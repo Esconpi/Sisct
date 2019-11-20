@@ -401,15 +401,16 @@ namespace Escon.SisctNET.Web.Controllers
                             if (productImport == null)
                             {
                                 decimal pICMSFormat = Math.Round(pICMS, 2);
-                                var code = comp.Document + NCM + notes[i][2]["UF"] + pICMSFormat.ToString().Replace(".", ",");
-                                var code2 = comp.Document + notes[i][2]["CNPJ"] + det["cProd"] + NCM + CEST;
-                                var taxed = _taxationService.FindByCode(code);
-                                var taxed2 = _taxationService.FindByCode2(code2);
+                                string number = pICMSFormat.ToString();
 
-                                if (taxed2 != null)
+                                if (pICMSFormat == 0)
                                 {
-                                    taxed = taxed2;
+                                    number = "0.00";
                                 }
+
+
+                                var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
+                                var taxed = _taxationService.FindByCode(code);
 
                                 if (taxed == null)
                                 {
