@@ -126,14 +126,12 @@ namespace Escon.SisctNET.Web.Controllers
                 if (entity.Pautado == true)
                 {
                     products = _service.FindByCnpjCprod(notes, note.Cnpj, rst.Cprod, rst.Ncm, rst.Cest);
-                    code2 = note.Cnpj + rst.Cprod + rst.Ncm + rst.Cest;
+                    code2 = note.Company.Document + note.Cnpj + rst.Cprod + rst.Ncm + rst.Cest;
                 }
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
                 var product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
                 
-                bool pauta = false;
-
                 foreach (var item in products)
                 {
                     decimal baseCalc = 0;
@@ -207,7 +205,6 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                             item.TotalICMS = total_icms_pauta;
-                            pauta = true;
                             item.Pautado = true;
                             item.ProductId = product.Id;
                         }
@@ -236,64 +233,49 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var produtoEspecial = Request.Form["produtoEspecial"];
-                if (produtoEspecial != "on")
+
+                if (produtoEspecial != "on" && entity.Pautado == false)
                 {
-                    if (product != null)
+                    var ncm = _ncmService.FindByCode(rst.Ncm);
+
+                    var taxation = new Model.Taxation
                     {
-                        var taxation = new Model.Taxation
-                        {
-                            Code = note.Company + rst.Ncm + note.Uf + rst.Picms,
-                            Code2 = code2,
-                            Ncm = rst.Ncm,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = Convert.ToDecimal(bcrForm),
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            Pautado = pauta,
-                            PrecoPautaId = product.Id,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-                    }
-                    else
-                    {
-                        var taxation = new Model.Taxation
-                        {
-                            Code = rst.Ncm + note.Uf + rst.Picms,
-                            Code2 = code2,
-                            Ncm = rst.Ncm,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = Convert.ToDecimal(bcrForm),
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-                    }
+                        CompanyId = note.CompanyId,
+                        Code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms,
+                        Code2 = code2,
+                        Cest = rst.Cest,
+                        AliqInterna = Convert.ToDecimal(AliqInt),
+                        Diferencial = dif,
+                        MVA = entity.Mva,
+                        BCR = Convert.ToDecimal(bcrForm),
+                        Fecop = entity.Fecop,
+                        DateStart = Convert.ToDateTime(dateStart),
+                        DateEnd = null,
+                        TaxationTypeId = Convert.ToInt32(taxaType),
+                        Created = DateTime.Now,
+                        Updated = DateTime.Now,
+                        NcmId = ncm.Id
+                    };
+                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    
                 }
 
-                bool status = false;
-                var noteTaxation = _service.FindByTaxation(Convert.ToInt32(rst.NoteId));
-
-                if (noteTaxation.Count == 0)
+                foreach (var prod in products)
                 {
-                    status = true;
-                }
+                    bool status = false;
+                    var nota = _noteService.FindById(Convert.ToInt32(prod.NoteId), GetLog(OccorenceLog.Read));
 
-                note.Status = status;
-                _noteService.Update(note, GetLog(OccorenceLog.Update));
+                    var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
+
+                    if (productTaxation.Count == 0)
+                    {
+                        status = true;
+                    }
+
+                    nota.Status = status;
+
+                    _noteService.Update(nota, GetLog(OccorenceLog.Update));
+                }
 
                 return RedirectToAction("Index", new { noteId = note.Id });
             }

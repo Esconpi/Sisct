@@ -400,7 +400,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (productImport == null)
                             {
-                                decimal pICMSFormat = Math.Round(pICMS, 2);
+                                decimal pICMSFormat = Math.Round(pICMS, 2);                          
                                 string number = pICMSFormat.ToString();
 
                                 if (pICMSFormat == 0)
@@ -411,6 +411,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
                                 var taxed = _taxationService.FindByCode(code);
+
 
                                 if (taxed == null)
                                 {
@@ -468,33 +469,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, GetLog(Model.OccorenceLog.Read));
                                     var calculation = new Calculation();
                                     decimal valorAgreg = 0, valor_fecop = 0, valorbcr = 0, valor_icms = vICMS + frete_icms,
-                                            valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, total_icms_pauta = 0, baseCalc = 0;
-                                    bool pautado = false;
+                                            valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
+
                                     if (taxedtype.Type == "ST")
                                     {
                                         baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc ;
 
-                                        if (taxed.Pautado == true)
-                                        {
-                                            decimal preco = _product.FindByPrice(Convert.ToInt32(taxed.Product));
-                                            // Primeiro PP feito pela tabela
-                                            decimal vAgre = calculation.valorAgregadoPauta(Convert.ToDecimal(det["qCom"]), preco);
-
-                                            // Segundo PP feito com os dados do produto
-                                            decimal vAgre2 = baseCalc / Convert.ToDecimal(det["qCom"]);
-                                            if (vAgre2 > vAgre)
-                                            {
-                                                vAgre = vAgre2;
-                                            }
-
-                                            if (taxed.Fecop != null)
-                                            {
-                                                valor_fecop = (Convert.ToDecimal(taxed.Fecop) / 100) * vAgre;
-                                            }
-                                            decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, vAgre);
-                                            decimal icms_pauta = valorAgreAliqInt - valor_icms;
-                                            total_icms_pauta = icms_pauta + valor_fecop;
-                                        }
                                         if (taxed.MVA != null)
                                         {
                                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
@@ -514,11 +494,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
                                         }
                                         cms = valorAgre_AliqInt - valor_icms;
-                                        if (total_icms_pauta > cms)
-                                        {
-                                            cms = total_icms_pauta;
-                                            pautado = true;
-                                        }
                                     }
                                     else if (taxedtype.Type == "Normal")
                                     {
@@ -527,133 +502,67 @@ namespace Escon.SisctNET.Web.Controllers
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
 
-                                    if (taxed.Product != null)
+                                  
+                                    try
                                     {
-                                        try
+                                        var item = new Model.ProductNote
                                         {
-                                            var item = new Model.ProductNote
-                                            {
-                                                Nnf = notes[i][1]["nNF"],
-                                                Cprod = det["cProd"],
-                                                Ncm = NCM,
-                                                Cest = CEST,
-                                                Cfop = CFOP,
-                                                Xprod = det["xProd"],
-                                                Vprod = Convert.ToDecimal(det["vProd"]),
-                                                Qcom = Convert.ToDecimal(det["qCom"]),
-                                                Ucom = det["uCom"],
-                                                Vuncom = vUnCom,
-                                                Vicms = vICMS,
-                                                Picms = pICMS,
-                                                Vipi = vIPI,
-                                                Vpis = vPIS,
-                                                Vcofins = vCOFINS,
-                                                Vbasecalc = baseCalc,
-                                                Vfrete = vFrete,
-                                                Vseg = vSeg,
-                                                Voutro = vOutro,
-                                                Vdesc = vDesc,
-                                                Created = DateTime.Now,
-                                                Updated = DateTime.Now,
-                                                IcmsST = vICMSST,
-                                                VbcFcpSt = vBCFCPST,
-                                                VbcFcpStRet = vBCFCPSTRet,
-                                                pFCPST = pFCPST,
-                                                pFCPSTRET = pFCPSTRet,
-                                                VfcpST = vFCPST,
-                                                VfcpSTRet = vFCPSTRet,
-                                                IcmsCTe = frete_icms,
-                                                Freterateado = frete_prod,
-                                                Aliqinterna = taxed.AliqInterna,
-                                                Mva = taxed.MVA,
-                                                BCR = taxed.BCR,
-                                                Fecop = taxed.Fecop,
-                                                Valoragregado = valorAgreg,
-                                                ValorBCR = valorbcr,
-                                                ValorAC = valorAgre_AliqInt,
-                                                TotalICMS = cms,
-                                                TotalFecop = valor_fecop,
-                                                Diferencial = dif,
-                                                IcmsApurado = icmsApu,
-                                                Status = true,
-                                                Pautado = pautado,
-                                                ProductId = taxed.PrecoPautaId,
-                                                TaxationTypeId = taxed.TaxationTypeId,
-                                                NoteId = noteId,
-                                                Nitem = det["nItem"]
-                                            };
-                                            _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                            return BadRequest(new { erro = 500, message = message });
-                                        }
-                                       
+                                            Nnf = notes[i][1]["nNF"],
+                                            Cprod = det["cProd"],
+                                            Ncm = NCM,
+                                            Cest = CEST,
+                                            Cfop = CFOP,
+                                            Xprod = det["xProd"],
+                                            Vprod = Convert.ToDecimal(det["vProd"]),
+                                            Qcom = Convert.ToDecimal(det["qCom"]),
+                                            Ucom = det["uCom"],
+                                            Vuncom = vUnCom,
+                                            Vicms = vICMS,
+                                            Picms = pICMS,
+                                            Vipi = vIPI,
+                                            Vpis = vPIS,
+                                            Vcofins = vCOFINS,
+                                            Vbasecalc = baseCalc,
+                                            Vfrete = vFrete,
+                                            Vseg = vSeg,
+                                            Voutro = vOutro,
+                                            Vdesc = vDesc,
+                                            Created = DateTime.Now,
+                                            Updated = DateTime.Now,
+                                            IcmsST = vICMSST,
+                                            VbcFcpSt = vBCFCPST,
+                                            VbcFcpStRet = vBCFCPSTRet,
+                                            pFCPST = pFCPST,
+                                            pFCPSTRET = pFCPSTRet,
+                                            VfcpST = vFCPST,
+                                            VfcpSTRet = vFCPSTRet,
+                                            IcmsCTe = frete_icms,
+                                            Freterateado = frete_prod,
+                                            Aliqinterna = taxed.AliqInterna,
+                                            Mva = taxed.MVA,
+                                            BCR = taxed.BCR,
+                                            Fecop = taxed.Fecop,
+                                            Valoragregado = valorAgreg,
+                                            ValorBCR = valorbcr,
+                                            ValorAC = valorAgre_AliqInt,
+                                            TotalICMS = cms,
+                                            TotalFecop = valor_fecop,
+                                            Diferencial = dif,
+                                            IcmsApurado = icmsApu,
+                                            Status = true,
+                                            TaxationTypeId = taxed.TaxationTypeId,
+                                            NoteId = noteId,
+                                            Nitem = det["nItem"]
+                                        };
+                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
-                                    else
+                                    catch(Exception ex)
                                     {
-                                        try
-                                        {
-                                            var item = new Model.ProductNote
-                                            {
-                                                Nnf = notes[i][1]["nNF"],
-                                                Cprod = det["cProd"],
-                                                Ncm = NCM,
-                                                Cest = CEST,
-                                                Cfop = CFOP,
-                                                Xprod = det["xProd"],
-                                                Vprod = Convert.ToDecimal(det["vProd"]),
-                                                Qcom = Convert.ToDecimal(det["qCom"]),
-                                                Ucom = det["uCom"],
-                                                Vuncom = vUnCom,
-                                                Vicms = vICMS,
-                                                Picms = pICMS,
-                                                Vipi = vIPI,
-                                                Vpis = vPIS,
-                                                Vcofins = vCOFINS,
-                                                Vbasecalc = baseCalc,
-                                                Vfrete = vFrete,
-                                                Vseg = vSeg,
-                                                Voutro = vOutro,
-                                                Vdesc = vDesc,
-                                                Created = DateTime.Now,
-                                                Updated = DateTime.Now,
-                                                IcmsST = vICMSST,
-                                                VbcFcpSt = vBCFCPST,
-                                                VbcFcpStRet = vBCFCPSTRet,
-                                                pFCPST = pFCPST,
-                                                pFCPSTRET = pFCPSTRet,
-                                                VfcpST = vFCPST,
-                                                VfcpSTRet = vFCPSTRet,
-                                                IcmsCTe = frete_icms,
-                                                Freterateado = frete_prod,
-                                                Aliqinterna = taxed.AliqInterna,
-                                                Mva = taxed.MVA,
-                                                BCR = taxed.BCR,
-                                                Fecop = taxed.Fecop,
-                                                Valoragregado = valorAgreg,
-                                                ValorBCR = valorbcr,
-                                                ValorAC = valorAgre_AliqInt,
-                                                TotalICMS = cms,
-                                                TotalFecop = valor_fecop,
-                                                Diferencial = dif,
-                                                IcmsApurado = icmsApu,
-                                                Status = true,
-                                                Pautado = pautado,
-                                                TaxationTypeId = taxed.TaxationTypeId,
-                                                NoteId = noteId,
-                                                Nitem = det["nItem"]
-                                            };
-                                            _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
-                                        }
-                                        catch(Exception ex)
-                                        {
-                                            string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                            return BadRequest(new { erro = 500, message = message });
-                                        }
-                                       
+                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
+                                        return BadRequest(new { erro = 500, message = message });
                                     }
+                                       
+                                    
                                     det.Clear();
                                 }
                             }
