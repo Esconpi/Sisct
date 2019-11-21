@@ -1,0 +1,13 @@
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Service.deps.json
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Service.dll
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Service.pdb
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Model.dll
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Repository.dll
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Model.pdb
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\bin\Release\netcoreapp2.2\Escon.SisctNET.Repository.pdb
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.csprojAssemblyReference.cache
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.AssemblyInfoInputs.cache
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.AssemblyInfo.cs
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.csproj.CopyComplete
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.dll
+C:\SVN\branches\SisctNET\Escon.SisctNET.Service\obj\Release\netcoreapp2.2\Escon.SisctNET.Service.pdb

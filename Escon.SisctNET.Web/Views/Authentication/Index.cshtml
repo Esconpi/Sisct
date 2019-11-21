@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sisct NET - Escon</title>
+
+
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/AdminLTE.css" rel="stylesheet" />
+    <link href="~/css/skins/_all-skins.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/js/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/js/Ionicons/css/ionicons.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/js/datatables.net/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/js/bootstrap-toggle/css/bootstrap-toggle.css" rel="stylesheet" />
+
+
+    <script src="~/js/jquery/jquery.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/js/datatables.net/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/adminlte.js"></script>
+    <script src="~/js/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    
+
+</head>
+
+<body class="hold-transition login-page" style="background-image:url('../img/fundo.jpg'); background-size:100% 100%;">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#" style="color:#FFFFFF;"><b>Sisct NET</b></a>
+        </div>
+
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Entre para iniciar sua sessão</p>
+
+            <form asp-action="Index" method="post">
+                <div class="form-group has-feedback">
+                    <input type="email" name="Email" required id="Email" class="form-control" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="Password" required id="Password" class="form-control" placeholder="Senha">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <input type="checkbox" data-off="Não Lembrar" data-on="Lembrar" data-toggle="toggle" data-onstyle="primary" />
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                    </div>
+                </div>
+
+                @if (ViewBag.CodeErro == 2)
+                {
+                    <div class="row has-error" style="text-align:center; margin-top:30px;">
+                        <span class="text-danger">Usuário ou senha inválido!</span>
+                    </div>
+                }
+
+                <div class="row" style="text-align:center; margin-top:30px;">
+                    <img src="http://www.esconpi.com.br/imgs/logo.png" style="width:100px;" /><br />
+                    <a href="http://www.esconpi.com.br">www.esconpi.com.br</a>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

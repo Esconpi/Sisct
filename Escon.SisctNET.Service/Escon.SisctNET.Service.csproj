@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Escon.SisctNET.Model\Escon.SisctNET.Model.csproj" />
+    <ProjectReference Include="..\Escon.SisctNET.Repository\Escon.SisctNET.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>SisCT NET - ESCON</title>
+
+    <link href="~/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/js/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/js/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/css/AdminLTE.css" rel="stylesheet" />
+    <link href="~/css/skins/_all-skins.css" rel="stylesheet" />
+    <link href="~/js/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/js/Ionicons/css/ionicons.css" rel="stylesheet" />
+    <link href="~/js/datatables.net/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/js/bootstrap-toggle/css/bootstrap-toggle.css" rel="stylesheet" />
+    <link href="~/js/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <script src="~/js/jquery/jquery.js"></script>
+    <script src="~/js/jquery/jquery.min.js"></script>
+    <script src="~/js/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/js/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/js/datatables.net/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/adminlte.js"></script>
+    <script src="~/js/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script src="~/js/input-mask/jquery.inputmask.js"></script>
+    <script src="~/js/input-mask/jquery.inputmask.numeric.extensions.js"></script>
+    <script src="~/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/js/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="~/js/site.js"></script>
+    
+
+</head>
+<body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
+
+    <div class="wrapper" style="height: auto; min-height: 100%;">
+        <header class="main-header">
+            <!-- Logo -->
+            <a asp-controller="Home" asp-action="Index" class="logo">
+
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>E</b>C</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><i class="fa fa-home"></i> <b>Es</b>Con</span>
+            </a>
+
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/img/ico_profile.png" class="user-image" alt="User Image">
+                                <span class="hidden-xs">@SessionManager.GetPersonInSession().FirstName</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/img/ico_profile.png" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        @SessionManager.GetPersonInSession().FirstName
+                                        <small>@SessionManager.GetPersonInSession().Email</small>
+                                    </p>
+                                </li>
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <a href="#" id=@SessionManager.GetPersonInSession().Id class="showProfile btn btn-default btn-flat">
+                                            Perfil
+                                        </a>
+                                    </div>
+
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a class="btn editProfile" asp-controller="Authentication" asp-action="Logout" title="Sair"><i class="fa fa-power-off"> Sair</i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar" style="height: auto;">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/img/ico_profile.png" class="img-circle" alt="User Image" />
+                    </div>
+                    <div class="pull-left info">
+                        <p>@SessionManager.GetPersonInSession().FirstName</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu tree" data-widget="tree">
+
+                    <li class="header">MENU PRINCIPAL</li>
+
+                    @if (SessionManager.GetProfileInSession().Equals(1) || SessionManager.GetUserInSession().Equals(5) || SessionManager.GetConfigurationInSession().Equals(12))
+                    {
+                        <li class="treeview menu-open">
+                            <a href="#">
+                                <i class="fa fa-file-text-o"></i> <span>Cadastros</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:block;">
+
+                                @if (SessionManager.GetProfileInSession().Equals(1))
+                                {
+                                    <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-circle-o"></i>Perfil</a></li>
+                                }
+
+                                @if (SessionManager.GetUserInSession().Equals(5))
+                                {
+                                    <li><a href="@Url.Action("Index","User")"><i class="fa fa-circle-o"></i>Usuários</a></li>
+                                }
+
+                                @if (SessionManager.GetConfigurationInSession().Equals(12))
+                                {
+                                    <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configurações</a></li>
+                                }
+
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (SessionManager.GetCfopInSession().Equals(13) || SessionManager.GetCestInSession().Equals(10) || SessionManager.GetNcmInSession().Equals(7) || SessionManager.GetAttachmentInSession().Equals(8) ||
+                        SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14))
+                    {
+                        <li class="treeview menu-open">
+                            <a href="#">
+                                <i class="fa fa-table"></i> <span>Tabelas</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:block;">
+
+                                @if (SessionManager.GetCfopInSession().Equals(13))
+                                {
+                                    <li><a href="@Url.Action("Index","Cfop")"><i class="fa fa-circle-o"></i>CFOP</a></li>
+                                }
+
+                                @if (SessionManager.GetCestInSession().Equals(10))
+                                {
+                                    <li><a href="@Url.Action("Index","Cest")"><i class="fa fa-circle-o"></i>CEST</a></li>
+                                }
+
+                                @if (SessionManager.GetNcmInSession().Equals(7))
+                                {
+                                    <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
+                                }
+
+                                @if (SessionManager.GetAttachmentInSession().Equals(8))
+                                {
+                                    <li><a href="@Url.Action("Index","Attachment")"><i class="fa fa-circle-o"></i>Sefaz Anexos</a></li>
+                                }
+
+                                @if (SessionManager.GetGroupInSession().Equals(9))
+                                {
+                                    <li><a href="@Url.Action("Index","Group")"><i class="fa fa-circle-o"></i>Sefaz Grupos</a></li>
+                                }
+
+                                @if (SessionManager.GetProductInSession().Equals(3))
+                                {
+                                    <li><a href="@Url.Action("Index","Product")"><i class="fa fa-circle-o"></i>Sefaz Produtos</a></li>
+                                }
+
+                                @if (SessionManager.GetStateInSession().Equals(14))
+                                {
+                                    <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Aliquotas Estados</a></li>
+                                }
+
+                            </ul>
+                        </li>
+
+                    }
+
+
+                    @if (SessionManager.GetCompanyInSession().Equals(11))
+                    {
+                        <li class="treeview menu-open">
+                            <a href="#">
+                                <i class="fa fa-calendar-check-o"></i> <span>Sisct</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:block;">
+                                <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresas</a></li>
+                            </ul>
+                        </li>
+                    }
+
+                </ul>
+            </section>
+        </aside>
+
+        <div class="content-wrapper" style="min-height: 960px;">
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.4.0
+            </div>
+            <strong>Copyright ©  @DateTime.Now.ToString("yyyy") <a href="https://www.esconpi.com.br">Escon</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+
+    <div class="modal modal-primary fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            function updateActive(ele) {
+
+                alert($(this).prop('id'));
+            }
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $(".selectoption").select2();
+            $('.cpfformatmask').inputmask("999.999.999-99");
+            $('.cnpjformatmask').inputmask("99.999.999/9999-99");
+
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
+            });
+
+            $('#tblIndex').DataTable();
+
+            $('.showProfile').click(function () {
+                $.get('User/EditNew/' + $(this).attr('id'), function (html) {
+                    $('#formShow .modal-body').empty();
+                    $('#formShow .modal-body').append($(html));
+                    $('#formShow').modal('show');
+                });
+
+            });
+
+        });
+
+    </script>
+</body>
+</html>
+

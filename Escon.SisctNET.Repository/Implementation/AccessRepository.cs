@@ -1,0 +1,40 @@
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Escon.SisctNET.Repository.Implementation
+{
+    public class AccessRepository : Repository<Access>, IAccessRepository
+    {
+        private readonly ContextDataBase _context;
+
+        public AccessRepository(ContextDataBase context, IConfiguration configuration)
+            : base(context, configuration)
+        {
+            _context = context;
+        }
+
+        public List<Access> FindByFunctionalityId(int functionalityId, Log log = null)
+        {
+            var result = _context.Accesses.Where(_ => _.FunctionalityId.Equals(functionalityId)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<Access> FindByProfileId(int profileId, Log log = null)
+        {
+            var result = _context.Accesses.Where(_ => _.ProfileId.Equals(profileId)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<Access> FindByActive(int profileId, Log log = null)
+        {
+            var result = _context.Accesses.Where(_ => _.ProfileId.Equals(profileId) && _.Active.Equals(true)).ToList();
+            AddLog(log);
+            return result;
+        }
+    }
+}

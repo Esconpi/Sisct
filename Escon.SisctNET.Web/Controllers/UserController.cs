@@ -1,0 +1,200 @@
+﻿using System;
+using Escon.SisctNET.Service;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Escon.SisctNET.Web.Controllers
+{
+    public class UserController : ControllerBaseSisctNET
+    {
+        private readonly IPersonService _service;
+        private readonly IProfileService _profileService;
+
+        public UserController(
+            IPersonService service,
+            IProfileService profileService,
+            IFunctionalityService functionalityService,
+            IHttpContextAccessor httpContextAccessor)
+            : base(functionalityService, "Person")
+        {
+            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
+
+            _service = service;
+            _profileService = profileService;
+        }
+
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            try
+            {
+
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    return View(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Model.Person entity)
+        {
+            try
+            {
+
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.Password = new Crypto.HashManager().GenerateHash(entity.Password);
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+      
+      
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            try
+            {
+                var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", person.Profile);
+
+                return View(person);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Model.Person person)
+        {
+            try
+            {
+                var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                person.Created = _person.Created;
+
+                if (!string.IsNullOrEmpty(person.Password))
+                {
+                    person.Password = new Crypto.HashManager().GenerateHash(person.Password);
+                }
+                else
+                {
+                    person.Password = _person.Password;
+                }
+
+                person.Updated = DateTime.Now;
+                _service.Update(person, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult EditNew(int id)
+        {
+            try
+            {
+                var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(person);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditNew(int id, Model.Person person)
+        {
+            try
+            {
+                var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                person.Created = _person.Created;
+
+                if (!string.IsNullOrEmpty(person.Password))
+                {
+                    person.Password = new Crypto.HashManager().GenerateHash(person.Password);
+                }
+                else
+                {
+                    person.Password = _person.Password;
+                }
+                person.Updated = DateTime.Now;
+                person.ProfileId = _person.ProfileId;
+                _service.Update(person, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
+        {
+            try
+            {
+                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                entity.Active = updateActive.Active;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { requestcode = 500, message = ex.Message });
+            }
+        }
+    }
+
+}

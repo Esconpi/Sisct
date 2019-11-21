@@ -1,0 +1,52 @@
+﻿@model Escon.SisctNET.Model.Person
+
+<div class="box-header">
+    <a asp-ction="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+    <h3 class="box-title" style="color:white;">
+        <strong>Dados do Perfil</strong> 
+    </h3>
+
+</div>
+<div class="box-body">
+    <div class="col-md-12">
+
+        <form asp-action="EditNew" id="formDefault">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" class="form-control" type="hidden" />
+
+            <div class="row">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="Document" class="control-label"></label>
+                    <input asp-for="Document" class="form-control cpfformatmask" />
+                    <span asp-validation-for="Document" class="text-danger"></span>
+                </div>
+                <div class="form-group  has-feedback col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" data-val="false" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                <input type="submit" value="Atualizar Dados" class="btn btn-success pull-right" />
+            </div>
+        </form>
+    </div>
+</div>
+
