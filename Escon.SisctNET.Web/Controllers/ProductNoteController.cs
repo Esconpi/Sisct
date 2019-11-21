@@ -390,7 +390,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         totalIcms = result.Select(_ => _.TotalICMS).Sum();
                         ViewBag.TotalICMS = totalIcms;
-
                         ViewBag.TotalICMSSTNota = totalIcms - totalIcmsPauta;                        
                         ViewBag.TotalICMSPauta = totalIcmsPauta;
 
