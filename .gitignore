@@ -1,2 +1,15 @@
 SisctNET.sln
+SisctNET.sln.sln
 .vs
+Escon.SisctNET.API/bin
+Escon.SisctNET.API/obj
+Escon.SisctNET.Fortes/bin
+Escon.SisctNET.Fortes/obj
+Escon.SisctNET.Model/bin
+Escon.SisctNET.Model/obj
+Escon.SisctNET.Repository/bin
+Escon.SisctNET.Repository/obj
+Escon.SisctNET.Service/bin
+Escon.SisctNET.Service/obj
+Escon.SisctNET.Web/bin
+Escon.SisctNET.Web/obj
