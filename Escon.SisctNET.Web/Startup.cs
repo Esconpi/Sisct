@@ -120,6 +120,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddScoped<ICompanyCfopRepository, CompanyCfopRepository>();
 
 
             services.AddScoped<IProfileService, ProfileService>();
@@ -143,6 +144,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IStateService, StateService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IAuthentication, Authentication>();
+            services.AddScoped<ICompanyCfopService, CompanyCfopService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }

@@ -167,6 +167,103 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Details(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult EditNew(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Id = result.Id;
+                return PartialView(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditNew(int id, Model.Company entity)
+        {
+            try
+            {
+                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                if (Request.Form["icms"] != "")
+                {
+                    rst.Icms = Convert.ToDecimal(Request.Form["icms"]);
+                }
+
+                if (Request.Form["transferencia"] != "")
+                {
+                    rst.Transferencia = Convert.ToDecimal(Request.Form["transferencia"]);
+                }
+
+                if (Request.Form["transferenciaEx"] != "")
+                {
+                    rst.TransferenciaExcedente = Convert.ToDecimal(Request.Form["transferenciaEx"]);
+                }
+
+                if (Request.Form["suspension"] != "")
+                {
+                    rst.Suspension = Convert.ToDecimal(Request.Form["suspension"]);
+                }
+
+                if (Request.Form["funef"] != "")
+                {
+                    rst.Funef = Convert.ToDecimal(Request.Form["funef"]);
+                }
+
+                if (Request.Form["vendaContri"] != "")
+                {
+                    rst.VendaContribuinte = Convert.ToDecimal(Request.Form["vendaContri"]);
+                }
+
+                if (Request.Form["vendaContriEx"] != "")
+                {
+                    rst.VendaContribuinteExcedente = Convert.ToDecimal(Request.Form["vendaContriEx"]);
+                }
+
+                if (Request.Form["cotac"] != "")
+                {
+                    rst.Cotac = Convert.ToDecimal(Request.Form["cotac"]);
+                }
+
+                if (Request.Form["vendaCpf"] != "")
+                {
+                    rst.VendaCpf = Convert.ToDecimal(Request.Form["vendaCpf"]);
+                }
+
+                if (Request.Form["vendaCpfEx"] != "")
+                {
+                    rst.VendaCpfExcedente = Convert.ToDecimal(Request.Form["vendaCpfEx"]);
+                }
+
+
+                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+
+                return RedirectToAction("Details", new { id = id});
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             try

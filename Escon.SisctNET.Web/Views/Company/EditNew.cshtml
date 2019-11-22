@@ -1,0 +1,95 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "EditNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Details" asp-route-id=@ViewBag.Id size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title">
+            <strong>Incentivo</strong>
+        </h3>
+        <div style="text-align:center;">
+            <strong> @Model.FantasyName - @Model.Document</strong>
+        </div>
+        <br />
+    </div>
+
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="EditNew">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Id" class="form-control" type="hidden" />
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Icms %</label>
+                        <input class="form-control" name="icms" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <br />
+                        <div>
+                            <strong>Transferências %</strong>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="transferencia" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="transferenciaEx" />
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Suspensão %</label>
+                        <input class="form-control" name="suspension" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Funef %</label>
+                        <input class="form-control" name="funef" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <br />
+                        <strong>Venda para Contribuinte %</strong>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="vendaContri" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="vendaContriEx" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Cotac %</label>
+                        <input class="form-control" name="cotac" />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <br />
+                        <strong>Venda para CPF (limite) %</strong>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="vendaCpf" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input class="form-control" name="vendaCpfEx" />
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Alterar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

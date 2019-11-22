@@ -451,7 +451,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             IcmsCTe = frete_icms,
                                             Freterateado = frete_prod,
                                             NoteId = noteId,
-                                            Nitem = det["nItem"]
+                                            Nitem = det["nItem"],
+                                            Status = false
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
@@ -552,7 +553,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             Status = true,
                                             TaxationTypeId = taxed.TaxationTypeId,
                                             NoteId = noteId,
-                                            Nitem = det["nItem"]
+                                            Nitem = det["nItem"],
+                                            TaxationId = taxed.Id
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
@@ -598,8 +600,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Vnf = result.Vnf;
-                return PartialView(result);
+                return View(result);
             }
             catch (Exception ex)
             {

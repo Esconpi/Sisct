@@ -254,7 +254,8 @@ namespace Escon.SisctNET.Web.Controllers
                         TaxationTypeId = Convert.ToInt32(taxaType),
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
-                        NcmId = ncm.Id
+                        NcmId = ncm.Id,
+                        Status = true
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
                     

@@ -14,9 +14,6 @@ namespace Escon.SisctNET.Model
 
         public string Code2 { get; set; }
 
-        [Display(Name = "NCM")]
-        public string Ncm { get; set; }
-
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
@@ -33,21 +30,7 @@ namespace Escon.SisctNET.Model
         public decimal? BCR { get; set; }
 
         [Display(Name = "Aliquota FECOP")]
-        public decimal? Fecop { get; set; }
-
-        [Display(Name = "Pautado")]
-        public bool Pautado { get; set; }
-        
-        [Display(Name = "Preço da Pauta")]
-        [ForeignKey("Product")]
-        public int? PrecoPautaId { get; set; }
-
-        private Product product;
-        public Product Product
-        {
-            get => LazyLoader.Load(this, ref product);
-            set => product = value;
-        }
+        public decimal? Fecop { get; set; }        
 
         [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]
@@ -67,5 +50,28 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref taxationType);
             set => taxationType = value;
         }
+
+        [Display(Name = "Empresa")]
+        [ForeignKey("Company")]
+        public int CompanyId { get; set; }
+
+        private Company company;
+        public Company Company
+        {
+            get => LazyLoader.Load(this, ref company);
+            set => company = value;
+        }
+
+        [Display(Name = "Ncm")]
+        public int NcmId { get; set; }
+
+        private Ncm ncm;
+        public Ncm Ncm
+        {
+            get => LazyLoader.Load(this, ref ncm);
+            set => ncm = value;
+        }
+
+        public bool ? Status { get; set; }
     }
 }

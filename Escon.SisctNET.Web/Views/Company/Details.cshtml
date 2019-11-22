@@ -1,0 +1,102 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
+        {
+            <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        }
+
+        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(2) || SessionManager.GetPersonInSession().Profile.Id.Equals(3))
+        {
+            <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        }
+
+        <h3 class="box-title">
+            <strong>Incentivo</strong>
+        </h3>
+        <div style="text-align:center;">
+            <strong> @Model.SocialName - @Model.Document</strong>
+        </div>
+        <br />
+    </div>
+    <div class="box-body">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Icms" class="control-label"></label>
+                    <input asp-for="Icms" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <br />
+                    <div>
+                        <strong>Transferências %</strong>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="Transferencia" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="TransferenciaExcedente" class="form-control" readonly />
+                </div>
+
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Suspension" class="control-label"></label>
+                    <input asp-for="Suspension" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Funef" class="control-label"></label>
+                    <input asp-for="Funef" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <br />
+                    <strong>Venda para Contribuinte %</strong>
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="VendaContribuinte" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="VendaContribuinteExcedente" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Cotac" class="control-label"></label>
+                    <input asp-for="Cotac" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <br />
+                    <strong>Venda para CPF (limite) %</strong>
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="VendaCpf" class="form-control" readonly />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label"></label>
+                    <input asp-for="VendaCpfExcedente" class="form-control" readonly />
+                </div>
+
+                @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
+                {
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        @Html.ActionLink(" ", "EditNew", new { id = @Model.Id }, new { @class = "glyphicon glyphicon-pencil pull-right", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Alterar Incentivo" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

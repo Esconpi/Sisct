@@ -46,5 +46,29 @@ namespace Escon.SisctNET.Model
             set => companyMatrix = value;
         }
 
+        [Display(Name = "ICMS %")]
+        public decimal ? Icms { get; set; }
+
+        [Display(Name = "Funef %")]
+        public decimal ? Funef { get; set; }
+
+        [Display(Name = "Cotac %")]
+        public decimal ? Cotac { get; set; }
+
+        [Display(Name = "Suspensão %")]
+        public decimal ? Suspension { get; set; }
+
+        public decimal ? VendaCpf { get; set; }
+
+        public decimal ? VendaContribuinte { get; set; }
+
+        public decimal ? Transferencia { get; set; }
+
+        public decimal ? VendaContribuinteExcedente { get; set; }
+
+        public decimal ? VendaCpfExcedente { get; set; }
+
+        public decimal? TransferenciaExcedente { get; set; }
+
     }
 }
