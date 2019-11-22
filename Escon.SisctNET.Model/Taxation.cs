@@ -14,9 +14,6 @@ namespace Escon.SisctNET.Model
 
         public string Code2 { get; set; }
 
-        [Display(Name = "NCM")]
-        public string Ncm { get; set; }
-
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
@@ -34,20 +31,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Aliquota FECOP")]
         public decimal? Fecop { get; set; }
-
-        [Display(Name = "Pautado")]
-        public bool Pautado { get; set; }
-        
-        [Display(Name = "Preço da Pauta")]
-        [ForeignKey("Product")]
-        public int? PrecoPautaId { get; set; }
-
-        private Product product;
-        public Product Product
-        {
-            get => LazyLoader.Load(this, ref product);
-            set => product = value;
-        }
 
         [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]

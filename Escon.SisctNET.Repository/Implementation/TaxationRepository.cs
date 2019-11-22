@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Linq;
 
 namespace Escon.SisctNET.Repository.Implementation
@@ -14,9 +15,15 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Taxation FindByCode(string code, Log log = null)
+        public Taxation FindByCode(string code, DateTime data, Log log = null)
         {
-            var rst = _context.Taxations.Where(_ => _.Code.Equals(code)).FirstOrDefault();
+            
+            var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateStart >= data && _.DateEnd.Equals(null)).FirstOrDefault();
+            if (rst == null)
+            {
+                rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateStart <= data && _.DateEnd >= data).FirstOrDefault();
+            }
+
             AddLog(log);
             return rst;
         }

@@ -236,52 +236,26 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var produtoEspecial = Request.Form["produtoEspecial"];
-                if (produtoEspecial != "on")
+                if (produtoEspecial != "on" && entity.Pautado == false)
                 {
-                    if (product != null)
+                    var taxation = new Model.Taxation
                     {
-                        var taxation = new Model.Taxation
-                        {
-                            Code = note.Company + rst.Ncm + note.Uf + rst.Picms,
-                            Code2 = code2,
-                            Ncm = rst.Ncm,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = Convert.ToDecimal(bcrForm),
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            Pautado = pauta,
-                            PrecoPautaId = product.Id,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-                    }
-                    else
-                    {
-                        var taxation = new Model.Taxation
-                        {
-                            Code = rst.Ncm + note.Uf + rst.Picms,
-                            Code2 = code2,
-                            Ncm = rst.Ncm,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = Convert.ToDecimal(bcrForm),
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-                    }
+                        Code = note.Company + rst.Ncm + note.Uf + rst.Picms,
+                        Code2 = code2,
+                        Cest = rst.Cest,
+                        AliqInterna = Convert.ToDecimal(AliqInt),
+                        Diferencial = dif,
+                        MVA = entity.Mva,
+                        BCR = Convert.ToDecimal(bcrForm),
+                        Fecop = entity.Fecop,
+                        DateStart = Convert.ToDateTime(dateStart),
+                        DateEnd = null,
+                        TaxationTypeId = Convert.ToInt32(taxaType),
+                        Created = DateTime.Now,
+                        Updated = DateTime.Now
+                    };
+                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    
                 }
 
                 bool status = false;
