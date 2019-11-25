@@ -553,8 +553,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             Status = true,
                                             TaxationTypeId = taxed.TaxationTypeId,
                                             NoteId = noteId,
-                                            Nitem = det["nItem"],
-                                            TaxationId = taxed.Id
+                                            Nitem = det["nItem"]
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
@@ -618,137 +617,77 @@ namespace Escon.SisctNET.Web.Controllers
 
                 note.Updated = DateTime.Now;
 
-                if (Request.Form["GnreNPaga"] == "")
-                {
-                    note.GnreNPaga = null;
-                }
-                else
+                if (Request.Form["GnreNPaga"] != "")
                 {
                     note.GnreNPaga = Convert.ToDecimal(Request.Form["GnreNPaga"]);
                 }
 
-                if (Request.Form["IcmsAp"] == "")
-                {
-                    note.IcmsAp = null;
-                }
-                else
+                if (Request.Form["IcmsAp"] != "")
                 {
                     note.IcmsAp = Convert.ToDecimal(Request.Form["IcmsAp"]);
                 }
 
-                if (Request.Form["IcmsSt"] == "")
-                {
-                    note.IcmsSt = null;
-                }
-                else
+                if (Request.Form["IcmsSt"] != "")
                 {
                     note.IcmsSt = Convert.ToDecimal(Request.Form["IcmsSt"]);
                 }
 
-                if (Request.Form["IcmsCo"] == "")
-                {
-                    note.IcmsCo = null;
-                }
-                else
+                if (Request.Form["IcmsCo"] != "")
                 {
                     note.IcmsCo = Convert.ToDecimal(Request.Form["IcmsCo"]);
                 }
 
-                if (Request.Form["IcmsIm"] == "")
-                {
-                    note.IcmsIm = null;
-                }
-                else
+                if (Request.Form["IcmsIm"] != "")
                 {
                     note.IcmsIm = Convert.ToDecimal(Request.Form["IcmsIm"]);
                 }
 
-                if (Request.Form["GnreAp"] == "")
-                {
-                    note.GnreAp = null;
-                }
-                else
+                if (Request.Form["GnreAp"] != "")
                 {
                     note.GnreAp = Convert.ToDecimal(Request.Form["GnreAp"]);
                 }
 
-                if (Request.Form["GnreCo"] == "")
-                {
-                    note.GnreCo = null;
-                }
-                else
+                if (Request.Form["GnreCo"] != "")
                 {
                     note.GnreCo = Convert.ToDecimal(Request.Form["GnreCo"]);
                 }
 
-                if (Request.Form["GnreIm"] == "")
-                {
-                    note.GnreIm = null;
-                }
-                else
+                if (Request.Form["GnreIm"] != "")
                 {
                     note.GnreIm = Convert.ToDecimal(Request.Form["GnreIm"]);
                 }
 
-                if (Request.Form["GnreSt"] == "")
-                {
-                    note.GnreSt = null;
-                }
-                else
+                if (Request.Form["GnreSt"] != "")
                 {
                     note.GnreSt = Convert.ToDecimal(Request.Form["GnreSt"]);
                 }
 
-                if (Request.Form["Fecop1"] == "")
-                {
-                    note.Fecop1 = null;
-                }
-                else
+                if (Request.Form["Fecop1"] != "")
                 {
                     note.Fecop1 = Convert.ToDecimal(Request.Form["Fecop1"]);
                 }
 
-                if (Request.Form["Fecop2"] == "")
-                {
-                    note.Fecop2 = null;
-                }
-                else
+                if (Request.Form["Fecop2"] != "")
                 {
                     note.Fecop2 = Convert.ToDecimal(Request.Form["Fecop2"]);
                 }
 
-                if (Request.Form["FecopGnre1"] == "")
-                {
-                    note.FecopGnre1 = null;
-                }
-                else
+                if (Request.Form["FecopGnre1"] != "")
                 {
                     note.FecopGnre1 = Convert.ToDecimal(Request.Form["FecopGnre1"]);
                 }
 
-                if (Request.Form["FecopGnre2"] == "")
-                {
-                    note.FecopGnre2 = null;
-                }
-                else
+                if (Request.Form["FecopGnre2"] != "")
                 {
                     note.FecopGnre2 = Convert.ToDecimal(Request.Form["FecopGnre2"]);
                 }
 
-                if (Request.Form["Desconto"] == "")
-                {
-                    note.Desconto = null;
-                }
-                else
+                if (Request.Form["Desconto"] != "")
                 {
                     note.Desconto = Convert.ToDecimal(Request.Form["Desconto"]);
                 }
 
-                if (Request.Form["Frete"] == "")
-                {
-                    note.Frete = null;
-                }
-                else
+                if (Request.Form["Frete"] != "")
                 {
                     note.Frete = Convert.ToDecimal(Request.Form["Frete"]);
                 }

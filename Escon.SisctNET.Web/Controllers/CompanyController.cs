@@ -153,28 +153,13 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 if (entity.CompanyId == 0)
-                    entity.CompanyId = null;
+                    rst.CompanyId = null;
 
-                entity.Created = rst.Created;
 
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return View(result);
-            }
-            catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
@@ -255,7 +240,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
-                return RedirectToAction("Details", new { id = id});
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {

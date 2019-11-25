@@ -177,18 +177,6 @@ namespace Escon.SisctNET.Model
             set => note = value;
         }
 
-        [Display(Name = "Tributação")]
-        [ForeignKey("Taxation")]
-        public int ? TaxationId { get; set; }
-
-        private Taxation taxation;
-
-        public Taxation Taxation
-        {
-            get => LazyLoader.Load(this, ref taxation);
-            set => taxation = value;
-        }
-
         [Display(Name = "Número do Item")]
         public string Nitem { get; set; }
 
