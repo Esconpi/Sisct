@@ -50,5 +50,27 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref taxationType);
             set => taxationType = value;
         }
+
+        [Display(Name = "Empresa")]
+        [ForeignKey("Company")]
+        public int CompanyId { get; set; }
+
+        private TaxationType company;
+        public TaxationType Company
+        {
+            get => LazyLoader.Load(this, ref company);
+            set => company = value;
+        }
+
+        [Display(Name = "Ncm")]
+        [ForeignKey("Ncm")]
+        public int NcmId { get; set; }
+
+        private TaxationType ncm;
+        public TaxationType Ncm
+        {
+            get => LazyLoader.Load(this, ref ncm);
+            set => ncm = value;
+        }
     }
 }
