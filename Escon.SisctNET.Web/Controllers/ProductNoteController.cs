@@ -234,17 +234,11 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var produtoEspecial = Request.Form["produtoEspecial"];
-<<<<<<< HEAD
 
                 if (produtoEspecial != "on" && entity.Pautado == false)
                 {
                     var ncm = _ncmService.FindByCode(rst.Ncm);
 
-=======
-                if (produtoEspecial != "on" && entity.Pautado == false)
-                {
-                    var ncm = _ncmService.FindByCode(rst.Ncm);
->>>>>>> origin/Tiago
                     var taxation = new Model.Taxation
                     {
                         CompanyId = note.CompanyId,
@@ -259,22 +253,16 @@ namespace Escon.SisctNET.Web.Controllers
                         DateStart = Convert.ToDateTime(dateStart),
                         DateEnd = null,
                         TaxationTypeId = Convert.ToInt32(taxaType),
-<<<<<<< HEAD
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
                         NcmId = ncm.Id,
                         Picms = rst.Picms,
                         Uf = note.Uf
-=======
-                        NcmId = ncm.Id,
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now
->>>>>>> origin/Tiago
+
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
                     
                 }
-<<<<<<< HEAD
 
                 foreach (var prod in products)
                 {
@@ -287,8 +275,6 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         status = true;
                     }
-=======
->>>>>>> origin/Tiago
 
                     nota.Status = status;
 

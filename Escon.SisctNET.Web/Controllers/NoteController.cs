@@ -402,7 +402,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (productImport == null)
                             {
-<<<<<<< HEAD
+
                                 decimal pICMSFormat = Math.Round(pICMS, 2);                          
                                 string number = pICMSFormat.ToString();
 
@@ -411,17 +411,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     number = "0.00";
                                 }
 
-
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
-                                var taxed = _taxationService.FindByCode(code);
-
-
-=======
-                                decimal pICMSFormat = Math.Round(pICMS, 2);
-                                var code = comp.Document + NCM + notes[i][2]["UF"] + pICMSFormat.ToString().Replace(".", ",");
                                 var taxed = _taxationService.FindByCode(code, Convert.ToDateTime(notes[i][1]["dhEmi"]));
-                               
->>>>>>> origin/Tiago
+
+
                                 if (taxed == null)
                                 {
                                     try
@@ -470,7 +463,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
                                         return BadRequest(new { erro = 500, message = message });
                                     }
-                                   
+
                                     det.Clear();
                                 }
                                 else
@@ -480,124 +473,110 @@ namespace Escon.SisctNET.Web.Controllers
                                     var calculation = new Calculation();
                                     decimal valorAgreg = 0, valor_fecop = 0, valorbcr = 0, valor_icms = vICMS + frete_icms,
                                             valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
-<<<<<<< HEAD
 
                                     if (taxedtype.Type == "ST")
                                     {
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc ;
+                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc;
 
-=======
-                                    bool pautado = false;
-                                    if (taxedtype.Type == "ST")
-                                    {
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc ;
->>>>>>> origin/Tiago
-                                        if (taxed.MVA != null)
+
+                                        if (taxedtype.Type == "ST")
                                         {
-                                            valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
+                                            baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc;
+
+                                            if (taxed.MVA != null)
+                                            {
+                                                valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
+                                            }
+                                            if (taxed.BCR != null)
+                                            {
+                                                valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
+                                            }
+
+                                            if (taxed.Fecop != null)
+                                            {
+                                                valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
+                                            }
+                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorAgreg);
+                                            if (valorbcr > 0)
+                                            {
+                                                valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
+                                            }
+                                            cms = valorAgre_AliqInt - valor_icms;
+
                                         }
-                                        if (taxed.BCR != null)
+                                        else if (taxedtype.Type == "Normal")
                                         {
-                                            valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
+                                            baseCalc = Convert.ToDecimal(det["baseCalc"]);
+                                            dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
+                                            icmsApu = calculation.icmsApurado(dif, baseCalc);
                                         }
 
-                                        if (taxed.Fecop != null)
+                                        try
                                         {
-                                            valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
+                                            var item = new Model.ProductNote
+                                            {
+                                                Nnf = notes[i][1]["nNF"],
+                                                Cprod = det["cProd"],
+                                                Ncm = NCM,
+                                                Cest = CEST,
+                                                Cfop = CFOP,
+                                                Xprod = det["xProd"],
+                                                Vprod = Convert.ToDecimal(det["vProd"]),
+                                                Qcom = Convert.ToDecimal(det["qCom"]),
+                                                Ucom = det["uCom"],
+                                                Vuncom = vUnCom,
+                                                Vicms = vICMS,
+                                                Picms = pICMS,
+                                                Vipi = vIPI,
+                                                Vpis = vPIS,
+                                                Vcofins = vCOFINS,
+                                                Vbasecalc = baseCalc,
+                                                Vfrete = vFrete,
+                                                Vseg = vSeg,
+                                                Voutro = vOutro,
+                                                Vdesc = vDesc,
+                                                Created = DateTime.Now,
+                                                Updated = DateTime.Now,
+                                                IcmsST = vICMSST,
+                                                VbcFcpSt = vBCFCPST,
+                                                VbcFcpStRet = vBCFCPSTRet,
+                                                pFCPST = pFCPST,
+                                                pFCPSTRET = pFCPSTRet,
+                                                VfcpST = vFCPST,
+                                                VfcpSTRet = vFCPSTRet,
+                                                IcmsCTe = frete_icms,
+                                                Freterateado = frete_prod,
+                                                Aliqinterna = taxed.AliqInterna,
+                                                Mva = taxed.MVA,
+                                                BCR = taxed.BCR,
+                                                Fecop = taxed.Fecop,
+                                                Valoragregado = valorAgreg,
+                                                ValorBCR = valorbcr,
+                                                ValorAC = valorAgre_AliqInt,
+                                                TotalICMS = cms,
+                                                TotalFecop = valor_fecop,
+                                                Diferencial = dif,
+                                                IcmsApurado = icmsApu,
+                                                Status = true,
+                                                Pautado = false,
+                                                TaxationTypeId = taxed.TaxationTypeId,
+                                                NoteId = noteId,
+                                                Nitem = det["nItem"]
+                                            };
+                                            _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                         }
-                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorAgreg);
-                                        if (valorbcr > 0)
+                                        catch (Exception ex)
                                         {
-                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
+                                            string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
+                                            return BadRequest(new { erro = 500, message = message });
                                         }
-                                        cms = valorAgre_AliqInt - valor_icms;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/Tiago
-                                    }
-                                    else if (taxedtype.Type == "Normal")
-                                    {
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]);
-                                        dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
-                                        icmsApu = calculation.icmsApurado(dif, baseCalc);
+
+                                        det.Clear();
+
                                     }
 
-<<<<<<< HEAD
-                                  
-=======
->>>>>>> origin/Tiago
-                                    try
-                                    {
-                                        var item = new Model.ProductNote
-                                        {
-                                            Nnf = notes[i][1]["nNF"],
-                                            Cprod = det["cProd"],
-                                            Ncm = NCM,
-                                            Cest = CEST,
-                                            Cfop = CFOP,
-                                            Xprod = det["xProd"],
-                                            Vprod = Convert.ToDecimal(det["vProd"]),
-                                            Qcom = Convert.ToDecimal(det["qCom"]),
-                                            Ucom = det["uCom"],
-                                            Vuncom = vUnCom,
-                                            Vicms = vICMS,
-                                            Picms = pICMS,
-                                            Vipi = vIPI,
-                                            Vpis = vPIS,
-                                            Vcofins = vCOFINS,
-                                            Vbasecalc = baseCalc,
-                                            Vfrete = vFrete,
-                                            Vseg = vSeg,
-                                            Voutro = vOutro,
-                                            Vdesc = vDesc,
-                                            Created = DateTime.Now,
-                                            Updated = DateTime.Now,
-                                            IcmsST = vICMSST,
-                                            VbcFcpSt = vBCFCPST,
-                                            VbcFcpStRet = vBCFCPSTRet,
-                                            pFCPST = pFCPST,
-                                            pFCPSTRET = pFCPSTRet,
-                                            VfcpST = vFCPST,
-                                            VfcpSTRet = vFCPSTRet,
-                                            IcmsCTe = frete_icms,
-                                            Freterateado = frete_prod,
-                                            Aliqinterna = taxed.AliqInterna,
-                                            Mva = taxed.MVA,
-                                            BCR = taxed.BCR,
-                                            Fecop = taxed.Fecop,
-                                            Valoragregado = valorAgreg,
-                                            ValorBCR = valorbcr,
-                                            ValorAC = valorAgre_AliqInt,
-                                            TotalICMS = cms,
-                                            TotalFecop = valor_fecop,
-                                            Diferencial = dif,
-                                            IcmsApurado = icmsApu,
-                                            Status = true,
-<<<<<<< HEAD
-=======
-                                            Pautado = pautado,
->>>>>>> origin/Tiago
-                                            TaxationTypeId = taxed.TaxationTypeId,
-                                            NoteId = noteId,
-                                            Nitem = det["nItem"]
-                                        };
-                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                        return BadRequest(new { erro = 500, message = message });
-                                    }
-                                       
-<<<<<<< HEAD
-                                    
-                                    det.Clear();
-=======
->>>>>>> origin/Tiago
-                                }
-                                det.Clear();
-                                
+                                }   
                             }
                             else
                             {

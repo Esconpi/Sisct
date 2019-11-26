@@ -32,6 +32,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliquota FECOP")]
         public decimal? Fecop { get; set; }
 
+
         [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]
         public DateTime DateStart { get; set; }
@@ -55,43 +56,32 @@ namespace Escon.SisctNET.Model
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
 
-<<<<<<< HEAD
         private Company company;
         public Company Company
-=======
-        private TaxationType company;
-        public TaxationType Company
->>>>>>> origin/Tiago
+
         {
             get => LazyLoader.Load(this, ref company);
             set => company = value;
         }
 
         [Display(Name = "Ncm")]
-<<<<<<< HEAD
+        [ForeignKey("Ncm")]
         public int NcmId { get; set; }
 
         private Ncm ncm;
         public Ncm Ncm
-=======
-        [ForeignKey("Ncm")]
-        public int NcmId { get; set; }
 
-        private TaxationType ncm;
-        public TaxationType Ncm
->>>>>>> origin/Tiago
         {
             get => LazyLoader.Load(this, ref ncm);
             set => ncm = value;
         }
-<<<<<<< HEAD
+
 
         [Display(Name = "Aliquota")]
         public decimal? Picms { get; set; }
 
         [Display(Name = "Uf")]
         public string Uf { get; set; }
-=======
->>>>>>> origin/Tiago
+
     }
 }
