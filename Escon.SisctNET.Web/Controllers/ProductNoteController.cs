@@ -228,6 +228,7 @@ namespace Escon.SisctNET.Web.Controllers
                     item.Updated = DateTime.Now;
                     item.Status = true;
                     item.Vbasecalc = baseCalc;
+                    item.Date = Convert.ToDateTime(dateStart);
 
                     var result = _service.Update(item, GetLog(OccorenceLog.Update));    
                 }
@@ -255,7 +256,8 @@ namespace Escon.SisctNET.Web.Controllers
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
                         NcmId = ncm.Id,
-                        Status = true
+                        Picms = rst.Picms,
+                        Uf = note.Uf
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
                     

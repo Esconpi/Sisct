@@ -12,8 +12,8 @@ C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\bin\Debug\netcoreapp2.2\Esco
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\bin\Debug\netcoreapp2.2\Escon.SisctNET.Model.runtimeconfig.dev.json
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\bin\Debug\netcoreapp2.2\Escon.SisctNET.Model.dll
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\bin\Debug\netcoreapp2.2\Escon.SisctNET.Model.pdb
-C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.csprojAssemblyReference.cache
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.AssemblyInfoInputs.cache
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.AssemblyInfo.cs
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.dll
 C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.pdb
+C:\SVN\branches\SisctNET\Sisct\Escon.SisctNET.Model\obj\Debug\netcoreapp2.2\Escon.SisctNET.Model.csprojAssemblyReference.cache

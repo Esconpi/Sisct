@@ -3255,40 +3255,40 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\charlton\\.nuget\\packages\\": {},
+    "C:\\Users\\Escon\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Service\\Escon.SisctNET.Service.csproj",
+      "projectUniqueName": "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Service\\Escon.SisctNET.Service.csproj",
       "projectName": "Escon.SisctNET.Service",
-      "projectPath": "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Service\\Escon.SisctNET.Service.csproj",
-      "packagesPath": "C:\\Users\\charlton\\.nuget\\packages\\",
-      "outputPath": "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Service\\obj\\",
+      "projectPath": "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Service\\Escon.SisctNET.Service.csproj",
+      "packagesPath": "C:\\Users\\Escon\\.nuget\\packages\\",
+      "outputPath": "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\charlton\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Escon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Model\\Escon.SisctNET.Model.csproj": {
-              "projectPath": "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Model\\Escon.SisctNET.Model.csproj"
+            "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Model\\Escon.SisctNET.Model.csproj": {
+              "projectPath": "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Model\\Escon.SisctNET.Model.csproj"
             },
-            "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Repository\\Escon.SisctNET.Repository.csproj": {
-              "projectPath": "C:\\SVN\\branches\\SisctNET\\Escon.SisctNET.Repository\\Escon.SisctNET.Repository.csproj"
+            "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Repository\\Escon.SisctNET.Repository.csproj": {
+              "projectPath": "C:\\SVN\\branches\\SisctNET\\Sisct\\Escon.SisctNET.Repository\\Escon.SisctNET.Repository.csproj"
             }
           }
         }

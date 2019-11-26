@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
-    class CompanyCfopRepository : Repository<Model.CompanyCfop>, ICompanyCfopRepository
+    public class CompanyCfopRepository : Repository<Model.CompanyCfop>, ICompanyCfopRepository
     {
         private readonly ContextDataBase _context;
 
@@ -18,10 +18,19 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public CompanyCfop FindByCompanyCfop(int companyId, int cfopId)
+        public List<CompanyCfop> FindByCompany(int companyId, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId));
+            AddLog(log);
+            return result.ToList();
+        }
+
+        public CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.CfopId.Equals(cfopId)).FirstOrDefault();
+            AddLog(log);
             return result;
         }
+
     }
 }

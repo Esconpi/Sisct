@@ -81,8 +81,17 @@
                 </div>
 
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Validade Inicial</label>
-                    <input type="date" class="form-control" name="dateStart" value="2019-11-01"/>
+                    @if (Model.Date == null)
+                    {
+                        <label class="control-label">Validade Inicial</label>
+                        <input type="date" class="form-control" name="dateStart" value="2019-11-01" />
+                    }
+                    else
+                    {
+                        <label class="control-label">Validade Inicial</label>
+                        <input type="date" class="form-control" name="dateStart" value="@Model.Date" />
+                    }
+
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Emissão</label>
@@ -99,7 +108,7 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-xs-12">
                         <label class="control-label">Quantidade da Pauta</label>
-                        <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
+                        <input type="text" class="form-control" id="quant" name="quantAlterada" value="@Model.Qpauta" style="font-size:12px;" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label asp-for="ProductId" class="control-label"></label>
@@ -159,15 +168,15 @@
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">MVA</label>
-                        <input type="text" name="mva" class="form-control" disabled="disabled" />
+                        <input type="text" name="mva" class="form-control" value="@Model.Mva" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Aliquota FECOP</label>
-                        <input type="text" name="fecop" class="form-control" disabled="disabled" />
+                        <input type="text" name="fecop" class="form-control" value="@Model.Fecop" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">BCR(%)</label>
-                        <input type="text" name="bcr" class="form-control" disabled="disabled" />
+                        <input type="text" name="bcr" class="form-control" value="@Model.BCR" disabled="disabled" />
                     </div>
 
                 </div>
@@ -179,6 +188,14 @@
     </div>
 </div>
 <script>
+
+    var taxacao = @Model.TaxationTypeId;
+    $("#taxaType").children('option').each(function () {
+        if ($(this).val() == taxacao){
+            $(this).attr('selected', true);
+        }
+    });
+
     $("#taxaType").on("change", function () {
         if ($(this).val() == 5) {
             $("input[name=mva]").prop("disabled", false);

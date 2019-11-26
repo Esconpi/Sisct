@@ -30,7 +30,7 @@ namespace Escon.SisctNET.Model
         public decimal? BCR { get; set; }
 
         [Display(Name = "Aliquota FECOP")]
-        public decimal? Fecop { get; set; }        
+        public decimal? Fecop { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]
@@ -72,6 +72,10 @@ namespace Escon.SisctNET.Model
             set => ncm = value;
         }
 
-        public bool ? Status { get; set; }
+        [Display(Name = "Aliquota")]
+        public decimal? Picms { get; set; }
+
+        [Display(Name = "Uf")]
+        public string Uf { get; set; }
     }
 }

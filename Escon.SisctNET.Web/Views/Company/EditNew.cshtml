@@ -7,12 +7,12 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
+        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4) || SessionManager.GetPersonInSession().Profile.Id.Equals(2))
         {
             <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         }
 
-        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(2) || SessionManager.GetPersonInSession().Profile.Id.Equals(3))
+        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(3))
         {
             <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -179,6 +180,10 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Número do Item")]
         public string Nitem { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data")]
+        public DateTime ? Date { get; set; }
 
     }
 }
