@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
+using System.Threading;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -73,13 +74,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var import = new Import();
 
+               
+
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                notes = import.Nfe(directoryNfe, directotyCte);
-
+                notes = import.Nfe(directoryNfe, directotyCte);          
 
                 var rst = _companyService.FindByDocument(comp.Document, GetLog(Model.OccorenceLog.Read));
                 for (int i = notes.Count - 1; i >= 0; i--)
@@ -408,10 +410,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     number = "0.00";
                                 }
 
-
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
                                 var taxed = _taxationService.FindByCode(code);
-
 
                                 if (taxed == null)
                                 {
@@ -495,6 +495,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
                                         }
                                         cms = valorAgre_AliqInt - valor_icms;
+
                                     }
                                     else if (taxedtype.Type == "Normal")
                                     {
@@ -503,7 +504,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
 
-                                  
                                     try
                                     {
                                         var item = new Model.ProductNote
@@ -562,10 +562,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
                                         return BadRequest(new { erro = 500, message = message });
                                     }
-                                       
-                                    
+                                                                           
                                     det.Clear();
                                 }
+                                det.Clear();
+                                
                             }
                             else
                             {
@@ -695,8 +696,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var result = _service.Update(note, GetLog(Model.OccorenceLog.Update));
 
-                return RedirectToAction("Index", new { company = note.Company, year = note.AnoRef, month = note.MesRef });
+                
+                return RedirectToAction("Index", new { company = note.Company.Id, year = note.AnoRef, month = note.MesRef });
             }
+
             catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });

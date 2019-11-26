@@ -256,11 +256,11 @@ namespace Escon.SisctNET.Web.Controllers
                         Updated = DateTime.Now,
                         NcmId = ncm.Id,
                         Status = true
+
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
                     
                 }
-
                 foreach (var prod in products)
                 {
                     bool status = false;
@@ -272,6 +272,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         status = true;
                     }
+
 
                     nota.Status = status;
 
@@ -373,7 +374,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         totalIcms = result.Select(_ => _.TotalICMS).Sum();
                         ViewBag.TotalICMS = totalIcms;
-
                         ViewBag.TotalICMSSTNota = totalIcms - totalIcmsPauta;                        
                         ViewBag.TotalICMSPauta = totalIcmsPauta;
 
