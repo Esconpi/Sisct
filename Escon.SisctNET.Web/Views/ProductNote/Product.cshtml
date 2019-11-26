@@ -150,15 +150,15 @@
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">MVA</label>
-                        <input type="text" name="mva" class="form-control" disabled="disabled" />
+                        <input type="hidden" name="mva" class="form-control"  />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Aliquota FECOP</label>
-                        <input type="text" name="fecop" class="form-control" disabled="disabled" />
+                        <input type="hidden" name="fecop" class="form-control"  />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">BCR(%)</label>
-                        <input type="text" name="bcr" class="form-control" disabled="disabled" />
+                        <label class="control-label" >BCR(%)</label>
+                        <input type="hidden" name="bcr" class="form-control"  />
                     </div>
 
                 </div>
@@ -170,26 +170,38 @@
     </div>
 </div>
 <script>
+    
+    
+    var taxacao = @Model.TaxationTypeId;
+    $("#taxaType").children('option').each(function () {
+        if ($(this).val() == taxacao) {
+            $(this).attr('selected', true);
+        }
+    });
+    
+
+
+
     $("#taxaType").on("change", function () {
         if ($(this).val() == 5) {
-            $("input[name=mva]").prop("disabled", false);
-            $("input[name=fecop]").prop("disabled", false);
-            $("input[name=bcr]").prop("disabled", true);
+            $("input[name=mva]").prop("type", 'text');
+            $("input[name=fecop]").prop("type", 'text');
         } else if ($(this).val() == 6) {
-            $("input[name=mva]").prop("disabled", false);
-            $("input[name=fecop]").prop("disabled", false);
-            $("input[name=bcr]").prop("disabled", false);
+            $("input[name=mva]").prop("type", 'text');
+            $("input[name=fecop]").prop("type", 'text');
+            $("input[name=bcr]").prop("type", 'text');
         } else {
-            $("input[name=mva]").prop("disabled", true);
-            $("input[name=fecop]").prop("disabled", true);
-            $("input[name=bcr]").prop("disabled", true);
+            $("input[name=mva]").prop("type", 'hidden');
+            $("input[name=fecop]").prop("type", 'hidden');
+            $("input[name=bcr]").prop("type", 'hidden');
         }
 
     });
+    
 
     $("#checkbox").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
-            $("#productid").prop("disabled", false);
+            $("#productid").prop("type", 'text');
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
