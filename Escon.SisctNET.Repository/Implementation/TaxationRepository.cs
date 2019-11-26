@@ -20,7 +20,7 @@ namespace Escon.SisctNET.Repository.Implementation
         public Taxation FindByCode(string code, DateTime data, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");
-            Taxation rls = new Taxation();
+            Taxation rls = null;
             //var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateStart <= data && _.DateEnd == null).FirstOrDefault();
             var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateEnd.Equals(null)).FirstOrDefault();
             var t = _context.Taxations.Where(_ => _.Code.Equals(code));

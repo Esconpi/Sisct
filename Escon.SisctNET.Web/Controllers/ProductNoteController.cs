@@ -238,9 +238,11 @@ namespace Escon.SisctNET.Web.Controllers
                 var produtoEspecial = Request.Form["produtoEspecial"];
                 if (produtoEspecial != "on" && entity.Pautado == false)
                 {
+                    var ncm = _ncmService.FindByCode(rst.Ncm);
                     var taxation = new Model.Taxation
                     {
-                        Code = note.Company + rst.Ncm + note.Uf + rst.Picms,
+                        CompanyId = note.CompanyId,
+                        Code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms,
                         Code2 = code2,
                         Cest = rst.Cest,
                         AliqInterna = Convert.ToDecimal(AliqInt),
@@ -251,6 +253,7 @@ namespace Escon.SisctNET.Web.Controllers
                         DateStart = Convert.ToDateTime(dateStart),
                         DateEnd = null,
                         TaxationTypeId = Convert.ToInt32(taxaType),
+                        NcmId = ncm.Id,
                         Created = DateTime.Now,
                         Updated = DateTime.Now
                     };
