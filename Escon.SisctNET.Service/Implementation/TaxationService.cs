@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -33,9 +34,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Taxation FindByCode(string code, Log log = null)
+        public Taxation FindByCode(string code, DateTime data, Log log = null)
         {
-            return _repository.FindByCode(code, log);
+            return _repository.FindByCode(code, data, log);
         }
 
         public Taxation FindByCode2(string code2, Log log = null)

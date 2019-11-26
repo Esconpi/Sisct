@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Taxation
 {
@@ -18,354 +19,358 @@ namespace Escon.SisctNET.Web.Taxation
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
 
-                for (int i = 0; i < archivesNfes.Count(); i++)
+               
+                foreach(var i in archivesNfes)
                 {
-
-                    if (new FileInfo(archivesNfes[i]).Length != 0)
-                    {
-                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
-                        Dictionary<string, string> ide = new Dictionary<string, string>();
-                        Dictionary<string, string> emit = new Dictionary<string, string>();
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-
-                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
-
-                        using (XmlReader reader = XmlReader.Create(new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"))))
+                    var arquivo = i;
+                    //Task.Factory.StartNew(() => {
+                        if (new FileInfo(arquivo).Length != 0)
                         {
-                            while (reader.Read())
+                            Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                            Dictionary<string, string> ide = new Dictionary<string, string>();
+                            Dictionary<string, string> emit = new Dictionary<string, string>();
+                            Dictionary<string, string> dest = new Dictionary<string, string>();
+
+                            List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+
+                            using (XmlReader reader = XmlReader.Create(new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"))))
                             {
-                                if (reader.IsStartElement())
+                                while (reader.Read())
                                 {
-                                    switch (reader.Name)
+                                    if (reader.IsStartElement())
                                     {
-                                        case "infNFe":
-                                            while (reader.MoveToNextAttribute())
-                                            {
-                                                if (reader.Name == "Id")
+                                        switch (reader.Name)
+                                        {
+                                            case "infNFe":
+                                                while (reader.MoveToNextAttribute())
                                                 {
-                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                    if (reader.Name == "Id")
+                                                    {
+                                                        infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                    }
                                                 }
-                                            }
-                                            nota.Add(infNFe);
-                                            break;
+                                                nota.Add(infNFe);
+                                                break;
 
-                                        case "ide":
-                                            reader.Read();
-                                            while (reader.Name != "ide" && reader.Name != "NFref")
-                                            {
-                                                ide.Add(reader.Name, reader.ReadString());
+                                            case "ide":
                                                 reader.Read();
-                                            }
-                                            nota.Add(ide);
-                                            break;
-
-
-                                        case "emit":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "emit")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
+                                                while (reader.Name != "ide" && reader.Name != "NFref")
                                                 {
-                                                    emit.Add(reader.Name, reader.ReadString());
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                    reader.Read();
                                                 }
-                                                reader.Read();
-                                            }
-                                            nota.Add(emit);
-                                            break;
+                                                nota.Add(ide);
+                                                break;
 
-                                        case "dest":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "dest")
-                                            {
-                                                if (reader.Name.ToString() != "enderDest")
+
+                                            case "emit":
+                                                reader.Read();
+                                                while (reader.Name.ToString() != "emit")
                                                 {
-                                                    dest.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name.ToString() != "enderEmit")
+                                                    {
+                                                        emit.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
                                                 }
-                                                reader.Read();
-                                            }
-                                            nota.Add(dest);
-                                            break;
+                                                nota.Add(emit);
+                                                break;
 
-                                        case "ICMSTot":
-                                            Dictionary<string, string> total = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
-                                            {
-                                               total.Add(reader.Name, reader.ReadString());
+                                            case "dest":
                                                 reader.Read();
+                                                while (reader.Name.ToString() != "dest")
+                                                {
+                                                    if (reader.Name.ToString() != "enderDest")
+                                                    {
+                                                        dest.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
+                                                }
+                                                nota.Add(dest);
+                                                break;
 
-                                            }
-                                            nota.Add(total);
-                                            break;
+                                            case "ICMSTot":
+                                                Dictionary<string, string> total = new Dictionary<string, string>();
+                                                reader.Read();
+                                                while (reader.Name.ToString() != "ICMSTot")
+                                                {
+                                                    total.Add(reader.Name, reader.ReadString());
+                                                    reader.Read();
+
+                                                }
+                                                nota.Add(total);
+                                                break;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        
-                        using (XmlReader reader = XmlReader.Create(new StreamReader(archivesNfes[i], new UTF8Encoding(false))))
-                        {
-                            double base_calc = 0;
-                            var code = nota[2]["CNPJ"];
-                            string nCT = "";
 
-                            int nItem = 1;
-
-                            while (reader.Read())
+                            using (XmlReader reader = XmlReader.Create(new StreamReader(arquivo, new UTF8Encoding(false))))
                             {
-                                if (reader.IsStartElement())
+                                double base_calc = 0;
+                                var code = nota[2]["CNPJ"];
+                                string nCT = "";
+
+                                int nItem = 1;
+
+                                while (reader.Read())
                                 {
-                                    switch (reader.Name)
+                                    if (reader.IsStartElement())
                                     {
-                                        case "prod":
+                                        switch (reader.Name)
+                                        {
+                                            case "prod":
 
-                                            if (base_calc > 0)
-                                            {
-                                                Dictionary<string, string> baseCalc = new Dictionary<string, string>();
-                                                baseCalc.Add("baseCalc", base_calc.ToString());
-                                                nota.Add(baseCalc);
-                                                base_calc = 0;
-                                                code = nota[2]["CNPJ"];
-                                            }
-                                            Dictionary<string, string> prod = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMS")
-                                            {
-                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
-                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
-                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
-                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
-                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
-                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
-                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
-                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
-                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
-                                                    reader.Name == "nRECOPI")
+                                                if (base_calc > 0)
                                                 {
+                                                    Dictionary<string, string> baseCalc = new Dictionary<string, string>();
+                                                    baseCalc.Add("baseCalc", base_calc.ToString());
+                                                    nota.Add(baseCalc);
+                                                    base_calc = 0;
+                                                    code = nota[2]["CNPJ"];
+                                                }
+                                                Dictionary<string, string> prod = new Dictionary<string, string>();
+                                                reader.Read();
+                                                while (reader.Name.ToString() != "ICMS")
+                                                {
+                                                    if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
+                                                        reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
+                                                        reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
+                                                        reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
+                                                        reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
+                                                        reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
+                                                        reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
+                                                        reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
+                                                        reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
+                                                        reader.Name == "nRECOPI")
+                                                    {
 
-                                                    prod.Add(reader.Name, reader.ReadString());
+                                                        prod.Add(reader.Name, reader.ReadString());
+                                                    }
+
+                                                    reader.Read();
                                                 }
 
-                                                reader.Read();
-                                            }
+                                                double valor_carga = 0;
+                                                double valor_prestado = 0;
+                                                double total_da_nota = Convert.ToDouble(nota[4]["vNF"]);
+                                                double total_dos_produtos = Convert.ToDouble(nota[4]["vProd"]);
+                                                double proporcao = 0;
+                                                double frete_nota = 0;
+                                                double total_icms_frete = 0;
+                                                double frete_icms = 0;
+                                                string nCT_temp = "";
 
-                                            double valor_carga = 0;
-                                            double valor_prestado = 0;
-                                            double total_da_nota = Convert.ToDouble(nota[4]["vNF"]);
-                                            double total_dos_produtos = Convert.ToDouble(nota[4]["vProd"]);
-                                            double proporcao = 0;
-                                            double frete_nota = 0;
-                                            double total_icms_frete = 0;
-                                            double frete_icms = 0;
-                                            string nCT_temp = "";
-
-                                            List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
-                                            ctes = Cte(directotyCte, nota[3]["CNPJ"]);
-                                            foreach (var item in ctes)
-                                            {
-                                                for (int j = 0; j < item.Count; j++)
+                                                List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
+                                                ctes = Cte(directotyCte, nota[3]["CNPJ"]);
+                                                foreach (var item in ctes)
                                                 {
-                                                    if (item[j].ContainsKey("vCarga"))
+                                                    for (int j = 0; j < item.Count; j++)
                                                     {
-                                                        valor_carga = Convert.ToDouble(item[j]["vCarga"]);
-                                                    }
-                                                    if (item[j].ContainsKey("vTPrest"))
-                                                    {
-                                                        valor_prestado = Convert.ToDouble(item[j]["vTPrest"]);
-                                                    }
-                                                    if (item[j].ContainsKey("vICMS"))
-                                                    {
-                                                        total_icms_frete = Convert.ToDouble(item[j]["vICMS"]);
-
-                                                    }
-                                                    if (item[j].ContainsKey("nCT"))
-                                                    {
-                                                        nCT_temp = item[j]["nCT"];
-                                                    }
-                                                    if (item[j].ContainsKey("chave"))
-                                                    {
-                                                        if (item[j]["chave"] == nota[0]["chave"])
+                                                        if (item[j].ContainsKey("vCarga"))
                                                         {
-                                                            nCT = nCT_temp;
-                                                            proporcao = ((100 * total_da_nota) / valor_carga) / 100;
-                                                            frete_nota = proporcao * valor_prestado;
-                                                            frete_icms = proporcao * total_icms_frete;
+                                                            valor_carga = Convert.ToDouble(item[j]["vCarga"]);
+                                                        }
+                                                        if (item[j].ContainsKey("vTPrest"))
+                                                        {
+                                                            valor_prestado = Convert.ToDouble(item[j]["vTPrest"]);
+                                                        }
+                                                        if (item[j].ContainsKey("vICMS"))
+                                                        {
+                                                            total_icms_frete = Convert.ToDouble(item[j]["vICMS"]);
+
+                                                        }
+                                                        if (item[j].ContainsKey("nCT"))
+                                                        {
+                                                            nCT_temp = item[j]["nCT"];
+                                                        }
+                                                        if (item[j].ContainsKey("chave"))
+                                                        {
+                                                            if (item[j]["chave"] == nota[0]["chave"])
+                                                            {
+                                                                nCT = nCT_temp;
+                                                                proporcao = ((100 * total_da_nota) / valor_carga) / 100;
+                                                                frete_nota = proporcao * valor_prestado;
+                                                                frete_icms = proporcao * total_icms_frete;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
 
-                                            double proporcao_prod = 0;
-                                            double frete_prod = 0;
-                                            double proporcao_icms = 0;
-                                            double frete_icmsprod = 0;
-                                            if (frete_nota > 0)
-                                            {
-                                                proporcao_prod = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
-                                                frete_prod = proporcao_prod * frete_nota;
-                                            }
-
-                                            if (frete_icms > 0)
-                                            {
-                                                proporcao_icms = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
-                                                frete_icmsprod = proporcao_icms * frete_icms;
-                                            }
-
-
-                                            if (prod.ContainsKey("vProd"))
-                                            {
-                                                base_calc = Convert.ToDouble(prod["vProd"]);
-                                            }
-
-                                            if (prod.ContainsKey("vOutro"))
-                                            {
-                                                base_calc += Convert.ToDouble(prod["vOutro"]);
-                                            }
-
-                                            if (prod.ContainsKey("vFrete"))
-                                            {
-                                                base_calc += Convert.ToDouble(prod["vFrete"]);
-                                            }
-
-                                            if (prod.ContainsKey("vSeg"))
-                                            {
-                                                base_calc += Convert.ToDouble(prod["vSeg"]);
-                                            }
-
-                                            if (prod.ContainsKey("vDesc"))
-                                            {
-                                                base_calc -= Convert.ToDouble(prod["vDesc"]);
-                                            }
-
-                                            base_calc += frete_prod;
-                                            string CEST = "";
-                                            string NCM = "";
-
-                                            if (prod.ContainsKey("NCM"))
-                                            {
-                                                NCM = prod["NCM"];
-                                            }
-
-                                            if (prod.ContainsKey("CEST"))
-                                            {
-                                                CEST = prod["CEST"];
-                                            }
-
-                                            prod.Add("frete_prod", frete_prod.ToString());
-                                            prod.Add("frete_icms", frete_icmsprod.ToString());
-                                            prod.Add("nItem", Convert.ToString(nItem));
-                                            nItem++;
-                                            code += (prod["cProd"] + NCM + CEST);
-                                            nota.Add(prod);
-
-                                            break;
-
-                                        case "ICMS00":
-                                        case "ICMS10":
-                                        case "ICMS20":
-                                        case "ICMS30":
-                                        case "ICMS40":
-                                        case "ICMS51":
-                                        case "ICMS60":
-                                        case "ICMS70":
-                                        case "ICMS90":
-                                        case "ICMSPart":
-                                        case "ICMSST":
-                                        case "ICMSSN101":
-                                        case "ICMSSN102":
-                                        case "ICMSSN201":
-                                        case "ICMSSN202":
-                                        case "ICMSSN500":
-                                        case "ICMSSN900":
-                                            Dictionary<string, string> icms = new Dictionary<string, string>();
-                                            while (reader.Name != "ICMS")
-                                            {
-                                                if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" || 
-                                                    reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" || 
-                                                    reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
+                                                double proporcao_prod = 0;
+                                                double frete_prod = 0;
+                                                double proporcao_icms = 0;
+                                                double frete_icmsprod = 0;
+                                                if (frete_nota > 0)
                                                 {
-                                                    icms.Add(reader.Name, reader.ReadString());
+                                                    proporcao_prod = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
+                                                    frete_prod = proporcao_prod * frete_nota;
                                                 }
-                                                reader.Read();
-                                            }
-                                            nota.Add(icms);
-                                            break;
 
-                                        case "IPI":
-                                            Dictionary<string, string> ipi = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "IPI")
-                                            {
-                                                if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
-                                                reader.Name == "pIPI" || reader.Name == "vIPI")
+                                                if (frete_icms > 0)
                                                 {
-                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                    proporcao_icms = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
+                                                    frete_icmsprod = proporcao_icms * frete_icms;
                                                 }
-                                                reader.Read();
-                                            }
 
-                                            if (ipi.ContainsKey("vIPI"))
-                                            {
-                                                base_calc += Convert.ToDouble(ipi["vIPI"]);
-                                            }
-                                            nota.Add(ipi);
-                                            break;
 
-                                        case "II":
-                                            Dictionary<string, string> ii = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "II")
-                                            {
-                                                ii.Add(reader.Name, reader.ReadString());
-                                                reader.Read();
-                                            }
-                                            nota.Add(ii);
-                                            break;
-
-                                        case "PIS":
-                                            Dictionary<string, string> pis = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "PIS")
-                                            {
-                                                if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
+                                                if (prod.ContainsKey("vProd"))
                                                 {
-                                                    pis.Add(reader.Name, reader.ReadString());
+                                                    base_calc = Convert.ToDouble(prod["vProd"]);
                                                 }
-                                                reader.Read();
-                                            }
-                                            nota.Add(pis);
-                                            break;
 
-                                        case "COFINS":
-                                            Dictionary<string, string> cofins = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "COFINS")
-                                            {
-                                                if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
+                                                if (prod.ContainsKey("vOutro"))
                                                 {
-                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                    base_calc += Convert.ToDouble(prod["vOutro"]);
                                                 }
+
+                                                if (prod.ContainsKey("vFrete"))
+                                                {
+                                                    base_calc += Convert.ToDouble(prod["vFrete"]);
+                                                }
+
+                                                if (prod.ContainsKey("vSeg"))
+                                                {
+                                                    base_calc += Convert.ToDouble(prod["vSeg"]);
+                                                }
+
+                                                if (prod.ContainsKey("vDesc"))
+                                                {
+                                                    base_calc -= Convert.ToDouble(prod["vDesc"]);
+                                                }
+
+                                                base_calc += frete_prod;
+                                                string CEST = "";
+                                                string NCM = "";
+
+                                                if (prod.ContainsKey("NCM"))
+                                                {
+                                                    NCM = prod["NCM"];
+                                                }
+
+                                                if (prod.ContainsKey("CEST"))
+                                                {
+                                                    CEST = prod["CEST"];
+                                                }
+
+                                                prod.Add("frete_prod", frete_prod.ToString());
+                                                prod.Add("frete_icms", frete_icmsprod.ToString());
+                                                prod.Add("nItem", Convert.ToString(nItem));
+                                                nItem++;
+                                                code += (prod["cProd"] + NCM + CEST);
+                                                nota.Add(prod);
+
+                                                break;
+
+                                            case "ICMS00":
+                                            case "ICMS10":
+                                            case "ICMS20":
+                                            case "ICMS30":
+                                            case "ICMS40":
+                                            case "ICMS51":
+                                            case "ICMS60":
+                                            case "ICMS70":
+                                            case "ICMS90":
+                                            case "ICMSPart":
+                                            case "ICMSST":
+                                            case "ICMSSN101":
+                                            case "ICMSSN102":
+                                            case "ICMSSN201":
+                                            case "ICMSSN202":
+                                            case "ICMSSN500":
+                                            case "ICMSSN900":
+                                                Dictionary<string, string> icms = new Dictionary<string, string>();
+                                                while (reader.Name != "ICMS")
+                                                {
+                                                    if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
+                                                        reader.Name == "pICMS" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                        reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
+                                                        reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
+                                                    {
+                                                        icms.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
+                                                }
+                                                nota.Add(icms);
+                                                break;
+
+                                            case "IPI":
+                                                Dictionary<string, string> ipi = new Dictionary<string, string>();
                                                 reader.Read();
-                                            }
-                                            nota.Add(cofins);
-                                            break;
+                                                while (reader.Name != "IPI")
+                                                {
+                                                    if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
+                                                    reader.Name == "pIPI" || reader.Name == "vIPI")
+                                                    {
+                                                        ipi.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
+                                                }
 
-                                        case "total":
+                                                if (ipi.ContainsKey("vIPI"))
+                                                {
+                                                    base_calc += Convert.ToDouble(ipi["vIPI"]);
+                                                }
+                                                nota.Add(ipi);
+                                                break;
 
-                                            Dictionary<string, string> baseCal = new Dictionary<string, string>();
-                                            baseCal.Add("baseCalc", base_calc.ToString());
-                                            nota.Add(baseCal);
-                                            Dictionary<string, string> NCte = new Dictionary<string, string>();
-                                            NCte.Add("nCT", nCT);
-                                            nota.Add(NCte);
-                                            break;
+                                            case "II":
+                                                Dictionary<string, string> ii = new Dictionary<string, string>();
+                                                reader.Read();
+                                                while (reader.Name != "II")
+                                                {
+                                                    ii.Add(reader.Name, reader.ReadString());
+                                                    reader.Read();
+                                                }
+                                                nota.Add(ii);
+                                                break;
+
+                                            case "PIS":
+                                                Dictionary<string, string> pis = new Dictionary<string, string>();
+                                                reader.Read();
+                                                while (reader.Name != "PIS")
+                                                {
+                                                    if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
+                                                    {
+                                                        pis.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
+                                                }
+                                                nota.Add(pis);
+                                                break;
+
+                                            case "COFINS":
+                                                Dictionary<string, string> cofins = new Dictionary<string, string>();
+                                                reader.Read();
+                                                while (reader.Name != "COFINS")
+                                                {
+                                                    if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
+                                                    {
+                                                        cofins.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
+                                                }
+                                                nota.Add(cofins);
+                                                break;
+
+                                            case "total":
+
+                                                Dictionary<string, string> baseCal = new Dictionary<string, string>();
+                                                baseCal.Add("baseCalc", base_calc.ToString());
+                                                nota.Add(baseCal);
+                                                Dictionary<string, string> NCte = new Dictionary<string, string>();
+                                                NCte.Add("nCT", nCT);
+                                                nota.Add(NCte);
+                                                break;
+                                        }
                                     }
                                 }
                             }
+                            notes.Add(nota);
                         }
-                        notes.Add(nota);
-                    }
+                    //});
+                   
                 }
             }
             catch (Exception ex)

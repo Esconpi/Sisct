@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
+using System.Threading;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -73,13 +74,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var import = new Import();
 
+               
+
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                notes = import.Nfe(directoryNfe, directotyCte);
-
+                notes = import.Nfe(directoryNfe, directotyCte);          
 
                 var rst = _companyService.FindByDocument(comp.Document, GetLog(Model.OccorenceLog.Read));
                 for (int i = notes.Count - 1; i >= 0; i--)
@@ -400,6 +402,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (productImport == null)
                             {
+<<<<<<< HEAD
                                 decimal pICMSFormat = Math.Round(pICMS, 2);                          
                                 string number = pICMSFormat.ToString();
 
@@ -413,6 +416,12 @@ namespace Escon.SisctNET.Web.Controllers
                                 var taxed = _taxationService.FindByCode(code);
 
 
+=======
+                                decimal pICMSFormat = Math.Round(pICMS, 2);
+                                var code = comp.Document + NCM + notes[i][2]["UF"] + pICMSFormat.ToString().Replace(".", ",");
+                                var taxed = _taxationService.FindByCode(code, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+                               
+>>>>>>> origin/Tiago
                                 if (taxed == null)
                                 {
                                     try
@@ -471,11 +480,18 @@ namespace Escon.SisctNET.Web.Controllers
                                     var calculation = new Calculation();
                                     decimal valorAgreg = 0, valor_fecop = 0, valorbcr = 0, valor_icms = vICMS + frete_icms,
                                             valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
+<<<<<<< HEAD
 
                                     if (taxedtype.Type == "ST")
                                     {
                                         baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc ;
 
+=======
+                                    bool pautado = false;
+                                    if (taxedtype.Type == "ST")
+                                    {
+                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc ;
+>>>>>>> origin/Tiago
                                         if (taxed.MVA != null)
                                         {
                                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
@@ -495,6 +511,10 @@ namespace Escon.SisctNET.Web.Controllers
                                             valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
                                         }
                                         cms = valorAgre_AliqInt - valor_icms;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/Tiago
                                     }
                                     else if (taxedtype.Type == "Normal")
                                     {
@@ -503,7 +523,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
 
+<<<<<<< HEAD
                                   
+=======
+>>>>>>> origin/Tiago
                                     try
                                     {
                                         var item = new Model.ProductNote
@@ -551,6 +574,10 @@ namespace Escon.SisctNET.Web.Controllers
                                             Diferencial = dif,
                                             IcmsApurado = icmsApu,
                                             Status = true,
+<<<<<<< HEAD
+=======
+                                            Pautado = pautado,
+>>>>>>> origin/Tiago
                                             TaxationTypeId = taxed.TaxationTypeId,
                                             NoteId = noteId,
                                             Nitem = det["nItem"]
@@ -563,9 +590,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         return BadRequest(new { erro = 500, message = message });
                                     }
                                        
+<<<<<<< HEAD
                                     
                                     det.Clear();
+=======
+>>>>>>> origin/Tiago
                                 }
+                                det.Clear();
+                                
                             }
                             else
                             {
@@ -695,8 +727,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var result = _service.Update(note, GetLog(Model.OccorenceLog.Update));
 
-                return RedirectToAction("Index", new { company = note.Company, year = note.AnoRef, month = note.MesRef });
+                
+                return RedirectToAction("Index", new { company = note.Company.Id, year = note.AnoRef, month = note.MesRef });
             }
+
             catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
