@@ -12,7 +12,7 @@
         <h3 class="box-title"><strong>Tributação</strong></h3>
     </div>
     <div class="box-body">
-        <div class="col-lg-12">
+        <div class="row">
             <form asp-action="Product" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input asp-for="Cprod" class="form-control" type="hidden" />
@@ -66,49 +66,27 @@
                     <input type="text" class="form-control" value="@ViewBag.Uf" name="Uf" readonly />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    @if (Model.Aliqinterna == null)
-                    {
-                        <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="18" required />
-                        <span asp-validation-for="Aliqinterna" class="text-danger"></span>
-                    }
-                    else
-                    {
-                        <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input type="text" name="AliqInt" class="form-control" value="@Model.Aliqinterna" required />
-                    }
-
+                    <label asp-for="Aliqinterna" class="control-label"></label>
+                    <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="18" required />
+                    <span asp-validation-for="Aliqinterna" class="text-danger"></span>
                 </div>
 
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    @if (Model.Date == null)
-                    {
-                        <label class="control-label">Validade Inicial</label>
-                        <input type="date" class="form-control" name="dateStart" value="2019-11-01" />
-                    }
-                    else
-                    {
-                        <label class="control-label">Validade Inicial</label>
-                        <input type="date" class="form-control" name="dateStart" value="@Model.Date" />
-                    }
-
+                    <label class="control-label">Validade Inicial</label>
+                    <input type="date" class="form-control" name="dateStart" value="2019-11-01"/>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Emissão</label>
                     <input type="text" class="form-control" value="@ViewBag.Dhemi" readonly />
                 </div>
                 <div class="col-lg-12">
-                    <div class="form-group col-lg-2 col-md-3 col-xs-12">
-                        <label class="control-label">Produto Especial</label>
-                        <input type="checkbox" name="produtoEspecial" />
-                    </div>
                     <div class="form-group col-lg-2 col-md-3 col-xs-12" id="checkbox">
                         <label asp-for="Pautado" class="control-label"></label>
-                        @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+                        @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-xs-12">
                         <label class="control-label">Quantidade da Pauta</label>
-                        <input type="text" class="form-control" id="quant" name="quantAlterada" value="@Model.Qpauta" style="font-size:12px;" disabled="disabled" />
+                        <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label asp-for="ProductId" class="control-label"></label>
@@ -177,46 +155,55 @@
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">BCR(%)</label>
                         <input type="text" name="bcr" class="form-control" value="@Model.BCR" disabled="disabled" />
-
                     </div>
 
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Tributar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Tributar" onclick="Enviar()" class="btn btn-success pull-right" />
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    
+
     var taxacao = @Model.TaxationTypeId;
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
             $(this).attr('selected', true);
         }
     });
-    
+
     $("#taxaType").on("change", function () {
         if ($(this).val() == 5) {
-            $("input[name=mva]").prop("type", 'text');
-            $("input[name=fecop]").prop("type", 'text');
+            $("input[name=mva]").prop("disabled", false);
+            $("input[name=fecop]").prop("disabled", false);
+            $("input[name=bcr]").prop("disabled", true);
         } else if ($(this).val() == 6) {
-            $("input[name=mva]").prop("type", 'text');
-            $("input[name=fecop]").prop("type", 'text');
-            $("input[name=bcr]").prop("type", 'text');
+            $("input[name=mva]").prop("disabled", false);
+            $("input[name=fecop]").prop("disabled", false);
+            $("input[name=bcr]").prop("disabled", false);
         } else {
-            $("input[name=mva]").prop("type", 'hidden');
-            $("input[name=fecop]").prop("type", 'hidden');
-            $("input[name=bcr]").prop("type", 'hidden');
+            $("input[name=mva]").prop("disabled", true);
+            $("input[name=fecop]").prop("disabled", true);
+            $("input[name=bcr]").prop("disabled", true);
         }
+        
 
     });
-    
+
+    function Enviar() {
+        $("#taxaType").children('option').each(function () {
+            if ($(this).val() === 0) {
+                alert('Selecione uma tributação');
+            }
+        });
+    }
 
     $("#checkbox").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
-            $("#productid").prop("type", 'text');
+            $("#productid").prop("disabled", false);
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);

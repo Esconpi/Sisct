@@ -74,9 +74,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var ncm = _ncmService.FindByCode(result.Ncm);
                 ViewBag.DescriptionNCM = ncm.Description;
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
-                
-                
-                
+                                             
                 list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
                 
                 
@@ -90,6 +88,10 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
                 ViewBag.Note = note.Nnf;
                 ViewBag.NoteId = note.Id;
+                if (result.TaxationTypeId == null)
+                {
+                    result.TaxationTypeId = 0;
+                }
                 return View(result);
             }
             catch (Exception ex)
