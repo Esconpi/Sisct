@@ -230,7 +230,6 @@ namespace Escon.SisctNET.Web.Controllers
                     item.Updated = DateTime.Now;
                     item.Status = true;
                     item.Vbasecalc = baseCalc;
-                    item.Date = Convert.ToDateTime(dateStart);
 
                     var result = _service.Update(item, GetLog(OccorenceLog.Update));    
                 }
