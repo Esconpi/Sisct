@@ -304,7 +304,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var notesS = notes.Where(_ => _.Iest == "");
                 var notesI = notes.Where(_ => _.Iest != "");
 
-                
                 var icmsStnoteS = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                 var icmsStnoteI = _service.FindBySubscription(notesI.ToList(), typeTaxation);
 
