@@ -10,5 +10,6 @@ namespace Escon.SisctNET.Service
         List<Model.CompanyCfop> FindByCompany(int companyId, Log log = null);
 
         Model.CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null);
+
     }
 }

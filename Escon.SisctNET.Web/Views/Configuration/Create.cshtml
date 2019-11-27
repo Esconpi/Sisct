@@ -8,13 +8,12 @@
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
-            Nova Configuração
+            <strong>Nova Configuração</strong>
         </h3>
 
     </div>
     <hr />
     <div class="box-body">
-        <div class="row">
             <div class="col-md-12">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -43,9 +42,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label asp-for="Name" class="control-label">Valor</label>
-                                <input asp-for="Name" class="form-control" placeholder="Valor" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <label asp-for="Value" class="control-label">Valor</label>
+                                <input asp-for="Value" class="form-control" placeholder="Valor" />
+                                <span asp-validation-for="Value" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -53,9 +52,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label asp-for="Name" class="control-label">Tipo de Campo</label>
-                                <input asp-for="Name" class="form-control" placeholder="Tipo de Campo" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <label asp-for="DataType" class="control-label">Tipo de Campo</label>
+                                <input asp-for="DataType" class="form-control" placeholder="Tipo de Campo" />
+                                <span asp-validation-for="DataType" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -66,7 +65,6 @@
 
                 </form>
             </div>
-        </div>
     </div>
     <div class="box-footer">
 

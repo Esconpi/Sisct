@@ -6,8 +6,8 @@ namespace Escon.SisctNET.Repository
 {
     public interface ICompanyCfopRepository : IRepository<Model.CompanyCfop>
     {
-        Model.CompanyCfop FindByCompanyCfop(int companyId, int cfopId , Model.Log log = null);
-
         List<Model.CompanyCfop> FindByCompany(int companyId, Log log = null);
+
+        Model.CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null);
     }
 }

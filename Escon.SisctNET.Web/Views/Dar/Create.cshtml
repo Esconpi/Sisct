@@ -1,15 +1,14 @@
-﻿@model Escon.SisctNET.Model.Profile
+﻿@model Escon.SisctNET.Model.Dar
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="box box-primary">
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
-            <strong>Novo Perfil</strong>
+            <strong>Novo Dar</strong>
         </h3>
 
     </div>
@@ -18,15 +17,13 @@
             <div class="col-md-12">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                     <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Active, "Ativo", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="checkbox">
-                                    <label>
-                                        @Html.CheckBoxFor(model => model.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
-                                    </label>
-                                </div>
+                                <label asp-for="Code" class="control-label"></label>
+                                <input asp-for="Code" class="form-control" placeholder="Código do dar" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -34,9 +31,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label asp-for="Name" class="control-label"></label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" placeholder="Descrição" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -52,5 +49,4 @@
 
     </div>
 </div>
-
 
