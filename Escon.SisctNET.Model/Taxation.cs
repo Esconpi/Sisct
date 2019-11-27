@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo de Uso")]
         [ForeignKey("TaxationType")]
-        public int TaxationTypeId { get; set; }
+        public int  TaxationTypeId { get; set; }
 
         private TaxationType taxationType;
         public TaxationType TaxationType
@@ -75,7 +75,6 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref ncm);
             set => ncm = value;
         }
-
 
         [Display(Name = "Aliquota")]
         public decimal? Picms { get; set; }

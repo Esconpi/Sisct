@@ -168,7 +168,6 @@
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">MVA</label>
-<<<<<<< HEAD
                         <input type="text" name="mva" class="form-control" value="@Model.Mva" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -178,17 +177,7 @@
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">BCR(%)</label>
                         <input type="text" name="bcr" class="form-control" value="@Model.BCR" disabled="disabled" />
-=======
-                        <input type="hidden" name="mva" class="form-control"  />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">Aliquota FECOP</label>
-                        <input type="hidden" name="fecop" class="form-control"  />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label" >BCR(%)</label>
-                        <input type="hidden" name="bcr" class="form-control"  />
->>>>>>> origin/Tiago
+
                     </div>
 
                 </div>
@@ -199,7 +188,7 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     
     var taxacao = @Model.TaxationTypeId;
     $("#taxaType").children('option').each(function () {

@@ -10,9 +10,7 @@
         @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4) || SessionManager.GetPersonInSession().Profile.Id.Equals(2))
         {
             <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        }
-
-        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(3))
+        }else
         {
             <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         }
