@@ -1,9 +1,5 @@
-﻿
-<<<<<<< HEAD
-using System.Collections.Generic;
-=======
+﻿using System.Collections.Generic;
 using System;
->>>>>>> origin/Tiago
 
 namespace Escon.SisctNET.Service
 {
