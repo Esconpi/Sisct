@@ -397,7 +397,9 @@ namespace Escon.SisctNET.Web.Controllers
                         // Relatorio das empresas incentivadas
                         var incentivada = company.Incentive;
                         if (incentivada == true)
-                        {}
+                        {
+                            var prodructsCfop = _service.FindByCfop(company.Id, notes);
+                        }
 
                     }
                     else if (typeTaxation >= 2 && typeTaxation <= 5)

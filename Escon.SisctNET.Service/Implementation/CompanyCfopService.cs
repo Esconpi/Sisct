@@ -45,6 +45,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompanyCfop(companyId, cfopId, log);
         }
 
+        public List<CompanyCfop> FindByCfopActive(int companyId, Log log = null)
+        {
+            return _repository.FindByCfopActive(companyId, log);
+        }
+
         public CompanyCfop FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
