@@ -170,6 +170,19 @@
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
             $(this).attr('selected', true);
+            if (taxacao === 5) {
+                $("input[name=mva]").prop("disabled", false);
+                $("input[name=fecop]").prop("disabled", false);
+                $("input[name=bcr]").prop("disabled", true);
+            } else if (taxacao === 6) {
+                $("input[name=mva]").prop("disabled", false);
+                $("input[name=fecop]").prop("disabled", false);
+                $("input[name=bcr]").prop("disabled", false);
+            } else {
+                $("input[name=mva]").prop("disabled", true);
+                $("input[name=fecop]").prop("disabled", true);
+                $("input[name=bcr]").prop("disabled", true);
+            }
         }
     });
 
