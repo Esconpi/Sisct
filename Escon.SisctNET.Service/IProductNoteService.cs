@@ -23,5 +23,7 @@ namespace Escon.SisctNET.Service
         List<Model.ProductNote> FindByTaxation(int noteId, Model.Log log = null);
 
         Model.ProductNote FindByProduct(int noteId, string nItem, Model.Log log = null);
+
+        List<Model.ProductNote> FindByCfop(int companyId, List<Model.Note> notes, Model.Log log = null);
     }
 }

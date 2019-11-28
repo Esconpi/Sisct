@@ -230,7 +230,7 @@ namespace Escon.SisctNET.Web.Controllers
                     item.Updated = DateTime.Now;
                     item.Status = true;
                     item.Vbasecalc = baseCalc;
-                    item.Date = Convert.ToDateTime(dateStart);
+                    
 
                     var result = _service.Update(item, GetLog(OccorenceLog.Update));    
                 }
@@ -399,7 +399,9 @@ namespace Escon.SisctNET.Web.Controllers
                         // Relatorio das empresas incentivadas
                         var incentivada = company.Incentive;
                         if (incentivada == true)
-                        {}
+                        {
+                            var prodructsCfop = _service.FindByCfop(company.Id, notes);
+                        }
 
                     }
                     else if (typeTaxation >= 2 && typeTaxation <= 5)

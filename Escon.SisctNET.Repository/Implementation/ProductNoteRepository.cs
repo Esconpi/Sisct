@@ -144,5 +144,19 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public List<ProductNote> FindByCfop(int companyId, List<Note> notes, Log log = null)
+        {
+            var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
+
+            List<ProductNote> result = null;
+            
+            foreach (var note in notes)
+            {
+                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && Array.Exists(cfopAtivo, e => e.Equals(_.Cfop))).ToList();
+            }
+
+            return result;
+        }
     }
 }

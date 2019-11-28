@@ -32,5 +32,12 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<CompanyCfop> FindByCfopActive(int companyId, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true));
+            AddLog(log);
+            return result.ToList();
+        }
+
     }
 }
