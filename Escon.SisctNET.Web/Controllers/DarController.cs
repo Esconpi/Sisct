@@ -97,5 +97,19 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }
