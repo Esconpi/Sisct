@@ -60,7 +60,8 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.Id = companyId;
                 var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Company = company;
+                ViewBag.Document = company.Document;
+                ViewBag.Name = company.SocialName;
                 var result = _service.FindByCompany(companyId);
                 return View(result);
             }

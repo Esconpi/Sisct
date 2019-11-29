@@ -137,10 +137,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             _service.Create(entity: note, GetLog(Model.OccorenceLog.Create));
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                            return BadRequest(new { erro = 500, message = message });
+                            throw new Exception(message);
+                            
                         }
 
                        
@@ -458,10 +459,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
-                                    catch (Exception ex)
+                                    catch
                                     {
                                         string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                        return BadRequest(new { erro = 500, message = message });
+                                        throw new Exception(message);
                                     }
 
                                     det.Clear();
@@ -565,10 +566,10 @@ namespace Escon.SisctNET.Web.Controllers
                                             };
                                             _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                         }
-                                        catch (Exception ex)
+                                        catch
                                         {
                                             string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                            return BadRequest(new { erro = 500, message = message });
+                                            throw new Exception(message);
                                         }
 
 

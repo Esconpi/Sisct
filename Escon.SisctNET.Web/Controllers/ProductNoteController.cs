@@ -230,7 +230,6 @@ namespace Escon.SisctNET.Web.Controllers
                     item.Updated = DateTime.Now;
                     item.Status = true;
                     item.Vbasecalc = baseCalc;
-                    
 
                     var result = _service.Update(item, GetLog(OccorenceLog.Update));    
                 }
@@ -304,7 +303,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var notesS = notes.Where(_ => _.Iest == "");
                 var notesI = notes.Where(_ => _.Iest != "");
 
-                
                 var icmsStnoteS = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                 var icmsStnoteI = _service.FindBySubscription(notesI.ToList(), typeTaxation);
 
