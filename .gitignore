@@ -2,7 +2,7 @@ SisctNET.sln
 SisctNET.sln.sln
 .vs
 **/**/**/**/.dll
-Escon.SisctNET.API/bin/Debug/netcoreapp2.2/*.cache
+Escon.SisctNET.API/bin/
 Escon.SisctNET.API/obj/
 Escon.SisctNET.Fortes/bin/
 Escon.SisctNET.Fortes/obj/
