@@ -132,7 +132,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 Nct = nCT,
                                 Xnome = notes[i][2]["xNome"],
                                 Vnf = Convert.ToDecimal(notes[i][4]["vNF"]),
-                                Status = false
+                                Status = false,
+                                IdDest = Convert.ToInt32(notes[i][1]["idDest"])
                             };
 
                             _service.Create(entity: note, GetLog(Model.OccorenceLog.Create));
@@ -708,7 +709,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var result = _service.Update(note, GetLog(Model.OccorenceLog.Update));
 
                 
-                return RedirectToAction("Index", new { company = note.Company.Id, year = note.AnoRef, month = note.MesRef });
+                return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });
             }
 
             catch (Exception ex)
