@@ -192,6 +192,13 @@
         if ($(this).val() == 5) {
             $("input[name=mva]").prop("disabled", false);
             $("input[name=fecop]").prop("disabled", false);
+            if ($("input[name=AliqInt]").val() === "18") {
+                $("input[name=fecop]").prop("value", "1");
+            } else if ($("input[name=AliqInt]").val() === "12") {
+                $("input[name=fecop]").prop("value", "");
+            } else {
+                $("input[name=fecop]").prop("value", "2");
+            }
             $("input[name=bcr]").prop("disabled", true);
         } else if ($(this).val() == 6) {
             $("input[name=mva]").prop("disabled", false);
@@ -199,11 +206,23 @@
             $("input[name=bcr]").prop("disabled", false);
         } else {
             $("input[name=mva]").prop("disabled", true);
+            $("input[name=mva]").prop("value", "");
             $("input[name=fecop]").prop("disabled", true);
+            $("input[name=fecop]").prop("value", "");
             $("input[name=bcr]").prop("disabled", true);
+            $("input[name=bcr]").prop("value", "");
         }
-        
+       
+    });
 
+    $("input[name=AliqInt]").focusout(function () {
+        if ($("input[name=AliqInt]").val() === "18") {
+                $("input[name=fecop]").prop("value", "1");
+        } else if ($("input[name=AliqInt]").val() === "12") {
+            $("input[name=fecop]").prop("value", "");
+        } else {
+           $("input[name=fecop]").prop("value", "2");
+        }
     });
 
     function Enviar() {
