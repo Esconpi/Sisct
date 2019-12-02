@@ -214,6 +214,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             det.Add("vICMS", notes[i][j]["vICMS"]);
                         }
+                        if (notes[i][j].ContainsKey("orig"))
+                        {
+                            det.Add("orig", notes[i][j]["orig"]);
+                        }
                         if (notes[i][j].ContainsKey("pICMS"))
                         {
                             det.Add("pICMS", notes[i][j]["pICMS"]);
@@ -456,7 +460,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             Freterateado = frete_prod,
                                             NoteId = noteId,
                                             Nitem = det["nItem"],
-                                            Status = false
+                                            Status = false,
+                                            Orig = Convert.ToInt32(det["orig"])
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
@@ -563,7 +568,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                 Pautado = false,
                                                 TaxationTypeId = taxed.TaxationTypeId,
                                                 NoteId = noteId,
-                                                Nitem = det["nItem"]
+                                                Nitem = det["nItem"],
+                                                Orig = Convert.ToInt32(det["orig"])
                                             };
                                             _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                         }

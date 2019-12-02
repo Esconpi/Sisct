@@ -37,35 +37,69 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            @if (item.Orig != 0)
+                            {
+                                <tr style="color:red;">
+                                    <td>
+                                        @if (item.Status.Equals(false))
+                                        {
+                                            <i class="fa fa-times-circle" style="color:red;"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                        }
+                                        @Html.DisplayFor(modelItem => item.Xprod)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ncm)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cest)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cfop)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.Status.Equals(false))
+                                        {
+                                            <i class="fa fa-times-circle" style="color:red;"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                        }
+                                        @Html.DisplayFor(modelItem => item.Xprod)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ncm)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cest)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cfop)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                    </td>
+                                </tr>
+                            }
 
-                            <tr>
-                                <td>
-                                    @if (item.Status.Equals(false))
-                                    {
-                                        <i class="fa fa-times-circle" style="color:red;"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="fa fa-check-circle" style="color:green;"></i>
-                                    }
-                                    @Html.DisplayFor(modelItem => item.Xprod)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ncm)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Cest)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Cfop)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Vprod)
-                                </td>
-                                <td>
-                                    @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                </td>
-                            </tr>
 
                         }
                     </tbody>
