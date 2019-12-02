@@ -145,12 +145,27 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<ProductNote> FindByCfop(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesIn(int companyId, List<Note> notes, Log log = null)
         {
             var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
 
             List<ProductNote> result = null;
             
+            foreach (var note in notes)
+            {
+                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && 
+                                                           Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1)).ToList();
+            }
+
+            return result;
+        }
+
+        public List<ProductNote> FindByCfopNotesOut(int companyId, List<Note> notes, Log log = null)
+        {
+            var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
+
+            List<ProductNote> result = null;
+
             foreach (var note in notes)
             {
                 result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && Array.Exists(cfopAtivo, e => e.Equals(_.Cfop))).ToList();
