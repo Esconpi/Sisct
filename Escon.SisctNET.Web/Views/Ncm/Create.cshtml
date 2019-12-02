@@ -1,20 +1,24 @@
-﻿@model Escon.SisctNET.Model.Cfop
+﻿@model Escon.SisctNET.Model.Ncm
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="box box-primary">
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        <h3 class="box-title"><strong>Editar Cfop:</strong> @Model.Code</h3>
+        <h3 class="box-title">
+            <strong>Novo Ncm</strong>
+        </h3>
+
     </div>
     <hr />
     <div class="box-body">
         <div class="col-md-12">
-            <form asp-action="Edit">
+            <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <div class="row">
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
                         @Html.LabelFor(model => model.Active, "Ativo", htmlAttributes: new { @class = "control-label col-md-12" })
@@ -38,8 +42,9 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
                 </div>
+
             </form>
         </div>
     </div>

@@ -131,7 +131,7 @@ namespace Escon.SisctNET.Web.Controllers
                             SessionManager.SetStateInSession(access.FunctionalityId);
                         }
 
-                        if (access.FunctionalityId.Equals(15))
+                        if (access.FunctionalityId.Equals(18))
                         {
                             SessionManager.SetTaxationInSession(access.FunctionalityId);
                         }
@@ -139,6 +139,16 @@ namespace Escon.SisctNET.Web.Controllers
                         if (access.FunctionalityId.Equals(16))
                         {
                             SessionManager.SetProductNoteInSession(access.FunctionalityId);
+                        }
+
+                        if (access.FunctionalityId.Equals(17))
+                        {
+                            SessionManager.SetCompanyCfopInSession(access.FunctionalityId);
+                        }
+
+                        if (access.FunctionalityId.Equals(19))
+                        {
+                            SessionManager.SetDarInSession(access.FunctionalityId);
                         }
 
                     }

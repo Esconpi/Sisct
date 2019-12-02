@@ -59,5 +59,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<CompanyCfop> CompanyCfops { get; set; }
 
+        public DbSet<Dar> Dars { get; set; }
+
     }
 }

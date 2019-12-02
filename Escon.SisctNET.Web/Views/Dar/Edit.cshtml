@@ -1,4 +1,4 @@
-﻿@model Escon.SisctNET.Model.Cfop
+﻿@model Escon.SisctNET.Model.Dar
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,23 +8,13 @@
 <div class="box box-primary">
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        <h3 class="box-title"><strong>Editar Cfop:</strong> @Model.Code</h3>
+        <h3 class="box-title"><strong>Editar Dar:</strong> @Model.Code</h3>
     </div>
     <hr />
     <div class="box-body">
         <div class="col-md-12">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        @Html.LabelFor(model => model.Active, "Ativo", htmlAttributes: new { @class = "control-label col-md-12" })
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(model => model.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
-                            </label>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="Code" class="control-label"></label>

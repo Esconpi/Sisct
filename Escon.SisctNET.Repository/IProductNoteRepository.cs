@@ -22,7 +22,9 @@ namespace Escon.SisctNET.Repository
 
         Model.ProductNote FindByProduct(int noteId, string item, Model.Log log = null);
 
-        List<Model.ProductNote> FindByCfop(int companyId, List<Model.Note> notes, Model.Log log = null);
+        List<Model.ProductNote> FindByCfopNotesIn(int companyId, List<Model.Note> notes, Model.Log log = null);
+
+        List<Model.ProductNote> FindByCfopNotesOut(int companyId, List<Model.Note> notes, Model.Log log = null);
 
     }
 }

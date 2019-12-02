@@ -153,7 +153,7 @@ namespace Escon.SisctNET.Repository.Implementation
             
             foreach (var note in notes)
             {
-                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && 
+                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest.Equals(1) &&
                                                            Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1)).ToList();
             }
 
@@ -168,7 +168,8 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var note in notes)
             {
-                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && Array.Exists(cfopAtivo, e => e.Equals(_.Cfop))).ToList();
+                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest != 1 && 
+                                                          Array.Exists(cfopAtivo, e => e.Equals(_.Cfop))).ToList();
             }
 
             return result;

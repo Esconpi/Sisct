@@ -206,5 +206,26 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<int>("ProductNoteSisctNET");
         }
+
+        public static void SetCompanyCfopInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("CompanyCfopSisctNET", functionalityId);
+        }
+
+        public static int GetCompanyCfopInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("CompanyCfopSisctNET");
+        }
+
+        public static void SetDarInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("DarSisctNET", functionalityId);
+        }
+
+        public static int GetDarInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("DarSisctNET");
+        }
+
     }
 }

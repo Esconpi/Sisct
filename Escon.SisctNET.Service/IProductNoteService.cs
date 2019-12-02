@@ -24,6 +24,8 @@ namespace Escon.SisctNET.Service
 
         Model.ProductNote FindByProduct(int noteId, string nItem, Model.Log log = null);
 
-        List<Model.ProductNote> FindByCfop(int companyId, List<Model.Note> notes, Model.Log log = null);
+        List<Model.ProductNote> FindByCfopNotesIn(int companyId, List<Model.Note> notes, Model.Log log = null);
+
+        List<Model.ProductNote> FindByCfopNotesOut(int companyId, List<Model.Note> notes, Model.Log log = null);
     }
 }

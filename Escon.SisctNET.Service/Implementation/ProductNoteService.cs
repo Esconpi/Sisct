@@ -88,9 +88,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByProduct(noteId, nItem, log);
         }
 
-        public List<ProductNote> FindByCfop(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesIn(int companyId, List<Note> notes, Log log = null)
         {
-            return _repository.FindByCfop(companyId, notes, log);
+            return _repository.FindByCfopNotesIn(companyId, notes, log);
+        }
+
+        public List<ProductNote> FindByCfopNotesOut(int companyId, List<Note> notes, Log log = null)
+        {
+            return _repository.FindByCfopNotesOut(companyId, notes, log);
         }
     }
 }

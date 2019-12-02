@@ -111,5 +111,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tributada")]
         public bool Status { get; set; }
+
+        public int ? IdDest { get; set; }
     }
 }

@@ -1,48 +1,40 @@
-﻿using Escon.SisctNET.Service;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
+
 
 namespace Escon.SisctNET.Web.Controllers
 {
-    public class AttachmentController : ControllerBaseSisctNET
+    public class DarController : ControllerBaseSisctNET
     {
-        private readonly IAttachmentService _service;
 
-        public AttachmentController(
-           IAttachmentService service,
-           IFunctionalityService functionalityService,
-           IHttpContextAccessor httpContextAccessor)
-           : base(functionalityService, "Attachment")
+        private readonly IDarService _service;
+
+        public DarController(
+            IDarService service,
+            IFunctionalityService functionalityService,
+            IHttpContextAccessor httpContextAccessor)
+            : base(functionalityService, "Dar")
         {
             _service = service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-
-        [HttpGet]
         public IActionResult Index()
         {
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
-                
-            }
-            catch (Exception ex)
+            }catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-
         }
 
         [HttpGet]
@@ -51,16 +43,15 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 return View();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-            
         }
 
-
         [HttpPost]
-        public IActionResult Create(Model.Attachment entity)
+        public IActionResult Create(Model.Dar entity)
         {
             try
             {
@@ -68,9 +59,11 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Updated = entity.Created;
 
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+
                 return RedirectToAction("Index");
+
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
@@ -82,8 +75,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
-
                 return View(result);
             }
             catch (Exception ex)
@@ -93,12 +84,26 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Attachment entity)
+        public IActionResult Edit(int id, Model.Dar entity)
         {
             try
             {
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

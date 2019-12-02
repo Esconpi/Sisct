@@ -37,6 +37,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindByProfileId(profileId);
+                    var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
+                    ViewBag.Name = profile.Name;
                     return View(result);
                 }
                 
