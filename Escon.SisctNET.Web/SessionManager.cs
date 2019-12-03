@@ -227,5 +227,25 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<int>("DarSisctNET");
         }
 
+        public static void SetAnnexInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("AnnexSisctNET", functionalityId);
+        }
+
+        public static int GetAnnexInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("AnnexSisctNET");
+        }
+
+        public static void SetNcmConvenioInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("NcmConvenioSisctNET", functionalityId);
+        }
+
+        public static int GetNcmConvenioInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("NcmConvenioSisctNET");
+        }
+
     }
 }

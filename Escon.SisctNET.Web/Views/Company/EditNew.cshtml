@@ -27,18 +27,12 @@
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input asp-for="Id" class="form-control" type="hidden" />
-
                     <div class="row">
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            @Html.LabelFor(model => model.TipoIncentivo, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
-                            <div class="checkbox">
-                                <label>
-                                    @Html.CheckBoxFor(model => model.TipoIncentivo, new { @data_off = "Pautado", @data_on = "Normal", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
-                                </label>
-                            </div>
+                        <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                            <label asp-for="AnnexId" class="control-label"></label>
+                            <select asp-items="@ViewBag.AnnexId" class="form-control selectoption"></select>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Icms %</label>
@@ -47,7 +41,7 @@
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <br />
                             <div>
-                                <strong>Transferências %</strong>
+                                <strong>Transferências</strong>
                             </div>
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -74,7 +68,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <br />
-                            <strong>Venda p/ Contribuinte %</strong>
+                            <strong>Venda p/ Contribuinte</strong>
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Limite %</label>
@@ -99,7 +93,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <br />
-                            <strong>Venda p/ CPF (limite) %</strong>
+                            <strong>Venda p/ CPF</strong>
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Limite %</label>
@@ -118,89 +112,85 @@
         }
         else
         {
-        <div class="col-md-12">
-            <div class="row">
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                    @Html.LabelFor(model => model.TipoIncentivo, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
-                    <div class="checkbox">
-                        <label>
-                            @Html.CheckBoxFor(model => model.TipoIncentivo, new { @data_off = "Pautado", @data_on = "Normal", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true", @disabled = true });
-                        </label>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                        <label asp-for="AnnexId" class="control-label"></label>
+                        <input asp-for="Annex.Description" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Icms" class="control-label"></label>
+                        <input asp-for="Icms" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <br />
+                        <div>
+                            <strong>Transferências</strong>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Limite %</label>
+                        <input asp-for="Transferencia" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Excedente %</label>
+                        <input asp-for="TransferenciaExcedente" class="form-control" disabled />
+                    </div>
+                    <div class="col-lg-1 col-md-6 col-xs-12">
+
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Suspension" class="control-label"></label>
+                        <input asp-for="Suspension" class="form-control" disabled />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Funef" class="control-label"></label>
+                        <input asp-for="Funef" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <br />
+                        <strong>Venda p/ Contribuinte</strong>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Limite %</label>
+                        <input asp-for="VendaContribuinte" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Excedente %</label>
+                        <input asp-for="VendaContribuinteExcedente" class="form-control" disabled />
+                    </div>
+                    <div class="col-lg-1 col-md-6 col-xs-12">
+
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Fecop" class="control-label"></label>
+                        <input asp-for="Fecop" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Cotac" class="control-label"></label>
+                        <input asp-for="Cotac" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <br />
+                        <strong>Venda p/ CPF</strong>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Limite</label>
+                        <input asp-for="VendaCpf" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Excedente</label>
+                        <input asp-for="VendaCpfExcedente" class="form-control" disabled />
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Icms" class="control-label"></label>
-                    <input asp-for="Icms" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <br />
-                    <div>
-                        <strong>Transferências %</strong>
-                    </div>
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Limite %</label>
-                    <input asp-for="Transferencia" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Excedente %</label>
-                    <input asp-for="TransferenciaExcedente" class="form-control" disabled />
-                </div>
-                <div class="col-lg-1 col-md-6 col-xs-12">
-
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Suspension" class="control-label"></label>
-                    <input asp-for="Suspension" class="form-control" disabled />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Funef" class="control-label"></label>
-                    <input asp-for="Funef" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <br />
-                    <strong>Venda p/ Contribuinte %</strong>
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Limite %</label>
-                    <input asp-for="VendaContribuinte" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Excedente %</label>
-                    <input asp-for="VendaContribuinteExcedente" class="form-control" disabled />
-                </div>
-                <div class="col-lg-1 col-md-6 col-xs-12">
-
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Fecop" class="control-label"></label>
-                    <input asp-for="Fecop" class="form-control" disabled />
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Cotac" class="control-label"></label>
-                    <input asp-for="Cotac" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <br />
-                    <strong>Venda p/ CPF (limite) %</strong>
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Limite</label>
-                    <input asp-for="VendaCpf" class="form-control" disabled />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Excedente</label>
-                    <input asp-for="VendaCpfExcedente" class="form-control" disabled />
-                </div>
-            </div>
-        </div>
         }
 
     </div>

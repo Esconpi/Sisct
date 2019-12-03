@@ -61,5 +61,9 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Dar> Dars { get; set; }
 
+        public DbSet<Annex> Annices { get; set; }
+
+        public DbSet<NcmConvenio> NcmConvenios { get; set; }
+
     }
 }

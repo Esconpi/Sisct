@@ -19,6 +19,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly Fortes.IEnterpriseService _fortesEnterpriseService;
         private readonly IConfigurationService _configurationService;
         private readonly ITaxationTypeService _taxationTypeService;
+        private readonly IAnnexService _annexService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -28,6 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
             IProductNoteService itemService,
             ITaxationTypeService taxationTypeService,
             IConfigurationService configurationService,
+            IAnnexService annexService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -40,6 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxationTypeService = taxationTypeService;
             _fortesEnterpriseService = fortesEnterpriseService;
             _configurationService = configurationService;
+            _annexService = annexService;
         }
 
         [HttpGet]
@@ -172,6 +175,12 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Id = result.Id;
+
+                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
+
                 return View(result);
             }
             catch(Exception ex)

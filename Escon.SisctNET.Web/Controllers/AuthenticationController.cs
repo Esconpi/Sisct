@@ -151,6 +151,16 @@ namespace Escon.SisctNET.Web.Controllers
                             SessionManager.SetDarInSession(access.FunctionalityId);
                         }
 
+                        if (access.FunctionalityId.Equals(20))
+                        {
+                            SessionManager.SetAnnexInSession(access.FunctionalityId);
+                        }
+
+                        if (access.FunctionalityId.Equals(21))
+                        {
+                            SessionManager.SetNcmConvenioInSession(access.FunctionalityId);
+                        }
+
                     }
                     SessionManager._httpContextAccessor.HttpContext.Request.Headers.Add("Authorization", "bearer " + auth.AccessToken);
                     SessionManager._httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", "bearer " + auth.AccessToken);

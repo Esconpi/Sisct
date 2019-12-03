@@ -149,8 +149,8 @@
                     }
 
                     @if (SessionManager.GetCfopInSession().Equals(13) || SessionManager.GetCestInSession().Equals(10) || SessionManager.GetNcmInSession().Equals(7) || SessionManager.GetAttachmentInSession().Equals(8) ||
-                        SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
-                        SessionManager.GetDarInSession().Equals(19))
+                       SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
+                       SessionManager.GetDarInSession().Equals(19))
                     {
                         <li class="treeview menu-open">
                             <a href="#">
@@ -204,6 +204,24 @@
                             </ul>
                         </li>
 
+                    }
+
+                    @if (SessionManager.GetAnnexInSession().Equals(20) || SessionManager.GetNcmConvenioInSession().Equals(21))
+                    {
+                        <li class="treeview menu-open">
+                            <a href="#">
+                                <i class="fa fa-bookmark"></i> <span>Icms</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:block;">
+                                <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
+                            </ul>
+                            <ul class="treeview-menu" style="display:block;">
+                                <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
+                            </ul>
+                        </li>
                     }
 
 

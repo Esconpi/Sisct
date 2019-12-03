@@ -73,7 +73,16 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Fecop")]
         public decimal ? Fecop { get; set; }
 
-        public bool TipoIncentivo { get; set; }
+        [Display(Name = "Anexo")]
+        [ForeignKey("Annex")]
+        public int ? AnnexId { get; set; }
+
+        private Annex annex;
+        public Annex Annex
+        {
+            get => LazyLoader.Load(this, ref annex);
+            set => annex = value;
+        }
 
     }
 }
