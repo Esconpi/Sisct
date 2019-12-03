@@ -181,5 +181,8 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Número do Item")]
         public string Nitem { get; set; }
 
+        [Display(Name = "Origem")]
+        public int ? Orig { get; set; }
+
     }
 }

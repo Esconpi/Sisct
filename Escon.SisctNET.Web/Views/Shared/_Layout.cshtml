@@ -149,7 +149,8 @@
                     }
 
                     @if (SessionManager.GetCfopInSession().Equals(13) || SessionManager.GetCestInSession().Equals(10) || SessionManager.GetNcmInSession().Equals(7) || SessionManager.GetAttachmentInSession().Equals(8) ||
-                        SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14))
+                        SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
+                        SessionManager.GetDarInSession().Equals(19))
                     {
                         <li class="treeview menu-open">
                             <a href="#">
@@ -270,6 +271,18 @@
             $(".selectoption").select2();
             $('.cpfformatmask').inputmask("999.999.999-99");
             $('.cnpjformatmask').inputmask("99.999.999/9999-99");
+
+            $(".money").inputmask('decimal', {
+                'alias': 'numeric',
+                'groupSeparator': '.',
+                'autoGroup': true,
+                'digits': 2,
+                'radixPoint': ",",
+                'digitsOptional': false,
+                'allowMinus': false,
+                'prefix': 'R$ ',
+                'placeholder': ''
+            });
 
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',

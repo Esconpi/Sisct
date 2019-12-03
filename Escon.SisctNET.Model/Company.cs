@@ -68,7 +68,12 @@ namespace Escon.SisctNET.Model
 
         public decimal ? VendaCpfExcedente { get; set; }
 
-        public decimal? TransferenciaExcedente { get; set; }
+        public decimal ? TransferenciaExcedente { get; set; }
+
+        [Display(Name = "Fecop")]
+        public decimal ? Fecop { get; set; }
+
+        public bool TipoIncentivo { get; set; }
 
     }
 }

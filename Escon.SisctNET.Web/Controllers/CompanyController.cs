@@ -172,7 +172,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Id = result.Id;
-                return PartialView(result);
+                return View(result);
             }
             catch(Exception ex)
             {
@@ -237,12 +237,29 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.VendaCpfExcedente = Convert.ToDecimal(Request.Form["vendaCpfEx"]);
                 }
 
+                if(Request.Form["fecop"] != ""){
+                    rst.Fecop = Convert.ToDecimal(Request.Form["fecop"]);
+                }
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Details(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Id = result.Id;
+                return View(result);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
