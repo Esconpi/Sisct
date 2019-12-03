@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Convênio")]
         public string Convenio { get; set; } 
 
-        [Display(Name = "Data Convênio")]
+        [Display(Name = "Data do Convênio")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 

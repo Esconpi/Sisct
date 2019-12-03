@@ -246,8 +246,14 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.VendaCpfExcedente = Convert.ToDecimal(Request.Form["vendaCpfEx"]);
                 }
 
-                if(Request.Form["fecop"] != ""){
+                if(Request.Form["fecop"] != "")
+                {
                     rst.Fecop = Convert.ToDecimal(Request.Form["fecop"]);
+                }
+
+                if (Request.Form["anexo"] != "")
+                {
+                    rst.AnnexId = Convert.ToInt32(Request.Form["anexo"]);
                 }
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
