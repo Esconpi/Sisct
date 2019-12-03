@@ -393,7 +393,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.DifValor2 = Math.Round(valorbase2 - valorNfe2Normal - valorNfe2Ret, 2);
                         ViewBag.DifTotal = Math.Round(TotalFecopCalc - TotalFecopNfe - (base1fecop + base2fecop), 2);
 
-
+                        /*
                         // Relatorio das empresas incentivadas
                         /*var incentivada = company.Incentive;
                         if (incentivada == true)
