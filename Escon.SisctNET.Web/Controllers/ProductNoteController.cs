@@ -395,7 +395,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                         // Relatorio das empresas incentivadas
-                        var incentivada = company.Incentive;
+                        /*var incentivada = company.Incentive;
                         if (incentivada == true)
                         {
                             var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
@@ -403,7 +403,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal basedeCalcIncentivo = prodructsCfopIn.Select(_ => _.Vbasecalc).Sum();
                             var notesFora = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);
-                        }
+                        }*/
 
                     }
                     else if (typeTaxation >= 2 && typeTaxation <= 5)
