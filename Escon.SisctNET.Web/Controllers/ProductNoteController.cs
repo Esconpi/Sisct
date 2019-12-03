@@ -395,7 +395,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         /*
                         // Relatorio das empresas incentivadas
-                        var incentivada = company.Incentive;
+                        /*var incentivada = company.Incentive;
                         if (incentivada == true)
                         {
                             var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
