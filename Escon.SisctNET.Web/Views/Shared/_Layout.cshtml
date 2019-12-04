@@ -302,6 +302,13 @@
                 'placeholder': ''
             });
 
+             $(".number").inputmask('decimal', {
+                 'alias': 'numeric',
+                 'digits': 0,
+                 'groupSeparator': '',
+                 'radixPoint': ""
+            });
+
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR'
