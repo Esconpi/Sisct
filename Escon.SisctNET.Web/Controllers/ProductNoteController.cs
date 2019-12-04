@@ -216,6 +216,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
+                    p.TaxationTypeId = Convert.ToInt32(taxaType);
+                    p.Updated = DateTime.Now;
+                    p.Status = true;
+                    p.Vbasecalc = baseCalc;
+
                     _service.Update(p, GetLog(Model.OccorenceLog.Read));
                 }
                 else
