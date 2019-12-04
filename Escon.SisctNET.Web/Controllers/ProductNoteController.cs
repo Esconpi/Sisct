@@ -275,12 +275,6 @@ namespace Escon.SisctNET.Web.Controllers
                             item.IcmsApurado = icmsApu;
                         }
 
-
-                        if (note.Company.Incentive && note.Company.AnnexId != null)
-                        {
-                            item.Incentivo = _service.FindByNcmAnnex(Convert.ToInt32(note.Company.AnnexId), item.Ncm);
-                        }
-
                         item.TaxationTypeId = Convert.ToInt32(taxaType);
                         item.Updated = DateTime.Now;
                         item.Status = true;
