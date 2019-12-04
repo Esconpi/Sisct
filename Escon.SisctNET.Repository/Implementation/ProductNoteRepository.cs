@@ -175,15 +175,15 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public bool FindByNcmAnnex(int Annex, ProductNote produto, Log log = null)
+        public bool FindByNcmAnnex(int Annex, string ncm, Log log = null)
         {
             var ncms = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
             bool NcmIncentivo = false;
-            foreach (var ncm in ncms)
+            foreach (var n in ncms)
             {
                 int contaChar = ncm.Count();
-                string substring = produto.Ncm.Substring(0, contaChar);
-                if (ncm.Equals(substring))
+                string substring = ncm.Substring(0, contaChar);
+                if (n.Equals(substring))
                 {
                     NcmIncentivo = true;
                 }

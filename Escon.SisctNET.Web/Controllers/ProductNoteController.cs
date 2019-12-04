@@ -136,24 +136,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (entity.Pautado == true)
                 {
-                    var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                    var p = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                     decimal baseCalc = 0;
-                    decimal valor_icms = item.IcmsCTe + item.Vicms;
+                    decimal valor_icms = p.IcmsCTe + p.Vicms;
 
                     if (taxedtype.Type == "ST")
                     {
                         decimal total_icms_pauta = 0;
                         decimal total_icms = 0;
-                        baseCalc = item.Vbasecalc + item.Vdesc;
+                        baseCalc = p.Vbasecalc + p.Vdesc;
 
                         if (entity.Pautado == true)
                         {
                             decimal quantParaCalc = 0;
-                            quantParaCalc = Convert.ToDecimal(item.Qcom);
+                            quantParaCalc = Convert.ToDecimal(p.Qcom);
                             if (quantPauta != "")
                             {
-                                prod.Qpauta = Convert.ToDecimal(quantPauta);
+                                p.Qpauta = Convert.ToDecimal(quantPauta);
                                 quantParaCalc = Convert.ToDecimal(quantPauta);
                             }
                             // Primeiro PP feito pela tabela
@@ -168,7 +168,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (fecop != null)
                             {
-                                prod.Fecop = Convert.ToDecimal(fecop);
+                                p.Fecop = Convert.ToDecimal(fecop);
                                 valor_fecop = (Convert.ToDecimal(fecop) / 100) * vAgre;
                             }
                             decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(AliqInt, Convert.ToDecimal(fecop), vAgre);
@@ -178,24 +178,24 @@ namespace Escon.SisctNET.Web.Controllers
                         if (mva != null)
                         {
                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
-                            prod.Valoragregado = valorAgreg;
-                            prod.Mva = Convert.ToDecimal(mva);
+                            p.Valoragregado = valorAgreg;
+                            p.Mva = Convert.ToDecimal(mva);
                         }
                         if (bcrForm != null)
                         {
                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
-                            prod.ValorBCR = valorAgreg;
-                            prod.BCR = Convert.ToDecimal(bcrForm);
+                            p.ValorBCR = valorAgreg;
+                            p.BCR = Convert.ToDecimal(bcrForm);
                         }
                         if (fecop != null)
                         {
-                            prod.Fecop = Convert.ToDecimal(fecop);
+                            p.Fecop = Convert.ToDecimal(fecop);
                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(fecop), valorAgreg);
-                            prod.TotalFecop = valor_fecop;
+                            p.TotalFecop = valor_fecop;
                         }
-                        prod.Aliqinterna = AliqInt;
-                        decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(item.Fecop), valorAgreg);
-                        prod.ValorAC = valorAgre_AliqInt;
+                        p.Aliqinterna = AliqInt;
+                        decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(p.Fecop), valorAgreg);
+                        p.ValorAC = valorAgre_AliqInt;
                         total_icms = valorAgre_AliqInt;
                         if (bcrForm == null)
                         {
@@ -205,19 +205,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (total_icms > total_icms_pauta)
                         {
-                            prod.TotalICMS = total_icms;
+                            p.TotalICMS = total_icms;
                         }
                         else
                         {
-                            prod.TotalICMS = total_icms_pauta;
-                            prod.Pautado = true;
-                            prod.ProductId = product.Id;
+                            p.TotalICMS = total_icms_pauta;
+                            p.Pautado = true;
+                            p.ProductId = product.Id;
                         }
 
                     }
 
-                    _service.Update(prod, GetLog(Model.OccorenceLog.Read));
-
+                    _service.Update(p, GetLog(Model.OccorenceLog.Read));
+                }
                 else
                 {
                     foreach (var item in products)
@@ -226,7 +226,6 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal valor_icms = item.IcmsCTe + item.Vicms;
                         if (taxedtype.Type == "ST")
                         {
-                            decimal total_icms_pauta = 0;
                             decimal total_icms = 0;
                             baseCalc = item.Vbasecalc + item.Vdesc;
 
@@ -259,7 +258,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
 
                             item.TotalICMS = total_icms;
-                           
+
                         }
                         else if (taxedtype.Type == "Normal")
                         {
@@ -276,9 +275,10 @@ namespace Escon.SisctNET.Web.Controllers
                             item.IcmsApurado = icmsApu;
                         }
 
+
                         if (note.Company.Incentive && note.Company.AnnexId != null)
                         {
-                            item.Incentivo = _service.FindByNcmAnnex(Convert.ToInt32(note.Company.AnnexId), item);
+                            item.Incentivo = _service.FindByNcmAnnex(Convert.ToInt32(note.Company.AnnexId), item.Ncm);
                         }
 
                         item.TaxationTypeId = Convert.ToInt32(taxaType);

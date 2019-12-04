@@ -28,6 +28,6 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByCfopNotesOut(int companyId, List<Model.Note> notes, Model.Log log = null);
 
-        bool FindByNcmAnnex(int Annex, Model.ProductNote produto, Model.Log log = null);
+        bool FindByNcmAnnex(int Annex, string ncm, Model.Log log = null);
     }
 }
