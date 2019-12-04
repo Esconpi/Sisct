@@ -174,5 +174,24 @@ namespace Escon.SisctNET.Repository.Implementation
 
             return result;
         }
+
+        public bool FindByNcmAnnex(ProductNote produto)
+        {
+            var ncms = _context.NcmConvenios.Select(_ => _.Ncm);
+            bool NcmIncentivo = false;
+            foreach (var ncm in ncms)
+            {
+                int contaChar = ncm.Count();
+                string substring = produto.Ncm.Substring(0, contaChar);
+                if (ncm.Equals(substring))
+                {
+                    NcmIncentivo = true;
+                }
+            }
+            return NcmIncentivo;
+
+        }
+
+
     }
 }
