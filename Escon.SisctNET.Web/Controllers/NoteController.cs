@@ -481,11 +481,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     decimal valorAgreg = 0, valor_fecop = 0, valorbcr = 0, valor_icms = vICMS + frete_icms,
                                             valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
 
-                                    if (taxedtype.Type == "ST")
-                                    {
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc;
-
-
+                                    
                                         if (taxedtype.Type == "ST")
                                         {
                                             baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc;
@@ -517,6 +513,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                             icmsApu = calculation.icmsApurado(dif, baseCalc);
                                         }
+
+                                        var 
 
                                         try
                                         {
@@ -581,9 +579,6 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                                         det.Clear();
-
-                                    }
-
                                 }   
                             }
                             else
