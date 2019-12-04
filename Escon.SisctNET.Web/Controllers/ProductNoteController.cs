@@ -225,7 +225,12 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal icmsApu = (dif / 100) * baseCalc;
                         item.IcmsApurado = icmsApu;
                     }
-                    
+
+                    if (note.Company.Incentive && note.Company.AnnexId != null)
+                    {
+                        item.Incentivo = _service.FindByNcmAnnex(Convert.ToInt32(note.Company.AnnexId), item);
+                    }
+
                     item.TaxationTypeId = Convert.ToInt32(taxaType);
                     item.Updated = DateTime.Now;
                     item.Status = true;

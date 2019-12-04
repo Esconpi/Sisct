@@ -175,9 +175,9 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public bool FindByNcmAnnex(ProductNote produto)
+        public bool FindByNcmAnnex(int Annex, ProductNote produto, Log log = null)
         {
-            var ncms = _context.NcmConvenios.Select(_ => _.Ncm);
+            var ncms = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
             bool NcmIncentivo = false;
             foreach (var ncm in ncms)
             {
