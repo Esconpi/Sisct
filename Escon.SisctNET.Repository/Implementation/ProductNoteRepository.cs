@@ -21,7 +21,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id));
+                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Status.Equals(false));
                 foreach (var item in rst)
                 {
                     products.Add(item);
