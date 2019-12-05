@@ -423,6 +423,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (taxed == null)
                                 {
+                                    bool incentivo = false;
+
+                                    if (nota.Company.Incentive && nota.Company.AnnexId != null)
+                                    {
+                                        incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
+                                    }
                                     try
                                     {
                                         var item = new Model.ProductNote
@@ -461,7 +467,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             NoteId = noteId,
                                             Nitem = det["nItem"],
                                             Status = false,
-                                            Orig = Convert.ToInt32(det["orig"])
+                                            Orig = Convert.ToInt32(det["orig"]),
+                                            Incentivo = incentivo
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
