@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -437,18 +438,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                         totalIcms = result.Select(_ => _.TotalICMS).Sum();
 
-                        /*string Formato1 = String.Format("{0:C}", Valor); //Moeda
-
-                        string Formato2 = String.Format("{0:C8}", Valor); //Moeda com 8 casas decimais
-
-                        string Formato3 = String.Format("{0:D}", Valor); //Decimal*/
 
                         double valor = 7342587.5891;
 
                         var t = valor.ToString("C", CultureInfo.CurrentCulture);
                         var t2 = valor.ToString("C2", CultureInfo.CurrentCulture);
 
-                        ViewBag.TotalICMS = totalIcms;
+                        var t3 = Convert.ToDouble(totalIcms);
+                        ViewBag.TotalICMS = t3.ToString("C2", CultureInfo.CurrentCulture);
                         ViewBag.TotalICMSSTNota = totalIcms - totalIcmsPauta;                        
                         ViewBag.TotalICMSPauta = totalIcmsPauta;
 
