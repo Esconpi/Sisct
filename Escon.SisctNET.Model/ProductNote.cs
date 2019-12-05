@@ -19,6 +19,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "NCM")]
         public string Ncm { get; set; }
 
+        [Display(Name = "Incentivo")]
+        public bool Incentivo { get; set; }
+
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
