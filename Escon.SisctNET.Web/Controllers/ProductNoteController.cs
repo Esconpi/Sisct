@@ -513,16 +513,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);*/
                         }
                     }
-                    else if (typeTaxation == 2)
-                    {
-                        totalIcms = result.Select(_ => _.IcmsApurado).Sum();
-                        ViewBag.TotalICMS = totalIcms;
-                        valorDief = totalIcms - icmsSt;
-                        decimal? icmsAp = notes.Select(_ => _.IcmsAp).Sum();
-                        ViewBag.ValorDief = valorDief;
-                        ViewBag.IcmsAp = icmsAp;
-                        ViewBag.IcmsPagar = valorDief - icmsAp;
-                    }else if (typeTaxation == 5)
+                    else if (typeTaxation == 2 ||  typeTaxation == 5 || typeTaxation == 3 || typeTaxation == 4)
                     {
                         totalIcms = result.Select(_ => _.IcmsApurado).Sum();
                         ViewBag.TotalICMS = totalIcms;
@@ -532,7 +523,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.IcmsAp = icmsAp;
                         ViewBag.IcmsPagar = valorDief - icmsAp;
                     }
-                    
                     ViewBag.TotalFecop = result.Select(_ => _.TotalFecop).Sum();
                     ViewBag.TotalFrete = result.Select(_ => _.Freterateado).Sum();
                     ViewBag.TotalIpi = result.Select(_ => _.Vipi).Sum();
