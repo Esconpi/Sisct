@@ -464,9 +464,11 @@ namespace Escon.SisctNET.Web.Controllers
                             var productsIncentive = _service.FindByIncentive(notes);
                             decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
                             ViewBag.Base = Math.Round(baseIcms,2);
-                            ViewBag.ImpostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (company.Icms/100)), 2);
-                            ViewBag.ImpostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (company.Fecop / 100)), 2);
-                            ViewBag.BaseFunef = 
+                            decimal impostoIcms = Convert.ToDecimal(baseIcms * (company.Icms / 100));
+                            ViewBag.ImpostoIcms = Math.Round(impostoIcms, 2);
+                            decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
+                            ViewBag.ImpostoFecop = Math.Round(impostoFecop, 2);
+                            ViewBag.BaseFunef = totalIcms - impostoIcms;
                             /*var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var prodructsCfopIn = _service.FindByCfopNotesIn(company.Id, notesDentro);
                             decimal basedeCalcIncentivo = prodructsCfopIn.Select(_ => _.Vbasecalc).Sum();
