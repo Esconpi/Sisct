@@ -92,10 +92,13 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else if (notes[i][1]["idDest"] == "1" && rst.Status == true)
                     {
-                        notes.RemoveAt(i);
+                        if (notes[i][2]["UF"] == notes[i][3]["UF"])
+                        {
+                            notes.RemoveAt(i);
+                        }
                     }
                 }
-
+                 
                 Dictionary<string, string> det = new Dictionary<string, string>();
 
                 for (int i = 0; i < notes.Count; i++)

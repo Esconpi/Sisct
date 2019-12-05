@@ -375,6 +375,7 @@ namespace Escon.SisctNET.Web.Taxation
             }
             catch (Exception ex)
             {
+                return notes;
                 Console.Out.WriteLine(ex.Message);
             }
             return notes;
