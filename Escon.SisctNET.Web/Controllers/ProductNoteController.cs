@@ -469,7 +469,43 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.ImpostoIcms = Math.Round(impostoIcms, 2);
                             decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
                             ViewBag.ImpostoFecop = Math.Round(impostoFecop, 2);
-                            ViewBag.BaseFunef = totalIcms - impostoIcms;
+                            
+                           
+                            var productsNormal = _service.FindByNormal(notes);
+                            decimal ? totalIcmsNormal = productsNormal.Where(_ => _.TaxationType.Type.Equals("ST")).Select(_ => _.TotalICMS).Sum();
+    
+
+                            diefSt = Convert.ToDecimal(totalIcmsNormal - icmsSt + gnreNPaga);
+                            ViewBag.ValorDief = diefSt;
+
+                            decimal ? IcmsMva = productsNormal.Where(_ => _.Pautado.Equals(false) && _.TaxationType.Type.Equals("ST")).Select(_ => _.TotalICMS).Sum();
+                            decimal ? IcmsPauta = productsNormal.Where(_ => _.Pautado.Equals(true) && _.TaxationType.Type.Equals("ST")).Select(_ => _.TotalICMS).Sum();
+                            ViewBag.IcmsMva = IcmsMva;
+                            ViewBag.IcmsPauta = totalIcmsPauta;
+                            ViewBag.IcmsPagar = diefSt - icmsStnota;
+
+                            decimal? basefunef = totalIcms - impostoIcms;
+                            ViewBag.BaseFunef = Math.Round(Convert.ToDecimal(basefunef), 2);
+                            ViewBag.Funef = company.Funef;
+                            ViewBag.TaxaFunef = Math.Round(Convert.ToDecimal(basefunef * (company.Funef / 100)), 2);
+
+                            base1 = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
+                            base1 += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
+                            ViewBag.base1 = Math.Round(base1, 2);
+
+                            base2 = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 2).Select(_ => _.ValorBCR).Sum()), 2);
+                            base2 += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 2).Select(_ => _.Valoragregado).Sum()), 2);
+                            ViewBag.base2 = Math.Round(base2, 2);
+
+                            valorbase1 = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2);
+                            ViewBag.valorbase1 = Math.Round(valorbase1, 2);
+
+                            valorbase2 = Math.Round(Convert.ToDecimal(result.Where(_ => _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2);
+                            ViewBag.valorbase2 = Math.Round(valorbase2, 2);
+
+                            TotalFecopCalc = valorbase1 + valorbase2;
+                            ViewBag.TotalFecopCalculada = Math.Round(TotalFecopCalc, 2);
+
                             /*var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var prodructsCfopIn = _service.FindByCfopNotesIn(company.Id, notesDentro);
                             decimal basedeCalcIncentivo = prodructsCfopIn.Select(_ => _.Vbasecalc).Sum();
@@ -477,7 +513,16 @@ namespace Escon.SisctNET.Web.Controllers
                             var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);*/
                         }
                     }
-                    else if (typeTaxation >= 2 && typeTaxation <= 5)
+                    else if (typeTaxation == 2)
+                    {
+                        totalIcms = result.Select(_ => _.IcmsApurado).Sum();
+                        ViewBag.TotalICMS = totalIcms;
+                        valorDief = totalIcms - icmsSt;
+                        decimal? icmsAp = notes.Select(_ => _.IcmsAp).Sum();
+                        ViewBag.ValorDief = valorDief;
+                        ViewBag.IcmsAp = icmsAp;
+                        ViewBag.IcmsPagar = valorDief - icmsAp;
+                    }else if (typeTaxation == 5)
                     {
                         totalIcms = result.Select(_ => _.IcmsApurado).Sum();
                         ViewBag.TotalICMS = totalIcms;
@@ -494,7 +539,9 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type == 2)
                 {
-                    //var teste = result.GroupBy(_ => _.Nnf);
+
+                    //var teste = result.GroupBy(_ => _.NoteId);
+
                 }
                 return View(result);
 

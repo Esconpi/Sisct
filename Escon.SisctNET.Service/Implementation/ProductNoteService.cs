@@ -107,5 +107,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByIncentive(notes, log);
         }
+
+        public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
+        {
+            return _repository.FindByNormal(notes, log);
+        }
     }
 }

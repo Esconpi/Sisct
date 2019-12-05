@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                             using (XmlReader reader = XmlReader.Create(new StreamReader(arquivo, new UTF8Encoding(false))))
                             {
-                                double base_calc = 0;
+                                decimal base_calc = 0;
                                 var code = nota[2]["CNPJ"];
                                 string nCT = "";
 
@@ -152,14 +152,14 @@ namespace Escon.SisctNET.Web.Taxation
                                                     reader.Read();
                                                 }
 
-                                                double valor_carga = 0;
-                                                double valor_prestado = 0;
-                                                double total_da_nota = Convert.ToDouble(nota[4]["vNF"]);
-                                                double total_dos_produtos = Convert.ToDouble(nota[4]["vProd"]);
-                                                double proporcao = 0;
-                                                double frete_nota = 0;
-                                                double total_icms_frete = 0;
-                                                double frete_icms = 0;
+                                                decimal valor_carga = 0;
+                                                decimal valor_prestado = 0;
+                                                decimal total_da_nota = Convert.ToDecimal(nota[4]["vNF"]);
+                                                decimal total_dos_produtos = Convert.ToDecimal(nota[4]["vProd"]);
+                                                decimal proporcao = 0;
+                                                decimal frete_nota = 0;
+                                                decimal total_icms_frete = 0;
+                                                decimal frete_icms = 0;
                                                 string nCT_temp = "";
 
                                                 List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
@@ -170,15 +170,15 @@ namespace Escon.SisctNET.Web.Taxation
                                                     {
                                                         if (item[j].ContainsKey("vCarga"))
                                                         {
-                                                            valor_carga = Convert.ToDouble(item[j]["vCarga"]);
+                                                            valor_carga = Convert.ToDecimal(item[j]["vCarga"]);
                                                         }
                                                         if (item[j].ContainsKey("vTPrest"))
                                                         {
-                                                            valor_prestado = Convert.ToDouble(item[j]["vTPrest"]);
+                                                            valor_prestado = Convert.ToDecimal(item[j]["vTPrest"]);
                                                         }
                                                         if (item[j].ContainsKey("vICMS"))
                                                         {
-                                                            total_icms_frete = Convert.ToDouble(item[j]["vICMS"]);
+                                                            total_icms_frete = Convert.ToDecimal(item[j]["vICMS"]);
 
                                                         }
                                                         if (item[j].ContainsKey("nCT"))
@@ -198,46 +198,46 @@ namespace Escon.SisctNET.Web.Taxation
                                                     }
                                                 }
 
-                                                double proporcao_prod = 0;
-                                                double frete_prod = 0;
-                                                double proporcao_icms = 0;
-                                                double frete_icmsprod = 0;
+                                                decimal proporcao_prod = 0;
+                                                decimal frete_prod = 0;
+                                                decimal proporcao_icms = 0;
+                                                decimal frete_icmsprod = 0;
                                                 if (frete_nota > 0)
                                                 {
-                                                    proporcao_prod = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
+                                                    proporcao_prod = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
                                                     frete_prod = proporcao_prod * frete_nota;
                                                 }
 
                                                 if (frete_icms > 0)
                                                 {
-                                                    proporcao_icms = ((100 * Convert.ToDouble(prod["vProd"])) / total_dos_produtos) / 100;
+                                                    proporcao_icms = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
                                                     frete_icmsprod = proporcao_icms * frete_icms;
                                                 }
 
 
                                                 if (prod.ContainsKey("vProd"))
                                                 {
-                                                    base_calc = Convert.ToDouble(prod["vProd"]);
+                                                    base_calc = Convert.ToDecimal(prod["vProd"]);
                                                 }
 
                                                 if (prod.ContainsKey("vOutro"))
                                                 {
-                                                    base_calc += Convert.ToDouble(prod["vOutro"]);
+                                                    base_calc += Convert.ToDecimal(prod["vOutro"]);
                                                 }
 
                                                 if (prod.ContainsKey("vFrete"))
                                                 {
-                                                    base_calc += Convert.ToDouble(prod["vFrete"]);
+                                                    base_calc += Convert.ToDecimal(prod["vFrete"]);
                                                 }
 
                                                 if (prod.ContainsKey("vSeg"))
                                                 {
-                                                    base_calc += Convert.ToDouble(prod["vSeg"]);
+                                                    base_calc += Convert.ToDecimal(prod["vSeg"]);
                                                 }
 
                                                 if (prod.ContainsKey("vDesc"))
                                                 {
-                                                    base_calc -= Convert.ToDouble(prod["vDesc"]);
+                                                    base_calc -= Convert.ToDecimal(prod["vDesc"]);
                                                 }
 
                                                 base_calc += frete_prod;
@@ -310,7 +310,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                                 if (ipi.ContainsKey("vIPI"))
                                                 {
-                                                    base_calc += Convert.ToDouble(ipi["vIPI"]);
+                                                    base_calc += Convert.ToDecimal(ipi["vIPI"]);
                                                 }
                                                 nota.Add(ipi);
                                                 break;
@@ -383,12 +383,14 @@ namespace Escon.SisctNET.Web.Taxation
         public List<List<Dictionary<string, string>>> Cte(string directory, string cnpj)
         {
             List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
+
+          
+
             try
             {
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
                 string[] archivesCtes = Directory.GetFiles(directory);
-
 
                 for (int i = 0; i < archivesCtes.Count(); i++)
                 {
@@ -612,6 +614,7 @@ namespace Escon.SisctNET.Web.Taxation
             {
                 Console.Out.WriteLine(ex.Message);
             }
+       
             return ctes;
         }
     }

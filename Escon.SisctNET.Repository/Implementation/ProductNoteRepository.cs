@@ -183,9 +183,10 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 int contaChar = n.Length;
                 string substring = ncm.Substring(0, contaChar);
-                if (n.Equals(substring))
+                if (n.Equals(substring) && !contaChar.Equals(0))
                 {
                     NcmIncentivo = true;
+                    break;
                 }
             }
             return NcmIncentivo;
