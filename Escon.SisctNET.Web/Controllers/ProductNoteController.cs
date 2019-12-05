@@ -453,15 +453,25 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.DifValor2 = Math.Round(valorbase2 - valorNfe2Normal - valorNfe2Ret, 2);
                         ViewBag.DifTotal = Math.Round(TotalFecopCalc - TotalFecopNfe - (base1fecop + base2fecop), 2);
 
-                        
+
+                        ViewBag.Incetive = company.Incentive;
                         //Relatorio das empresas incentivadas
                         if (company.Incentive == true)
                         {
-                            var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
+                            ViewBag.Icms = company.Icms;
+                            ViewBag.Fecop = company.Fecop;
+                            
+                            var productsIncentive = _service.FindByIncentive(notes);
+                            decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
+                            ViewBag.Base = Math.Round(baseIcms,2);
+                            ViewBag.ImpostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (company.Icms/100)), 2);
+                            ViewBag.ImpostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (company.Fecop / 100)), 2);
+                            ViewBag.BaseFunef = 
+                            /*var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var prodructsCfopIn = _service.FindByCfopNotesIn(company.Id, notesDentro);
                             decimal basedeCalcIncentivo = prodructsCfopIn.Select(_ => _.Vbasecalc).Sum();
                             var notesFora = notes.Where(_ => _.IdDest.Equals(1)).ToList();
-                            var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);
+                            var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);*/
                         }
                     }
                     else if (typeTaxation >= 2 && typeTaxation <= 5)

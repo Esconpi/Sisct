@@ -192,6 +192,20 @@ namespace Escon.SisctNET.Repository.Implementation
 
         }
 
+        public List<ProductNote> FindByIncentive(List<Note> notes, Log log = null)
+        {
+            List <ProductNote> products = new List<ProductNote>();
 
+            foreach(var note in notes)
+            {
+                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == true).ToList();
+
+                foreach (var item in itens)
+                {
+                     products.Add(item);
+                }
+            }
+            return products;
+        }
     }
 }

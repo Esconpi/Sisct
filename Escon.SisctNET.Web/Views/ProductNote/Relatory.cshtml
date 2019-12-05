@@ -225,7 +225,7 @@
 
                         </tbody>
                     }
-                    </table>
+                </table>
             </div>
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
@@ -278,7 +278,7 @@
                                 <th>Total da Base de Cálculo</th>
                                 <th>ICMS ST NFe</th>
                                 <th>Total ICMS</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>
@@ -311,174 +311,369 @@
                 <table style="font-size:10px">
                     @if (ViewBag.TaxationType != 6)
                     {
-                    <thead>
-                        <tr>
-                            <th class="col-lg-4 col-md-4 col-sm-4" style="text-align:center; border:1px solid; margin-right:10px;">RESUMO DO IMPOSTO</th>
-                            <th class="col-lg-1 col-md-1 col-sm-1"></th>
-                            @if (@ViewBag.TaxationType == 1)
-                            {
-                                <th class="col-lg-7 col-md-7 col-sm-7" style="text-align:center; border:1px solid; margin-left:10px;">APURAÇÃO FECOP</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-lg-4 col-sm-4">
-                                <table>
-                                    @if (@ViewBag.TaxationType == 1)
-                                    {
-                                        <tr>
-                                            <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Substituição Tributária MVA</td>
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSPauta</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNRE</td>
-
-                                        </tr>
-                                    }
-                                    else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
-                                    {
-                                        <tr>
-                                            <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Antecipação Parcial</td>
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
-                                        </tr>
-                                    }
-                                    <tr>
-                                        <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS ST NFe R$</td>
-                                        <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSST</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="col-lg-10 col-sm-10" style="text-align:right">(=)VALOR A SER INFORMADO NA DIEF</th>
-                                        <th class="col-lg-2 col-sm-2">@ViewBag.ValorDief</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS pago R$</td>
-                                        @if (ViewBag.TaxationType == 1)
+                        <thead>
+                            <tr>
+                                <th class="col-lg-4 col-md-4 col-sm-4" style="text-align:center; border:1px solid; margin-right:10px;">RESUMO DO IMPOSTO</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1"></th>
+                                @if (@ViewBag.TaxationType == 1)
+                                {
+                                    <th class="col-lg-7 col-md-7 col-sm-7" style="text-align:center; border:1px solid; margin-left:10px;">APURAÇÃO FECOP</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-lg-4 col-sm-4">
+                                    <table>
+                                        @if (@ViewBag.TaxationType == 1)
                                         {
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.IcmsSt</td>
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Substituição Tributária MVA</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSPauta</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNRE</td>
+
+                                            </tr>
                                         }
                                         else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
                                         {
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.IcmsAp</td>
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Antecipação Parcial</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
+                                            </tr>
                                         }
+                                        <tr>
+                                            <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS ST NFe R$</td>
+                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSST</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="col-lg-10 col-sm-10" style="text-align:right">(=)VALOR A SER INFORMADO NA DIEF</th>
+                                            <th class="col-lg-2 col-sm-2">@ViewBag.ValorDief</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS pago R$</td>
+                                            @if (ViewBag.TaxationType == 1)
+                                            {
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.IcmsSt</td>
+                                            }
+                                            else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
+                                            {
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.IcmsAp</td>
+                                            }
 
-                                    </tr>
-                                    <tr></tr>
-                                    <tr>
-                                        <th class="col-lg-10 col-sm-10" style="text-align:right">ICMS a Pagar R$</th>
-                                        <th class="col-lg-2 col-sm-2">@ViewBag.IcmsPagar</th>
-                                    </tr>
-                                </table>
-                                <br />
-                                <table class="col-lg-12 col-md-12 col-sm-12">
-                                    <tr>
-                                        <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113001</td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td></td>
-                            <td class="col-lg-8 col-sm-8">
-                                @if (@ViewBag.TaxationType == 1)
-                                {
-                                    <table class="col-lg-12 col-sm-12">
+                                        </tr>
+                                        <tr></tr>
                                         <tr>
-                                            <th class="col-lg-5 col-sm-5" style="text-align:right;">Base FECOP interestaduais ST</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">Base (1%)</th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">Valor</th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">Base (2%)</th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">Valor</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">Total</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-lg-4 col-sm-4" style="text-align:right;">Base FECOP interestaduais ST R$</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.base1</td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorbase1</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.base2</td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorbase2</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopCalculada</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) GNRE paga R$</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP ST NFe</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.fecopNfe1</td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorNfe1</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.fecopNfe2</td>
-                                            <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorNfe2</td>
-                                            <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopNfe</td>
-                                        </tr>
-                                        <tr style="background-color:lightgray;">
-                                            <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) Valor a informar na DIEF R$</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifBase1</th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.DifValor1</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifBase2</th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.DifValor2</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago R$</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base1fecop</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base2fecop</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalBaseFecop</th>
-                                        </tr>
-                                        <tr style="background-color:lightgray;">
-                                            <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) FECOP a pagar R$</th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                            <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
-                                            <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
+                                            <th class="col-lg-10 col-sm-10" style="text-align:right">ICMS a Pagar R$</th>
+                                            <th class="col-lg-2 col-sm-2">@ViewBag.IcmsPagar</th>
                                         </tr>
                                     </table>
+                                    <br />
                                     <table class="col-lg-12 col-md-12 col-sm-12">
                                         <tr>
-                                            <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-113387</th>
+                                            <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113001</td>
                                         </tr>
                                     </table>
-                                }
+                                </td>
+                                <td></td>
+                                <td class="col-lg-8 col-sm-8">
+                                    @if (@ViewBag.TaxationType == 1)
+                                    {
+                                        <table class="col-lg-12 col-sm-12">
+                                            <tr>
+                                                <th class="col-lg-5 col-sm-5" style="text-align:right;">Base FECOP interestaduais ST</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">Base (1%)</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">Valor</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">Base (2%)</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">Valor</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">Total</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-4 col-sm-4" style="text-align:right;">Base FECOP interestaduais ST R$</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.base1</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorbase1</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.base2</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorbase2</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopCalculada</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) GNRE paga R$</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP ST NFe</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.fecopNfe1</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorNfe1</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.fecopNfe2</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorNfe2</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopNfe</td>
+                                            </tr>
+                                            <tr style="background-color:lightgray;">
+                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) Valor a informar na DIEF R$</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifBase1</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.DifValor1</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifBase2</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.DifValor2</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago R$</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base1fecop</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base2fecop</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalBaseFecop</th>
+                                            </tr>
+                                            <tr style="background-color:lightgray;">
+                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) FECOP a pagar R$</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
+                                            </tr>
+                                        </table>
+                                        <table class="col-lg-12 col-md-12 col-sm-12">
+                                            <tr>
+                                                <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-113387</th>
+                                            </tr>
+                                        </table>
+                                    }
 
-                                <table class="col-lg-12 col-sm-12">
-                                    <tr>
-                                        <th class="col-lg-12 col-sm-12" style="text-align:center;border:1px solid;">EMITENTES COM INSCRIÇÃO NO ESTADO</th>
-                                    </tr>
-                                </table>
-                                <br />
-                                <table class="col-lg-12 col-md-12 col-sm-12">
-                                    <tr>
-                                        <td class="col-lg-10 col-md-10 col-sm-10">
-                                            I - Empresas com IE no PIauí ICMS NFe
-                                        </td>
-                                        <td class="col-lg-2 col-md-2 col-sm-2">
-                                            @ViewBag.IcmsStNoteI
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-10 col-md-10 col-sm-10">
-                                            S - Empresas com IE no PIauí ICMS NFe
-                                        </td>
-                                        <td class="col-lg-2 col-md-2 col-sm-2">
-                                            @ViewBag.IcmsStNoteS
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </tbody>
+                                    <table class="col-lg-12 col-sm-12">
+                                        <tr>
+                                            <th class="col-lg-12 col-sm-12" style="text-align:center;border:1px solid;">EMITENTES COM INSCRIÇÃO NO ESTADO</th>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <table class="col-lg-12 col-md-12 col-sm-12">
+                                        <tr>
+                                            <td class="col-lg-10 col-md-10 col-sm-10">
+                                                I - Empresas com IE no PIauí ICMS NFe
+                                            </td>
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @ViewBag.IcmsStNoteI
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-10 col-md-10 col-sm-10">
+                                                S - Empresas com IE no PIauí ICMS NFe
+                                            </td>
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @ViewBag.IcmsStNoteS
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
                     }
                 </table>
+
             </div>
+            @if (ViewBag.Incetive == true)
+            {
+                <br />
+                <div class="col-lg-12 col-md-12 col-sm-12" style="font-size:12px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="border:1px solid; text-align:center;">
+                        <strong>APURAÇÂO INCENTIVADA</strong>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; margin-right:10px;">IMPOSTO INCENTIVADO</th>
+                                <th class="col-lg-1 col-md-1 col-sm-1"></th>
+                                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; margin-left:10px;">IMPOSTO FUNEF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-lg-5 col-md-5 col-sm-5">
+                                    <table class="col-lg-12 col-sm-12">
+                                        <thead>
+                                            <tr style="border:1px solid;">
+                                                <th>
+                                                    Icms
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Icms %
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Imposto Icms
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.Base
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                                    x
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.Icms
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                                    =
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.ImpostoIcms
+                                                </th>
+                                            </tr>
+                                            <tr style="border:1px solid; padding-top:100px;">
+                                                <th>
+                                                    Fecop
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Fecop %
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Imposto Fecop
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.Base
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                                    x
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.Fecop
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                                    =
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.ImpostoFecop
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </td>
+                                <td></td>
+                                <td class="col-lg-6 col-md-6 col-sm-6">
+                                    <table class="col-lg-12 col-sm-12">
+                                        <thead>
+                                            <tr style="border:1px solid;">
+                                                <th>
+                                                    Imposto Normal
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Imposto Incetivado
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Base de Cálculo Funef
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    Funef %
+                                                </th>
+                                                <th></th>
+                                                <th>
+                                                    Taxa Funef
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                   @ViewBag.TotalICMS
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1" style="font-size:15px;">
+                                                    -
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    @ViewBag.ImpostoIcms
+                                                </th>
+                                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                                    =
+                                                </th>
+                                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                                    4355653456
+                                                </th>
+                                                <th>
+                                                    x
+                                                </th>
+                                                <th>
+                                                    10
+                                                </th>
+                                                <th>
+                                                    =
+                                                </th>
+                                                <th>
+                                                    3758786886
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="border:1px solid; text-align:center;">
+                        <strong>RESUMO DOS IMPOSTOS</strong>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Valor do Imposto</th>
+                                <th>Código DAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ICMS</strong></td>
+                                <th>5685685</th>
+                                <td>q2876y</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fecop</strong></td>
+                                <th>5685685</th>
+                                <td>q2876y</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Funef</strong></td>
+                                <th>5685685</th>
+                                <td>q2876y</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <th>5685685</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            }
         </div>
 </div>

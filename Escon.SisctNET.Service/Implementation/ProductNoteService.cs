@@ -102,5 +102,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByNcmAnnex(Annex, ncm, log);
         }
+
+        public List<ProductNote> FindByIncentive(List<Note> notes, Log log = null)
+        {
+            return _repository.FindByIncentive(notes, log);
+        }
     }
 }
