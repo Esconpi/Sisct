@@ -208,5 +208,21 @@ namespace Escon.SisctNET.Repository.Implementation
             }
             return products;
         }
+
+        public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
+        {
+            List<ProductNote> products = new List<ProductNote>();
+
+            foreach (var note in notes)
+            {
+                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false).ToList();
+
+                foreach (var item in itens)
+                {
+                    products.Add(item);
+                }
+            }
+            return products;
+        }
     }
 }

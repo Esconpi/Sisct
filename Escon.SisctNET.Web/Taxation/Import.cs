@@ -370,7 +370,6 @@ namespace Escon.SisctNET.Web.Taxation
                             notes.Add(nota);
                         }
                     //});
-                   
                 }
             }
             catch (Exception ex)
