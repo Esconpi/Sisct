@@ -25,6 +25,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            @if (@ViewBag.type == 3)
+                            {
+                                <strong>Produtos sem preço de referência</strong>
+                            }
                             @if (@ViewBag.TaxationType == 1)
                             {
                                 <strong>Substituição Tributária por MVA</strong>
@@ -62,6 +66,30 @@
         <div class="box-body">
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
+                    @if (@ViewBag.type == 3)
+                    {
+                        <thead>
+                            <tr>
+                                <th>Cod Produto</th>
+                                <th>Produto</th>
+                                <th>Ncm</th>
+                                <th>Fornecedor</th>
+                                <th>Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.product)
+                            { 
+                                <tr>
+                                    <td>@item.Cprod</td>
+                                    <td>@item.Xprod</td>
+                                    <td>@item.Ncm</td>
+                                    <td>@item.Note.Xnome</td>
+                                    <td>@item.Nnf</td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
                     @if (@ViewBag.TaxationType == 1)
                     {
                         <thead>
@@ -309,7 +337,7 @@
                     }
                 </table>
                 <table style="font-size:10px">
-                    @if (ViewBag.TaxationType != 6)
+                    @if (ViewBag.TaxationType != 6 && ViewBag.TaxationType != 0)
                     {
                         <thead>
                             <tr>
@@ -393,7 +421,18 @@
                                     <br />
                                     <table class="col-lg-12 col-md-12 col-sm-12">
                                         <tr>
-                                            <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113001</td>
+                                            @if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 3 || ViewBag.TaxationType == 4)
+                                            {
+                                                <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113001</td>
+                                            }
+                                            @if (ViewBag.TaxationType == 2)
+                                            {
+                                                <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113011</td>
+                                            }
+                                            @if (ViewBag.TaxationType == 5)
+                                            {
+                                                <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113013</td>
+                                            }
                                         </tr>
                                     </table>
                                 </td>

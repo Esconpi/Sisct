@@ -52,6 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Month = month;
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
+                ViewBag.Status = comp.Status;
 
                 var result = _service.FindByNotes(id, year, month);
 
@@ -73,8 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var import = new Import();
-
-               
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -478,9 +477,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
-                                    catch (Exception ex)
+                                    catch
                                     {
-                                        return BadRequest(new { erro = 500, message = ex.Message });
+                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
+                                        throw new Exception(message);
                                     }
 
                                     det.Clear();

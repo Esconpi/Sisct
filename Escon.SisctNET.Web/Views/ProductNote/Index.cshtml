@@ -10,6 +10,7 @@
         <div class="box-header">
             <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Produtos</strong></h3>
+            
         </div>
         <div class="box-body">
             <div style="width:100%; padding:20px;">
@@ -31,6 +32,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -63,9 +65,19 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
+                                    @if (item.Pautado.Equals(true))
+                                    {
+                                        <td>P</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
                                     <td>
                                         @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
                                     </td>
+
+
                                 </tr>
                             }
                             else
@@ -94,9 +106,18 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
+                                    @if (item.Pautado.Equals(true))
+                                    {
+                                        <td>P</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
                                     <td>
                                         @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
                                     </td>
+                   
                                 </tr>
                             }
 
