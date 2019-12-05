@@ -103,6 +103,7 @@ namespace Escon.SisctNET.Web.Taxation
                                         }
                                     }
                                 }
+                            reader.Close();
                             }
 
 
@@ -366,10 +367,10 @@ namespace Escon.SisctNET.Web.Taxation
                                         }
                                     }
                                 }
+                            reader.Close();
                             }
                             notes.Add(nota);
                         }
-                    //});
                 }
             }
             catch (Exception ex)
@@ -523,6 +524,7 @@ namespace Escon.SisctNET.Web.Taxation
                                 }
 
                             }
+                            reader.Close();
                         }
                         ctes.Add(cte);
                     }
