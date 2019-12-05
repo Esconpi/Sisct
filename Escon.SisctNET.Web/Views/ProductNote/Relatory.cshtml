@@ -357,27 +357,14 @@
                                         {
                                             <tr>
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Substituição Tributária MVA</td>
-                                                @if (ViewBag.Incetive == true)
-                                                {
-                                                    <td class="col-lg-2 col-sm-2">@ViewBag.IcmsMva</td>
-                                                }
-                                                else
-                                                {
-                                                    <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
-                                                }
-
-
+                                           
+                                                    <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSMva</td>
+                                              
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
-                                                @if (ViewBag.Incetive == true)
-                                                {
-                                                    <td class="col-lg-2 col-sm-2">@ViewBag.IcmsPauta</td>
-                                                }
-                                                else
-                                                {
+                                               
                                                     <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSPauta</td>
-                                                }
 
                                             </tr>
                                             <tr>
