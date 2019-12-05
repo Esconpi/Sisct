@@ -74,7 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
                 return View(result);
             }
             catch (Exception ex)
@@ -90,12 +89,13 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 result.Updated = DateTime.Now;
-                result.DateEnd = entity.DateStart;
+                result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 _service.Update(result, GetLog(Model.OccorenceLog.Update));
 
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
-                entity.DateEnd = null;                   
+                entity.DateEnd = null;
+                entity.GroupId = result.GroupId;
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }

@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-6 col-xs-12">
                         <label asp-for="GroupId" class="control-label"></label>
-                        <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="group"></select>
+                        <input asp-for="Group.Description" class="form-control" disabled />
                         <span asp-validation-for="GroupId" class="text-danger"></span>
                     </div>
                 </div>
@@ -69,13 +69,3 @@
 
         </div>
     </div>
-
-    <script type="text/javascript">
-        var grupo = @Model.GroupId;
-        $("#group").children('option').each(function () {
-            if ($(this).val() == grupo) {
-                $(this).attr('selected', true);
-            }
-        });
-
-    </script>
