@@ -216,6 +216,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
+                    p.TaxationTypeId = Convert.ToInt32(taxaType);
+                    p.Updated = DateTime.Now;
+                    p.Status = true;
+                    p.Vbasecalc = baseCalc;
+
                     _service.Update(p, GetLog(Model.OccorenceLog.Read));
                 }
                 else
@@ -273,12 +278,6 @@ namespace Escon.SisctNET.Web.Controllers
                             item.Diferencial = dif;
                             decimal icmsApu = (dif / 100) * baseCalc;
                             item.IcmsApurado = icmsApu;
-                        }
-
-
-                        if (note.Company.Incentive && note.Company.AnnexId != null)
-                        {
-                            item.Incentivo = _service.FindByNcmAnnex(Convert.ToInt32(note.Company.AnnexId), item.Ncm);
                         }
 
                         item.TaxationTypeId = Convert.ToInt32(taxaType);
