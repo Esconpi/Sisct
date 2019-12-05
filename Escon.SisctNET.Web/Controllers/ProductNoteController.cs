@@ -454,19 +454,19 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     ViewBag.Registro = result.Count();
-                    ViewBag.ValorProd = result.Select(_ => _.Vprod).Sum();
-                    ViewBag.TotalBC = Math.Round(result.Select(_ => _.Vbasecalc).Sum(), 2);
-                    ViewBag.TotalNotas = total;
+                    ViewBag.ValorProd = Convert.ToDouble(result.Select(_ => _.Vprod).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalBC = Convert.ToDouble(Math.Round(result.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalNotas = Convert.ToDouble(total).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    ViewBag.TotalBcICMS = Math.Round(Convert.ToDecimal(result.Select(_ => _.Valoragregado).Sum()), 2);
-                    ViewBag.TotalBCR = result.Select(_ => _.ValorBCR).Sum();
-                    ViewBag.TotalAC = result.Select(_ => _.ValorAC).Sum();
-                    ViewBag.TotalICMSNfe = result.Select(_ => _.Vicms).Sum();
-                    ViewBag.TotalICMSCte = Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2);
+                    ViewBag.TotalBcICMS = Convert.ToDouble(Math.Round(Convert.ToDecimal(result.Select(_ => _.Valoragregado).Sum()), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalBCR = Convert.ToDouble(result.Select(_ => _.ValorBCR).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalAC = Convert.ToDouble(result.Select(_ => _.ValorAC).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalICMSNfe = Convert.ToDouble(result.Select(_ => _.Vicms).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     decimal icmsSt = Math.Round(Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalIcms = 0, valorDief = 0; 
-                    ViewBag.TotalICMSST = icmsSt;
+                    ViewBag.TotalICMSST = Convert.ToDouble(icmsSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     if (typeTaxation == 1)
                     {
                         decimal totalIcmsPauta = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(true)).Select(_ => _.TotalICMS).Sum()), 2);
@@ -599,8 +599,8 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.IcmsAp = icmsAp;
                         ViewBag.IcmsPagar = valorDief - icmsAp;
                     }
-                    ViewBag.TotalFecop = result.Select(_ => _.TotalFecop).Sum();
-                    ViewBag.TotalFrete = result.Select(_ => _.Freterateado).Sum();
+                    ViewBag.TotalFecop = Convert.ToDouble(result.Select(_ => _.TotalFecop).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalFrete = Convert.ToDouble(result.Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalIpi = result.Select(_ => _.Vipi).Sum();
                 }
                 else if (type == 3)
