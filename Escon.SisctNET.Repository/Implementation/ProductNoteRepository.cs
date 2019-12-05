@@ -186,6 +186,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Equals(substring))
                 {
                     NcmIncentivo = true;
+                    break;
                 }
             }
             return NcmIncentivo;
