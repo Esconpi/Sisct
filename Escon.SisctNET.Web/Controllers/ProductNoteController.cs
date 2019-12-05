@@ -80,6 +80,10 @@ namespace Escon.SisctNET.Web.Controllers
                 
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
+                foreach (var prod in list_product)
+                {
+                    prod.Description = prod.Code + " - " + prod.Description;
+                }
                 list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList products = new SelectList(list_product, "Id", "Description", null);
                 ViewBag.ProductId = products;

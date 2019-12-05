@@ -83,7 +83,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-
                 return View(result);
             }
             catch (Exception ex)
@@ -97,8 +96,10 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                entity.Created = result.Created;
                 entity.Updated = DateTime.Now;
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

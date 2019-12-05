@@ -66,9 +66,19 @@
                     <input type="text" class="form-control" value="@ViewBag.Uf" name="Uf" readonly />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Aliqinterna" class="control-label"></label>
-                    <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="18" required />
-                    <span asp-validation-for="Aliqinterna" class="text-danger"></span>
+                    @if (Model.Aliqinterna != null)
+                    {
+                        <label asp-for="Aliqinterna" class="control-label"></label>
+                        <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="@Model.Aliqinterna" required />
+                        <span asp-validation-for="Aliqinterna" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <label asp-for="Aliqinterna" class="control-label"></label>
+                        <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="18" required />
+                        <span asp-validation-for="Aliqinterna" class="text-danger"></span>
+                    }
+
                 </div>
 
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -88,7 +98,7 @@
                         <label class="control-label">Quantidade da Pauta</label>
                         <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
                     </div>
-                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-8 col-md-6 col-xs-12">
                         <label asp-for="ProductId" class="control-label"></label>
                         <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
                     </div>
@@ -136,7 +146,7 @@
                         <span asp-validation-for="Vipi" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="IcmsST" class="control-label"></label>
                         <input asp-for="IcmsST" class="form-control money" disabled />
                     </div>

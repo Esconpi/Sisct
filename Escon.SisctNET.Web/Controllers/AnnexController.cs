@@ -86,6 +86,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
