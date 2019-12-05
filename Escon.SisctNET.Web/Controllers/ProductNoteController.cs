@@ -540,8 +540,6 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type == 2)
                 {
 
-                    //var teste = result.GroupBy(_ => _.NoteId);
-
                 }
                 return View(result);
 
