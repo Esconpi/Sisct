@@ -344,7 +344,7 @@
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
                                                 @if (ViewBag.Incetive == true)
                                                 {
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.IcmsPauta</td>
+                                                    <td class="col-lg-2 col-sm-2">@ViewBag.IcmsPauta</td>
                                                 }
                                                 else
                                                 {
@@ -355,7 +355,6 @@
                                             <tr>
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
                                                 <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNRE</td>
-
                                             </tr>
                                         }
                                         else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
