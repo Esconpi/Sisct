@@ -274,10 +274,11 @@ namespace Escon.SisctNET.Web.Controllers
                             dif = AliqInt - item.Picms;
                             item.Aliqinterna = AliqInt;
                             baseCalc = item.Vbasecalc;
-                            if (note.Crt != "3")
+                            if (item.Picms != 4)
                             {
                                 var aliq_simples = _stateService.FindByUf(note.Uf);
                                 dif = calculation.diferencialAliq(AliqInt, aliq_simples.Aliquota);
+                                item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
                             }
                             item.Diferencial = dif;
                             decimal icmsApu = (dif / 100) * baseCalc;
@@ -493,7 +494,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type == 2)
                 {
-                    var teste = result.GroupBy(_ => _.Nnf);
+                    //var teste = result.GroupBy(_ => _.Nnf);
                 }
                 return View(result);
 
