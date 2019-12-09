@@ -67,5 +67,42 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Model.Product entity)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                result.Updated = DateTime.Now;
+                result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                _service.Update(result, GetLog(Model.OccorenceLog.Update));
+
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.GroupId = result.GroupId;
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }
