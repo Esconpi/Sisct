@@ -31,5 +31,8 @@ namespace Escon.SisctNET.Service
         bool FindByNcmAnnex(int Annex, string ncm, Model.Log log = null);
 
         List<Model.ProductNote> FindByIncentive(List<Model.Note> notes, Model.Log log = null);
+
+        List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
+
     }
 }

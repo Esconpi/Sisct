@@ -279,7 +279,7 @@ namespace Escon.SisctNET.Web.Controllers
                             det.Add("baseCalc", notes[i][j]["baseCalc"]);
 
                             decimal vUnCom = 0, vICMS = 0, pICMS = 0, vIPI = 0, vPIS = 0, vCOFINS = 0, vFrete = 0,
-                                    vSeg = 0, vOutro = 0, vDesc = 0, vICMSST = 0, frete_icms = 0, frete_prod = 0,
+                                    vSeg = 0, vOutro = 0, vDesc = 0, vICMSST = 0, frete_icms = 0, frete_prod = 0, baseDeCalc = 0,
                                     vBCST = 0, vBCFCPST = 0, pFCPST = 0, vFCPST = 0, vBCFCPSTRet = 0, pFCPSTRet = 0, vFCPSTRet = 0;
                             string NCM = "", CEST = "", CFOP = "";
                             string nItem = "";
@@ -398,7 +398,10 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 frete_prod = Convert.ToDecimal(det["frete_prod"]);
                             }
-
+                            if (det.ContainsKey("baseCalc"))
+                            {
+                                baseDeCalc = Convert.ToDecimal(det["baseCalc"]);
+                            }
                             if (det.ContainsKey("nItem"))
                             {
                                 nItem = det["nItem"];
@@ -448,7 +451,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             Vipi = vIPI,
                                             Vpis = vPIS,
                                             Vcofins = vCOFINS,
-                                            Vbasecalc = Convert.ToDecimal(det["baseCalc"]),
+                                            Vbasecalc = baseDeCalc,
                                             Vfrete = vFrete,
                                             Vseg = vSeg,
                                             Voutro = vOutro,
@@ -472,11 +475,15 @@ namespace Escon.SisctNET.Web.Controllers
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
-                                    catch
+                                    catch (Exception ex)
                                     {
-                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                        throw new Exception(message);
+                                        return BadRequest(new { erro = 500, message = ex.Message });
                                     }
+                                    /*catch
+                                    {
+                                        //string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
+                                        throw new Exception(message);
+                                    }*/
 
                                     det.Clear();
                                 }

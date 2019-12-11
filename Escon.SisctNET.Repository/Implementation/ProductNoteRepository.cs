@@ -86,12 +86,36 @@ namespace Escon.SisctNET.Repository.Implementation
                 }
                 else if (taxationType == 2)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4)));
+                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(1));
+                    foreach (var item in rst)
+                    {
+                        products.Add(item);
+                    }
+                }else if (taxationType == 3)
+                {
+                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(2));
                     foreach (var item in rst)
                     {
                         products.Add(item);
                     }
                 }
+                else if (taxationType.Equals(5))
+                {
+                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(3));
+                    foreach (var item in rst)
+                    {
+                        products.Add(item);
+                    }
+                }
+                else if (taxationType.Equals(4))
+                {
+                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(4));
+                    foreach (var item in rst)
+                    {
+                        products.Add(item);
+                    }
+                }
+
             }
             AddLog(log);
             return products;
@@ -207,6 +231,23 @@ namespace Escon.SisctNET.Repository.Implementation
                 }
             }
             return products;
+        }
+
+        public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
+        {
+            List<ProductNote> products = new List<ProductNote>();
+
+            foreach (var note in notes)
+            {
+                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false).ToList();
+
+                foreach (var item in itens)
+                {
+                    products.Add(item);
+                }
+            }
+            return products;
+
         }
     }
 }
