@@ -21,6 +21,7 @@
                     <i class="fa fa-trash"></i>
                     Excluir
                 </a>
+                
             }
         </div>
 
@@ -109,8 +110,13 @@
                             </td>
                             <td>
                                 @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-usd pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Dados Pagamentos" })
-                           
+
                                 @Html.ActionLink(" ", "Index", "ProductNote", new { noteId = item.Id }, new { @class = "glyphicon glyphicon-list-alt pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Produtos" })
+                                @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
+                                {
+                                    @Html.ActionLink(" ", "DeleteNote", new { id = item.Id , company = item.CompanyId, year = item.AnoRef, month = item.MesRef},
+                                    new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                }
                             </td>
                         </tr>
                     }

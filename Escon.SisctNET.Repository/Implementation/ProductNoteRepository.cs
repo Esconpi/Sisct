@@ -86,36 +86,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 }
                 else if (taxationType == 2)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(1));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
-                }else if (taxationType == 3)
-                {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(2));
+                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4)));
                     foreach (var item in rst)
                     {
                         products.Add(item);
                     }
                 }
-                else if (taxationType.Equals(5))
-                {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(3));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
-                }
-                else if (taxationType.Equals(4))
-                {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && _.TaxationTypeId.Equals(4));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
-                }
-
             }
             AddLog(log);
             return products;
@@ -207,7 +183,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 int contaChar = n.Length;
                 string substring = ncm.Substring(0, contaChar);
-                if (n.Equals(substring))
+                if (n.Equals(substring) && !contaChar.Equals(0))
                 {
                     NcmIncentivo = true;
                     break;
@@ -247,7 +223,6 @@ namespace Escon.SisctNET.Repository.Implementation
                 }
             }
             return products;
-
         }
     }
 }

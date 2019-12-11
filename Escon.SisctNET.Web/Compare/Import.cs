@@ -108,6 +108,7 @@ namespace Escon.SisctNET.Web.Compare
                                     }
                                 }
                             }
+                            reader.Close();
                         }
                         notes.Add(note);
                     }
@@ -277,6 +278,7 @@ namespace Escon.SisctNET.Web.Compare
                                 }
 
                             }
+                            reader.Close();
                         }
                         ctes.Add(cte);
                     }

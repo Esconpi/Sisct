@@ -763,5 +763,24 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        public IActionResult DeleteNote(int id,int company, string year, string month)
+        {
+            try
+            {
+                var products = _itemService.FindByNotes(id);
+                foreach (var product in products)
+                {
+                    _itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
+                }
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+
+                return RedirectToAction("Index", new { id = company, year = year, month = month });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }
