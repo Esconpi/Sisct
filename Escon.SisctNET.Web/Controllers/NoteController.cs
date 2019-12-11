@@ -475,9 +475,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         };
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
                                     }
-                                    catch (Exception ex)
+                                    catch
                                     {
-                                        return BadRequest(new { erro = 500, message = ex.Message });
+                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
+                                        throw new Exception(message);
                                     }
 
                                     det.Clear();
