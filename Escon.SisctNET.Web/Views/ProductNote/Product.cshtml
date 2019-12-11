@@ -69,14 +69,12 @@
                     @if (Model.Aliqinterna != null)
                     {
                         <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="@Model.Aliqinterna" required />
-                        <span asp-validation-for="Aliqinterna" class="text-danger"></span>
+                        <input type="text" name="AliqInt" class="form-control money" value="@Model.Aliqinterna" required />
                     }
                     else
                     {
                         <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input asp-for="Aliqinterna" name="AliqInt" class="form-control" value="18" required />
-                        <span asp-validation-for="Aliqinterna" class="text-danger"></span>
+                        <input type="text" name="AliqInt" class="form-control money" value="18" required />
                     }
 
                 </div>
@@ -156,15 +154,15 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">MVA</label>
-                        <input type="text" name="mva" class="form-control" value="@Model.Mva" disabled="disabled" />
+                        <input type="text" name="mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Aliquota FECOP</label>
-                        <input type="text" name="fecop" class="form-control" value="@Model.Fecop" disabled="disabled" />
+                        <input type="text" name="fecop" class="form-control money" value="@Model.Fecop" disabled="disabled" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">BCR(%)</label>
-                        <input type="text" name="bcr" class="form-control" value="@Model.BCR" disabled="disabled" />
+                        <input type="text" name="bcr" class="form-control money" value="@Model.BCR" disabled="disabled" />
                     </div>
 
                 </div>
