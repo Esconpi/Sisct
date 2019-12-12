@@ -440,9 +440,6 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcms = result.Select(_ => _.TotalICMS).Sum();
                         double t3 = Convert.ToDouble(totalIcms);
                         ViewBag.TotalICMS = t3.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
-
-
                         ViewBag.TotalICMSSTNota = totalIcms - totalIcmsPauta;                        
                         ViewBag.TotalICMSPauta = totalIcmsPauta;
 
