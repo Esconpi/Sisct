@@ -76,6 +76,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
+
                 if (taxationType == 1)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));

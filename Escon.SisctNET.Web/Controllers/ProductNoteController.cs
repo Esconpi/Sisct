@@ -528,7 +528,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFrete = result.Select(_ => _.Freterateado).Sum();
                     ViewBag.TotalIpi = result.Select(_ => _.Vipi).Sum();
                 }
-                else if (type == 2)
+                else if (type == 3)
                 {
 
                 }

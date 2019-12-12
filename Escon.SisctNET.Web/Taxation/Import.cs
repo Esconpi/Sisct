@@ -18,11 +18,10 @@ namespace Escon.SisctNET.Web.Taxation
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-               
-                foreach(var i in archivesNfes)
+              
+                for (int i = 0; i < archivesNfes.Count(); i++)
                 {
-                    var arquivo = i;
+                    var arquivo = archivesNfes[i];
                     //Task.Factory.StartNew(() => {
                         if (new FileInfo(arquivo).Length != 0)
                         {

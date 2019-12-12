@@ -74,8 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var import = new Import();
 
-               
-
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
