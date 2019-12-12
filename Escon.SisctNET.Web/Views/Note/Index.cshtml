@@ -11,17 +11,15 @@
         <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Notas</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Import" asp-route-id=@ViewBag.Id asp-route-year=@ViewBag.Year asp-route-month=@ViewBag.Month class="btn btn-primary">
-                <i class="fa fa-cloud-download"></i>
-                Importar
-            </a>
+
+            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
+                                   new { onclick = "return confirm('Os arquivos CTes foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
+
             @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
             {
-                <a asp-action="Delete" asp-route-Id=@ViewBag.Id asp-route-year=@ViewBag.Year asp-route-month=@ViewBag.Month class="btn btn-primary">
-                    <i class="fa fa-trash"></i>
-                    Excluir
-                </a>
-                
+                @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
+                                    new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left"})
+
             }
         </div>
 
@@ -112,6 +110,7 @@
                                 @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-usd pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Dados Pagamentos" })
 
                                 @Html.ActionLink(" ", "Index", "ProductNote", new { noteId = item.Id }, new { @class = "glyphicon glyphicon-list-alt pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Produtos" })
+                                
                                 @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
                                 {
                                     @Html.ActionLink(" ", "DeleteNote", new { id = item.Id , company = item.CompanyId, year = item.AnoRef, month = item.MesRef},

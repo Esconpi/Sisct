@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -369,15 +370,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.IcmsStNoteS = Math.Round(icmsStnoteS, 2);
                 ViewBag.IcmsStNoteI = Math.Round(icmsStnoteI, 2);
+                ViewBag.SocialName = company.SocialName;
+                ViewBag.Document = company.Document;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+                ViewBag.TaxationType = typeTaxation;
 
                 if (type == 1)
-                {
-                    ViewBag.TaxationType = typeTaxation;
+                {    
                     ViewBag.Notes = notes;
-                    ViewBag.SocialName = company.SocialName;
-                    ViewBag.Document = company.Document;
-                    ViewBag.Year = year;
-                    ViewBag.Month = month;
+
 
                     ViewBag.Registro = result.Count();
                     ViewBag.ValorProd = result.Select(_ => _.Vprod).Sum();
@@ -436,7 +438,11 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFecopNfe = Math.Round(TotalFecopNfe, 2);
 
                         totalIcms = result.Select(_ => _.TotalICMS).Sum();
-                        ViewBag.TotalICMS = totalIcms;
+                        double t3 = Convert.ToDouble(totalIcms);
+                        ViewBag.TotalICMS = t3.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+
+
                         ViewBag.TotalICMSSTNota = totalIcms - totalIcmsPauta;                        
                         ViewBag.TotalICMSPauta = totalIcmsPauta;
 
@@ -518,19 +524,20 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcms = result.Select(_ => _.IcmsApurado).Sum();
                         ViewBag.TotalICMS = totalIcms;
                         valorDief = totalIcms - icmsSt;
-                        decimal? icmsAp = notes.Select(_ => _.IcmsAp).Sum();
+                        decimal? icmsAp = result.Select(_ => _.Note.IcmsAp).Distinct().Sum();
                         ViewBag.ValorDief = valorDief;
                         ViewBag.IcmsAp = icmsAp;
                         ViewBag.IcmsPagar = valorDief - icmsAp;
                     }
-                    
                     ViewBag.TotalFecop = result.Select(_ => _.TotalFecop).Sum();
                     ViewBag.TotalFrete = result.Select(_ => _.Freterateado).Sum();
                     ViewBag.TotalIpi = result.Select(_ => _.Vipi).Sum();
                 }
                 else if (type == 3)
                 {
-
+                    var prod = result.Where(_ => _.Pautado.Equals(false));
+                    ViewBag.product = prod;
+                    ViewBag.type = type;
                 }
                 return View(result);
 
