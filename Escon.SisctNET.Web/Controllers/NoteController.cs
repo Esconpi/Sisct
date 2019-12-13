@@ -52,6 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Month = month;
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
+                ViewBag.Status = comp.Status;
 
                 var result = _service.FindByNotes(id, year, month);
 
