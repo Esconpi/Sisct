@@ -141,6 +141,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         catch
                         {
+
                             string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
                             throw new Exception(message);
                             

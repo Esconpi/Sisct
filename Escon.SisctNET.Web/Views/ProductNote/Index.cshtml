@@ -64,7 +64,7 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
-                                    
+
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>
@@ -119,3 +119,27 @@
         </div>
         <div class="box-footer"></div>
     </div>
+<script>
+    $("#tblIndex").on("change", ".status", function(){
+            try {
+
+                    $.ajax({
+                    url: '@(Url.Action("UpdateView", "Note"))',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "Id": $(this).prop('id'), "Status": $(this).prop('checked') }),
+                    processData: false,
+                    success: function (data, textStatus, jQxhr) {
+
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                    });
+
+            } catch (e) {
+                console.log(e);
+            }
+        });
+</script>

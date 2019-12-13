@@ -366,7 +366,7 @@ namespace Escon.SisctNET.Web.Taxation
                                         }
                                     }
                                 }
-                            reader.Close();
+                                reader.Close();
                             }
                             notes.Add(nota);
                         }
