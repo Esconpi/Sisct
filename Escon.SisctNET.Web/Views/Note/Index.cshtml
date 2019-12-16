@@ -141,17 +141,35 @@
                         {
                             <tr>
                                 <td>
-                                    @if (item.Crt == "1")
+                                    @if (item.View.Equals(true))
                                     {
-                                        <i class="fa fa-circle" style="color:red;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                        }
                                     }
-                                    else if (item.Crt == "2")
+                                    else
                                     {
-                                        <i class="fa fa-circle" style="color:blue;"></i>
-                                    }
-                                    else if (item.Crt == "3")
-                                    {
-                                        <i class="fa fa-circle" style="color:green;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                            <i class="fa fa-circle" style="color:green;"></i>
+                                        }
                                     }
                                     @Html.DisplayFor(modelItem => item.Nnf)
                                 </td>
