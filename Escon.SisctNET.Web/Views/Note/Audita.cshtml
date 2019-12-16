@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+@{
+    ViewData["Title"] = "Audita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="box box-primary">
+        <div class="box-header">
+            <div style="width:100%; overflow:hidden; padding:20px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <img src="~/img/logo-sisct.png" style="width:25%; height:60%; float:left;" />
+                        <img src="~/img/escon.png" style="width:20%; height:50%; float:right;" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="text-align:center;">
+                <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+            </div>
+
+            <div style="width:100%; overflow:hidden; padding:20px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <strong>Audita</strong>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
+                            <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table" style="font-size:11px">
+
+                <thead>
+                    <tr>
+                        <th>Nota</th>
+                        <th>Data</th>
+                        <th>Fornecedor</th>
+                        <th>Produtos</th>
+                        <th>Valor dos produtos</th>
+                        <th>NCM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Note.Dhemi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Note.Xnome)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
+                        </tr> 
+                    }
+
+                </tbody>
+
+                <thead>
+                    <tr>
+                        <th>Quantidade de Registros</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewBag.Registro</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>

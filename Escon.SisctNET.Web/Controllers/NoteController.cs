@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
 using System.Threading;
 using MySql.Data.MySqlClient;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -659,75 +660,135 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     note.GnreNPaga = Convert.ToDecimal(Request.Form["GnreNPaga"]);
                 }
+                else
+                {
+                    note.GnreNPaga = null;
+                }
 
                 if (Request.Form["IcmsAp"] != "")
                 {
                     note.IcmsAp = Convert.ToDecimal(Request.Form["IcmsAp"]);
+                }
+                else
+                {
+                    note.IcmsAp = null;
                 }
 
                 if (Request.Form["IcmsSt"] != "")
                 {
                     note.IcmsSt = Convert.ToDecimal(Request.Form["IcmsSt"]);
                 }
+                else
+                {
+                    note.IcmsSt = null;
+                }
 
                 if (Request.Form["IcmsCo"] != "")
                 {
                     note.IcmsCo = Convert.ToDecimal(Request.Form["IcmsCo"]);
+                }
+                else
+                {
+                    note.IcmsCo = null;
                 }
 
                 if (Request.Form["IcmsIm"] != "")
                 {
                     note.IcmsIm = Convert.ToDecimal(Request.Form["IcmsIm"]);
                 }
+                else
+                {
+                    note.IcmsIm = null;
+                }
 
                 if (Request.Form["GnreAp"] != "")
                 {
                     note.GnreAp = Convert.ToDecimal(Request.Form["GnreAp"]);
+                }
+                else
+                {
+                    note.GnreAp = null;
                 }
 
                 if (Request.Form["GnreCo"] != "")
                 {
                     note.GnreCo = Convert.ToDecimal(Request.Form["GnreCo"]);
                 }
+                else
+                {
+                    note.GnreCo = null;
+                }
 
                 if (Request.Form["GnreIm"] != "")
                 {
                     note.GnreIm = Convert.ToDecimal(Request.Form["GnreIm"]);
+                }
+                else
+                {
+                    note.GnreIm = null;
                 }
 
                 if (Request.Form["GnreSt"] != "")
                 {
                     note.GnreSt = Convert.ToDecimal(Request.Form["GnreSt"]);
                 }
+                else
+                {
+                    note.GnreSt = null;
+                }
 
                 if (Request.Form["Fecop1"] != "")
                 {
                     note.Fecop1 = Convert.ToDecimal(Request.Form["Fecop1"]);
+                }
+                else
+                {
+                    note.Fecop1 = null;
                 }
 
                 if (Request.Form["Fecop2"] != "")
                 {
                     note.Fecop2 = Convert.ToDecimal(Request.Form["Fecop2"]);
                 }
+                else
+                {
+                    note.Fecop2 = null;
+                }
 
                 if (Request.Form["FecopGnre1"] != "")
                 {
                     note.FecopGnre1 = Convert.ToDecimal(Request.Form["FecopGnre1"]);
+                }
+                else
+                {
+                    note.FecopGnre1 = null;
                 }
 
                 if (Request.Form["FecopGnre2"] != "")
                 {
                     note.FecopGnre2 = Convert.ToDecimal(Request.Form["FecopGnre2"]);
                 }
+                else
+                {
+                    note.FecopGnre2 = null;
+                }
 
                 if (Request.Form["Desconto"] != "")
                 {
                     note.Desconto = Convert.ToDecimal(Request.Form["Desconto"]);
                 }
+                else
+                {
+                    note.Desconto = null;
+                }
 
                 if (Request.Form["Frete"] != "")
                 {
                     note.Frete = Convert.ToDecimal(Request.Form["Frete"]);
+                }
+                else
+                {
+                    note.Frete = null;
                 }
 
 
@@ -741,6 +802,25 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult Audita(int id, string year, string month)
+        {
+            try
+            {
+                var notes = _service.FindByNotes(id, year, month);
+                var products = _itemService.FindByProducts(notes);
+
+                products = products.Where(_ => _.Status.Equals(false)).ToList();
+                ViewBag.Registro = products.Count();
+                return View(products);
+
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { erro = 500, message = e.Message });
+            }
+
         }
 
         public IActionResult Delete(int id, string year, string month)
