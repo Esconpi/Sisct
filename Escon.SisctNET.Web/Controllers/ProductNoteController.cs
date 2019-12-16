@@ -60,6 +60,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Note = rst.Nnf;
                 ViewBag.Fornecedor = rst.Xnome;
                 ViewBag.Valor = rst.Vnf;
+                ViewBag.View = rst.View;
+                ViewBag.NoteId = rst.Id;
 
                 return PartialView(result);
             }
