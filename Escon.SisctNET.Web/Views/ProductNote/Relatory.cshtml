@@ -262,10 +262,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (int i = 0; i < @ViewBag.NotasTaxation.Count; i++)
+                            @foreach (var note in ViewBag.NotasTaxation)
                             {
                                 <tr>
-                                    <td>@ViewBag.NotasTaxation[i].Vnf</td>
+                                    <td>@note.Nnf</td>
                                 </tr>
 
                                 <table>
@@ -275,12 +275,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for (int j = 0; j < @ViewBag.Products.Count; j++)
+                                        @foreach (var item in ViewBag.product)
                                         {
                                             <tr>
-                                                <td>@ViewBag.Products[j].Xnome</td>
+                                                <td>@item.Xprod</td>
                                             </tr>
                                         }
+                                 
                                     </tbody>
                                     
                                 </table>
