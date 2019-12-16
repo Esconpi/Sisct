@@ -456,6 +456,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type == 1)
                 {    
+                    
                     ViewBag.Notes = notes;
 
 
@@ -478,7 +479,9 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal totalIcmsPauta = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(true)).Select(_ => _.TotalICMS).Sum()), 2);
                         decimal totalIcmsMva = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(false)).Select(_ => _.TotalICMS).Sum()), 2);
                         decimal gnreNPaga = Math.Round(Convert.ToDecimal(notes.Select(_ => _.GnreNPaga).Sum()), 2);
-                        ViewBag.TotalGNRE = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal gnrePaga = Math.Round(Convert.ToDecimal(notes.Select(_ => _.GnreSt).Sum()), 2);
+                        ViewBag.TotalGNREnPaga = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalGNREPaga = Convert.ToDouble(gnrePaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         decimal base1 = Math.Round(Convert.ToDecimal(result.Where(_ => _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                         base1 += Math.Round(Convert.ToDecimal(result.Where(_ => _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -511,6 +514,18 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.fecopNfe2 = Convert.ToDouble(Math.Round(baseNfe2Normal + baseNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.valorNfe2 = Convert.ToDouble(Math.Round(valorNfe2Normal + valorNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                        decimal gnreNPagaFecop = Math.Round(Convert.ToDecimal(notes.Select(_ => _.GnreFecop).Sum()), 2);
+                        ViewBag.GNREnPagaFecop = Convert.ToDouble(gnreNPagaFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        decimal gnrePagaFecop1 = Math.Round(Convert.ToDecimal(notes.Select(_ => _.FecopGnre1).Sum()), 2);
+                        ViewBag.GNREPagaFecop1 = Convert.ToDouble(gnrePagaFecop1).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        decimal gnrePagaFecop2 = Math.Round(Convert.ToDecimal(notes.Select(_ => _.FecopGnre2).Sum()), 2);
+                        ViewBag.GNREPagaFecop2 = Convert.ToDouble(gnrePagaFecop2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        decimal totalGnreFecop = gnrePagaFecop1 + gnrePagaFecop2;
+                        ViewBag.TotalGnreFecop = Convert.ToDouble(totalGnreFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                         decimal TotalFecopCalc = valorbase1 + valorbase2;
                         ViewBag.TotalFecopCalculada = Convert.ToDouble(Math.Round(TotalFecopCalc, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         decimal TotalFecopNfe = valorNfe1Normal + valorNfe1Ret + valorNfe2Normal + valorNfe2Ret;
@@ -525,7 +540,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalICMSMva = Convert.ToDouble(totalIcmsMva).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         // Valores da dief resumo
-                        decimal diefSt = Convert.ToDecimal(totalIcms - icmsSt + gnreNPaga);
+                        decimal diefSt = Convert.ToDecimal(totalIcms - icmsSt + gnreNPaga - gnrePaga);
                         ViewBag.ValorDief = Convert.ToDouble(diefSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         decimal icmsStnota = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsSt).Sum()), 2);
                         ViewBag.IcmsSt = Convert.ToDouble(icmsStnota).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -533,10 +548,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                         // Valores da dief fecop
                         ViewBag.DifBase1 = Convert.ToDouble(Math.Round(base1 - baseNfe1Normal - baseNfe1Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DifValor1 = Convert.ToDouble(Math.Round(valorbase1 - valorNfe1Normal - valorNfe1Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal difvalor1 = valorbase1 - valorNfe1Normal - valorNfe1Ret - gnrePagaFecop1;
+                        ViewBag.DifValor1 = Convert.ToDouble(Math.Round(difvalor1, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.DifBase2 = Convert.ToDouble(Math.Round(base2 - baseNfe2Normal - baseNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DifValor2 = Convert.ToDouble(Math.Round(valorbase2 - valorNfe2Normal - valorNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DifTotal = Convert.ToDouble(Math.Round(TotalFecopCalc - TotalFecopNfe - (base1fecop + base2fecop), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal difvalor2 = valorbase2 - valorNfe2Normal - valorNfe2Ret - gnrePagaFecop2;
+                        ViewBag.DifValor2 = Convert.ToDouble(Math.Round(difvalor2, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal diftotal = difvalor1 + difvalor2;
+                        ViewBag.DifTotal = Convert.ToDouble(Math.Round(diftotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         ViewBag.Incetive = company.Incentive;
 
@@ -552,12 +570,10 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal impostoIcms = Convert.ToDecimal(baseIcms * (company.Icms / 100));
                             ViewBag.ImpostoIcms = Convert.ToDouble(Math.Round(impostoIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
-                            ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            
+                            ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");                         
                            
                             var productsNormal = _service.FindByNormal(notes);
-                            decimal ? totalIcmsNormal = productsNormal.Where(_ => _.TaxationType.Type.Equals("ST")).Select(_ => _.TotalICMS).Sum();
-    
+                            decimal ? totalIcmsNormal = productsNormal.Where(_ => _.TaxationType.Type.Equals("ST")).Select(_ => _.TotalICMS).Sum();    
 
                             diefSt = Convert.ToDecimal(totalIcmsNormal - icmsSt + gnreNPaga);
                             ViewBag.ValorDief = Convert.ToDouble(diefSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -596,6 +612,12 @@ namespace Escon.SisctNET.Web.Controllers
                             var notesFora = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);*/
                         }
+
+                        decimal totalfecop1 = difvalor1 - base1fecop;
+                        ViewBag.TotalFecop1 = Convert.ToDouble(Math.Round(totalfecop1, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal totalfecop2 = difvalor2 - base2fecop;
+                        ViewBag.TotalFecop2 = Convert.ToDouble(Math.Round(totalfecop2, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalFecopCalculada = Convert.ToDouble(Math.Round(totalfecop1 + totalfecop2, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     }
                     else if (typeTaxation >= 2 && typeTaxation <= 5)
                     {

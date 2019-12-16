@@ -311,7 +311,7 @@
                                 <th>Total</th>
                                 <th>Valor dos Produtos</th>
                                 <th>Frete</th>
-                                <th>IPI
+                                <th>IPI</th>
                                 <th>Total da Base de Cálculo</th>
                                 <th>ICMS ST NFe</th>
                                 <th>Total ICMS</th>
@@ -379,6 +379,15 @@
 
                                                 </tr>
                                             }
+
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">(-)GNRE Paga R$</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREPaga</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREnPaga</td>
+                                            </tr>
 
                                         }
                                         else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
@@ -467,15 +476,15 @@
                                                 <td class="col-lg-1 col-sm-1" style="text-align:center;"></td>
                                                 <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
                                                 <td class="col-lg-1 col-sm-1" style="text-align:center;"></td>
-                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.GNREnPagaFecop</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) GNRE paga R$</td>
                                                 <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.GNREPagaFecop1</td>
                                                 <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
-                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.GNREPagaFecop1</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalGnreFecop</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP ST NFe</td>
@@ -494,7 +503,7 @@
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
                                             </tr>
                                             <tr>
-                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago R$</th>
+                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago - Posto Fiscal R$</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
                                                 <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base1fecop</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
@@ -504,10 +513,10 @@
                                             <tr style="background-color:lightgray;">
                                                 <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) FECOP a pagar R$</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop1</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
-                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop2</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopCalculada</th>
                                             </tr>
                                         </table>
                                         <table class="col-lg-12 col-md-12 col-sm-12">
