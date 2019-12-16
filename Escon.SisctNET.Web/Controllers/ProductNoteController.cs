@@ -664,9 +664,11 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal? basefunef = totalIcms - impostoIcms;
                             ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.Funef = company.Funef;
-                            ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef * (company.Funef / 100)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            decimal taxaFunef = Convert.ToDecimal(basefunef * (company.Funef / 100));
+                            ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(taxaFunef, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            
+                            decimal totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
+                            ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo,2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                             /*var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
                             var prodructsCfopIn = _service.FindByCfopNotesIn(company.Id, notesDentro);
