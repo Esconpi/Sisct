@@ -59,5 +59,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByPrice(id, log);
         }
+
+        public Product FindByProduct(string code, int grupoId, Log log = null)
+        {
+            return _repository.FindByProduct(code, grupoId);
+        }
     }
 }

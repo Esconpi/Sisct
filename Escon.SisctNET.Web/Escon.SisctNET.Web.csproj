@@ -27,6 +27,7 @@
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Atos\" />
     <Folder Include="wwwroot\Uploads\Speds\" />
   </ItemGroup>
 

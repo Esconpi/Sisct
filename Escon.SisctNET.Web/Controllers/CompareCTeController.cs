@@ -67,31 +67,15 @@ namespace Escon.SisctNET.Web.Controllers
                 string caminhoDestinoArquivoOriginal = caminhoDestinoArquivo + nomeArquivo;
 
                 string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivo);
-                if (paths_upload_sped.Count() > 0)
+           
+                if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
                 {
-                    bool existe = false;
-                    foreach (var item in paths_upload_sped)
-                    {
-                        if (item == caminhoDestinoArquivoOriginal)
-                        {
-                            existe = true;
-                        }
-                    }
-                    if (existe == false)
-                    {
-                        using (var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create))
-                        {
-                            await arquivo.CopyToAsync(stream);
-                        }
-                    }
+                    System.IO.File.Delete(caminhoDestinoArquivoOriginal);
+
                 }
-                else
-                {
-                    using (var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create))
-                    {
-                        await arquivo.CopyToAsync(stream);
-                    }
-                }
+                var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
+                await arquivo.CopyToAsync(stream);
+                stream.Close();
 
                 sped = import.SpedCte(caminhoDestinoArquivoOriginal);
 
