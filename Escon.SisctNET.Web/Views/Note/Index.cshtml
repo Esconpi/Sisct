@@ -15,12 +15,11 @@
             @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
                                    new { onclick = "return confirm('Os arquivos CTes foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
-            @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
-            {
-                @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
-                                    new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left"})
 
-            }
+            @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
+                                new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left"})
+
+            
         </div>
 
         <div style="width:100%; text-align:center;">
@@ -113,11 +112,9 @@
 
                                     @Html.ActionLink(" ", "Index", "ProductNote", new { noteId = item.Id }, new { @class = "glyphicon glyphicon-list-alt pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Produtos" })
 
-                                    @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1) || SessionManager.GetPersonInSession().Profile.Id.Equals(4))
-                                    {
-                                        @Html.ActionLink(" ", "DeleteNote", new { id = item.Id, company = item.CompanyId, year = item.AnoRef, month = item.MesRef },
-                                        new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                                    }
+                                    @Html.ActionLink(" ", "DeleteNote", new { id = item.Id, company = item.CompanyId, year = item.AnoRef, month = item.MesRef },
+                                    new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                    
                                 </td>
                             </tr>
                         }

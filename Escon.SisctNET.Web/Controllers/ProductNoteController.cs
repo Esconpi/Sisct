@@ -371,6 +371,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
+                    decimal? bcr = null;
+                    if (!bcrForm.Equals(null))
+                    {
+                        bcr = Convert.ToDecimal(bcrForm);
+                    }
                     var ncm = _ncmService.FindByCode(rst.Ncm);
 
                     var taxation = new Model.Taxation
@@ -382,7 +387,7 @@ namespace Escon.SisctNET.Web.Controllers
                         AliqInterna = Convert.ToDecimal(AliqInt),
                         Diferencial = dif,
                         MVA = entity.Mva,
-                        BCR = Convert.ToDecimal(bcrForm),
+                        BCR = bcr,
                         Fecop = entity.Fecop,
                         DateStart = Convert.ToDateTime(dateStart),
                         DateEnd = null,
@@ -394,7 +399,7 @@ namespace Escon.SisctNET.Web.Controllers
                         Uf = note.Uf
 
                     };
-                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    //_taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
                     
                 }
 

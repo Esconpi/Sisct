@@ -104,6 +104,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Fecop Gnre paga 2%")]
         public decimal? FecopGnre2 { get; set; }
 
+        [Display(Name = "Gnre não Paga Fecop")]
+        public decimal? GnreFecop { get; set; }
+
         [Display(Name = "Desconto")]
         public decimal? Desconto { get; set; }
 
@@ -112,6 +115,8 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tributada")]
         public bool Status { get; set; }
+
+        public bool View { get; set; }
 
         public int ? IdDest { get; set; }
     }

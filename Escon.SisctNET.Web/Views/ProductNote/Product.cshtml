@@ -10,7 +10,6 @@
         
         <a asp-controller="ProductNote" asp-action="Index" asp-route-noteId="@ViewBag.NoteId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Tributação</strong></h3>
-
     </div>
     <div class="box-body">
         <div class="col-lg-12">
@@ -144,7 +143,8 @@
                         <input asp-for="Vipi" class="form-control money" disabled />
                         <span asp-validation-for="Vipi" class="text-danger"></span>
                     </div>
-                  
+
+                    
                 </div>
 
                 <div class="col-lg-12">
@@ -164,13 +164,7 @@
                         <label class="control-label">BCR(%)</label>
                         <input type="text" name="bcr" class="form-control money" value="@Model.BCR" disabled="disabled" />
                     </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">Produto</label>
-                        <select class="form-control selectoption" name="produto">
-                            <option value="1" selected>Normal</option>
-                            <option value="2">Especial</option>
-                        </select>
-                    </div>
+
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <input type="submit" value="Tributar" onclick="Enviar()" class="btn btn-success pull-right" />
