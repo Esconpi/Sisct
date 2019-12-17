@@ -105,7 +105,7 @@ namespace Escon.SisctNET.Model
         public decimal? FecopGnre2 { get; set; }
 
         [Display(Name = "Gnre não Paga Fecop")]
-        public decimal? GnreNPagaFecop { get; set; }
+        public decimal? GnreFecop { get; set; }
 
         [Display(Name = "Desconto")]
         public decimal? Desconto { get; set; }

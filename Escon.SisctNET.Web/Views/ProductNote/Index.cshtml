@@ -11,7 +11,6 @@
             <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Produtos</strong></h3>
         </div>
-        @Html.CheckBoxFor(model => model.NoteId, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @disabled = true })
         <div class="box-body">
             <div style="width:100%; padding:20px;">
                 <table class="table table-striped table-bordered" style="width:100%">
