@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
 using System.Threading;
+using MySql.Data.MySqlClient;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -70,6 +71,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                List<string> LinhasNota = new List<string>();
+
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
@@ -116,6 +119,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         try
                         {
+                            LinhasNota.Add(string.Format("('{}')", MySqlHelper.EscapeString("")));
                             var note = new Model.Note
                             {
                                 CompanyId = id,
