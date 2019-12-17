@@ -22,9 +22,17 @@ namespace Escon.SisctNET.Web.Ato
                     string[] linha = line.Split(';');
                     foreach (var l in linha)
                     {
-                        product.Add(l);
+                        if (!l.Equals(""))
+                        {
+                            product.Add(l);
+                        }
+                        
                     }
-                    products.Add(product);
+                    if (product.Count > 0)
+                    {
+                        products.Add(product);
+                    }
+                    
                 }
             }
             catch (Exception ex)

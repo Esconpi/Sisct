@@ -45,10 +45,5 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref group);
             set => group = value;
         }
-
-        public static implicit operator Product(Product v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -119,7 +119,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         try
                         {
-                            LinhasNota.Add(string.Format("('{}')", MySqlHelper.EscapeString("")));
+                            //LinhasNota.Add(string.Format("('{}')", MySqlHelper.EscapeString("")));
                             var note = new Model.Note
                             {
                                 CompanyId = id,

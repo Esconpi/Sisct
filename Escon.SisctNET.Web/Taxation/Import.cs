@@ -22,8 +22,9 @@ namespace Escon.SisctNET.Web.Taxation
                 for (int i = 0; i < archivesNfes.Count(); i++)
                 {
                     var arquivo = archivesNfes[i];
+                        
                     //Task.Factory.StartNew(() => {
-                        if (new FileInfo(arquivo).Length != 0)
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
                         {
                             Dictionary<string, string> infNFe = new Dictionary<string, string>();
                             Dictionary<string, string> ide = new Dictionary<string, string>();
@@ -94,6 +95,7 @@ namespace Escon.SisctNET.Web.Taxation
                                                 while (reader.Name.ToString() != "ICMSTot")
                                                 {
                                                     total.Add(reader.Name, reader.ReadString());
+                                                    
                                                     reader.Read();
 
                                                 }
@@ -111,7 +113,6 @@ namespace Escon.SisctNET.Web.Taxation
                                 decimal base_calc = 0;
                                 var code = nota[2]["CNPJ"];
                                 string nCT = "";
-
                                 int nItem = 1;
 
                                 while (reader.Read())
@@ -122,7 +123,7 @@ namespace Escon.SisctNET.Web.Taxation
                                         {
                                             case "prod":
 
-                                                if (base_calc > 0)
+                                                if (nItem > 1)
                                                 {
                                                     Dictionary<string, string> baseCalc = new Dictionary<string, string>();
                                                     baseCalc.Add("baseCalc", base_calc.ToString());
@@ -132,7 +133,7 @@ namespace Escon.SisctNET.Web.Taxation
                                                 }
                                                 Dictionary<string, string> prod = new Dictionary<string, string>();
                                                 reader.Read();
-                                                while (reader.Name.ToString() != "ICMS")
+                                                while (reader.Name.ToString() != "prod")
                                                 {
                                                     if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
                                                         reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
@@ -150,6 +151,7 @@ namespace Escon.SisctNET.Web.Taxation
                                                     }
 
                                                     reader.Read();
+
                                                 }
 
                                                 decimal valor_carga = 0;
