@@ -512,7 +512,8 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.fecopNfe2 = Convert.ToDouble(Math.Round(baseNfe2Normal + baseNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.valorNfe2 = Convert.ToDouble(Math.Round(valorNfe2Normal + valorNfe2Ret, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-
+                        decimal gnreNPagaFecop = Math.Round(Convert.ToDecimal(notes.Select(_ => _.GnreFecop).Sum()), 2);
+                        ViewBag.GNREnPagaFecop = Convert.ToDouble(gnreNPagaFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         decimal TotalFecopCalc = valorbase1 + valorbase2;
                         ViewBag.TotalFecopCalculada = Convert.ToDouble(Math.Round(TotalFecopCalc, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
