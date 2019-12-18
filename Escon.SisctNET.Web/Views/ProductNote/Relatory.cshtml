@@ -302,7 +302,7 @@
                                 <th>Total</th>
                                 <th>Valor dos Produtos</th>
                                 <th>Frete</th>
-                                <th>IPI
+                                <th>IPI</th>
                                 <th>Total da Base de Cálculo</th>
                                 <th>ICMS ST NFe</th>
                                 <th>Total ICMS</th>
@@ -369,11 +369,11 @@
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">(-)GNRE Paga R$</td>
-                                                <td class="col-lg-2 col-sm-2"></td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREPaga</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
-                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNRE</td>
+                                                <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREnPaga</td>
                                             </tr>
                                         }
                                         else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
