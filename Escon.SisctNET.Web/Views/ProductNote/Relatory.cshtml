@@ -29,6 +29,10 @@
                             {
                                 <strong>Produtos sem preço de referência</strong>
                             }
+                            @if (ViewBag.type == 4)
+                            {
+                                <strong>Agrupado</strong>
+                            }
                             @if (@ViewBag.TaxationType == 1)
                             {
                                 <strong>Substituição Tributária por MVA</strong>
@@ -52,7 +56,8 @@
                             else if (@ViewBag.TaxationType == 6)
                             {
                                 <strong>Isento</strong>
-                            }else if (@ViewBag.TaxationType == 7)
+                            }
+                            else if (@ViewBag.TaxationType == 7)
                             {
                                 <strong>Antecipação Total</strong>
                             }
@@ -69,7 +74,163 @@
         <div class="box-body">
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
-                    @if (@ViewBag.type == 3)
+                    @if (ViewBag.type == 1)
+                    {
+                        @if (@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7)
+                        {
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nota</th>
+                                    <th>Produto</th>
+                                    <th>Dia/Mês</th>
+                                    <th>Valor da Nota</th>
+                                    <th>Valor dos Produtos</th>
+                                    <th>Valor IPI</th>
+                                    <th>Frete Nº</th>
+                                    <th>Valor Frete</th>
+                                    <th>Total BC</th>
+                                    <th>MVA(%)</th>
+                                    <th>Base de Cálculo ICMS</th>
+                                    @if (@ViewBag.TaxationType == 1)
+                                    {
+                                        <th>BCR(%)</th>
+                                        <th>Base de Cálculo Reduzida</th>
+                                    }
+                                    <th>Aliq Int(%)</th>
+                                    <th>Valor imp AC</th>
+                                    <th>Nfe</th>
+                                    <th>CTe</th>
+                                    <th>ICMS ST NFe</th>
+                                    <th>Total ICMS</th>
+                                    <th>Total Fecop</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @if (item.Note.Iest == "")
+                                        {
+                                            <td><strong>S</strong></td>
+                                        }
+                                        else
+                                        {
+                                            <td><strong>I</strong></td>
+                                        }
+
+                                        <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Note.Vnf)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Mva)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Valoragregado)</td>
+                                        @if (@ViewBag.TaxationType == 1)
+                                        {
+                                            <td>@Html.DisplayFor(modelItem => item.BCR)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ValorBCR)</td>
+                                        }
+                                        <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ValorAC)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vicms)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IcmsCTe)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TotalICMS)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TotalFecop)</td>
+                                        @if (item.Pautado == true)
+                                        {
+                                            <td>P</td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                        else if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+                        {
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nota</th>
+                                    <th>Produto</th>
+                                    <th>UF</th>
+                                    <th>Dia/Mês</th>
+                                    <th>Valor da Nota</th>
+                                    <th>Valor dos Produtos</th>
+                                    <th>Frete NFe</th>
+                                    <th>Frete Nº</th>
+                                    <th>Frete CTe</th>
+                                    <th>Valor IPI</th>
+                                    <th>Base de Cálculo ICMS</th>
+                                    <th>Aliq Intra(%)</th>
+                                    <th>Aliq Inter(%)</th>
+                                    <th>Dif</th>
+                                    <th>ICMS Apurado</th>
+                                    <th>ICMS ST NFe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @if (item.Note.Iest == "")
+                                        {
+                                            <td><strong>S</strong></td>
+                                        }
+                                        else
+                                        {
+                                            <td><strong>I</strong></td>
+                                        }
+                                        <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
+                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Note.Vnf)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vfrete)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Picms)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        }
+                        else if (@ViewBag.TaxationType == 6)
+                        {
+                            <thead>
+                                <tr>
+                                    <th>Nota</th>
+                                    <th>Produtos</th>
+                                    <th>NCM</th>
+                                    <th>Valor dos produtos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        }
+                    }
+                    else if (ViewBag.type == 3)
                     {
                         <thead>
                             <tr>
@@ -82,7 +243,7 @@
                         </thead>
                         <tbody>
                             @foreach (var item in ViewBag.product)
-                            { 
+                            {
                                 <tr>
                                     <td>@item.Cprod</td>
                                     <td>@item.Xprod</td>
@@ -93,157 +254,66 @@
                             }
                         </tbody>
                     }
-                    @if (@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7)
+                    else if (ViewBag.type == 4)
                     {
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @ViewBag.NotasTaxation.Count; i++)
+                            {
+                                <tr>
+                                    <td>@ViewBag.NotasTaxation[i].Vnf</td>
+                                </tr>
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int j = 0; j < @ViewBag.Products.Count; j++)
+                                        {
+                                            <tr>
+                                                <td>@ViewBag.Products[j].Xnome</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    
+                                </table>
+                               
+                             }
+                        </tbody>
+                    }
+
+
+                    @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
+                    {
+
+
+
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nota</th>
-                                <th>Produto</th>
-                                <th>Dia/Mês</th>
-                                <th>Valor da Nota</th>
-                                <th>Valor dos Produtos</th>
-                                <th>Valor IPI</th>
-                                <th>Frete Nº</th>
-                                <th>Valor Frete</th>
-                                <th>Total BC</th>
-                                <th>MVA(%)</th>
-                                <th>Base de Cálculo ICMS</th>
-                                @if (@ViewBag.TaxationType == 1)
-                                {
-                                    <th>BCR(%)</th>
-                                    <th>Base de Cálculo Reduzida</th>
-                                }
-                                <th>Aliq Int(%)</th>
-                                <th>Valor imp AC</th>
-                                <th>Nfe</th>
-                                <th>CTe</th>
-                                <th>ICMS ST NFe</th>
-                                <th>Total ICMS</th>
-                                <th>Total Fecop</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach (var item in Model)
+                        @for (int j = 0; j < ViewBag.Products.Count; j++)
+                        {
+                            @if (ViewBag.NotasTaxation[i].Id.Equals(ViewBag.Products[j].NoteId))
                             {
-                                <tr>
-                                    @if (item.Note.Iest == "")
-                                    {
-                                        <td><strong>S</strong></td>
-                                    }
-                                    else
-                                    {
-                                        <td><strong>I</strong></td>
-                                    }
 
-                                    <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
-                                    <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Note.Vnf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Mva)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Valoragregado)</td>
-                                    @if (@ViewBag.TaxationType == 1)
-                                    {
-                                        <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.ValorBCR)</td>
-                                    }
-                                    <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.ValorAC)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vicms)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.IcmsCTe)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.TotalICMS)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.TotalFecop)</td>
-                                    @if (item.Pautado == true)
-                                    {
-                                        <td>P</td>
-                                    }
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
                             }
-                        </tbody>
-                    }@if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
-                    {
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nota</th>
-                                <th>Produto</th>
-                                <th>UF</th>
-                                <th>Dia/Mês</th>
-                                <th>Valor da Nota</th>
-                                <th>Valor dos Produtos</th>
-                                <th>Frete NFe</th>
-                                <th>Frete Nº</th>
-                                <th>Frete CTe</th>
-                                <th>Valor IPI</th>
-                                <th>Base de Cálculo ICMS</th>
-                                <th>Aliq Intra(%)</th>
-                                <th>Aliq Inter(%)</th>
-                                <th>Dif</th>
-                                <th>ICMS Apurado</th>
-                                <th>ICMS ST NFe</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {  
-                                <tr>
-                                    @if (item.Note.Iest == "")
-                                    {
-                                        <td><strong>S</strong></td>
-                                    }
-                                    else
-                                    {
-                                        <td><strong>I</strong></td>
-                                    }
-                                    <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
-                                    <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Note.Vnf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vfrete)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Picms)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
-                                </tr>                                  
-                            }
-                        </tbody>
+                        }
                     }
-                    @if (@ViewBag.TaxationType == 6)
-                    {
-                        <thead>
-                            <tr>
-                                <th>Nota</th>
-                                <th>Produtos</th>
-                                <th>NCM</th>
-                                <th>Valor dos produtos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
-                                </tr>
-                            }
 
-                        </tbody>
-                    }
                 </table>
             </div>
             <div style="width:100%; overflow:hidden; padding:20px;">
@@ -718,21 +788,21 @@
                             <tr>
                                 <td><strong>ICMS</strong></td>
                                 <th> @ViewBag.ImpostoIcms</th>
-                                <td>q2876y</td>
+                                <td>113000</td>
                             </tr>
                             <tr>
                                 <td><strong>Fecop</strong></td>
                                 <th>@ViewBag.ImpostoFecop</th>
-                                <td>q2876y</td>
+                                <td>113387</td>
                             </tr>
                             <tr>
                                 <td><strong>Funef</strong></td>
                                 <th>@ViewBag.TaxaFunef</th>
-                                <td>q2876y</td>
+                                <td>122100</td>
                             </tr>
                             <tr>
                                 <td><strong>Total</strong></td>
-                                <th>5685685</th>
+                                <th>@ViewBag.TotalImpostoIncentivo</th>
                             </tr>
                         </tbody>
                     </table>

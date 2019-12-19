@@ -12,7 +12,7 @@
         <h3 class="box-title"><strong> Notas</strong></h3>
         <div class="btn-group pull-right">
             
-            @Html.ActionLink("Auditar", "Audita", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month }, new {@class = "btn btn-primary fa fa-cloud-download pull-left" })
+            @Html.ActionLink(" Auditar", "Audita", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month }, new {@class = "btn btn-primary fa fa-cloud-download pull-left" })
 
 
             @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
@@ -41,6 +41,12 @@
             </div>
             <div>
                 <i class="fa fa-circle" style="color:green;"></i> Regime Normal
+            </div>
+        </div>
+        <div class="btn-group pull-right" style="padding:20px;">
+
+            <div style="color:blueviolet;">
+                Notas com cfop interno para UF de fora
             </div>
         </div>
         <div style="width:100%; padding:20px;">
@@ -105,7 +111,7 @@
                                         }
                                         else if (item.Crt == "3")
                                         {
-                                           <i class="fa fa-circle" style="color:green;"></i>
+                                            <i class="fa fa-circle" style="color:green;"></i>
                                         }
                                     }
 
@@ -136,7 +142,7 @@
 
                                     @Html.ActionLink(" ", "DeleteNote", new { id = item.Id, company = item.CompanyId, year = item.AnoRef, month = item.MesRef },
                                     new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                                    
+
                                 </td>
                             </tr>
                         }
