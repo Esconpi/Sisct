@@ -358,15 +358,6 @@
                                                     <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
 
                                                     <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSPauta</td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">(-)GNRE Paga R$</td>
-                                                    <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREPaga</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
-                                                    <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREnPaga</td>
                                                 </tr>
                                             }
 
@@ -374,17 +365,33 @@
                                         else if (ViewBag.TaxationType >= 2 && ViewBag.TaxationType <= 5)
                                         {
                                             <tr>
-                                                <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Antecipação Parcial</td>
+                                                @if (@ViewBag.TaxationType == 2)
+                                                {
+                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Antecipação Parcial</td>
+                                                }
+                                                else if (@ViewBag.TaxationType == 3)
+                                                {
+                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Consumo</td>
+                                                }
+                                                else if (@ViewBag.TaxationType == 4)
+                                                {
+                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Consumo p/ Revenda</td>
+                                                }
+                                                else if (@ViewBag.TaxationType == 5)
+                                                {
+                                                    <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Imobilizado</td>
+                                                }
+
                                                 <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMS</td>
                                             </tr>
                                         }
                                         <tr>
                                             <td class="col-lg-10 col-sm-10" style="text-align:right">(-)GNRE Paga R$</td>
-                                            <td class="col-lg-2 col-sm-2"></td>
+                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREPaga</td>
                                         </tr>
                                         <tr>
                                             <td class="col-lg-10 col-sm-10" style="text-align:right">(+)GNRE não Paga R$</td>
-                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNRE</td>
+                                            <td class="col-lg-2 col-sm-2">@ViewBag.TotalGNREnPaga</td>
                                         </tr>
                                         <tr>
                                             <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS ST NFe R$</td>
@@ -396,7 +403,7 @@
                                         </tr>
                                         <tr>
                                             <td class="col-lg-10 col-sm-10" style="text-align:right">(-)ICMS pago - Posto Fiscal R$</td>
-                                            @if (ViewBag.TaxationType == 1)
+                                            @if (ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7)
                                             {
                                                 <td class="col-lg-2 col-sm-2">@ViewBag.IcmsSt</td>
                                             }
@@ -462,10 +469,10 @@
                                             <tr>
                                                 <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) GNRE paga R$</td>
                                                 <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.GNREPagaFecop1</td>
                                                 <td class="col-lg-2 col-sm-2" style="text-align:center;"></td>
-                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">0,00</td>
-                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">0,00</td>
+                                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.GNREPagaFecop1</td>
+                                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalGnreFecop</td>
                                             </tr>
                                             <tr>
                                                 <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP ST NFe</td>
@@ -484,7 +491,7 @@
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
                                             </tr>
                                             <tr>
-                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago R$</th>
+                                                <th class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP pago - Posto Fiscal R$</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
                                                 <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.base1fecop</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
@@ -494,10 +501,10 @@
                                             <tr style="background-color:lightgray;">
                                                 <th class="col-lg-4 col-sm-4" style="text-align:right;">(=) FECOP a pagar R$</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop1</th>
                                                 <th class="col-lg-2 col-sm-2" style="text-align:center;"></th>
-                                                <th class="col-lg-1 col-sm-1" style="text-align:center;"></th>
-                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.DifTotal</th>
+                                                <th class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop2</th>
+                                                <th class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFinalFecopCalculada</th>
                                             </tr>
                                         </table>
                                         <table class="col-lg-12 col-md-12 col-sm-12">
@@ -710,17 +717,17 @@
                         <tbody>
                             <tr>
                                 <td><strong>ICMS</strong></td>
-                                <th>5685685</th>
+                                <th> @ViewBag.ImpostoIcms</th>
                                 <td>q2876y</td>
                             </tr>
                             <tr>
                                 <td><strong>Fecop</strong></td>
-                                <th>5685685</th>
+                                <th>@ViewBag.ImpostoFecop</th>
                                 <td>q2876y</td>
                             </tr>
                             <tr>
                                 <td><strong>Funef</strong></td>
-                                <th>5685685</th>
+                                <th>@ViewBag.TaxaFunef</th>
                                 <td>q2876y</td>
                             </tr>
                             <tr>

@@ -40,12 +40,13 @@ namespace Escon.SisctNET.Web.Controllers
                 var year = Request.Form["year"];
                 var id = Request.Form["id"];
                 var month = Request.Form["month"];
+                var ordem = Request.Form["ordem"];
                 var company = _companyService.FindById(Convert.ToInt32(id) , null);
                 string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
                 List<string> sped = new List<string>();
-
+                
 
                 notes = import.Nfe(directoryNfe);
 
@@ -78,44 +79,70 @@ namespace Escon.SisctNET.Web.Controllers
                 sped = import.SpedNfe(caminhoDestinoArquivoOriginal);
 
                 List<List<Dictionary<string, string>>> notas = new List<List<Dictionary<string, string>>>();
-
-                foreach (var note in notes)
+                List<string> notas_sped = new List<string>();
+                if (ordem.Equals("xml"))
                 {
-                    for (int i = 0; i < note.Count; i++)
+                    foreach (var note in notes)
                     {
-                        if (note[i].ContainsKey("CNPJ"))
+                        for (int i = 0; i < note.Count; i++)
                         {
-                            if (note[i]["CNPJ"] != company.Document)
+                            if (note[i].ContainsKey("CNPJ"))
                             {
-                                for (int j = 0; j < note.Count; j++)
+                                if (note[i]["CNPJ"] != company.Document)
                                 {
-                                    if (note[j].ContainsKey("chave"))
+                                    for (int j = 0; j < note.Count; j++)
                                     {
-                                        string nota_xml = note[j]["chave"];
-
-                                        bool nota_encontrada = false;
-
-                                        for (int k = 0; k < sped.Count(); k++)
+                                        if (note[j].ContainsKey("chave"))
                                         {
-                                            if (nota_xml == sped[k])
+                                            string nota_xml = note[j]["chave"];
+
+                                            bool nota_encontrada = false;
+
+                                            for (int k = 0; k < sped.Count(); k++)
                                             {
-                                                nota_encontrada = true;
-                                                break;
+                                                if (nota_xml == sped[k])
+                                                {
+                                                    nota_encontrada = true;
+                                                    break;
+                                                }
                                             }
-                                        }
-                                        if (nota_encontrada == false)
-                                        {
-                                            notas.Add(note);
+                                            if (nota_encontrada == false)
+                                            {
+                                                notas.Add(note);
+                                            }
                                         }
                                     }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
+                    ViewBag.ordem = "1";
                 }
-                
+                else if (ordem.Equals("sped"))
+                {
+                    foreach(var note in sped)
+                    {
+                        bool nota_encontrada = false;
+                        foreach (var notaXml in notes)
+                        {
+                            string nota_xml = notaXml[0]["chave"];
+                            if (note.Equals(nota_xml))
+                            {
+                                nota_encontrada = true;
+                                break;
+                            }
+                        }
+                        if (nota_encontrada.Equals(false))
+                        {
+                            notas_sped.Add(note);
+                        }
+                    }
+
+                    ViewBag.ordem = "2";
+                }
                 ViewBag.Notas = notas;
+                ViewBag.notas_sped = notas_sped;
                 ViewBag.Document = company.Document;
                 ViewBag.SocialName = company.SocialName;
                 ViewBag.Ano = year;
