@@ -11,15 +11,18 @@
         <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Notas</strong></h3>
         <div class="btn-group pull-right">
+            
+            @Html.ActionLink("Auditar", "Audita", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month }, new {@class = "btn btn-primary fa fa-cloud-download pull-left" })
+
 
             @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
                                    new { onclick = "return confirm('Os arquivos CTes foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
 
             @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
-                                new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left"})
+                                new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left" })
 
-            
+
         </div>
 
         <div style="width:100%; text-align:center;">
@@ -75,18 +78,37 @@
                         {
                             <tr style="color:blueviolet;">
                                 <td>
-                                    @if (item.Crt == "1")
+                                    @if (item.View.Equals(true))
                                     {
-                                        <i class="fa fa-circle" style="color:red;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                        }
                                     }
-                                    else if (item.Crt == "2")
+                                    else
                                     {
-                                        <i class="fa fa-circle" style="color:blue;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                           <i class="fa fa-circle" style="color:green;"></i>
+                                        }
                                     }
-                                    else if (item.Crt == "3")
-                                    {
-                                        <i class="fa fa-circle" style="color:green;"></i>
-                                    }
+
                                     @Html.DisplayFor(modelItem => item.Nnf)
                                 </td>
                                 <td>
@@ -122,17 +144,35 @@
                         {
                             <tr>
                                 <td>
-                                    @if (item.Crt == "1")
+                                    @if (item.View.Equals(true))
                                     {
-                                        <i class="fa fa-circle" style="color:red;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                        }
                                     }
-                                    else if (item.Crt == "2")
+                                    else
                                     {
-                                        <i class="fa fa-circle" style="color:blue;"></i>
-                                    }
-                                    else if (item.Crt == "3")
-                                    {
-                                        <i class="fa fa-circle" style="color:green;"></i>
+                                        @if (item.Crt == "1")
+                                        {
+                                            <i class="fa fa-circle" style="color:red;"></i>
+                                        }
+                                        else if (item.Crt == "2")
+                                        {
+                                            <i class="fa fa-circle" style="color:blue;"></i>
+                                        }
+                                        else if (item.Crt == "3")
+                                        {
+                                            <i class="fa fa-circle" style="color:green;"></i>
+                                        }
                                     }
                                     @Html.DisplayFor(modelItem => item.Nnf)
                                 </td>

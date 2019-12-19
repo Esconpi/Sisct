@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
 using System.Threading;
 using MySql.Data.MySqlClient;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -54,7 +55,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
                 ViewBag.Status = comp.Status;
-
+        
                 var result = _service.FindByNotes(id, year, month);
 
                 return View(result);
@@ -743,6 +744,25 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult Audita(int id, string year, string month)
+        {
+            try
+            {
+                var notes = _service.FindByNotes(id, year, month);
+                var products = _itemService.FindByProducts(notes);
+
+                products = products.Where(_ => _.Status.Equals(false)).ToList();
+                ViewBag.Registro = products.Count();
+                return View(products);
+
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { erro = 500, message = e.Message });
+            }
+
+        }
+
         public IActionResult Delete(int id, string year, string month)
         {
             try
@@ -785,6 +805,25 @@ namespace Escon.SisctNET.Web.Controllers
                 return RedirectToAction("Index", new { id = company, year = year, month = month });
             }
             catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult UpdateView(int id)
+        {
+            try
+            {
+                var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                note.View = true;
+
+                _service.Update(note, GetLog(Model.OccorenceLog.Update));
+
+                return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }

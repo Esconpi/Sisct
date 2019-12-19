@@ -10,6 +10,20 @@
         <div class="box-header">
             <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Produtos</strong></h3>
+
+            <div class="btn-group pull-right">
+
+                @if (ViewBag.View == false)
+                {
+                    <a asp-controller="Note" asp-action="UpdateView" asp-route-id="@ViewBag.NoteId" class="btn btn-primary">
+                        <i class="fa fa-check-square"></i>
+                        Visualizar
+                    </a>
+
+                }
+
+
+            </div>
         </div>
         <div class="box-body">
             <div style="width:100%; padding:20px;">
