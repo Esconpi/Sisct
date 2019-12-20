@@ -143,7 +143,9 @@ namespace Escon.SisctNET.Web.Controllers
                             LinhasNota.Add(string.Format("({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}',{15},{16},{17})",
                                id, notes[i][0]["chave"], notes[i][1]["nNF"], Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["CNPJ"], notes[i][2]["CRT"], notes[i][2]["UF"],
                                notes[i][2]["IE"], IEST, year, month, DateTime.Now, DateTime.Now, nCT, notes[i][2]["xNome"], Convert.ToDecimal(notes[i][4]["vNF"]), false, Convert.ToInt32(notes[i][1]["idDest"])));
-                               */
+                            sCommand.Append(string.Join(",", LinhasNota));
+                            sCommand.Append(";");*/
+
                             var note = new Model.Note
                             {
                                 CompanyId = id,

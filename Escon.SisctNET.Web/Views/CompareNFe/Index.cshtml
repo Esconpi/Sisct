@@ -91,7 +91,7 @@
                 </table>
              }
                 <div style="float:left;">
-                    <h6><strong>@ViewBag.Notas.Count registro(s)</strong></h6>
+                    <h6><strong>@if (!ViewBag.notas_sped.Count.Equals(0)) { @ViewBag.notas_sped.Count } else { @ViewBag.Notas.Count } registro(s)</strong></h6>
                 </div>
             </div>
     </div>
