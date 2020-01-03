@@ -258,7 +258,7 @@
                     {
                         <thead>
                             <tr>
-                                <th>Número</th>
+                                <th>Número da Nota</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -277,42 +277,20 @@
                                     <tbody>
                                         @foreach (var item in ViewBag.product)
                                         {
-                                            <tr>
-                                                <td>@item.Xprod</td>
-                                            </tr>
+                                            @if (note.Id.Equals(item.NoteId))
+                                            {
+                                                <tr>
+                                                    <td>@item.Xprod</td>
+                                                </tr>
+                                            }
                                         }
-                                 
+
                                     </tbody>
-                                    
+
                                 </table>
-                               
+                                
                              }
                         </tbody>
-                    }
-
-
-                    @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
-                    {
-
-
-
-                        <thead>
-                            <tr>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        @for (int j = 0; j < ViewBag.Products.Count; j++)
-                        {
-                            @if (ViewBag.NotasTaxation[i].Id.Equals(ViewBag.Products[j].NoteId))
-                            {
-
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            }
-                        }
                     }
 
                 </table>
