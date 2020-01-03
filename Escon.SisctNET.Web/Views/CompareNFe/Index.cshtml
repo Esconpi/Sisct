@@ -22,6 +22,8 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
+            @if (ViewBag.ordem == "1")
+            {
                 <table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
                     <thead>
                         <tr>
@@ -56,40 +58,42 @@
                         @for (int i = 0; i < ViewBag.Notas.Count; i++)
                         {
                             <tr>
-                                <td>
-                                    @ViewBag.Notas[i][1]["dhEmi"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][1]["tpNF"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][2]["UF"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][1]["nNF"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][2]["CNPJ"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][2]["xNome"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][4]["vNF"]
-                                </td>
-                                <td>
-                                    @ViewBag.Notas[i][0]["chave"]
-                                </td>
+                                <td>@ViewBag.Notas[i][1]["dhEmi"]</td>
+                                <td>@ViewBag.Notas[i][1]["tpNF"]</td>
+                                <td>@ViewBag.Notas[i][2]["UF"]</td>
+                                <td>@ViewBag.Notas[i][1]["nNF"]</td>
+                                <td>@ViewBag.Notas[i][2]["CNPJ"]</td>
+                                <td>@ViewBag.Notas[i][2]["xNome"]</td>
+                                <td>@ViewBag.Notas[i][4]["vNF"]</td>
+                                <td>@ViewBag.Notas[i][0]["chave"]</td>
                             </tr>
                         }
-
                     </tbody>
                 </table>
-
+                
+             }else if (ViewBag.ordem == "2")
+             {
+                <table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chave
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var chave in ViewBag.notas_sped) {
+                            <tr>
+                                <th>@chave</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+             }
                 <div style="float:left;">
-                    <h6><strong>@ViewBag.Notas.Count registro(s)</strong></h6>
+                    <h6><strong>@if (!ViewBag.notas_sped.Count.Equals(0)) { @ViewBag.notas_sped.Count } else { @ViewBag.Notas.Count } registro(s)</strong></h6>
                 </div>
-        </div>
+            </div>
     </div>
     <div class="box-footer"></div>
 </div>

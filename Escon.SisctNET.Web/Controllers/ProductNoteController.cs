@@ -60,6 +60,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Note = rst.Nnf;
                 ViewBag.Fornecedor = rst.Xnome;
                 ViewBag.Valor = rst.Vnf;
+                ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
+                ViewBag.Uf = rst.Uf;
                 ViewBag.View = rst.View;
                 ViewBag.NoteId = rst.Id;
 
@@ -159,34 +161,33 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal total_icms = 0;
                         baseCalc = p.Vbasecalc + p.Vdesc;
 
-                        if (entity.Pautado == true)
+
+                        decimal quantParaCalc = 0;
+                        quantParaCalc = Convert.ToDecimal(p.Qcom);
+                        if (quantPauta != "")
                         {
-                            decimal quantParaCalc = 0;
-                            quantParaCalc = Convert.ToDecimal(p.Qcom);
-                            if (quantPauta != "")
-                            {
-                                p.Qpauta = Convert.ToDecimal(quantPauta);
-                                quantParaCalc = Convert.ToDecimal(quantPauta);
-                            }
-                            // Primeiro PP feito pela tabela
-                            decimal vAgre = calculation.valorAgregadoPauta(Convert.ToDecimal(quantParaCalc), Convert.ToDecimal(product.Price));
-
-                            // Segundo PP feito com os dados do produto
-                            decimal vAgre2 = Convert.ToDecimal(baseCalc / quantParaCalc);
-                            if (vAgre2 > vAgre)
-                            {
-                                vAgre = vAgre2;
-                            }
-
-                            if (fecop != null)
-                            {
-                                p.Fecop = Convert.ToDecimal(fecop);
-                                valor_fecop = (Convert.ToDecimal(fecop) / 100) * vAgre;
-                            }
-                            decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(AliqInt, Convert.ToDecimal(fecop), vAgre);
-                            decimal icms_pauta = valorAgreAliqInt - valor_icms;
-                            total_icms_pauta = icms_pauta + valor_fecop;
+                            p.Qpauta = Convert.ToDecimal(quantPauta);
+                            quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
+                        // Primeiro PP feito pela tabela
+                        decimal vAgre = calculation.valorAgregadoPauta(Convert.ToDecimal(quantParaCalc), Convert.ToDecimal(product.Price));
+
+                        // Segundo PP feito com os dados do produto
+                        decimal vAgre2 = Convert.ToDecimal(baseCalc / quantParaCalc);
+                        if (vAgre2 > vAgre)
+                        {
+                            vAgre = vAgre2;
+                        }
+
+                        if (fecop != null)
+                        {
+                            p.Fecop = Convert.ToDecimal(fecop);
+                            valor_fecop = (Convert.ToDecimal(fecop) / 100) * vAgre;
+                        }
+                        decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(AliqInt, Convert.ToDecimal(fecop), vAgre);
+                        decimal icms_pauta = valorAgreAliqInt - valor_icms;
+                        total_icms_pauta = icms_pauta + valor_fecop;
+                        
                         if (mva != null)
                         {
                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
@@ -374,34 +375,72 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
                     decimal? bcr = null;
-                    if (!bcrForm.Equals(null))
+                    if (bcrForm != null)
                     {
                         bcr = Convert.ToDecimal(bcrForm);
                     }
+
                     var ncm = _ncmService.FindByCode(rst.Ncm);
 
-                    var taxation = new Model.Taxation
-                    {
-                        CompanyId = note.CompanyId,
-                        Code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms,
-                        Code2 = code2,
-                        Cest = rst.Cest,
-                        AliqInterna = Convert.ToDecimal(AliqInt),
-                        Diferencial = dif,
-                        MVA = entity.Mva,
-                        BCR = bcr,
-                        Fecop = entity.Fecop,
-                        DateStart = Convert.ToDateTime(dateStart),
-                        DateEnd = null,
-                        TaxationTypeId = Convert.ToInt32(taxaType),
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now,
-                        NcmId = ncm.Id,
-                        Picms = rst.Picms,
-                        Uf = note.Uf
+                    string code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms;
 
-                    };
-                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    var taxationcm = _taxationService.FindByNcm(code);
+
+                    if(taxationcm != null)
+                    {
+                        taxationcm.DateEnd = Convert.ToDateTime(dateStart).AddDays(-1);
+                        _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
+
+                        var taxation = new Model.Taxation
+                        {
+                            CompanyId = note.CompanyId,
+                            Code = code,
+                            Code2 = code2,
+                            Cest = rst.Cest,
+                            AliqInterna = Convert.ToDecimal(AliqInt),
+                            Diferencial = dif,
+                            MVA = entity.Mva,
+                            BCR = bcr,
+                            Fecop = entity.Fecop,
+                            DateStart = Convert.ToDateTime(dateStart),
+                            DateEnd = null,
+                            TaxationTypeId = Convert.ToInt32(taxaType),
+                            Created = DateTime.Now,
+                            Updated = DateTime.Now,
+                            NcmId = ncm.Id,
+                            Picms = rst.Picms,
+                            Uf = note.Uf
+
+                        };
+                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+
+                    }
+                    else
+                    {
+                        var taxation = new Model.Taxation
+                        {
+                            CompanyId = note.CompanyId,
+                            Code = code,
+                            Code2 = code2,
+                            Cest = rst.Cest,
+                            AliqInterna = Convert.ToDecimal(AliqInt),
+                            Diferencial = dif,
+                            MVA = entity.Mva,
+                            BCR = bcr,
+                            Fecop = entity.Fecop,
+                            DateStart = Convert.ToDateTime(dateStart),
+                            DateEnd = null,
+                            TaxationTypeId = Convert.ToInt32(taxaType),
+                            Created = DateTime.Now,
+                            Updated = DateTime.Now,
+                            NcmId = ncm.Id,
+                            Picms = rst.Picms,
+                            Uf = note.Uf
+
+                        };
+                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    }
+
                     
                 }
 
@@ -458,24 +497,28 @@ namespace Escon.SisctNET.Web.Controllers
                 
 
 
-                if (type == 1 || type == 2 || type == 4)
+                if (type == 1 || type == 2 || type == 4 || type == 5)
                 {    
                     if (type == 2)
                     {
                         notes = notes.Where(_ => _.Nnf.Equals(nota)).ToList();
+                        total = notes.Select(_ => _.Vnf).Sum();
                         result = _service.FindByProductsType(notes, typeTaxation);
                     }
 
-                    if(type == 4)
+                    ViewBag.Registro = result.Count();
+
+                    if (type == 4 || type == 5)
                     {
                         ViewBag.NotasTaxation = notasTaxation;
                         ViewBag.Products = result;
+                        ViewBag.Registro = notasTaxation.Count();
                     }
+
                     
                     ViewBag.Notes = notes;
 
 
-                    ViewBag.Registro = result.Count();
                     ViewBag.ValorProd = Convert.ToDouble(result.Select(_ => _.Vprod).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalBC = Convert.ToDouble(Math.Round(result.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalNotas = Convert.ToDouble(total).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -736,6 +779,14 @@ namespace Escon.SisctNET.Web.Controllers
                     var prod = result.Where(_ => _.Pautado.Equals(false));
                     ViewBag.product = prod;
                 }
+                /*else if (type == 5)
+                {
+
+                    foreach (var n in notasTaxation)
+                    {
+                        var newresult = result.Where(_ => _.NoteId.Equals(n.Id)).Select(_ => new { _.Nnf, _.Vprod, _.ValorBCR }).Sum(_ => new { _.Vprod, _.ValorBCR});
+                    }
+                }*/
 
                 return View(result);
 

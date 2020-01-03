@@ -60,5 +60,12 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst.ToList();
         }
+
+        public Taxation FindByNcm(string code, Log log = null)
+        {
+            var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateEnd == null).FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
     }
 }

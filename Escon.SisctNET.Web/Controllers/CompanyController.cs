@@ -411,7 +411,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Company = company.FantasyName;
                 ViewBag.Document = company.Document;
-                return View(result);
+                return View(result.Select(_ => _.Ncm).Distinct());
             }
             catch (Exception ex)
             {

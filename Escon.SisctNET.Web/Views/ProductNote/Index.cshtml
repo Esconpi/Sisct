@@ -9,7 +9,28 @@
     <div class="box box-primary">
         <div class="box-header">
             <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-            <h3 class="box-title"><strong>Produtos</strong></h3>
+            <h3 class="box-title"><strong>Produtos </strong></h3>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nota</th>
+                        <th>Data</th>
+                        <th>UF</th>
+                        <th>Fornecedor</th>
+                        <th>Valor total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewBag.Note</td>
+                        <td>@ViewBag.Data</td>
+                        <td>@ViewBag.Uf</td>
+                        <td>@ViewBag.Fornecedor</td>
+                        <td>@ViewBag.Valor</td>
+                    </tr>
+                </tbody>
+            </table>
 
             <div class="btn-group pull-right">
 

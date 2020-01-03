@@ -7,16 +7,10 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        @if (SessionManager.GetPersonInSession().ProfileId.Equals(1) || SessionManager.GetPersonInSession().ProfileId.Equals(2) || SessionManager.GetPersonInSession().ProfileId.Equals(4))
-        {
-            <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        }
-        else
-        {
-            <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        }
 
-        <h3 class="box-title"><strong>Tributações</strong></h3>
+        <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+
+        <h3 class="box-title"><strong>Ncms Tributados</strong></h3>
 
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Company-@ViewBag.Document</strong>
@@ -49,7 +43,10 @@
                         <td>@Html.DisplayFor(modelItem => item.Uf)</td>
                         <td>@Html.DisplayFor(modelItem => item.DateStart)</td>
                         <td>@Html.DisplayFor(modelItem => item.DateEnd)</td>
-                        <td></td>
+                        <td>
+                            @Html.ActionLink(" ", "Delete", new { id = item.Id },
+                                   new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                        </td>
                     </tr>
                     }
                 </tbody>

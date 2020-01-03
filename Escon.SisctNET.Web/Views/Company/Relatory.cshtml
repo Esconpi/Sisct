@@ -48,12 +48,18 @@
 
                     <div class="form-group col-lg-5 col-md-6 col-xs-12">
                         <label class="control-label">Tipo</label>
-                        <select name="type" class="form-control selectoption">
+                        <select name="type" id="type" class="form-control selectoption">
                             <option value="1">Produto</option>
                             <option value="3">Produto fora da pauta</option>
                             <option value="2">Nota</option>
                             <option value="4">Agrupado</option>
+                            <option value="5">Agrupado - Sintético</option>
                         </select>
+                    </div>
+
+                    <div class="form-group col-lg-5 col-md-6 col-xs-12">
+                        <label class="control-label"></label>
+                        <input type="hidden" id="caixa_num_nota" name="nota" class="form-control" placeholder="Nota" />
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
@@ -64,3 +70,14 @@
 
     </div>
 </div>
+<script>
+     $("#type").on("change", function () {
+         if ($(this).val() == 2) {
+             console.log('entrou')
+             $('input[name=nota]').prop('type', 'text');
+         }
+         else {
+             $('input[name=nota]').prop('type', 'hidden');
+         }
+    });
+</script>

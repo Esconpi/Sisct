@@ -8,6 +8,7 @@ using Escon.SisctNET.Web.Taxation;
 using System.Threading;
 using MySql.Data.MySqlClient;
 using System.Linq;
+using System.Text;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -72,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                List<string> LinhasNota = new List<string>();
+                
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
@@ -103,7 +104,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                  
                 Dictionary<string, string> det = new Dictionary<string, string>();
-
+                //StringBuilder sCommand = new StringBuilder("INSERT INTO Note (CompanyId, Chave, Nnf, Dhemi, Cnpj, Crt, Uf, Ie, Iest, AnoRef, MesRef, Created, Updated, Nct, Xnome, Vnf, Status, IdDest) VALUES ");
+                //List<string> LinhasNota = new List<string>();
                 for (int i = 0; i < notes.Count; i++)
                 {
                     var notaImport = _service.FindByNote(notes[i][0]["chave"]);
@@ -120,7 +122,30 @@ namespace Escon.SisctNET.Web.Controllers
 
                         try
                         {
-                            //LinhasNota.Add(string.Format("('{}')", MySqlHelper.EscapeString("")));
+
+                            /*string ConnectionString = "server=192.168.1xxx";
+                            StringBuilder sCommand = new StringBuilder("INSERT INTO User (FirstName, LastName) VALUES ");
+                            using (MySqlConnection mConnection = new MySqlConnection(ConnectionString))
+                            {
+                                List<string> Rows = new List<string>();
+                                for (int i = 0; i < 100000; i++)
+                                {
+                                    Rows.Add(string.Format("('{0}','{1}')", MySqlHelper.EscapeString("test"), MySqlHelper.EscapeString("test")));
+                                }
+                                sCommand.Append(string.Join(",", Rows));
+                                sCommand.Append(";");
+                                mConnection.Open();
+                                using (MySqlCommand myCmd = new MySqlCommand(sCommand.ToString(), mConnection))
+                                {
+                                    myCmd.CommandType = CommandType.Text;
+                                    myCmd.ExecuteNonQuery();
+                            }
+                            LinhasNota.Add(string.Format("({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}',{15},{16},{17})",
+                               id, notes[i][0]["chave"], notes[i][1]["nNF"], Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["CNPJ"], notes[i][2]["CRT"], notes[i][2]["UF"],
+                               notes[i][2]["IE"], IEST, year, month, DateTime.Now, DateTime.Now, nCT, notes[i][2]["xNome"], Convert.ToDecimal(notes[i][4]["vNF"]), false, Convert.ToInt32(notes[i][1]["idDest"])));
+                            sCommand.Append(string.Join(",", LinhasNota));
+                            sCommand.Append(";");*/
+
                             var note = new Model.Note
                             {
                                 CompanyId = id,
@@ -297,120 +322,120 @@ namespace Escon.SisctNET.Web.Controllers
                                 NCM = det["NCM"];
                             }
 
-                            if (det.ContainsKey("CFOP"))
+                            else if (det.ContainsKey("CFOP"))
                             {
                                 CFOP = det["CFOP"];
                             }
 
-                            if (det.ContainsKey("CEST"))
+                            else if (det.ContainsKey("CEST"))
                             {
                                 CEST = det["CEST"];
                             }
 
-                            if (det.ContainsKey("vUnCom"))
+                            else if (det.ContainsKey("vUnCom"))
                             {
                                 vUnCom = Convert.ToDecimal(det["vUnCom"]);
                             }
 
-                            if (det.ContainsKey("vICMS"))
+                            else if (det.ContainsKey("vICMS"))
                             {
                                 vICMS = Convert.ToDecimal(det["vICMS"]);
                             }
 
-                            if (det.ContainsKey("pICMS"))
+                            else if (det.ContainsKey("pICMS"))
                             {
                                 pICMS = Convert.ToDecimal(det["pICMS"]);
                             }
 
-                            if (det.ContainsKey("vIPI"))
+                            else if (det.ContainsKey("vIPI"))
                             {
                                 vIPI = Convert.ToDecimal(det["vIPI"]);
                             }
 
-                            if (det.ContainsKey("vPIS"))
+                            else if (det.ContainsKey("vPIS"))
                             {
                                 vPIS = Convert.ToDecimal(det["vPIS"]);
                             }
 
-                            if (det.ContainsKey("vCOFINS"))
+                            else if (det.ContainsKey("vCOFINS"))
                             {
                                 vCOFINS = Convert.ToDecimal(det["vCOFINS"]);
                             }
 
-                            if (det.ContainsKey("vFrete"))
+                            else if (det.ContainsKey("vFrete"))
                             {
                                 vFrete = Convert.ToDecimal(det["vFrete"]);
                             }
 
-                            if (det.ContainsKey("vSeg"))
+                            else if (det.ContainsKey("vSeg"))
                             {
                                 vSeg = Convert.ToDecimal(det["vSeg"]);
                             }
 
-                            if (det.ContainsKey("vOutro"))
+                            else if (det.ContainsKey("vOutro"))
                             {
                                 vOutro = Convert.ToDecimal(det["vOutro"]);
                             }
 
-                            if (det.ContainsKey("vDesc"))
+                            else if(det.ContainsKey("vDesc"))
                             {
                                 vDesc = Convert.ToDecimal(det["vDesc"]);
                             }
 
-                            if (det.ContainsKey("vICMSST"))
+                            else if (det.ContainsKey("vICMSST"))
                             {
                                 vICMSST = Convert.ToDecimal(det["vICMSST"]);
                             }
 
-                            if (det.ContainsKey("vBCST"))
+                            else if (det.ContainsKey("vBCST"))
                             {
                                 vBCST = Convert.ToDecimal(det["vBCST"]);
                             }
 
-                            if (det.ContainsKey("vBCFCPST"))
+                            else if (det.ContainsKey("vBCFCPST"))
                             {
                                 vBCFCPST = Convert.ToDecimal(det["vBCFCPST"]);
                             }
 
-                            if (det.ContainsKey("vBCFCPSTRet"))
+                            else if (det.ContainsKey("vBCFCPSTRet"))
                             {
                                 vBCFCPSTRet = Convert.ToDecimal(det["vBCFCPSTRet"]);
                             }
 
-                            if (det.ContainsKey("pFCPST"))
+                            else if (det.ContainsKey("pFCPST"))
                             {
                                 pFCPST = Convert.ToDecimal(det["pFCPST"]);
                             }
 
-                            if (det.ContainsKey("pFCPSTRet"))
+                            else if (det.ContainsKey("pFCPSTRet"))
                             {
                                 pFCPSTRet = Convert.ToDecimal(det["pFCPSTRet"]);
                             }
 
-                            if (det.ContainsKey("vFCPST"))
+                            else if (det.ContainsKey("vFCPST"))
                             {
                                 vFCPST = Convert.ToDecimal(det["vFCPST"]);
                             }
 
-                            if (det.ContainsKey("vFCPSTRet"))
+                            else if (det.ContainsKey("vFCPSTRet"))
                             {
                                 vFCPSTRet = Convert.ToDecimal(det["vFCPSTRet"]);
                             }
 
-                            if (det.ContainsKey("frete_icms"))
+                            else if (det.ContainsKey("frete_icms"))
                             {
                                 frete_icms = Convert.ToDecimal(det["frete_icms"]);
                             }
 
-                            if (det.ContainsKey("frete_prod"))
+                            else if (det.ContainsKey("frete_prod"))
                             {
                                 frete_prod = Convert.ToDecimal(det["frete_prod"]);
                             }
-                            if (det.ContainsKey("baseCalc"))
+                            else if (det.ContainsKey("baseCalc"))
                             {
                                 baseDeCalc = Convert.ToDecimal(det["baseCalc"]);
                             }
-                            if (det.ContainsKey("nItem"))
+                            else if (det.ContainsKey("nItem"))
                             {
                                 nItem = det["nItem"];
                             }
