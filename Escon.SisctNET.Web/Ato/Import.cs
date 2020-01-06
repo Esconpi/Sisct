@@ -19,7 +19,7 @@ namespace Escon.SisctNET.Web.Ato
                 while ((line = archiveAto.ReadLine()) != null)
                 {
                     List<string> product = new List<string>();
-                    string[] linha = line.Split(';');
+                    string[] linha = line.Split(";");
                     foreach (var l in linha)
                     {
                         if (!l.Equals(""))
