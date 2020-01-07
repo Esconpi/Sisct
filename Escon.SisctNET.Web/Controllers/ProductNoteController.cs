@@ -495,7 +495,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Month = month;
                 ViewBag.TaxationType = typeTaxation;
                 ViewBag.type = type;
-                
 
 
                 if (type == 1 || type == 2 || type == 4 || type == 5)
@@ -827,14 +826,11 @@ namespace Escon.SisctNET.Web.Controllers
                     var prod = result.Where(_ => _.Pautado.Equals(false));
                     ViewBag.product = prod;
                 }
-                /*else if (type == 5)
+                else if(type == 6)
                 {
 
-                    foreach (var n in notasTaxation)
-                    {
-                        var newresult = result.Where(_ => _.NoteId.Equals(n.Id)).Select(_ => new { _.Nnf, _.Vprod, _.ValorBCR }).Sum(_ => new { _.Vprod, _.ValorBCR});
-                    }
-                }*/
+                }
+
 
                 return View(result);
 

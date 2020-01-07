@@ -31,11 +31,15 @@
                             }
                             @if (ViewBag.type == 4)
                             {
-                                <strong>Agrupado</strong>
+                                <strong>Agrupado - Analítico</strong>
                             }
                             @if (ViewBag.type == 5)
                             {
                                 <strong>Agrupado - Sintético</strong>
+                            }
+                            @if (ViewBag.type == 6)
+                            {
+                                <strong>Resumo Geral das Entradas</strong>
                             }
                             @if (@ViewBag.TaxationType == 1)
                             {
@@ -541,8 +545,22 @@
 
                         }
                     }
+                    else if (ViewBag.type == 6)
+                    {
+                        <thead>
+                            <tr>
+                                <th>
+                                    Tributação
+                                </th>
+                                <th>
+                                    Código do Dar
+                                </th>
+                            </tr>
+                        </thead>
+                    }
                 </table>
             </div>
+            
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
                     @if (@ViewBag.TaxationType == 1)
