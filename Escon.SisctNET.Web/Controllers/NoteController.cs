@@ -320,120 +320,117 @@ namespace Escon.SisctNET.Web.Controllers
                                 NCM = det["NCM"];
                             }
 
-                            else if (det.ContainsKey("CFOP"))
+                            if (det.ContainsKey("CFOP"))
                             {
                                 CFOP = det["CFOP"];
                             }
 
-                            else if (det.ContainsKey("CEST"))
+                            if (det.ContainsKey("CEST"))
                             {
                                 CEST = det["CEST"];
                             }
 
-                            else if (det.ContainsKey("vUnCom"))
+                            if (det.ContainsKey("vUnCom"))
                             {
                                 vUnCom = Convert.ToDecimal(det["vUnCom"]);
                             }
 
-                            else if (det.ContainsKey("vICMS"))
+                            if (det.ContainsKey("vICMS"))
                             {
                                 vICMS = Convert.ToDecimal(det["vICMS"]);
                             }
 
-                            else if (det.ContainsKey("pICMS"))
+                            if (det.ContainsKey("pICMS"))
                             {
                                 pICMS = Convert.ToDecimal(det["pICMS"]);
                             }
 
-                            else if (det.ContainsKey("vIPI"))
+                            if (det.ContainsKey("vIPI"))
                             {
                                 vIPI = Convert.ToDecimal(det["vIPI"]);
                             }
 
-                            else if (det.ContainsKey("vPIS"))
+                            if (det.ContainsKey("vPIS"))
                             {
                                 vPIS = Convert.ToDecimal(det["vPIS"]);
                             }
 
-                            else if (det.ContainsKey("vCOFINS"))
+                            if (det.ContainsKey("vCOFINS"))
                             {
                                 vCOFINS = Convert.ToDecimal(det["vCOFINS"]);
                             }
 
-                            else if (det.ContainsKey("vFrete"))
+                            if (det.ContainsKey("vFrete"))
                             {
                                 vFrete = Convert.ToDecimal(det["vFrete"]);
                             }
 
-                            else if (det.ContainsKey("vSeg"))
+                            if (det.ContainsKey("vSeg"))
                             {
                                 vSeg = Convert.ToDecimal(det["vSeg"]);
                             }
 
-                            else if (det.ContainsKey("vOutro"))
+                            if (det.ContainsKey("vOutro"))
                             {
                                 vOutro = Convert.ToDecimal(det["vOutro"]);
                             }
 
-                            else if(det.ContainsKey("vDesc"))
+                            if(det.ContainsKey("vDesc"))
                             {
                                 vDesc = Convert.ToDecimal(det["vDesc"]);
                             }
 
-                            else if (det.ContainsKey("vICMSST"))
+                            if (det.ContainsKey("vICMSST"))
                             {
                                 vICMSST = Convert.ToDecimal(det["vICMSST"]);
                             }
 
-                            else if (det.ContainsKey("vBCST"))
+                            if (det.ContainsKey("vBCST"))
                             {
                                 vBCST = Convert.ToDecimal(det["vBCST"]);
                             }
 
-                            else if (det.ContainsKey("vBCFCPST"))
+                            if (det.ContainsKey("vBCFCPST"))
                             {
                                 vBCFCPST = Convert.ToDecimal(det["vBCFCPST"]);
                             }
 
-                            else if (det.ContainsKey("vBCFCPSTRet"))
+                            if (det.ContainsKey("vBCFCPSTRet"))
                             {
                                 vBCFCPSTRet = Convert.ToDecimal(det["vBCFCPSTRet"]);
                             }
 
-                            else if (det.ContainsKey("pFCPST"))
+                            if (det.ContainsKey("pFCPST"))
                             {
                                 pFCPST = Convert.ToDecimal(det["pFCPST"]);
                             }
 
-                            else if (det.ContainsKey("pFCPSTRet"))
+                            if (det.ContainsKey("pFCPSTRet"))
                             {
                                 pFCPSTRet = Convert.ToDecimal(det["pFCPSTRet"]);
                             }
 
-                            else if (det.ContainsKey("vFCPST"))
+                            if (det.ContainsKey("vFCPST"))
                             {
                                 vFCPST = Convert.ToDecimal(det["vFCPST"]);
                             }
-
-                            else if (det.ContainsKey("vFCPSTRet"))
+                            if (det.ContainsKey("vFCPSTRet"))
                             {
                                 vFCPSTRet = Convert.ToDecimal(det["vFCPSTRet"]);
                             }
-
-                            else if (det.ContainsKey("frete_icms"))
+                            if (det.ContainsKey("frete_icms"))
                             {
                                 frete_icms = Convert.ToDecimal(det["frete_icms"]);
                             }
-
-                            else if (det.ContainsKey("frete_prod"))
+                            if (det.ContainsKey("frete_prod"))
                             {
                                 frete_prod = Convert.ToDecimal(det["frete_prod"]);
                             }
-                            else if (det.ContainsKey("baseCalc"))
+                            if (det.ContainsKey("baseCalc"))
                             {
                                 baseDeCalc = Convert.ToDecimal(det["baseCalc"]);
                             }
-                            else if (det.ContainsKey("nItem"))
+                            if (det.ContainsKey("nItem"))
                             {
                                 nItem = det["nItem"];
                             }

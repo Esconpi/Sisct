@@ -135,7 +135,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(IFormFile arquivo)
+        public async Task<IActionResult> Import(IFormFile arquivo, Model.Product entity)
         {
             try
             {
