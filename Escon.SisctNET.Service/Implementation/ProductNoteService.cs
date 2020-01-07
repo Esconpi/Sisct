@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -111,6 +112,11 @@ namespace Escon.SisctNET.Service.Implementation
         public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
         {
             return _repository.FindByNormal(notes, log);
+        }
+
+        public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
+        {
+            return _repository.FindAllInDate(dateProd, log);
         }
     }
 }

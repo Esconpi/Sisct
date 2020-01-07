@@ -21,30 +21,28 @@ namespace Escon.SisctNET.Repository.Implementation
         public Taxation FindByCode(string code, DateTime data, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");
-            Taxation rls = null;
-            //var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateStart <= data && _.DateEnd == null).FirstOrDefault();
-            var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateEnd.Equals(null)).FirstOrDefault();
-            var t = _context.Taxations.Where(_ => _.Code.Equals(code));
+            Taxation result = null;
+            var taxations = _context.Taxations.Where(_ => _.Code.Equals(code));
             
-            foreach(var d in t)
+            foreach(var t in taxations)
             {
-                var dataInicial = DateTime.Compare(d.DateStart, data);
-                
-                if (dataInicial <= 0 && d.DateEnd == null)
+                var dataInicial = DateTime.Compare(t.DateStart, data);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
+
+                if (dataInicial <= 0 && t.DateEnd == null)
                 {
-                    rls = d;
+                    result = t;
                     break;
-                }else if (dataInicial <= 0 && DateTime.Compare(Convert.ToDateTime(d.DateEnd), data) > 0 )
+                }else if (dataInicial <= 0 && dataFinal > 0 )
                 {
-                    rls = d;
+                    result = t;
                     break;
                 }
-                
                 
             }
 
             AddLog(log);
-            return rls;
+            return result;
         }
 
         public Taxation FindByCode2(string code2, Log log = null)

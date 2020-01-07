@@ -265,5 +265,30 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
+        public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
+        {
+            List<Product> products = new List<Product>();
+
+            var productPauta = _context.Products;
+
+            foreach(var prod in productPauta)
+            {
+                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
+
+                if (dataInicial <= 0 && prod.DateEnd == null)
+                {
+                    products.Add(prod);
+                    continue;
+                }else if (dataInicial <= 0 && dataFinal > 0)
+                {
+                    products.Add(prod);
+                    continue;
+                }
+            }
+
+            return products;
+        }
+
     }
 }
