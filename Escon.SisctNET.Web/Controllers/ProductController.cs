@@ -39,7 +39,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 SessionManager.SetUserIdInSession(7);
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-
                 return View(result);
             }
             catch (Exception ex)
@@ -176,9 +175,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < products.Count(); i++)
                 {
-                
+                    var item = _service.FindByProduct(products[i][0], Convert.ToInt32(products[i][5]));
+
+                    if (item != null)
+                    {
+                        item.Updated = DateTime.Now;
+                        item.DateEnd = Convert.ToDateTime(products[i][4]).AddDays(-1);
+                        _service.Update(item, GetLog(Model.OccorenceLog.Update));
+                    }
+
+                    var id = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
                     var product = new Model.Product
                     {
+                        Id = id + 1,
                         Code = products[i][0],
                         Description = products[i][1],
                         Unity = products[i][2],
@@ -190,14 +199,7 @@ namespace Escon.SisctNET.Web.Controllers
                     };
                     _service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
 
-                    var item = _service.FindByProduct(products[i][0], Convert.ToInt32(products[i][5]));
-
-                    if (item != null)
-                    {
-                        item.Updated = DateTime.Now;
-                        item.DateEnd = Convert.ToDateTime(products[i][4]).AddDays(-1);
-                        _service.Update(item, GetLog(Model.OccorenceLog.Update));
-                    }
+                   
                     
                 }
 

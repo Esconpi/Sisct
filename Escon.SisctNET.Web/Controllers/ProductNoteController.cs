@@ -1,4 +1,5 @@
 ﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Model.ContextDataBase;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,6 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class ProductNote : ControllerBaseSisctNET
     {
-
         private readonly IProductNoteService _service;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IProductService _productService;
@@ -508,14 +508,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Registro = result.Count();
 
-                    if (type == 4 || type == 5)
+                    if (type == 4)
                     {
                         ViewBag.NotasTaxation = notasTaxation;
                         ViewBag.Products = result;
-                        ViewBag.Registro = notasTaxation.Count();
+                       
                     }
 
-                    
+                    if (type == 5)
+                    {
+                        ViewBag.Registro = notasTaxation.Count();
+
+                        var t = result.GroupBy(_ => _.NoteId);
+                           
+                    }
+
+
                     ViewBag.Notes = notes;
 
 
