@@ -33,6 +33,10 @@
                             {
                                 <strong>Agrupado</strong>
                             }
+                            @if (ViewBag.type == 5)
+                            {
+                                <strong>Agrupado - Sintético</strong>
+                            }
                             @if (@ViewBag.TaxationType == 1)
                             {
                                 <strong>Substituição Tributária por MVA</strong>
@@ -263,13 +267,27 @@
                             {
                                 <thead>
                                     <tr>
-                                        <th>Número da Nota</th>
+                                        <th>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Número da Nota</th>
+                                                        <th>Fornecedor</th>
+                                                        <th>Valor da Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="font-weight:normal;">
+                                                        <td>@note.Nnf</td>
+                                                        <td>@note.Xnome</td>
+                                                        <td>@note.Vnf</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>@note.Nnf</td>
-                                    </tr>
                                     <tr>
                                         <td>
                                             <table class="table">
@@ -326,19 +344,35 @@
                             }
 
                         }
-                        else if (ViewBag.TaxationType >= 1)
+                        else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
                         {
                             @foreach (var note in ViewBag.NotasTaxation)
                             {
                                 <thead>
                                     <tr>
-                                        <th>Número da Nota</th>
+                                        <th>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Número da Nota</th>
+                                                        <th>Fornecedor</th>
+                                                        <th>Valor da Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="font-weight:normal;">
+                                                        <td>@note.Nnf</td>
+                                                        <td>@note.Xnome</td>
+                                                        <td>@note.Vnf</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>@note.Nnf</td>
-                                    </tr>
+                                   
                                     <tr>
                                         <td>
                                             <table class="table">
@@ -442,14 +476,15 @@
                             {
                                 <tbody>
                                     <tr>
-                                        <td></td>
+                                        <td>@note.Nnf</td>
+                                        <td>@note.Xnome</td>
+                                        <td>@Convert.ToDateTime(note.Dhemi).ToString("dd/MM")</td>
+                                        <td>@note.Vnf</td>
                                     </tr>
                                 </tbody>
                             }
                         }
                     }
-
-
 
                 </table>
             </div>

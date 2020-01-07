@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Company = company.FantasyName;
                 ViewBag.Document = company.Document;
+
                 return View(result);
             }
             catch(Exception ex)
@@ -39,6 +41,21 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
 
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index", new { companyId = comp.CompanyId});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
     }
 }

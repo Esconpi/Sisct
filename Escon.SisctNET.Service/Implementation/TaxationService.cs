@@ -54,6 +54,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public Taxation FindByNcm(string code, Log log = null)
+        {
+            return _repository.FindByNcm(code, log);
+        }
+
         public Taxation Update(Taxation entity, Log log)
         {
             return _repository.Update(entity, log);
