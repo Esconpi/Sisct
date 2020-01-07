@@ -102,28 +102,11 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                 }
-                 
+                
                 Dictionary<string, string> det = new Dictionary<string, string>();
                 //StringBuilder sCommand = new StringBuilder("INSERT INTO Note (CompanyId, Chave, Nnf, Dhemi, Cnpj, Crt, Uf, Ie, Iest, AnoRef, MesRef, Created, Updated, Nct, Xnome, Vnf, Status, IdDest) VALUES ");
                 //List<string> LinhasNota = new List<string>();
-                for (int i = 0; i < notes.Count; i++)
-                {
-                    var notaImport = _service.FindByNote(notes[i][0]["chave"]);
-                    if (notaImport == null)
-                    {
-                        int lastposicao = notes[i].Count;
-                        string nCT = notes[i][lastposicao - 1]["nCT"];
-
-                        string IEST = "";
-                        if (notes[i][2].ContainsKey("IEST"))
-                        {
-                            IEST = notes[i][2]["IEST"];
-                        }
-
-                        try
-                        {
-
-                            /*string ConnectionString = "server=192.168.1xxx";
+                /*string ConnectionString = "server=192.168.1xxx";
                             StringBuilder sCommand = new StringBuilder("INSERT INTO User (FirstName, LastName) VALUES ");
                             using (MySqlConnection mConnection = new MySqlConnection(ConnectionString))
                             {
@@ -145,7 +128,22 @@ namespace Escon.SisctNET.Web.Controllers
                                notes[i][2]["IE"], IEST, year, month, DateTime.Now, DateTime.Now, nCT, notes[i][2]["xNome"], Convert.ToDecimal(notes[i][4]["vNF"]), false, Convert.ToInt32(notes[i][1]["idDest"])));
                             sCommand.Append(string.Join(",", LinhasNota));
                             sCommand.Append(";");*/
+                for (int i = 0; i < notes.Count; i++)
+                {
+                    var notaImport = _service.FindByNote(notes[i][0]["chave"]);
+                    if (notaImport == null)
+                    {
+                        int lastposicao = notes[i].Count;
+                        string nCT = notes[i][lastposicao - 1]["nCT"];
 
+                        string IEST = "";
+                        if (notes[i][2].ContainsKey("IEST"))
+                        {
+                            IEST = notes[i][2]["IEST"];
+                        }
+
+                        try
+                        {
                             var note = new Model.Note
                             {
                                 CompanyId = id,
