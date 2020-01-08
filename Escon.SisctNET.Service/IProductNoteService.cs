@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service
@@ -33,6 +34,8 @@ namespace Escon.SisctNET.Service
         List<Model.ProductNote> FindByIncentive(List<Model.Note> notes, Model.Log log = null);
 
         List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
+
+        List<Model.Product> FindAllInDate(DateTime dateProd, Model.Log log = null);
 
     }
 }

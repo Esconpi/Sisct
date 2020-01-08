@@ -88,7 +88,8 @@ namespace Escon.SisctNET.Web.Controllers
                 
                 
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
-                List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
+                //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
+                List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
                 foreach (var prod in list_product)
                 {
                     prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
