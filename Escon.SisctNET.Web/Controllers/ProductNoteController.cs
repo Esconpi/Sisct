@@ -151,23 +151,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (entity.Pautado == true)
                 {
-                    var p = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                    var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                     decimal baseCalc = 0;
-                    decimal valor_icms = p.IcmsCTe + p.Vicms;
+                    decimal valor_icms = prod.IcmsCTe + prod.Vicms;
 
                     if (taxedtype.Type == "ST")
                     {
                         decimal total_icms_pauta = 0;
                         decimal total_icms = 0;
-                        baseCalc = p.Vbasecalc + p.Vdesc;
+                        baseCalc = prod.Vbasecalc + prod.Vdesc;
 
 
                         decimal quantParaCalc = 0;
-                        quantParaCalc = Convert.ToDecimal(p.Qcom);
+                        quantParaCalc = Convert.ToDecimal(prod.Qcom);
                         if (quantPauta != "")
                         {
-                            p.Qpauta = Convert.ToDecimal(quantPauta);
+                            prod.Qpauta = Convert.ToDecimal(quantPauta);
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
                         // Primeiro PP feito pela tabela
@@ -182,7 +182,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (fecop != null)
                         {
-                            p.Fecop = Convert.ToDecimal(fecop);
+                            prod.Fecop = Convert.ToDecimal(fecop);
                             valor_fecop = (Convert.ToDecimal(fecop) / 100) * vAgre;
                         }
                         decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(AliqInt, Convert.ToDecimal(fecop), vAgre);
@@ -192,24 +192,24 @@ namespace Escon.SisctNET.Web.Controllers
                         if (mva != null)
                         {
                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
-                            p.Valoragregado = valorAgreg;
-                            p.Mva = Convert.ToDecimal(mva);
+                            prod.Valoragregado = valorAgreg;
+                            prod.Mva = Convert.ToDecimal(mva);
                         }
                         if (bcrForm != null)
                         {
                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
-                            p.ValorBCR = valorAgreg;
-                            p.BCR = Convert.ToDecimal(bcrForm);
+                            prod.ValorBCR = valorAgreg;
+                            prod.BCR = Convert.ToDecimal(bcrForm);
                         }
                         if (fecop != null)
                         {
-                            p.Fecop = Convert.ToDecimal(fecop);
+                            prod.Fecop = Convert.ToDecimal(fecop);
                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(fecop), valorAgreg);
-                            p.TotalFecop = valor_fecop;
+                            prod.TotalFecop = valor_fecop;
                         }
-                        p.Aliqinterna = AliqInt;
-                        decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(p.Fecop), valorAgreg);
-                        p.ValorAC = valorAgre_AliqInt;
+                        prod.Aliqinterna = AliqInt;
+                        decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(prod.Fecop), valorAgreg);
+                        prod.ValorAC = valorAgre_AliqInt;
                         total_icms = valorAgre_AliqInt;
                         if (bcrForm == null)
                         {
@@ -219,23 +219,28 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (total_icms > total_icms_pauta)
                         {
-                            p.TotalICMS = total_icms;
+                            prod.TotalICMS = total_icms;
                         }
                         else
                         {
-                            p.TotalICMS = total_icms_pauta;
-                            p.Pautado = true;
-                            p.ProductId = product.Id;
+                            prod.TotalICMS = total_icms_pauta;
+                            prod.Pautado = true;
+                            prod.ProductId = product.Id;
                         }
 
                     }
 
-                    p.TaxationTypeId = Convert.ToInt32(taxaType);
-                    p.Updated = DateTime.Now;
-                    p.Status = true;
-                    p.Vbasecalc = baseCalc;
+                    prod.TaxationTypeId = Convert.ToInt32(taxaType);
+                    prod.Updated = DateTime.Now;
+                    prod.Status = true;
+                    prod.Vbasecalc = baseCalc;
 
-                    _service.Update(p, GetLog(Model.OccorenceLog.Read));
+                    if (note.Company.Incentive.Equals(true))
+                    {
+                        prod.Incentivo = true;
+                    }
+
+                    _service.Update(prod, GetLog(Model.OccorenceLog.Read));
                 }
                 else
                 {
@@ -496,6 +501,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.TaxationType = typeTaxation;
                 ViewBag.type = type;
 
+                var totalFecop = result.Select(_ => _.TotalFecop).Sum();
+
 
                 if (type == 1 || type == 2 || type == 4 || type == 5)
                 {    
@@ -520,11 +527,11 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<string>> notasAgrup = new List<List<string>>();
                         for (int i = 0; i < notasTaxation.Count; i++)
                         {
-                            List<string> n = new List<string>();
-                            n.Add(notasTaxation[i].Nnf.ToString());
-                            n.Add(notasTaxation[i].Xnome.ToString());
-                            n.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
-                            n.Add(Convert.ToDouble(notasTaxation[i].Vnf).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            List<string> notesAgrup = new List<string>();
+                            notesAgrup.Add(notasTaxation[i].Nnf.ToString());
+                            notesAgrup.Add(notasTaxation[i].Xnome.ToString());
+                            notesAgrup.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
+                            notesAgrup.Add(Convert.ToDouble(notasTaxation[i].Vnf).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
                             var Vprod = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vprod).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
                             var Vipi = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             var frete = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -540,22 +547,22 @@ namespace Escon.SisctNET.Web.Controllers
                             var vFrete = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vfrete).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             var icmsApurado = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsApurado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            n.Add(Vprod);
-                            n.Add(Vipi);
-                            n.Add(notasTaxation[i].Nct.ToString());
-                            n.Add(frete);
-                            n.Add(bcTotal);
-                            n.Add(bcIcms);
-                            n.Add(bcr);
-                            n.Add(vAC);
-                            n.Add(nfe);
-                            n.Add(cte);
-                            n.Add(icms);
-                            n.Add(icmsTotal);
-                            n.Add(fecopTotal);
-                            n.Add(vFrete);
-                            n.Add(icmsApurado);
-                            notasAgrup.Add(n);
+                            notesAgrup.Add(Vprod);
+                            notesAgrup.Add(Vipi);
+                            notesAgrup.Add(notasTaxation[i].Nct.ToString());
+                            notesAgrup.Add(frete);
+                            notesAgrup.Add(bcTotal);
+                            notesAgrup.Add(bcIcms);
+                            notesAgrup.Add(bcr);
+                            notesAgrup.Add(vAC);
+                            notesAgrup.Add(nfe);
+                            notesAgrup.Add(cte);
+                            notesAgrup.Add(icms);
+                            notesAgrup.Add(icmsTotal);
+                            notesAgrup.Add(fecopTotal);
+                            notesAgrup.Add(vFrete);
+                            notesAgrup.Add(icmsApurado);
+                            notasAgrup.Add(notesAgrup);
                         }
 
                         ViewBag.NotasTaxation = notasAgrup;
@@ -749,9 +756,10 @@ namespace Escon.SisctNET.Web.Controllers
                             TotalFecopNfe = valorNfe1Normal + valorNfe1Ret + valorNfe2Normal + valorNfe2Ret;
                             ViewBag.TotalFecopNfe = Convert.ToDouble(Math.Round(TotalFecopNfe, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            totalIcms = productsNormal.Select(_ => _.TotalICMS).Sum();
+                            
+                            //totalIcms = productsNormal.Select(_ => _.TotalICMS).Sum();
 
-                            ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            //ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
                             //Produto incentivados
@@ -765,10 +773,11 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal impostoIcms = Convert.ToDecimal(baseIcms * (company.Icms / 100));
                             ViewBag.ImpostoIcms = Convert.ToDouble(Math.Round(impostoIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
-                            ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");                         
-                           
+                            ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            decimal? basefunef = totalIcms - impostoIcms;
+                            var impostoGeral = totalIcms + totalFecop;
+
+                            decimal? basefunef = impostoGeral - impostoIcms;
                             ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.Funef = company.Funef;
                             decimal taxaFunef = Convert.ToDecimal(basefunef * (company.Funef / 100));
@@ -777,11 +786,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
                             ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo,2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            /*var notesDentro = notes.Where(_ => _.IdDest.Equals(1)).ToList();
-                            var prodructsCfopIn = _service.FindByCfopNotesIn(company.Id, notesDentro);
-                            decimal basedeCalcIncentivo = prodructsCfopIn.Select(_ => _.Vbasecalc).Sum();
-                            var notesFora = notes.Where(_ => _.IdDest.Equals(1)).ToList();
-                            var profucsCfopOut = _service.FindByCfopNotesOut(company.Id, notesFora);*/
+                            ViewBag.ImpostoGeral = impostoGeral;
                         }
 
                     }
@@ -817,7 +822,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.IcmsAp = Convert.ToDouble(icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsPagar = Convert.ToDouble(valorDief - icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     }
-                    ViewBag.TotalFecop = Convert.ToDouble(result.Select(_ => _.TotalFecop).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalFecop = Convert.ToDouble(totalFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalFrete = Convert.ToDouble(result.Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalIpi = Convert.ToDouble(result.Select(_ => _.Vipi).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 }
@@ -827,6 +832,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.product = prod;
                 }
                 else if(type == 6)
+                {
+
+                }else if (type == 7)
                 {
 
                 }

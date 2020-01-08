@@ -667,7 +667,7 @@
                                                 <td class="col-lg-2 col-sm-2">@ViewBag.TotalICMSMva</td>
 
                                             </tr>
-                                            @if (@ViewBag.TaxationType == 1)
+                                            @if (@ViewBag.TaxationType == 1 && ViewBag.Incetive == false)
                                             {
                                                 <tr>
                                                     <td class="col-lg-10 col-sm-10" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
@@ -883,7 +883,7 @@
                                         <thead>
                                             <tr style="border:1px solid;">
                                                 <th>
-                                                    Icms
+                                                    Base de Cálculo Regime
                                                 </th>
                                                 <th>
 
@@ -917,7 +917,7 @@
                                             </tr>
                                             <tr style="border:1px solid; padding-top:100px;">
                                                 <th>
-                                                    Fecop
+                                                    Base de Cálculo Fecop
                                                 </th>
                                                 <th>
 
@@ -985,7 +985,7 @@
                                             </tr>
                                             <tr>
                                                 <th class="col-lg-2 col-md-2 col-sm-2">
-                                                   @ViewBag.TotalICMS
+                                                   @ViewBag.ImpostoGeral
                                                 </th>
                                                 <th class="col-lg-1 col-md-1 col-sm-1" style="font-size:15px;">
                                                     -
