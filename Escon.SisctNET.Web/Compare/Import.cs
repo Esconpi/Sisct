@@ -228,16 +228,16 @@ namespace Escon.SisctNET.Web.Compare
                                             reader.Read();
                                             while (reader.Name != "ide")
                                             {
-
+                                                if (reader.Name.Equals("toma4"))
+                                                {
+                                                    break;
+                                                }
                                                 if (reader.Name != "toma3")
                                                 {
                                                     ide.Add(reader.Name, reader.ReadString());
                                                 }
 
-                                                if (reader.Name == "toma4")
-                                                {
-                                                    break;
-                                                }
+                                                
 
                                                 reader.Read();
                                             }

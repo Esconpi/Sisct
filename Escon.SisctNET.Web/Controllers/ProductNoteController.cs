@@ -340,7 +340,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     total_icms -= valor_icms;
                                 }
-                                decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
+                                //decimal total = Convert.ToDecimal(item.TotalICMS) + valor_fecop;
 
                                 item.TotalICMS = total_icms;
 
