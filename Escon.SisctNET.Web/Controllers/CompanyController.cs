@@ -394,7 +394,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
+                return View(result);
             }
             catch (Exception ex)
             {
