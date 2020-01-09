@@ -27,7 +27,7 @@
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             @if (@ViewBag.type == 3)
                             {
-                                <strong>Produtos sem preço de referência</strong>
+                                <strong>Produtos sem preço de referência &nbsp;</strong>
                             }
                             @if (ViewBag.type == 4)
                             {
@@ -35,15 +35,15 @@
                             }
                             @if (ViewBag.type == 5)
                             {
-                        <strong>Agrupado - Sintético &nbsp;</strong>
+                                <strong>Agrupado - Sintético &nbsp;</strong>
                             }
                             @if (ViewBag.type == 6)
                             {
-                                <strong>Resumo Geral das Entradas</strong>
+                                <strong>Resumo Geral das Entradas &nbsp;</strong>
                             }
                             @if (@ViewBag.TaxationType == 1)
                             {
-                                <strong>Substituição Tributária por MVA </strong>
+                                <strong>Substituição Tributária por MVA</strong>
                             }
                             else if (@ViewBag.TaxationType == 2)
                             {
@@ -75,7 +75,7 @@
                             }
                             @if (ViewBag.type == 8)
                             {
-                        <strong>&nbsp;Produto Não Pautado</strong>
+                                <strong>&nbsp;Produto Não Pautado</strong>
                             }
 
                         </div>
@@ -557,14 +557,73 @@
                     {
                         <thead>
                             <tr>
-                                <th>
-                                    Tributação
-                                </th>
-                                <th>
-                                    Código do Dar
-                                </th>
+                                <th>Tributação</th>
+                                <th>Código do Dar</th>
+                                <th>Icms Apurado</th>
+                                <th>Icms Pago</th>
+                                <th>A Pagar</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <tr>
+                                <td>Icms ST</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Antecipação Parcial</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Consumo</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Consumo p/ Revenda</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Imobilizado</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Antecipação Total</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Isento</td>
+                                <td align="center"> ---- </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total</td>
+                                <td align="center"> ---- </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     }
                 </table>
             </div>

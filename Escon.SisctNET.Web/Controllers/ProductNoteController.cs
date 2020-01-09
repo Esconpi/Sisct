@@ -244,7 +244,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    if (products == null)
+                    if (Request.Form["produto"].ToString() == "2")
                     {
                         var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                         decimal baseCalc = 0;
@@ -345,7 +345,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     total_icms -= valor_icms;
                                 }
-                                decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
+                                //decimal total = Convert.ToDecimal(item.TotalICMS) + valor_fecop;
 
                                 item.TotalICMS = total_icms;
 
@@ -397,60 +397,33 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var taxationcm = _taxationService.FindByNcm(code);
 
-                    if(taxationcm != null)
+                    if (taxationcm != null)
                     {
                         taxationcm.DateEnd = Convert.ToDateTime(dateStart).AddDays(-1);
                         _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
-
-                        var taxation = new Model.Taxation
-                        {
-                            CompanyId = note.CompanyId,
-                            Code = code,
-                            Code2 = code2,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = bcr,
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now,
-                            NcmId = ncm.Id,
-                            Picms = rst.Picms,
-                            Uf = note.Uf
-
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-
                     }
-                    else
+                    var taxation = new Model.Taxation
                     {
-                        var taxation = new Model.Taxation
-                        {
-                            CompanyId = note.CompanyId,
-                            Code = code,
-                            Code2 = code2,
-                            Cest = rst.Cest,
-                            AliqInterna = Convert.ToDecimal(AliqInt),
-                            Diferencial = dif,
-                            MVA = entity.Mva,
-                            BCR = bcr,
-                            Fecop = entity.Fecop,
-                            DateStart = Convert.ToDateTime(dateStart),
-                            DateEnd = null,
-                            TaxationTypeId = Convert.ToInt32(taxaType),
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now,
-                            NcmId = ncm.Id,
-                            Picms = rst.Picms,
-                            Uf = note.Uf
+                        CompanyId = note.CompanyId,
+                        Code = code,
+                        Code2 = code2,
+                        Cest = rst.Cest,
+                        AliqInterna = Convert.ToDecimal(AliqInt),
+                        Diferencial = dif,
+                        MVA = entity.Mva,
+                        BCR = bcr,
+                        Fecop = entity.Fecop,
+                        DateStart = Convert.ToDateTime(dateStart),
+                        DateEnd = null,
+                        TaxationTypeId = Convert.ToInt32(taxaType),
+                        Created = DateTime.Now,
+                        Updated = DateTime.Now,
+                        NcmId = ncm.Id,
+                        Picms = rst.Picms,
+                        Uf = note.Uf
 
-                        };
-                        _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
-                    }
+                    };
+                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
 
                     
                 }
@@ -870,7 +843,6 @@ namespace Escon.SisctNET.Web.Controllers
                     var prod = result.Where(_ => _.Pautado.Equals(false));
                     ViewBag.product = prod;
                 }
-
 
 
                 return View(result);
