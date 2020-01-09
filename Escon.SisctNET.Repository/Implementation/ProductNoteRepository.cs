@@ -21,11 +21,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Status.Equals(false));
-                foreach (var item in rst)
-                {
-                    products.Add(item);
-                }
+                products = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id)).ToList();
             }
             AddLog(log);
             return products;
@@ -38,11 +34,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 if (note.Cnpj.Equals(cnpj))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products = _context.ProductNotes.Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).ToList();
                 }
             }
             AddLog(log);
@@ -61,11 +53,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
-                foreach (var item in rst)
-                {
-                    products.Add(item);
-                }
+                products = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id)).ToList();
             }
             AddLog(log);
             return products;
