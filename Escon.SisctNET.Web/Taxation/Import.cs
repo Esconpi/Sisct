@@ -371,7 +371,7 @@ namespace Escon.SisctNET.Web.Taxation
                                 reader.Close();
                             }
                             notes.Add(nota);
-                        }
+                    }
                 }
             }
             catch (Exception ex)
