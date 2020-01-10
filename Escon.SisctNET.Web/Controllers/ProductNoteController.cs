@@ -106,6 +106,10 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result.TaxationTypeId = 0;
                 }
+                if (result.ProductId == null)
+                {
+                    result.ProductId = 0;
+                }
                 return View(result);
             }
             catch (Exception ex)
