@@ -200,60 +200,135 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     rst.Icms = Convert.ToDecimal(Request.Form["icms"]);
                 }
+                else
+                {
+                    rst.Icms = null;
+                }
 
                 if (Request.Form["transferencia"] != "")
                 {
                     rst.Transferencia = Convert.ToDecimal(Request.Form["transferencia"]);
+                }
+                else
+                {
+                    rst.Transferencia = null;
                 }
 
                 if (Request.Form["transferenciaEx"] != "")
                 {
                     rst.TransferenciaExcedente = Convert.ToDecimal(Request.Form["transferenciaEx"]);
                 }
+                else
+                {
+                    rst.TransferenciaExcedente = null;
+                }
 
                 if (Request.Form["suspension"] != "")
                 {
                     rst.Suspension = Convert.ToDecimal(Request.Form["suspension"]);
+                }
+                else
+                {
+                    rst.Suspension = null;
                 }
 
                 if (Request.Form["funef"] != "")
                 {
                     rst.Funef = Convert.ToDecimal(Request.Form["funef"]);
                 }
+                else
+                {
+                    rst.Funef = null;
+                }
 
                 if (Request.Form["vendaContri"] != "")
                 {
                     rst.VendaContribuinte = Convert.ToDecimal(Request.Form["vendaContri"]);
+                }
+                else
+                {
+                    rst.VendaContribuinte = null;
                 }
 
                 if (Request.Form["vendaContriEx"] != "")
                 {
                     rst.VendaContribuinteExcedente = Convert.ToDecimal(Request.Form["vendaContriEx"]);
                 }
+                else
+                {
+                    rst.VendaContribuinteExcedente = null;
+                }
 
                 if (Request.Form["cotac"] != "")
                 {
                     rst.Cotac = Convert.ToDecimal(Request.Form["cotac"]);
+                }
+                else
+                {
+                    rst.Cotac = null;
                 }
 
                 if (Request.Form["vendaCpf"] != "")
                 {
                     rst.VendaCpf = Convert.ToDecimal(Request.Form["vendaCpf"]);
                 }
+                else
+                {
+                    rst.VendaCpf = null;
+                }
 
                 if (Request.Form["vendaCpfEx"] != "")
                 {
                     rst.VendaCpfExcedente = Convert.ToDecimal(Request.Form["vendaCpfEx"]);
                 }
+                else
+                {
+                    rst.VendaCpfExcedente = null;
+                }
 
-                if(Request.Form["fecop"] != "")
+                if (Request.Form["fecop"] != "")
                 {
                     rst.Fecop = Convert.ToDecimal(Request.Form["fecop"]);
+                }
+                else
+                {
+                    rst.Fecop = null;
                 }
 
                 if (Request.Form["anexo"] != "")
                 {
                     rst.AnnexId = Convert.ToInt32(Request.Form["anexo"]);
+                }
+                else
+                {
+                    rst.AnnexId = null;
+                }
+                
+                if(Request.Form["percentual"] != "")
+                {
+                    rst.Percentual = Convert.ToDecimal(Request.Form["percentual"]);
+                }
+                else
+                {
+                    rst.Percentual = null;
+                }
+
+                if(Request.Form["vendaGrupo"] != "")
+                {
+                    rst.VendaMGrupo = Convert.ToDecimal(Request.Form["vendaGrupo"]);
+                }
+                else
+                {
+                    rst.VendaMGrupo = null;
+                }
+
+                if(Request.Form["transferenciaInter"] != "")
+                {
+                    rst.TransferenciaInter = Convert.ToDecimal(Request.Form["transferenciaInter"]);
+                }
+                else
+                {
+                    rst.TransferenciaInter = null;
                 }
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));

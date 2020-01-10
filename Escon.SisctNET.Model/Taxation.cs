@@ -41,7 +41,7 @@ namespace Escon.SisctNET.Model
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
 
-        [Display(Name = "Tipo de Uso")]
+        [Display(Name = "Tipo de Tributação")]
         [ForeignKey("TaxationType")]
         public int  TaxationTypeId { get; set; }
 

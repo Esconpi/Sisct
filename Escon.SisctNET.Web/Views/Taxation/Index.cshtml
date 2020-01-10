@@ -25,6 +25,10 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Ncm)
                         </th>
+                        <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
+                        <th>@Html.DisplayNameFor(model => model.AliqInterna)</th>
+                        <th>@Html.DisplayNameFor(model => model.MVA)</th>
+                        <th>@Html.DisplayNameFor(model => model.BCR)</th>
                         <th>@Html.DisplayNameFor(model => model.Picms)</th>
                         <th>@Html.DisplayNameFor(model => model.Uf)</th>
                         <th>@Html.DisplayNameFor(model => model.DateStart)</th>
@@ -39,6 +43,10 @@
                         <td>
                             @item.Ncm.Code
                         </td>
+                        <td>@item.TaxationType.Description</td>
+                        <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MVA)</td>
+                        <td>@Html.DisplayFor(modelItem => item.BCR)</td>
                         <td>@Html.DisplayFor(modelItem => item.Picms)</td>
                         <td>@Html.DisplayFor(modelItem => item.Uf)</td>
                         <td>@Html.DisplayFor(modelItem => item.DateStart)</td>
