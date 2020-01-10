@@ -32,8 +32,8 @@ namespace Escon.SisctNET.Web.Taxation
                             Dictionary<string, string> dest = new Dictionary<string, string>();
 
                             List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
-
-                            using (XmlReader reader = XmlReader.Create(new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"))))
+                            StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                            using (XmlReader reader = XmlReader.Create(sr))
                             {
                                 while (reader.Read())
                                 {
@@ -105,10 +105,11 @@ namespace Escon.SisctNET.Web.Taxation
                                     }
                                 }
                             reader.Close();
+                            sr.Close();
                             }
 
-
-                            using (XmlReader reader = XmlReader.Create(new StreamReader(arquivo, new UTF8Encoding(false))))
+                            StreamReader sr2 = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                            using (XmlReader reader = XmlReader.Create(sr2))
                             {
                                 decimal base_calc = 0;
                                 var code = nota[2]["CNPJ"];
@@ -368,7 +369,8 @@ namespace Escon.SisctNET.Web.Taxation
                                         }
                                     }
                                 }
-                                reader.Close();
+                            reader.Close();
+                            sr2.Close();
                             }
                             notes.Add(nota);
                         }
@@ -383,9 +385,7 @@ namespace Escon.SisctNET.Web.Taxation
 
         public List<List<Dictionary<string, string>>> Cte(string directory, string cnpj)
         {
-            List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
-
-          
+            List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();        
 
             try
             {
@@ -407,8 +407,8 @@ namespace Escon.SisctNET.Web.Taxation
                         Dictionary<string, string> vPrest = new Dictionary<string, string>();
                         Dictionary<string, string> infCarga = new Dictionary<string, string>();
                         Dictionary<string, string> ide = new Dictionary<string, string>();
-
-                        using (XmlReader reader = XmlReader.Create(new StreamReader(archivesCtes[i], Encoding.GetEncoding("ISO-8859-1"))))
+                        StreamReader ct = new StreamReader(archivesCtes[i], Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(ct))
                         {
 
                             while (reader.Read())
@@ -526,6 +526,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                             }
                             reader.Close();
+                            ct.Close();
                         }
                         ctes.Add(cte);
                     }
