@@ -58,7 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Status = comp.Status;
         
                 var result = _service.FindByNotes(id, year, month);
-
+                ViewBag.Count = result.Count();
                 return View(result);
 
             }
