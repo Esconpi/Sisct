@@ -50,6 +50,9 @@
             </div>
         </div>
         <div style="width:100%; padding:20px;">
+            <div>
+                Quantidades de Notas - @ViewBag.Count
+            </div>
             <table class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
@@ -205,10 +208,10 @@
 
                                     @Html.ActionLink(" ", "Index", "ProductNote", new { noteId = item.Id }, new { @class = "glyphicon glyphicon-list-alt pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Produtos" })
 
-                               
+
                                     @Html.ActionLink(" ", "DeleteNote", new { id = item.Id, company = item.CompanyId, year = item.AnoRef, month = item.MesRef },
                                     new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                            </td>
+                                </td>
                             </tr>
                         }
 

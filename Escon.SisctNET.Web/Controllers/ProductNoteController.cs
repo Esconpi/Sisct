@@ -106,6 +106,10 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result.TaxationTypeId = 0;
                 }
+                if (result.ProductId == null)
+                {
+                    result.ProductId = 0;
+                }
                 return View(result);
             }
             catch (Exception ex)
@@ -807,18 +811,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                         decimal gnreNPaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNPaga).Distinct().Sum()), 2);
                         decimal gnrePaga = 0;
-
-                        if(typeTaxation == 2)
+                        decimal? icmsAp = 0;
+                        if (typeTaxation == 2)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreAp).Distinct().Sum()), 2);
+                            icmsAp = result.Select(_ => _.Note.IcmsAp).Distinct().Sum();
                         }
                         else if (typeTaxation == 3)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreCo).Distinct().Sum()), 2);
+                            icmsAp = result.Select(_ => _.Note.IcmsCo).Distinct().Sum();
                         }
                         else if (typeTaxation == 5)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreIm).Distinct().Sum()), 2);
+                            icmsAp = result.Select(_ => _.Note.IcmsIm).Distinct().Sum();
                         }
 
                         ViewBag.TotalGNREnPaga = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -828,7 +835,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         valorDief = Convert.ToDecimal(totalIcms - icmsSt + gnreNPaga - gnrePaga);
-                        decimal? icmsAp = result.Select(_ => _.Note.IcmsAp).Distinct().Sum();
+                        
                         ViewBag.ValorDief = Convert.ToDouble(valorDief).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsAp = Convert.ToDouble(icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsPagar = Convert.ToDouble(valorDief - icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
