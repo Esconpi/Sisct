@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Taxation
                             sr.Close();
                             }
 
-                            StreamReader sr2 = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                            StreamReader sr2 = new StreamReader(arquivo, Encoding.GetEncoding("UTF-8"));
                             using (XmlReader reader = XmlReader.Create(sr2))
                             {
                                 decimal base_calc = 0;
