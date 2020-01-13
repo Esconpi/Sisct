@@ -157,7 +157,7 @@ namespace Escon.SisctNET.Web.Controllers
                             string nota_xml = notaXml[0]["chave"];
                             if (linha[1].Equals(nota_xml))
                             {
-                                string fornecedor = notaXml[2]["xFant"];
+                                string fornecedor = notaXml[2]["xNome"];
                                 string totalXml = notaXml[4]["vNF"];
                                 string totalSped = linha[2].Equals("") ? "0" : linha[2];
                                 string totalDif = (Math.Abs(Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped))).ToString();
