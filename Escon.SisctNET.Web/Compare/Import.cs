@@ -101,7 +101,6 @@ namespace Escon.SisctNET.Web.Compare
                                             {
                                                 total.Add(reader.Name, reader.ReadString());
                                                 reader.Read();
-
                                             }
                                             note.Add(total);
                                             break;
@@ -149,6 +148,44 @@ namespace Escon.SisctNET.Web.Compare
                 archiveSped.Close();
             }
             return sped;
+        }
+
+        public List<List<string>> SpedDif(string directorySped)
+        {
+            List<List<string>> sped = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+            try
+            {
+                string line;
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    List<string> linhaSped = new List<string>();
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2] == "0")
+                    {
+                        linhaSped.Add(linha[8]);
+                        linhaSped.Add(linha[9]);
+                        linhaSped.Add(linha[12]);
+                        linhaSped.Add(linha[14]);
+                        linhaSped.Add(linha[18]);
+                        linhaSped.Add(linha[19]);
+                        linhaSped.Add(linha[20]);
+                        linhaSped.Add(linha[24]);
+                        linhaSped.Add(linha[25]);
+                    }
+                    sped.Add(linhaSped);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return sped;
+
         }
 
         public List<string> SpedCte(string directorySped)
