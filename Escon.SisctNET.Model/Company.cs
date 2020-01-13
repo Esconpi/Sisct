@@ -84,7 +84,7 @@ namespace Escon.SisctNET.Model
             set => annex = value;
         }
 
-        [Display(Name = "Percentual de Venda do Anexo %")]
+        [Display(Name = "Venda do Anexo %")]
         public decimal ?  Percentual { get; set; }
 
         [Display(Name = "Venda p/ Mesmo Grupo %")]

@@ -181,6 +181,10 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
 
+                if(result.AnnexId == null)
+                {
+                    result.AnnexId = 0;
+                }
                 return View(result);
             }
             catch(Exception ex)
@@ -295,15 +299,15 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Fecop = null;
                 }
 
-                if (Request.Form["anexo"] != "")
-                {
-                    rst.AnnexId = Convert.ToInt32(Request.Form["anexo"]);
-                }
-                else
+                if(Request.Form["anexo"] == "0")
                 {
                     rst.AnnexId = null;
                 }
-                
+                else
+                {
+                    rst.AnnexId = Convert.ToInt32(Request.Form["anexo"]);
+                }
+                                    
                 if(Request.Form["percentual"] != "")
                 {
                     rst.Percentual = Convert.ToDecimal(Request.Form["percentual"]);

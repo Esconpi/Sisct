@@ -161,6 +161,11 @@ namespace Escon.SisctNET.Web.Controllers
                             SessionManager.SetNcmConvenioInSession(access.FunctionalityId);
                         }
 
+                        if (access.FunctionalityId.Equals(22))
+                        {
+                            SessionManager.SetHomeExitInSession(access.FunctionalityId);
+                        }
+
                     }
                     SessionManager._httpContextAccessor.HttpContext.Request.Headers.Add("Authorization", "bearer " + auth.AccessToken);
                     SessionManager._httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", "bearer " + auth.AccessToken);
