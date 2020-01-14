@@ -14,7 +14,7 @@
             <strong>Incentivo</strong>
         </h3>
         <div style="text-align:center;">
-            <strong> @Model.FantasyName - @Model.Document</strong>
+            <strong> @Model.SocialName - @Model.Document</strong>
         </div>
         <br />
     </div>
@@ -22,14 +22,15 @@
     <div class="box-body">
         <div class="col-md-12">
             <div class="row">
-                <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                <div class="form-group col-lg-9 col-md-6 col-xs-12">
                     <label asp-for="AnnexId" class="control-label"></label>
                     <input asp-for="Annex.Description" class="form-control" disabled />
                 </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Fecop" class="control-label"></label>
-                    <input asp-for="Fecop" class="form-control" disabled />
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="Percentual" class="control-label"></label>
+                    <input asp-for="Percentual" class="form-control money" disabled />
                 </div>
+
             </div>
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -50,13 +51,15 @@
                     <label class="control-label">Excedente %</label>
                     <input asp-for="TransferenciaExcedente" class="form-control" disabled />
                 </div>
+
                 <div class="col-lg-1 col-md-6 col-xs-12">
 
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Suspension" class="control-label"></label>
-                    <input asp-for="Suspension" class="form-control" disabled />
+                    <label asp-for="Fecop" class="control-label"></label>
+                    <input asp-for="Fecop" class="form-control money" disabled/>
                 </div>
+
             </div>
 
             <div class="row">
@@ -76,7 +79,14 @@
                     <label class="control-label">Excedente %</label>
                     <input asp-for="VendaContribuinteExcedente" class="form-control" disabled />
                 </div>
-              
+                <div class="col-lg-1 col-md-6 col-xs-12">
+
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Suspension" class="control-label"></label>
+                    <input asp-for="Suspension" class="form-control" disabled />
+                </div>
+
             </div>
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -94,6 +104,16 @@
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Excedente</label>
                     <input asp-for="VendaCpfExcedente" class="form-control" disabled />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="TransferenciaInter" class="control-label"></label>
+                    <input asp-for="TransferenciaInter" class="form-control money" disabled />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="VendaMGrupo" class="control-label"></label>
+                    <input asp-for="VendaMGrupo" class="form-control money" disabled />
                 </div>
             </div>
         </div>

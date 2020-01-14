@@ -89,7 +89,53 @@
                         }
                     </tbody>
                 </table>
-             }
+            }else if (ViewBag.ordem == "3")
+            {
+                <table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
+                    <thead>
+                        <tr>
+                            <th>Nº NFe</th>
+                            <th>Fornecedor</th>
+                            <th>Total NFe</th>
+                            <th>Total Sped</th>
+                            <th style="background-color:gray;">DIF</th>
+                            <th>Desconto NFe</th>
+                            <th>Desconto Sped</th>
+                            <th style="background-color:gray;">DIF</th>
+                            <th>Outras Despesas NFe</th>
+                            <th>Outras Despesas Sped</th>
+                            <th style="background-color:gray;">DIF</th>
+                            <th>Frete NFe</th>
+                            <th>Frete Sped</th>
+                            <th style="background-color:gray;">DIF</th>
+                            <th>Seguro NFe</th>
+                            <th>Seguro Sped</th>
+                            <th style="background-color:gray;">DIF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nº NFe</td>
+                            <td>Fornecedor</td>
+                            <td>Total NFe</td>
+                            <td>Total Sped</td>
+                            <td style="background-color:gray;">DIF</td>
+                            <td>Desconto NFe</td>
+                            <td>Desconto Sped</td>
+                            <td style="background-color:gray;">DIF</td>
+                            <td>Outras Despesas NFe</td>
+                            <td>Outras Despesas Sped</td>
+                            <td style="background-color:gray;">DIF</td>
+                            <td>Frete NFe</td>
+                            <td>Frete Sped</td>
+                            <td style="background-color:gray;">DIF</td>
+                            <td>Seguro NFe</td>
+                            <td>Seguro Sped</td>
+                            <td style="background-color:gray;">DIF</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
                 <div style="float:left;">
                     <h6><strong>@if (!ViewBag.notas_sped.Count.Equals(0)) { @ViewBag.notas_sped.Count } else { @ViewBag.Notas.Count } registro(s)</strong></h6>
                 </div>

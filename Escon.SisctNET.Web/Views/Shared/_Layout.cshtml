@@ -216,14 +216,22 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu" style="display:block;">
-                                <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
-                                <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
+                                @if (SessionManager.GetAnnexInSession().Equals(20))
+                                {
+                                    <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
+                                }
+
+                                @if (SessionManager.GetNcmConvenioInSession().Equals(21))
+                                {
+                                    <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
+                                }
+
                             </ul>
                         </li>
                     }
 
 
-                    @if (SessionManager.GetCompanyInSession().Equals(11))
+                    @if (SessionManager.GetCompanyInSession().Equals(11) || SessionManager.GetHomeExitInSession().Equals(22) || SessionManager.GetHomeInSession().Equals(6))
                     {
                         <li class="treeview menu-open">
                             <a href="#">
@@ -233,7 +241,20 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu" style="display:block;">
-                                <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresas</a></li>
+                                @if (SessionManager.GetCompanyInSession().Equals(11))
+                                {
+                                    <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresas</a></li>
+                                }
+
+                                @if (SessionManager.GetHomeInSession().Equals(6))
+                                {
+                                    <li><a href="@Url.Action("Index","Home")"><i class="fa fa-circle-o"></i>Entrada</a></li>
+                                }
+
+                                @if (SessionManager.GetHomeExitInSession().Equals(22))
+                                {
+                                    <li><a href="@Url.Action("Index","HomeExit")"><i class="fa fa-circle-o"></i>Saída</a></li>
+                                }
                             </ul>
                         </li>
                     }
