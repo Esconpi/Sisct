@@ -174,7 +174,6 @@ namespace Escon.SisctNET.Web.Compare
                         linhaSped.Add(linha[25]);
                         sped.Add(linhaSped);
                     }
-                    
                 }
             }
             catch(Exception ex)

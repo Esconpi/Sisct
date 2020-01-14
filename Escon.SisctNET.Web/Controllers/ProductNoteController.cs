@@ -144,12 +144,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var notes = _noteService.FindByUf(note.Company.Id,note.AnoRef,note.MesRef,note.Uf);
                 var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms);
 
-                /*if (entity.Pautado == true)
-                {
-                    products = _service.FindByCnpjCprod(notes, note.Cnpj, rst.Cprod, rst.Ncm, rst.Cest);
-                    code2 = note.Company.Document + note.Cnpj + rst.Cprod + rst.Ncm + rst.Cest;
-                }*/
-
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
                 var product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
 

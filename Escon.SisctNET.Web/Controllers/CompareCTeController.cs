@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var confDBSisctCte = _configurationService.FindByName("CTe");
+                var confDBSisctCte = _configurationService.FindByName("CTe Entrada");
                 var import = new Import();
 
                 var nome_social = Request.Form["socialname"];

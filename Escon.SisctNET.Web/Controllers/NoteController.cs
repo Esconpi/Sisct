@@ -76,8 +76,8 @@ namespace Escon.SisctNET.Web.Controllers
                 
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                var confDBSisctNfe = _configurationService.FindByName("NFe Entrada", GetLog(Model.OccorenceLog.Read));
-                var confDBSisctCte = _configurationService.FindByName("CTe Entrada", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var import = new Import();
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
