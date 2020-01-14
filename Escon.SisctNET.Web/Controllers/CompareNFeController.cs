@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var confDBSisctNfe = _configurationService.FindByName("NFe");
+                var confDBSisctNfe = _configurationService.FindByName("NFe Entrada");
                 var import = new Import();
 
                 var nome_social = Request.Form["socialname"];
@@ -149,57 +149,61 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (ordem.Equals("difereValor"))
                 {
-                    List<string> ValoresRelatorio = new List<string>();
+                    List<List<string>> registros = new List<List<string>>();
+                    
                     foreach(var linha in SpedDif)
                     {
-                        foreach(var notaXml in notes)
+                        List<string> Valores = new List<string>();
+                        foreach (var notaXml in notes)
                         {
                             string nota_xml = notaXml[0]["chave"];
                             if (linha[1].Equals(nota_xml))
                             {
-                                string fornecedor = notaXml[2]["xFant"];
+                                string fornecedor = notaXml[2]["xNome"];
                                 string totalXml = notaXml[4]["vNF"];
-                                string totalSped = linha[2].Equals("") ? "0" : linha[2];
+                                string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace(",",".");
                                 string totalDif = (Math.Abs(Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped))).ToString();
-                                string descXml = notaXml[4]["VDesc"];
-                                string descSped = linha[3].Equals("") ? "0" : linha[3];
+                                string descXml = notaXml[4]["vDesc"];
+                                string descSped = linha[3].Equals("") ? "0" : linha[3].Replace(",", ".");
                                 string descDif = (Math.Abs(Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped))).ToString();
                                 string outDespXml = notaXml[4]["vOutro"];
-                                string outDespSped = linha[6].Equals("") ? "0" : linha[6];
+                                string outDespSped = linha[6].Equals("") ? "0" : linha[6].Replace(",", ".");
                                 string outDespDif = (Math.Abs(Convert.ToDecimal(outDespXml) - Convert.ToDecimal(outDespSped))).ToString();
                                 string segXml = notaXml[4]["vSeg"];
-                                string segSped = linha[5].Equals("") ? "0" : linha[5];
+                                string segSped = linha[5].Equals("") ? "0" : linha[5].Replace(",", ".");
                                 string segDif = (Math.Abs(Convert.ToDecimal(segXml) - Convert.ToDecimal(segSped))).ToString();
                                 string freteXml = notaXml[4]["vFrete"];
-                                string freteSped = linha[4].Equals("") ? "0" : linha[4];
+                                string freteSped = linha[4].Equals("") ? "0" : linha[4].Replace(",", ".");
                                 string freteDif = (Math.Abs(Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped))).ToString();
 
-                                if (!Convert.ToDecimal(totalDif).Equals(0) && !Convert.ToDecimal(descDif).Equals(0) && 
-                                    !Convert.ToDecimal(outDespDif).Equals(0) && !Convert.ToDecimal(segDif).Equals(0) &&
-                                    !Convert.ToDecimal(freteDif).Equals(0))
+                                if ((!totalDif.Equals("0.00") && !totalDif.Equals("0") ) || (!descDif.Equals("0.00") && !descDif.Equals("0")) || 
+                                    (!outDespDif.Equals("0.00") && !outDespDif.Equals("0")) || (!segDif.Equals("0.00") &&
+                                    !segDif.Equals("0")) || (!freteDif.Equals("0.00") && !freteDif.Equals("0")))
                                 {
-                                    ValoresRelatorio.Add(nota_xml);
-                                    ValoresRelatorio.Add(fornecedor);
-                                    ValoresRelatorio.Add(totalSped);
-                                    ValoresRelatorio.Add(totalXml);
-                                    ValoresRelatorio.Add(totalDif);
-                                    ValoresRelatorio.Add(descSped);
-                                    ValoresRelatorio.Add(descXml);
-                                    ValoresRelatorio.Add(descDif);
-                                    ValoresRelatorio.Add(outDespSped);
-                                    ValoresRelatorio.Add(outDespXml);
-                                    ValoresRelatorio.Add(outDespDif);
-                                    ValoresRelatorio.Add(freteSped);
-                                    ValoresRelatorio.Add(freteXml);
-                                    ValoresRelatorio.Add(freteDif);
-                                    ValoresRelatorio.Add(segSped);
-                                    ValoresRelatorio.Add(segXml);
-                                    ValoresRelatorio.Add(segDif);
+                                    Valores.Add(linha[0]);
+                                    Valores.Add(fornecedor);
+                                    Valores.Add(totalXml);
+                                    Valores.Add(totalSped);                                    
+                                    Valores.Add(totalDif);
+                                    Valores.Add(descXml);
+                                    Valores.Add(descSped);                                    
+                                    Valores.Add(descDif);
+                                    Valores.Add(outDespXml);
+                                    Valores.Add(outDespSped);                                    
+                                    Valores.Add(outDespDif);
+                                    Valores.Add(freteXml);
+                                    Valores.Add(freteSped);                                    
+                                    Valores.Add(freteDif);
+                                    Valores.Add(segXml);
+                                    Valores.Add(segSped);
+                                    Valores.Add(segDif);
+                                    registros.Add(Valores);
                                 }
                             }
                         }
+                        
                     }
-
+                    ViewBag.Valores = registros;
                     ViewBag.ordem = "3";
                 }
 
