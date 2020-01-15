@@ -50,22 +50,32 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int noteId)
         {
 
-            try 
-            { 
-                var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read));
-                var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
-                ViewBag.Id = rst.CompanyId;
-                ViewBag.Year = rst.AnoRef;
-                ViewBag.Month = rst.MesRef;
-                ViewBag.Note = rst.Nnf;
-                ViewBag.Fornecedor = rst.Xnome;
-                ViewBag.Valor = rst.Vnf;
-                ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
-                ViewBag.Uf = rst.Uf;
-                ViewBag.View = rst.View;
-                ViewBag.NoteId = rst.Id;
+            try
+            {
+                var login = SessionManager.GetLoginInSession();
 
-                return PartialView(result);
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read));
+                    var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
+                    ViewBag.Id = rst.CompanyId;
+                    ViewBag.Year = rst.AnoRef;
+                    ViewBag.Month = rst.MesRef;
+                    ViewBag.Note = rst.Nnf;
+                    ViewBag.Fornecedor = rst.Xnome;
+                    ViewBag.Valor = rst.Vnf;
+                    ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
+                    ViewBag.Uf = rst.Uf;
+                    ViewBag.View = rst.View;
+                    ViewBag.NoteId = rst.Id;
+
+                    return View(result);
+                }
+              
             }
             catch (Exception ex)
             {

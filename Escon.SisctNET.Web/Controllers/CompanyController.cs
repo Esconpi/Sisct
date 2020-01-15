@@ -425,21 +425,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult CompareCte(int id)
-        {
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
-        public IActionResult CompareNfe(int id, int ident)
+        public IActionResult Compare(int id, int ident)
         {
             try
             {

@@ -66,12 +66,8 @@
                                 <td style="width:110px;">
 
 
-                                    <a href="#" id="@item.Id" class="showCompareNfe">
-                                        <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara NFe"></i>
-                                    </a>
-
-                                    <a href="#" id="@item.Id" class="showCompareCte">
-                                        <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px; color:gray;" data-toggle="tooltip" data-placement="top" title="Compara CTe"></i>
+                                    <a href="#" id="@item.Id" class="showCompare">
+                                        <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara"></i>
                                     </a>
 
                                     <a href="#" id="@item.Id" class="showTaxation">
@@ -139,17 +135,8 @@
             }
         });
 
-        $('.showCompareNfe').click(function () {
-            $.get('Company/CompareNfe?id=' + $(this).attr('id') + '&ident=0', function (html) {
-                $('#formShow .modal-body').empty();
-                $('#formShow .modal-body').append($(html));
-                $('#formShow').modal('show');
-            });
-
-        });
-
-        $('.showCompareCte').click(function () {
-            $.get('Company/CompareCte/' + $(this).attr('id'), function (html) {
+        $('.showCompare').click(function () {
+            $.get('Company/Compare?id=' + $(this).attr('id') + '&ident=0', function (html) {
                 $('#formShow .modal-body').empty();
                 $('#formShow .modal-body').append($(html));
                 $('#formShow').modal('show');

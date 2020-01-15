@@ -49,17 +49,26 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Status = comp.Status;
-        
-                var result = _service.FindByNotes(id, year, month);
-                ViewBag.Count = result.Count();
-                return View(result);
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                    ViewBag.Id = comp.Id;
+                    ViewBag.Year = year;
+                    ViewBag.Month = month;
+                    ViewBag.SocialName = comp.SocialName;
+                    ViewBag.Document = comp.Document;
+                    ViewBag.Status = comp.Status;
+
+                    var result = _service.FindByNotes(id, year, month);
+                    ViewBag.Count = result.Count();
+                    return View(result);
+                }
 
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Escon.SisctNET.Web.Controllers
 {
+    
     public class DarController : ControllerBaseSisctNET
     {
 
@@ -28,8 +29,17 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                return View(result);
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    return View(result);
+                }
 
             }catch(Exception ex)
             {

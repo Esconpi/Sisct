@@ -58,12 +58,22 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                ViewBag.Id = companyId;
-                var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Document = company.Document;
-                ViewBag.Name = company.SocialName;
-                var result = _service.FindByCompany(companyId);
-                return View(result);
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    ViewBag.Id = companyId;
+                    var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                    ViewBag.Document = company.Document;
+                    ViewBag.Name = company.SocialName;
+                    var result = _service.FindByCompany(companyId);
+                    return View(result);
+                }
+               
             }
             catch (Exception ex)
             {

@@ -37,9 +37,18 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                SessionManager.SetUserIdInSession(7);
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                return View(result);
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    SessionManager.SetUserIdInSession(7);
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    return View(result);
+                }
             }
             catch (Exception ex)
             {

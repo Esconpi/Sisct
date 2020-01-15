@@ -5,7 +5,6 @@ using System;
 
 namespace Escon.SisctNET.Web.Controllers
 {
-
     public class HomeController : ControllerBaseSisctNET
     {
 
@@ -19,7 +18,6 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
         }
-
 
 
         public IActionResult Index()

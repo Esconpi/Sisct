@@ -1,7 +1,7 @@
 ﻿using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -21,8 +21,26 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-            return View(result);
+            try
+            {
+                var login = SessionManager.GetLoginInSession();
+
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    return View(result);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+            
         }
     }
 }

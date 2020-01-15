@@ -29,12 +29,22 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindByCompany(companyId);
-                var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Company = company.SocialName;
-                ViewBag.Document = company.Document;
+                var login = SessionManager.GetLoginInSession();
 
-                return View(result);
+                if (login == null)
+                {
+                    return RedirectToAction("Index", "Authentication");
+                }
+                else
+                {
+                    var result = _service.FindByCompany(companyId);
+                    var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                    ViewBag.Cmpany = company.SocialName;
+                    ViewBag.Docoument = company.Document;
+
+                    return View(result);
+                }
+               
             }
             catch(Exception ex)
             {
