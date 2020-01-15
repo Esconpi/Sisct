@@ -544,10 +544,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                         }
-                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorAgreg);
+                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), taxed.Fecop, valorAgreg);
                                         if (valorbcr > 0)
                                         {
-                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), valor_fecop, valorbcr);
+                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), taxed.Fecop, valorbcr);
                                         }
                                         cms = valorAgre_AliqInt - valor_icms;
 
