@@ -539,15 +539,17 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
                                         }
-
+                                        decimal percentFecop = 0;
                                         if (taxed.Fecop != null)
                                         {
+                                            percentFecop = Convert.ToDecimal(taxed.Fecop);
                                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                         }
-                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), taxed.Fecop, valorAgreg);
+
+                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
                                         if (valorbcr > 0)
                                         {
-                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), taxed.Fecop, valorbcr);
+                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
                                         }
                                         cms = valorAgre_AliqInt - valor_icms;
 
