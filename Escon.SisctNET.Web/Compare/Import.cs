@@ -29,7 +29,8 @@ namespace Escon.SisctNET.Web.Compare
                         Dictionary<string, string> dest = new Dictionary<string, string>();
 
                         List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
-                        using (XmlReader reader = XmlReader.Create(new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"))))
+                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(arq))
                         {
                             while (reader.Read())
                             {
@@ -108,6 +109,7 @@ namespace Escon.SisctNET.Web.Compare
                                 }
                             }
                             reader.Close();
+                            arq.Close();
                         }
                         notes.Add(note);
                     }
@@ -122,9 +124,9 @@ namespace Escon.SisctNET.Web.Compare
             return notes;
         }
 
-        public List<string> SpedNfe(string directorySped)
+        public List<List<string>> SpedNfe(string directorySped)
         {
-            List<string> sped = new List<string>();
+            List<List<string>> spedNf = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             try
             {
@@ -134,7 +136,12 @@ namespace Escon.SisctNET.Web.Compare
                     string[] linha = line.Split('|');
                     if (linha[1] == "C100" && linha[2] == "0")
                     {
+                        List<string> sped = new List<string>();
                         sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        spedNf.Add(sped);
                     }
                 }               
                 
@@ -147,7 +154,40 @@ namespace Escon.SisctNET.Web.Compare
             {
                 archiveSped.Close();
             }
-            return sped;
+            return spedNf;
+        }
+
+        public List<List<string>> SpedNfeSaida(string directorySped)
+        {
+            List<List<string>> spedNf = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+            try
+            {
+                string line;
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2] == "1")
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        spedNf.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNf;
         }
 
         public List<List<string>> SpedDif(string directorySped)
@@ -320,7 +360,6 @@ namespace Escon.SisctNET.Web.Compare
                         ctes.Add(cte);
                     }
                 }
-
             }
             catch (Exception ex)
             {

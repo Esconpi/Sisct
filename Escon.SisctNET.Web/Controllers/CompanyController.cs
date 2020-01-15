@@ -439,10 +439,11 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult CompareNfe(int id)
+        public IActionResult CompareNfe(int id, int ident)
         {
             try
             {
+                ViewBag.Ident = ident;
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 return PartialView(result);
             }

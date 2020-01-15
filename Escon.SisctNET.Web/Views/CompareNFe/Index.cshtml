@@ -27,30 +27,14 @@
                 <table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
                     <thead>
                         <tr>
-                            <th>
-                                Data
-                            </th>
-                            <th>
-                                Tipo
-                            </th>
-                            <th>
-                                UF
-                            </th>
-                            <th>
-                                Nota
-                            </th>
-                            <th>
-                                CNPJ
-                            </th>
-                            <th>
-                                Nome
-                            </th>
-                            <th>
-                                Valor
-                            </th>
-                            <th>
-                                Chave
-                            </th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>UF</th>
+                            <th>Nota</th>
+                            <th>CNPJ</th>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Chave</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,15 +60,19 @@
                 <table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
                     <thead>
                         <tr>
-                            <th>
-                                Chave
-                            </th>
+                            <th>Chave</th>
+                            <th>Modelo</th>
+                            <th>Número</th>
+                            <th>Valor</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var chave in ViewBag.notas_sped) {
+                        @foreach (var nota in ViewBag.notas_sped) {
                             <tr>
-                                <th>@chave</th>
+                                <th>@nota[0]</th>
+                                <th>@nota[1]</th>
+                                <th>@nota[2]</th>
+                                <th>@nota[3]</th>
                             </tr>
                         }
                     </tbody>

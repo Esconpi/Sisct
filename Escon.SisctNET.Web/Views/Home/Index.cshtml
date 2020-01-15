@@ -140,7 +140,7 @@
         });
 
         $('.showCompareNfe').click(function () {
-            $.get('Company/CompareNfe/' + $(this).attr('id'), function (html) {
+            $.get('Company/CompareNfe?id=' + $(this).attr('id') + '&ident=0', function (html) {
                 $('#formShow .modal-body').empty();
                 $('#formShow .modal-body').append($(html));
                 $('#formShow').modal('show');

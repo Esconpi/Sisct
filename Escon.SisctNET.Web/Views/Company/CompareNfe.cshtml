@@ -29,7 +29,7 @@
             <form action="CompareNFe/Index" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-
+                <input type="hidden" name="ident" value="@ViewBag.Ident" />
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Ano</label>
                     <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />

@@ -31,6 +31,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Incentive)
                         </th>
+                        <th>
+
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +57,11 @@
                                 @Html.CheckBoxFor(modelItem => item.Incentive, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @disabled = "true" })
 
                             </td>
+                            <td>
+                                <a href="#" id="@item.Id" class="showCompareNfe">
+                                    <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara NFe"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -63,3 +71,16 @@
     </div>
     <div class="box-footer"></div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.showCompareNfe').click(function () {
+            $.get('Company/CompareNfe?id=' + $(this).attr('id') + "&ident=1", function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+    })
+
+</script>
