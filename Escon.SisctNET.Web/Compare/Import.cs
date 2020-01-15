@@ -167,7 +167,7 @@ namespace Escon.SisctNET.Web.Compare
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    if (linha[1] == "C100" && (linha[2] == "1" || linha[2] == "0"))
+                    if (linha[1] == "C100" && linha[2] == "1" && linha[6] != "05" && linha[6] != "03")
                     {
                         List<string> sped = new List<string>();
                         sped.Add(linha[9]);

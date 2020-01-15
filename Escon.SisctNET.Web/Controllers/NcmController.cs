@@ -34,6 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).TakeLast(1000);
+
                     return View(result);
                 }
             }
@@ -120,12 +121,12 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateStatus([FromBody] Model.UpdateStatus updateStatus)
+        public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
             try
             {
-                var entity = _service.FindById(updateStatus.Id, GetLog(Model.OccorenceLog.Read));
-                entity.Status = updateStatus.Status;
+                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                entity.Active = updateActive.Active;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return Ok(new { requestcode = 200, message = "ok" });

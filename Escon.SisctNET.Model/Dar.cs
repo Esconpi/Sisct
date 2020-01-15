@@ -15,5 +15,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Descrição")]
         public string Description { get; set; }
 
+        [Display(Name = "Tipo")]
+        public string Type { get; set; }
     }
 }

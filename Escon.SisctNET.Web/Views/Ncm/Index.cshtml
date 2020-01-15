@@ -61,3 +61,34 @@
     </div>
     <div class="box-footer"></div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+
+             $("#tblIndex").on("change", "input[type='checkbox']", function(){
+                try {
+
+                     $.ajax({
+                        url: '@(Url.Action("UpdateStatus", "Ncm"))',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ "Id": $(this).prop('id'), "Active": $(this).prop('checked') }),
+                        processData: false,
+                        success: function (data, textStatus, jQxhr) {
+
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                     });
+
+                } catch (e) {
+                    console.log(e);
+                }
+             });
+
+
+        })
+    })
+</script>
