@@ -22,6 +22,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IStateService _stateService;
         private readonly ITaxationService _taxationService;
         private readonly ICompanyService _companyService;
+        private readonly IDarService _darService;
 
         public ProductNote(
             IProductNoteService service,
@@ -32,6 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
             IStateService stateService,
             ITaxationService taxationService,
             ICompanyService companyService,
+            IDarService darService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
@@ -44,6 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
             _stateService = stateService;
             _taxationService = taxationService;
             _companyService = companyService;
+            _darService = darService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -855,6 +858,20 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.product = prod;
                 }
 
+                var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
+
+                var darFecop = dar.Where(_ => _.Type.Equals("Fecop")).Select(_ => _.Code).FirstOrDefault();
+                var darStCo = dar.Where(_ => _.Type.Equals("ST-CO")).Select(_ => _.Code).FirstOrDefault();
+                var darIcms = dar.Where(_ => _.Type.Equals("Icms")).Select(_ => _.Code).FirstOrDefault();
+                var darAp = dar.Where(_ => _.Type.Equals("AP")).Select(_ => _.Code).FirstOrDefault();
+                var darIm = dar.Where(_ => _.Type.Equals("IM")).Select(_ => _.Code).FirstOrDefault();
+                var darFunef = dar.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
+                ViewBag.DarFecop = darFecop;
+                ViewBag.DarSTCO = darStCo;
+                ViewBag.DarIcms = darIcms;
+                ViewBag.DarAp = darAp;
+                ViewBag.DarIm = darIm;
+                ViewBag.DarFunef = darFunef;
 
                 return View(result);
 
