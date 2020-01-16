@@ -58,8 +58,8 @@
 
                             </td>
                             <td>
-                                <a href="#" id="@item.Id" class="showCompareNfe">
-                                    <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara NFe"></i>
+                                <a href="#" id="@item.Id" class="showCompare">
+                                    <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara"></i>
                                 </a>
                             </td>
                         </tr>
@@ -73,8 +73,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.showCompareNfe').click(function () {
-            $.get('Company/CompareNfe?id=' + $(this).attr('id') + "&ident=1", function (html) {
+        $('.showCompare').click(function () {
+            $.get('Company/Compare?id=' + $(this).attr('id') + "&ident=1", function (html) {
                 $('#formShow .modal-body').empty();
                 $('#formShow .modal-body').append($(html));
                 $('#formShow').modal('show');
