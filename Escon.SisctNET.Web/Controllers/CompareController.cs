@@ -114,55 +114,29 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 sped = import.SpedNfeSaida(caminhoDestinoArquivoOriginal);
                             }
-
                         }
                         List<List<Dictionary<string, string>>> notas = new List<List<Dictionary<string, string>>>();
                         List<List<string>> notas_sped = new List<List<string>>();
                         if (ordem.Equals("xml"))
                         {
-                            if (ident.Equals("0"))
+                            foreach (var note in notes)
                             {
-                                foreach (var note in notes)
+                                string nota_xml = note[0]["chave"];
+                                bool nota_encontrada = false;
+                                foreach (var nota_sped in sped)
                                 {
-                                    if (!note[2]["CNPJ"].Equals(company.Document))
+                                    if (nota_xml.Equals(nota_sped[0]))
                                     {
-                                        string nota_xml = note[0]["chave"];
-                                        bool nota_encontrada = false;
-                                        foreach (var nota_sped in sped)
-                                        {
-                                            if (nota_xml.Equals(nota_sped[0]))
-                                            {
-                                                nota_encontrada = true;
-                                                break;
-                                            }
-                                        }
-                                        if (nota_encontrada.Equals(false))
-                                        {
-                                            notas.Add(note);
-                                        }
+                                        nota_encontrada = true;
+                                        break;
                                     }
                                 }
-                            }
-                            else if (ident.Equals("1"))
-                            {
-                                foreach (var note in notes)
+                                if (nota_encontrada.Equals(false))
                                 {
-                                    string nota_xml = note[0]["chave"];
-                                    bool nota_encontrada = false;
-                                    foreach (var nota_sped in sped)
-                                    {
-                                        if (nota_xml.Equals(nota_sped[0]))
-                                        {
-                                            nota_encontrada = true;
-                                            break;
-                                        }
-                                    }
-                                    if (nota_encontrada.Equals(false))
-                                    {
-                                        notas.Add(note);
-                                    }
+                                    notas.Add(note);
                                 }
                             }
+                            
                             ViewBag.ordem = "1";
                         }
                         else if (ordem.Equals("sped"))
