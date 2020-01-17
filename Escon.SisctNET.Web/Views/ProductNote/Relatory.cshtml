@@ -808,17 +808,17 @@
                                         <br />
                                         <table class="col-lg-12 col-md-12 col-sm-12">
                                             <tr>
-                                                @if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 3 || ViewBag.TaxationType == 4)
+                                                @if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 3 || ViewBag.TaxationType == 4 || ViewBag.TaxationType == 7)
                                                 {
-                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113001</td>
+                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right"><b>Código DAR-@ViewBag.DarSTCO</b></td>
                                                 }
                                                 @if (ViewBag.TaxationType == 2)
                                                 {
-                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113011</td>
+                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right"><b>Código DAR-@ViewBag.DarAp</b></td>
                                                 }
                                                 @if (ViewBag.TaxationType == 5)
                                                 {
-                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right">Código DAR-113013</td>
+                                                    <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right"><b>Código DAR-@ViewBag.DarIm</b></td>
                                                 }
                                             </tr>
                                         </table>
@@ -895,7 +895,7 @@
                                             </table>
                                             <table class="col-lg-12 col-md-12 col-sm-12">
                                                 <tr>
-                                                    <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-113387</th>
+                                                    <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-@ViewBag.DarFecop</th>
                                                 </tr>
                                             </table>
                                         }
@@ -1106,17 +1106,17 @@
                             <tr>
                                 <th>ICMS</th>
                                 <td> @ViewBag.ImpostoIcms</td>
-                                <td>113000</td>
+                                <td>@ViewBag.DarIcms</td>
                             </tr>
                             <tr>
                                 <th>Fecop</th>
                                 <td>@ViewBag.ImpostoFecop</td>
-                                <td>113387</td>
+                                <td>@ViewBag.DarFecop</td>
                             </tr>
                             <tr>
                                 <th>Funef</th>
                                 <td>@ViewBag.TaxaFunef</td>
-                                <td>122100</td>
+                                <td>@ViewBag.DarFunef</td>
                             </tr>
                             <tr>
                                 <th>Total</th>

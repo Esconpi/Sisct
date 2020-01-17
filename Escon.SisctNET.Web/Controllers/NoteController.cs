@@ -545,6 +545,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             percentFecop = Convert.ToDecimal(taxed.Fecop);
                                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                         }
+
                                         valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
                                         if (valorbcr > 0)
                                         {
