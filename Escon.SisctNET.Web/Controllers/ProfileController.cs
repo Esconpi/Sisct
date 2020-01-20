@@ -11,7 +11,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public ProfileController(
             IProfileService profileService,
-            IAccessService accessService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Profile")
