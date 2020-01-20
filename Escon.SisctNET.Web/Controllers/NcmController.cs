@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -20,8 +21,9 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
+
         [HttpGet]
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(string ncm = "")
         {
             try
             {
@@ -33,16 +35,33 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    int contaPage = rst.Count() / 1000;
-                    if(rst.Count() % 1000 > 0)
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    if (ncm.Equals(""))
                     {
-                        contaPage++;
+                        result = result.Take(500).ToList();
                     }
-                    int final = page * 1000;
-                    int inicio = final - 1000;
-                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-                    ViewBag.ContaPage = contaPage;
+                    else if (!ncm.Equals(""))
+                    {
+                        List<Model.Ncm> lista = new List<Model.Ncm>();
+                        foreach (var code in result)
+                        {
+                            if(code.Code.Contains(ncm))
+                            {
+                                lista.Add(code);
+                            }
+                        }
+                        result = lista;
+                    }
+                    //int contaPage = rst.Count() / 1000;
+                    //if(rst.Count() % 1000 > 0)
+                    //{
+                    //    contaPage++;
+                    //}
+                    //int final = page * 1000;
+                    //int inicio = final - 1000;
+                    //var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
+                    
+                    //ViewBag.ContaPage = contaPage;
                     return View(result);
                 }
             }
