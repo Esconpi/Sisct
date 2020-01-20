@@ -23,7 +23,9 @@
                 <input type="text" name="ncm"/>
                 <input type="submit" value="Pesquisar" />
             </form>
-            <table class="table table-striped table-bordered" style="width:100%">
+
+            <table style="width:100%">
+
                 <thead>
                     <tr>
                         <th style="width:10%">
@@ -63,28 +65,9 @@
             </table>
         </div>
     </div>
-    <div class="box-footer"></div>
 </div>
+
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#page").on("change", function () {
-            var e = document.getElementById("page").value;
-            console.log(e);
-            $.ajax({
-                url: '@(Url.Action("Index", "Ncm"))',
-                dataType: 'json',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({ "Page": $(this).val }),
-                processData: false,
-                success: function (data, textStatus, jQxhr) {
 
-                },
-                error: function (jqXhr, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            });
-
-        });
-     })
+    
 </script>

@@ -555,75 +555,84 @@
                     }
                     else if (ViewBag.type == 6)
                     {
-                        <thead>
+                        <thead style="font-size:12px;">
                             <tr>
                                 <th>Tributação</th>
                                 <th>Código do Dar</th>
+                                <th>Quantidade de Produtos</th>
                                 <th>Icms Apurado</th>
                                 <th>Icms Pago</th>
                                 <th>A Pagar</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size:12px;">
                             <tr>
                                 <td>Icms ST</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarSTCO</td>
+                                <td>@ViewBag.QtdST</td>
+                                <td>@ViewBag.TotatlApuradoST</td>
+                                <td>@ViewBag.TotalIcmsPagoST</td>
+                                <td>@ViewBag.TotalAPagaST</td>
                             </tr>
                             <tr>
                                 <td>Antecipação Parcial</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarAp</td>
+                                <td>@ViewBag.QtdAP</td>
+                                <td>@ViewBag.TotalApuradoAP</td>
+                                <td>@ViewBag.TotalIcmsPagoAP</td>
+                                <td>@ViewBag.TotalAPagaAP</td>
                             </tr>
                             <tr>
                                 <td>Consumo</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarSTCO</td>
+                                <td>@ViewBag.QtdCO</td>
+                                <td>@ViewBag.TotalApuradoCO</td>
+                                <td>@ViewBag.TotatIcmsPagoCO</td>
+                                <td>@ViewBag.TotalAPagaCO</td>
                             </tr>
                             <tr>
                                 <td>Consumo p/ Revenda</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarSTCO</td>
+                                <td>@ViewBag.QtdCOR</td>
+                                <td>@ViewBag.TotalApuradoCOR</td>
+                                <td> ---- </td>
+                                <td>@ViewBag.TotalAPagaCOR</td>
                             </tr>
                             <tr>
                                 <td>Imobilizado</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarIm</td>
+                                <td>@ViewBag.QtdIM</td>
+                                <td>@ViewBag.TotalApuradoIM</td>
+                                <td>@ViewBag.TotalIcmsPagoIM</td>
+                                <td>@ViewBag.TotalAPagaIM</td>
                             </tr>
                             <tr>
                                 <td>Antecipação Total</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>@ViewBag.DarSTCO</td>
+                                <td>@ViewBag.QtdAT</td>
+                                <td>@ViewBag.TotalApuradoAT</td>
+                                <td> --- </td>
+                                <td>@ViewBag.TotalAPagaAT</td>
                             </tr>
                             <tr>
                                 <td>Isento</td>
-                                <td align="center"> ---- </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> ---- </td>
+                                <td>@ViewBag.QtdIsento</td>
+                                <td> ---- </td>
+                                <td> ---- </td>
+                                <td> ---- </td>
                             </tr>
-                        </tbody>
-                        <tfoot>
                             <tr>
                                 <td>Total</td>
-                                <td align="center"> ---- </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> ---- </td>
+                                <td>@ViewBag.QtdGeral</td>
+                                <td>@ViewBag.TotalApuradoGeral</td>
+                                <td>@ViewBag.TotalIcmsPagoGeral</td>
+                                <td>@ViewBag.TotalAPagaGeral</td>
                             </tr>
-                        </tfoot>
+
+                        </tbody>
+
                     }
                 </table>
             </div>
