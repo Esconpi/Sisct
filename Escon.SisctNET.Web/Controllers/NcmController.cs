@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(1000);
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).TakeLast(1000);
 
                     return View(result);
                 }

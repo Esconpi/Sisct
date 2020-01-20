@@ -926,9 +926,9 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? totalIcmsPagoGeral = totalIcmsPagoAP + totalIcmsPagoCO + totalIcmsPagoIM + totalIcmsPagoST;
                     decimal? totalAPagaGeral = totalAPagaST + totalAPagaAP + totalAPagaIM + totalAPagaCO + totalApuradoCOR + totalApuradoAT;
                     ViewBag.QtdGeral = qtdGeral;
-                    ViewBag.TotalApuradoGeral = totalApuradoGeral;
-                    ViewBag.TotalIcmsPagoGeral = totalIcmsPagoGeral;
-                    ViewBag.TotalAPagaGeral = totalAPagaGeral;
+                    ViewBag.TotalApuradoGeral = Convert.ToDouble(totalApuradoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalIcmsPagoGeral = Convert.ToDouble(totalIcmsPagoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalAPagaGeral = Convert.ToDouble(totalAPagaGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     
                 }
 
