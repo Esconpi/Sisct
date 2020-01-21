@@ -115,11 +115,20 @@ namespace Escon.SisctNET.Web.Controllers
                 result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 _service.Update(result, GetLog(Model.OccorenceLog.Update));
 
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.DateEnd = null;
-                entity.GroupId = result.GroupId;
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                decimal price = Convert.ToDecimal(Request.Form["price"]);
+                var product = new Model.Product
+                {
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
+                    DateEnd = null,
+                    GroupId = entity.GroupId,
+                    Code = entity.Code,
+                    Unity = entity.Unity,
+                    Description = entity.Description,
+                    Price = price,
+                    DateStart = entity.DateStart
+                };
+                _service.Create(entity:product, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

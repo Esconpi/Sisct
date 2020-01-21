@@ -46,8 +46,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.ContaPage = contaPage;
 
-                    ViewBag.Page = page;
-
                     return View(result);
                 }
             }
