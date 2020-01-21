@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\State\NewFolder\**" />
+    <Content Remove="Views\State\NewFolder\**" />
+    <EmbeddedResource Remove="Views\State\NewFolder\**" />
+    <None Remove="Views\State\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AdminLTE" Version="2.4.0" />
     <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -27,7 +34,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\State\NewFolder\" />
     <Folder Include="wwwroot\Uploads\Atos\" />
     <Folder Include="wwwroot\Uploads\Speds\" />
   </ItemGroup>

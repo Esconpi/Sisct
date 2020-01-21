@@ -52,9 +52,15 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.AttachmentId = new SelectList(_attachmentService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
-            
-            return View();
+            try
+            {
+                ViewBag.AttachmentId = new SelectList(_attachmentService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                return View();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpPost]

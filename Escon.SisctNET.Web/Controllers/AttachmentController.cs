@@ -51,7 +51,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 return View();
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }

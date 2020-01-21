@@ -21,7 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             try
             {
@@ -33,7 +33,20 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).TakeLast(1000);
+                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                    int contaPage = rst.Count() / 1000;
+                    if(rst.Count() % 1000 > 0)
+                    {
+                       contaPage++;
+                    }
+                    int final = page * 1000;
+                    int inicio = final - 1000;
+                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
+
+                    ViewBag.ContaPage = contaPage;
+
+                    ViewBag.Page = page;
 
                     return View(result);
                 }
@@ -96,6 +109,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
