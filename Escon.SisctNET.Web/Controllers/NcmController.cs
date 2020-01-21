@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -20,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
+
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
@@ -34,18 +36,45 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-
+                    //if (ncm.Equals(""))
+                    //{
+                    //    result = result.Take(500).ToList();
+                    //}
+                    //else if (!ncm.Equals(""))
+                    //{
+                    //    List<Model.Ncm> lista = new List<Model.Ncm>();
+                    //    foreach (var code in result)
+                    //    {
+                    //        if(code.Code.Contains(ncm))
+                    //        {
+                    //            lista.Add(code);
+                    //        }
+                    //    }
+                    //    result = lista;
+                    //}
                     int contaPage = rst.Count() / 1000;
                     if(rst.Count() % 1000 > 0)
                     {
-                       contaPage++;
+                        contaPage++;
                     }
                     int final = page * 1000;
                     int inicio = final - 1000;
                     var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-
+                    
                     ViewBag.ContaPage = contaPage;
 
+<<<<<<< HEAD
+=======
+                    //var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(500);
+                    //foreach(var rst in result)
+                    //{
+                    //    if (rst.Description.Length > 50)
+                    //    {
+                    //        rst.Description = rst.Description.Substring(0, 50);
+                    //    }
+                    //}
+
+>>>>>>> origin/Tiago
                     return View(result);
                 }
             }
@@ -107,8 +136,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");

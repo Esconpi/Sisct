@@ -119,14 +119,14 @@
 
                     @if (SessionManager.GetProfileInSession().Equals(1) || SessionManager.GetUserInSession().Equals(5) || SessionManager.GetConfigurationInSession().Equals(12))
                     {
-                        <li class="treeview menu-open">
+                        <li class="treeview menu">
                             <a href="#">
                                 <i class="fa fa-file-text-o"></i> <span>Cadastros</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
-                            <ul class="treeview-menu" style="display:block;">
+                            <ul class="treeview-menu" style="display:none;">
 
                                 @if (SessionManager.GetProfileInSession().Equals(1))
                                 {
@@ -152,14 +152,14 @@
                        SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
                        SessionManager.GetDarInSession().Equals(19))
                     {
-                        <li class="treeview menu-open">
+                        <li class="treeview menu">
                             <a href="#">
                                 <i class="fa fa-table"></i> <span>Tabelas</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
-                            <ul class="treeview-menu" style="display:block;">
+                            <ul class="treeview-menu" style="display:none;">
 
                                 @if (SessionManager.GetCfopInSession().Equals(13))
                                 {
@@ -208,14 +208,14 @@
 
                     @if (SessionManager.GetAnnexInSession().Equals(20) || SessionManager.GetNcmConvenioInSession().Equals(21))
                     {
-                        <li class="treeview menu-open">
+                        <li class="treeview menu">
                             <a href="#">
                                 <i class="fa fa-bookmark"></i> <span>Icms</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
-                            <ul class="treeview-menu" style="display:block;">
+                            <ul class="treeview-menu" style="display:none;">
                                 @if (SessionManager.GetAnnexInSession().Equals(20))
                                 {
                                     <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
