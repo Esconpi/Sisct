@@ -10,7 +10,7 @@ namespace Escon.SisctNET.Model
     public class Cst : EntityBase
     {
         [Display(Name = "CST")]
-        public string code { get; set; }
+        public string Code { get; set; }
 
         [Display(Name = "Descrição")]
         public string Description { get; set; }

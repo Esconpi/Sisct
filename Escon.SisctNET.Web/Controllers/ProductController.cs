@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             try
             {
@@ -45,7 +45,19 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                    int contaPage = rst.Count() / 2000;
+                    if (rst.Count() % 2000 > 0)
+                    {
+                        contaPage++;
+                    }
+                    int final = page * 2000;
+                    int inicio = final - 2000;
+                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
+
+                    ViewBag.ContaPage = contaPage;
+
                     return View(result);
                 }
             }
