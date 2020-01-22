@@ -332,6 +332,14 @@
             
             $('#tblIndex').DataTable();
 
+            $('#tblIndex2').DataTable({
+                "scrollY": "400px",
+                "scrollCollapse": true,
+                "paging": false,
+                "ordering": false,
+                "info": false
+            });
+
             $('.showProfile').click(function () {
                 $.get('User/EditNew/' + $(this).attr('id'), function (html) {
                     $('#formShow .modal-body').empty();

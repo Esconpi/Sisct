@@ -35,23 +35,23 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    if (ncm.Equals(""))
-                    {
-                        result = result.Take(500).ToList();
-                    }
-                    else if (!ncm.Equals(""))
-                    {
-                        List<Model.Ncm> lista = new List<Model.Ncm>();
-                        foreach (var code in result)
-                        {
-                            if(code.Code.Contains(ncm))
-                            {
-                                lista.Add(code);
-                            }
-                        }
-                        result = lista;
-                    }
+                    //var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    //if (ncm.Equals(""))
+                    //{
+                    //    result = result.Take(500).ToList();
+                    //}
+                    //else if (!ncm.Equals(""))
+                    //{
+                    //    List<Model.Ncm> lista = new List<Model.Ncm>();
+                    //    foreach (var code in result)
+                    //    {
+                    //        if(code.Code.Contains(ncm))
+                    //        {
+                    //            lista.Add(code);
+                    //        }
+                    //    }
+                    //    result = lista;
+                    //}
                     //int contaPage = rst.Count() / 1000;
                     //if(rst.Count() % 1000 > 0)
                     //{
@@ -62,6 +62,16 @@ namespace Escon.SisctNET.Web.Controllers
                     //var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
                     
                     //ViewBag.ContaPage = contaPage;
+
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(500);
+                    foreach(var rst in result)
+                    {
+                        if (rst.Description.Length > 50)
+                        {
+                            rst.Description = rst.Description.Substring(0, 50);
+                        }
+                    }
+
                     return View(result);
                 }
             }
