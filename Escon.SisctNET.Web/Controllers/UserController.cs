@@ -52,8 +52,15 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
-            return View();
+            try
+            {
+                ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+                return View();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpPost]

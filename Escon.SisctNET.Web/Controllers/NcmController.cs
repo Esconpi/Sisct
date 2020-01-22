@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Index(string ncm = "")
+        public IActionResult Index(int page = 1)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    //var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                     //if (ncm.Equals(""))
                     //{
                     //    result = result.Take(500).ToList();
@@ -52,25 +52,25 @@ namespace Escon.SisctNET.Web.Controllers
                     //    }
                     //    result = lista;
                     //}
-                    //int contaPage = rst.Count() / 1000;
-                    //if(rst.Count() % 1000 > 0)
-                    //{
-                    //    contaPage++;
-                    //}
-                    //int final = page * 1000;
-                    //int inicio = final - 1000;
-                    //var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-                    
-                    //ViewBag.ContaPage = contaPage;
-
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(500);
-                    foreach(var rst in result)
+                    int contaPage = rst.Count() / 1000;
+                    if(rst.Count() % 1000 > 0)
                     {
-                        if (rst.Description.Length > 50)
-                        {
-                            rst.Description = rst.Description.Substring(0, 50);
-                        }
+                        contaPage++;
                     }
+                    int final = page * 1000;
+                    int inicio = final - 1000;
+                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
+                    
+                    ViewBag.ContaPage = contaPage;
+
+                    //var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(500);
+                    //foreach(var rst in result)
+                    //{
+                    //    if (rst.Description.Length > 50)
+                    //    {
+                    //        rst.Description = rst.Description.Substring(0, 50);
+                    //    }
+                    //}
 
                     return View(result);
                 }

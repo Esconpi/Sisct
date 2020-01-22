@@ -11,7 +11,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public ProfileController(
             IProfileService profileService,
-            IAccessService accessService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Profile")
@@ -47,7 +46,14 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -86,6 +92,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");

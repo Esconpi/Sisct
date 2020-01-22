@@ -35,14 +35,16 @@ namespace Escon.SisctNET.Web.Controllers
                     var companycfop = _service.FindByCompanyCfop(companyId, cfop.Id);
                     if (companycfop == null)
                     {
-                        var cc = new Model.CompanyCfop
+                        var companyCfop = new Model.CompanyCfop
                         {
                             CompanyId = companyId,
                             CfopId = cfop.Id,
-                            Active = false
+                            Active = false,
+                            Created = DateTime.Now,
+                            Updated = DateTime.Now
                         };
 
-                        var result = _service.Create(entity:cc, GetLog(Model.OccorenceLog.Create));
+                        var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
                     }
                 }
                 return RedirectToAction("Index", new { companyId = companyId});

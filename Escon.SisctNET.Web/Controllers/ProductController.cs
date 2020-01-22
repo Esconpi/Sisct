@@ -27,8 +27,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             _service = service;
             _groupService = groupService;
-            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _appEnvironment = env;
+            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
 
@@ -45,7 +45,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    SessionManager.SetUserIdInSession(7);
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                     return View(result);
                 }

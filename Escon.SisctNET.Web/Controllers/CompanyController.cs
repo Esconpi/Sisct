@@ -98,13 +98,20 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            List<Company> list_matrix = _service.FindAll(GetLog(OccorenceLog.Read));
-            list_matrix.Insert(0, new Company() { SocialName = "Nenhuma Matriz selecionada", Id = 0 });
+            try
+            {
+                List<Company> list_matrix = _service.FindAll(GetLog(OccorenceLog.Read));
+                list_matrix.Insert(0, new Company() { SocialName = "Nenhuma Matriz selecionada", Id = 0 });
 
-            SelectList matrix = new SelectList(list_matrix, "Id", "SocialName", null);
-            ViewBag.Matrix = matrix;
+                SelectList matrix = new SelectList(list_matrix, "Id", "SocialName", null);
+                ViewBag.Matrix = matrix;
 
-            return View();
+                return View();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -158,6 +165,8 @@ namespace Escon.SisctNET.Web.Controllers
                 if (entity.CompanyId == 0)
                     rst.CompanyId = null;
 
+                entity.Created = rst.Created;
+                entity.Updated = DateTime.Now;
 
                 var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
@@ -334,6 +343,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     rst.TransferenciaInter = null;
                 }
+
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
