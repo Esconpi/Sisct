@@ -30,12 +30,13 @@
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstEntradaId" class="control-label"></label>
-                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" name="CstEntradaId"></select>
+                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" id="cstE" name="CstEntradaId"></select>
                         <span asp-validation-for="CstEntradaId" class="text-danger"></span>
+                        
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstSaidaId" class="control-label"></label>
-                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" name="CstSaidaId"></select>
+                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" id="cstS" name="CstSaidaId"></select>
                         <span asp-validation-for="CstSaidaId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -45,11 +46,11 @@
                     </div>
                     <div class="form-group col-lg-1 col-md-2 col-xs-12">
                         <label asp-for="Pis" class="control-label"></label>
-                        <input type="text" name="pis" class="form-control money" />
+                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
                     </div>
                     <div class="form-group col-lg-1 col-md-2 col-xs-12">
                         <label asp-for="Cofins" class="control-label"></label>
-                        <input type="text" name="cofins" class="form-control money" />
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins"/>
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>
@@ -75,3 +76,18 @@
 
     </div>
 </div>
+<script type="text/javascript">
+
+    var cstS = @Model.CstSaidaId;
+    $("#cstS").children('option').each(function () {
+        if ($(this).val() == cstS) {
+            $(this).attr('selected', true);
+        }
+    });
+    var cstE = @Model.CstEntradaId;
+    $("#cstE").children('option').each(function () {
+        if ($(this).val() == cstE) {
+            $(this).attr('selected', true);
+        }
+    });
+</script>

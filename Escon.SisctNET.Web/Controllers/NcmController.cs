@@ -107,16 +107,25 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum item selecionado", Id = 0 });
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
                 SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
                 ViewBag.CstEntradaId = cstE;
 
                 List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum item selecionado", Id = 0 });
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
                 SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
                 ViewBag.CstSaidaID = cstS;
 
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                if (result.CstSaidaId == null)
+                {
+                    result.CstSaidaId = 0;
+                }
+                if (result.CstEntradaId == null)
+                {
+                    result.CstEntradaId = 0;
+                }
                 return View(result);
             }
             catch (Exception ex)
@@ -133,6 +142,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
+                if (entity.CstEntradaId.Equals(0))
+                {
+                    entity.CstEntradaId = null;
+                }
+                if (entity.CstSaidaId.Equals(0))
+                {
+                    entity.CstSaidaId = null;
+                }
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
