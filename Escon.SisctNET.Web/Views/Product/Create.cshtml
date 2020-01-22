@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="form-group col-lg-12 col-md-6 col-xs-12">
                             <label asp-for="GroupId" class="control-label"></label>
-                            <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption"></select>
+                            <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="status" onchange="ativar_button()"></select>
                             <span asp-validation-for="GroupId" class="text-danger"></span>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                  
 
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
+                        <input type="submit" value="Cadastrar" class="btn btn-success pull-right" id="ativa" disabled = "disabled" />
                     </div>
 
                 </form>
@@ -71,3 +71,15 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+
+    function ativar_button() {
+        var opcao = document.getElementById("status").value;
+        if (opcao == "0") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
+</script>

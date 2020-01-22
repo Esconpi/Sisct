@@ -1,14 +1,14 @@
 ﻿using Escon.SisctNET.Service;
+using Escon.SisctNET.Web.Ato;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.IO;
-using Escon.SisctNET.Web.Ato;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -73,7 +73,11 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+                lista_group.Insert(0, new Model.Group() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList groups = new SelectList(lista_group, "Id", "Description", null);
+                ViewBag.GroupId = groups;
+
                 return View();
             }
             catch(Exception ex)
@@ -109,6 +113,9 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+
                 return View(result);
             }
             catch (Exception ex)

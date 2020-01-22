@@ -54,7 +54,10 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                ViewBag.AttachmentId = new SelectList(_attachmentService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Attachment> list_anexos = _attachmentService.FindAll(GetLog(Model.OccorenceLog.Read));
+                list_anexos.Insert(0, new Model.Attachment() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList anexos = new SelectList(list_anexos, "Id", "Description", null);
+                ViewBag.AttachmentId = anexos;
                 return View();
             }
             catch(Exception ex)
