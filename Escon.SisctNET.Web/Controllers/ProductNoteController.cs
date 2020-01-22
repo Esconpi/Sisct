@@ -94,7 +94,15 @@ namespace Escon.SisctNET.Web.Controllers
                 var result = _service.FindById(id, GetLog(OccorenceLog.Read));
                 var note = _noteService.FindByNote(result.Note.Chave);
                 var ncm = _ncmService.FindByCode(result.Ncm);
+
+                if(ncm == null)
+                {
+                    string message = "O Ncm " + result.Ncm + " não estar cadastrado";
+                    throw new Exception(message);
+                }
+
                 ViewBag.DescriptionNCM = ncm.Description;
+
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
                                              
                 list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });

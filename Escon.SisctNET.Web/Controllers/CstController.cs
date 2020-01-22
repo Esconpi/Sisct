@@ -1,70 +1,76 @@
-﻿using Escon.SisctNET.Service;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
-    public class CestController : ControllerBaseSisctNET
+    public class CstController : ControllerBaseSisctNET
     {
-        ICestService _service;
-        public CestController(
-            ICestService service,
-                IFunctionalityService functionalityService,
-                IHttpContextAccessor httpContextAccessor) 
-                : base(functionalityService, "Cest")
+        ICstService _service;
+
+        public CstController(
+            ICstService service,
+            IFunctionalityService functionalityService,
+            IHttpContextAccessor httpContextAccessor)
+            : base(functionalityService, "Cst")
         {
             _service = service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
+
         }
 
-        [HttpGet]
         public IActionResult Index()
         {
             try
             {
                 var login = SessionManager.GetLoginInSession();
-
                 if (login == null)
                 {
                     return RedirectToAction("Index", "Authentication");
                 }
                 else
                 {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Take(10);
+                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                     return View(result);
                 }
-                
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                return BadRequest(new { erro = 500, message = ex.Message });
+                return BadRequest(new { erro = 500, message = e.Message });
             }
-
+            
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { erro = 500, message = e.Message});
+            }
         }
 
-
         [HttpPost]
-        public IActionResult Create(Model.Cest entity)
+        public IActionResult Create(Model.Cst entity)
         {
             try
             {
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
-
-                var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return BadRequest(new { erro = 500, message = ex.Message });
+                return BadRequest(new { erro = 500, message = e.Message });
             }
         }
 
@@ -83,12 +89,10 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Cest entity)
+        public IActionResult Edit(int id, Model.Cst entity)
         {
             try
-            { 
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                entity.Created = rst.Created;
+            {
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
@@ -99,6 +103,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -107,9 +112,26 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
                 return RedirectToAction("Index");
             }
+            catch (Exception e)
+            {
+                return BadRequest(new { erro = 500, message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
+        {
+            try
+            {
+                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                entity.Ident = updateActive.Active;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
             catch (Exception ex)
             {
-                return BadRequest(new { erro = 500, message = ex.Message });
+                return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
     }

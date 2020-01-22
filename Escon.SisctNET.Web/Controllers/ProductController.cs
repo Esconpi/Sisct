@@ -128,8 +128,12 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Update(result, GetLog(Model.OccorenceLog.Update));
 
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
+
+                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+
                 var product = new Model.Product
                 {
+                    Id = lastId+1,
                     Created = DateTime.Now,
                     Updated = DateTime.Now,
                     DateEnd = null,
@@ -140,7 +144,8 @@ namespace Escon.SisctNET.Web.Controllers
                     Price = price,
                     DateStart = entity.DateStart
                 };
-                _service.Create(entity:product, GetLog(Model.OccorenceLog.Create));
+
+                _service.Create(product, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

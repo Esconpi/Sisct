@@ -42,6 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                  
                     int contaPage = rst.Count() / 1000;
+
                     if(rst.Count() % 1000 > 0)
                     {
                         contaPage++;
@@ -51,7 +52,6 @@ namespace Escon.SisctNET.Web.Controllers
                     var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
                     
                     ViewBag.ContaPage = contaPage;
-
 
                     return View(result);
                 }
@@ -83,7 +83,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
             
         }
-
 
         [HttpPost]
         public IActionResult Create(Model.Ncm entity)

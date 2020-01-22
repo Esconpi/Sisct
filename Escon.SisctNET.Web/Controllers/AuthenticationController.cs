@@ -172,6 +172,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             SessionManager.SetHomeExitInSession(access.FunctionalityId);
                         }
+                        if (access.FunctionalityId.Equals(23))
+                        {
+                            SessionManager.SetCstInSession(access.FunctionalityId);
+                        }
 
                     }
                     SessionManager._httpContextAccessor.HttpContext.Request.Headers.Add("Authorization", "bearer " + auth.AccessToken);

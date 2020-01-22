@@ -40,7 +40,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cst Entrada")]
         [ForeignKey("Cst")]
-        public int ? CstEntradaId { get; set; }
+        public int? CstEntradaId { get; set; }
 
         private Cst cstEntrada;
         public Cst CstEntrada

@@ -171,6 +171,10 @@
                                     <li><a href="@Url.Action("Index","Cest")"><i class="fa fa-circle-o"></i>CEST</a></li>
                                 }
 
+                                @if (SessionManager.GetCstInSession().Equals(23))
+                                {
+                                    <li><a href="@Url.Action("Index","Cst")"><i class="fa fa-circle-o"></i>CST</a></li>
+                                }
                                 @if (SessionManager.GetNcmInSession().Equals(7))
                                 {
                                     <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
