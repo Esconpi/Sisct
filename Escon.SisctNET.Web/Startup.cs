@@ -124,6 +124,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IDarRepository, DarRepository>();
             services.AddScoped<IAnnexRepository, AnnexRepository>();
             services.AddScoped<INcmConvenioRepository, NcmConvenioRepository>();
+            services.AddScoped<ICstRepository, CstRepository>();
 
 
             services.AddScoped<IProfileService, ProfileService>();
@@ -151,6 +152,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IDarService, DarService>();
             services.AddScoped<IAnnexService, AnnexService>();
             services.AddScoped<INcmConvenioService, NcmConvenioService>();
+            services.AddScoped<ICstService, CstService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }

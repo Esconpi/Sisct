@@ -40,24 +40,24 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cst Entrada")]
         [ForeignKey("Cst")]
-        public int ? CstEntradaId { get; set; }
+        public int? CstEntradaId { get; set; }
 
-        private Cst cstE;
-        public Cst CstE
+        private Cst cstEntrada;
+        public Cst CstEntrada
         {
-            get => LazyLoader.Load(this, ref cstE);
-            set => cstE = value;
+            get => LazyLoader.Load(this, ref cstEntrada);
+            set => cstEntrada = value;
         }
 
         [Display(Name = "Cst Saida")]
         [ForeignKey("Cst")]
         public int? CstSaidaId { get; set; }
 
-        private Cst cstS;
-        public Cst CstS
+        private Cst cstSaida;
+        public Cst CstSaida
         {
-            get => LazyLoader.Load(this, ref cstS);
-            set => cstS = value;
+            get => LazyLoader.Load(this, ref cstSaida);
+            set => cstSaida = value;
         }
 
     }
