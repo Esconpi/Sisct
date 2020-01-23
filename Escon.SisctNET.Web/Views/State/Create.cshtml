@@ -22,13 +22,69 @@
                 <div class="row">
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
                         <label asp-for="UfOrigem" class="control-label"></label>
-                        <input asp-for="UfOrigem" class="form-control" />
-                        <span asp-validation-for="UfOrigem" class="text-danger"></span>
+                        <select class="form-control selectoption" name="UfOrigem" id="ufOrigem" onchange="ativar_button()">
+                            <option value="0">Selecione o Estado</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="PR">Paraná</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
                     </div>
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
                         <label asp-for="UfDestino" class="control-label"></label>
-                        <input asp-for="UfDestino" class="form-control" />
-                        <span asp-validation-for="UfDestino" class="text-danger"></span>
+                        <select class="form-control selectoption" name="UfDestino" id="ufDestino" onchange="ativar_button()">
+                            <option value="0">Selecione o Estado</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="PR">Paraná</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
                     </div>
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -44,7 +100,7 @@
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" id="ativa" disabled="disabled"/>
                 </div>
 
             </form>
@@ -55,4 +111,14 @@
     </div>
 </div>
 
-
+<script type="text/javascript">
+    function ativar_button() {
+        var opcaoOrigem = document.getElementById("ufOrigem").value;
+        var opcaoDestino = document.getElementById("ufDestino").value;
+        if (opcaoOrigem == "0" || opcaoDestino == "0") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
+</script>
