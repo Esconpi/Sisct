@@ -478,6 +478,19 @@ namespace Escon.SisctNET.Web.Controllers
             }
             
         }
+        [HttpGet]
+        public IActionResult RelatoryExit(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
 
         public IActionResult Ncm(int id)
         {
@@ -487,7 +500,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Company = company.FantasyName;
                 ViewBag.Document = company.Document;
-                return View(result.Select(_ => _.Ncm).Distinct());
+                return View(result);
             }
             catch (Exception ex)
             {
