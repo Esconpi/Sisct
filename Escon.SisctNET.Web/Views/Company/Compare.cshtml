@@ -1,26 +1,5 @@
 ﻿@model Escon.SisctNET.Model.Company
-<style>
-    [type="file"] {
-        height: 0;
-        overflow: hidden;
-        width: 0;
-    }
 
-    [type="file"] + label {
-        border: none;
-        border-radius: 2px;
-        cursor: pointer;
-        display: inline-block;
-        font-size: inherit;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        outline: none;
-        padding: 1rem 50px;
-        position: relative;
-        transition: all 0.3s;
-        vertical-align: middle;
-    }
-</style>
 <div>
     <h4><strong>Compara:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
     <hr />
@@ -53,22 +32,14 @@
                     </select>
                 </div>
 
-                <div class="form-group col-lg-5 col-md-6 col-xs-12">
-                    <br />
-                    <div>
-                        <input type="file" class="custom-file-input" id="customFile" name="arquivo" accept=".txt" required>
-                        <label class="custom-file-label" for="customFile"><i class="fa fa-file" style="font-size:19px; text-align:center;"> <strong>Sped</strong></i></label>
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Opção</label>
                     <select name="opcao" class="form-control selectoption">
                         <option value="1">NFe</option>
                         <option value="2">CTe</option>
                     </select>
                 </div>
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="form-group col-lg-5 col-md-6 col-xs-12">
 
                     <label class="control-label">Tipo</label>
                     <select name="ordem" class="form-control selectoption">
@@ -79,9 +50,14 @@
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                    <label class="control-label"><strong>Selecione o arquivo</strong></label>
+                    <input type="file" class="form-control" name="arquivo" accept=".txt" required/>
                 </div>
-                
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Compara" class="btn btn-success pull-right" />
+                </div>
+
 
             </form>
         </div>
