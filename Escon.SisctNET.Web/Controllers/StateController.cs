@@ -60,6 +60,20 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                //var ufori = Request.Form["ufOrigem"];
+                //var ufdest = Request.Form["ufDestino"];
+                var aliq = _service.FindAll(GetLog(Model.OccorenceLog.Create));
+                foreach (var a in aliq)
+                {
+                    if (a.UfOrigem.Equals(ufori) && a.UfDestino.Equals(ufdest))
+                    {
+                        a.DateEnd = entity.DateStart.AddDays(-1);
+                        _service.Update(a, GetLog(Model.OccorenceLog.Update));
+                    }
+                }
+                //entity.UfDestino = ufdest;
+                //entity.UfOrigem = ufori;
+                //entity.Aliquota = Convert.ToDecimal(aliquota);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 
@@ -91,6 +105,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var aliq = Request.Form["aliquota"];
+                entity.Aliquota = Convert.ToDecimal(aliq);
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 entity.Created = rst.Created;

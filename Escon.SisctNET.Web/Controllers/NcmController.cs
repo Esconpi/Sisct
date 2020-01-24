@@ -107,12 +107,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
                 ViewBag.CstEntradaId = cstE;
 
                 List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
                 ViewBag.CstSaidaID = cstS;
 
