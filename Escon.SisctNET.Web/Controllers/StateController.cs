@@ -60,20 +60,15 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                //var ufori = Request.Form["ufOrigem"];
-                //var ufdest = Request.Form["ufDestino"];
                 var aliq = _service.FindAll(GetLog(Model.OccorenceLog.Create));
                 foreach (var a in aliq)
                 {
-                    if (a.UfOrigem.Equals(ufori) && a.UfDestino.Equals(ufdest))
+                    if (a.UfOrigem.Equals(entity.UfOrigem) && a.UfDestino.Equals(entity.UfDestino))
                     {
                         a.DateEnd = entity.DateStart.AddDays(-1);
                         _service.Update(a, GetLog(Model.OccorenceLog.Update));
                     }
                 }
-                //entity.UfDestino = ufdest;
-                //entity.UfOrigem = ufori;
-                //entity.Aliquota = Convert.ToDecimal(aliquota);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 
@@ -81,40 +76,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult Edit(int id, Model.State entity)
-        {
-            try
-            {
-                var aliq = Request.Form["aliquota"];
-                entity.Aliquota = Convert.ToDecimal(aliq);
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
