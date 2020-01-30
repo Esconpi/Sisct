@@ -127,10 +127,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 cfop[pos, 2] = (Convert.ToDecimal(cfop[pos, 2]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                             }
 
-                            if (notes[i][j].ContainsKey("vICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                             {
-                                cfop[pos, 3] = (Convert.ToDecimal(cfop[pos, 3]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();   
+                                cfop[pos, 3] = (Convert.ToDecimal(cfop[pos, 3]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"]))/100)).ToString();   
                             }
+
                         }
 
                     }
