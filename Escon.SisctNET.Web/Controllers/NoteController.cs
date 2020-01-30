@@ -94,14 +94,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 notes = import.Nfe(directoryNfe, directotyCte);          
 
-                var rst = _companyService.FindByDocument(comp.Document, GetLog(Model.OccorenceLog.Read));
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
                     if (notes[i][1]["finNFe"] == "4")
                     {
                         notes.RemoveAt(i);
                     }
-                    else if (notes[i][1]["idDest"] == "1" && rst.Status == true)
+                    else if (!notes[i][3]["CNPJ"].Equals(comp.Document))
+                    {
+                        notes.RemoveAt(i);
+                    }
+                    else if (notes[i][1]["idDest"] == "1" && comp.Status == true)
                     {
                         if (notes[i][2]["UF"] == notes[i][3]["UF"])
                         {
@@ -111,30 +114,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 
                 Dictionary<string, string> det = new Dictionary<string, string>();
-                //StringBuilder sCommand = new StringBuilder("INSERT INTO Note (CompanyId, Chave, Nnf, Dhemi, Cnpj, Crt, Uf, Ie, Iest, AnoRef, MesRef, Created, Updated, Nct, Xnome, Vnf, Status, IdDest) VALUES ");
-                //List<string> LinhasNota = new List<string>();
-                /*string ConnectionString = "server=192.168.1xxx";
-                            StringBuilder sCommand = new StringBuilder("INSERT INTO User (FirstName, LastName) VALUES ");
-                            using (MySqlConnection mConnection = new MySqlConnection(ConnectionString))
-                            {
-                                List<string> Rows = new List<string>();
-                                for (int i = 0; i < 100000; i++)
-                                {
-                                    Rows.Add(string.Format("('{0}','{1}')", MySqlHelper.EscapeString("test"), MySqlHelper.EscapeString("test")));
-                                }
-                                sCommand.Append(string.Join(",", Rows));
-                                sCommand.Append(";");
-                                mConnection.Open();
-                                using (MySqlCommand myCmd = new MySqlCommand(sCommand.ToString(), mConnection))
-                                {
-                                    myCmd.CommandType = CommandType.Text;
-                                    myCmd.ExecuteNonQuery();
-                            }
-                            LinhasNota.Add(string.Format("({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}',{15},{16},{17})",
-                               id, notes[i][0]["chave"], notes[i][1]["nNF"], Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["CNPJ"], notes[i][2]["CRT"], notes[i][2]["UF"],
-                               notes[i][2]["IE"], IEST, year, month, DateTime.Now, DateTime.Now, nCT, notes[i][2]["xNome"], Convert.ToDecimal(notes[i][4]["vNF"]), false, Convert.ToInt32(notes[i][1]["idDest"])));
-                            sCommand.Append(string.Join(",", LinhasNota));
-                            sCommand.Append(";");*/
+                
                 for (int i = 0; i < notes.Count; i++)
                 {
                     var notaImport = _service.FindByNote(notes[i][0]["chave"]);
@@ -450,9 +430,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal pICMSFormat = Math.Round(pICMS, 2);                          
                                 string number = pICMSFormat.ToString();
 
-                                if (pICMSFormat == 0)
+                                if (!number.Contains("."))
                                 {
-                                    number = "0.00";
+                                    number += ".00";
                                 }
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");

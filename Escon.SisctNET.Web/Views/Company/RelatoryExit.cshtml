@@ -11,7 +11,7 @@
     </div>
     <div class="box-body">
         <div class="col-lg-12">
-            <form asp-controller="ProductNote" asp-action="Relatory" method="post">
+            <form asp-controller="Icms" asp-action="RelatoryExit" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
                 <div class="row">
@@ -40,7 +40,7 @@
                         <label class="control-label">Opção</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="0">Selecione o tipo</option>
-                            <option value="1">Resumo Geral Cfop</option>
+                            <option value="1">Resumo por CFOP</option>
                         </select>
                     </div>
                 </div>
