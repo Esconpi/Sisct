@@ -101,14 +101,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 notes = import.Nfe(directoryNfe, directotyCte);
 
-                var rst = _companyService.FindByDocument(comp.Document, GetLog(Model.OccorenceLog.Read));
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
                     if (notes[i][1]["finNFe"] == "4")
                     {
                         notes.RemoveAt(i);
                     }
-                    else if (notes[i][1]["idDest"] == "1" && rst.Status == true)
+                    else if (!notes[i][3]["CNPJ"].Equals(comp.Document))
+                    {
+                        notes.RemoveAt(i);
+                    }
+                    else if (notes[i][1]["idDest"] == "1" && comp.Status == true)
                     {
                         if (notes[i][2]["UF"] == notes[i][3]["UF"])
                         {

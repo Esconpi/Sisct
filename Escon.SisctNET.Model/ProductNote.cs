@@ -32,6 +32,7 @@ namespace Escon.SisctNET.Model
         public string Xprod { get; set; }
 
         [Display(Name = "Valor")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Vprod { get; set; }
 
         [Display(Name = "Quantidade")]
@@ -75,9 +76,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Outras Despesas")]
         public decimal Voutro { get; set; }
-
-        [Display(Name = "Oms")]
-        public string Oms { get; set; }
 
         [Display(Name = "BCR(%)")]
         public decimal? BCR { get; set; }
