@@ -19,10 +19,9 @@ namespace Escon.SisctNET.Web.Taxation
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
               
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-                        
+                
+                foreach (var arquivo in archivesNfes) 
+                {                         
                     //Task.Factory.StartNew(() => {
                     if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
                         {
@@ -201,6 +200,7 @@ namespace Escon.SisctNET.Web.Taxation
                                                     }
                                                 }
 
+
                                                 decimal proporcao_prod = 0;
                                                 decimal frete_prod = 0;
                                                 decimal proporcao_icms = 0;
@@ -318,16 +318,6 @@ namespace Escon.SisctNET.Web.Taxation
                                                 nota.Add(ipi);
                                                 break;
 
-                                            case "II":
-                                                Dictionary<string, string> ii = new Dictionary<string, string>();
-                                                reader.Read();
-                                                while (reader.Name != "II")
-                                                {
-                                                    ii.Add(reader.Name, reader.ReadString());
-                                                    reader.Read();
-                                                }
-                                                nota.Add(ii);
-                                                break;
 
                                             case "PIS":
                                                 Dictionary<string, string> pis = new Dictionary<string, string>();
@@ -389,7 +379,10 @@ namespace Escon.SisctNET.Web.Taxation
 
             try
             {
-
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 string[] archivesCtes = Directory.GetFiles(directory);
 

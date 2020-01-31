@@ -14,7 +14,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _service;
         public HomeExitController(
             ICompanyService service,
-            Service.IFunctionalityService functionalityService,
+            IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "HomeExit")
         {
