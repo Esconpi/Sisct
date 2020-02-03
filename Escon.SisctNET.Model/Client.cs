@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Model
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Fornecedor")]
+        [Display(Name = "Cliente")]
         public string Name { get; set; }
 
         [Display(Name = "CNPJ")]

@@ -61,6 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                int cont = 0;
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -77,6 +78,12 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     string IE = "escon";
                     string indIEDest = "escon";
+                    string CNPJ = "escon";
+
+                    if (det.ContainsKey("CNPJ"))
+                    {
+                        CNPJ = det["CNPJ"];
+                    }
 
                     if (det.ContainsKey("IE"))
                     {
@@ -88,9 +95,35 @@ namespace Escon.SisctNET.Web.Controllers
                         indIEDest = det["indIEDest"];
                     }
 
+                    if(CNPJ != "escon")
+                    {
+                        string name = det["xNome"], document = det["CNPJ"];
+                        int companyId = id;
+
+                        if (indIEDest == "1")
+                        {
+                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+
+                            if (existCnpj == null)
+                            {
+                                var client = new Model.Client
+                                {
+                                    Name = name,
+                                    CompanyId = companyId,
+                                    Document = document,
+                                    Taxpayer = true,
+                                    Created = DateTime.Now,
+                                    Updated = DateTime.Now
+                                };
+                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
+                                cont++;
+                            }
+                        }
+                    }
+                    
                 }
 
-                return RedirectToAction("Details");
+                return RedirectToAction("Details",new {id = id,count = cont });
             }
             catch(Exception ex)
             {
@@ -99,10 +132,12 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details()
+        public IActionResult Details(int id,int count)
         {
             try
             {
+                var result = _service.FindByCompanyId(id);
+                ViewBag.Count = result.Count;
                 return View();
             }
             catch(Exception ex)

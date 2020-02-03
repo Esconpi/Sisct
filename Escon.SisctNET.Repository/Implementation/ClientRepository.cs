@@ -36,6 +36,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<Client> FindByLast(int companyId, int count, Log log = null)
+        {
+            var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId)).TakeLast(count).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public Client FindByName(string name, Log log = null)
         {
             var result = _context.Clients.Where(_ => _.Name.Equals(name)).FirstOrDefault();
