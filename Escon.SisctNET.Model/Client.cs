@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
+    [Table("client")]
     public class Client : EntityBase
     {
         [JsonIgnore]

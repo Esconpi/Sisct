@@ -10,5 +10,7 @@ namespace Escon.SisctNET.Service
         Client FindByName(string name, Model.Log log = null);
 
         List<Client> FindByCompanyId(int companyId, Model.Log log = null);
+
+        Client FindByDocumentCompany(int companyId, string document, Model.Log log = null);
     }
 }

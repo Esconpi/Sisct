@@ -29,6 +29,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public Client FindByDocumentCompany(int companyId, string document, Log log = null)
+        {
+            var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Document.Equals(document)).FirstOrDefault();
+            AddLog(log);
+            return result;
+        }
+
         public Client FindByName(string name, Log log = null)
         {
             var result = _context.Clients.Where(_ => _.Name.Equals(name)).FirstOrDefault();

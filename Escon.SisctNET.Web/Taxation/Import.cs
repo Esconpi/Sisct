@@ -868,5 +868,63 @@ namespace Escon.SisctNET.Web.Taxation
             return notes;
         }
 
+        public List<Dictionary<string, string>> Client(string directoryNfe)
+        {
+            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "dest":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            dets.Add(dest);
+                                            
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return dets;
+        }
+
     }
 }
