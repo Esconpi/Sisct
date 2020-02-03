@@ -67,6 +67,5 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.Update(entity, log);
         }
-       
     }
 }

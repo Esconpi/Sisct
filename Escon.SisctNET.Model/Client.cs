@@ -17,6 +17,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CNPJ")]
         public string Document { get; set; }
 
+        [Display(Name = "IE")]
+        public string Ie { get; set; }
+
         [Display(Name = "Contribuinte")]
         public bool Taxpayer { get; set; }
 

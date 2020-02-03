@@ -78,19 +78,26 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     string indIEDest = "escon";
                     string CNPJ = "escon";
+                    string IE = "escon";
 
                     if (det.ContainsKey("CNPJ"))
                     {
                         CNPJ = det["CNPJ"];
                     }
 
+                    if (det.ContainsKey("IE"))
+                    {
+                        IE = det["IE"];            
+                    }
+
                     if (det.ContainsKey("indIEDest"))
                     {
-                        indIEDest = det["indIEDest"];
+                        indIEDest = det["indIEDest"];                        
                     }
 
                     if(CNPJ != "escon")
                     {
+
                         if (indIEDest == "1")
                         {
                             var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
@@ -102,6 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     Name = det["xNome"],
                                     CompanyId = id,
                                     Document = CNPJ,
+                                    Ie = IE ,
                                     Taxpayer = true,
                                     Created = DateTime.Now,
                                     Updated = DateTime.Now
@@ -135,6 +143,23 @@ namespace Escon.SisctNET.Web.Controllers
             catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
+        {
+            try
+            {
+                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                entity.Taxpayer = updateActive.Active;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
     }

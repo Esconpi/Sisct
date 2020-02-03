@@ -7,7 +7,7 @@
 
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title"><strong>Clientes Novos</strong></h3>
+            <h3 class="box-title"><strong>Novos Clientes</strong></h3>
         </div>
         <div class="box-body">
             <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -41,10 +41,11 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Document)
                                     </td>
-
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Taxpayer)
+                                        @Html.CheckBoxFor(modelItem => item.Taxpayer, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
                                     </td>
+
+
                                 </tr>
                             }
                         </tbody>
