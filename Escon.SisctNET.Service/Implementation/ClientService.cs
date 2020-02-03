@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
 {
-    public class ProviderService : IProviderService
+    public class ClientService : IClientService
     {
-        private readonly IProviderRepository _repository;
+        private readonly IClientRepository _repository;
 
-        public ProviderService(IProviderRepository repository)
+        public ClientService(IClientRepository repository)
         {
             _repository = repository;
         }
 
-        public Provider Create(Provider entity, Log log)
+        public Client Create(Client entity, Log log)
         {
             return _repository.Create(entity, log);
         }
@@ -23,37 +23,37 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
-        public List<Provider> FindAll(Log log)
+        public List<Client> FindAll(Log log)
         {
             return _repository.FindAll(log);
         }
 
-        public List<Provider> FindAll(int page, int countrow, Log log)
+        public List<Client> FindAll(int page, int countrow, Log log)
         {
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Provider> FindByCompanyId(int companyId, Log log = null)
+        public List<Client> FindByCompanyId(int companyId, Log log = null)
         {
             return _repository.FindByCompanyId(companyId, log);
         }
 
-        public Provider FindByDocument(int document, Log log = null)
+        public Client FindByDocument(int document, Log log = null)
         {
             return _repository.FindByDocument(document, log);
         }
 
-        public Provider FindById(int id, Log log)
+        public Client FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public Provider FindByName(string name, Log log = null)
+        public Client FindByName(string name, Log log = null)
         {
             return _repository.FindByName(name, log);
         }
 
-        public Provider Update(Provider entity, Log log)
+        public Client Update(Client entity, Log log)
         {
             return _repository.Update(entity, log);
         }

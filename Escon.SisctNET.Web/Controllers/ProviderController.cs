@@ -7,13 +7,13 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class ProviderController : ControllerBaseSisctNET
     {
-        private readonly IProviderService _service;
+        private readonly IClientService _service;
 
         public ProviderController(
-            IProviderService service,
+            IClientService service,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
-            : base(functionalityService, "Provider")
+            : base(functionalityService, "Client")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;

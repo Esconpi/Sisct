@@ -125,7 +125,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAnnexRepository, AnnexRepository>();
             services.AddScoped<INcmConvenioRepository, NcmConvenioRepository>();
             services.AddScoped<ICstRepository, CstRepository>();
-            services.AddScoped<IProviderRepository, ProviderRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
 
             services.AddScoped<IProfileService, ProfileService>();
@@ -154,7 +154,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAnnexService, AnnexService>();
             services.AddScoped<INcmConvenioService, NcmConvenioService>();
             services.AddScoped<ICstService, CstService>();
-            services.AddScoped(IProviderService, ProviderService)();
+            services.AddScoped<IClientService, ClientService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }
