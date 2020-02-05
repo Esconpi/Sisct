@@ -21,6 +21,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Incentivada")]
         public bool Incentive { get; set; }
 
+        [Display(Name = "Apuração do regime de ICMS")]
+        public bool TipoApuracao { get; set; }
+
         [Display(Name = "Razão Social")]
         public string SocialName { get; set; }
 
