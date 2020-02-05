@@ -1,5 +1,4 @@
 ﻿using Escon.SisctNET.Model;
-using Escon.SisctNET.Model.ContextDataBase;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
