@@ -60,15 +60,30 @@ namespace Escon.SisctNET.Model
 
         public decimal ? VendaCpf { get; set; }
 
+        public decimal? VendaCpfExcedente { get; set; }
+
         public decimal ? VendaContribuinte { get; set; }
+
+        public decimal? VendaContribuinteExcedente { get; set; }
 
         public decimal ? Transferencia { get; set; }
 
-        public decimal ? VendaContribuinteExcedente { get; set; }
+        public decimal? TransferenciaExcedente { get; set; }
 
-        public decimal ? VendaCpfExcedente { get; set; }
+        [Display(Name = "Venda p/ Mesmo Grupo %")]
+        public decimal? VendaMGrupo { get; set; }
 
-        public decimal ? TransferenciaExcedente { get; set; }
+        public decimal? VendaMGrupoExcedente { get; set; }
+
+        [Display(Name = "Transferência Interestaduais %")]
+        public decimal? TransferenciaInter { get; set; }
+
+        public decimal? TransferenciaInterExcedente { get; set; }
+
+        [Display(Name = "Venda do Anexo %")]
+        public decimal? VendaAnexo { get; set; }
+
+        public decimal? VendaAnexoExcedente { get; set; }
 
         [Display(Name = "Fecop")]
         public decimal ? Fecop { get; set; }
@@ -84,13 +99,7 @@ namespace Escon.SisctNET.Model
             set => annex = value;
         }
 
-        [Display(Name = "Venda do Anexo %")]
-        public decimal ?  Percentual { get; set; }
+        
 
-        [Display(Name = "Venda p/ Mesmo Grupo %")]
-        public decimal ? VendaMGrupo { get; set; }
-
-        [Display(Name = "Transferência Interestaduais %")]
-        public decimal ? TransferenciaInter { get; set; }
     }
 }

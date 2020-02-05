@@ -319,11 +319,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     
                 if(Request.Form["percentual"] != "")
                 {
-                    rst.Percentual = Convert.ToDecimal(Request.Form["percentual"]);
+                    rst.VendaAnexo = Convert.ToDecimal(Request.Form["percentual"]);
                 }
                 else
                 {
-                    rst.Percentual = null;
+                    rst.VendaAnexoExcedente = null;
                 }
 
                 if(Request.Form["vendaGrupo"] != "")
