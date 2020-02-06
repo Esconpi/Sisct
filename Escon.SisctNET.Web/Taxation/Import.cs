@@ -906,7 +906,6 @@ namespace Escon.SisctNET.Web.Taxation
                                                 reader.Read();
                                             }
                                             dets.Add(dest);
-                                            
                                             break;
                                     }
                                 }
