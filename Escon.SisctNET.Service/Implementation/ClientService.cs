@@ -43,6 +43,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDocument(document, log);
         }
 
+        public Client FindByDocumentCompany(int companyId, string document, Log log = null)
+        {
+            return _repository.FindByDocumentCompany(companyId, document, log);
+        }
+
         public Client FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
@@ -56,6 +61,56 @@ namespace Escon.SisctNET.Service.Implementation
         public Client Update(Client entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        Client IServiceBase<Client>.Create(Client entity, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void IServiceBase<Client>.Delete(int id, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        List<Client> IServiceBase<Client>.FindAll(Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        List<Client> IServiceBase<Client>.FindAll(int page, int countrow, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        List<Client> IClientService.FindByCompanyId(int companyId, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Client IClientService.FindByDocument(int document, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Client IClientService.FindByDocumentCompany(int companyId, string document, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Client IServiceBase<Client>.FindById(int id, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Client IClientService.FindByName(string name, Log log)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Client IServiceBase<Client>.Update(Client entity, Log log)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
