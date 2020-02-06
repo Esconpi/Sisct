@@ -53,6 +53,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<Client> FindByLast(int companyId, int count, Log log = null)
+        {
+            return _repository.FindByLast(companyId, count, log);
+        }
+
         public Client FindByName(string name, Log log = null)
         {
             return _repository.FindByName(name, log);
@@ -62,6 +67,5 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.Update(entity, log);
         }
-
     }
 }

@@ -61,6 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                int cont = 0;
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -72,12 +73,17 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
                 dets = import.Client(directoryNfe);
-                List<Dictionary<string, string>> contribuinte = new List<Dictionary<string, string>>();
 
                 foreach (var det in dets)
                 {
                     string IE = "escon";
                     string indIEDest = "escon";
+                    string CNPJ = "escon";
+
+                    if (det.ContainsKey("CNPJ"))
+                    {
+                        CNPJ = det["CNPJ"];
+                    }
 
                     if (det.ContainsKey("IE"))
                     {
@@ -86,14 +92,39 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (det.ContainsKey("indIEDest"))
                     {
-                        indIEDest = det["indIEDest"];
-                        contribuinte.Add(det);
-                        
+                        indIEDest = det["indIEDest"];                        
                     }
 
+                    if(CNPJ != "escon")
+                    {
+                        string name = det["xNome"], document = det["CNPJ"];
+                        
+
+                        if (indIEDest == "1")
+                        {
+                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+
+                            if (existCnpj == null)
+                            {
+                                var client = new Model.Client
+                                {
+                                    Name = name,
+                                    CompanyId = id,
+                                    Document = document,
+                                    Ie = IE ,
+                                    Taxpayer = true,
+                                    Created = DateTime.Now,
+                                    Updated = DateTime.Now
+                                };
+                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
+                                cont++;
+                            }
+                        }
+                    }
+                    
                 }
 
-                return RedirectToAction("Details");
+                return RedirectToAction("Details",new {id = id,count = cont });
             }
             catch(Exception ex)
             {
@@ -102,15 +133,34 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details()
+        public IActionResult Details(int id,int count)
         {
             try
             {
-                return View();
+                var result = _service.FindByCompanyId(id);
+                ViewBag.Count = result.Count;
+                return View(result);
             }
             catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
+        {
+            try
+            {
+                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                entity.Taxpayer = updateActive.Active;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
     }

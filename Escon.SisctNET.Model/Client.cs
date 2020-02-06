@@ -11,11 +11,14 @@ namespace Escon.SisctNET.Model
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Fornecedor")]
+        [Display(Name = "Cliente")]
         public string Name { get; set; }
 
         [Display(Name = "CNPJ")]
         public string Document { get; set; }
+
+        [Display(Name = "IE")]
+        public string Ie { get; set; }
 
         [Display(Name = "Contribuinte")]
         public bool Taxpayer { get; set; }

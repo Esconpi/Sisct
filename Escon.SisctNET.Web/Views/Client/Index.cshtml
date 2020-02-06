@@ -34,18 +34,17 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Document)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Taxpayer)
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Document)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(modelItem => item.Taxpayer, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -83,6 +82,29 @@
                 $('#formShow').modal('show');
             });
 
+        });
+      
+        $("#tblIndex").on("change", ".active", function(){
+            try {
+
+                $.ajax({
+                url: '@(Url.Action("UpdateActive", "Client"))',
+                dataType: 'json',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({ "Id": $(this).prop('id'), "Active": $(this).prop('checked') }),
+                processData: false,
+                success: function (data, textStatus, jQxhr) {
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+                });
+
+            } catch (e) {
+                console.log(e);
+            }
         });
 
     })
