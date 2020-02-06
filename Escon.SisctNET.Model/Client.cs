@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    public class Provider : EntityBase
+    [Table("client")]
+    public class Client : EntityBase
     {
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }

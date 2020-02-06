@@ -65,7 +65,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<NcmConvenio> NcmConvenios { get; set; }
 
-        public DbSet<Provider> Providers { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
     }
 }
