@@ -96,10 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     if(CNPJ != "escon")
-                    {
-                        string name = det["xNome"], document = det["CNPJ"];
-                        
-
+                    {                       
                         if (indIEDest == "1")
                         {
                             var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
@@ -108,9 +105,9 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 var client = new Model.Client
                                 {
-                                    Name = name,
+                                    Name = det["xNome"],
                                     CompanyId = id,
-                                    Document = document,
+                                    Document = CNPJ,
                                     Ie = IE ,
                                     Taxpayer = true,
                                     Created = DateTime.Now,
@@ -137,8 +134,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindByCompanyId(id);
-                ViewBag.Count = result.Count;
+                var result = _service.FindByLast(id, count);
+                ViewBag.Count = count;
                 return View(result);
             }
             catch(Exception ex)
