@@ -925,5 +925,77 @@ namespace Escon.SisctNET.Web.Taxation
             return dets;
         }
 
+
+        public List<List<Dictionary<string, string>>> NotesRelatoryIcms(string directoryNfe)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {                       
+                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "dest":
+                                            Dictionary<string, string> dest = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            nota.Add(dest);
+                                            break;
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+
+                                                reader.Read();
+
+                                            }
+                                            nota.Add(total);
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                        notes.Add(nota);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return notes;
+        }
+
     }
 }
