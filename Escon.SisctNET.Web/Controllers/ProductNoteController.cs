@@ -368,12 +368,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     item.ValorBCR = valorAgreg;
                                     item.BCR = Convert.ToDecimal(bcrForm);
                                 }
-                                else
-                                {
-                                    valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(0), valorAgreg);
-                                    item.ValorBCR = valorAgreg;
-                                    item.BCR = Convert.ToDecimal(0);
-                                }
+
                                 if (fecop != null)
                                 {
                                     item.Fecop = Convert.ToDecimal(fecop);
