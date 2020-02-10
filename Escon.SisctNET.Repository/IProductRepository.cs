@@ -10,6 +10,6 @@ namespace Escon.SisctNET.Repository
 
         decimal FindByPrice(int id, Model.Log log = null);
 
-        Model.Product FindByProduct(string code, int grupoId, Model.Log log = null);
+        Model.Product FindByProduct(string code, int grupoId, string description, Model.Log log = null);
     }
 }

@@ -95,29 +95,25 @@ namespace Escon.SisctNET.Web.Controllers
                         indIEDest = det["indIEDest"];                        
                     }
 
-                    if(CNPJ != "escon")
+                    if (indIEDest == "1")
                     {
+                        var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
-                        if (indIEDest == "1")
+                        if (existCnpj == null)
                         {
-                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
-
-                            if (existCnpj == null)
+                            var client = new Model.Client
                             {
-                                var client = new Model.Client
-                                {
-                                    Name = det["xNome"],
-                                    CompanyId = id,
-                                    Document = CNPJ,
-                                    Ie = IE ,
-                                    Taxpayer = true,
-                                    Created = DateTime.Now,
-                                    Updated = DateTime.Now
+                                Name = det["xNome"],
+                                CompanyId = id,
+                                Document = CNPJ,
+                                Ie = IE ,
+                                Taxpayer = true,
+                                Created = DateTime.Now,
+                                Updated = DateTime.Now
 
-                                };
-                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
-                                cont++;
-                            }
+                            };
+                            _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
+                            cont++;
                         }
                     }
                     
@@ -136,8 +132,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindByCompanyId(id);
-                ViewBag.Count = result.Count;
+                var result = _service.FindByLast(id, count);
+                ViewBag.Count = count;
                 return View(result);
             }
             catch(Exception ex)

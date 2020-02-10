@@ -324,6 +324,12 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Status = true;
                         prod.Vbasecalc = baseCalc;
 
+                        if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
+                        {
+                            prod.Incentivo = false;
+                        }
+
+
                         var result = _service.Update(prod, GetLog(OccorenceLog.Update));
                     }
                     else
