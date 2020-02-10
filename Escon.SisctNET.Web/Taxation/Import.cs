@@ -438,8 +438,9 @@ namespace Escon.SisctNET.Web.Taxation
                                             reader.Read();
                                             while (reader.Name != "toma4" && reader.Name != "toma3")
                                             {
-                                                ide.Add(reader.Name, reader.ReadString());
-
+                                                if (reader.Name != "") {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                }
                                                 reader.Read();
                                             }
                                             cte.Add(ide);
@@ -454,7 +455,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             reader.Read();
                                             while (reader.Name.ToString() != "emit")
                                             {
-                                                if (reader.Name.ToString() != "enderEmit")
+                                                if (reader.Name.ToString() != "enderEmit" && reader.Name != "")
                                                 {
                                                     emit.Add(reader.Name, reader.ReadString());
                                                 }
@@ -467,7 +468,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             reader.Read();
                                             while (reader.Name.ToString() != "dest")
                                             {
-                                                if (reader.Name.ToString() != "enderDest")
+                                                if (reader.Name.ToString() != "enderDest" && reader.Name != "")
                                                 {
                                                     dest.Add(reader.Name, reader.ReadString());
                                                 }
@@ -504,7 +505,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
 
-                                                if (reader.NodeType.ToString() != "EndElement")
+                                                if (reader.NodeType.ToString() != "EndElement" && reader.Name != "")
                                                 {
                                                     icms.Add(reader.Name, reader.ReadString());
                                                 }
