@@ -15,6 +15,13 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public List<Client> FindByContribuinte(int companyId, Log log = null)
+        {
+            var result = _context.Clients.Where(_ => _.Taxpayer.Equals(true)).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<Client> FindByCompanyId(int companyId, Log log = null)
         {
             var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId)).ToList();

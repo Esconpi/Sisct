@@ -38,6 +38,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompanyId(companyId, log);
         }
 
+        public List<Client> FindByContribuinte(int companyId, Log log = null)
+        {
+            return _repository.FindByContribuinte(companyId, log);
+        }
+
         public Client FindByDocument(int document, Log log = null)
         {
             return _repository.FindByDocument(document, log);
