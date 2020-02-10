@@ -530,19 +530,29 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
                                         }
+                                        else
+                                        {
+                                            valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(0), valorAgreg);
+                                        }
                                         decimal percentFecop = 0;
                                         if (taxed.Fecop != null)
                                         {
                                             percentFecop = Convert.ToDecimal(taxed.Fecop);
                                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                         }
-
+                                        else
+                                        {
+                                            percentFecop = Convert.ToDecimal(0);
+                                            valor_fecop = calculation.valorFecop(Convert.ToDecimal(0), valorAgreg);
+                                        }
                                         valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
+                                        cms = valorAgre_AliqInt - valor_icms;
                                         if (valorbcr > 0)
                                         {
                                             valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
+                                            cms = valorAgre_AliqInt;
                                         }
-                                        cms = valorAgre_AliqInt - valor_icms;
+                                        
 
                                     }
                                     else if (taxedtype.Type == "Normal")

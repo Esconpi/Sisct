@@ -33,29 +33,39 @@
                         <th>@Html.DisplayNameFor(model => model.Uf)</th>
                         <th>@Html.DisplayNameFor(model => model.DateStart)</th>
                         <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
-                        <th></th>
+
+                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                        {
+                            <th></th>
+                        }
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @item.Ncm.Code
-                        </td>
-                        <td>@item.TaxationType.Description</td>
-                        <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
-                        <td>@Html.DisplayFor(modelItem => item.MVA)</td>
-                        <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Picms)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Uf)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DateStart)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DateEnd)</td>
-                        <td>
-                            @Html.ActionLink(" ", "Delete", new { id = item.Id },
-                                   new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @item.Ncm.Code
+                            </td>
+                            <td>@item.TaxationType.Description</td>
+                            <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MVA)</td>
+                            <td>@Html.DisplayFor(modelItem => item.BCR)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Picms)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Uf)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DateStart)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DateEnd)</td>
+
+                            @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                            {
+                                <td>
+                                @Html.ActionLink(" ", "Delete", new { id = item.Id },
+                                       new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                            </td>
+                            }
+                        
+                        </tr>
                     }
                 </tbody>
             </table>
