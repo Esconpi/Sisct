@@ -803,14 +803,21 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
                             ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            if(type == 7)
+                            decimal? impostoGeral;
+
+                            if (type == 7)
                             {
                                var productsP = _service.FindByProductsType(notes, typeTaxation);
 
                                 totalIcms = productsP.Select(_ => _.TotalICMS).Sum();
-                            }
+                                decimal ? totalFecop1 = productsP.Select(_ => _.TotalFecop).Sum();
 
-                            var impostoGeral = totalIcms + totalFecop;
+                                impostoGeral = totalIcms + totalFecop1;
+                            }
+                            else
+                            {
+                                impostoGeral = totalIcms + totalFecop;
+                            }
 
                             decimal? basefunef = impostoGeral - impostoIcms;
                             ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
