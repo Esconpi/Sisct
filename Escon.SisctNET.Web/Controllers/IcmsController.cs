@@ -571,10 +571,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = 0; i < notes.Count(); i++)
                     {
-                        int posCliente = contContribuintes;
+                        int posCliente = contContribuintes - 1;
 
                         if (notes[i][3].ContainsKey("CNPJ"))
                         {
+
                             for (int j = 0; j < contContribuintes; j++)
                             {
                                 if (resumoGeral[j, 0].Equals(notes[i][3]["CNPJ"]))
