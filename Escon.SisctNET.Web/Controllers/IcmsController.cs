@@ -52,7 +52,9 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-               /* notes = import.NfeExit(directoryNfe, id);
+
+                notes = import.NfeExit(directoryNfe, id);
+
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
                     if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
@@ -61,7 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                 }
-                */
+                
                 if (type.Equals("resumocfop")) {
                     
                     var cfops = _companyCfopService.FindByCfopActive(id);
@@ -561,14 +563,55 @@ namespace Escon.SisctNET.Web.Controllers
                             if (i < contContribuintes -1)
                             {
                                 resumoGeral[i, j, 0] = contribuintes[i].Document;
-                                resumoGeral[i, j, 1] = cfops[i].Cfop.Code;
+                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
                                 resumoGeral[i, j, 2] = "0";
                             }
                             else
                             {
                                 resumoGeral[i, j, 0] = "Não contribuinte";
-                                resumoGeral[i, j, 1] = cfops[i].Cfop.Code;
+                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
                                 resumoGeral[i, j, 2] = "0";
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < notes.Count(); i++)
+                    {
+                        int posCliente = contContribuintes;
+
+                        if (notes[i][3].ContainsKey("CNPJ"))
+                        {
+                            for (int j = 0; j < contContribuintes; j++)
+                            {
+                                if (resumoGeral[j , 0, 0].Equals(notes[i][3]["CNPJ"]))
+                                {
+                                    posCliente = j;
+                                }
+                            }
+                        }
+
+                        int posCfop = -1;
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+                            if (notes[i][k].ContainsKey("CFOP"))
+                            {
+                                for (int c = 0; c < contContribuintes; c++)
+                                {
+                                    if (resumoGeral[c, 1, 0].Equals(notes[i][c]["CFOP"]))
+                                    {
+                                        posCfop = c;
+                                    }
+                                }
+
+                            }
+
+                            if (posCfop >= 0)
+                            {
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    resumoGeral[posCliente,posCfop, 2] = (Convert.ToDecimal(resumoGeral[posCliente,posCfop, 2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                }
                             }
                         }
                     }
