@@ -76,24 +76,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach (var det in dets)
                 {
-                    string indIEDest = "escon";
-                    string CNPJ = "escon";
-                    string IE = "escon";
-
-                    if (det.ContainsKey("CNPJ"))
-                    {
-                        CNPJ = det["CNPJ"];
-                    }
-
-                    if (det.ContainsKey("IE"))
-                    {
-                        IE = det["IE"];            
-                    }
-
-                    if (det.ContainsKey("indIEDest"))
-                    {
-                        indIEDest = det["indIEDest"];                        
-                    }
+                    string CNPJ = det.ContainsKey("CNPJ") ? det["CNPJ"] : "escon";
+                    string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "escon";
+                    string IE = det.ContainsKey("IE") ? det["IE"] : "escon";   
 
                     if (indIEDest == "1")
                     {
