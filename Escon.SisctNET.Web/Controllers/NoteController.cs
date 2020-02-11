@@ -21,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IConfigurationService _configurationService;
+        private readonly IStateService _stateService;
 
         public NoteController(
             INoteService service,
@@ -31,6 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationTypeService taxationTypeService,
             IFunctionalityService functionalityService,
             IConfigurationService configurationService,
+            IStateService stateService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
         {
@@ -40,6 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
             _itemService = itemService;
             _product = productService;
             _taxationService = taxationService;
+            _stateService = stateService;
             _taxationTypeService = taxationTypeService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -433,6 +436,12 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (!number.Contains("."))
                                 {
                                     number += ".00";
+                                }
+
+                                if (!number.Equals("4.00"))
+                                {
+                                    var state = _stateService.FindByUf(notes[i][2]["UF"]);
+                                    number = state.Aliquota.ToString();
                                 }
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
