@@ -517,6 +517,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                         case "infNFe":
                                             reader.Read();
+
                                             while (reader.Name != "infNFe") {
                                                 if (reader.Name != "") {
                                                     Dictionary<string, string> infNFe = new Dictionary<string, string>();

@@ -21,7 +21,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
             _configuration = configuration;
 
-            var logEnabled = _configuration["ConfigurationProtocolNET:EnabledLog"];
+            var logEnabled = _configuration["ConfigurationSisctNET:EnabledLog"];
             if (logEnabled != null)
                 EnabledLog = Convert.ToBoolean(logEnabled);
 

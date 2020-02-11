@@ -324,6 +324,12 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Status = true;
                         prod.Vbasecalc = baseCalc;
 
+                        if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
+                        {
+                            prod.Incentivo = false;
+                        }
+
+
                         var result = _service.Update(prod, GetLog(OccorenceLog.Update));
                     }
                     else
@@ -411,6 +417,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncm = _ncmService.FindByCode(rst.Ncm);
 
+                    if (rst.Picms != 4)
+                    {
+                        var state = _stateService.FindByUf(note.Uf);
+                        rst.Picms = state.Aliquota;
+                    }
                     string code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms;
 
                     var taxationcm = _taxationService.FindByNcm(code);
@@ -798,18 +809,20 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                             decimal? impostoGeral = 0;
+
                             if (type == 7)
                             {
-                               var productsP = _service.FindByProductsType(notes, typeTaxation);
+                                var productsP = _service.FindByProductsType(notes, typeTaxation);
 
                                 totalIcms = productsP.Select(_ => _.TotalICMS).Sum();
                                 var totalFecop1 = productsP.Select(_ => _.TotalFecop).Sum();
+
                                 impostoGeral = totalIcms + totalFecop1;
                             }
                             else
                             {
                                 impostoGeral = totalIcms + totalFecop;
-                            }                            
+                            }
 
                             decimal? basefunef = impostoGeral - impostoIcms;
                             ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");

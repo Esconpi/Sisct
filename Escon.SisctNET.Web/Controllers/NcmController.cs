@@ -49,8 +49,18 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     int final = page * 1000;
                     int inicio = final - 1000;
-                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-                    
+
+                    List<Model.Ncm> result = null;
+
+                    if (contaPage == page)
+                    {
+                        result = rst.Where(_ => _.Id > inicio).ToList();
+                    }
+                    else
+                    {
+                        result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
+                    }
+                   
                     ViewBag.ContaPage = contaPage;
 
                     return View(result);

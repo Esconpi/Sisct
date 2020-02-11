@@ -447,15 +447,17 @@ namespace Escon.SisctNET.Web.Controllers
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
                                 var taxed = _taxationService.FindByCode(code, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
+                                bool incentivo = false;
+
+                                if (nota.Company.Incentive && nota.Company.AnnexId.Equals(1))
+                                {
+                                    incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
+                                }
 
                                 if (taxed == null)
                                 {
-                                    bool incentivo = false;
+                                    
 
-                                    if (nota.Company.Incentive && nota.Company.AnnexId != null)
-                                    {
-                                        incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
-                                    }
                                     try
                                     {
                                         var item = new Model.ProductNote
@@ -548,13 +550,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         baseCalc = Convert.ToDecimal(det["baseCalc"]);
                                         dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
-                                    }
-
-                                    bool incentivo = false;
-
-                                    if (nota.Company.Incentive && nota.Company.AnnexId != null)
-                                    {
-                                        incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
                                     }
 
                                     try

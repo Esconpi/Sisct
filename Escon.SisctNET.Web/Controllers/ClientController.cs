@@ -80,27 +80,25 @@ namespace Escon.SisctNET.Web.Controllers
                     string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "escon";
                     string IE = det.ContainsKey("IE") ? det["IE"] : "escon";   
 
-                    if(CNPJ != "escon")
-                    {                       
-                        if (indIEDest == "1")
-                        {
-                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+                    if (indIEDest == "1")
+                    {
+                        var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
-                            if (existCnpj == null)
+                        if (existCnpj == null)
+                        {
+                            var client = new Model.Client
                             {
-                                var client = new Model.Client
-                                {
-                                    Name = det["xNome"],
-                                    CompanyId = id,
-                                    Document = CNPJ,
-                                    Ie = IE ,
-                                    Taxpayer = true,
-                                    Created = DateTime.Now,
-                                    Updated = DateTime.Now
-                                };
-                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
-                                cont++;
-                            }
+                                Name = det["xNome"],
+                                CompanyId = id,
+                                Document = CNPJ,
+                                Ie = IE ,
+                                Taxpayer = true,
+                                Created = DateTime.Now,
+                                Updated = DateTime.Now
+
+                            };
+                            _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
+                            cont++;
                         }
                     }
                     

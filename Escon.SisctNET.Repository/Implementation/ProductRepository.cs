@@ -41,9 +41,9 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public Product FindByProduct(string code, int grupoId, Log log = null)
+        public Product FindByProduct(string code, int grupoId, string description, Log log = null)
         {
-            var rst = _context.Products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId)).FirstOrDefault();
+            var rst = _context.Products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.Description.Equals(description) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);
             return rst;
         }
