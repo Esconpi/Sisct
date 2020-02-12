@@ -933,7 +933,6 @@ namespace Escon.SisctNET.Web.Taxation
             return dets;
         }
 
-
         public List<List<Dictionary<string, string>>> NotesRelatoryIcms(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();

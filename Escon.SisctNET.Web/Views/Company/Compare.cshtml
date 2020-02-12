@@ -35,22 +35,24 @@
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Opção</label>
                     <select name="opcao" class="form-control selectoption">
+                        <option value="0">Selecione</option>
                         <option value="1">NFe</option>
                         <option value="2">CTe</option>
                     </select>
                 </div>
                 <div class="form-group col-lg-5 col-md-6 col-xs-12">
                     <label class="control-label">Tipo</label>
-                    <select name="ordem" class="form-control selectoption">
+                    <select name="ordem" id="ordem" class="form-control selectoption">
                         <option value="xml">XML x SPED</option>
                         <option value="sped">SPED x XML</option>
                         <option value="difereValor">DIFERENÇA DE TOTAIS</option>
+                        <option value="freteOutroMes">CTE PARA O OUTRO MÊS</option>
                     </select>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                    <input type="file" class="form-control" name="arquivo" accept=".txt" required/>
+                    <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" required/>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
@@ -63,5 +65,17 @@
 
     </div>
 </div>
+<script>
+    $("#ordem").on("change", function () {
+         console.log($(this).val());
+        if ($(this).val() == "freteOutroMes") {
+            $('#arquivo').attr('required', false);
+        }
+        else {
+            $('#arquivo').attr('required', true);
+        }
+    });
+
+</script>
 
 
