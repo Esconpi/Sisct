@@ -530,10 +530,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
                                         }
-                                        else
-                                        {
-                                            valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(0), valorAgreg);
-                                        }
+
                                         decimal percentFecop = 0;
                                         if (taxed.Fecop != null)
                                         {
