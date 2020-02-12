@@ -608,7 +608,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         decimal totalIcmsPauta = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(true)).Select(_ => _.TotalICMS).Sum()), 2);
                         decimal totalIcmsMva = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(false)).Select(_ => _.TotalICMS).Sum()), 2);
-                        decimal gnreNPaga = Math.Round(Convert.ToDecimal(notasTaxation.Select(_ => _.GnreNPaga).Sum()), 2);
+                        decimal gnreNPaga = Math.Round(Convert.ToDecimal(notasTaxation.Select(_ => _.GnreNSt).Sum()), 2);
                         decimal gnrePaga = Math.Round(Convert.ToDecimal(notasTaxation.Select(_ => _.GnreSt).Sum()), 2);
                         ViewBag.TotalGNREnPaga = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalGNREPaga = Convert.ToDouble(gnrePaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -708,7 +708,7 @@ namespace Escon.SisctNET.Web.Controllers
                             icmsSt = Math.Round(Convert.ToDecimal(productsNormal.Select(_ => _.IcmsST).Sum()), 2);
                             ViewBag.TotalICMSST = Convert.ToDouble(icmsSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            gnreNPaga = Math.Round(Convert.ToDecimal(notasTaxationNormal.Select(_ => _.GnreNPaga).Distinct().Sum()), 2);
+                            gnreNPaga = Math.Round(Convert.ToDecimal(notasTaxationNormal.Select(_ => _.GnreNSt).Distinct().Sum()), 2);
                             gnrePaga = Math.Round(Convert.ToDecimal(notasTaxationNormal.Select(_ => _.GnreSt).Distinct().Sum()), 2);
                             ViewBag.TotalGNREnPaga = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalGNREPaga = Convert.ToDouble(gnrePaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -841,22 +841,24 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         totalIcms = result.Select(_ => _.IcmsApurado).Sum();
 
-                        decimal gnreNPaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNPaga).Distinct().Sum()), 2);
-                        decimal gnrePaga = 0;
+                        decimal gnrePaga = 0, gnreNPaga = 0;
                         decimal? icmsAp = 0;
                         if (typeTaxation == 2)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreAp).Distinct().Sum()), 2);
+                            gnreNPaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNAp).Distinct().Sum()), 2);
                             icmsAp = result.Select(_ => _.Note.IcmsAp).Distinct().Sum();
                         }
                         else if (typeTaxation == 3)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreCo).Distinct().Sum()), 2);
+                            gnreNPaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNCo).Distinct().Sum()), 2);
                             icmsAp = result.Select(_ => _.Note.IcmsCo).Distinct().Sum();
                         }
                         else if (typeTaxation == 5)
                         {
                             gnrePaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreIm).Distinct().Sum()), 2);
+                            gnreNPaga = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNIm).Distinct().Sum()), 2);
                             icmsAp = result.Select(_ => _.Note.IcmsIm).Distinct().Sum();
                         }
 

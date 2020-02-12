@@ -42,18 +42,16 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var opcao = Request.Form["opcao"];
-
+                    var nome_social = Request.Form["socialname"];
+                    var year = Request.Form["year"];
+                    var id = Request.Form["id"];
+                    var month = Request.Form["month"];
                     ViewBag.opcao = opcao;
 
                     if (opcao.Equals("1"))
                     {
                         var confDBSisctNfe = new Model.Configuration();
                         var import = new Import();
-
-                        var nome_social = Request.Form["socialname"];
-                        var year = Request.Form["year"];
-                        var id = Request.Form["id"];
-                        var month = Request.Form["month"];
                         var ordem = Request.Form["ordem"];
                         var ident = Request.Form["ident"];
 
@@ -235,11 +233,6 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         var confDBSisctCte = _configurationService.FindByName("CTe");
                         var import = new Import();
-
-                        var nome_social = Request.Form["socialname"];
-                        var year = Request.Form["year"];
-                        var id = Request.Form["id"];
-                        var month = Request.Form["month"];
                         var company = _companyService.FindById(Convert.ToInt32(id), null);
                         string directoryCte = confDBSisctCte.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 

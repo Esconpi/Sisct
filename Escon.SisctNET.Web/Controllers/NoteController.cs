@@ -666,17 +666,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
                 note.Updated = DateTime.Now;
-
-                if (Request.Form["GnreNPaga"] != "")
-                {
-                    note.GnreNPaga = Convert.ToDecimal(Request.Form["GnreNPaga"]);
-                }
-                else
-                {
-                    note.GnreNPaga = null;
-                }
 
                 if (Request.Form["IcmsAp"] != "")
                 {
@@ -749,6 +739,45 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     note.GnreSt = null;
                 }
+
+                if (Request.Form["GnreNAp"] != "")
+                {
+                    note.GnreNAp = Convert.ToDecimal(Request.Form["GnreNAp"]);
+                }
+                else
+                {
+                    note.GnreNAp = null;
+                }
+
+                if (Request.Form["GnreNCo"] != "")
+                {
+                    note.GnreNCo = Convert.ToDecimal(Request.Form["GnreNCo"]);
+                }
+                else
+                {
+                    note.GnreNCo = null;
+                }
+
+                if (Request.Form["GnreNIm"] != "")
+                {
+                    note.GnreNIm = Convert.ToDecimal(Request.Form["GnreNIm"]);
+                }
+                else
+                {
+                    note.GnreNIm = null;
+                }
+
+                if (Request.Form["GnreNSt"] != "")
+                {
+                    note.GnreNSt = Convert.ToDecimal(Request.Form["GnreNSt"]);
+                }
+                else
+                {
+                    note.GnreNSt = null;
+                }
+
+
+
 
                 if (Request.Form["Fecop1"] != "")
                 {
