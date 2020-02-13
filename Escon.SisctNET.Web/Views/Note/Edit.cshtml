@@ -48,7 +48,7 @@
 
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
                             <label asp-for="GnreNPaga" class="control-label"></label>
-                            <input type="text" name="GnreNPaga" value="@Model.GnreNPaga" class="form-control money" />
+                            <input type="text" name="GnreNPaga" value="@Model.GnreNPaga" class="form-control money" readonly />
                         </div>
 
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -62,20 +62,17 @@
                             <label asp-for="IcmsAp" class="control-label"></label>
                             <input type="text" value="@Model.IcmsAp" name="IcmsAp" class="form-control money" />
                         </div>
-
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label asp-for="IcmsSt" class="control-label"></label>
-                            <input type="text" value="@Model.IcmsSt" name="IcmsSt" class="form-control money" />
-                        </div>
-
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
                             <label asp-for="IcmsCo" class="control-label"></label>
                             <input type="text" value="@Model.IcmsCo" name="IcmsCo" class="form-control money" />
                         </div>
-
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
                             <label asp-for="IcmsIm" class="control-label"></label>
                             <input type="text" value="@Model.IcmsIm" name="IcmsIm" class="form-control money" />
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label asp-for="IcmsSt" class="control-label"></label>
+                            <input type="text" value="@Model.IcmsSt" name="IcmsSt" class="form-control money" />
                         </div>
                     </div>
 
@@ -105,8 +102,32 @@
 
                     <div class="row">
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label asp-for="GnreNAp" class="control-label"></label>
+                            <input type="text" value="@Model.GnreNAp" name="GnreNAp" class="form-control money" />
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label asp-for="GnreNCo" class="control-label"></label>
+                            <input type="text" value="@Model.GnreNCo" name="GnreNCo" class="form-control money" />
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label asp-for="GnreNIm" class="control-label"></label>
+                                <input type="text" value="@Model.GnreNIm" name="GnreNIm" class="form-control money" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label asp-for="GnreNSt" class="control-label"></label>
+                            <input type="text" value="@Model.GnreNSt" name="GnreNSt" class="form-control money" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
                             <label asp-for="Fecop1" class="control-label"></label>
-                            <input type="text"  value="@Model.Fecop1" name="Fecop1" class="form-control money" />
+                            <input type="text" value="@Model.Fecop1" name="Fecop1" class="form-control money" />
                         </div>
 
                         <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -144,7 +165,7 @@
                         <div class="form-group col-lg-12 col-md-12 col-xs-12">
                             <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                         </div>
-                        
+
                     </div>
 
                 </form>

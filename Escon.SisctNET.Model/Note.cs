@@ -92,6 +92,18 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Gnre paga ST")]
         public decimal? GnreSt { get; set; }
 
+        [Display(Name = "Gnre não paga AP")]
+        public decimal? GnreNAp { get; set; }
+
+        [Display(Name = "Gnre não paga CO")]
+        public decimal? GnreNCo { get; set; }
+
+        [Display(Name = "Gnre não paga IM")]
+        public decimal? GnreNIm { get; set; }
+
+        [Display(Name = "Gnre não paga ST")]
+        public decimal? GnreNSt { get; set; }      
+
         [Display(Name = "Fecop pago (1%)")]
         public decimal? Fecop1 { get; set; }
 

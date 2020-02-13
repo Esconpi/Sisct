@@ -36,5 +36,17 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Ativo")]
         public bool Active { get; set; }
 
+        [Display(Name = "Tipo")]
+        [ForeignKey("CfopType")]
+        public int ? CfopTypeId { get; set; }
+
+        private CfopType cfopType;
+
+        public CfopType CfopType
+        {
+            get => LazyLoader.Load(this, ref cfopType);
+            set => cfopType = value;
+        }
+
     }
 }

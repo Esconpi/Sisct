@@ -2,8 +2,10 @@
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -33,7 +35,18 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.Id = companyId;
-                var result = _service.FindByCompanyId(companyId);
+                List<Model.Client> list_clients = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var client in list_clients)
+                {
+                    client.Name = client.Document + " - " + client.Name;
+                }
+
+                list_clients.Insert(0, new Model.Client() { Name = "Nennhum item selecionado", Id = 0 });
+                SelectList clients = new SelectList(list_clients, "Id", "Name", null);
+                ViewBag.ClientId = clients;
+                var result = _service.FindByCompanyId(companyId).TakeLast(1000);
+
                 return View(result);
             }
             catch(Exception ex)
@@ -80,7 +93,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "escon";
                     string IE = det.ContainsKey("IE") ? det["IE"] : "escon";   
 
-                    if (indIEDest == "1")
+                    if (indIEDest == "1" && (IE != "escon" || IE != ""))
                     {
                         var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
@@ -105,6 +118,20 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 return RedirectToAction("Details",new {id = id,count = cont });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Filter(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
+                return View(result);
             }
             catch(Exception ex)
             {

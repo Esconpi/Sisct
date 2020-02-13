@@ -549,8 +549,9 @@ namespace Escon.SisctNET.Web.Controllers
                      }*/
 
                     var contribuintes = _clientService.FindByContribuinte(id);
+                    var contribuinteCnpj = contribuintes.Select(_ => _.Document).ToList();
                     var cfops = _companyCfopService.FindByCfopActive(id);
-
+                    decimal totalSaidas = 0;
                     int contContribuintes = contribuintes.Count() + 1;
 
                     string[,] resumoGeral = new string[contContribuintes, 2];
@@ -575,14 +576,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (notes[i][3].ContainsKey("CNPJ"))
                         {
-
-                            for (int j = 0; j < contContribuintes; j++)
+                            if (contribuinteCnpj.Contains(notes[i][3]["CNPJ"]))
                             {
-                                if (resumoGeral[j, 0].Equals(notes[i][3]["CNPJ"]))
-                                {
-                                    posCliente = j;
-                                    break;
-                                }
+                                posCliente = contribuinteCnpj.IndexOf(notes[i][3]["CNPJ"]);
                             }
                         }
 
@@ -591,32 +587,39 @@ namespace Escon.SisctNET.Web.Controllers
                            
                             if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
                             {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vProd"]);
                                 resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vProd"])).ToString();
                             }
 
                             if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
                             {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vFrete"]);
                                 resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vFrete"])).ToString();
                             }
 
                             if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
                             {
+                                totalSaidas -= Convert.ToDecimal(notes[i][k]["vDesc"]);
                                 resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) - Convert.ToDecimal(notes[i][k]["vDesc"])).ToString();
                             }
 
                             if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
                             {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vOutro"]);
                                 resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vOutro"])).ToString();
                             }
 
                             if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
                             {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vSeg"]);
                                 resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vSeg"])).ToString();
                             }
 
                         }
                     }
-
+                    decimal totalNcontribuinte = Convert.ToDecimal(resumoGeral[contContribuintes - 1, 1]);
+                    decimal totalContribuinte = totalSaidas - totalNcontribuinte;
+                    var parar = "ok";
                 }
 
                 return View();

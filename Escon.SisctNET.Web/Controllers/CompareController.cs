@@ -42,19 +42,17 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var opcao = Request.Form["opcao"];
-
+                    var nome_social = Request.Form["socialname"];
+                    var year = Request.Form["year"];
+                    var id = Request.Form["id"];
+                    var month = Request.Form["month"];
+                    var ordem = Request.Form["ordem"];
                     ViewBag.opcao = opcao;
 
                     if (opcao.Equals("1"))
                     {
                         var confDBSisctNfe = new Model.Configuration();
                         var import = new Import();
-
-                        var nome_social = Request.Form["socialname"];
-                        var year = Request.Form["year"];
-                        var id = Request.Form["id"];
-                        var month = Request.Form["month"];
-                        var ordem = Request.Form["ordem"];
                         var ident = Request.Form["ident"];
 
                         List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
@@ -235,11 +233,6 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         var confDBSisctCte = _configurationService.FindByName("CTe");
                         var import = new Import();
-
-                        var nome_social = Request.Form["socialname"];
-                        var year = Request.Form["year"];
-                        var id = Request.Form["id"];
-                        var month = Request.Form["month"];
                         var company = _companyService.FindById(Convert.ToInt32(id), null);
                         string directoryCte = confDBSisctCte.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 
@@ -315,6 +308,21 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.Ano = year;
                         ViewBag.Mes = month;
                         
+                    }
+                    else if (ordem.Equals("freteOutroMes"))
+                    {
+                        var confDBSisctNfe = new Model.Configuration();
+                        confDBSisctNfe = _configurationService.FindByName("NFe");
+                        var import = new Import();
+                        var ident = Request.Form["ident"];
+
+                        List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
+                        var company = _companyService.FindById(Convert.ToInt32(id), null);
+                        string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+
+                        notes = import.Nfe(directoryNfe);
+
                     }
                     return View();
                 }

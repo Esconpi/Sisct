@@ -314,8 +314,6 @@ namespace Escon.SisctNET.Web.Compare
                                                     ide.Add(reader.Name, reader.ReadString());
                                                 }
 
-                                                
-
                                                 reader.Read();
                                             }
                                             cte.Add(ide);
@@ -367,5 +365,6 @@ namespace Escon.SisctNET.Web.Compare
             }
             return ctes;
         }
+
     }
 }

@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Cfop")]
         public string Code { get; set; }
 
-        [Display(Name = "Ativa")]
+        [Display(Name = "Ativo")]
         public bool Active { get; set; }
 
         [Display(Name = "Descrição")]
