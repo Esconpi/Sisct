@@ -15,11 +15,13 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
         private readonly ICompanyCfopService _companyCfopService;
+        private readonly IClientService _clientService;
 
         public IcmsController(
             ICompanyService companyService,
             IConfigurationService configurationService,
             ICompanyCfopService companyCfopService,
+            IClientService clientService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "NoteExit")
@@ -27,6 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
             _companyService = companyService;
             _configurationService = configurationService;
             _companyCfopService = companyCfopService;
+            _clientService = clientService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -48,18 +51,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
-                if (type.Equals("resumocfop")) {
-                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-                    notes = import.NfeExit(directoryNfe, id);
-                    for (int i = notes.Count - 1; i >= 0; i--)
+                List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+               /* notes = import.NfeExit(directoryNfe, id);
+                for (int i = notes.Count - 1; i >= 0; i--)
+                {
+                    if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
-                        {
-                            notes.RemoveAt(i);
-                        }
-
+                        notes.RemoveAt(i);
                     }
 
+                }
+                */
+                if (type.Equals("resumocfop")) {
+                    
                     var cfops = _companyCfopService.FindByCfopActive(id);
 
                     int cont = cfops.Count();
@@ -499,31 +503,60 @@ namespace Escon.SisctNET.Web.Controllers
 
                 else if (type.Equals("icmsexcedente"))
                 {
-                    var notes = import.NotesRelatoryIcms(directoryNfe);
-                    decimal total = 0, totalContribuinte = 0, totalNContribuinte = 0;
-                    
-                    
-                    foreach (var note in notes)
+                    /* var notes = import.NotesRelatoryIcms(directoryNfe);
+                     decimal total = 0, totalContribuinte = 0, totalNContribuinte = 0;
+
+
+                     foreach (var note in notes)
+                     {
+                         if (note[0].ContainsKey("CNPJ") && note[0].ContainsKey("indIEDest") && note[0].ContainsKey("IE"))
+                         {
+                             if (note[0]["indIEDest"].Equals("1"))
+                             {
+                                 totalContribuinte += Convert.ToDecimal(note[1]["vNF"]);
+                                 total += Convert.ToDecimal(note[1]["vNF"]);
+                             }
+                         }
+                         else if (note.Count.Equals(1))
+                         {
+                             totalNContribuinte += Convert.ToDecimal(note[0]["vNF"]);
+                             total += Convert.ToDecimal(note[0]["vNF"]);
+                         }
+                         else
+                         {
+                             totalNContribuinte += Convert.ToDecimal(note[1]["vNF"]);
+                             total += Convert.ToDecimal(note[1]["vNF"]);
+                         }
+
+                     }*/
+
+                    var contribuintes = _clientService.FindByContribuinte(id);
+                    var cfops = _companyCfopService.FindByCfopActive(id);
+
+                    int contContribuintes = contribuintes.Count() + 1;
+                    int contCfops = cfops.Count();
+
+                    string[,,] resumoGeral = new string[contContribuintes,contCfops, 3];
+
+                    for (int i = 0; i < contContribuintes; i++)
                     {
-                        if (note[0].ContainsKey("CNPJ") && note[0].ContainsKey("indIEDest") && note[0].ContainsKey("IE"))
+                        for (int j = 0; j < contCfops; j++)
                         {
-                            if (note[0]["indIEDest"].Equals("1"))
+                            if (i < contContribuintes -1)
                             {
-                                totalContribuinte += Convert.ToDecimal(note[1]["vNF"]);
-                                total += Convert.ToDecimal(note[1]["vNF"]);
+                                resumoGeral[i, j, 0] = contribuintes[i].Document;
+                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
+                                resumoGeral[i, j, 2] = "0";
+                            }
+                            else
+                            {
+                                resumoGeral[i, j, 0] = "Não contribuinte";
+                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
+                                resumoGeral[i, j, 2] = "0";
                             }
                         }
-                        else if (note.Count.Equals(1))
-                        {
-                            totalNContribuinte += Convert.ToDecimal(note[0]["vNF"]);
-                            total += Convert.ToDecimal(note[0]["vNF"]);
-                        }
-                        else
-                        {
-                            totalNContribuinte += Convert.ToDecimal(note[1]["vNF"]);
-                            total += Convert.ToDecimal(note[1]["vNF"]);
-                        }
                     }
+
                 }
 
                 return View();

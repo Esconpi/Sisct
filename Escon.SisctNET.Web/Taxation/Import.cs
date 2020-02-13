@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.Threading.Tasks;
 using Escon.SisctNET.Service;
 
 namespace Escon.SisctNET.Web.Taxation
@@ -16,6 +15,10 @@ namespace Escon.SisctNET.Web.Taxation
         public Import(ICompanyCfopService companyCfopService)
         {
             _companyCfopService = companyCfopService;
+        }
+
+        public Import()
+        {
         }
 
         public List<List<Dictionary<string, string>>> Nfe(string directoryNfe, string directotyCte)
