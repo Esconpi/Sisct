@@ -38,14 +38,14 @@
                         </div>
                         <div class="form-group col-lg-10 col-md-6 col-xs-12">
                             <label asp-for="AnnexId" class="control-label"></label>
-                            <select asp-items="@ViewBag.AnnexId" class="form-control selectoption" name="anexo" id="annex"></select>
+                            <select asp-items="@ViewBag.AnnexId" class="form-control selectoption" name="AnnexId" id="annex"></select>
                         </div>
 
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Icms" class="control-label"></label>
-                            <input class="form-control money" name="icms" value="@Model.Icms" />
+                            <input class="form-control money" name="Icms" value="@Model.Icms" />
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <br />
@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Excedente %</label>
-                            <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaEx" />
+                            <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" />
                         </div>
                         <div class="col-lg-1 col-md-6 col-xs-12">
 
@@ -82,11 +82,11 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Limite %</label>
-                            <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContri" />
+                            <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContribuinte" />
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Excedente %</label>
-                            <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContriEx" />
+                            <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" />
                         </div>
                         <div class="col-lg-1 col-md-6 col-xs-12">
 
@@ -111,7 +111,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Excedente %</label>
-                            <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfEx" />
+                            <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfExcedente" />
                         </div>
 
                     </div>
@@ -125,11 +125,11 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Limite %</label>
-                            <input class="form-control money" value="@Model.VendaMGrupo" name="vendaGrupo" />
+                            <input class="form-control money" value="@Model.VendaMGrupo" name="vendaMGrupo" />
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Excedente %</label>
-                            <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="vendaCpfEx" />
+                            <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="vendaMGrupoExcedente" />
                         </div>
                     </div>
 
@@ -143,11 +143,11 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Limite %</label>
-                            <input class="form-control money" value="@Model.VendaAnexo" name="vendaGrupo" />
+                            <input class="form-control money" value="@Model.VendaAnexo" name="vendaAnexo" />
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Excedente %</label>
-                            <input class="form-control money" value="@Model.VendaAnexoExcedente" name="vendaCpfEx" />
+                            <input class="form-control money" value="@Model.VendaAnexoExcedente" name="vendaAnexoExcedente" />
                         </div>
                     </div>
 

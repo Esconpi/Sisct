@@ -209,7 +209,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                if (Request.Form["icms"] != "")
+                /*if (Request.Form["icms"] != "")
                 {
                     rst.Icms = Convert.ToDecimal(Request.Form["icms"]);
                 }
@@ -218,7 +218,7 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Icms = null;
                 }
 
-                if (Request.Form["transferencia"] != "")
+                if (Request.Form["transferenciaInter"] != "")
                 {
                     rst.Transferencia = Convert.ToDecimal(Request.Form["transferencia"]);
                 }
@@ -317,15 +317,6 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.AnnexId = Convert.ToInt32(Request.Form["anexo"]);
                 }
                                     
-                if(Request.Form["percentual"] != "")
-                {
-                    rst.VendaAnexo = Convert.ToDecimal(Request.Form["percentual"]);
-                }
-                else
-                {
-                    rst.VendaAnexoExcedente = null;
-                }
-
                 if(Request.Form["vendaGrupo"] != "")
                 {
                     rst.VendaMGrupo = Convert.ToDecimal(Request.Form["vendaGrupo"]);
@@ -335,14 +326,32 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.VendaMGrupo = null;
                 }
 
-                if(Request.Form["transferenciaInter"] != "")
+                if (Request.Form["vendaGrupoEx"] != "")
+                {
+                    rst.VendaMGrupo = Convert.ToDecimal(Request.Form["vendaGrupoEx"]);
+                }
+                else
+                {
+                    rst.VendaMGrupo = null;
+                }
+
+                if (Request.Form["vendaGrupoEx"] != "")
+                {
+                    rst.VendaMGrupo = Convert.ToDecimal(Request.Form["vendaGrupoEx"]);
+                }
+                else
+                {
+                    rst.VendaMGrupo = null;
+                }
+
+                if (Request.Form["transferenciaInter"] != "")
                 {
                     rst.TransferenciaInter = Convert.ToDecimal(Request.Form["transferenciaInter"]);
                 }
                 else
                 {
                     rst.TransferenciaInter = null;
-                }
+                }*/
 
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
