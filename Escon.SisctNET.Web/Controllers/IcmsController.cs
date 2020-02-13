@@ -70,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string[,] cfopSCnpj = new string[cont, 6];
                     string[,] cfopSCnpjCpf = new string[cont, 6];
                     string[,] cfopCnpjSIE = new string[cont, 6];
-
+                    
                     for (int i = 0; i < cont; i++)
                     {
                         cfopGeral[i, 0] = cfops[i].Cfop.Code;
@@ -122,25 +122,9 @@ namespace Escon.SisctNET.Web.Controllers
                     {
 
                         int pos = -1;
-                        string cpf = "escon";
-                        string cnpj = "escon";
-                        string indIEDest = "escon";
-
-                        if (notes[i][3].ContainsKey("CPF"))
-                        {
-                            cpf = notes[i][3]["CPF"];
-                        }
-
-                        if (notes[i][3].ContainsKey("CNPJ"))
-                        {
-                            cnpj = notes[i][3]["CNPJ"];
-                        }
-
-
-                        if (notes[i][3].ContainsKey("indIEDest"))
-                        {
-                            indIEDest = notes[i][3]["indIEDest"];
-                        }
+                        string cpf = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "escon";
+                        string cnpj = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "escon";
+                        string indIEDest = notes[i][3].ContainsKey("indIEDest") ? notes[i][3]["indIEDest"] : "escon";
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -539,7 +523,6 @@ namespace Escon.SisctNET.Web.Controllers
                             totalNContribuinte += Convert.ToDecimal(note[1]["vNF"]);
                             total += Convert.ToDecimal(note[1]["vNF"]);
                         }
-                        
                     }
                 }
 
