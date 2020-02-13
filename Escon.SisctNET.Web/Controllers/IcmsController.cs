@@ -555,9 +555,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for(int i = notesEntrada.Count - 1; i >= 0; i--)
                     {
-                        if (!notesTranferencia[i][3]["CNPJ"].Equals(comp.Document) || notesEntrada[i].Count <= 5)
+                        if (!notesEntrada[i][3]["CNPJ"].Equals(comp.Document) || notesEntrada[i].Count <= 5)
                         {
-                            notesTranferencia.RemoveAt(i);
+                            notesEntrada.RemoveAt(i);
                         }
                     }
 
