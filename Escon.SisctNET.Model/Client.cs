@@ -17,6 +17,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CNPJ")]
         public string Document { get; set; }
 
+        [Display(Name = "CNPJ Raiz")]
+        public string CnpjRaiz { get; set; }
+
         [Display(Name = "IE")]
         public string Ie { get; set; }
 

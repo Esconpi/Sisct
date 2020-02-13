@@ -15,16 +15,26 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Client> FindByContribuinte(int companyId, Log log = null)
-        {
-            var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Taxpayer.Equals(true)).ToList();
-            AddLog(log);
-            return result;
-        }
 
         public List<Client> FindByCompanyId(int companyId, Log log = null)
         {
             var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<string> FindByContribuinte(int companyId, string type, Log log = null)
+        {
+            List<string> result = null;
+            if (type == "all")
+            {
+                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Taxpayer.Equals(true)).Select(_ => _.Document).ToList();
+            }
+            else if (type == "raiz")
+            {
+                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Taxpayer.Equals(true)).Select(_ => _.CnpjRaiz).Distinct().ToList();
+            }
+            
             AddLog(log);
             return result;
         }
@@ -43,17 +53,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<Client> FindByLast(int companyId, int count, Log log = null)
-        {
-            List<Client> result = null;
-
-            if (count > 0)
-            {
-                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId)).TakeLast(count).ToList();
-            }
-            AddLog(log);
-            return result;
-        }
 
         public Client FindByName(string name, Log log = null)
         {

@@ -1,26 +1,26 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.Client>
+﻿@model Escon.SisctNET.Model.Client
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="box box-primary">
-        <div class="box-header">
-            <a asp-action="Index" asp-route-id="@ViewBag.Id" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-            <h3 class="box-title"><strong>Novos Clientes</strong></h3>
-        </div>
-        <div class="box-body">
-            <div style="width:100%; padding:20px;">
-                @if (ViewBag.Count == 0)
-                {
-                    <h4>Não foram encontrados novos clientes</h4>
-                }
-                else
-                {
-                    <h4>Foram encontrados @ViewBag.Count novos clientes</h4>
-                }
-            </div>
-        </div>
-        <div class="box-footer"></div>
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" asp-route-id="@ViewBag.Id" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong>Novos Clientes</strong></h3>
     </div>
+    <div class="box-body">
+        <div style="width:100%; padding:20px;">
+            @if (ViewBag.Count == 0)
+            {
+                <h4>Não foram encontrados novos clientes</h4>
+            }
+            else
+            {
+                <h4>Foram encontrados @ViewBag.Count novos clientes</h4>
+            }
+        </div>
+    </div>
+    <div class="box-footer"></div>
+</div>

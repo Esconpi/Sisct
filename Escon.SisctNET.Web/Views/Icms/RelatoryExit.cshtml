@@ -29,7 +29,7 @@
                             }
                             else if (ViewBag.Type == "venda")
                             {
-                                <strong>Resumo por Venda</strong>
+                                <strong>Relatório de Penalidade</strong>
                             }
 
                         </div>
@@ -42,9 +42,10 @@
         </div>
         <div class="box-body">
             <div style="width:100%; overflow:hidden; padding:20px;">
-                <table class="table" style="border:1px solid;">
-                    @if (ViewBag.Type == "resumocfop")
-                    {
+
+                @if (ViewBag.Type == "resumocfop")
+                {
+                    <table class="table" style="border:1px solid;">
                         <thead>
                             <tr style="border:1px solid;">
                                 <th style="border:1px solid;">
@@ -157,9 +158,11 @@
                                 </tr>
                             }
                         </tbody>
-                    }
-                    else if (ViewBag.Type == "venda")
-                    {
+                    </table>
+                 }
+                 else if (ViewBag.Type == "venda")
+                 {
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>
@@ -196,10 +199,19 @@
                                 </td>
                             </tr>
 
-                        </tbody>
-                    }
+                            <tr>
+                                <th>
+                                    Venda P/ CNPJ maior que 40%
+                                </th>
+                                <td>
+                                    000
+                                </td>
+                            </tr>
 
-                </table>
+                        </tbody>
+                    </table>
+                 }
+
             </div>
         </div>
     </div>
