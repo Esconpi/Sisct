@@ -48,19 +48,21 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
 
-                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
                 var import = new Import(_companyCfopService);
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-               
+                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+
                 ViewBag.Type = type;
 
                 if (type.Equals("resumocfop")) {
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                    notes = import.NfeExit(directoryNfe, id, type, "all");
+                    notes = import.NfeExit(directoryNfeExit, id, type, "all");
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -527,9 +529,11 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesTranferencia = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesEntrada = new List<List<Dictionary<string, string>>>();
 
-                    notesVenda = import.NfeExit(directoryNfe, id, type, "venda");
-                    notesTranferencia = import.NfeExit(directoryNfe, id, type, "tranferencia");
+                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    notesTranferencia = import.NfeExit(directoryNfeExit, id, type, "transferencia");
+                    notesEntrada = import.NfeExit(directoryNfeEntrada, id, type, "devolução");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -547,6 +551,14 @@ namespace Escon.SisctNET.Web.Controllers
                             notesTranferencia.RemoveAt(i);
                         }
 
+                    }
+
+                    for(int i = notesEntrada.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesTranferencia[i][3]["CNPJ"].Equals(comp.Document) || notesEntrada[i].Count <= 5)
+                        {
+                            notesTranferencia.RemoveAt(i);
+                        }
                     }
 
 
@@ -843,7 +855,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Contribuinte = totalContribuinte;
                     ViewBag.NContribuinte = totalNcontribuinte;
-                    ViewBag.TotalSaida = totalVendas;
+                    ViewBag.TotalSaida = totalSaida;
 
                 }
                 return View();
