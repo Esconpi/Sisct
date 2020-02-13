@@ -32,7 +32,7 @@ namespace Escon.SisctNET.Repository.Implementation
             }
             else if (type.Equals("venda") && typeCfop.Equals("transferencia"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Transferencia")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Transferência")).ToList();
 
             }
 
