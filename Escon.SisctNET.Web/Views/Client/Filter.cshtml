@@ -7,7 +7,7 @@
 
     <div class="box box-primary">
         <div class="box-header">
-            <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <a asp-action="Index" asp-route-id="@ViewBag.Id" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Cliente - </strong> @Model.Name</h3>
         </div>
         <div class="box-body">

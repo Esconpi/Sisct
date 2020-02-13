@@ -34,8 +34,11 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var comp = _companyService.FindById(companyId,GetLog(Model.OccorenceLog.Read));
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
                 ViewBag.Id = companyId;
-                List<Model.Client> list_clients = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Client> list_clients = _service.FindByCompanyId(companyId);
 
                 foreach (var client in list_clients)
                 {
@@ -130,6 +133,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                ViewBag.Id = id;
                 var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
                 return View(result);
             }
@@ -145,6 +149,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindByLast(id, count);
+                ViewBag.Id = id;
                 ViewBag.Count = count;
                 return View(result);
             }

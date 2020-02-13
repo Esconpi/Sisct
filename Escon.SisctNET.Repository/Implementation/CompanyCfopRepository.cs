@@ -18,6 +18,22 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public List<CompanyCfop> FindByCfopActive(int companyId, string type, Log log = null)
+        {
+            List<CompanyCfop> result = null;
+
+            if (type.Equals("resumocfop"))
+            {
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).ToList();
+            }
+            else if (type.Equals("venda"))
+            {
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda")).ToList();
+            }
+            AddLog(log);
+            return result;
+        }
+
         public List<CompanyCfop> FindByCompany(int companyId, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId));
@@ -33,11 +49,5 @@ namespace Escon.SisctNET.Repository.Implementation
 
         }
 
-        public List<CompanyCfop> FindByCfopActive(int companyId, Log log = null)
-        {
-            var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true));
-            AddLog(log);
-            return result.ToList();
-        }
     }
 }
