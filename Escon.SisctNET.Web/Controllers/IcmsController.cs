@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string[,] cfopSCnpj = new string[cont, 6];
                     string[,] cfopSCnpjCpf = new string[cont, 6];
                     string[,] cfopCnpjSIE = new string[cont, 6];
-                    
+
                     for (int i = 0; i < cont; i++)
                     {
                         cfopGeral[i, 0] = cfops[i].Cfop.Code;
@@ -128,9 +128,25 @@ namespace Escon.SisctNET.Web.Controllers
                     {
 
                         int pos = -1;
-                        string cpf = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "escon";
-                        string cnpj = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "escon";
-                        string indIEDest = notes[i][3].ContainsKey("indIEDest") ? notes[i][3]["indIEDest"] : "escon";
+                        string cpf = "escon";
+                        string cnpj = "escon";
+                        string indIEDest = "escon";
+
+                        if (notes[i][3].ContainsKey("CPF"))
+                        {
+                            cpf = notes[i][3]["CPF"];
+                        }
+
+                        if (notes[i][3].ContainsKey("CNPJ"))
+                        {
+                            cnpj = notes[i][3]["CNPJ"];
+                        }
+
+
+                        if (notes[i][3].ContainsKey("indIEDest"))
+                        {
+                            indIEDest = notes[i][3]["indIEDest"];
+                        }
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -536,26 +552,20 @@ namespace Escon.SisctNET.Web.Controllers
                     var cfops = _companyCfopService.FindByCfopActive(id);
 
                     int contContribuintes = contribuintes.Count() + 1;
-                    int contCfops = cfops.Count();
 
-                    string[,,] resumoGeral = new string[contContribuintes,contCfops, 3];
+                    string[,] resumoGeral = new string[contContribuintes, 2];
 
                     for (int i = 0; i < contContribuintes; i++)
                     {
-                        for (int j = 0; j < contCfops; j++)
+                        if (i < contContribuintes - 1)
                         {
-                            if (i < contContribuintes -1)
-                            {
-                                resumoGeral[i, j, 0] = contribuintes[i].Document;
-                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
-                                resumoGeral[i, j, 2] = "0";
-                            }
-                            else
-                            {
-                                resumoGeral[i, j, 0] = "Não contribuinte";
-                                resumoGeral[i, j, 1] = cfops[j].Cfop.Code;
-                                resumoGeral[i, j, 2] = "0";
-                            }
+                            resumoGeral[i , 0] = contribuintes[i].Document;
+                            resumoGeral[i , 1] = "0";
+                        }
+                        else
+                        {
+                            resumoGeral[i, 0] = "Não contribuinte";
+                            resumoGeral[i, 1] = "0";
                         }
                     }
 
@@ -567,34 +577,53 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             for (int j = 0; j < contContribuintes; j++)
                             {
-                                if (resumoGeral[j , 0, 0].Equals(notes[i][3]["CNPJ"]))
+                                if (resumoGeral[j, 0].Equals(notes[i][3]["CNPJ"]))
                                 {
                                     posCliente = j;
                                 }
                             }
                         }
 
-                        int posCfop = -1;
+                        bool status = false;
 
                         for (int k = 0; k < notes[i].Count(); k++)
                         {
                             if (notes[i][k].ContainsKey("CFOP"))
                             {
-                                for (int c = 0; c < contContribuintes; c++)
-                                {
-                                    if (resumoGeral[c, 1, 0].Equals(notes[i][c]["CFOP"]))
+                                foreach(var cfop in cfops){
+                                    if (cfop.Cfop.Code.Equals(notes[i][k]["CFOP"]))
                                     {
-                                        posCfop = c;
+                                        status = true;
                                     }
                                 }
 
                             }
 
-                            if (posCfop >= 0)
+                            if (status == true)
                             {
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
                                 {
-                                    resumoGeral[posCliente,posCfop, 2] = (Convert.ToDecimal(resumoGeral[posCliente,posCfop, 2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                }
+
+                                if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
+                                {
+                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
                                 }
                             }
                         }
