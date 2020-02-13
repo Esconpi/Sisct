@@ -118,6 +118,28 @@
                 }
              });
 
+            $("#tblIndex").on("change", ".selectoptiontype", function () {
+
+                    var accountid = $(this).attr("AccountId");
+                    var accountname = "";
+                    accountname =  $(this).children("option:selected").text();
+                    var accountypeid = $(this).val();
+                    $.ajax({
+                        url: '@(Url.Action("UpdateCfopType", "CompanyCfop"))',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        async: true,
+                        data: JSON.stringify({ "Id": accountid, "AccountTypeId": accountypeid }),
+                        processData: false,
+                        success: function (data, textStatus, jQxhr) {
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+
+                });
 
         })
     })

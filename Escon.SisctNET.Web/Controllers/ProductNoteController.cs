@@ -218,6 +218,7 @@ namespace Escon.SisctNET.Web.Controllers
                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                             prod.ValorBCR = valorAgreg;
                             prod.BCR = Convert.ToDecimal(bcrForm);
+                            valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
                         }
                         if (fecop != null)
                         {
@@ -228,11 +229,8 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Aliqinterna = AliqInt;
                         decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(prod.Fecop), valorAgreg);
                         prod.ValorAC = valorAgre_AliqInt;
-                        total_icms = valorAgre_AliqInt;
-                        if (bcrForm == null)
-                        {
-                            total_icms -= valor_icms;
-                        }
+                        total_icms = valorAgre_AliqInt - valor_icms;
+                        
                         decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
 
                         if (total_icms > total_icms_pauta)
@@ -283,12 +281,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                                 prod.ValorBCR = valorAgreg;
                                 prod.BCR = Convert.ToDecimal(bcrForm);
-                            }
-                            else
-                            {
-                                valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(0), valorAgreg);
-                                prod.ValorBCR = valorAgreg;
-                                prod.BCR = Convert.ToDecimal(0);
+                                valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
                             }
 
                             if (fecop != null)
@@ -306,11 +299,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Aliqinterna = AliqInt;
                             decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(prod.Fecop), valorAgreg);
                             prod.ValorAC = valorAgre_AliqInt;
-                            total_icms = valorAgre_AliqInt;
-                            if (bcrForm == null)
-                            {
-                                total_icms -= valor_icms;
-                            }
+                            total_icms = valorAgre_AliqInt - valor_icms;
                             decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
 
                             prod.TotalICMS = total_icms;
@@ -367,6 +356,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                                     item.ValorBCR = valorAgreg;
                                     item.BCR = Convert.ToDecimal(bcrForm);
+                                    valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
                                 }
 
                                 if (fecop != null)
@@ -384,12 +374,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.Aliqinterna = AliqInt;
                                 decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(item.Fecop), valorAgreg);
                                 item.ValorAC = valorAgre_AliqInt;
-                                total_icms = valorAgre_AliqInt;
+                                total_icms = valorAgre_AliqInt - valor_icms;
 
-                                if (bcrForm == null)
-                                {
-                                    total_icms -= valor_icms;
-                                }
                                 //decimal total = Convert.ToDecimal(item.TotalICMS) + valor_fecop;
 
                                 item.TotalICMS = total_icms;

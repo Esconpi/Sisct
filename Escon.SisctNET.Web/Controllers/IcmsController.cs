@@ -523,8 +523,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     /* var notes = import.NotesRelatoryIcms(directoryNfe);
                      decimal total = 0, totalContribuinte = 0, totalNContribuinte = 0;
-
-
                      foreach (var note in notes)
                      {
                          if (note[0].ContainsKey("CNPJ") && note[0].ContainsKey("indIEDest") && note[0].ContainsKey("IE"))
@@ -621,7 +619,6 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal totalContribuinte = totalSaidas - totalNcontribuinte;
                     var parar = "ok";
                 }
-
                 return View();
             }
             catch(Exception ex)
