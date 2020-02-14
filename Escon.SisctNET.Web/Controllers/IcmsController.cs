@@ -549,8 +549,9 @@ namespace Escon.SisctNET.Web.Controllers
                      }*/
 
                     var contribuintes = _clientService.FindByContribuinte(id);
+                    var contribuinteCnpj = contribuintes.Select(_ => _.Document).ToList();
                     var cfops = _companyCfopService.FindByCfopActive(id);
-
+                    decimal totalSaidas = 0;
                     int contContribuintes = contribuintes.Count() + 1;
 
                     string[,] resumoGeral = new string[contContribuintes, 2];
@@ -571,64 +572,53 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = 0; i < notes.Count(); i++)
                     {
-                        int posCliente = contContribuintes;
-
+                        int posCliente = contContribuintes - 1;
                         if (notes[i][3].ContainsKey("CNPJ"))
                         {
-                            for (int j = 0; j < contContribuintes; j++)
+                            if (contribuinteCnpj.Contains(notes[i][3]["CNPJ"]))
                             {
-                                if (resumoGeral[j, 0].Equals(notes[i][3]["CNPJ"]))
-                                {
-                                    posCliente = j;
-                                }
+                                posCliente = contribuinteCnpj.IndexOf(notes[i][3]["CNPJ"]);
                             }
                         }
-
-                        bool status = false;
 
                         for (int k = 0; k < notes[i].Count(); k++)
                         {
-                            if (notes[i][k].ContainsKey("CFOP"))
+                           
+                            if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
                             {
-                                foreach(var cfop in cfops){
-                                    if (cfop.Cfop.Code.Equals(notes[i][k]["CFOP"]))
-                                    {
-                                        status = true;
-                                    }
-                                }
-
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vProd"]);
+                                resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vProd"])).ToString();
                             }
 
-                            if (status == true)
+                            if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
                             {
-                                if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
-                                {
-                                    resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                }
-
-                                if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
-                                {
-                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopGeral[pos, 1] = (Convert.ToDecimal(cfopGeral[pos, 1]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                }
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vFrete"]);
+                                resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vFrete"])).ToString();
                             }
+
+                            if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
+                            {
+                                totalSaidas -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+                                resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) - Convert.ToDecimal(notes[i][k]["vDesc"])).ToString();
+                            }
+
+                            if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
+                            {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vOutro"]);
+                                resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vOutro"])).ToString();
+                            }
+
+                            if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
+                            {
+                                totalSaidas += Convert.ToDecimal(notes[i][k]["vSeg"]);
+                                resumoGeral[posCliente, 1] = (Convert.ToDecimal(resumoGeral[posCliente, 1]) + Convert.ToDecimal(notes[i][k]["vSeg"])).ToString();
+                            }
+
                         }
                     }
-
+                    decimal totalNcontribuinte = Convert.ToDecimal(resumoGeral[contContribuintes - 1, 1]);
+                    decimal totalContribuinte = totalSaidas - totalNcontribuinte;
+                    var parar = "ok";
                 }
 
                 return View();

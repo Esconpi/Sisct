@@ -1,7 +1,10 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -10,11 +13,13 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyCfopService _service;
         private readonly ICompanyService _companyService;
         private readonly ICfopService _cfopService;
+        private readonly ICfopTypeService _cfopTypeService;
 
         public CompanyCfopController(
             ICompanyCfopService service,
             ICfopService cfopService,
             ICompanyService companyService,
+            ICfopTypeService cfopTypeService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "CompanyCfop")
@@ -22,6 +27,7 @@ namespace Escon.SisctNET.Web.Controllers
             _service = service;
             _cfopService = cfopService;
             _companyService = companyService;
+            _cfopTypeService = cfopTypeService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -72,6 +78,26 @@ namespace Escon.SisctNET.Web.Controllers
                     var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
                     ViewBag.Document = company.Document;
                     ViewBag.Name = company.SocialName;
+
+                    //var cofpType = _accountPlanTypeService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(a => a.Active.Equals(true)).ToList();
+
+                    var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                    List<CfopType> cfopsTypes = new List<CfopType>();
+                    cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Selecione um tipo de conta" });
+
+                    foreach (var item in cfopType)
+                    {
+                        cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
+                    }
+
+                    SelectList accountTypes = new SelectList(cfopsTypes, "Id", "Name", null);
+                    ViewBag.ListTypes = accountTypes;
+
+                    ViewBag.CompanyName = company.SocialName;
+                    ViewBag.Document = company.Document;
+                    ViewBag.CompanyId = company.Id;
+
                     var result = _service.FindByCompany(companyId);
                     return View(result);
                 }
@@ -97,8 +123,24 @@ namespace Escon.SisctNET.Web.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { requestcode = 500, message = ex.Message });
+                return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
+        {
+
+            try
+            {
+
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
     }
 }

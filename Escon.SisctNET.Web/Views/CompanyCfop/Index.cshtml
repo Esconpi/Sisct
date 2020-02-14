@@ -25,7 +25,7 @@
 
             <div style="width:100%; padding:20px;">
                 <h5 style="color:blue;">Cfops entradas</h5>
-                <h5 style="color:red;">Cfops saídas</>
+                <h5 style="color:red;">Cfops saídas<</h5>
             </div>
 
             <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -41,6 +41,9 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Active)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CfopType)
                             </th>
                         </tr>
                     </thead>
@@ -59,6 +62,7 @@
                                     <td>
                                         @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @id = item.Id })
                                     </td>
+                                    <td><select asp-items="@ViewBag.ListTypes" name="cfopType" id="cfopType" class="form-control selectoptionAll" style="width:100%;"></select></td>
                                 </tr>
                             }
                             else
@@ -73,6 +77,10 @@
                                     <td>
                                         @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @id = item.Id })
                                     </td>
+                                   <td>
+                                   <td>
+                                    <select asp-items="@ViewBag.ListTypes" name="cfopType" id="cfopType" class="form-control selectoptionAll" style="width:100%;"></select>
+                                   </td>
                                 </tr>
                             }
 

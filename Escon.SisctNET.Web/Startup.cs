@@ -155,6 +155,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<INcmConvenioService, NcmConvenioService>();
             services.AddScoped<ICstService, CstService>();
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<ICfopTypeService, CfopTypeService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }
