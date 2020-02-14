@@ -529,6 +529,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.BCR != null)
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
+                                            valor_icms = valor_icms * Convert.ToDecimal(taxed.BCR) / 100;
                                         }
 
                                         decimal percentFecop = 0;
@@ -543,18 +544,23 @@ namespace Escon.SisctNET.Web.Controllers
                                             valor_fecop = calculation.valorFecop(Convert.ToDecimal(0), valorAgreg);
                                         }
                                         valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
-                                        cms = valorAgre_AliqInt - valor_icms;
                                         if (valorbcr > 0)
                                         {
                                             valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
-                                            cms = valorAgre_AliqInt;
                                         }
-                                        
+                                        cms = valorAgre_AliqInt - valor_icms;
+
 
                                     }
                                     else if (taxedtype.Type == "Normal")
                                     {
+
+                                        var aliq_simples = _stateService.FindByUf(notes[i][2]["UF"]);
                                         baseCalc = Convert.ToDecimal(det["baseCalc"]);
+                                        if (number != "4.00")
+                                        {
+                                            pICMS = aliq_simples.Aliquota;
+                                        }
                                         dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
