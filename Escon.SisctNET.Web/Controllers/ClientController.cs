@@ -2,8 +2,10 @@
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -32,8 +34,22 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                var comp = _companyService.FindById(companyId,GetLog(Model.OccorenceLog.Read));
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
                 ViewBag.Id = companyId;
-                var result = _service.FindByCompanyId(companyId);
+                List<Model.Client> list_clients = _service.FindByCompanyId(companyId);
+
+                foreach (var client in list_clients)
+                {
+                    client.Name = client.Document + " - " + client.Name;
+                }
+
+                list_clients.Insert(0, new Model.Client() { Name = "Nennhum item selecionado", Id = 0 });
+                SelectList clients = new SelectList(list_clients, "Id", "Name", null);
+                ViewBag.ClientId = clients;
+                var result = _service.FindByCompanyId(companyId).TakeLast(1000);
+
                 return View(result);
             }
             catch(Exception ex)
@@ -80,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "escon";
                     string IE = det.ContainsKey("IE") ? det["IE"] : "escon";   
 
-                    if (indIEDest == "1")
+                    if (indIEDest == "1" && (IE != "escon" || IE != ""))
                     {
                         var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
@@ -112,12 +128,28 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Filter(int id)
+        {
+            try
+            {
+                ViewBag.Id = id;
+                var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Details(int id,int count)
         {
             try
             {
                 var result = _service.FindByLast(id, count);
+                ViewBag.Id = id;
                 ViewBag.Count = count;
                 return View(result);
             }

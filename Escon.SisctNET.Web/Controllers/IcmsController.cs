@@ -53,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                notes = import.NfeExit(directoryNfe, id);
+                notes = import.NfeExit(directoryNfe, id, type);
 
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
@@ -63,10 +63,13 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                 }
-                
+
+                var cfops = _companyCfopService.FindByCfopActive(id, type);
+                ViewBag.Type = type;
+
                 if (type.Equals("resumocfop")) {
                     
-                    var cfops = _companyCfopService.FindByCfopActive(id);
+                    
 
                     int cont = cfops.Count();
                     string[,] cfopGeral = new string[cont, 6];
@@ -519,36 +522,11 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Cfop = cfop_list;
                 }
 
-                else if (type.Equals("icmsexcedente"))
+                else if (type.Equals("venda"))
                 {
-                    /* var notes = import.NotesRelatoryIcms(directoryNfe);
-                     decimal total = 0, totalContribuinte = 0, totalNContribuinte = 0;
-                     foreach (var note in notes)
-                     {
-                         if (note[0].ContainsKey("CNPJ") && note[0].ContainsKey("indIEDest") && note[0].ContainsKey("IE"))
-                         {
-                             if (note[0]["indIEDest"].Equals("1"))
-                             {
-                                 totalContribuinte += Convert.ToDecimal(note[1]["vNF"]);
-                                 total += Convert.ToDecimal(note[1]["vNF"]);
-                             }
-                         }
-                         else if (note.Count.Equals(1))
-                         {
-                             totalNContribuinte += Convert.ToDecimal(note[0]["vNF"]);
-                             total += Convert.ToDecimal(note[0]["vNF"]);
-                         }
-                         else
-                         {
-                             totalNContribuinte += Convert.ToDecimal(note[1]["vNF"]);
-                             total += Convert.ToDecimal(note[1]["vNF"]);
-                         }
-
-                     }*/
 
                     var contribuintes = _clientService.FindByContribuinte(id);
                     var contribuinteCnpj = contribuintes.Select(_ => _.Document).ToList();
-                    var cfops = _companyCfopService.FindByCfopActive(id);
                     decimal totalSaidas = 0;
                     int contContribuintes = contribuintes.Count() + 1;
 
@@ -571,6 +549,7 @@ namespace Escon.SisctNET.Web.Controllers
                     for (int i = 0; i < notes.Count(); i++)
                     {
                         int posCliente = contContribuintes - 1;
+
                         if (notes[i][3].ContainsKey("CNPJ"))
                         {
                             if (contribuinteCnpj.Contains(notes[i][3]["CNPJ"]))
@@ -616,7 +595,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     decimal totalNcontribuinte = Convert.ToDecimal(resumoGeral[contContribuintes - 1, 1]);
                     decimal totalContribuinte = totalSaidas - totalNcontribuinte;
-                    var parar = "ok";
+
+                    ViewBag.Contribuinte = totalContribuinte;
+                    ViewBag.NContribuinte = totalNcontribuinte;
+                    ViewBag.TotalSaida = totalSaidas;
                 }
                 return View();
             }

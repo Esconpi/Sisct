@@ -84,7 +84,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
 
                     List<CfopType> cfopsTypes = new List<CfopType>();
-                    cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Selecione um tipo de conta" });
+                    cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
 
                     foreach (var item in cfopType)
                     {
@@ -133,7 +133,18 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                var entity = _service.FindById(updateCfopType.CompanyCfopId, GetLog(Model.OccorenceLog.Read));
 
+                if (updateCfopType.CfopTypeId.Equals(0))
+                {
+                    entity.CfopTypeId = null;
+                }
+                else
+                {
+                    entity.CfopTypeId = updateCfopType.CfopTypeId;
+                }
+               
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return Ok(new { requestcode = 200, message = "ok" });
             }
             catch (Exception ex)

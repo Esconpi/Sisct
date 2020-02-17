@@ -1,73 +1,87 @@
 ﻿@model Escon.SisctNET.Model.Company
 
-<div>
-    <h4><strong>Compara:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
-    <hr />
-    <div class="row">
-        <div class="col-lg-12">
-            <form action="Compare/Index" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-                <input type="hidden" name="ident" value="@ViewBag.Ident" />
+@{
+    ViewData["Title"] = "Compare";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Ano</label>
-                    <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
-                </div>
-                <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <label class="control-label">Mês</label>
-                    <select name="month" class="form-control selectoption">
-                        <option value="Janeiro">Janeiro</option>
-                        <option value="Fevereiro">Fevereiro</option>
-                        <option value="Março">Março</option>
-                        <option value="Abril">Abril</option>
-                        <option value="Maio">Maio</option>
-                        <option value="Junho">Junho</option>
-                        <option value="Julho">Julho</option>
-                        <option value="Agosto">Agosto</option>
-                        <option value="Setembro">Setembro</option>
-                        <option value="Outubro">Outubro</option>
-                        <option value="Novembro">Novembro</option>
-                        <option value="Dezembro">Dezembro</option>
-                    </select>
-                </div>
+    <div class="box box-primary">
+        <div class="box-header">
+            <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <h3 class="box-title"> <strong>Compara:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+        </div>
+        <div class="box-body">
+            <div class="col-lg-12">
+                <form action="Compare/Index" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
+                    <input type="hidden" name="ident" value="@ViewBag.Ident" />
 
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Opção</label>
-                    <select name="opcao" class="form-control selectoption">
-                        <option value="0">Selecione</option>
-                        <option value="1">NFe</option>
-                        <option value="2">CTe</option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-5 col-md-6 col-xs-12">
-                    <label class="control-label">Tipo</label>
-                    <select name="ordem" id="ordem" class="form-control selectoption">
-                        <option value="xml">XML x SPED</option>
-                        <option value="sped">SPED x XML</option>
-                        <option value="difereValor">DIFERENÇA DE TOTAIS</option>
-                        <option value="freteOutroMes">CTE PARA O OUTRO MÊS</option>
-                    </select>
-                </div>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Ano</label>
+                            <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Mês</label>
+                            <select name="month" class="form-control selectoption">
+                                <option value="Janeiro">Janeiro</option>
+                                <option value="Fevereiro">Fevereiro</option>
+                                <option value="Março">Março</option>
+                                <option value="Abril">Abril</option>
+                                <option value="Maio">Maio</option>
+                                <option value="Junho">Junho</option>
+                                <option value="Julho">Julho</option>
+                                <option value="Agosto">Agosto</option>
+                                <option value="Setembro">Setembro</option>
+                                <option value="Outubro">Outubro</option>
+                                <option value="Novembro">Novembro</option>
+                                <option value="Dezembro">Dezembro</option>
+                            </select>
+                        </div>
 
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                    <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" required/>
-                </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Opção</label>
+                            <select name="opcao" class="form-control selectoption">
+                                <option value="0">Selecione</option>
+                                <option value="1">NFe</option>
+                                <option value="2">CTe</option>
+                            </select>
+                        </div>
 
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Compara" class="btn btn-success pull-right" />
-                </div>
+                        <div class="form-group col-lg-5 col-md-6 col-xs-12">
+                            <label class="control-label">Tipo</label>
+                            <select name="ordem" id="ordem" class="form-control selectoption">
+                                <option value="xml">XML x SPED</option>
+                                <option value="sped">SPED x XML</option>
+                                <option value="difereValor">DIFERENÇA DE TOTAIS</option>
+                                <!--<option value="freteOutroMes">CTE PARA O OUTRO MÊS</option>-->
+                            </select>
+                        </div>
+                    </div>
+
+                  
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                            <label class="control-label"><strong>Selecione o arquivo</strong></label>
+                            <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" required />
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Compara" class="btn btn-success pull-right" />
+                    </div>
 
 
-            </form>
+                </form>
+            </div>
         </div>
 
     </div>
-</div>
 <script>
     $("#ordem").on("change", function () {
-         console.log($(this).val());
+        console.log($(this).val());
         if ($(this).val() == "freteOutroMes") {
             $('#arquivo').attr('required', false);
         }

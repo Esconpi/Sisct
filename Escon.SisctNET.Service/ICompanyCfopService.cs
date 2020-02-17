@@ -1,7 +1,5 @@
 ﻿using Escon.SisctNET.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service
 {
@@ -11,7 +9,7 @@ namespace Escon.SisctNET.Service
 
         Model.CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null);
 
-        List<CompanyCfop> FindByCfopActive(int companyId, Log log = null);
+        List<CompanyCfop> FindByCfopActive(int companyId, string type, Log log = null);
 
     }
 }

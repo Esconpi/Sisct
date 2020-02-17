@@ -23,7 +23,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                            <strong>Resumo por CFOP</strong>
+                            @if (ViewBag.Type == "resumocfop")
+                            {
+                                <strong>Resumo por CFOP</strong>
+                            }
+                            else if (ViewBag.Type == "venda")
+                            {
+                                <strong>Resumo por Venda</strong>
+                            }
+
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
                             <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
@@ -35,118 +43,162 @@
         <div class="box-body">
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="border:1px solid;">
-                    <thead>
-                        <tr style="border:1px solid;">
-                            <th style="border:1px solid;">
-                                CFOP
-                            </th>
-                            <th style="border:1px solid;">
-                                Descrição
-                            </th>
-                            <th style="border:1px solid;">
-                                Valor Contábil
-                            </th>
-                            <th style="border:1px solid;">
-                                Base de Cálculo Icms
-                            </th>
-                            <th style="border:1px solid;">
-                                Valor Icms
-                            </th>
-                            <th style="border:1px solid;">
-                                Valor Fecop
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
-                        {
-
+                    @if (ViewBag.Type == "resumocfop")
+                    {
+                        <thead>
                             <tr style="border:1px solid;">
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][0]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][1]
-                                </td>
-                                <td style="border:1px solid;">
-                                    <b>@ViewBag.Cfop[i][2]</b>
-                                </td>
-                                <td style="border:1px solid;">
-                                    <b>@ViewBag.Cfop[i][3]</b>
-                                </td>
-                                <td style="border:1px solid;">
-                                    <b>@ViewBag.Cfop[i][4]</b>
-                                </td>
-                                <td style="border:1px solid;">
-                                    <b>@ViewBag.Cfop[i][5]</b>
+                                <th style="border:1px solid;">
+                                    CFOP
+                                </th>
+                                <th style="border:1px solid;">
+                                    Descrição
+                                </th>
+                                <th style="border:1px solid;">
+                                    Valor Contábil
+                                </th>
+                                <th style="border:1px solid;">
+                                    Base de Cálculo Icms
+                                </th>
+                                <th style="border:1px solid;">
+                                    Valor Icms
+                                </th>
+                                <th style="border:1px solid;">
+                                    Valor Fecop
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+                            {
+
+                                <tr style="border:1px solid;">
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][0]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][1]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        <b>@ViewBag.Cfop[i][2]</b>
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        <b>@ViewBag.Cfop[i][3]</b>
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        <b>@ViewBag.Cfop[i][4]</b>
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        <b>@ViewBag.Cfop[i][5]</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="border:1px solid;"><b>Venda com CPF</b></td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][6]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][7]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][8]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][9]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="border:1px solid;"><b>Venda sem CPF</b></td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][10]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][11]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][12]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][13]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="border:1px solid;"><b>Venda com CNPJ com Inscrição Estadual</b></td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][14]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][15]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][16]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][17]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="border:1px solid;"><b>Venda com CNPJ sem Inscrição Estadual</b></td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][18]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][19]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][20]
+                                    </td>
+                                    <td style="border:1px solid;">
+                                        @ViewBag.Cfop[i][21]
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else if (ViewBag.Type == "venda")
+                    {
+                        <thead>
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Valor
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    Base de Cálculo
+                                </th>
+                                <td>
+                                    @ViewBag.TotalSaida
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td style="border:1px solid;"><b>Venda com CPF</b></td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][6]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][7]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][8]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][9]
+                                <th>
+                                    Venda P/ Contribuintes
+                                </th>
+                                <td>
+                                    @ViewBag.Contribuinte
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td style="border:1px solid;"><b>Venda sem CPF</b></td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][10]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][11]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][12]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][13]
+                                <th>
+                                    Venda P/ Não Contribuintes
+                                </th>
+                                <td>
+                                    @ViewBag.NContribuinte
                                 </td>
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td style="border:1px solid;"><b>Venda com CNPJ com Inscrição Estadual</b></td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][14]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][15]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][16]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][17]
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td style="border:1px solid;"><b>Venda com CNPJ sem Inscrição Estadual</b></td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][18]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][19]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][20]
-                                </td>
-                                <td style="border:1px solid;">
-                                    @ViewBag.Cfop[i][21]
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+
+                        </tbody>
+                    }
+
                 </table>
             </div>
         </div>

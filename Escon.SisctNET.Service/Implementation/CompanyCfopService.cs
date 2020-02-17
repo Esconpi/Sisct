@@ -35,6 +35,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<CompanyCfop> FindByCfopActive(int companyId, string type, Log log = null)
+        {
+            return _repository.FindByCfopActive(companyId, type, log);
+        }
+
         public List<CompanyCfop> FindByCompany(int companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
@@ -43,11 +48,6 @@ namespace Escon.SisctNET.Service.Implementation
         public CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null)
         {
             return _repository.FindByCompanyCfop(companyId, cfopId, log);
-        }
-
-        public List<CompanyCfop> FindByCfopActive(int companyId, Log log = null)
-        {
-            return _repository.FindByCfopActive(companyId, log);
         }
 
         public CompanyCfop FindById(int id, Log log)
