@@ -474,6 +474,10 @@ namespace Escon.SisctNET.Web.Taxation
 
                                         case "receb":
                                             reader.Read();
+                                            while (reader.Name.Equals(""))
+                                            {
+                                                reader.Read();
+                                            }
                                             receb.Add("cnpjreceb", reader.ReadString());
                                             cte.Add(receb);
                                             break;
@@ -594,6 +598,7 @@ namespace Escon.SisctNET.Web.Taxation
                         if (ctes[i][j].ContainsKey("cnpjreceb"))
                         {
                             recebedor = ctes[i][j]["cnpjreceb"];
+                            break;
                         }
                     }
                     for (int j = 0; j < ctes[i].Count(); j++)
