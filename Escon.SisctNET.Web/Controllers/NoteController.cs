@@ -369,37 +369,30 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 vDesc = Convert.ToDecimal(det["vDesc"]);
                             }
-
                             if (det.ContainsKey("vICMSST"))
                             {
                                 vICMSST = Convert.ToDecimal(det["vICMSST"]);
                             }
-
                             if (det.ContainsKey("vBCST"))
                             {
                                 vBCST = Convert.ToDecimal(det["vBCST"]);
                             }
-
                             if (det.ContainsKey("vBCFCPST"))
                             {
                                 vBCFCPST = Convert.ToDecimal(det["vBCFCPST"]);
                             }
-
                             if (det.ContainsKey("vBCFCPSTRet"))
                             {
                                 vBCFCPSTRet = Convert.ToDecimal(det["vBCFCPSTRet"]);
                             }
-
                             if (det.ContainsKey("pFCPST"))
                             {
                                 pFCPST = Convert.ToDecimal(det["pFCPST"]);
                             }
-
                             if (det.ContainsKey("pFCPSTRet"))
                             {
                                 pFCPSTRet = Convert.ToDecimal(det["pFCPSTRet"]);
                             }
-
                             if (det.ContainsKey("vFCPST"))
                             {
                                 vFCPST = Convert.ToDecimal(det["vFCPST"]);
@@ -456,8 +449,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (taxed == null)
                                 {
-                                    
-
                                     try
                                     {
                                         var item = new Model.ProductNote
