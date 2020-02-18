@@ -101,6 +101,8 @@ namespace Escon.SisctNET.Web.Controllers
                         CNPJ = CNPJ.Substring(0, 8);
                         var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
+                        var CNPJRaiz = CNPJ.Substring(0, 8);
+
                         if (existCnpj == null)
                         {
                             var client = new Model.Client
@@ -108,6 +110,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 Name = det["xNome"],
                                 CompanyId = id,
                                 Document = CNPJ,
+                                CnpjRaiz = CNPJRaiz,
                                 Ie = IE ,
                                 Taxpayer = true,
                                 Created = DateTime.Now,
@@ -149,10 +152,9 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindByLast(id, count);
                 ViewBag.Id = id;
                 ViewBag.Count = count;
-                return View(result);
+                return View();
             }
             catch(Exception ex)
             {

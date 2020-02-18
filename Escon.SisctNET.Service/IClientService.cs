@@ -13,8 +13,7 @@ namespace Escon.SisctNET.Service
 
         Client FindByDocumentCompany(int companyId, string document, Model.Log log = null);
 
-        List<Client> FindByLast(int companyId, int count, Model.Log log = null);
+        List<string> FindByContribuinte(int companyId, string type, Model.Log log = null);
 
-        List<Client> FindByContribuinte(int companyId, Model.Log log = null);
     }
 }
