@@ -190,6 +190,7 @@
                                     @ViewBag.Contribuinte
                                 </td>
                             </tr>
+
                             <tr>
                                 <th>
                                     Vendas P/ Não Contribuintes
@@ -198,9 +199,19 @@
                                     @ViewBag.NContribuinte
                                 </td>
                             </tr>
+
                             <tr>
                                 <th>
-                                    Vendas do Anexo
+                                    Vendas P/ CNPJ maior que @ViewBag.PercentualAnexo %
+                                </th>
+                                <td>
+                                    00
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Vendas do Anexo II
                                 </th>
                                 <td>
                                     @ViewBag.VendaAnexo
@@ -253,19 +264,18 @@
                                                 <th></th>
                                                 <th>Vendas</th>
                                                 <th></th>
-                                                <th>Limite</th>
+                                                <th>Limite (MÁXIMO)</th>
                                                 <th></th>
                                                 <th>Excedente</th>
                                                 <th></th>
                                                 <th>Adicional</th>
                                                 <th></th>
                                                 <th>Total</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <th>ICMS Excedente</th>
+                                                <th>ICMS excedente</th>
                                                 <td></td>
                                                 <th>-</th>
                                                 <td></td>
@@ -275,23 +285,44 @@
                                                 <td></td>
                                                 <th>=</th>
                                                 <td></td>
-                                                <td></td>
                                             </tr>
-                                            <tr>
-                                                <th>ICMS excedente não contribuinte</th>
-                                                <td></td>
-                                                <th>-</th>
-                                                <td></td>
-                                                <th>=</th>
-                                                <td></td>
-                                                <th>x</th>
-                                                <td></td>
-                                                <th>=</th>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <thead>
                                             <tr>
                                                 <th></th>
+                                                <th>Limite (MÍNIMO)</th>
+                                                <th></th>
+                                                <th>Vendas</th>
+                                                <th></th>
+                                                <th>Excedente</th>
+                                                <th></th>
+                                                <th>Adicional</th>
+                                                <th></th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>ICMS excedente contribuinte</th>
+                                                <td>@ViewBag.LimiteContribuinte</td>
+                                                <th>-</th>
+                                                <td>@ViewBag.Contribuinte</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.ExcedenteContribuinte</td>
+                                                <th>x</th>
+                                                <td>@ViewBag.PercentualExcedenteContribuinte</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.TotalExcedenteContribuinte</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -301,13 +332,26 @@
                                                 <th>Total ICMS</th>
                                                 <td></td>
                                                 <td></td>
-                                                <td>DAR</td>
                                             </tr>
                                         </tbody>
-
+                                        <tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <th>DAR</th>
+                                                <td></td>
+                                                <th>113000</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
 
