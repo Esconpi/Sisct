@@ -866,12 +866,18 @@ namespace Escon.SisctNET.Web.Controllers
                         limiteGrupo = (totalVendas * Convert.ToDecimal(comp.VendaMGrupo)) / 100;
 
                     decimal impostoContribuinte = 0, excedenteContribuinte = 0, excedenteNcm = 0 , impostoNcm = 0;
+                    
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
+                    //Geral
+                    ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalSaida = Math.Round(Convert.ToDouble(totalSaida.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //CNPJ
                     List<List<string>> gruposExecentes = new List<List<string>>();
-
-
-                    //Calcular cnpj com saidas acima de x%
-                    for (int i = 0; i < contContribuintesRaiz-1; i++)
+                    for (int i = 0; i < contContribuintesRaiz - 1; i++)
                     {
                         var totalVendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
                         if (totalVendaGrupo > limiteGrupo)
@@ -884,18 +890,23 @@ namespace Escon.SisctNET.Web.Controllers
                             grupoExcedente.Add(cnpjGrupo);
                             grupoExcedente.Add(nomeGrupo);
                             grupoExcedente.Add(percentualGrupo.ToString());
-                            grupoExcedente.Add(totalVendaGrupo.ToString());
+                            grupoExcedente.Add(Math.Round(Convert.ToDouble(totalVendaGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                            grupoExcedente.Add(comp.VendaMGrupoExcedente.ToString());
                             gruposExecentes.Add(grupoExcedente);
                         }
                     }
-                    
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                    //Geral
-                    ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalSaida = Math.Round(Convert.ToDouble(totalSaida.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    //Anexo II
+                    if (totalNcm < limiteNcm)
+                    {
+                        excedenteNcm = limiteNcm - totalNcm;
+                        impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;
+                    }
+                    ViewBag.PercentualAnexo = comp.VendaAnexo;
+                    ViewBag.LimiteAnexo = Math.Round(Convert.ToDouble(limiteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualExcedenteAnexo = comp.VendaAnexoExcedente;
+                    ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //Contribuinte
                     if (totalContribuinte < limiteContribuinte)
@@ -909,17 +920,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualExcedenteContribuinte = comp.VendaContribuinteExcedente;
                     ViewBag.TotalExcedenteContribuinte = Math.Round(Convert.ToDouble(impostoContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    //Anexo II
-                    if (totalNcm < limiteNcm)
-                    {
-                        excedenteNcm = limiteNcm - totalNcm;
-                        impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;
-                    }
-                    ViewBag.PercentualAnexo = comp.VendaAnexo;
-                    ViewBag.LimiteAnexo = Math.Round(Convert.ToDouble(limiteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualExcedenteAnexo = comp.VendaAnexoExcedente;
-                    ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //Total Icms
+                    ViewBag.TotalIcms = Math.Round(Convert.ToDouble((impostoNcm + impostoContribuinte).ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                 }
                 return View();
             }
