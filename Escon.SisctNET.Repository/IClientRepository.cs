@@ -15,5 +15,7 @@ namespace Escon.SisctNET.Repository
 
         List<string> FindByContribuinte(int companyId,string type, Model.Log log = null);
 
+        Client FindByRaiz(string raiz, Model.Log log = null);
+
     }
 }

@@ -63,6 +63,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByName(name, log);
         }
 
+        public Client FindByRaiz(string raiz, Log log = null)
+        {
+            return _repository.FindByRaiz(raiz, log);
+        }
+
         public Client Update(Client entity, Log log)
         {
             return _repository.Update(entity, log);

@@ -60,5 +60,12 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return result;
         }
+
+        public Client FindByRaiz(string raiz, Log log = null)
+        {
+            var result = _context.Clients.Where(_ => _.CnpjRaiz.Equals(raiz)).FirstOrDefault();
+            AddLog(log);
+            return result;
+        }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service
 {
     public interface INcmConvenioService : IServiceBase<Model.NcmConvenio>
     {
+        List<string> FindByAnnex(int annexId, Log log = null);
     }
 }
