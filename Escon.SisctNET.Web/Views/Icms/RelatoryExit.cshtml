@@ -162,7 +162,7 @@
                  }
                  else if (ViewBag.Type == "venda")
                  {
-                    <table class="table">
+                    <table class="table" style="font-size:10px;">
                         <thead>
                             <tr>
                                 <th>
@@ -184,7 +184,7 @@
                             </tr>
                             <tr>
                                 <th>
-                                    Venda P/ Contribuintes
+                                    Vendas P/ Contribuintes
                                 </th>
                                 <td>
                                     @ViewBag.Contribuinte
@@ -192,15 +192,125 @@
                             </tr>
                             <tr>
                                 <th>
-                                    Venda P/ Não Contribuintes
+                                    Vendas P/ Não Contribuintes
                                 </th>
                                 <td>
                                     @ViewBag.NContribuinte
                                 </td>
                             </tr>
+                            <tr>
+                                <th>
+                                    Vendas do Anexo
+                                </th>
+                                <td>
+                                    @ViewBag.VendaAnexo
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>
+
+                    <table class="table" style="font-size: 10px;">
+                        <thead>
+                            <tr style="border: 1px solid;">
+                                <th style="border: 1px solid; text-align:center;">CNPJ</th>
+                                <th style="border: 1px solid; text-align:center;">Cliente</th>
+                                <th style="border: 1px solid;">Percentual</th>
+                                <th style="border: 1px solid;">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table" style="font-size: 10px;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <table class="table">
+                                        <thead class="table">
+                                            <tr class="table" style="border: 1px solid;">
+                                                <th style="text-align:center; border: 1px solid;">APURAÇÃO ICMS</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Vendas</th>
+                                                <th></th>
+                                                <th>Limite</th>
+                                                <th></th>
+                                                <th>Excedente</th>
+                                                <th></th>
+                                                <th>Adicional</th>
+                                                <th></th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>ICMS Excedente</th>
+                                                <td></td>
+                                                <th>-</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                                <th>x</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>ICMS excedente não contribuinte</th>
+                                                <td></td>
+                                                <th>-</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                                <th>x</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <th>Total ICMS</th>
+                                                <td></td>
+                                                <td></td>
+                                                <td>DAR</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                  }
 
             </div>

@@ -591,9 +591,7 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                             resumoCnpjRaiz[i, 0] = "Não contribuinte";
-                            resumoAllCnpjRaiz[i, 0] = "Não contribuinte";
                             resumoCnpjRaiz[i, 1] = "0";
-                            resumoAllCnpjRaiz[i, 1] = "0";
                         }
                     }
 
@@ -856,6 +854,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Contribuinte = totalContribuinte;
                     ViewBag.NContribuinte = totalNcontribuinte;
                     ViewBag.TotalSaida = totalSaida;
+                    ViewBag.VendaAnexo = impostoNcm;
+                    ViewBag.Grupo = gruposExecentes;
 
                 }
                 return View();
