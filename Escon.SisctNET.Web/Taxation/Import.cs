@@ -636,7 +636,7 @@ namespace Escon.SisctNET.Web.Taxation
             return ctes;
         }
 
-        public List<List<Dictionary<string,string>>> NfeExit(string directoryNfe, int companyId, string type)
+        public List<List<Dictionary<string,string>>> NfeExit(string directoryNfe, int companyId, string type, string typeCfop)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             try
@@ -645,7 +645,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
 
-                var cfops = _companyCfopService.FindByCfopActive(companyId, type).Select(_ => _.Cfop.Code);
+                var cfops = _companyCfopService.FindByCfopActive(companyId, type, typeCfop).Select(_ => _.Cfop.Code);
 
                 for (int i = 0; i < archivesNfes.Count(); i++)
                 {

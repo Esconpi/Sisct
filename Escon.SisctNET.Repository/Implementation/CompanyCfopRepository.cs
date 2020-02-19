@@ -18,18 +18,24 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<CompanyCfop> FindByCfopActive(int companyId, string type, Log log = null)
+        public List<CompanyCfop> FindByCfopActive(int companyId, string type, string typeCfop, Log log = null)
         {
             List<CompanyCfop> result = null;
 
-            if (type.Equals("resumocfop"))
+            if (type.Equals("resumocfop") && typeCfop.Equals("all"))
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).ToList();
             }
-            else if (type.Equals("venda"))
+            else if (type.Equals("venda") && typeCfop.Equals("venda"))
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda")).ToList();
             }
+            else if (type.Equals("venda") && typeCfop.Equals("transferencia"))
+            {
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Transferencia")).ToList();
+
+            }
+
             AddLog(log);
             return result;
         }
