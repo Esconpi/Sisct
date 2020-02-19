@@ -529,7 +529,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesTranferencia = new List<List<Dictionary<string, string>>>();
 
                     notesVenda = import.NfeExit(directoryNfe, id, type, "venda");
-                    notesTranferencia = import.NfeExit(directoryNfe, id, type, "tranferencia");
+                    notesTranferencia = import.NfeExit(directoryNfe, id, type, "transferencia");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -801,7 +801,7 @@ namespace Escon.SisctNET.Web.Controllers
                    
                     decimal totalNcontribuinte = Convert.ToDecimal(resumoCnpjRaiz[contContribuintesRaiz - 1, 1]);
                     decimal totalContribuinte = totalVendas - totalNcontribuinte;
-
+                    totalSaida = totalVendas + totalTranferencias;
                     decimal limiteContribuinte = (totalVendas * Convert.ToDecimal(comp.VendaContribuinte)) / 100,
                         limiteNcm = (totalVendas * Convert.ToDecimal(comp.VendaAnexo)) / 100,
                         limiteGrupo = (totalVendas * Convert.ToDecimal(comp.VendaMGrupo)) / 100;
@@ -810,6 +810,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> gruposExecentes = new List<List<string>>();
 
+
+                    //Calcular cnpj com saidas acima de x%
                     for (int i = 0; i < contContribuintesRaiz; i++)
                     {
                         var totalVendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
@@ -819,7 +821,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
                             var clientGrupo = _clientService.FindByRaiz(cnpjGrupo);
                             var nomeGrupo = clientGrupo.Name;
-                            var percentualGrupo = Math.Round((totalVendaGrupo / totalVendas) * 100, 2);
+                            var percentualGrupo = Math.Round((totalVendaGrupo / totalSaida) * 100, 2);
                             grupoExcedente.Add(cnpjGrupo);
                             grupoExcedente.Add(nomeGrupo);
                             grupoExcedente.Add(percentualGrupo.ToString());
