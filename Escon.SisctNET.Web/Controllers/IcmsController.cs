@@ -530,11 +530,30 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesTranferencia = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesEntrada = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesDeFora = new List<List<Dictionary<string, string>>>();
 
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesTranferencia = import.NfeExit(directoryNfeExit, id, type, "transferencia");
                     notesEntrada = import.NfeExit(directoryNfeEntrada, id, type, "devolução");
+                    notesDeFora = import.NotesTransfer(directoryNfeEntrada, id);
+                    var cfopstransf = _companyCfopService.FindByCfopActive(id, type, "transferencia").Select(_ => _.Cfop.Code).ToList();
 
+                    decimal totalEntradas = 0, totalTranferencia = 0;
+                    for (int i = notesDeFora.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesDeFora[i][3]["CNPJ"].Equals(comp.Document))
+                        {
+                            notesDeFora.RemoveAt(i);
+                        }
+                        else
+                        {
+                            if (cfopstransf.Contains(notesDeFora[i][4]["CFOP"]) && notesDeFora[i][1]["idDest"].Equals("2"))
+                            {
+                                totalTranferencia += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
+                            }
+                            totalEntradas += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
+                        }
+                    }
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -563,7 +582,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         totalDevolucao += Convert.ToDecimal(notesEntrada[i][notesEntrada[i].Count() - 1]["vNF"]);
                     }
-
 
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     var contribuintesRaiz = _clientService.FindByContribuinte(id, "raiz");
