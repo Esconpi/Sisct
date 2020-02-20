@@ -538,7 +538,7 @@ namespace Escon.SisctNET.Web.Controllers
                     notesDeFora = import.NotesTransfer(directoryNfeEntrada, id);
                     var cfopstransf = _companyCfopService.FindByCfopActive(id, type, "transferencia").Select(_ => _.Cfop.Code).ToList();
 
-                    decimal totalEntradas = 0, totalTranferencia = 0;
+                    decimal totalEntradas = 0, totalTranferenciaInter = 0;
                     for (int i = notesDeFora.Count - 1; i >= 0; i--)
                     {
                         if (!notesDeFora[i][3]["CNPJ"].Equals(comp.Document))
@@ -549,7 +549,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (cfopstransf.Contains(notesDeFora[i][4]["CFOP"]) && notesDeFora[i][1]["idDest"].Equals("2"))
                             {
-                                totalTranferencia += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
+                                totalTranferenciaInter += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
                             }
                             totalEntradas += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
                         }
@@ -881,9 +881,10 @@ namespace Escon.SisctNET.Web.Controllers
                     totalSaida = totalVendas + totalTranferencias;
                     decimal limiteContribuinte = (totalVendas * Convert.ToDecimal(comp.VendaContribuinte)) / 100,
                         limiteNcm = (totalVendas * Convert.ToDecimal(comp.VendaAnexo)) / 100,
-                        limiteGrupo = (totalVendas * Convert.ToDecimal(comp.VendaMGrupo)) / 100;
+                        limiteGrupo = (totalVendas * Convert.ToDecimal(comp.VendaMGrupo)) / 100,
+                        limiteTransferencia = (totalEntradas * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
 
-                    decimal impostoContribuinte = 0, excedenteContribuinte = 0, excedenteNcm = 0 , impostoNcm = 0;
+                    decimal impostoContribuinte = 0, excedenteContribuinte = 0, excedenteNcm = 0 , impostoNcm = 0, excedenteTranfInter = 0, impostoTransfInter = 0;
 
                     List<List<string>> gruposExecentes = new List<List<string>>();
 
@@ -938,6 +939,13 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualExcedenteAnexo = comp.VendaAnexoExcedente;
                     ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    // Transferência inter
+                    if (limiteTransferencia < totalTranferenciaInter)
+                    {
+                        excedenteTranfInter = totalTranferenciaInter - limiteTransferencia;
+                        impostoTransfInter = (excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
+                    }
                 }
                 return View();
             }
