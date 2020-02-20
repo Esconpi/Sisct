@@ -162,7 +162,7 @@
                  }
                  else if (ViewBag.Type == "venda")
                  {
-                    <table class="table">
+                    <table class="table" style="font-size:10px;">
                         <thead>
                             <tr>
                                 <th>
@@ -184,7 +184,7 @@
                             </tr>
                             <tr>
                                 <th>
-                                    Venda P/ Contribuintes
+                                    Vendas P/ Contribuintes
                                 </th>
                                 <td>
                                     @ViewBag.Contribuinte
@@ -193,35 +193,41 @@
 
                             <tr>
                                 <th>
-                                    Venda P/ Não Contribuintes
+                                    Vendas P/ Não Contribuintes
                                 </th>
                                 <td>
                                     @ViewBag.NContribuinte
                                 </td>
                             </tr>
+
                             <tr>
-                                <th>Vendas P/ CNPJ maior que 40%</th>
-                                <td>0000000</td>
+                                <th>
+                                    Vendas P/ CNPJ maior que @ViewBag.PercentualAnexo %
+                                </th>
+                                <td>
+                                    00
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Vendas do Anexo II
+                                </th>
+                                <td>
+                                    @ViewBag.VendaAnexo
+                                </td>
                             </tr>
 
                         </tbody>
                     </table>
 
-                    <table class="table">
+                    <table class="table" style="font-size: 10px;">
                         <thead>
-                            <tr style="border:1px solid;">
-                                <th>
-                                    CNPJ
-                                </th>
-                                <th>
-                                    Cliente
-                                </th>
-                                <th>
-                                    Percentual
-                                </th>
-                                <th>
-                                    Valor
-                                </th>
+                            <tr style="border: 1px solid;">
+                                <th style="border: 1px solid; text-align:center;">CNPJ</th>
+                                <th style="border: 1px solid; text-align:center;">Cliente</th>
+                                <th style="border: 1px solid;">Percentual</th>
+                                <th style="border: 1px solid;">Valor</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -234,25 +240,121 @@
                         </tbody>
                     </table>
 
-                    <table class="table">
+                    <table class="table" style="font-size: 10px;">
                         <thead>
                             <tr>
-                                APURAÇÃO ICMS
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>Vendas</th>
-                                <th>Limite</th>
-                                <th>Excedente</th>
-                                <th>Adicional</th>
-                                <th>Total</th>
+                                <th>
+                                    <table class="table">
+                                        <thead class="table">
+                                            <tr class="table" style="border: 1px solid;">
+                                                <th style="text-align:center; border: 1px solid;">APURAÇÃO ICMS</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr></tr>
-                            <tr></tr>
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Vendas</th>
+                                                <th></th>
+                                                <th>Limite (MÁXIMO)</th>
+                                                <th></th>
+                                                <th>Excedente</th>
+                                                <th></th>
+                                                <th>Adicional</th>
+                                                <th></th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>ICMS excedente</th>
+                                                <td></td>
+                                                <th>-</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                                <th>x</th>
+                                                <td></td>
+                                                <th>=</th>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Limite (MÍNIMO)</th>
+                                                <th></th>
+                                                <th>Vendas</th>
+                                                <th></th>
+                                                <th>Excedente</th>
+                                                <th></th>
+                                                <th>Adicional</th>
+                                                <th></th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>ICMS excedente contribuinte</th>
+                                                <td>@ViewBag.LimiteContribuinte</td>
+                                                <th>-</th>
+                                                <td>@ViewBag.Contribuinte</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.ExcedenteContribuinte</td>
+                                                <th>x</th>
+                                                <td>@ViewBag.PercentualExcedenteContribuinte</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.TotalExcedenteContribuinte</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <th>Total ICMS</th>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <th>DAR</th>
+                                                <td></td>
+                                                <th>113000</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
+
                  }
 
             </div>
