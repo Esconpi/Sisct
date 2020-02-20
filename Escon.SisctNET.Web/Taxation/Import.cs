@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 
 namespace Escon.SisctNET.Web.Taxation
