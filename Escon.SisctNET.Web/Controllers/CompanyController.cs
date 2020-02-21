@@ -163,12 +163,12 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 if (entity.CompanyId == 0)
-                    rst.CompanyId = null;
+                    entity.CompanyId = null;
 
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
 
-                var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -325,7 +325,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.Ident = ident;
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
+                return View(result);
             }
             catch (Exception ex)
             {

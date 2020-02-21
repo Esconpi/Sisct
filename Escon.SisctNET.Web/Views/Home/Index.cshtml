@@ -65,16 +65,13 @@
                                 </td>
                                 <td style="width:110px;">
 
-
-                                    <a href="#" id="@item.Id" class="showCompare">
-                                        <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara"></i>
-                                    </a>
+                                    @Html.ActionLink(" ", "Compare", "Company", new { id = item.Id , ident = "0" }, new { @class = "glyphicon glyphicon-duplicate pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
 
                                     <a href="#" id="@item.Id" class="showTaxation">
                                         <i class="fa fa-calculator pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Tributar"></i>
                                     </a>
 
-                                    @Html.ActionLink(" ", "Relatory", "Company", new { id = item.Id }, new { @class = "fa fa-file pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
+                                    @Html.ActionLink(" ", "Relatory", "Company", new { id = item.Id}, new { @class = "fa fa-file pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
 
                                     @if (item.Incentive == true)
                                     {
@@ -133,15 +130,6 @@
             } catch (e) {
                 console.log(e);
             }
-        });
-
-        $('.showCompare').click(function () {
-            $.get('Company/Compare?id=' + $(this).attr('id') + '&ident=0', function (html) {
-                $('#formShow .modal-body').empty();
-                $('#formShow .modal-body').append($(html));
-                $('#formShow').modal('show');
-            });
-
         });
 
         $('.showTaxation').click(function () {

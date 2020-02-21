@@ -15,11 +15,11 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
                     <div class="row">
-                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
                             <label class="control-label">Ano</label>
                             <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
                         </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
                             <label class="control-label">Mês</label>
                             <select name="month" class="form-control selectoption">
                                 <option value="Janeiro">Janeiro</option>
@@ -36,7 +36,7 @@
                                 <option value="Dezembro">Dezembro</option>
                             </select>
                         </div>
-                        <div class="form-group col-lg-7 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-7 col-md-7 col-xs-12">
                             <label class="control-label">Tipo de tributação</label>
                             <select name="typeTaxation" class="form-control selectoption">
                                 <option value="0">Selecione o tipo</option>

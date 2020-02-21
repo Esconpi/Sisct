@@ -206,7 +206,6 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> products = new List<List<string>>();
                 products = import.Product(caminhoDestinoArquivoOriginal);
 
-
                 for (int i = 0; i < products.Count(); i++)
                 {
                     var item = _service.FindByProduct(products[i][0], Convert.ToInt32(products[i][5]), products[i][1]);

@@ -58,6 +58,8 @@
 
                             </td>
                             <td style="width:80px;">
+                                @Html.ActionLink(" ", "Compare", "Company", new { id = item.Id , ident = "1"}, new { @class = "glyphicon glyphicon-duplicate pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
+
                                 <a href="#" id="@item.Id" class="showCompare">
                                     <i class="glyphicon glyphicon-duplicate pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Compara"></i>
                                 </a>
