@@ -530,11 +530,30 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesTranferencia = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesEntrada = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesDeFora = new List<List<Dictionary<string, string>>>();
 
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesTranferencia = import.NfeExit(directoryNfeExit, id, type, "transferencia");
                     notesEntrada = import.NfeExit(directoryNfeEntrada, id, type, "devolução");
+                    notesDeFora = import.NotesTransfer(directoryNfeEntrada, id);
+                    var cfopstransf = _companyCfopService.FindByCfopActive(id, type, "transferencia").Select(_ => _.Cfop.Code).ToList();
 
+                    decimal totalEntradas = 0, totalTranferenciaInter = 0;
+                    for (int i = notesDeFora.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesDeFora[i][3]["CNPJ"].Equals(comp.Document) && !notesDeFora[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notesDeFora.RemoveAt(i);
+                        }
+                        else
+                        {
+                            if (cfopstransf.Contains(notesDeFora[i][4]["CFOP"]) && notesDeFora[i][1]["idDest"].Equals("2"))
+                            {
+                                totalTranferenciaInter += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
+                            }
+                            totalEntradas += Convert.ToDecimal(notesDeFora[i][notesDeFora[i].Count - 1]["vNF"]);
+                        }
+                    }
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -564,7 +583,6 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDevolucao += Convert.ToDecimal(notesEntrada[i][notesEntrada[i].Count() - 1]["vNF"]);
                     }
 
-
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     var contribuintesRaiz = _clientService.FindByContribuinte(id, "raiz");
                     var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
@@ -576,7 +594,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string[,] resumoCnpjRaiz = new string[contContribuintesRaiz, 2];
                     string[,] resumoAllCnpjRaiz = new string[contContribuintesRaiz-1, 2];
 
-                    for(int i = 0; i < contContribuintes; i++)
+                    for(int i = 0; i < contContribuintes; i++) 
                     {
                         resumoCnpjs[i, 0] = contribuintes[i];
                         resumoCnpjs[i, 1] = "0";
@@ -809,49 +827,49 @@ namespace Escon.SisctNET.Web.Controllers
 
                         for (int j = 0; j < notesTranferencia[i].Count; j++)
                         {
-                            if (notesVenda[i][j].ContainsKey("vProd") && notesVenda[i][j].ContainsKey("cProd"))
+                            if (notesTranferencia[i][j].ContainsKey("vProd") && notesTranferencia[i][j].ContainsKey("cProd"))
                             {
-                                totalTranferencias += Convert.ToDecimal(notesVenda[i][j]["vProd"]);
+                                totalTranferencias += Convert.ToDecimal(notesTranferencia[i][j]["vProd"]);
                                 if (posClienteRaiz < contContribuintesRaiz - 1) { 
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][j]["vProd"])).ToString();
+                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesTranferencia[i][j]["vProd"])).ToString();
                                 }
                             }
 
-                            if (notesVenda[i][j].ContainsKey("vFrete") && notesVenda[i][j].ContainsKey("cProd"))
+                            if (notesTranferencia[i][j].ContainsKey("vFrete") && notesTranferencia[i][j].ContainsKey("cProd"))
                             {
-                                totalTranferencias += Convert.ToDecimal(notesVenda[i][j]["vFrete"]);
+                                totalTranferencias += Convert.ToDecimal(notesTranferencia[i][j]["vFrete"]);
                                 if (posClienteRaiz < contContribuintesRaiz - 1)
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][j]["vFrete"])).ToString();
+                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesTranferencia[i][j]["vFrete"])).ToString();
 
                                 }
                             }
-                            if (notesVenda[i][j].ContainsKey("vDesc") && notesVenda[i][j].ContainsKey("cProd"))
+                            if (notesTranferencia[i][j].ContainsKey("vDesc") && notesTranferencia[i][j].ContainsKey("cProd"))
                             {
-                                totalTranferencias -= Convert.ToDecimal(notesVenda[i][j]["vDesc"]);
+                                totalTranferencias -= Convert.ToDecimal(notesTranferencia[i][j]["vDesc"]);
                                 if (posClienteRaiz < contContribuintesRaiz - 1)
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][j]["vDesc"])).ToString();
-
-                                }
-                            }
-
-                            if (notesVenda[i][j].ContainsKey("vOutro") && notesVenda[i][j].ContainsKey("cProd"))
-                            {
-                                totalTranferencias += Convert.ToDecimal(notesVenda[i][j]["vOutro"]);
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
-                                {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][j]["vOutro"])).ToString();
+                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesTranferencia[i][j]["vDesc"])).ToString();
 
                                 }
                             }
 
-                            if (notesVenda[i][j].ContainsKey("vSeg") && notesVenda[i][j].ContainsKey("cProd"))
+                            if (notesTranferencia[i][j].ContainsKey("vOutro") && notesTranferencia[i][j].ContainsKey("cProd"))
                             {
-                                totalTranferencias += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                totalTranferencias += Convert.ToDecimal(notesTranferencia[i][j]["vOutro"]);
                                 if (posClienteRaiz < contContribuintesRaiz - 1)
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][j]["vSeg"])).ToString();
+                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesTranferencia[i][j]["vOutro"])).ToString();
+
+                                }
+                            }
+
+                            if (notesTranferencia[i][j].ContainsKey("vSeg") && notesTranferencia[i][j].ContainsKey("cProd"))
+                            {
+                                totalTranferencias += Convert.ToDecimal(notesTranferencia[i][j]["vSeg"]);
+                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                {
+                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesTranferencia[i][j]["vSeg"])).ToString();
 
                                 }
                             }
@@ -863,20 +881,15 @@ namespace Escon.SisctNET.Web.Controllers
                     totalSaida = totalVendas + totalTranferencias;
                     decimal limiteContribuinte = (totalVendas * Convert.ToDecimal(comp.VendaContribuinte)) / 100,
                         limiteNcm = (totalVendas * Convert.ToDecimal(comp.VendaAnexo)) / 100,
-                        limiteGrupo = (totalVendas * Convert.ToDecimal(comp.VendaMGrupo)) / 100;
+                        limiteGrupo = (totalSaida * Convert.ToDecimal(comp.VendaMGrupo)) / 100,
+                        limiteTransferencia = (totalEntradas * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
 
-                    decimal impostoContribuinte = 0, excedenteContribuinte = 0, excedenteNcm = 0 , impostoNcm = 0;
+                    decimal impostoContribuinte = 0, excedenteContribuinte = 0, excedenteNcm = 0 , impostoNcm = 0, excedenteTranfInter = 0, impostoTransfInter = 0;
                     
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
-                    //Geral
-                    ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalSaida = Math.Round(Convert.ToDouble(totalSaida.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //CNPJ
                     List<List<string>> gruposExecentes = new List<List<string>>();
+                    decimal totalExcedente = 0, totalImpostoGrupo = 0;
                     for (int i = 0; i < contContribuintesRaiz - 1; i++)
                     {
                         var totalVendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
@@ -887,14 +900,25 @@ namespace Escon.SisctNET.Web.Controllers
                             var clientGrupo = _clientService.FindByRaiz(cnpjGrupo);
                             var nomeGrupo = clientGrupo.Name;
                             var percentualGrupo = Math.Round((totalVendaGrupo / totalSaida) * 100, 2);
+                            var excedenteGrupo = totalVendaGrupo - limiteGrupo;
+                            var impostoGrupo = (excedenteGrupo * Convert.ToDecimal(comp.VendaMGrupoExcedente)) / 100;
+                            totalExcedente += totalVendaGrupo;
+                            totalImpostoGrupo += impostoGrupo;
+                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                             grupoExcedente.Add(cnpjGrupo);
                             grupoExcedente.Add(nomeGrupo);
                             grupoExcedente.Add(percentualGrupo.ToString());
                             grupoExcedente.Add(Math.Round(Convert.ToDouble(totalVendaGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                            grupoExcedente.Add(Math.Round(Convert.ToDouble(limiteGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                            grupoExcedente.Add(Math.Round(Convert.ToDouble(excedenteGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
                             grupoExcedente.Add(comp.VendaMGrupoExcedente.ToString());
+                            grupoExcedente.Add(Math.Round(Convert.ToDouble(impostoGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
                             gruposExecentes.Add(grupoExcedente);
+                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
                         }
                     }
+
 
                     //Anexo II
                     if (totalNcm < limiteNcm)
@@ -902,11 +926,6 @@ namespace Escon.SisctNET.Web.Controllers
                         excedenteNcm = limiteNcm - totalNcm;
                         impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;
                     }
-                    ViewBag.PercentualAnexo = comp.VendaAnexo;
-                    ViewBag.LimiteAnexo = Math.Round(Convert.ToDouble(limiteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualExcedenteAnexo = comp.VendaAnexoExcedente;
-                    ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //Contribuinte
                     if (totalContribuinte < limiteContribuinte)
@@ -915,14 +934,47 @@ namespace Escon.SisctNET.Web.Controllers
                         impostoContribuinte = (excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100;
                     }
 
+                    // Transferência inter
+                    if (limiteTransferencia < totalTranferenciaInter)
+                    {
+                        excedenteTranfInter = totalTranferenciaInter - limiteTransferencia;
+                        impostoTransfInter = (excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
+                    }
+
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                    //Geral
+                    ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalSaida = Math.Round(Convert.ToDouble(totalSaida.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalTransferencia = Math.Round(Convert.ToDouble(totalTranferenciaInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //CNPJ
+                    ViewBag.PercentualCNPJ = comp.VendaMGrupo;
+                    ViewBag.TotalExecedente = Math.Round(Convert.ToDouble(totalExcedente.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.Grupo = gruposExecentes;
+
+                    //Anexo II
+                    ViewBag.LimiteAnexo = Math.Round(Convert.ToDouble(limiteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualExcedenteAnexo = comp.VendaAnexoExcedente;
+                    ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //Contribuinte
                     ViewBag.LimiteContribuinte = Math.Round(Convert.ToDouble(limiteContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ExcedenteContribuinte = Math.Round(Convert.ToDouble(excedenteContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualExcedenteContribuinte = comp.VendaContribuinteExcedente;
                     ViewBag.TotalExcedenteContribuinte = Math.Round(Convert.ToDouble(impostoContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                    //Tranferência
+                    ViewBag.LimiteTransferencia = Math.Round(Convert.ToDouble(limiteTransferencia.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.ExcedenteTransferencia = Math.Round(Convert.ToDouble(excedenteTranfInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentaulTransferencia = comp.TransferenciaInterExcedente;
+                    ViewBag.TotalExcedenteTransferencia = Math.Round(Convert.ToDouble(impostoTransfInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //Total Icms
-                    ViewBag.TotalIcms = Math.Round(Convert.ToDouble((impostoNcm + impostoContribuinte).ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalIcms = Math.Round(Convert.ToDouble((impostoNcm + impostoContribuinte + impostoTransfInter + totalImpostoGrupo).ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
                 return View();
