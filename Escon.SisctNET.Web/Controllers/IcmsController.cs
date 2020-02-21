@@ -17,13 +17,14 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyCfopService _companyCfopService;
         private readonly IClientService _clientService;
         private readonly INcmConvenioService _ncmConvenioService;
-
+        private readonly IDarService _darService;
         public IcmsController(
             ICompanyService companyService,
             IConfigurationService configurationService,
             ICompanyCfopService companyCfopService,
             IClientService clientService,
             INcmConvenioService ncmConvenioService,
+            IDarService darService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "NoteExit")
@@ -33,6 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
             _companyCfopService = companyCfopService;
             _clientService = clientService;
             _ncmConvenioService = ncmConvenioService;
+            _darService = darService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -976,6 +978,10 @@ namespace Escon.SisctNET.Web.Controllers
                     //Total Icms
                     ViewBag.TotalIcms = Math.Round(Convert.ToDouble((impostoNcm + impostoContribuinte + impostoTransfInter + totalImpostoGrupo).ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+
+                    //Dar
+                    var dar = _darService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
+                    ViewBag.Dar = dar.Code;
                 }
                 return View();
             }
