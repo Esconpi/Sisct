@@ -20,6 +20,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IConfigurationService _configurationService;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IAnnexService _annexService;
+        private readonly ICountingTypeService _countingTypeService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -30,6 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationTypeService taxationTypeService,
             IConfigurationService configurationService,
             IAnnexService annexService,
+            ICountingTypeService countingTypeService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -43,6 +45,7 @@ namespace Escon.SisctNET.Web.Controllers
             _fortesEnterpriseService = fortesEnterpriseService;
             _configurationService = configurationService;
             _annexService = annexService;
+            _countingTypeService = countingTypeService;
         }
 
         [HttpGet]
@@ -85,6 +88,19 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
+                    var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                    List<CountingType> countingTypes = new List<CountingType>();
+                    countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
+
+                    foreach (var item in countingType)
+                    {
+                        countingTypes.Add(new CountingType() { Id = item.Id, Name = item.Name });
+                    }
+
+                    SelectList countingsTypes = new SelectList(countingTypes, "Id", "Name", null);
+                    ViewBag.ListTypes = countingsTypes;
+
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                     return View(result);
                 }
@@ -385,6 +401,32 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Company = company.FantasyName;
                 ViewBag.Document = company.Document;
                 return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
+        {
+
+            try
+            {
+                var entity = _service.FindById(updateCountingType.CompanyId, GetLog(Model.OccorenceLog.Read));
+
+                if (updateCountingType.CountingTypeId.Equals(0))
+                {
+                    entity.CountingTypeId = null;
+                }
+                else
+                {
+                    entity.CountingTypeId = updateCountingType.CountingTypeId;
+                }
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
             }
             catch (Exception ex)
             {
