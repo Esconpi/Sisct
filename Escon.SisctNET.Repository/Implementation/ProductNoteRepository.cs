@@ -22,10 +22,7 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var note in notes)
             {
                 var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Pautado.Equals(false));
-                foreach (var item in rst)
-                {
-                    products.Add(item);
-                }
+                products.AddRange(rst);                
             }
             AddLog(log);
             return products;
@@ -39,10 +36,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (note.Cnpj.Equals(cnpj))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
             }
             AddLog(log);
@@ -62,10 +56,7 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var note in notes)
             {
                 var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
-                foreach (var item in rst)
-                {
-                    products.Add(item);
-                }
+                products.AddRange(rst);
             }
             AddLog(log);
             return products;
@@ -79,58 +70,37 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (taxationType == 0)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 if (taxationType == 1)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 else if (taxationType == 2)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 else if (taxationType == 3)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(2)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 else if (taxationType == 4)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(4)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 else if (taxationType == 5)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(3)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
                 else if (taxationType == 6)
                 {
                     var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(7)));
-                    foreach (var item in rst)
-                    {
-                        products.Add(item);
-                    }
+                    products.AddRange(rst);
                 }
             }
             AddLog(log);
@@ -240,11 +210,7 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach(var note in notes)
             {
                 var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == true).ToList();
-
-                foreach (var item in itens)
-                {
-                     products.Add(item);
-                }
+                products.AddRange(itens);
             }
             return products;
         }
@@ -256,11 +222,7 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var note in notes)
             {
                 var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false && _.Status.Equals(true)).ToList();
-
-                foreach (var item in itens)
-                {
-                    products.Add(item);
-                }
+                products.AddRange(itens);
             }
             return products;
         }
