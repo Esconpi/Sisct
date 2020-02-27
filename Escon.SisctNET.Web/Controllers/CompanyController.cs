@@ -215,7 +215,8 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Cotac = entity.Cotac;
                 rst.Transferencia = entity.Transferencia;
                 rst.TransferenciaExcedente = entity.TransferenciaExcedente;
-                rst.TransferenciaInter = entity.TransferenciaInterExcedente;
+                rst.TransferenciaInter = entity.TransferenciaInter;
+                rst.TransferenciaInterExcedente = entity.TransferenciaInterExcedente;
                 rst.VendaContribuinte = entity.VendaContribuinte;
                 rst.VendaContribuinteExcedente = entity.VendaContribuinteExcedente;
                 rst.VendaCpf = entity.VendaCpf;
@@ -223,6 +224,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.VendaMGrupo = entity.VendaMGrupo;
                 rst.VendaMGrupoExcedente = entity.VendaMGrupoExcedente;
                 rst.VendaAnexo = entity.VendaAnexo;
+                rst.VendaAnexoExcedente = entity.VendaAnexoExcedente;
                 rst.Fecop = entity.Fecop;
                 rst.Suspension = entity.Suspension;
 

@@ -159,9 +159,9 @@
                             }
                         </tbody>
                     </table>
-                 }
-                 else if (ViewBag.Type == "venda")
-                 {
+                }
+                else if (ViewBag.Type == "venda")
+                {
                     <table class="table" style="font-size:10px;">
                         <thead>
                             <tr>
@@ -202,10 +202,10 @@
 
                             <tr>
                                 <th>
-                                    Vendas P/ CNPJ maior que @ViewBag.PercentualAnexo %
+                                    Vendas P/ CNPJ maior que @ViewBag.PercentualCNPJ %
                                 </th>
                                 <td>
-                                    00
+                                    @ViewBag.TotalExecedente
                                 </td>
                             </tr>
 
@@ -221,24 +221,37 @@
                         </tbody>
                     </table>
 
-                    <table class="table" style="font-size: 10px;">
-                        <thead>
-                            <tr style="border: 1px solid;">
-                                <th style="border: 1px solid; text-align:center;">CNPJ</th>
-                                <th style="border: 1px solid; text-align:center;">Cliente</th>
-                                <th style="border: 1px solid;">Percentual</th>
-                                <th style="border: 1px solid;">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if (ViewBag.Grupo.Count == 0)
+                    {
+                        <h6 style="padding-left:20px;"><strong>Não houve vendas para contribuites maior que @ViewBag.PercentualCNPJ %</strong></h6>
+                    }
+                    else
+                    {
+                        <table class="table" style="font-size: 10px;">
+                            <thead>
+                                <tr style="border: 1px solid;">
+                                    <th style="border: 1px solid; text-align:center;">CNPJ</th>
+                                    <th style="border: 1px solid; text-align:center;">Cliente</th>
+                                    <th style="border: 1px solid;">Percentual</th>
+                                    <th style="border: 1px solid;">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              
+                                @foreach (var item in ViewBag.Grupo)
+                                {
+                                    <tr>
+                                        <td>@item[0]</td>
+                                        <td>@item[1]</td>
+                                        <td>@item[2]</td>
+                                        <td>@item[3]</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    }
+
 
                     <table class="table" style="font-size: 10px;">
                         <thead>
@@ -261,31 +274,47 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
+                                                <th style="width:200px;"></th>
+                                                <th style="width:120px;">Vendas</th>
                                                 <th></th>
-                                                <th>Vendas</th>
+                                                <th style="width:120px;">Limite (MÁXIMO)</th>
                                                 <th></th>
-                                                <th>Limite (MÁXIMO)</th>
+                                                <th style="width:100px;">Excedente</th>
                                                 <th></th>
-                                                <th>Excedente</th>
+                                                <th style="width:100px;">Adicional</th>
                                                 <th></th>
-                                                <th>Adicional</th>
-                                                <th></th>
-                                                <th>Total</th>
+                                                <th style="width:100px;">Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach (var item in ViewBag.Grupo)
+                                            {
+                                                <tr>
+                                                    <th>ICMS excedente</th>
+                                                    <td>@item[3]</td>
+                                                    <th>-</th>
+                                                    <td>@item[4]</td>
+                                                    <th>=</th>
+                                                    <td>@item[5]</td>
+                                                    <th>x</th>
+                                                    <td>@item[6]</td>
+                                                    <th>=</th>
+                                                    <td>@item[7]</td>
+                                                </tr>
+                                            }
                                             <tr>
-                                                <th>ICMS excedente</th>
-                                                <td></td>
+                                                <th>Transferência Interestadual</th>
+                                                <td>@ViewBag.TotalTransferencia</td>
                                                 <th>-</th>
-                                                <td></td>
+                                                <td>@ViewBag.LimiteTransferencia</td>
                                                 <th>=</th>
-                                                <td></td>
+                                                <td>@ViewBag.ExcedenteTransferencia</td>
                                                 <th>x</th>
-                                                <td></td>
+                                                <td>@ViewBag.PercentaulTransferencia</td>
                                                 <th>=</th>
-                                                <td></td>
+                                                <td>@ViewBag.TotalExcedenteTransferencia</td>
                                             </tr>
+
                                         </tbody>
 
                                     </table>
@@ -296,16 +325,16 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
+                                                <th style="width:200px;"></th>
+                                                <th style="width:120px;">Limite (MÍNIMO)</th>
                                                 <th></th>
-                                                <th>Limite (MÍNIMO)</th>
+                                                <th style="width:120px;">Vendas</th>
                                                 <th></th>
-                                                <th>Vendas</th>
+                                                <th style="width:100px;">Excedente</th>
                                                 <th></th>
-                                                <th>Excedente</th>
+                                                <th style="width:100px;">Adicional</th>
                                                 <th></th>
-                                                <th>Adicional</th>
-                                                <th></th>
-                                                <th>Total</th>
+                                                <th style="width:100px;">Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -322,6 +351,18 @@
                                                 <td>@ViewBag.TotalExcedenteContribuinte</td>
                                             </tr>
                                             <tr>
+                                                <th>Venda conforme anexo</th>
+                                                <td>@ViewBag.LimiteAnexo</td>
+                                                <th>-</th>
+                                                <td>@ViewBag.VendaAnexo</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.ExcedenteAnexo</td>
+                                                <th>x</th>
+                                                <td>@ViewBag.PercentualExcedenteAnexo</td>
+                                                <th>=</th>
+                                                <td>@ViewBag.TotalExcedenteAnexo</td>
+                                            </tr>
+                                            <tr>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -331,7 +372,7 @@
                                                 <td></td>
                                                 <th>Total ICMS</th>
                                                 <td></td>
-                                                <td></td>
+                                                <td>@ViewBag.TotalIcms</td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
@@ -355,7 +396,7 @@
                         </tbody>
                     </table>
 
-                 }
+                }
 
             </div>
         </div>
