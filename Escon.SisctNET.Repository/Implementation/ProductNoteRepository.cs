@@ -255,7 +255,7 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var note in notes)
             {
-                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false).ToList();
+                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false && _.Status.Equals(true)).ToList();
 
                 foreach (var item in itens)
                 {

@@ -204,7 +204,7 @@
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
             $(this).attr('selected', true);
-            if (taxacao === 5) {
+            if (taxacao === 5 || taxacao === 8) {
                 $("input[name=mva]").prop("disabled", false);
                 $("input[name=fecop]").prop("disabled", false);
                 $("input[name=bcr]").prop("disabled", true);
@@ -221,7 +221,7 @@
     });
 
     $("#taxaType").on("change", function () {
-        if ($(this).val() == 5) {
+        if ($(this).val() == 5 || $(this).val() == 8) {
             $("input[name=mva]").prop("disabled", false);
             $("input[name=fecop]").prop("disabled", false);
             if ($("input[name=AliqInt]").val() === "18") {
