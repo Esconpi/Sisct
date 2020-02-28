@@ -79,8 +79,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Document = company.Document;
                     ViewBag.Name = company.SocialName;
 
-                    //var cofpType = _accountPlanTypeService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(a => a.Active.Equals(true)).ToList();
-
                     var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
 
                     List<CfopType> cfopsTypes = new List<CfopType>();

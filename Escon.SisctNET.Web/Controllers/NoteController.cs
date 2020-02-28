@@ -305,118 +305,31 @@ namespace Escon.SisctNET.Web.Controllers
                             string NCM = "", CEST = "", CFOP = "";
                             string nItem = "";
 
-                            if (det.ContainsKey("NCM"))
-                            {
-                                NCM = det["NCM"];
-                            }
-
-                            if (det.ContainsKey("CFOP"))
-                            {
-                                CFOP = det["CFOP"];
-                            }
-
-                            if (det.ContainsKey("CEST"))
-                            {
-                                CEST = det["CEST"];
-                            }
-
-                            if (det.ContainsKey("vUnCom"))
-                            {
-                                vUnCom = Convert.ToDecimal(det["vUnCom"]);
-                            }
-
-                            if (det.ContainsKey("vICMS"))
-                            {
-                                vICMS = Convert.ToDecimal(det["vICMS"]);
-                            }
-
-                            if (det.ContainsKey("pICMS"))
-                            {
-                                pICMS = Convert.ToDecimal(det["pICMS"]);
-                            }
-
-                            if (det.ContainsKey("vIPI"))
-                            {
-                                vIPI = Convert.ToDecimal(det["vIPI"]);
-                            }
-
-                            if (det.ContainsKey("vPIS"))
-                            {
-                                vPIS = Convert.ToDecimal(det["vPIS"]);
-                            }
-
-                            if (det.ContainsKey("vCOFINS"))
-                            {
-                                vCOFINS = Convert.ToDecimal(det["vCOFINS"]);
-                            }
-
-                            if (det.ContainsKey("vFrete"))
-                            {
-                                vFrete = Convert.ToDecimal(det["vFrete"]);
-                            }
-
-                            if (det.ContainsKey("vSeg"))
-                            {
-                                vSeg = Convert.ToDecimal(det["vSeg"]);
-                            }
-
-                            if (det.ContainsKey("vOutro"))
-                            {
-                                vOutro = Convert.ToDecimal(det["vOutro"]);
-                            }
-
-                            if(det.ContainsKey("vDesc"))
-                            {
-                                vDesc = Convert.ToDecimal(det["vDesc"]);
-                            }
-                            if (det.ContainsKey("vICMSST"))
-                            {
-                                vICMSST = Convert.ToDecimal(det["vICMSST"]);
-                            }
-                            if (det.ContainsKey("vBCST"))
-                            {
-                                vBCST = Convert.ToDecimal(det["vBCST"]);
-                            }
-                            if (det.ContainsKey("vBCFCPST"))
-                            {
-                                vBCFCPST = Convert.ToDecimal(det["vBCFCPST"]);
-                            }
-                            if (det.ContainsKey("vBCFCPSTRet"))
-                            {
-                                vBCFCPSTRet = Convert.ToDecimal(det["vBCFCPSTRet"]);
-                            }
-                            if (det.ContainsKey("pFCPST"))
-                            {
-                                pFCPST = Convert.ToDecimal(det["pFCPST"]);
-                            }
-                            if (det.ContainsKey("pFCPSTRet"))
-                            {
-                                pFCPSTRet = Convert.ToDecimal(det["pFCPSTRet"]);
-                            }
-                            if (det.ContainsKey("vFCPST"))
-                            {
-                                vFCPST = Convert.ToDecimal(det["vFCPST"]);
-                            }
-                            if (det.ContainsKey("vFCPSTRet"))
-                            {
-                                vFCPSTRet = Convert.ToDecimal(det["vFCPSTRet"]);
-                            }
-                            if (det.ContainsKey("frete_icms"))
-                            {
-                                frete_icms = Convert.ToDecimal(det["frete_icms"]);
-                            }
-                            if (det.ContainsKey("frete_prod"))
-                            {
-                                frete_prod = Convert.ToDecimal(det["frete_prod"]);
-                            }
-                            if (det.ContainsKey("baseCalc"))
-                            {
-                                baseDeCalc = Convert.ToDecimal(det["baseCalc"]);
-                            }
-                            if (det.ContainsKey("nItem"))
-                            {
-                                nItem = det["nItem"];
-                            }
+                            NCM = det.ContainsKey("NCM") ? det["NCM"] : NCM;
+                            CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : CFOP;
+                            CEST = det.ContainsKey("CEST") ? det["CEST"] : CEST;
+                            vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : vUnCom;
+                            vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : vICMS;
+                            pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : pICMS;
+                            vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : vIPI;
+                            vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : vPIS;
+                            vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : vCOFINS;
+                            vFrete = det.ContainsKey("vFrete") ? Convert.ToDecimal(det["vFrete"]) : vFrete;
+                            vSeg = det.ContainsKey("vSeg") ? Convert.ToDecimal(det["vSeg"]) : vSeg;
+                            vOutro = det.ContainsKey("vOutro") ? Convert.ToDecimal(det["vOutro"]) : vOutro;
+                            vDesc = det.ContainsKey("vDesc") ? Convert.ToDecimal(det["vDesc"]) : vDesc;
+                            vICMSST = det.ContainsKey("vICMSST") ? Convert.ToDecimal(det["vICMSST"]) : vICMSST;
+                            vBCST = det.ContainsKey("vBCST") ? Convert.ToDecimal(det["vBCST"]) : vBCST;
+                            vBCFCPST = det.ContainsKey("vBCFCPST") ? Convert.ToDecimal(det["vBCFCPST"]) : vBCFCPST;
+                            vBCFCPSTRet = det.ContainsKey("vBCFCPSTRet") ? Convert.ToDecimal(det["vBCFCPSTRet"]) : vBCFCPSTRet;
+                            pFCPST = det.ContainsKey("pFCPST") ? Convert.ToDecimal(det["pFCPST"]) : pFCPST;
+                            pFCPSTRet = det.ContainsKey("pFCPSTRet") ? Convert.ToDecimal(det["pFCPSTRet"]) : pFCPSTRet;
+                            vFCPST = det.ContainsKey("vFCPST") ? Convert.ToDecimal(det["vFCPST"]) : vFCPST;
+                            vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : vFCPSTRet;
+                            frete_icms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : frete_icms;
+                            frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : frete_prod;
+                            baseDeCalc = det.ContainsKey("baseCalc") ? Convert.ToDecimal(det["baseCalc"]) : baseDeCalc;
+                            nItem = det.ContainsKey("nItem") ? det["nItem"] : nItem;
 
                             var productImport = _itemService.FindByProduct(noteId, nItem);
 
@@ -671,176 +584,27 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 note.Updated = DateTime.Now;
-
-                if (Request.Form["IcmsAp"] != "")
-                {
-                    note.IcmsAp = Convert.ToDecimal(Request.Form["IcmsAp"]);
-                }
-                else
-                {
-                    note.IcmsAp = null;
-                }
-
-                if (Request.Form["IcmsSt"] != "")
-                {
-                    note.IcmsSt = Convert.ToDecimal(Request.Form["IcmsSt"]);
-                }
-                else
-                {
-                    note.IcmsSt = null;
-                }
-
-                if (Request.Form["IcmsCo"] != "")
-                {
-                    note.IcmsCo = Convert.ToDecimal(Request.Form["IcmsCo"]);
-                }
-                else
-                {
-                    note.IcmsCo = null;
-                }
-
-                if (Request.Form["IcmsIm"] != "")
-                {
-                    note.IcmsIm = Convert.ToDecimal(Request.Form["IcmsIm"]);
-                }
-                else
-                {
-                    note.IcmsIm = null;
-                }
-
-                if (Request.Form["GnreAp"] != "")
-                {
-                    note.GnreAp = Convert.ToDecimal(Request.Form["GnreAp"]);
-                }
-                else
-                {
-                    note.GnreAp = null;
-                }
-
-                if (Request.Form["GnreCo"] != "")
-                {
-                    note.GnreCo = Convert.ToDecimal(Request.Form["GnreCo"]);
-                }
-                else
-                {
-                    note.GnreCo = null;
-                }
-
-                if (Request.Form["GnreIm"] != "")
-                {
-                    note.GnreIm = Convert.ToDecimal(Request.Form["GnreIm"]);
-                }
-                else
-                {
-                    note.GnreIm = null;
-                }
-
-                if (Request.Form["GnreSt"] != "")
-                {
-                    note.GnreSt = Convert.ToDecimal(Request.Form["GnreSt"]);
-                }
-                else
-                {
-                    note.GnreSt = null;
-                }
-
-                if (Request.Form["GnreNAp"] != "")
-                {
-                    note.GnreNAp = Convert.ToDecimal(Request.Form["GnreNAp"]);
-                }
-                else
-                {
-                    note.GnreNAp = null;
-                }
-
-                if (Request.Form["GnreNCo"] != "")
-                {
-                    note.GnreNCo = Convert.ToDecimal(Request.Form["GnreNCo"]);
-                }
-                else
-                {
-                    note.GnreNCo = null;
-                }
-
-                if (Request.Form["GnreNIm"] != "")
-                {
-                    note.GnreNIm = Convert.ToDecimal(Request.Form["GnreNIm"]);
-                }
-                else
-                {
-                    note.GnreNIm = null;
-                }
-
-                if (Request.Form["GnreNSt"] != "")
-                {
-                    note.GnreNSt = Convert.ToDecimal(Request.Form["GnreNSt"]);
-                }
-                else
-                {
-                    note.GnreNSt = null;
-                }
-
-
-
-
-                if (Request.Form["Fecop1"] != "")
-                {
-                    note.Fecop1 = Convert.ToDecimal(Request.Form["Fecop1"]);
-                }
-                else
-                {
-                    note.Fecop1 = null;
-                }
-
-                if (Request.Form["Fecop2"] != "")
-                {
-                    note.Fecop2 = Convert.ToDecimal(Request.Form["Fecop2"]);
-                }
-                else
-                {
-                    note.Fecop2 = null;
-                }
-
-                if (Request.Form["FecopGnre1"] != "")
-                {
-                    note.FecopGnre1 = Convert.ToDecimal(Request.Form["FecopGnre1"]);
-                }
-                else
-                {
-                    note.FecopGnre1 = null;
-                }
-
-                if (Request.Form["FecopGnre2"] != "")
-                {
-                    note.FecopGnre2 = Convert.ToDecimal(Request.Form["FecopGnre2"]);
-                }
-                else
-                {
-                    note.FecopGnre2 = null;
-                }
-
-                if (Request.Form["Desconto"] != "")
-                {
-                    note.Desconto = Convert.ToDecimal(Request.Form["Desconto"]);
-                }
-                else
-                {
-                    note.Desconto = null;
-                }
-
-                if (Request.Form["Frete"] != "")
-                {
-                    note.Frete = Convert.ToDecimal(Request.Form["Frete"]);
-                }
-                else
-                {
-                    note.Frete = null;
-                }
-
+                note.IcmsAp = entity.IcmsAp;
+                note.IcmsSt = entity.IcmsSt;
+                note.IcmsCo = entity.IcmsCo;
+                note.IcmsIm = entity.IcmsIm;
+                note.GnreAp = entity.GnreAp;
+                note.GnreCo = entity.GnreCo;
+                note.GnreIm = entity.GnreIm;
+                note.GnreSt = entity.GnreSt;
+                note.GnreNAp = entity.GnreNAp;
+                note.GnreNCo = entity.GnreNCo;
+                note.GnreNIm = entity.GnreNIm;
+                note.GnreNSt = entity.GnreNSt;
+                note.Fecop1 = entity.Fecop1;
+                note.Fecop2 = entity.Fecop2;
+                note.FecopGnre1 = entity.FecopGnre1;
+                note.FecopGnre2 = entity.FecopGnre2;
+                note.Desconto = entity.Desconto;
+                note.Frete = entity.Frete;
+                note.GnreFecop = entity.GnreFecop;
 
                 var result = _service.Update(note, GetLog(Model.OccorenceLog.Update));
-
-                
                 return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });
             }
 
