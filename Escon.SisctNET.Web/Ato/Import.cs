@@ -25,12 +25,22 @@ namespace Escon.SisctNET.Web.Ato
                         if (!l.Equals(""))
                         {
                             product.Add(l);
-                        }
-                        
+                        }                        
                     }
                     if (product.Count > 0)
                     {
-                        products.Add(product);
+                        if (product.Count.Equals(5))
+                        {
+                            var ultimo = products[products.Count - 1];
+                            ultimo[1] = (ultimo[1] + " " + product[0]);
+                            product.RemoveAt(0);
+                            ultimo.AddRange(product);
+                            products[products.Count - 1] = ultimo;
+                        }
+                        else
+                        {
+                            products.Add(product);
+                        }
                     }
                     
                 }
