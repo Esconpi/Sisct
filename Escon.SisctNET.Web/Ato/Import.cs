@@ -20,12 +20,12 @@ namespace Escon.SisctNET.Web.Ato
                 {
                     List<string> product = new List<string>();
 
-                    string[] linha = line.Split(";");
-                    foreach (var l in linha)
+                    string[] linhas = line.Split(";");
+                    foreach (var linha in linhas)
                     {
-                        if (!l.Equals(""))
+                        if (!linha.Equals(""))
                         {
-                            product.Add(l);
+                            product.Add(linha);
                         }                        
                     }
                     if (product.Count > 0)
