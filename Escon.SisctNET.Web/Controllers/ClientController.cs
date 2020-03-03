@@ -153,8 +153,10 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.Id = id;
+                var client = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).Reverse();
+                var result = client.Take(count).ToList();
                 ViewBag.Count = count;
-                return View();
+                return View(result);
             }
             catch(Exception ex)
             {

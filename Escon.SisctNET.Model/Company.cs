@@ -102,7 +102,17 @@ namespace Escon.SisctNET.Model
             set => annex = value;
         }
 
-        
+        [Display(Name = "Tipo")]
+        [ForeignKey("CountingType")]
+        public int ? CountingTypeId { get; set; }
+
+        private CountingType countingType;
+        public CountingType CountingType
+        {
+            get => LazyLoader.Load(this, ref countingType);
+            set => countingType = value;
+        }
+
 
     }
 }

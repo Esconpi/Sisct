@@ -89,8 +89,8 @@ namespace Escon.SisctNET.Web.Controllers
                         cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
                     }
 
-                    SelectList accountTypes = new SelectList(cfopsTypes, "Id", "Name", null);
-                    ViewBag.ListTypes = accountTypes;
+                    SelectList cfopTypes = new SelectList(cfopsTypes, "Id", "Name", null);
+                    ViewBag.ListTypes = cfopTypes;
 
                     ViewBag.CompanyName = company.SocialName;
                     ViewBag.Document = company.Document;
