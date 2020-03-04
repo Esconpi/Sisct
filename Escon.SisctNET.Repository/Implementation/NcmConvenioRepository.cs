@@ -21,5 +21,12 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return result;
         }
+
+        public List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null)
+        {
+            var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).ToList();
+            AddLog(log);
+            return result;
+        }
     }
 }

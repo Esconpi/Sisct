@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).ToList();
             }
-            else if (type.Equals("venda") && typeCfop.Equals("venda"))
+            else if ((type.Equals("venda") || type.Equals("anexo")) && typeCfop.Equals("venda"))
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda")).ToList();
             }

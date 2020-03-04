@@ -31,6 +31,10 @@
                             {
                                 <strong>Relatório de Penalidade</strong>
                             }
+                            else if (ViewBag.Type == "percentual")
+                            {
+                                <strong>Venda Ncm Anexo II</strong>
+                            }
 
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
@@ -41,7 +45,7 @@
             </div>
         </div>
         <div class="box-body">
-            <div style="width:100%; overflow:hidden; padding:20px;">
+            <div style="width:100%; padding:20px;">
 
                 @if (ViewBag.Type == "resumocfop")
                 {
@@ -237,7 +241,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              
+
                                 @foreach (var item in ViewBag.Grupo)
                                 {
                                     <tr>
@@ -395,6 +399,46 @@
 
                         </tbody>
                     </table>
+
+                }
+                else if (ViewBag.Type == "anexo")
+                {
+                    <diV class="pull-right">
+                        <strong>Total Vendas </strong> @ViewBag.TotalVendas
+                    </diV>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Ncm
+                                </th>
+                                <th>
+                                    Valor
+                                </th>
+                                <th>
+                                    Percentual %
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < ViewBag.ResumoNcm.Count; i++)
+                            {
+                                <tr>
+                                    <td>@ViewBag.ResumoNcm[i][0]</td>
+                                    <td>@ViewBag.ResumoNcm[i][2]</td>
+                                    <td style="width:150px;">@ViewBag.ResumoNcm[i][3]</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <td>@ViewBag.TotalNcm</td>
+                                <td>@ViewBag.PercentualTotal</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                   
 
                 }
 

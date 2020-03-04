@@ -44,6 +44,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null)
+        {
+            return _repository.FindByNcmAnnex(annexId, log);
+        }
+
         public NcmConvenio Update(NcmConvenio entity, Log log)
         {
             return _repository.Update(entity, log);
