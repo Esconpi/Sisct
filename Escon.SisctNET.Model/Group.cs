@@ -24,5 +24,11 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref attachment);
             set => attachment = value;
         }
+
+        [Display(Name = "Item")]
+        public string Item { get; set; }
+
+        [Display(Name = "Incentivo")]
+        public bool Active { get; set; }
     }
 }

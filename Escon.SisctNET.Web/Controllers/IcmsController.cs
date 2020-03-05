@@ -998,7 +998,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var dar = _darService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
                     ViewBag.Dar = dar.Code;
                 }
-                else if (type.Equals("percentual"))
+                else if (type.Equals("anexo"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();                    
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
@@ -1151,6 +1151,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualTotal = percentualTotal.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalVendas = totalVendas;
                     ViewBag.ResumoNcm = ncm_list;
+
+                }
+                else if (type.Equals("foraAnexo"))
+                {
 
                 }
                 return View();
