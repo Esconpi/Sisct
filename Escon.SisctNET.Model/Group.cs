@@ -25,6 +25,9 @@ namespace Escon.SisctNET.Model
             set => attachment = value;
         }
 
+        [Display(Name = "Item")]
+        public string Item { get; set; }
+
         [Display(Name = "Incentivo")]
         public bool Active { get; set; }
     }
