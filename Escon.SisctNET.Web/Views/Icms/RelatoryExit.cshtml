@@ -444,11 +444,7 @@
 
 
                 }
-<<<<<<< HEAD
                 else if (ViewBag.Type == "foraAnexo")
-=======
-                else if (ViewBag.Type = "foraAnexo")
->>>>>>> origin/Pedro
                 {
                     <diV class="pull-right">
                         <strong>Total Vendas: </strong> @ViewBag.TotalVendas
@@ -468,21 +464,13 @@
                             </tr>
                         </thead>
                         <tbody>
-<<<<<<< HEAD
                             @for (int i = 0; i < ViewBag.Ncm.Count; i++)
                             {
                                 <tr>
                                     <td>@ViewBag.Ncm[i][0]</td>
                                     <td>@ViewBag.Ncm[i][1]</td>
                                     <td style="width:150px;">@ViewBag.Ncm[i][2]</td>
-=======
-                            @for (int i = 0; i < ViewBag.ResumoNcm.Count; i++)
-                            {
-                                <tr>
-                                    <td>@ViewBag.ResumoNcm[i][0]</td>
-                                    <td>@ViewBag.ResumoNcm[i][2]</td>
-                                    <td style="width:150px;">@ViewBag.ResumoNcm[i][3]</td>
->>>>>>> origin/Pedro
+
                                 </tr>
                             }
                         </tbody>
