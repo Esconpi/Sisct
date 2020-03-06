@@ -170,7 +170,7 @@ namespace Escon.SisctNET.Web.Controllers
                 if (entity.Pautado == true)
                 {
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
+                    
                     decimal baseCalc = 0;
                     decimal valor_icms = prod.IcmsCTe + prod.Vicms;
 
@@ -245,16 +245,14 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                     }
-
+                    if (product.Group.Active.Equals(true))
+                    {
+                        prod.Incentivo = true;
+                    }
                     prod.TaxationTypeId = Convert.ToInt32(taxaType);
                     prod.Updated = DateTime.Now;
                     prod.Status = true;
                     prod.Vbasecalc = baseCalc;
-
-                    if (note.Company.Incentive.Equals(true))
-                    {
-                        prod.Incentivo = true;
-                    }
 
                     _service.Update(prod, GetLog(Model.OccorenceLog.Read));
                 }

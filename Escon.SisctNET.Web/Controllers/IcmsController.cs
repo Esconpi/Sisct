@@ -998,7 +998,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var dar = _darService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
                     ViewBag.Dar = dar.Code;
                 }
-                else if (type.Equals("percentual"))
+                else if (type.Equals("anexo"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();                    
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
@@ -1026,8 +1026,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal totalVendas = 0;
                     bool status = false;
-
-                    List<List<string>> ncmsForaAnexo = new List<List<string>>();
 
                     for (int i = 0; i < notesVenda.Count(); i++)
                     {
@@ -1149,9 +1147,168 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.TotalNcm = valorTotalNcm.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualTotal = percentualTotal.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalVendas = totalVendas;
+                    ViewBag.TotalVendas = totalVendas.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ;
                     ViewBag.ResumoNcm = ncm_list;
 
+                }
+                else if (type.Equals("foraAnexo"))
+                {
+                    List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
+                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+
+                    for (int i = notesVenda.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
+                        {
+                            notesVenda.RemoveAt(i);
+                        }
+
+                    }
+                    
+                    List<List<string>> ncmsForaAnexo = new List<List<string>>();
+                    bool status = false;
+                    decimal totalVendas = 0;
+                    for (int i = 0; i < notesVenda.Count(); i++)
+                    {
+                        string ncm = "";
+                        for (int j = 0; j < notesVenda[i].Count(); j++)
+                        {
+                            if (notesVenda[i][j].ContainsKey("NCM"))
+                            {
+                                status = false;
+                                ncm = "";
+                                for (int k = 0; k < ncms.Count; k++)
+                                {
+                                    int tamanho = ncms[k].Ncm.Length;
+                                    if (ncms[k].Ncm.Equals(notesVenda[i][j]["NCM"].Substring(0, tamanho)))
+                                    {
+                                        status = true;
+                                        break;
+                                    }
+                                }
+
+                                if(status == false)
+                                {
+                                    ncm = notesVenda[i][j]["NCM"];
+                                }
+                            }
+
+                            if (status == false)
+                            {
+                                List<string> ncmForaAnexo = new List<string>();
+                                int pos = -1; 
+                                for(int k = 0; k < ncmsForaAnexo.Count(); k++)
+                                {
+                                    if (ncmsForaAnexo[k][0].Equals(ncm))
+                                    {
+                                        pos = k;
+                                    }
+                                }
+                                
+                                if(pos < 0)
+                                {
+                                    ncmForaAnexo.Add(ncm);
+                                    ncmForaAnexo.Add("0");
+                                    ncmForaAnexo.Add("0");
+                                    ncmsForaAnexo.Add(ncmForaAnexo);
+                                    var x = ncmsForaAnexo.IndexOf(ncmForaAnexo);
+                                    pos = ncmsForaAnexo.Count() - 1;
+                                }
+                                if (notesVenda[i][j].ContainsKey("vProd") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notesVenda[i][j]["vProd"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vProd"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vFrete") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notesVenda[i][j]["vFrete"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vFrete"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vDesc") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) - Convert.ToDecimal(notesVenda[i][j]["vDesc"])).ToString();
+                                    totalVendas -= Convert.ToDecimal(notesVenda[i][j]["vDesc"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vOutro") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notesVenda[i][j]["vOutro"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vOutro"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vSeg") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notesVenda[i][j]["vSeg"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                }
+                            }
+                            else
+                            {
+                                if (notesVenda[i][j].ContainsKey("vProd") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vProd"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vFrete") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vFrete"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vDesc") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    totalVendas -= Convert.ToDecimal(notesVenda[i][j]["vDesc"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vOutro") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vOutro"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vSeg") && notesVenda[i][j].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                }
+                            }
+
+                        }
+                    }
+
+                    decimal valorTotalNcm = 0, percentualTotal = 0;
+
+                    foreach (var ncm in ncmsForaAnexo)
+                    {
+                        if (!ncm[1].Equals("0"))
+                        {
+                            ncm[2] = ((Convert.ToDecimal(ncm[1]) * 100) / totalVendas).ToString();
+                            valorTotalNcm += Convert.ToDecimal(ncm[1]);
+                            percentualTotal += Convert.ToDecimal(ncm[2]);
+
+                        }
+                    }
+
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+                    List<List<string>> ncmsForaAnexoList = new List<List<string>>();
+
+                    foreach (var ncm in ncmsForaAnexo)
+                    {
+                        if (!ncm[1].Equals("0"))
+                        {
+                            List<string> ncmFora = new List<string>();
+                            ncmFora.Add(ncm[0]);
+                            ncmFora.Add(Convert.ToDouble(ncm[1].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            ncmFora.Add(Convert.ToDouble(ncm[2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            ncmsForaAnexoList.Add(ncmFora);
+
+                        }
+                    }
+
+                    ViewBag.Ncm = ncmsForaAnexoList;
+                    ViewBag.PercentualTotal = percentualTotal.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalVendas = totalVendas.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
+                    ViewBag.TotalNcm = valorTotalNcm.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 }
                 return View();
             }
