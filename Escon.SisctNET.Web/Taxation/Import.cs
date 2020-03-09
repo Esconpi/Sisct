@@ -17,9 +17,7 @@ namespace Escon.SisctNET.Web.Taxation
             _companyCfopService = companyCfopService;
         }
 
-        public Import()
-        {
-        }
+        public Import() { }
 
         public List<List<Dictionary<string, string>>> Nfe(string directoryNfe, string directotyCte)
         {

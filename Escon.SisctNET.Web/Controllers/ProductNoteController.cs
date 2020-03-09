@@ -147,12 +147,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var note = _noteService.FindByNote(rst.Note.Chave);
                 var calculation = new Calculation();
 
-                string mva = Request.Form["mva"];
-                if (mva == "") { mva = null; }
-                string fecop = Request.Form["fecop"];
-                if (fecop == "") { fecop = null; }
-                string bcrForm = Request.Form["bcr"];
-                if (bcrForm == "") { bcrForm = null; }
+                var mva = entity.Mva;
+                var fecop = entity.Fecop;
+                var bcrForm = entity.BCR;
                 decimal AliqInt = Convert.ToDecimal(Request.Form["AliqInt"]);
                 var taxaType = Request.Form["taxaType"];
                 var productid = Request.Form["productid"];
