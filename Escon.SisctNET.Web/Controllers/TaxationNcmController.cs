@@ -62,6 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
                         result.AddRange(ncmTemp);
                     }
                 }
+                ViewBag.CompanyId = id;
                 return View(result);
             }
             catch(Exception ex)
@@ -70,7 +71,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Ncm(int id)
+        public IActionResult Ncm(int companyId,int id)
         {
             try
             {
