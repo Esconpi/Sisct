@@ -108,30 +108,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
-        $("#tblIndex").on("change", "input[type='checkbox']", function(){
-            try {
-
-                    $.ajax({
-                    url: '@(Url.Action("UpdateStatus", "Home"))',
-                    dataType: 'json',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ "Id": $(this).prop('id'), "Status": $(this).prop('checked') }),
-                    processData: false,
-                    success: function (data, textStatus, jQxhr) {
-
-                    },
-                    error: function (jqXhr, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    }
-                    });
-
-            } catch (e) {
-                console.log(e);
-            }
-        });
-
         $('.showTaxation').click(function () {
             $.get('Company/Taxation/' + $(this).attr('id'), function (html) {
                 $('#formShow .modal-body').empty();

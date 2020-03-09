@@ -1212,6 +1212,79 @@ namespace Escon.SisctNET.Web.Taxation
             return notes;
         }
 
+        public List<string> FindByNcms(string directoryNfe)
+        {
+            List<string> ncms = new List<string>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+
+                                        case "prod":
+
+                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "NCM")
+                                                {
+                                                    bool status = false;
+                                                    string ncmTemp = reader.ReadString();
+                                                    foreach (var ncm in ncms)
+                                                    {
+                                                        if (ncm.Equals(ncmTemp))
+                                                        {
+                                                            status = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if(status == false)
+                                                    {
+                                                        ncms.Add(ncmTemp);
+                                                    }
+                                                   
+                                                    
+                                                }
+
+                                                reader.Read();
+
+                                            }
+                                            break;
+
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return ncms;
+        }
+
 
     }
 }
