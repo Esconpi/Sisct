@@ -63,6 +63,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
                 ViewBag.CompanyId = id;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
                 return View(result);
             }
             catch(Exception ex)
@@ -71,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Ncm(int companyId,int id)
+        public IActionResult Ncm(int companyId, string year, string month, int id)
         {
             try
             {
@@ -95,6 +97,10 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result.CstEntradaId = 0;
                 }
+                ViewBag.CompanyId = companyId;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+
                 return View(result);
             }
             catch(Exception ex)

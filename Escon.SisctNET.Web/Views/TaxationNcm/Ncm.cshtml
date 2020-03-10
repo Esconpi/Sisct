@@ -7,7 +7,7 @@
 
     <div class="box box-primary">
         <div class="box-header">
-            <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <a asp-controller="TaxationNcm" asp-action="Index" asp-route-id="@ViewBag.CompanyId" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Tibutação:</strong> @Model.Code</h3>
         </div>
         <hr />

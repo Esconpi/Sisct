@@ -77,6 +77,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
+                            <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -110,6 +111,7 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
+                                    <td>@item.TaxationType.Description</td>
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>
@@ -151,6 +153,7 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
+                                    <td>@item.TaxationType.Description</td>
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>

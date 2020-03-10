@@ -35,7 +35,7 @@
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </td>
                                 <td>
-                                    @Html.ActionLink(" ", "Ncm", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Ncm" })
+                                    @Html.ActionLink(" ", "Ncm", new {companyId =  ViewBag.CompanyId,year = ViewBag.Year, month =  ViewBag.Month, id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Ncm" })
                                 </td>
                             </tr>
                         }
