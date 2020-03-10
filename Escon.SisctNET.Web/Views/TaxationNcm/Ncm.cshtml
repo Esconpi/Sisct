@@ -1,0 +1,92 @@
+﻿@model Escon.SisctNET.Model.Ncm
+
+@{
+    ViewData["Title"] = "Ncm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="box box-primary">
+        <div class="box-header">
+            <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <h3 class="box-title"><strong>Tibutação</strong> @Model.Code</h3>
+        </div>
+        <hr />
+        <div class="box-body">
+            <div class="col-md-12">
+                <form asp-action="Ncm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label asp-for="Code" class="control-label"></label>
+                            <input asp-for="Code" class="form-control" />
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-10 col-md-10 col-xs-12">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="CstEntradaId" class="control-label"></label>
+                            <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" id="cstE" name="CstEntradaId"></select>
+                            <span asp-validation-for="CstEntradaId" class="text-danger"></span>
+
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="CstSaidaId" class="control-label"></label>
+                            <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" id="cstS" name="CstSaidaId"></select>
+                            <span asp-validation-for="CstSaidaId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="NatReceita" class="control-label"></label>
+                            <input asp-for="NatReceita" class="form-control" />
+                            <span asp-validation-for="NatReceita" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-1 col-md-2 col-xs-12">
+                            <label asp-for="Pis" class="control-label"></label>
+                            <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
+                        </div>
+                        <div class="form-group col-lg-1 col-md-2 col-xs-12">
+                            <label asp-for="Cofins" class="control-label"></label>
+                            <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label asp-for="DateStart" class="control-label"></label>
+                            <input asp-for="DateStart" class="form-control" />
+                            <span asp-validation-for="DateStart" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label asp-for="DateEnd" class="control-label"></label>
+                            <input asp-for="DateEnd" class="form-control" />
+                            <span asp-validation-for="DateEnd" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="box-footer">
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    var cstS = @Model.CstSaidaId;
+    $("#cstS").children('option').each(function () {
+        if ($(this).val() == cstS) {
+            $(this).attr('selected', true);
+        }
+    });
+    var cstE = @Model.CstEntradaId;
+    $("#cstE").children('option').each(function () {
+        if ($(this).val() == cstE) {
+            $(this).attr('selected', true);
+        }
+    });
+    </script>

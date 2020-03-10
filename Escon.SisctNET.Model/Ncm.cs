@@ -60,5 +60,9 @@ namespace Escon.SisctNET.Model
             set => cstSaida = value;
         }
 
+        public bool Status { get; set; }
+
+        public bool StatusReal { get; set; }
+
     }
 }
