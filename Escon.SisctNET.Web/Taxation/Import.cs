@@ -117,7 +117,7 @@ namespace Escon.SisctNET.Web.Taxation
                         using (XmlReader reader = XmlReader.Create(sr2))
                         {
                             decimal base_calc = 0;
-                            var code = nota[2]["CNPJ"];
+                            //var code = nota[2]["CNPJ"];
                             string nCT = "";
                             int nItem = 1;
 
@@ -135,7 +135,7 @@ namespace Escon.SisctNET.Web.Taxation
                                                 baseCalc.Add("baseCalc", base_calc.ToString());
                                                 nota.Add(baseCalc);
                                                 base_calc = 0;
-                                                code = nota[2]["CNPJ"];
+                                                //code = nota[2]["CNPJ"];
                                             }
                                             Dictionary<string, string> prod = new Dictionary<string, string>();
                                             reader.Read();
@@ -267,7 +267,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             prod.Add("frete_icms", frete_icmsprod.ToString());
                                             prod.Add("nItem", Convert.ToString(nItem));
                                             nItem++;
-                                            code += (prod["cProd"] + NCM + CEST);
+                                            //code += (prod["cProd"] + NCM + CEST);
                                             nota.Add(prod);
 
                                             break;

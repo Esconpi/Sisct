@@ -134,13 +134,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                         try
                         {
+                            var cnpj = !notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CPF"] : notes[i][2]["CNPJ"];
+
                             var note = new Model.Note
                             {
                                 CompanyId = id,
                                 Chave = notes[i][0]["chave"],
                                 Nnf = notes[i][1]["nNF"],
                                 Dhemi = Convert.ToDateTime(notes[i][1]["dhEmi"]),
-                                Cnpj = notes[i][2]["CNPJ"],
+                                Cnpj = cnpj,
                                 Crt = notes[i][2]["CRT"],
                                 Uf = notes[i][2]["UF"],
                                 Ie = notes[i][2]["IE"],
@@ -160,10 +162,8 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         catch
                         {
-
                             string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                            throw new Exception(message);
-                            
+                            throw new Exception(message);   
                         }
 
                        

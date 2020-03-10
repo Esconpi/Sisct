@@ -142,7 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Product(int id, Model.ProductNote entity)
         {
             try
-            {
+            { 
                 var rst = _service.FindById(id, GetLog(OccorenceLog.Read));
                 var note = _noteService.FindByNote(rst.Note.Chave);
                 var calculation = new Calculation();
@@ -277,7 +277,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 prod.ValorBCR = valorAgreg;
                                 prod.BCR = Convert.ToDecimal(bcrForm);
                                 valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
-                            }
+                            } 
 
                             if (fecop != null)
                             {
