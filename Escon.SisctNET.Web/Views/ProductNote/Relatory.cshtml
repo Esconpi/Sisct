@@ -611,7 +611,7 @@
                                 <td>@ViewBag.DarSTCO</td>
                                 <td>@ViewBag.QtdAT</td>
                                 <td>@ViewBag.TotalApuradoAT</td>
-                                <td> --- </td>
+                                <td> ---- </td>
                                 <td>@ViewBag.TotalAPagaAT</td>
                             </tr>
                             <tr>
@@ -639,7 +639,7 @@
             
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
-                    @if (@ViewBag.TaxationType == 1)
+                    @if (@ViewBag.TaxationType == 1 && ViewBag.type != 6)
                     {
                         <thead>
                             <tr>
@@ -676,7 +676,7 @@
                             </tr>
                         </tbody>
                     }
-                    @if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+                    @if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5 && ViewBag.type != 6)
                     {
                         <thead>
                             <tr>
@@ -704,7 +704,7 @@
                             </tr>
                         </tbody>
                     }
-                    @if (ViewBag.TaxationType == 6)
+                    @if (ViewBag.TaxationType == 6 && ViewBag.type != 6)
                     {
                         <thead>
                             <tr>
@@ -907,32 +907,33 @@
                                                     <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-@ViewBag.DarFecop</th>
                                                 </tr>
                                             </table>
-                                        }
 
-                                        <table class="col-lg-12 col-sm-12">
-                                            <tr>
-                                                <th class="col-lg-12 col-sm-12" style="text-align:center;border:1px solid;">EMITENTES COM INSCRIÇÃO NO ESTADO</th>
-                                            </tr>
-                                        </table>
-                                        <br />
-                                        <table class="col-lg-12 col-md-12 col-sm-12">
-                                            <tr>
-                                                <td class="col-lg-10 col-md-10 col-sm-10">
-                                                    I - Empresas com IE no PIauí ICMS NFe
-                                                </td>
-                                                <td class="col-lg-2 col-md-2 col-sm-2">
-                                                    @ViewBag.IcmsStNoteI
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-lg-10 col-md-10 col-sm-10">
-                                                    S - Empresas com IE no PIauí ICMS NFe
-                                                </td>
-                                                <td class="col-lg-2 col-md-2 col-sm-2">
-                                                    @ViewBag.IcmsStNoteS
-                                                </td>
-                                            </tr>
-                                        </table>
+
+                                            <table class="col-lg-12 col-sm-12">
+                                                <tr>
+                                                    <th class="col-lg-12 col-sm-12" style="text-align:center;border:1px solid;">EMITENTES COM INSCRIÇÃO NO ESTADO</th>
+                                                </tr>
+                                            </table>
+                                            <br />
+                                            <table class="col-lg-12 col-md-12 col-sm-12">
+                                                <tr>
+                                                    <td class="col-lg-10 col-md-10 col-sm-10">
+                                                        I - Empresas com IE no PIauí ICMS NFe
+                                                    </td>
+                                                    <td class="col-lg-2 col-md-2 col-sm-2">
+                                                        @ViewBag.IcmsStNoteI
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-lg-10 col-md-10 col-sm-10">
+                                                        S - Empresas com IE no PIauí ICMS NFe
+                                                    </td>
+                                                    <td class="col-lg-2 col-md-2 col-sm-2">
+                                                        @ViewBag.IcmsStNoteS
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
                                     </td>
                                 </tr>
                             </tbody>
