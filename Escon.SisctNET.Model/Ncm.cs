@@ -25,18 +25,35 @@ namespace Escon.SisctNET.Model
         [DataType(DataType.Date)]
         public DateTime? DateStart { get; set; }
 
+        [Display(Name = "Data Inicial")]
+        [DataType(DataType.Date)]
+        public DateTime? DateStartReal { get; set; }
+
         [Display(Name = "Data Final")]
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
 
+        [Display(Name = "Data Final")]
+        [DataType(DataType.Date)]
+        public DateTime? DateEndReal { get; set; }
+
         [Display(Name = "Cofins")]
         public decimal? Cofins { get; set; }
+
+        [Display(Name = "Cofins")]
+        public decimal? CofinsReal { get; set; }
 
         [Display(Name = "Pis")]
         public decimal? Pis { get; set; }
 
+        [Display(Name = "Pis")]
+        public decimal? PisReal { get; set; }
+
         [Display(Name = "Natureza Receita")]
         public string NatReceita { get; set; }
+
+        [Display(Name = "Natureza Receita")]
+        public string NatReceitaReal { get; set; }
 
         [Display(Name = "Cst Entrada")]
         [ForeignKey("Cst")]
@@ -49,6 +66,17 @@ namespace Escon.SisctNET.Model
             set => cstEntrada = value;
         }
 
+        [Display(Name = "Cst Entrada")]
+        [ForeignKey("Cst")]
+        public int? CstEntradaRealId { get; set; }
+
+        private Cst cstEntradaReal;
+        public Cst CstEntradaReal
+        {
+            get => LazyLoader.Load(this, ref cstEntradaReal);
+            set => cstEntradaReal = value;
+        }
+
         [Display(Name = "Cst Saida")]
         [ForeignKey("Cst")]
         public int? CstSaidaId { get; set; }
@@ -58,6 +86,18 @@ namespace Escon.SisctNET.Model
         {
             get => LazyLoader.Load(this, ref cstSaida);
             set => cstSaida = value;
+        }
+
+        [Display(Name = "Cst Saida")]
+        [ForeignKey("Cst")]
+        public int? CstSaidaRealId { get; set; }
+
+        private Cst cstSaidaReal;
+
+        public Cst CstSaidaReal
+        {
+            get => LazyLoader.Load(this, ref cstSaidaReal);
+            set => cstSaidaReal = value;
         }
 
         public bool Status { get; set; }

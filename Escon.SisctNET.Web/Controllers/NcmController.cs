@@ -146,6 +146,16 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result.CstEntradaId = 0;
                 }
+
+                if (result.CstSaidaRealId == null)
+                {
+                    result.CstSaidaRealId = 0;
+                }
+                if (result.CstEntradaRealId == null)
+                {
+                    result.CstEntradaRealId = 0;
+                }
+
                 return View(result);
             }
             catch (Exception ex)
@@ -170,6 +180,30 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     entity.CstSaidaId = null;
                 }
+
+                if (entity.CstEntradaRealId.Equals(0))
+                {
+                    entity.CstEntradaRealId = null;
+                }
+                if (entity.CstSaidaRealId.Equals(0))
+                {
+                    entity.CstSaidaRealId = null;
+                }
+
+                bool status = false;
+                if (!entity.CstEntradaId.Equals(0) && !entity.CstSaidaId.Equals(0))
+                {
+                    status = true;
+                }
+                entity.Status = status;
+
+                bool statuReal = false;
+                if (!entity.CstEntradaRealId.Equals(0) && !entity.CstSaidaRealId.Equals(0))
+                {
+                    statuReal = true;
+                }
+                entity.StatusReal = statuReal;
+
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

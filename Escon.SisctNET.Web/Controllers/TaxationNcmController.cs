@@ -73,6 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Ncm(int companyId, string year, string month, int id)
         {
             try
@@ -97,6 +98,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result.CstEntradaId = 0;
                 }
+                var comp = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Type = comp.CountingType.Name;
                 ViewBag.CompanyId = companyId;
                 ViewBag.Year = year;
                 ViewBag.Month = month;
@@ -118,16 +121,41 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
-                if (entity.CstEntradaId.Equals(0))
+                var type = Request.Form["type"].ToString();
+                if(type != "Lucro Real")
                 {
+                    if (entity.CstEntradaId.Equals(0))
+                    {
+                        entity.CstEntradaId = null;
+                    }
+                    if (entity.CstSaidaId.Equals(0))
+                    {
+                        entity.CstSaidaId = null;
+                    }
+                    entity.CstEntradaRealId = null;
+                    entity.CstSaidaRealId = null;
+                    entity.Status = true;
+                }
+                else
+                {
+                    if (entity.CstEntradaRealId.Equals(0))
+                    {
+                        entity.CstEntradaRealId = null;
+                    }
+                    if (entity.CstSaidaRealId.Equals(0))
+                    {
+                        entity.CstSaidaRealId = null;
+                    }
                     entity.CstEntradaId = null;
-                }
-                if (entity.CstSaidaId.Equals(0))
-                {
                     entity.CstSaidaId = null;
+                    entity.StatusReal = true;
                 }
+
+                var company = Convert.ToInt32(Request.Form["company"]);
+                var year = Request.Form["year"].ToString();
+                var month = Request.Form["month"].ToString();
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Index");
+                return RedirectToAction("Index" , new {id = company, year = year, month = month});
             }
             catch (Exception ex)
             {

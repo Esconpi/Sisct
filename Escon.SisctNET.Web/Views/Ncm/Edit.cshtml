@@ -27,12 +27,17 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <h5>Simples e Lucro Presumido</h5>
+                </div>
+
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstEntradaId" class="control-label"></label>
                         <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" id="cstE" name="CstEntradaId"></select>
                         <span asp-validation-for="CstEntradaId" class="text-danger"></span>
-                        
+
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstSaidaId" class="control-label"></label>
@@ -50,7 +55,7 @@
                     </div>
                     <div class="form-group col-lg-1 col-md-2 col-xs-12">
                         <label asp-for="Cofins" class="control-label"></label>
-                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins"/>
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>
@@ -63,7 +68,48 @@
                         <span asp-validation-for="DateEnd" class="text-danger"></span>
                     </div>
                 </div>
-       
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <h5>Lucro Real</h5>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="CstEntradaRealId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" id="cstEReal" name="CstEntradaRealId"></select>
+                        <span asp-validation-for="CstEntradaRealId" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="CstSaidaRealId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" id="cstSReal" name="CstSaidaRealId"></select>
+                        <span asp-validation-for="CstSaidaRealId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="NatReceitaReal" class="control-label"></label>
+                        <input asp-for="NatReceitaReal" class="form-control" />
+                        <span asp-validation-for="NatReceitaReal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-1 col-md-2 col-xs-12">
+                        <label asp-for="PisReal" class="control-label"></label>
+                        <input type="text" name="pisReal" class="form-control money" value="@Model.PisReal" />
+                    </div>
+                    <div class="form-group col-lg-1 col-md-2 col-xs-12">
+                        <label asp-for="CofinsReal" class="control-label"></label>
+                        <input type="text" name="cofinsReal" class="form-control money" value="@Model.CofinsReal" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="DateStartReal" class="control-label"></label>
+                        <input asp-for="DateStartReal" class="form-control" />
+                        <span asp-validation-for="DateStartReal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="DateEndReal" class="control-label"></label>
+                        <input asp-for="DateEndReal" class="form-control" />
+                        <span asp-validation-for="DateEndReal" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                 </div>
@@ -85,6 +131,20 @@
     var cstE = @Model.CstEntradaId;
     $("#cstE").children('option').each(function () {
         if ($(this).val() == cstE) {
+            $(this).attr('selected', true);
+        }
+    });
+
+    var cstEReal = @Model.CstEntradaRealId;
+    $("cstEReal").children('option').each(function () {
+        if ($(this).val() == cstEReal) {
+            $(this).attr('selected', true);
+        }
+    });
+
+    var cstSReal = @Model.CstSaidaRealId;
+    $("cstSReal").children('option').each(function () {
+        if ($(this).val() == cstSReal) {
             $(this).attr('selected', true);
         }
     });
