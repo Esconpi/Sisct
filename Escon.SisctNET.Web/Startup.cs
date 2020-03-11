@@ -128,7 +128,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ICountingTypeRepository, CountingTypeRepository>();
 
-
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
             services.AddScoped<ICompanyService, CompanyService>();
