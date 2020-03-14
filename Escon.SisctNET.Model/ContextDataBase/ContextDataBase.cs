@@ -67,5 +67,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Client> Clients { get; set; }
 
+        public DbSet<TaxationNcm> TaxationNcms { get; set; }
+
     }
 }

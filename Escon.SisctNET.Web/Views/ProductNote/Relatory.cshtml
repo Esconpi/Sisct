@@ -639,7 +639,7 @@
             
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px">
-                    @if (@ViewBag.TaxationType == 1 && ViewBag.type != 6)
+                    @if ((@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7) && ViewBag.type != 6)
                     {
                         <thead>
                             <tr>
@@ -926,7 +926,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="col-lg-10 col-md-10 col-sm-10">
-                                                        S - Empresas com IE no PIauí ICMS NFe
+                                                        S - Empresas sem IE no PIauí ICMS NFe
                                                     </td>
                                                     <td class="col-lg-2 col-md-2 col-sm-2">
                                                         @ViewBag.IcmsStNoteS

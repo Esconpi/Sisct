@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.Ncm>
+﻿@model IEnumerable<Escon.SisctNET.Model.TaxationNcm>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +8,11 @@
     <div class="box box-primary">
         <div class="box-header">
             <h3 class="box-title"><strong>Ncm</strong></h3>
+            <div class="btn-group pull-right">
+                @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
+                                       new { onclick = "return confirm('Os arquivos foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
+
+            </div>
         </div>
         <div class="box-body">
             <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -16,11 +21,12 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Code)
+                                @Html.DisplayNameFor(model => model.Ncm.Code)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Description)
+                                @Html.DisplayNameFor(model => model.Ncm.Description)
                             </th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -29,13 +35,16 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
+                                    @Html.DisplayFor(modelItem => item.Ncm.Code)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
+                                    @Html.DisplayFor(modelItem => item.Ncm.Description)
                                 </td>
                                 <td>
-                                    @Html.ActionLink(" ", "Ncm", new {companyId =  ViewBag.CompanyId,year = ViewBag.Year, month =  ViewBag.Month, id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Ncm" })
+                                    @Html.CheckBoxFor(modelItem => item.Status, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @id = item.Id, @disabled = true })
+                                </td>
+                                <td>
+                                    @Html.ActionLink(" ", "Ncm", new {companyId =  ViewBag.CompanyId,year = ViewBag.Year, month =  ViewBag.Month, id = item.NcmId }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Ncm" })
                                 </td>
                             </tr>
                         }
