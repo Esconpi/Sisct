@@ -637,6 +637,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         int posClienteRaiz = contContribuintesRaiz - 1, posCliente = -1;
 
+                        bool status = false;
+
                         if (notesVenda[i][3].ContainsKey("CNPJ"))
                         {
                             if (contribuintesRaiz.Contains(notesVenda[i][3]["CNPJ"].Substring(0, 8)))
@@ -652,77 +654,178 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         
                         for (int k = 0; k < notesVenda[i].Count(); k++)
-                        {                            
-                            if (notesVenda[i][k].ContainsKey("vProd") && notesVenda[i][k].ContainsKey("cProd"))
+                        {
+
+                            if (notesVenda[i][k].ContainsKey("NCM"))
                             {
-                                totalVendas += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
-                                resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                status = false;
+
+                                for(int j = 0; j < ncms.Count(); j++)
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
-                                }
-                                if (posCliente >= 0)
-                                {
-                                    resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    int tamanho = ncms[j].Length;
+
+                                    if (ncms[j].Equals(notesVenda[i][k]["NCM"].Substring(0, tamanho)))
+                                    {
+                                        status = true;
+                                        break;
+                                    }
                                 }
                             }
 
-                            if (notesVenda[i][k].ContainsKey("vFrete") && notesVenda[i][k].ContainsKey("cProd"))
+                            if(status == true)
                             {
-                                totalVendas += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
-                                resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
+
+                                if (notesVenda[i][k].ContainsKey("vProd") && notesVenda[i][k].ContainsKey("cProd"))
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
+                                    totalNcm += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    }
                                 }
-                                if (posCliente >= 0)
+
+                                if (notesVenda[i][k].ContainsKey("vFrete") && notesVenda[i][k].ContainsKey("cProd"))
                                 {
-                                    resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
+                                    totalNcm += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vDesc") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
+                                    totalNcm -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vOutro") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
+                                    totalNcm += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vSeg") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
+                                    totalNcm += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+
+                                    }
                                 }
                             }
-
-                            if (notesVenda[i][k].ContainsKey("vDesc") && notesVenda[i][k].ContainsKey("cProd"))
+                            else
                             {
-                                totalVendas -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
-                                resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
+
+                                if (notesVenda[i][k].ContainsKey("vProd") && notesVenda[i][k].ContainsKey("cProd"))
                                 {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vProd"])).ToString();
+                                    }
                                 }
-                                if (posCliente >= 0)
+
+                                if (notesVenda[i][k].ContainsKey("vFrete") && notesVenda[i][k].ContainsKey("cProd"))
                                 {
-                                    resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vDesc") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) - Convert.ToDecimal(notesVenda[i][k]["vDesc"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vOutro") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
+                                    }
+                                }
+
+                                if (notesVenda[i][k].ContainsKey("vSeg") && notesVenda[i][k].ContainsKey("cProd"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
+                                    resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+                                    if (posClienteRaiz < contContribuintesRaiz - 1)
+                                    {
+                                        resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+                                    }
+                                    if (posCliente >= 0)
+                                    {
+                                        resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
+
+                                    }
                                 }
                             }
-
-                            if (notesVenda[i][k].ContainsKey("vOutro") && notesVenda[i][k].ContainsKey("cProd"))
-                            {
-                                totalVendas += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
-                                resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
-                                {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
-                                }
-                                if (posCliente >= 0)
-                                {
-                                    resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vOutro"])).ToString();
-                                }
-                            }
-
-                            if (notesVenda[i][k].ContainsKey("vSeg") && notesVenda[i][k].ContainsKey("cProd"))
-                            {
-                                totalVendas += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
-                                resumoCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
-                                if (posClienteRaiz < contContribuintesRaiz - 1)
-                                {
-                                    resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
-                                }
-                                if (posCliente >= 0)
-                                {
-                                    resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(notesVenda[i][k]["vSeg"])).ToString();
-
-                                }
-                            }                          
+                      
                         }
                     }
 

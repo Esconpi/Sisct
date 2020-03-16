@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -243,5 +244,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
+
     }
 }
