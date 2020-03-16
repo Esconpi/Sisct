@@ -889,8 +889,12 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result = _service.FindByProducts(notes);
 
+
                     // Icms Substituição Tributária
-                    decimal? totalApuradoST = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalICMS).Sum()), 2);
+                    decimal? gnrePagaST = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreSt).Distinct().Sum()), 2);
+                    decimal? gnreNPagaST = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNSt).Distinct().Sum()), 2);
+                    decimal? icmsStST = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal? totalApuradoST = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalICMS).Sum()), 2) - icmsStST + gnreNPagaST - gnrePagaST;
                     decimal? totalIcmsPagoST = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsSt).Sum()), 2);
                     decimal? totalAPagaST = totalApuradoST - totalIcmsPagoST;
                     int? qtdST = result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Count();
@@ -900,7 +904,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalAPagaST = Convert.ToDouble(totalAPagaST).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Antecipação Parcial
-                    decimal? totalApuradoAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2);
+                    decimal? gnrePagaAP = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreAp).Distinct().Sum()), 2);
+                    decimal? gnreNPagaAP = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNAp).Distinct().Sum()), 2);
+                    decimal? icmsStAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2);              
+                    decimal? totalApuradoAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2) - icmsStAP + gnreNPagaAP + gnrePagaAP;
                     var n = notes.Select(_ => _.IcmsAp);
                     decimal? totalIcmsPagoAP = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsAp).Sum()), 2);
                     decimal? totalAPagaAP = totalApuradoAP - totalIcmsPagoAP;
@@ -911,7 +918,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalAPagaAP = Convert.ToDouble(totalAPagaAP).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Consumo
-                    decimal? totalApuradoCO = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsApurado).Sum()), 2);
+                    decimal? gnrePagaCO = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreCo).Distinct().Sum()), 2);
+                    decimal? gnreNPagaCO = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNCo).Distinct().Sum()), 2);
+                    decimal? icmsStCO = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal? totalApuradoCO = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsApurado).Sum()), 2) - icmsStCO + gnreNPagaCO - gnrePagaCO;
                     decimal? totalIcmsPagoCO = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsCo).Sum()), 2);
                     decimal? totalAPagaCO = totalApuradoCO - totalIcmsPagoCO;
                     int? qtdCO = result.Where(_ => _.TaxationTypeId.Equals(2)).Count();
@@ -921,14 +931,18 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalAPagaCO = Convert.ToDouble(totalAPagaCO).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Consumo para Revenda
-                    decimal? totalApuradoCOR = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsApurado).Sum()), 2);
+                    decimal? icmsStCOR = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal? totalApuradoCOR = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsApurado).Sum()), 2) - icmsStCOR;
                     int? qtdCOR = result.Where(_ => _.TaxationTypeId.Equals(4)).Count();
                     ViewBag.QtdCOR = qtdCOR;
                     ViewBag.TotalApuradoCOR = Convert.ToDouble(totalApuradoCOR).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalAPagaCOR = Convert.ToDouble(totalApuradoCOR).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Imobilizado
-                    decimal? totalApuradoIM = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsApurado).Sum()), 2);
+                    decimal? gnrePagaIM = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreIm).Distinct().Sum()), 2);
+                    decimal? gnreNPagaIM = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNIm).Distinct().Sum()), 2);
+                    decimal? icmsStIM = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal? totalApuradoIM = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsApurado).Sum()), 2) - icmsStIM + gnreNPagaIM - gnrePagaIM;
                     decimal? totalIcmsPagoIM = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsIm).Sum()), 2);
                     decimal? totalAPagaIM = totalApuradoIM - totalIcmsPagoIM;
                     int? qtdIM = result.Where(_ => _.TaxationTypeId.Equals(3)).Count();
@@ -938,7 +952,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalAPagaIM = Convert.ToDouble(totalAPagaIM).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Antecipação Total
-                    decimal? totalApuradoAT = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2);
+                    decimal? icmsStAT = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(8)).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal? totalApuradoAT = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2) - icmsStAT;
                     int? qtdAT = result.Where(_ => _.TaxationTypeId.Equals(8)).Count();
                     ViewBag.QtdAT = qtdAT;
                     ViewBag.TotalApuradoAT = Convert.ToDouble(totalApuradoAT).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -953,7 +968,7 @@ namespace Escon.SisctNET.Web.Controllers
                     int? qtdGeral = qtdST + qtdIsento + qtdIM + qtdCOR + qtdAP + qtdAT + qtdCO;
                     decimal? totalApuradoGeral = totalApuradoST + totalApuradoAP + totalAPagaCO + totalApuradoAT + totalApuradoCOR + totalApuradoIM;
                     decimal? totalIcmsPagoGeral = totalIcmsPagoAP + totalIcmsPagoCO + totalIcmsPagoIM + totalIcmsPagoST;
-                    decimal? totalAPagaGeral = totalAPagaST + totalAPagaAP + totalAPagaIM + totalAPagaCO + totalApuradoCOR + totalApuradoAT;
+                    decimal? totalAPagaGeral = totalApuradoGeral - totalIcmsPagoGeral;
                     ViewBag.QtdGeral = qtdGeral;
                     ViewBag.TotalApuradoGeral = Convert.ToDouble(totalApuradoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalIcmsPagoGeral = Convert.ToDouble(totalIcmsPagoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");

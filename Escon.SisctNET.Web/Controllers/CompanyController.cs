@@ -89,7 +89,6 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
-
                     List<CountingType> countingTypes = new List<CountingType>();
                     countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
 
@@ -225,7 +224,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 rst.TipoApuracao = entity.TipoApuracao;
-                rst.AnnexId = entity.AnnexId;
+                rst.AnnexId = entity.AnnexId.Equals(0) ? null : entity.AnnexId;
                 rst.Icms = entity.Icms;
                 rst.Funef = entity.Funef;
                 rst.Cotac = entity.Cotac;
@@ -243,7 +242,8 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.VendaAnexoExcedente = entity.VendaAnexoExcedente;
                 rst.Fecop = entity.Fecop;
                 rst.Suspension = entity.Suspension;
-
+                rst.IcmsNContribuinte = entity.IcmsNContribuinte;
+                rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
@@ -255,12 +255,13 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id , int type)
         {
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Id = result.Id;
+                ViewBag.Type = type;
                 return View(result);
             }
             catch (Exception ex)
@@ -448,6 +449,5 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-
     }
 }

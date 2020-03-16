@@ -65,7 +65,7 @@
                                 </td>
                                 <td style="width:110px;">
 
-                                    @Html.ActionLink(" ", "Compare", "Company", new { id = item.Id , ident = "0" }, new { @class = "glyphicon glyphicon-duplicate pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
+                                    @Html.ActionLink(" ", "Compare", "Company", new { id = item.Id , ident = "0" }, new { @class = "glyphicon glyphicon-duplicate pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Compara" })
 
                                     <a href="#" id="@item.Id" class="showTaxation">
                                         <i class="fa fa-calculator pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Tributar"></i>
@@ -75,7 +75,7 @@
 
                                     @if (item.Incentive == true)
                                     {
-                                        @Html.ActionLink(" ", "Details", "Company", new { id = item.Id }, new { @class = "glyphicon glyphicon-briefcase pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Visualizar Incentivo" })
+                                        @Html.ActionLink(" ", "Details", "Company", new { id = item.Id , type = 0 }, new { @class = "glyphicon glyphicon-briefcase pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Visualizar Incentivo" })
 
                                     }
                                 </td>

@@ -113,6 +113,10 @@ namespace Escon.SisctNET.Model
             set => countingType = value;
         }
 
+        [Display(Name = "Icms p/ Não Contribuinte")]
+        public decimal? IcmsNContribuinte { get; set; }
 
+        [Display(Name = "Icms p/ Não Contribuinte Fora do Estado")]
+        public decimal? IcmsNContribuinteFora { get; set; }
     }
 }
