@@ -744,11 +744,11 @@ namespace Escon.SisctNET.Web.Taxation
                                                 cfop = false;
                                             }
 
-                                            if(cfop == true)
+                                            if (cfop == true)
                                             {
                                                 nota.Add(prod);
                                             }
-                                            
+
                                             break;
 
                                         case "ICMS00":
@@ -772,7 +772,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP"  || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {
@@ -780,11 +780,11 @@ namespace Escon.SisctNET.Web.Taxation
                                                 }
                                                 reader.Read();
                                             }
-                                            if(cfop == true)
+                                            if (cfop == true)
                                             {
                                                 nota.Add(icms);
                                             }
-                                            
+
                                             break;
 
                                         case "IPI":
@@ -799,11 +799,11 @@ namespace Escon.SisctNET.Web.Taxation
                                                 }
                                                 reader.Read();
                                             }
-                                            if(cfop == true)
+                                            if (cfop == true)
                                             {
                                                 nota.Add(ipi);
                                             }
-                                            
+
                                             break;
 
                                         case "PIS":
@@ -821,7 +821,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             {
                                                 nota.Add(pis);
                                             }
-                                            
+
                                             break;
 
                                         case "COFINS":
@@ -835,11 +835,11 @@ namespace Escon.SisctNET.Web.Taxation
                                                 }
                                                 reader.Read();
                                             }
-                                            if(cfop == true)
+                                            if (cfop == true)
                                             {
                                                 nota.Add(cofins);
                                             }
-                                            
+
                                             break;
 
                                         case "ICMSTot":
@@ -861,6 +861,7 @@ namespace Escon.SisctNET.Web.Taxation
                             sr.Close();
                         }
                         notes.Add(nota);
+                        
                     }
                 }
 

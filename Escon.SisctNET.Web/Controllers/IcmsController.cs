@@ -1211,11 +1211,18 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesEntradaVenda = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesEntradaDevo = new List<List<Dictionary<string, string>>>();
                     //List<List<Dictionary<string, string>>> notesEntradaDevolucao = new List<List<Dictionary<string, string>>>();
                     //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
+                    notesEntradaVenda = import.NfeExit(directoryNfeEntrada, id, type, "venda");
+                    notesEntradaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolucao");
+
+                    decimal creditosIcms = 0, debitosIcms = 0;
+
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
                         if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
@@ -1225,7 +1232,6 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     for (int i = notesVendaSt.Count - 1; i >= 0; i--)
                     {
-                        
                         if ((!notesVendaSt[i][2]["CNPJ"].Equals(comp.Document) || notesVendaSt[i].Count <= 5))
                         {
                             notesVendaSt.RemoveAt(i);
@@ -1238,9 +1244,40 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
+                    for (int i = notesEntradaDevo.Count - 1; i >= 0; i--)
+                    {
+
+                        if (!notesEntradaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaDevo[i].Count <= 5)
+                        {
+                            notesEntradaDevo.RemoveAt(i);
+                            continue;
+                        }
+                        for (int k = 0; k < notesEntradaDevo[i].Count; k++)
+                        {
+                            if (notesEntradaDevo[i][k].ContainsKey("pICMS") && notesEntradaDevo[i][k].ContainsKey("CST") && notesEntradaDevo[i][k].ContainsKey("orig"))
+                            {
+                                creditosIcms += (Convert.ToDecimal(notesEntradaDevo[i][k]["pICMS"]) * Convert.ToDecimal(notesEntradaDevo[i][k]["vBC"])) / 100;
+                            }
+                        }
+                    }
+                    for (int i = notesEntradaVenda.Count - 1; i >= 0; i--)
+                    {
+
+                        if (!notesEntradaVenda[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaVenda[i].Count <= 5)
+                        {
+                            notesEntradaVenda.RemoveAt(i);
+                            continue;
+                        }
+                        for (int k = 0; k < notesEntradaVenda[i].Count; k++)
+                        {
+                            if (notesEntradaVenda[i][k].ContainsKey("pICMS") && notesEntradaVenda[i][k].ContainsKey("CST") && notesEntradaVenda[i][k].ContainsKey("orig"))
+                            {
+                                creditosIcms += (Convert.ToDecimal(notesEntradaVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesEntradaVenda[i][k]["vBC"])) / 100;
+                            }
+                        }
+                    }
 
 
-                    
                     decimal totalVendas = 0, naoContribuintes = 0, Contribuintes = 0, naoContriForaDoEstado = 0;
 
                     for (int i = 0; i < notesVenda.Count(); i++)
@@ -1347,6 +1384,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalVendas += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
 
                             }
+
+                            if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
+                            {
+                                debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
+                            }
                         }
                     }
 
@@ -1409,6 +1451,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
                             }
+
                         }
                     }
                     var parateste = "ok";
