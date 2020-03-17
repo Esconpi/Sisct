@@ -64,12 +64,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                    //notes = import.NfeExit(directoryNfeExit, id, type, "all");
-                    notes = import.NfeExit(directoryNfeEntrada, id, type, "all");
+                    notes = import.NfeExit(directoryNfeExit, id, type, "all");
+                    //notes = import.NfeExit(directoryNfeEntrada, id, type, "all");
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        //if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
-                        if (notes[i].Count <= 5)
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
+                        //if (notes[i].Count <= 5)
                         {
                             notes.RemoveAt(i);
                         }
@@ -1219,8 +1219,8 @@ namespace Escon.SisctNET.Web.Controllers
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
-                    notesEntradaVenda = import.NfeExit(directoryNfeEntrada, id, type, "venda");
-                    notesEntradaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolucao");
+                    //notesEntradaVenda = import.NfeExit(directoryNfeEntrada, id, type, "venda");
+                    //notesEntradaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolucao");
 
                     decimal creditosIcms = 0, debitosIcms = 0;
 
@@ -1245,7 +1245,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    for (int i = notesEntradaDevo.Count - 1; i >= 0; i--)
+                    /*for (int i = notesEntradaDevo.Count - 1; i >= 0; i--)
                     {
 
                         if (!notesEntradaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaDevo[i].Count <= 5)
@@ -1261,7 +1261,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    for (int i = notesEntradaVenda.Count - 1; i >= 0; i--)
+                    /*for (int i = notesEntradaVenda.Count - 1; i >= 0; i--)
                     {
 
                         if (!notesEntradaVenda[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaVenda[i].Count <= 5)
@@ -1276,7 +1276,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 creditosIcms += (Convert.ToDecimal(notesEntradaVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesEntradaVenda[i][k]["vBC"])) / 100;
                             }
                         }
-                    }
+                    }*/
 
 
                     decimal totalVendas = 0, naoContribuintes = 0, Contribuintes = 0, naoContriForaDoEstado = 0;

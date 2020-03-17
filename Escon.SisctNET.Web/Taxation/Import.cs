@@ -1284,6 +1284,35 @@ namespace Escon.SisctNET.Web.Taxation
             return ncms;
         }
 
+        public decimal SpedCredito(string directorySped)
+        {
+            decimal totalDeCredito = 0;
+            StreamReader archiveSped = new StreamReader(directorySped);
+            
+            try
+            {
+                string line;
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C170" && linha[11] == )
+                    {
+                        
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return totalDeCredito;
+        }
+
 
     }
 }
