@@ -1324,8 +1324,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("incentivo"))
                 {
                     var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
-                    var codeProdI = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Ncm);
-                    var codeProdNI = productincentivo.Where(_ => _.TypeTaxation.Equals("Não Incentivado")).Select(_ => _.Ncm);
+                    var codeProdI = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code);
+                    var codeProdNI = productincentivo.Where(_ => _.TypeTaxation.Equals("Não Incentivado")).Select(_ => _.Code);
 
                     if (arquivo == null || arquivo.Length == 0)
                     {
@@ -1363,7 +1363,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
-                     notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
+                    notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                     notesSaidaDevo = import.NfeExit(directoryNfeExit, id, type, "devolução de saida");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
@@ -1426,7 +1426,7 @@ namespace Escon.SisctNET.Web.Controllers
                         for (int k = 0; k < notesVenda[i].Count(); k++)
                         {
                             if (notesVenda[i][k].ContainsKey("cProd")) {
-                                if (codeProdI.Contains(notesVenda[i][k]["NCM"]))
+                                if (codeProdI.Contains(notesVenda[i][k]["cProd"]))
                                 {
                                     if (notesVenda[i][k].ContainsKey("vProd"))
                                     {
@@ -1498,7 +1498,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     }
                                 }
-                                else if(codeProdNI.Contains(notesVenda[i][k]["NCM"]))
+                                else if(codeProdNI.Contains(notesVenda[i][k]["cProd"]))
                                 {
                                     if (notesVenda[i][k].ContainsKey("vProd"))
                                     {
@@ -1595,7 +1595,6 @@ namespace Escon.SisctNET.Web.Controllers
                             if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
                             {
                                 debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
-                                break;
                             }
                         }
                     }
