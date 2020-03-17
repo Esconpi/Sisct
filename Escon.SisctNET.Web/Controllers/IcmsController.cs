@@ -1357,8 +1357,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
-                    List<List<Dictionary<string, string>>> notesEntradaVenda = new List<List<Dictionary<string, string>>>();
-                    List<List<Dictionary<string, string>>> notesEntradaDevo = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesSaidaDevo = new List<List<Dictionary<string, string>>>();
 
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
@@ -1725,10 +1723,18 @@ namespace Escon.SisctNET.Web.Controllers
                     //// Direfença de débito e crédito
                     var diferenca = Math.Round(debitosIcms - creditosIcms);
 
-                    //// FUNEF e COTAC
-
                     //Total Icms
                     var totalIcms = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo);
+
+                    //// FUNEF e COTAC
+
+                    //FUNEF
+                    var percentualFunef = comp.Funef == null ? 0 : comp.Funef;
+
+                    //COTAC
+                    var percentualCotac = comp.Cotac == null ? 0 : comp.Cotac;
+
+
                     var BCFunef = debitosIcms - creditosIcms - icmsContribuinteIncentivo;
                     var vFunef = BCFunef * Convert.ToDecimal(comp.Funef) / 100;
 
@@ -1788,10 +1794,16 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Diferenca = Convert.ToDouble(diferenca.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
+                    ////Total Icms
+                    ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     //// FUNEF e COTAC
 
-                    //Total Icms
-                    ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    //FUNEF
+                    ViewBag.PercentualFunef = Convert.ToDouble(percentualFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //COTAC
+                    ViewBag.PercentualCotac = Convert.ToDouble(percentualCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
                     //// Total

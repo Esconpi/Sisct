@@ -717,7 +717,7 @@
                                     <td>
                                         <table class="table">
                                             <tr>
-                                                <td style="text-align:right;">Icms Apurado Incentivado (R$)</td>
+                                                <td style="text-align:right;" width="300px">Icms Apurado Incentivado (R$)</td>
                                                 <td style="text-align:right;">@ViewBag.Debito</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
@@ -738,32 +738,64 @@
                                             <tr>
                                                 <th style="text-align:right"></th>
                                                 <th style="text-align:right">Base de Cálculo</th>
-                                                <th style="text-align:right">Percentual</th>
-                                                <th style="text-align:right">Valor</th>
+                                                <th style="text-align:right">Percentual %</th>
+                                                <th style="text-align:right">Valor (R$)</th>
                                             </tr>
                                             <tr>
-                                                <th style="text-align:right">Valor do FUNEF</th>
+                                                <th style="text-align:right">FUNEF</th>
                                                 <th style="text-align:right">@ViewBag.Diferenca</th>
-                                                <td>&nbsp;</td>
+                                                <td style="text-align:right">@ViewBag.PercentualFunef %</td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <th style="text-align:right">Base de Cálculo COTAC</th>
+                                                <th style="text-align:right">COTAC</th>
                                                 <th style="text-align:right">@ViewBag.Diferenca</th>
-                                                <td>&nbsp;</td>
+                                                <td style="text-align:right">@ViewBag.PercentualCotac %</td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <th style="text-align:right">Total (R$)</th>
+                                                <th style="text-align:right" width="150px">Total (R$)</th>
                                                 <th style="text-align:right"></th>
                                                 <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
+                                                <td style="text-align:right">0000000000000</td>
                                             </tr>
                                         </table>
                                     </td>
                                     
                                 </tr>
                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="width:100%; overflow:hidden; padding:20px; padding-top:30px">
+                        <table class="table" style="font-size:12px;" border="1">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center; border:1px solid;">RESUMO DA APURAÇÃO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <table class="table">
+                                            <tr>
+                                                <th style="text-align:center;">IMPOSTO</th>
+                                                <th style="text-align:center;">Percentual %</th>
+                                                <th style="text-align:center;">UF</th>
+                                                <th style="text-align:center;">Cod. Tributo</th>
+                                                <th style="text-align:right;">Valor (R$)</th>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">ICMS</td>
+                                                <td style="text-align:center;">2 %</td>
+                                                <td style="text-align:center;">PI</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">00000</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
