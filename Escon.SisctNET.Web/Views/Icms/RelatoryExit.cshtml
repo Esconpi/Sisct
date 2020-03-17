@@ -489,7 +489,7 @@
                 }
                 else if (ViewBag.Type == "incentivo")
                 {
-                    <table class="table">
+                    <table class="table" style="font-size:12px;" border="1">
                         <thead>
                             <tr>
                                 <th>Histórico</th>
@@ -501,107 +501,164 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                   Venda p/ Contribuintes (R$)
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                   
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                    
-                                </td>
-                   
+                                <td>Venda p/ Contribuintes (R$)</td>
+                                <td>@ViewBag.VendaContribuinte </td>
+                                <td>10.000,00</td>
+                                <td>500.000,00</td>
+                                <td>2.047.964,75</td>
                             </tr>
                             <tr>
-                                <td>
-                                    Percentual do Incentivo Fiscal (%)
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                    
-                                </td>
+                                <td>Percentual do Incentivo Fiscal (%)</td>
+                                <td>@ViewBag.PercentualIcms %</td>
+                                <td>5%</td>
+                                <td></td>
+                                <td></td>
                             </tr>
-
                             <tr>
-                                <th>
-                                   Total (R$)
-                                </th>
-                                <td>
-                                    
-                                </td>
-                                <td>
-                                   
-                                </td>
-                                <td>
-                                   
-                                </td>
-                                <td>
-                                    
-                                </td>
+                                <td>Total (R$)</td>
+                                <td>@ViewBag.Valor</td>
+                                <td>500,00</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td>Venda p/ Não Contribuintes (R$)</td>
+                                <td>91.825,70</td>
+                                <td></td>
+                                <td>10.000,00</td>
+                                <td>101.825,70</td>
+                            </tr>
+                            <tr>
+                                <td>Percentual do Incentivo Fiscal (%)</td>
+                                <td>7%</td>
+                                <td></td>
+                                <td>3,5%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total (R$)</td>
+                                <td>6.427,80</td>
+                                <td></td>
+                                <td>350,00</td>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td>Venda p/ Não Contribuintes Fora do Estado (R$)</td>
+                                <td></td>
+                                <td></td>
+                                <td>33.787,81</td>
+                                <td>33.787,81</td>
+                            </tr>
+                            <tr>
+                                <td>Percentual do Incentivo Fiscal (%)</td>
+                                <td></td>
+                                <td></td>
+                                <td>6%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total (R$)</td>
+                                <td></td>
+                                <td></td>
+                                <td>2.027,27</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total ICMS incentivado</td>
+                                <td>37.687,09</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Total geral do ICMS</td>
+                                <td>40.064,36</td>
+                                <td></td>
+                                <td></td>
+                                <td>2.183.578,26</td>
                             </tr>
                         </tbody>
                     </table>
-
-
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-xs-12">
+                            <table class="table" style="font-size:12px;">
+                                <thead>
+                                    <tr>
+                                        <th align="center" colspan="2">APURAÇÃO DO ICMS NORMAL INCENTIVADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Débito</td>
+                                        <td>90.000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Crédito</td>
+                                        <td>30.000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>60.000,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-12">
+                            <table class="table" style="font-size:12px;">
+                                <thead>
+                                    <tr>
+                                        <th align="center" colspan="2">APURAÇÃO DO ICMS NORMAL NÂO INCENTIVADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Débito</td>
+                                        <td>90.000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Crédito</td>
+                                        <td>30.000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td>60.000,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Receitas</th>
-                                <th>ICMS p/ Não contribuite %</th>
-                                <th>Venda para não contrinuinte para outro Estado</th>
-                                <th>ICMS p/ Não contribuite fora do Estado</th>
-                                <th>Total do  ICMS</th>
+                                <th colspan="3" align="center">BASE DE CÁLCULO FUNEF E COTAC</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    Faturamento Inferior a 25%
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-
-                                </td>
+                                <td>Base de cálculo</td>
+                                <td></td>
+                                <td>22.312,91</td>
                             </tr>
                             <tr>
-                                <td>
-                                    Faturamento superior a 25%
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-
-                                </td>
-   
+                                <td>Valor FUNEF</td>
+                                <td>8%</td>
+                                <td>1.785,03</td>
+                            </tr>
+                            <tr>
+                                <td>Valor COTAC</td>
+                                <td>2%</td>
+                                <td>446,26</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>2.231,29</td>
                             </tr>
                         </tbody>
                     </table>
-
-
-                }
+                 }
 
             </div>
         </div>
