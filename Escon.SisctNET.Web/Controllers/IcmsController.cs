@@ -1383,7 +1383,7 @@ namespace Escon.SisctNET.Web.Controllers
                     for (int i = notesSaidaDevo.Count - 1; i >= 0; i--)
                     {
 
-                        if (!notesSaidaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesSaidaDevo[i].Count <= 5)
+                        if (notesSaidaDevo[i].Count <= 5)
                         {
                             notesSaidaDevo.RemoveAt(i);
                             continue;
