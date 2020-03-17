@@ -1399,14 +1399,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (posCliente < 0)
                                         {
-                                            if (notesVenda[i][1]["idDest"].Equals("2"))
-                                            {
-                                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
-                                            }
-                                            else
+                                            if (!notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriDentroDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
                                             }
+                                           
                                         }
                                         else
                                         {
@@ -1420,14 +1417,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (posCliente < 0)
                                         {
-                                            if (notesVenda[i][1]["idDest"].Equals("2"))
-                                            {
-                                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
-                                            }
-                                            else
+                                            if (!notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriDentroDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
                                             }
+                                           
                                         }
                                         else
                                         {
@@ -1441,14 +1435,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (posCliente < 0)
                                         {
-                                            if (notesVenda[i][1]["idDest"].Equals("2"))
-                                            {
-                                                naoContriForaDoEstadoIncentivo -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
-                                            }
-                                            else
+                                            if (!notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriDentroDoEstadoIncentivo -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
                                             }
+                                           
                                         }
                                         else
                                         {
@@ -1462,14 +1453,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (posCliente < 0)
                                         {
-                                            if (notesVenda[i][1]["idDest"].Equals("2"))
-                                            {
-                                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
-                                            }
-                                            else
+                                            if (!notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriDentroDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
                                             }
+                                           
                                         }
                                         else
                                         {
@@ -1483,14 +1471,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (posCliente < 0)
                                         {
-                                            if (notesVenda[i][1]["idDest"].Equals("2"))
+                                            if (!notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
                                             }
-                                            else
-                                            {
-                                                naoContriDentroDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
-                                            }
+                                            
                                         }
                                         else
                                         {
@@ -1507,10 +1492,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (posCliente < 0)
                                         {
                                             if (!notesVenda[i][1]["idDest"].Equals("2"))
-                                            {
-                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
-                                            }
-                                            else
                                             {
                                                 naoContribuinteDentroDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
                                             }
@@ -1531,10 +1512,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
                                             }
-                                            else
-                                            {
-                                                naoContribuinteDentroDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
-                                            }
                                         }
                                         else
                                         {
@@ -1551,10 +1528,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriForaDoEstadoNIncentivo -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
-                                            }
-                                            else
-                                            {
-                                                naoContribuinteDentroDoEstadoNIncentivo -= Convert.ToDecimal(notesVenda[i][k]["vDesc"]);
                                             }
                                         }
                                         else
@@ -1573,10 +1546,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
                                             }
-                                            else
-                                            {
-                                                naoContribuinteDentroDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vOutro"]);
-                                            }
                                         }
                                         else
                                         {
@@ -1593,10 +1562,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (notesVenda[i][1]["idDest"].Equals("2"))
                                             {
                                                 naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
-                                            }
-                                            else
-                                            {
-                                                naoContribuinteDentroDoEstadoNIncentivo += Convert.ToDecimal(notesVenda[i][k]["vSeg"]);
                                             }
                                         }
                                         else
@@ -1636,10 +1601,9 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (notesVendaSt[i][k].ContainsKey("vProd") && notesVendaSt[i][k].ContainsKey("cProd"))
                             {
-                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstado += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
+                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
                                 }
                                
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
@@ -1648,11 +1612,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notesVendaSt[i][k].ContainsKey("vFrete") && notesVendaSt[i][k].ContainsKey("cProd"))
                             {
-                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
-
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstado += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
+                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
                                 }
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
 
@@ -1660,10 +1622,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notesVendaSt[i][k].ContainsKey("vDesc") && notesVendaSt[i][k].ContainsKey("cProd"))
                             {
-                                naoContriForaDoEstadoIncentivo -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstado -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
+                                    naoContriForaDoEstadoIncentivo -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
                                 }
                                 
                                 totalVendas -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
@@ -1672,10 +1633,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notesVendaSt[i][k].ContainsKey("vOutro") && notesVendaSt[i][k].ContainsKey("cProd"))
                             {
-                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vOutro"]);
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstado += Convert.ToDecimal(notesVendaSt[i][k]["Outro"]);
+                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["Outro"]);
                                 }
                            
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vOutro"]);
@@ -1684,11 +1644,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notesVendaSt[i][k].ContainsKey("vSeg") && notesVendaSt[i][k].ContainsKey("cProd"))
                             {
-                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
 
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstado += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
+                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
                                 }
                               
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
@@ -1726,7 +1685,7 @@ namespace Escon.SisctNET.Web.Controllers
                     double valorVendaContriIncentivo = (Convert.ToDouble(ContribuintesIncentivo) * Convert.ToDouble(comp.Icms)) / 100;
 
                     //Não Contribuinte Fora do Estado
-                    var icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstado / 100, 2);
+                    var icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstadoNIncentivo / 100, 2);
 
                     //Não Contribuinte Dentro do Estado
                     var icmsNContribuinteDentroDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContriDentroDoEstadoIncentivo / 100, 2);
