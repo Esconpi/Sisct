@@ -1323,9 +1323,9 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
-                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read));
-                    var codeProdI = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code);
-                    var codeProdNI = productincentivo.Where(_ => _.TypeTaxation.Equals("Não Incentivado")).Select(_ => _.Code);
+                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
+                    var codeProdI = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Ncm);
+                    var codeProdNI = productincentivo.Where(_ => _.TypeTaxation.Equals("Não Incentivado")).Select(_ => _.Ncm);
 
                     if (arquivo == null || arquivo.Length == 0)
                     {
@@ -1426,7 +1426,7 @@ namespace Escon.SisctNET.Web.Controllers
                         for (int k = 0; k < notesVenda[i].Count(); k++)
                         {
                             if (notesVenda[i][k].ContainsKey("cProd")) {
-                                if (codeProdI.Contains(notesVenda[i][k]["cProd"]))
+                                if (codeProdI.Contains(notesVenda[i][k]["NCM"]))
                                 {
                                     if (notesVenda[i][k].ContainsKey("vProd"))
                                     {
@@ -1498,7 +1498,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     }
                                 }
-                                else if(codeProdNI.Contains(notesVenda[i][k]["cProd"]))
+                                else if(codeProdNI.Contains(notesVenda[i][k]["NCM"]))
                                 {
                                     if (notesVenda[i][k].ContainsKey("vProd"))
                                     {
