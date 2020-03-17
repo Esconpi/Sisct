@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
