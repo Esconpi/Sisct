@@ -527,12 +527,28 @@
                             </tr>
                             <tr></tr>
                             <tr>
-                                <th style="text-align:center">B</th>
+                                <th style="text-align:center"></th>
                                 <td>Venda p/ Não Contribuintes (R$)</td>
                                 <td style="text-align:right">@ViewBag.VendaNContribIncentivo</td>
                                 <td></td>
                                 <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivo</td>
-                                <td style="text-align:right">@ViewBag.TotalVendaNContibuinte</td>
+                                <td style="text-align:right">@ViewBag.TotalGeralVendaNContibuinte</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"></th>
+                                <td>Venda p/ Não Contribuintes ST (R$)</td>
+                                <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivo</td>
+                                <td></td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center">B</th>
+                                <td>Base de Cálculo (R$)</td>
+                                <td style="text-align:right">@ViewBag.TotalVendaNContribuinte</td>
+                                <td></td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -550,13 +566,37 @@
                                 <td style="text-align:right"></td>
                                 <td></td>
                             </tr>
+                            <tr>
+                                <th style="text-align:center"></th>
+                                <th>Total das Vendas (A + B) (R$)</th>
+                                <td style="text-align:right">@ViewBag.TotalGeralVendasIncentivo</td>
+                                <td></td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
+                            </tr>
                             <tr></tr>
                             <tr>
-                                <th style="text-align:center">C</th>
+                                <th style="text-align:center"></th>
                                 <td>Venda p/ Não Contribuintes Fora do Estado (R$)</td>
                                 <td style="text-align:right">@ViewBag.VendaNForaEstadoContribuinteIncetivo</td>
                                 <td style="text-align:right"></td>
                                 <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
+                                <td style="text-align:right">@ViewBag.TotalGeralVendaNContibuinteForaDoEstado</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"></th>
+                                <td>Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
+                                <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center">C</th>
+                                <td>Base de Cálculo (R$)</td>
+                                <td style="text-align:right">@ViewBag.TotalVendaNContribuinteForaDoEstado</td>
+                                <td style="text-align:right"></td>
+                                <td style="text-align:right"></td>
                                 <td style="text-align:right"></td>
                             </tr>
                             <tr>
@@ -564,7 +604,7 @@
                                 <td>Percentual do Incentivo Fiscal (%)</td>
                                 <td style="text-align:right">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
                                 <td style="text-align:right"></td>
-                                <td style="text-align:right"></td>
+                                <td style="text-align:right">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -572,16 +612,8 @@
                                 <th>Total (R$)</th>
                                 <th style="text-align:right">@ViewBag.ValorVendaNContribIncentivoForaDoEstado</th>
                                 <td></td>
-                                <td style="text-align:right"></td>
+                                <td style="text-align:right">@ViewBag.ValorVendaNContribNIncentivoForaDoEstado</td>
                                 <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <th>Total Vendas Incentivadas (A + B)</th>
-                                <td style="text-align:right">@ViewBag.TotalGeralVendasIncentivada</td>
-                                <td></td>
-                                <td></td>
-                                <td style="text-align:right"></td>
                             </tr>
                             <tr>
                                 <td></td>
