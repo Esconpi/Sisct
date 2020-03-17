@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Ato;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Index(int page = 1)
+        public IActionResult Index()
         {
             try
             {
@@ -45,20 +46,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
-                    int contaPage = rst.Count() / 2000;
-                    if (rst.Count() % 2000 > 0)
-                    {
-                        contaPage++;
-                    }
-                    int final = page * 2000;
-                    int inicio = final - 2000;
-                    var result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-
-                    ViewBag.ContaPage = contaPage;
-
-                    return View(result);
+                    return View(null);
                 }
             }
             catch (Exception ex)
@@ -126,7 +115,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
 
-                return View(result);
+                if(result.DateEnd != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(result);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -242,5 +239,85 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var productsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
+
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Product> products = new List<Product>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Product> productTemp = new List<Product>();
+                productsAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    s.Code = s.Code;
+                    s.Price = s.Price;
+                    s.GroupId = s.GroupId;
+                    s.Unity = s.Unity;
+                    s.DateStart = s.DateStart;
+                    s.DateEnd = s.DateEnd;
+                    productTemp.Add(s);
+                });
+
+                var ids = productTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Group.Description.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                    )
+                .Select(s => s.Id).ToList();
+
+                products = productsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var ncm = from r in products
+                          where ids.ToArray().Contains(r.Id)
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description,
+                              GroupName = r.Group.Description,
+                              Price = r.Price,
+                              Unity = r.Unity,
+                              Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                              Fim = r.DateEnd
+
+                          };
+
+                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var product = from r in productsAll
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description,
+                              GroupName = r.Group.Description,
+                              Price = r.Price,
+                              Unity = r.Unity,
+                              Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                              Fim = r.DateEnd
+
+                          };
+                return Ok(new { draw = draw, recordsTotal = productsAll.Count(), recordsFiltered = productsAll.Count(), data = product.Skip(start).Take(lenght) });
+            }
+
+        }
+
     }
 }

@@ -1577,15 +1577,12 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    double valor = (Contribuintes * comp.Icms) / 100
-
-
+                    double valor = Convert.ToDouble((Contribuintes * comp.Icms) / 100);
 
                     ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualIcms = comp.Icms;
                     ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
                 }
                 return View();
             }

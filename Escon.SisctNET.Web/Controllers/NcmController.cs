@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,7 +18,7 @@ namespace Escon.SisctNET.Web.Controllers
             INcmService service,
             ICstService cstService,
             IFunctionalityService functionalityService,
-            IHttpContextAccessor httpContextAccessor) 
+            IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Ncm")
         {
             _service = service;
@@ -40,30 +41,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                 
-                    int contaPage = rst.Count() / 1000;
 
-                    if(rst.Count() % 1000 > 0)
-                    {
-                        contaPage++;
-                    }
-                    int final = page * 1000;
-                    int inicio = final - 1000;
-
-                    List<Model.Ncm> result = null;
-
-                    if (contaPage == page)
-                    {
-                        result = rst.Where(_ => _.Id > inicio).ToList();
-                    }
-                    else
-                    {
-                        result = rst.Where(_ => _.Id > inicio && _.Id <= final).ToList();
-                    }
-                   
-                    ViewBag.ContaPage = contaPage;
-
-                    return View(result);
+                    return View(null);
                 }
             }
             catch (Exception ex)
@@ -94,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-            
+
         }
 
         [HttpPost]
@@ -242,6 +221,68 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { requestcode = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var ncmsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
+
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Ncm> ncms = new List<Ncm>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Ncm> ncmTemp = new List<Ncm>();
+                ncmsAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    s.Code = s.Code;
+                    ncmTemp.Add(s);
+                });
+
+                var ids = ncmTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                ncms = ncmsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var ncm = from r in ncms
+                          where ids.ToArray().Contains(r.Id)
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description
+
+                          };
+
+                return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var ncm = from r in ncmsAll
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description
+
+                          };
+                return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
+            }
+
         }
     }
 }
