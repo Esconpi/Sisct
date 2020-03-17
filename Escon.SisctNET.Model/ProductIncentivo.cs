@@ -12,14 +12,18 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
+        [Display(Name = "Código")]
         public string Code { get; set; }
 
+        [Display(Name = "Ncm")]
         public string Ncm { get; set; }
 
+        [Display(Name = "Descrição")]
         public string Name { get; set; }
 
-        public string Active { get; set; }
-       
+        public bool Active { get; set; }
+
+        [Display(Name = "Tributação")]
         public string TypeTaxation { get; set; }
 
         [Display(Name = "Empresa")]

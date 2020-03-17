@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductIncentivo>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title"><strong>Produtos</strong></h3>
+        <div class="btn-group pull-right">
+            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
+                                  new { onclick = "return confirm('Os arquivos foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
+        </div>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
+
+            <table class="table table-striped table-bordered" id="tblIndex2" style="width:100%">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ncm)
+                        </th>
+                        <th>
+                            Tributado
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TypeTaxation)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Code)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ncm)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true"})
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TypeTaxation)
+                            </td>
+                            
+                            <td style="width:50px;">
+                                @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="box-footer"></div>
+</div>

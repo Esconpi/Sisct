@@ -633,247 +633,6 @@ namespace Escon.SisctNET.Web.Taxation
             return ctes;
         }
 
-        public List<List<Dictionary<string,string>>> NfeExit(string directoryNfe, int companyId, string type, string typeCfop)
-        {
-            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-                var cfops = _companyCfopService.FindByCfopActive(companyId, type, typeCfop).Select(_ => _.Cfop.Code);
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        bool cfop = true;
-                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
-                        Dictionary<string, string> ide = new Dictionary<string, string>();
-                        Dictionary<string, string> emit = new Dictionary<string, string>();
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "infNFe":
-                                            while (reader.MoveToNextAttribute())
-                                            {
-                                                if (reader.Name == "Id")
-                                                {
-                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
-                                                }
-                                            }
-                                            nota.Add(infNFe);
-                                            break;
-
-                                        case "ide":
-                                            reader.Read();
-                                            while (reader.Name != "ide" && reader.Name != "NFref")
-                                            {
-                                                ide.Add(reader.Name, reader.ReadString());
-                                                reader.Read();
-                                            }
-                                            nota.Add(ide);
-                                            break;
-
-
-                                        case "emit":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "emit")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    emit.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            nota.Add(emit);
-                                            break;
-
-                                        case "dest":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "dest")
-                                            {
-                                                if (reader.Name.ToString() != "enderDest")
-                                                {
-                                                    dest.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            nota.Add(dest);
-                                            break;
-
-                                        case "prod":
-
-                                            Dictionary<string, string> prod = new Dictionary<string, string>();
-                                            cfop = true;
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "prod")
-                                            {
-                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
-                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
-                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
-                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
-                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
-                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
-                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
-                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
-                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
-                                                    reader.Name == "nRECOPI")
-                                                {
-
-                                                    prod.Add(reader.Name, reader.ReadString());
-                                                }
-
-                                                reader.Read();
-
-                                            }
-
-                                            if (!cfops.Contains(prod["CFOP"]))
-                                            {
-                                                cfop = false;
-                                            }
-
-                                            if (cfop == true)
-                                            {
-                                                nota.Add(prod);
-                                            }
-
-                                            break;
-
-                                        case "ICMS00":
-                                        case "ICMS10":
-                                        case "ICMS20":
-                                        case "ICMS30":
-                                        case "ICMS40":
-                                        case "ICMS51":
-                                        case "ICMS60":
-                                        case "ICMS70":
-                                        case "ICMS90":
-                                        case "ICMSPart":
-                                        case "ICMSST":
-                                        case "ICMSSN101":
-                                        case "ICMSSN102":
-                                        case "ICMSSN201":
-                                        case "ICMSSN202":
-                                        case "ICMSSN500":
-                                        case "ICMSSN900":
-                                            Dictionary<string, string> icms = new Dictionary<string, string>();
-                                            while (reader.Name != "ICMS")
-                                            {
-                                                if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
-                                                    reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
-                                                    reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
-                                                {
-                                                    icms.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            if (cfop == true)
-                                            {
-                                                nota.Add(icms);
-                                            }
-
-                                            break;
-
-                                        case "IPI":
-                                            Dictionary<string, string> ipi = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "IPI")
-                                            {
-                                                if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
-                                                reader.Name == "pIPI" || reader.Name == "vIPI")
-                                                {
-                                                    ipi.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            if (cfop == true)
-                                            {
-                                                nota.Add(ipi);
-                                            }
-
-                                            break;
-
-                                        case "PIS":
-                                            Dictionary<string, string> pis = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "PIS")
-                                            {
-                                                if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
-                                                {
-                                                    pis.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            if (cfop == true)
-                                            {
-                                                nota.Add(pis);
-                                            }
-
-                                            break;
-
-                                        case "COFINS":
-                                            Dictionary<string, string> cofins = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name != "COFINS")
-                                            {
-                                                if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
-                                                {
-                                                    cofins.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            if (cfop == true)
-                                            {
-                                                nota.Add(cofins);
-                                            }
-
-                                            break;
-
-                                        case "ICMSTot":
-                                            Dictionary<string, string> total = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
-                                            {
-                                                total.Add(reader.Name, reader.ReadString());
-
-                                                reader.Read();
-
-                                            }
-                                            nota.Add(total);
-                                            break;
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
-                        notes.Add(nota);
-                        
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return notes;
-        }
-
         public List<Dictionary<string, string>> Client(string directoryNfe)
         {
             List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
@@ -1313,6 +1072,317 @@ namespace Escon.SisctNET.Web.Taxation
             return totalDeCredito;
         }
 
+        public List<List<Dictionary<string, string>>> NfeExit(string directoryNfe, int companyId, string type, string typeCfop)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                var cfops = _companyCfopService.FindByCfopActive(companyId, type, typeCfop).Select(_ => _.Cfop.Code);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        bool cfop = true;
+                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            nota.Add(infNFe);
+                                            break;
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name != "ide" && reader.Name != "NFref")
+                                            {
+                                                ide.Add(reader.Name, reader.ReadString());
+                                                reader.Read();
+                                            }
+                                            nota.Add(ide);
+                                            break;
+
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            nota.Add(emit);
+                                            break;
+
+                                        case "dest":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            nota.Add(dest);
+                                            break;
+
+                                        case "prod":
+
+                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            cfop = true;
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
+                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
+                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
+                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
+                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
+                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
+                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
+                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
+                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
+                                                    reader.Name == "nRECOPI")
+                                                {
+
+                                                    prod.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+
+                                            }
+
+                                            if (!cfops.Contains(prod["CFOP"]))
+                                            {
+                                                cfop = false;
+                                            }
+
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(prod);
+                                            }
+
+                                            break;
+
+                                        case "ICMS00":
+                                        case "ICMS10":
+                                        case "ICMS20":
+                                        case "ICMS30":
+                                        case "ICMS40":
+                                        case "ICMS51":
+                                        case "ICMS60":
+                                        case "ICMS70":
+                                        case "ICMS90":
+                                        case "ICMSPart":
+                                        case "ICMSST":
+                                        case "ICMSSN101":
+                                        case "ICMSSN102":
+                                        case "ICMSSN201":
+                                        case "ICMSSN202":
+                                        case "ICMSSN500":
+                                        case "ICMSSN900":
+                                            Dictionary<string, string> icms = new Dictionary<string, string>();
+                                            while (reader.Name != "ICMS")
+                                            {
+                                                if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
+                                                    reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
+                                                {
+                                                    icms.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(icms);
+                                            }
+
+                                            break;
+
+                                        case "IPI":
+                                            Dictionary<string, string> ipi = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "IPI")
+                                            {
+                                                if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
+                                                reader.Name == "pIPI" || reader.Name == "vIPI")
+                                                {
+                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(ipi);
+                                            }
+
+                                            break;
+
+                                        case "PIS":
+                                            Dictionary<string, string> pis = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "PIS")
+                                            {
+                                                if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
+                                                {
+                                                    pis.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(pis);
+                                            }
+
+                                            break;
+
+                                        case "COFINS":
+                                            Dictionary<string, string> cofins = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "COFINS")
+                                            {
+                                                if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
+                                                {
+                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(cofins);
+                                            }
+
+                                            break;
+
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+
+                                                reader.Read();
+
+                                            }
+                                            nota.Add(total);
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                        notes.Add(nota);
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return notes;
+        }
+
+        public List<Dictionary<string, string>> NfeExitProducts(string directoryNfe)
+        {
+            List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "prod":
+
+                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
+                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
+                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
+                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
+                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
+                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
+                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
+                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
+                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
+                                                    reader.Name == "nRECOPI")
+                                                {
+
+                                                    prod.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+
+                                            }
+
+                                            products.Add(prod);
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return products;
+        }
 
     }
 }

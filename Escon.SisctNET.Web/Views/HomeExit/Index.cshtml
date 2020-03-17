@@ -61,7 +61,11 @@
 
                                 @Html.ActionLink(" ", "Compare", "Company", new { id = item.Id, ident = "1" }, new { @class = "glyphicon glyphicon-duplicate pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Compara" })
                                 <a href="#" id="@item.Id" class="showTaxation">
-                                    <i class="fa fa-calculator pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Tributar"></i>
+                                    <i class="fa fa-calculator pull-left" style="margin-left:10px; margin-bottom:10px;" data-toggle="tooltip" data-placement="top" title="Tributar Ncm"></i>
+                                </a>
+
+                                <a href="#" id="@item.Id" class="showTaxationProduct">
+                                    <i class="fa fa-calculator pull-left" style="margin-left:10px; margin-bottom:10px; color:darkslateblue" data-toggle="tooltip" data-placement="top" title="Tributar Produto"></i>
                                 </a>
                                 @Html.ActionLink(" ", "RelatoryExit", "Company", new { id = item.Id }, new { @class = "fa fa-file pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Gerar Relatório" })
                                 @Html.ActionLink(" ", "Index", "Client", new { companyId = item.Id }, new { @class = "glyphicon glyphicon-list-alt pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Visualizar Clientes" })
@@ -103,6 +107,18 @@
 
         $('.showTaxation').click(function () {
             $.get('Company/TaxationNcm/' + $(this).attr('id'), function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+    })
+
+      $(document).ready(function () {
+
+        $('.showTaxationProduct').click(function () {
+            $.get('Company/TaxationProduct/' + $(this).attr('id'), function (html) {
                 $('#formShow .modal-body').empty();
                 $('#formShow .modal-body').append($(html));
                 $('#formShow').modal('show');
