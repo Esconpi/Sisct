@@ -1584,6 +1584,16 @@ namespace Escon.SisctNET.Web.Controllers
                     var icmsNContribuinteFora = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstado / 100, 2);
                     var BCFunef = debitosIcms - creditosIcms - icmsContribuinte;
                     var vFunef = BCFunef * Convert.ToDecimal(comp.Funef);
+
+                    double valor = (Convert.ToDouble(Contribuintes) * Convert.ToDouble(comp.Icms)) / 100;
+
+
+
+                    ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualIcms = comp.Icms;
+                    ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                 }
                 return View();
             }
