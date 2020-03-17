@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Web.Controllers
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductIncentivo")
         {
-           _
+            _service = service;
         }
 
         public IActionResult Index(int id, string year, string month)
