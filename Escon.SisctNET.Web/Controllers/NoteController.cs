@@ -172,7 +172,11 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        notas.Add(notaImport);
+                        
+                        if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
+                        {
+                            notas.Add(notaImport);
+                        }
                     }
 
                     var nota = _service.FindByNote(notes[i][0]["chave"]);
