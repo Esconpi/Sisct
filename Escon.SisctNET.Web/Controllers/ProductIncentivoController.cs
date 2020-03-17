@@ -136,11 +136,19 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
+                    _service.Update(prod, GetLog(Model.OccorenceLog.Update));
                 }
                 else
                 {
                     var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId) &&
-                    _.Year.Equals(year) && _.Month.Equals(month));
+                    _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
+
+                    foreach(var p in products)
+                    {
+                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.Active = true;
+                        _service.Update(p, GetLog(Model.OccorenceLog.Update));
+                    }
                 }
 
                 return RedirectToAction("Index", new { id = companyId, year = year, month = month });
