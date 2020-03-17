@@ -35,5 +35,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.Product> FindAllInDate(DateTime dateProd, Model.Log log = null);
 
+        List<Model.Product1> FindAllInDate1(DateTime dateProd, Model.Log log = null);
+
     }
 }
