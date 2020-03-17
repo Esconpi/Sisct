@@ -101,6 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;
+                ViewBag.DataNote = note.Dhemi;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
                                              
@@ -123,12 +124,12 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Convert.ToDateTime(note.Dhemi) >= Convert.ToDateTime("10/02/2020"))
                 {
-                    List<Product1> list_product = _service.FindAllInDate(result.Note.Dhemi);
+                    List<Product1> list_product = _service.FindAllInDate1(result.Note.Dhemi);
                     foreach (var prod in list_product)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
                     }
-                    list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
+                    list_product.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
                     SelectList products = new SelectList(list_product, "Id", "Description", null);
                     ViewBag.ProductId = products;
                 }

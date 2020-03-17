@@ -24,6 +24,7 @@
                 <input asp-for="Vicms" class="form-control" type="hidden" />
                 <input asp-for="Vipi" class="form-control" type="hidden" />
                 <input asp-for="Picms" class="form-control" type="hidden" />
+                <input class="form-control" name="dataNote" value="@ViewBag.DataNote" type="hidden" />
 
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label asp-for="Nnf" class="control-label"></label>
@@ -81,7 +82,7 @@
 
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Validade Inicial</label>
-                    <input type="date" class="form-control" name="dateStart" value="2019-11-01"/>
+                    <input type="date" class="form-control" name="dateStart" value="2019-11-01" />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Emissão</label>
@@ -144,7 +145,7 @@
                         <span asp-validation-for="Vipi" class="text-danger"></span>
                     </div>
 
-                    
+
                 </div>
 
                 <div class="col-lg-12">
