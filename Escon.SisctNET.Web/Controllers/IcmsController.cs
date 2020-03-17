@@ -1577,16 +1577,14 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                   
+                    double valor = (Contribuintes * comp.Icms) / 100
 
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-                    List<List<string>> nmsForaAnexoList = new List<List<string>>();
 
 
                     ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualIcms = comp.Icms;
-                    ViewBag.Valor = ((Contribuintes * comp.Icms) / 100).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaNContribuinte = valorTotalNcm.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
                 return View();
