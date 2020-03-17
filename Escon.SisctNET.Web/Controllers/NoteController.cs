@@ -95,6 +95,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
+                List<Note> notas = new  List<Note>();
+
                 notes = import.Nfe(directoryNfe, directotyCte);          
 
                 for (int i = notes.Count - 1; i >= 0; i--)
@@ -167,6 +169,10 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                        
+                    }
+                    else
+                    {
+                        notas.Add(notaImport);
                     }
 
                     var nota = _service.FindByNote(notes[i][0]["chave"]);
@@ -553,8 +559,20 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { id = id, year = year , month = month});
-
+                if (notas.Count > 0)
+                {
+                    ViewBag.Id = id;
+                    ViewBag.Year = year;
+                    ViewBag.Month = month;
+                    ViewBag.SocialName = comp.SocialName;
+                    ViewBag.Document = comp.Document;
+                    return View(notas);
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { id = id, year = year, month = month });
+                }
+              
             }
             catch (Exception ex)
             {

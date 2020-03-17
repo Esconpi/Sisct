@@ -449,5 +449,42 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+            
+            List<Company> companies = new List<Company>();
+
+            companies = _service.FindByCompanies();
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Company> accTmp = new List<Company>();
+                companies.ToList().ForEach(s =>
+                {
+                    s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
+                    s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
+                    accTmp.Add(s);
+                });
+
+                var ids = accTmp.Where(c =>
+                    c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.SocialName.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                companies = companies.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+            }
+
+            return Ok(new { draw = draw, recordsTotal = companies.Count, recordsFiltered = companies.Count, data = companies.Skip(start).Take(lenght) });
+        }
+
     }
 }
