@@ -113,7 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var prod = _service.FindById(id, null);
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.Month = prod.Month;
-                ViewBag.Year = prod;
+                ViewBag.Year = prod.Year;
                 return View(prod);
             }
             catch(Exception ex)
