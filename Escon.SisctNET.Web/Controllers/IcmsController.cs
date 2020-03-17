@@ -1728,7 +1728,6 @@ namespace Escon.SisctNET.Web.Controllers
                     var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo,2);
                     var totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstadoIncentivo,2);
                     var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte, 2);
-                    var totalGeralVendas = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + totalVendasNContribuinteForaDoEstado);
 
                     //// FUNEF
                     var BCFunef = debitosIcms - creditosIcms - icmsContribuinteIncentivo;
@@ -1765,7 +1764,6 @@ namespace Escon.SisctNET.Web.Controllers
                     //Contribuinte
                     ViewBag.VendaContribuinteNIncentivo = Convert.ToDouble(ContribuintesNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-
                     //Não Contribuinte
                     ViewBag.VendaNContribuinteNIncentivo = Convert.ToDouble(naoContribuinteNIncetivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -1779,7 +1777,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalGeralVendaNContibuinteForaDoEstado = Convert.ToDouble(totalVendasNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalGeralIcmsIncentivo = Convert.ToDouble(totalIcmsGeralIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalGeralVendasIncentivo = Convert.ToDouble(totalGeralVendasIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalGeralVendas = Convert.ToDouble(totalGeralVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
 
