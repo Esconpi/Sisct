@@ -1603,7 +1603,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
+                                    naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
                                 }
                                
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vProd"]);
@@ -1614,7 +1614,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
+                                    naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
                                 }
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vFrete"]);
 
@@ -1624,7 +1624,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstadoIncentivo -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
+                                    naoContriForaDoEstadoNIncentivo -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
                                 }
                                 
                                 totalVendas -= Convert.ToDecimal(notesVendaSt[i][k]["vDesc"]);
@@ -1635,7 +1635,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["Outro"]);
+                                    naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["Outro"]);
                                 }
                            
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vOutro"]);
@@ -1647,7 +1647,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (notesVendaSt[i][1]["idDest"].Equals("2"))
                                 {
-                                    naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
+                                    naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
                                 }
                               
                                 totalVendas += Convert.ToDecimal(notesVendaSt[i][k]["vSeg"]);
