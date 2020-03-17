@@ -459,7 +459,7 @@ namespace Escon.SisctNET.Web.Controllers
             
             List<Company> companies = new List<Company>();
 
-            companies = _service.FindByCompanies();
+            companies = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
