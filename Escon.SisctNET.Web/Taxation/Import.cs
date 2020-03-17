@@ -1284,6 +1284,35 @@ namespace Escon.SisctNET.Web.Taxation
             return ncms;
         }
 
+        public decimal SpedCredito(string directorySped, int companyId)
+        {
+            decimal totalDeCredito = 0;
+            StreamReader archiveSped = new StreamReader(directorySped);
+            var cfopstransf = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            try
+            {
+                string line;
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000"))
+                    {
+                         totalDeCredito += Convert.ToDecimal(linha[15]);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return totalDeCredito;
+        }
+
 
     }
 }
