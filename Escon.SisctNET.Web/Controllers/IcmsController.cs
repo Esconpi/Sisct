@@ -1363,7 +1363,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
-                    notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
+                     notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                     notesSaidaDevo = import.NfeExit(directoryNfeExit, id, type, "devolução de saida");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
