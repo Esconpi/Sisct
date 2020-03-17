@@ -250,7 +250,6 @@ namespace Escon.SisctNET.Web.Controllers
             var productsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
 
 
-
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
                 List<Product> products = new List<Product>();
@@ -290,7 +289,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Price = r.Price,
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
-                              Fim = r.DateEnd
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                           };
 
@@ -311,7 +310,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Price = r.Price,
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
-                              Fim = r.DateEnd
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                           };
                 return Ok(new { draw = draw, recordsTotal = productsAll.Count(), recordsFiltered = productsAll.Count(), data = product.Skip(start).Take(lenght) });
