@@ -136,8 +136,8 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                ViewBag.Id = id;
                 var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
+                ViewBag.Id = result.CompanyId;
                 return View(result);
             }
             catch(Exception ex)

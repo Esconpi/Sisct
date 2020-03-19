@@ -1,11 +1,14 @@
 ﻿using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -18,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IClientService _clientService;
         private readonly INcmConvenioService _ncmConvenioService;
         private readonly IDarService _darService;
+        private readonly IHostingEnvironment _appEnvironment;
         public IcmsController(
             ICompanyService companyService,
             IConfigurationService configurationService,
@@ -26,6 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             INcmConvenioService ncmConvenioService,
             IDarService darService,
             IFunctionalityService functionalityService,
+            IHostingEnvironment env,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "NoteExit")
         {
@@ -35,10 +40,11 @@ namespace Escon.SisctNET.Web.Controllers
             _clientService = clientService;
             _ncmConvenioService = ncmConvenioService;
             _darService = darService;
+            _appEnvironment = env;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult RelatoryExit(int id, string year, string month, string type)
+        public async Task<IActionResult> RelatoryExit(int id, string year, string month, string type, IFormFile arquivo)
         {
             try
             {
@@ -1313,19 +1319,45 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
+                    if (arquivo == null || arquivo.Length == 0)
+                    {
+                        ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
+                        return View(ViewData);
+                    }
+
+                    string nomeArquivo = comp.Document + year + month;
+
+                    if (arquivo.FileName.Contains(".txt"))
+                        nomeArquivo += ".txt";
+                    else
+                        nomeArquivo += ".tmp";
+
+                    string caminho_WebRoot = _appEnvironment.WebRootPath;
+                    string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Speds\\";
+                    string caminhoDestinoArquivoOriginal = caminhoDestinoArquivo + nomeArquivo;
+
+                    string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivo);
+                    if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
+                    {
+                        System.IO.File.Delete(caminhoDestinoArquivoOriginal);
+
+                    }
+                    var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
+                    await arquivo.CopyToAsync(stream);
+                    stream.Close();
+                    decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id),
+                         debitosIcms = 0;
+
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesEntradaVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesEntradaDevo = new List<List<Dictionary<string, string>>>();
-                    //List<List<Dictionary<string, string>>> notesEntradaDevolucao = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesSaidaDevo = new List<List<Dictionary<string, string>>>();
                     //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
-                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
-                    notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
-                    //notesEntradaVenda = import.NfeExit(directoryNfeEntrada, id, type, "venda");
-                    //notesEntradaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolucao");
-
-                    decimal creditosIcms = 0, debitosIcms = 0;
+                    ///notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    //notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
+                    notesSaidaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolução de saida");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -1348,19 +1380,19 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    /*for (int i = notesEntradaDevo.Count - 1; i >= 0; i--)
+                    for (int i = notesSaidaDevo.Count - 1; i >= 0; i--)
                     {
 
-                        if (!notesEntradaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaDevo[i].Count <= 5)
+                        if (!notesSaidaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesSaidaDevo[i].Count <= 5)
                         {
-                            notesEntradaDevo.RemoveAt(i);
+                            notesSaidaDevo.RemoveAt(i);
                             continue;
                         }
-                        for (int k = 0; k < notesEntradaDevo[i].Count; k++)
+                        for (int k = 0; k < notesSaidaDevo[i].Count; k++)
                         {
-                            if (notesEntradaDevo[i][k].ContainsKey("pICMS") && notesEntradaDevo[i][k].ContainsKey("CST") && notesEntradaDevo[i][k].ContainsKey("orig"))
+                            if (notesSaidaDevo[i][k].ContainsKey("pICMS") && notesSaidaDevo[i][k].ContainsKey("CST") && notesSaidaDevo[i][k].ContainsKey("orig"))
                             {
-                                creditosIcms += (Convert.ToDecimal(notesEntradaDevo[i][k]["pICMS"]) * Convert.ToDecimal(notesEntradaDevo[i][k]["vBC"])) / 100;
+                                creditosIcms += (Convert.ToDecimal(notesSaidaDevo[i][k]["pICMS"]) * Convert.ToDecimal(notesSaidaDevo[i][k]["vBC"])) / 100;
                             }
                         }
                     }

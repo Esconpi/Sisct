@@ -11,7 +11,7 @@
     </div>
     <div class="box-body">
         <div class="col-lg-12">
-            <form asp-controller="Icms" asp-action="RelatoryExit" method="post">
+            <form asp-controller="Icms" asp-action="RelatoryExit" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
                 <div class="row">
@@ -47,6 +47,12 @@
                             <option value="incentivo">Incentivo</option>
                         </select>
                     </div>
+
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label"><strong>Selecione o arquivo</strong></label>
+                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled/>
+                    </div>
+
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <input type="submit" value="Gerar" class="btn btn-success pull-right" id="ativa" disabled="disabled" />
@@ -63,8 +69,13 @@
         var opcao = document.getElementById("status").value;
         if (opcao == "0") {
             document.getElementById("ativa").disabled = true;
+        }
+        else if (opcao == "incentivo"){
+            document.getElementById("file").disabled = false;
+            document.getElementById("ativa").disabled = false;
         } else {
             document.getElementById("ativa").disabled = false;
+            document.getElementById("file").disabled = true;
         }
     }
 </script>
