@@ -1289,6 +1289,7 @@ namespace Escon.SisctNET.Web.Taxation
             decimal totalDeCredito = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
             var cfopstransf = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            cfopstransf.AddRange(_companyCfopService.FindByCfopActive(companyId, "incentivo", "devolução de saida").Select(_ => _.Cfop.Code).ToList());
             try
             {
                 string line;
@@ -1299,9 +1300,9 @@ namespace Escon.SisctNET.Web.Taxation
                     {
                          totalDeCredito += Convert.ToDecimal(linha[15]);
                     }
-                }
-
+                }                
             }
+            
             catch (Exception ex)
             {
                 Console.Out.WriteLine(ex.Message);

@@ -1357,7 +1357,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     ///notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     //notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
-                    notesSaidaDevo = import.NfeExit(directoryNfeEntrada, id, type, "devolução de saida");
+                    notesSaidaDevo = import.NfeExit(directoryNfeExit, id, type, "devolução de saida");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -1382,11 +1382,13 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     for (int i = notesSaidaDevo.Count - 1; i >= 0; i--)
                     {
-
-                        if (!notesSaidaDevo[i][3]["CNPJ"].Equals(comp.Document) || notesSaidaDevo[i].Count <= 5)
+                        if (notesSaidaDevo[i][2].ContainsKey("CNPJ"))
                         {
-                            notesSaidaDevo.RemoveAt(i);
-                            continue;
+                            if (!notesSaidaDevo[i][2]["CNPJ"].Equals(comp.Document) || notesSaidaDevo[i].Count <= 5)
+                            {
+                                notesSaidaDevo.RemoveAt(i);
+                                continue;
+                            }
                         }
                         for (int k = 0; k < notesSaidaDevo[i].Count; k++)
                         {
