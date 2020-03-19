@@ -1577,6 +1577,12 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                     var parateste = "ok";
+
+                    var icmsContribuinte = Math.Round(Convert.ToDecimal(comp.Icms) * Contribuintes/ 100, 2);
+                    var icmsNContribuinte = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContribuintes / 100, 2);
+                    var icmsNContribuinteFora = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstado / 100, 2);
+                    var BCFunef = debitosIcms - creditosIcms - icmsContribuinte;
+                    var vFunef = BCFunef * Convert.ToDecimal(comp.Funef);
                 }
                 return View();
             }
