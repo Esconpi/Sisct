@@ -1355,8 +1355,8 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesSaidaDevo = new List<List<Dictionary<string, string>>>();
                     //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
-                    ///notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
-                    //notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
+                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                     notesSaidaDevo = import.NfeExit(directoryNfeExit, id, type, "devolução de saida");
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
@@ -1398,22 +1398,6 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    /*for (int i = notesEntradaVenda.Count - 1; i >= 0; i--)
-                    {
-
-                        if (!notesEntradaVenda[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaVenda[i].Count <= 5)
-                        {
-                            notesEntradaVenda.RemoveAt(i);
-                            continue;
-                        }
-                        for (int k = 0; k < notesEntradaVenda[i].Count; k++)
-                        {
-                            if (notesEntradaVenda[i][k].ContainsKey("pICMS") && notesEntradaVenda[i][k].ContainsKey("CST") && notesEntradaVenda[i][k].ContainsKey("orig"))
-                            {
-                                creditosIcms += (Convert.ToDecimal(notesEntradaVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesEntradaVenda[i][k]["vBC"])) / 100;
-                            }
-                        }
-                    }*/
 
 
                     decimal totalVendas = 0, naoContribuintes = 0, Contribuintes = 0, naoContriForaDoEstado = 0;
