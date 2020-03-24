@@ -1584,7 +1584,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var BCFunef = debitosIcms - creditosIcms - icmsContribuinte;
                     var vFunef = BCFunef * Convert.ToDecimal(comp.Funef);
 
-                    double valor = (Contribuintes * comp.Icms) / 100
+                    double valor = (Convert.ToDouble(Contribuintes) * Convert.ToDouble(comp.Icms)) / 100;
 
 
 
