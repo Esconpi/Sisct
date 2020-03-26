@@ -286,7 +286,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Code,
                               Description = r.Description,
                               GroupName = r.Group.Description,
-                              Price = r.Price,
+                              Price = r.Price.ToString().Replace(".",","),
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
@@ -307,7 +307,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Code,
                               Description = r.Description,
                               GroupName = r.Group.Description,
-                              Price = r.Price,
+                              Price = r.Price.ToString().Replace(".", ","),
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
