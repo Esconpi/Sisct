@@ -121,5 +121,51 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
+        [HttpGet]
+        public IActionResult Product(int id)
+        {
+            try
+            {
+                var prod = _service.FindById(id, null);
+                ViewBag.CompanyId = prod.CompanyId;
+                ViewBag.Month = prod.Month;
+                ViewBag.Year = prod;
+                return View(prod);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Product(int id, Model.ProductIncentivo entity)
+        {
+            try
+            {
+                var prod = _service.FindById(id, null);
+                var companyId = prod.CompanyId;
+                var year = prod.Year;
+                var month = prod.Month;
+
+                if(Request.Form["type"].ToString() == "1")
+                {
+                    prod.TypeTaxation = Request.Form["taxation"].ToString();
+                    prod.Active = true;
+                }
+                else
+                {
+                    var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId) &&
+                    _.Year.Equals(year) && _.Month.Equals(month));
+                }
+
+                return RedirectToAction("Index", new { id = companyId, year = year, month = month });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
     }
 }

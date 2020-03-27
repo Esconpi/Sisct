@@ -31,11 +31,12 @@
                             @Html.DisplayNameFor(model => model.Ncm)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.TypeTaxation)
-                        </th>
-                        <th>
                             Tributado
                         </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TypeTaxation)
+                        </th>
+
                         <th></th>
                     </tr>
                 </thead>
@@ -54,13 +55,14 @@
                                 @Html.DisplayFor(modelItem => item.Ncm)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.TypeTaxation)
+                                @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true"})
                             </td>
                             <td>
-                                @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active"})
+                                @Html.DisplayFor(modelItem => item.TypeTaxation)
                             </td>
+                            
                             <td style="width:50px;">
-                                @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
                             </td>
                         </tr>
                     }
