@@ -1323,7 +1323,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
-                    /*var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read));
+                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read));
                     var codeprod = productincentivo.Select(_ => _.Code);
                     if (arquivo == null || arquivo.Length == 0)
                     {
@@ -1671,7 +1671,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualIcms = comp.Icms;
                     ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");*/
+                    ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
                 return View();
