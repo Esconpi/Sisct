@@ -77,7 +77,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach(var prod in products)
                 {
-                    var prodImport = _service.FindByProduct(id, prod["NCM"], prod["cProd"]);
+                    var prodImport = _service.FindByProduct(id, prod["cProd"]);
                     if(prodImport == null)
                     {
                         var product = new Model.ProductIncentivo
@@ -105,22 +105,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
-        {
-            try
-            {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
-                entity.Active = updateActive.Active;
-
-                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
-                return Ok(new { requestcode = 200, message = "ok" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { requestcode = 500, message = ex.Message });
-            }
-        }
         [HttpGet]
         public IActionResult Product(int id)
         {
@@ -152,11 +136,22 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
+                    prod.Updated = DateTime.Now;
+                    _service.Update(prod, null);
                 }
                 else
                 {
-                    var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId) &&
-                    _.Year.Equals(year) && _.Month.Equals(month));
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) &&
+                    _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm) &&
+                    _.Active.Equals(false)).ToList();
+
+                    foreach(var p in products)
+                    {
+                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.Active = true;
+                        p.Updated = DateTime.Now;
+                        _service.Update(p, null);
+                    }
                 }
 
                 return RedirectToAction("Index", new { id = companyId, year = year, month = month });

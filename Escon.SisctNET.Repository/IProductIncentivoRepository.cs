@@ -8,6 +8,6 @@ namespace Escon.SisctNET.Repository
     {
         List<Model.ProductIncentivo> FindByProducts(int id, string year, string month, Model.Log log = null);
 
-        Model.ProductIncentivo FindByProduct(int company, string ncm, string code, Model.Log log = null);
+        Model.ProductIncentivo FindByProduct(int company, string code, Model.Log log = null);
     }
 }

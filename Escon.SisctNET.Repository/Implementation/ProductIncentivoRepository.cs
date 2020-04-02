@@ -18,9 +18,9 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public ProductIncentivo FindByProduct(int company, string ncm, string code, Log log)
+        public ProductIncentivo FindByProduct(int company, string code, Log log)
         {
-            var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(company) && _.Ncm.Equals(ncm) && _.Code.Equals(code)).FirstOrDefault();
+            var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(company) &&  _.Code.Equals(code)).FirstOrDefault();
             AddLog(log);
             return result;
         }

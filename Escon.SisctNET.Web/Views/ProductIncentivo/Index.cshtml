@@ -6,6 +6,7 @@
 }
 <div class="box box-primary">
     <div class="box-header">
+        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produtos</strong></h3>
         <div class="btn-group pull-right">
             @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
@@ -16,7 +17,7 @@
     <div class="box-body">
         <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
 
-            <table class="table table-striped table-bordered" id="tblIndex" style="width:100%">
+            <table class="table table-striped table-bordered" id="tblIndex2" style="width:100%">
                 <thead>
                     <tr>
 

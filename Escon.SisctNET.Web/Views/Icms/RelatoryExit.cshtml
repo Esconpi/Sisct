@@ -489,7 +489,7 @@
                 }
                 else if (ViewBag.Type == "incentivo")
                 {
-                    <table class="table" style="font-size:12px;" border="1">
+                    <table style="font-size:12px;" border="1">
                         <thead>
                             <tr>
                                 <th>Histórico</th>
@@ -502,21 +502,21 @@
                         <tbody>
                             <tr>
                                 <td>Venda p/ Contribuintes (R$)</td>
-                                <td>1.537.964,75 </td>
+                                <td>@ViewBag.VendaContribuinte </td>
                                 <td>10.000,00</td>
                                 <td>500.000,00</td>
                                 <td>2.047.964,75</td>
                             </tr>
                             <tr>
                                 <td>Percentual do Incentivo Fiscal (%)</td>
-                                <td>2%</td>
+                                <td>@ViewBag.PercentualIcms %</td>
                                 <td>5%</td>
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Total (R$)</td>
-                                <td>30.759,30</td>
+                                <td>@ViewBag.Valor</td>
                                 <td>500,00</td>
                                 <td></td>
                                 <td></td>

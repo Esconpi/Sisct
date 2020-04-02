@@ -1323,8 +1323,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
-                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read));
-                    var codeprod = productincentivo.Select(_ => _.Code);
+                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
+                    var codeProd = productincentivo.Select(_ => _.Code).ToList();
                     if (arquivo == null || arquivo.Length == 0)
                     {
                         ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1424,7 +1424,7 @@ namespace Escon.SisctNET.Web.Controllers
                         for (int k = 0; k < notesVenda[i].Count(); k++)
                         {
                             if (notesVenda[i][k].ContainsKey("cProd")) {
-                                if (codeprod.Contains(notesVenda[i][k]["cProd"]))
+                                if (codeProd.Contains(notesVenda[i][k]["cProd"]))
                                 {
                                     if (notesVenda[i][k].ContainsKey("vProd"))
                                     {
@@ -1593,7 +1593,6 @@ namespace Escon.SisctNET.Web.Controllers
                             if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
                             {
                                 debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
-                                break;
                             }
                         }
                     }
@@ -1668,10 +1667,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                     double valor = (Convert.ToDouble(Contribuintes) * Convert.ToDouble(comp.Icms)) / 100;
 
+
                     ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualIcms = comp.Icms;
                     ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                    ViewBag.VendaContribuinte = Convert.ToDouble(Contribuintes.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualIcms = Convert.ToDouble(comp.Icms.ToString().Replace(".",",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");;
+                    ViewBag.Valor = Convert.ToDouble(valor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
                 return View();
