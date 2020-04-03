@@ -1325,6 +1325,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
                     var codeProd = productincentivo.Select(_ => _.Code).ToList();
+
                     if (arquivo == null || arquivo.Length == 0)
                     {
                         ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1663,22 +1664,18 @@ namespace Escon.SisctNET.Web.Controllers
                     var icmsNContribuinte = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContribuintes / 100, 2);
                     var icmsNContribuinteFora = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstado / 100, 2);
                     var BCFunef = debitosIcms - creditosIcms - icmsContribuinte;
-                    var vFunef = BCFunef * Convert.ToDecimal(comp.Funef);
+                    var vFunef = BCFunef * Convert.ToDecimal(comp.Funef) / 100;
 
                     double valor = (Convert.ToDouble(Contribuintes) * Convert.ToDouble(comp.Icms)) / 100;
 
 
-                    ViewBag.VendaContribuinte = Contribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualIcms = comp.Icms;
-                    ViewBag.Valor = valor.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaNContribuinte = naoContribuintes.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
+           
                     System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                     ViewBag.VendaContribuinte = Convert.ToDouble(Contribuintes.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualIcms = Convert.ToDouble(comp.Icms.ToString().Replace(".",",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");;
                     ViewBag.Valor = Convert.ToDouble(valor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
+                    ViewBag.VendaNContibuite = Convert.ToDouble(naoContribuintes.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 }
                 return View();
             }
