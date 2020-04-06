@@ -1325,7 +1325,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
                     var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
-                    var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("Não Incentivado")).Select(_ => _.Code).ToList();
+                    var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
 
                     if (arquivo == null || arquivo.Length == 0)
                     {
@@ -1360,7 +1360,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesEntradaVenda = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesEntradaDevo = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesSaidaDevo = new List<List<Dictionary<string, string>>>();
-                    //List<List<Dictionary<string, string>>> notesSaidaDevolucao = new List<List<Dictionary<string, string>>>();
+
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
@@ -1714,13 +1714,23 @@ namespace Escon.SisctNET.Web.Controllers
                     var icmsContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.Icms) * ContribuintesIncentivo/ 100, 2);
 
                     //Não Contribuinte
-                    var totalVendasNContribuinte = naoContribuinteIncentivo + naoContribuinteNIncetivo;
+                    var totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo);
                     var icmsNContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * totalVendasNContribuinte / 100, 2);
 
                     //Não Contribuinte Fora do Estado
-                    var totalVendasNContribuinteForaDoEstado = naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo;
+                    var totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo,2);
                     var icmsNContribuinteForaDoEstadoIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * totalVendasNContribuinteForaDoEstado / 100, 2);
                     var icmsNContribuinteForaDoEstadoNIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstadoNIncentivo / 100, 2);
+
+                    //// Direfença de débito e crédito
+                    var diferenca = Math.Round(debitosIcms - creditosIcms);
+
+                    //// FUNEF e COTAC
+
+                    //Total Icms
+                    var totalIcms = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo);
+                    var BCFunef = debitosIcms - creditosIcms - icmsContribuinteIncentivo;
+                    var vFunef = BCFunef * Convert.ToDecimal(comp.Funef) / 100;
 
 
 
@@ -1729,11 +1739,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstadoIncentivo,2);
                     var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte, 2);
 
-                    //// FUNEF
-                    var BCFunef = debitosIcms - creditosIcms - icmsContribuinteIncentivo;
-                    var vFunef = BCFunef * Convert.ToDecimal(comp.Funef) / 100;
-
-
+                  
 
                     System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -1769,6 +1775,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                     //Não Contribuinte
                     ViewBag.VendaNContribuinteNIncentivoForaDoEstado = Convert.ToDouble(naoContriForaDoEstadoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+
+                    //// Crédito e Débito
+                    //Crédito
+                    ViewBag.Credito = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //Débito
+                    ViewBag.Debito = Convert.ToDouble(debitosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    //Diferença
+                    ViewBag.Diferenca = Convert.ToDouble(diferenca.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+
+                    //// FUNEF e COTAC
+
+                    //Total Icms
+                    ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
                     //// Total

@@ -489,34 +489,34 @@
                 }
                 else if (ViewBag.Type == "incentivo")
                 {
-                    <div>
+                    <div style="width:100%; padding:20px; padding-top:10px;">
                         <table style="font-size:12px;" border="1">
-                            <thead>
+                            <thead style="font-size:13px; background-color:lightgray">
                                 <tr>
-                                    <th style="text-align:center" width="32%">Histórico</th>
+                                    <th style="text-align:center" width="320px">Histórico</th>
                                     <th style="text-align:center">Aliq. Inter do Produto até 25%</th>
                                     <th style="text-align:center">Aliq. Inter do Produto superior 25%</th>
                                     <th style="text-align:center">Receitas de Produtos ST</th>
-                                    <th style="text-align:center" width="15%">Total (R$)</th>
+                                    <th style="text-align:center" width="150px">Total (R$)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Venda p/ Contribuintes (R$)</td>
+                                    <td style="font-size:11px;">Venda p/ Contribuintes (R$)</td>
                                     <td style="text-align:right">@ViewBag.VendaContribuinteIncentivo</td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right">@ViewBag.VendaContribuinteNIncentivo</td>
                                     <td style="text-align:right">@ViewBag.TotalVendaContibuinte</td>
                                 </tr>
                                 <tr>
-                                    <td>Percentual do Incentivo Fiscal (%)</td>
+                                    <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                                     <td style="text-align:right">@ViewBag.PercentualIcmsContrib %</td>
                                     <td style="text-align:right">5,00 %</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th>Total (R$)</th>
+                                    <th style="font-size:11px;">Total (R$)</th>
                                     <th style="text-align:right">@ViewBag.ValorVendaContribIncentivo</th>
                                     <td style="text-align:right"></td>
                                     <td></td>
@@ -530,35 +530,35 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>Venda p/ Não Contribuintes (R$)</td>
+                                    <td style="font-size:11px;">Venda p/ Não Contribuintes (R$)</td>
                                     <td style="text-align:right">@ViewBag.VendaNContribIncentivo</td>
                                     <td></td>
                                     <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivo</td>
                                     <td style="text-align:right">@ViewBag.TotalGeralVendaNContibuinte</td>
                                 </tr>
                                 <tr>
-                                    <td>Venda p/ Não Contribuintes ST (R$)</td>
+                                    <td style="font-size:11px;">Venda p/ Não Contribuintes ST (R$)</td>
                                     <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivo</td>
                                     <td></td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                 </tr>
                                 <tr>
-                                    <td>Base de Cálculo (R$)</td>
+                                    <td style="font-size:11px;">Base de Cálculo (R$)</td>
                                     <td style="text-align:right">@ViewBag.TotalVendaNContribuinte</td>
                                     <td></td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                 </tr>
                                 <tr>
-                                    <td>Percentual do Incentivo Fiscal (%)</td>
+                                    <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                                     <td style="text-align:right">@ViewBag.PercentualIcmsNContribuinte %</td>
                                     <td></td>
                                     <td style="text-align:right"></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th>Total (R$)</th>
+                                    <th style="font-size:11px;">Total (R$)</th>
                                     <th style="text-align:right">@ViewBag.ValorVendaNContribIncentivo</th>
                                     <td></td>
                                     <td style="text-align:right"></td>
@@ -572,7 +572,7 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <th>Total das Vendas (R$)</th>
+                                    <th style="font-size:11px;">Total das Vendas (R$)</th>
                                     <th style="text-align:right">@ViewBag.TotalGeralVendasIncentivo</th>
                                     <td></td>
                                     <td style="text-align:right"></td>
@@ -586,35 +586,35 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>Venda p/ Não Contribuintes Fora do Estado (R$)</td>
+                                    <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado (R$)</td>
                                     <td style="text-align:right">@ViewBag.VendaNForaEstadoContribuinteIncetivo</td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
                                     <td style="text-align:right">@ViewBag.TotalGeralVendaNContibuinteForaDoEstado</td>
                                 </tr>
                                 <tr>
-                                    <td>Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
+                                    <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
                                     <td style="text-align:right">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                 </tr>
                                 <tr>
-                                    <td>Base de Cálculo (R$)</td>
+                                    <td style="font-size:11px;">Base de Cálculo (R$)</td>
                                     <td style="text-align:right">@ViewBag.TotalVendaNContribuinteForaDoEstado</td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                 </tr>
                                 <tr>
-                                    <td>Percentual do Incentivo Fiscal (%)</td>
+                                    <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                                     <td style="text-align:right">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
                                     <td style="text-align:right"></td>
                                     <td style="text-align:right"></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th>Total (R$)</th>
+                                    <th style="font-size:11px;">Total (R$)</th>
                                     <th style="text-align:right">@ViewBag.ValorVendaNContribIncentivoForaDoEstado</th>
                                     <td></td>
                                     <td style="text-align:right"></td>
@@ -628,7 +628,7 @@
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <th>Total Geral do Icms</th>
+                                    <th style="font-size:11px;">Total Geral do Icms</th>
                                     <th style="text-align:right">@ViewBag.TotalGeralIcmsIncentivo</th>
                                     <td></td>
                                     <td></td>
@@ -637,15 +637,14 @@
                             </tbody>
                         </table>
                     </div>
-                    <br />
-                    <div>
-                        <table class="table" style="font-size:12px;">
 
-                                <thead style="background-color:lightgray">
+                    <div style="width:100%; overflow:hidden; padding:20px;">
+                        <table class="table" border="1" style="font-size:12px;">
+                                <thead>
                                     <tr>
-                                        <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">APURAÇÃO DO ICMS NORMAL</th>
+                                        <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid; background-color:lightgray">APURAÇÃO DO ICMS NORMAL</th>
                                         <th class="col-lg-1 col-md-1 col-sm-1"></th>
-                                        <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid;">DADOS PARA CÁLCULO DA FUNEF e COTAC</th>
+                                        <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid; background-color:lightgray">DADOS PARA CÁLCULO DA FUNEF e COTAC</th>
                                     </tr>
                                 </thead>
                                 <tbody style="font-size:14px;">
@@ -654,20 +653,19 @@
                                             <table>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Débito do Imposto pelas Saídas (R$)</td>
-
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSMva</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Debito</td>
 
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Crédito do Imposto pelas Entradas (R$)</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalGNREPaga</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Credito</td>
                                                 </tr>
 
                                                 <tr>
                                                     <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalGNREPaga</td>
+                                                    <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.Diferenca</th>
                                                 </tr>
 
                                             </table>
@@ -678,25 +676,25 @@
                                             <table>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsContrib %</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsContrib % (R$)</td>
 
                                                     <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribIncentivo</td>
 
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS 5,00 %</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">-</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS 5,00 % (R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">0,00</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsNContribuinte %</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsNContribuinte % (R$)</td>
                                                     <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaNContribIncentivo</td>
                                                 </tr>
 
                                                 <tr>
                                                     <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Total (R$)</th>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right"></td>
+                                                    <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalIcms</th>
                                                 </tr>
 
                                             </table>
@@ -704,6 +702,45 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                        </table>
+                    </div>
+
+                    <div style="width:100%; overflow:hidden; padding:20px;">
+                        <table class="table" style="font-size:12px;" border="1">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center; border:1px solid; background-color:lightgray">BASE DE CÁLCULO SA FUNEF E COTAC</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:14px;">
+                                <tr>
+                                    <td>
+                                        <table class="table">
+                                            <tr>
+                                                <td style="text-align:right;">Icms Apurado Incentivado (R$)</td>
+                                                <td style="text-align:right;">@ViewBag.Debito</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:right;">Icms Apurado Normal (R$)</td>
+                                                <td style="text-align:right;">@ViewBag.Credito</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align:right">Total (R$)</th>
+                                                <th style="text-align:right">@ViewBag.Diferenca</th>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    
+                                </tr>
+                               
+                            </tbody>
                         </table>
                     </div>
                 }
