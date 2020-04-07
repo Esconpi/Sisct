@@ -1370,7 +1370,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
-                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
+                        if (notesVenda[i].Count <= 5)
                         {
                             notesVenda.RemoveAt(i);
                             continue;
@@ -1595,7 +1595,8 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
                             {
-                                debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
+                                //debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
+                                debitosIcms += Convert.ToDecimal(notesVenda[i][k]["vICMS"]);
                             }
                         }
 
