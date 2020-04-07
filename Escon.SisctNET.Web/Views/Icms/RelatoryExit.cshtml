@@ -651,7 +651,6 @@
                                     <tr>
                                         <td class="col-lg-6 col-sm-6">
                                             <table>
-
                                                 <tr>
                                                     <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
                                                     <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Debito</td>
@@ -715,23 +714,29 @@
                             <tbody style="font-size:14px;">
                                 <tr>
                                     <td>
-                                        <table class="table">
+                                        <table>
                                             <tr>
-                                                <td style="text-align:right;" width="300px">Icms Apurado Incentivado (R$)</td>
-                                                <td style="text-align:right;">@ViewBag.Debito</td>
+                                                <td style="text-align:right;" width="300px">Icms Apurado Normal (R$)</td>
+                                                <td style="text-align:right;" width="200px">@ViewBag.Diferenca</td>
+                                                <td  width="200px">&nbsp;</td>
+                                                <td  width="200px">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:right;">Icms Apurado Incentivado (R$)</td>
+                                                <td style="text-align:right;">@ViewBag.TotalIcms</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
 
                                             </tr>
                                             <tr>
-                                                <td style="text-align:right;">Icms Apurado Normal (R$)</td>
-                                                <td style="text-align:right;">@ViewBag.Credito</td>
+                                                <th style="text-align:right">Total (R$)</th>
+                                                <th style="text-align:right">@ViewBag.BaseCalculo</th>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <th style="text-align:right">Total (R$)</th>
-                                                <th style="text-align:right">@ViewBag.Diferenca</th>
+                                                <th style="text-align:right">&nbsp;</th>
+                                                <th style="text-align:right">&nbsp;</th>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -743,21 +748,21 @@
                                             </tr>
                                             <tr>
                                                 <th style="text-align:right">FUNEF</th>
-                                                <th style="text-align:right">@ViewBag.Diferenca</th>
+                                                <td style="text-align:right">@ViewBag.BaseCalculo</td>
                                                 <td style="text-align:right">@ViewBag.PercentualFunef %</td>
-                                                <td>&nbsp;</td>
+                                                <td style="text-align:right">@ViewBag.TotalFunef</td>
                                             </tr>
                                             <tr>
                                                 <th style="text-align:right">COTAC</th>
-                                                <th style="text-align:right">@ViewBag.Diferenca</th>
+                                                <td style="text-align:right">@ViewBag.BaseCalculo</td>
                                                 <td style="text-align:right">@ViewBag.PercentualCotac %</td>
-                                                <td>&nbsp;</td>
+                                                <td style="text-align:right">@ViewBag.TotalCotac</td>
                                             </tr>
                                             <tr>
                                                 <th style="text-align:right" width="150px">Total (R$)</th>
-                                                <th style="text-align:right"></th>
+                                                <td style="text-align:right"></td>
                                                 <td>&nbsp;</td>
-                                                <td style="text-align:right">0000000000000</td>
+                                                <th style="text-align:right">@ViewBag.TotalFunefCotac</th>
                                             </tr>
                                         </table>
                                     </td>
@@ -768,7 +773,7 @@
                         </table>
                     </div>
 
-                    <div style="width:100%; overflow:hidden; padding:20px; padding-top:30px">
+                    <div style="width:100%; overflow:hidden; padding:20px;">
                         <table class="table" style="font-size:12px;" border="1">
                             <thead>
                                 <tr>
@@ -778,13 +783,13 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <table class="table">
+                                        <table>
                                             <tr>
-                                                <th style="text-align:center;">IMPOSTO</th>
-                                                <th style="text-align:center;">Percentual %</th>
-                                                <th style="text-align:center;">UF</th>
-                                                <th style="text-align:center;">Cod. Tributo</th>
-                                                <th style="text-align:right;">Valor (R$)</th>
+                                                <th style="text-align:center;" width="300px">IMPOSTO</th>
+                                                <th style="text-align:center;" width="150px">Percentual %</th>
+                                                <th style="text-align:center;" width="100px">UF</th>
+                                                <th style="text-align:center;" width="150px">Cod. Tributo</th>
+                                                <th style="text-align:right;" width="250px">Valor (R$)</th>
                                             </tr>
                                             <tr>
                                                 <td style="text-align:center;">ICMS</td>
