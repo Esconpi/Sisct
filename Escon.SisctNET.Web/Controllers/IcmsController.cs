@@ -1384,7 +1384,6 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 posCliente = contribuintes.IndexOf(notesVenda[i][3]["CNPJ"]);
                             }
-
                         }
 
                         for (int k = 0; k < notesVenda[i].Count(); k++)
@@ -1403,8 +1402,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vProd"]);
                                             }
-                                          
-                                           
                                         }
                                         else
                                         {
@@ -1595,8 +1592,8 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
                             {
-                                //debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
-                                debitosIcms += Convert.ToDecimal(notesVenda[i][k]["vICMS"]);
+                                debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
+                                //debitosIcms += Convert.ToDecimal(notesVenda[i][k]["vICMS"]);
                             }
                         }
 
