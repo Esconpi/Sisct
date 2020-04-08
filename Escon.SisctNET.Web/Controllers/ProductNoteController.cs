@@ -101,6 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;
+                ViewBag.DataNote = note.Dhemi;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
                                              
@@ -109,14 +110,31 @@ namespace Escon.SisctNET.Web.Controllers
                 
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
-                List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
-                foreach (var prod in list_product)
+
+                if (Convert.ToDateTime(note.Dhemi) < Convert.ToDateTime("10/02/2020"))
                 {
-                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
+                    foreach (var prod in list_product)
+                    {
+                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    }
+                    list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
+                    SelectList products = new SelectList(list_product, "Id", "Description", null);
+                    ViewBag.ProductId = products;
                 }
-                list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
-                SelectList products = new SelectList(list_product, "Id", "Description", null);
-                ViewBag.ProductId = products;
+                else if (Convert.ToDateTime(note.Dhemi) >= Convert.ToDateTime("10/02/2020"))
+                {
+                    List<Product1> list_product = _service.FindAllInDate1(result.Note.Dhemi);
+                    foreach (var prod in list_product)
+                    {
+                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    }
+                    list_product.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
+                    SelectList products = new SelectList(list_product, "Id", "Description", null);
+                    ViewBag.ProductId = products;
+                }
+               
+
                 ViewBag.TaxationTypeId = taxationtypes;
                 ViewBag.Uf = note.Uf;
                 ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
