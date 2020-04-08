@@ -22,6 +22,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationService _taxationService;
         private readonly ICompanyService _companyService;
         private readonly IDarService _darService;
+        private readonly IProduct1Service _product1Service;
 
         public ProductNote(
             IProductNoteService service,
@@ -33,6 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationService taxationService,
             ICompanyService companyService,
             IDarService darService,
+            IProduct1Service product1Service,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
@@ -46,6 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxationService = taxationService;
             _companyService = companyService;
             _darService = darService;
+            _product1Service = product1Service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -111,28 +114,24 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
 
-                if (Convert.ToDateTime(note.Dhemi) < Convert.ToDateTime("10/02/2020"))
+
+                List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
+                foreach (var prod in list_product)
                 {
-                    List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
-                    foreach (var prod in list_product)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
-                    }
-                    list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products = new SelectList(list_product, "Id", "Description", null);
-                    ViewBag.ProductId = products;
+                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
                 }
-                else if (Convert.ToDateTime(note.Dhemi) >= Convert.ToDateTime("10/02/2020"))
+                list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList products = new SelectList(list_product, "Id", "Description", null);
+                ViewBag.ProductId = products;
+            
+                List<Product1> list_product1 = _service.FindAllInDate1(result.Note.Dhemi);
+                foreach (var prod in list_product1)
                 {
-                    List<Product1> list_product = _service.FindAllInDate1(result.Note.Dhemi);
-                    foreach (var prod in list_product)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
-                    }
-                    list_product.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products = new SelectList(list_product, "Id", "Description", null);
-                    ViewBag.ProductId = products;
+                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
                 }
+                list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
+                ViewBag.Product1Id = products1;
                
 
                 ViewBag.TaxationTypeId = taxationtypes;
@@ -171,8 +170,11 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal AliqInt = Convert.ToDecimal(Request.Form["AliqInt"]);
                 var taxaType = Request.Form["taxaType"];
                 var productid = Request.Form["productid"];
+                var product1id = Request.Form["product1id"];
                 var quantPauta = Request.Form["quantAlterada"];
                 var dateStart = Request.Form["dateStart"];
+                var dateNote = Request.Form["dataNote"];
+
                 decimal valorAgreg = 0, dif = 0;
                 decimal valor_fecop = 0;
                 string code2 = "";
@@ -180,12 +182,28 @@ namespace Escon.SisctNET.Web.Controllers
                 var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms);
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
+
                 var product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
+
+                var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
+
+                
 
                 if (entity.Pautado == true)
                 {
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    
+
+                    decimal precoPauta = 0;
+
+                    if (Convert.ToDateTime(dateNote) < Convert.ToDateTime("10/02/2020"))
+                    {
+                        precoPauta = Convert.ToDecimal(product.Price);
+                    }
+                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020"))
+                    {
+                        precoPauta = Convert.ToDecimal(product1.Price);
+                    }
+
                     decimal baseCalc = 0;
                     decimal valor_icms = prod.IcmsCTe + prod.Vicms;
 
@@ -194,6 +212,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal total_icms_pauta = 0;
                         decimal total_icms = 0;
                         baseCalc = prod.Vbasecalc + prod.Vdesc;
+                        
 
 
                         decimal quantParaCalc = 0;
@@ -204,7 +223,7 @@ namespace Escon.SisctNET.Web.Controllers
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
                         // Primeiro PP feito pela tabela
-                        decimal vAgre = calculation.valorAgregadoPauta(Convert.ToDecimal(quantParaCalc), Convert.ToDecimal(product.Price));
+                        decimal vAgre = calculation.valorAgregadoPauta(Convert.ToDecimal(quantParaCalc), precoPauta);
 
                         // Segundo PP feito com os dados do produto
                         decimal vAgre2 = Convert.ToDecimal(baseCalc / quantParaCalc);
@@ -256,7 +275,18 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             prod.TotalICMS = total_icms_pauta;
                             prod.Pautado = true;
-                            prod.ProductId = product.Id;
+
+                            if(product != null)
+                            {
+                                prod.ProductId = product.Id;
+                            }
+
+                            if (product1 != null)
+                            {
+                                prod.Product1Id = product1.Id;
+                            }
+                           
+                            
                         }
 
                     }

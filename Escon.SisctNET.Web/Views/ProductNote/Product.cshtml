@@ -97,10 +97,21 @@
                         <label class="control-label">Quantidade da Pauta</label>
                         <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
                     </div>
-                    <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                        <label asp-for="ProductId" class="control-label"></label>
-                        <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
-                    </div>
+                    @if (Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("10/02/2020"))
+                    {
+                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                            <label asp-for="ProductId" class="control-label"></label>
+                            <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
+                        </div>
+                    }
+                    else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020"))
+                    {
+                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                            <label asp-for="Product1Id" class="control-label"></label>
+                            <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
+                        </div>
+                    }
+
                 </div>
                 <div class="col-lg-12">
                     <div class="form-group col-lg-1 col-md-6 col-xs-12">

@@ -168,6 +168,17 @@ namespace Escon.SisctNET.Model
             set => product = value;
         }
 
+        [Display(Name = "Produto1")]
+        [ForeignKey("Product1")]
+        public int? Product1Id { get; set; }
+
+        private Product1 product1;
+        public Product1 Product1
+        {
+            get => LazyLoader.Load(this, ref product1);
+            set => product1 = value;
+        }
+
         [Display(Name = "Nota")]
         [ForeignKey("Note")]
         public int? NoteId { get; set; }
