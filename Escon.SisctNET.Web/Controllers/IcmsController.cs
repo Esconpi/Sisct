@@ -1723,9 +1723,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     //Total Icms
                     var totalIcms = icmsContribuinteIncentivo + icmsNContribuinteIncentivo;
+                    
+                    //Total Icms NOrmal e incentivado
+                    var totalDeIcmsApu = diferenca - totalIcms;
 
                     //// FUNEF e COTAC
-                    var baseCalculo = diferenca - totalIcms;
+                    var baseCalculo = diferenca - icmsContribuinteIncentivo;
 
                     //FUNEF
                     decimal percentualFunef = Convert.ToDecimal(comp.Funef == null ? 0 : comp.Funef);
@@ -1794,6 +1797,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ////Total Icms
                     ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    // Total Icms Apurado
+                    ViewBag.TotalIcmsApu = Convert.ToDouble(totalDeIcmsApu.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //// FUNEF e COTAC
                     ViewBag.BaseCalculo = Convert.ToDouble(baseCalculo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
