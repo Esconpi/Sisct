@@ -16,6 +16,7 @@
             <form asp-action="Client">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="companyId" value="@Model.CompanyId" />
+                <input type="hidden" name="count" value="@ViewBag.Count" />
                 <div class="row">
                     <div class="form-group col-lg-10 col-md-10 col-xs-12">
                         <label asp-for="Name" class="control-label"></label>
@@ -45,7 +46,7 @@
                     <div class="form-group col-lg-2 col-md-2 col-xs-12" id="checkbox">
                         @Html.LabelFor(model => model.Diferido, "Diferido", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
-                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger" , @readonly = "true" })
+                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
                         </div>
                     </div>
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
