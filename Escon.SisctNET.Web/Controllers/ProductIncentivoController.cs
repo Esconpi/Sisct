@@ -214,7 +214,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.CompanyId = companyId;
                 var comp = _companyService.FindById(companyId, null);
-                var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
+                var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
                 var result = products.Take(count).ToList();
                 ViewBag.Count = count;
                 ViewBag.TypeCompany = comp.TypeCompany;
@@ -322,6 +322,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                ViewBag.CompanyId = result.CompanyId;
                 return View(result);
             }
             catch (Exception ex)

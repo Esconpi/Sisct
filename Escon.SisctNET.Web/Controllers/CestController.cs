@@ -1,7 +1,9 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -33,7 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
+                    return View(null);
                 }
                 
             }
@@ -47,7 +49,14 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
 
@@ -111,6 +120,68 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var cestsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
+
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Cest> cests = new List<Cest>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Cest> cestTemp = new List<Cest>();
+                cestsAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    s.Code = s.Code;
+                    cestTemp.Add(s);
+                });
+
+                var ids = cestTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                cests = cestsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var cest = from r in cests
+                          where ids.ToArray().Contains(r.Id)
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description
+
+                          };
+
+                return Ok(new { draw = draw, recordsTotal = cests.Count(), recordsFiltered = cests.Count(), data = cest.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var cest = from r in cestsAll
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Code = r.Code,
+                              Description = r.Description
+
+                          };
+                return Ok(new { draw = draw, recordsTotal = cestsAll.Count(), recordsFiltered = cestsAll.Count(), data = cest.Skip(start).Take(lenght) });
+            }
+
         }
     }
 }
