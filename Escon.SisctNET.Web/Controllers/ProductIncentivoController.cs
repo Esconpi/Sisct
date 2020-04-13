@@ -161,7 +161,24 @@ namespace Escon.SisctNET.Web.Controllers
                     
                     _service.Update(prod, null);
                 }
-                else
+                else if(Request.Form["type"].ToString() == "2")
+                {
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Ncm.Equals(prod.Ncm)).ToList();
+
+                    foreach (var p in products)
+                    {
+                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.Active = true;
+                        p.Updated = DateTime.Now;
+                        if (comp.TypeCompany.Equals(false))
+                        {
+                            p.Percentual =  entity.Percentual;
+                        }
+
+                        _service.Update(p, null);
+                    }
+                }
+                else if (Request.Form["type"].ToString() == "3")
                 {
                     var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).ToList();
 
@@ -172,7 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false))
                         {
-                            p.Percentual =  entity.Percentual;
+                            p.Percentual = entity.Percentual;
                         }
 
                         _service.Update(p, null);
@@ -215,7 +232,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.Month = prod.Month;
                 ViewBag.Year = prod.Year;
-                //ViewBag.TypeCompany = comp.TypeCompany;
+                ViewBag.TypeCompany = comp.TypeCompany;
                 ViewBag.Count = count;
                 return View(prod);
             }
@@ -248,11 +265,27 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     _service.Update(prod, null);
                 }
-                else
+                else if (Request.Form["type"].ToString() == "2")
                 {
                     var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) &&
-                    _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm) &&
-                    _.Active.Equals(false)).ToList();
+                    _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
+
+                    foreach (var p in products)
+                    {
+                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.Active = true;
+                        p.Updated = DateTime.Now;
+                        if (comp.TypeCompany.Equals(false))
+                        {
+                            p.Percentual = entity.Percentual;
+                        }
+                        _service.Update(p, null);
+                    }
+                }
+                else if (Request.Form["type"].ToString() == "3")
+                {
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) &&
+                    _.Year.Equals(year) && _.Month.Equals(month)).ToList();
 
                     foreach (var p in products)
                     {

@@ -173,6 +173,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
+                ViewBag.Company = companyId;
                 return View(result);
             }
             catch (Exception ex)
@@ -209,6 +210,8 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
+                ViewBag.Company = result.CompanyId;
+                ViewBag.Count = count;
                 return View(result);
             }
             catch (Exception ex)

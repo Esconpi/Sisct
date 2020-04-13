@@ -401,6 +401,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.TypeCompany = result.TypeCompany;
                 return View(result);
             }
             catch(Exception ex)
