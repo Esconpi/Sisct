@@ -2252,6 +2252,9 @@ namespace Escon.SisctNET.Web.Controllers
                         var percentualCreditoNIncentivado = vendasNIncentivada / totalVendas;
                         var creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado;
 
+
+                        var difApuNormal = debitoIncetivo - creditosIcms;
+
                         
                         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -2320,6 +2323,10 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.Credito = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                        //Apuração Normal
+                        //Debito - ViewBag.DebitoIncentivo
+                        ViewBag.CreditoIncentivo = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.DifApuNormal = Convert.ToDouble(difApuNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     }
 
                     ////Código do Dar
