@@ -151,7 +151,11 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
-                    prod.Percentual = Convert.ToDecimal(entity.Percentual);
+                    if (comp.TypeCompany.Equals(false) && entity.Percentual != null)
+                    {
+                        prod.Percentual = Convert.ToDecimal(entity.Percentual);
+                    }
+                    
                     _service.Update(prod, null);
                 }
                 else
