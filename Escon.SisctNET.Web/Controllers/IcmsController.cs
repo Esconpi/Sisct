@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -1324,17 +1325,13 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
-                    List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-
-                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
-
-                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
-                    var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
-
+                   
                     var darIcms = _darService.FindAll(null).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
 
                     if (comp.TypeCompany.Equals(true))
                     {
+                        var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
+                        var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
                         var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
 
                         if (arquivo == null || arquivo.Length == 0)
@@ -1365,13 +1362,14 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id),
                              debitosIcms = 0;
 
-                        
+                        List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesSaidaDevoVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesSaidaDevoCompra = new List<List<Dictionary<string, string>>>();
 
                         var contribuintes = _clientService.FindByContribuinte(id, "all");
-                        
+
+                        notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                         notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                         notesSaidaDevoVenda = import.NfeExit(directoryNfeExit, id, type, "devolução de venda");
                         notesSaidaDevoCompra = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
@@ -1613,7 +1611,7 @@ namespace Escon.SisctNET.Web.Controllers
                        
                         for (int i = notesVendaSt.Count - 1; i >= 0; i--)
                         {
-                            if ((!notesVendaSt[i][2]["CNPJ"].Equals(comp.Document) || notesVendaSt[i].Count <= 5))
+                            if (( notesVendaSt[i].Count <= 5))
                             {
                                 notesVendaSt.RemoveAt(i);
                                 continue;
@@ -1864,6 +1862,14 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
+                        
+                        List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
+                        List<ProductIncentivo> productincentivo = new List<ProductIncentivo>();
+                        List<string> codeProdIncentivado = new List<string>();
+                        List<List<string>> percentuais = new List<List<string>>();
+
+                        notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+
                         decimal vendasIncentivada = 0, vendasNIncentivada = 0;
 
                         for(int i = notesVenda.Count - 1; i >= 0; i--)
@@ -1873,6 +1879,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 notesVenda.RemoveAt(i);
                                 continue;
                             }
+                            if (notesVenda[i][1].ContainsKey("dhEmi"))
+                            {
+                                productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(notesVenda[i][1]["dhEmi"]));
+                                codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
+                            }
 
                             for (int k = 0; k < notesVenda[i].Count(); k++)
                             {
@@ -1880,7 +1891,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     if (codeProdIncentivado.Contains(notesVenda[i][k]["cProd"]))
                                     {
-                                        var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(notesVenda[i][k]["cProd"])).Select(_ => _.Percentual));
+                                        var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(notesVenda[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
 
                                         if(percentualIncentivado < 100)
                                         {
@@ -1972,8 +1983,16 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
                                 }
+
+                                if (notesVenda[i][k].ContainsKey("pICMS") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
+                                {
+                                    //debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
+                                    //debitosIcms += Convert.ToDecimal(notesVenda[i][k]["vICMS"]);
+                                }
                             }
                         }
+
+                        var totalVendas = vendasIncentivada + vendasNIncentivada;
                     }
 
                     ////Código do Dar
