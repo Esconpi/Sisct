@@ -1871,6 +1871,34 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<string>> percentuaisIncentivado = new List<List<string>>();
                         List<List<string>> percentuaisNIncentivado = new List<List<string>>();
 
+                        if (arquivo == null || arquivo.Length == 0)
+                        {
+                            ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
+                            return View(ViewData);
+                        }
+
+                        string nomeArquivo = comp.Document + year + month;
+
+                        if (arquivo.FileName.Contains(".txt"))
+                            nomeArquivo += ".txt";
+                        else
+                            nomeArquivo += ".tmp";
+
+                        string caminho_WebRoot = _appEnvironment.WebRootPath;
+                        string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Speds\\";
+                        string caminhoDestinoArquivoOriginal = caminhoDestinoArquivo + nomeArquivo;
+
+                        string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivo);
+                        if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
+                        {
+                            System.IO.File.Delete(caminhoDestinoArquivoOriginal);
+                        }
+                        var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
+                        await arquivo.CopyToAsync(stream);
+                        stream.Close();
+                        decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id);
+
+
                         notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
 
                         decimal vendasIncentivada = 0, vendasNIncentivada = 0;
