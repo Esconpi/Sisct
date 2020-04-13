@@ -36,7 +36,7 @@
                             <option value="Dezembro">Dezembro</option>
                         </select>
                     </div>
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-7 col-md-6 col-xs-12">
                         <label class="control-label">Tipo</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="0">Selecione o tipo</option>
@@ -48,13 +48,6 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                        <label class="control-label">Opção</label>
-                        <select name="opcao" id="opcao" class="form-control selectoption" disabled onchange="ativar_button()">
-                            <option value="entrada">Entrada</option>
-                            <option value="saida" selected>Saída</option>
-                        </select>
-                    </div>
 
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
@@ -76,7 +69,6 @@
 
     function ativar_button() {
         var tipo = document.getElementById("status").value;
-        var opcao = document.getElementById("opcao").value;
         if (tipo == "0") {
             document.getElementById("ativa").disabled = true;
         }
@@ -84,19 +76,9 @@
             document.getElementById("file").disabled = false;
             document.getElementById("ativa").disabled = false;
         }
-        else if (tipo == "resumocfop") {
-            document.getElementById("opcao").disabled = false;
-            document.getElementById("ativa").disabled = false;
-            if (opcao == "entrada") {
-                document.getElementById("file").disabled = false;
-            }
-            else if (opcao == "saida") {
-                document.getElementById("file").disabled = true;
-            }
-        } else {
+        else {
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = true;
-            document.getElementById("opcao").disabled = true;
         }
     }
 </script>
