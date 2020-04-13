@@ -186,7 +186,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                return View();
+                return RedirectToAction("Index", new { companyId = companyId});
             }
             catch (Exception ex)
             {
