@@ -1724,11 +1724,8 @@ namespace Escon.SisctNET.Web.Controllers
                     //Total Icms
                     var totalIcms = icmsContribuinteIncentivo + icmsNContribuinteIncentivo;
                     
-                    //Total Icms NOrmal e incentivado
-                    var totalDeIcmsApu = diferenca - totalIcms;
-
                     //// FUNEF e COTAC
-                    var baseCalculo = diferenca - icmsContribuinteIncentivo;
+                    var baseCalculo = diferenca - totalIcms;
 
                     //FUNEF
                     decimal percentualFunef = Convert.ToDecimal(comp.Funef == null ? 0 : comp.Funef);
@@ -1738,8 +1735,15 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal percentualCotac = Convert.ToDecimal(comp.Cotac == null ? 0 : comp.Cotac);
                     var totalCotac = Math.Round((baseCalculo * percentualCotac) / 100, 2);
 
-                    //Total
+                    //Total Funef e Cotac
                     var totalFunefCotac = totalFunef + totalCotac;
+
+                    ////Total Imposto
+                    var totalImposto = icmsContribuinteIncentivo + icmsNContribuinteIncentivo + totalFunef + totalCotac;
+
+
+                    ////Total Imposto Geral
+                    var totalImpostoGeral = totalImposto + icmsNContribuinteForaDoEstadoIncentivo;
 
                     //// Cálculos dos Totais
                     var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo,2);
@@ -1798,8 +1802,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ////Total Icms
                     ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    // Total Icms Apurado
-                    ViewBag.TotalIcmsApu = Convert.ToDouble(totalDeIcmsApu.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //// FUNEF e COTAC
                     ViewBag.BaseCalculo = Convert.ToDouble(baseCalculo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -1812,9 +1814,14 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualCotac = Convert.ToDouble(percentualCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalCotac = Convert.ToDouble(totalCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    //Total
+                    //Total Funef e Cotac
                     ViewBag.TotalFunefCotac = Convert.ToDouble(totalFunefCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                    ////Total Imposto
+                    ViewBag.TotalImposto = Convert.ToDouble(totalImposto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    ////Total Imposto Geral
+                    ViewBag.TotalImpostoGeral = Convert.ToDouble(totalImpostoGeral.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     //// Total
                     ViewBag.TotalVendaContibuinte = Convert.ToDouble(totalVendaContribuinte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");

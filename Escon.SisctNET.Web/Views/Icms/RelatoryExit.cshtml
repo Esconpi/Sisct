@@ -730,7 +730,7 @@
                                             </tr>
                                             <tr>
                                                 <th style="text-align:right">Total (R$)</th>
-                                                <th style="text-align:right">@ViewBag.TotalIcmsApu</th>
+                                                <th style="text-align:right">@ViewBag.BaseCalculo</th>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                             </tr>
@@ -793,10 +793,66 @@
                                             </tr>
                                             <tr>
                                                 <td style="text-align:center;">ICMS</td>
-                                                <td style="text-align:center;">2 %</td>
+                                                <td style="text-align:center;">@ViewBag.PercentualIcmsContrib %</td>
                                                 <td style="text-align:center;">PI</td>
                                                 <td style="text-align:center;">0000</td>
-                                                <td style="text-align:right;">00000</td>
+                                                <td style="text-align:right;">@ViewBag.ValorVendaContribIncentivo</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">ICMS</td>
+                                                <td style="text-align:center;">5,00 %</td>
+                                                <td style="text-align:center;">PI</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">ICMS</td>
+                                                <td style="text-align:center;">@ViewBag.PercentualIcmsNContribuinte %</td>
+                                                <td style="text-align:center;">PI</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">@ViewBag.ValorVendaNContribIncentivo</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">FUNEF</td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;">PI</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">@ViewBag.TotalFunef</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">COTAC</td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;">PI</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">@ViewBag.TotalCotac</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align:center;">Total (R$)</th>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:right;">@ViewBag.TotalImposto</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <th style="text-align:center;">DIFAL</th>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:right;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">ICMS</td>
+                                                <td style="text-align:center;">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
+                                                <td style="text-align:center;">MA</td>
+                                                <td style="text-align:center;">0000</td>
+                                                <td style="text-align:right;">@ViewBag.ValorVendaNContribIncentivoForaDoEstado</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align:center;">Total Geral (R$)</th>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <td style="text-align:center;"></td>
+                                                <th style="text-align:right;">@ViewBag.TotalImpostoGeral</th>
                                             </tr>
                                         </table>
                                     </td>
