@@ -1,7 +1,7 @@
 ﻿@model Escon.SisctNET.Model.Client
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,18 +13,18 @@
     <hr />
     <div class="box-body">
         <div class="col-md-12">
-            <form asp-action="Edit">
+            <form asp-action="Client">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="companyId" value="@Model.CompanyId" />
                 <div class="row">
                     <div class="form-group col-lg-10 col-md-10 col-xs-12">
                         <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" disabled/>
+                        <input asp-for="Name" class="form-control" disabled />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="Document" class="control-label"></label>
-                        <input asp-for="Document" class="form-control" disabled/>
+                        <input asp-for="Document" class="form-control" disabled />
                         <span asp-validation-for="Document" class="text-danger"></span>
                     </div>
 
@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label asp-for="Ie" class="control-label"></label>
-                        <input asp-for="Ie" class="form-control" disabled/>
+                        <input asp-for="Ie" class="form-control" disabled />
                         <span asp-validation-for="Ie" class="text-danger"></span>
                     </div>
 
@@ -45,12 +45,12 @@
                     <div class="form-group col-lg-2 col-md-2 col-xs-12" id="checkbox">
                         @Html.LabelFor(model => model.Diferido, "Diferido", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
-                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger" , @readonly = "true"})
+                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger" , @readonly = "true" })
                         </div>
                     </div>
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label asp-for="Percentual" class="control-label"></label>
-                        <input  type="text" name="percentual"  id="percentual" class="form-control money" value="@Model.Percentual" disabled />
+                        <input type="text" name="percentual" id="percentual" class="form-control money" value="@Model.Percentual" disabled />
                     </div>
 
                 </div>

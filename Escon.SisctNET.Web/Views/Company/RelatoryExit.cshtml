@@ -36,8 +36,8 @@
                             <option value="Dezembro">Dezembro</option>
                         </select>
                     </div>
-                    <div class="form-group col-lg-7 col-md-6 col-xs-12">
-                        <label class="control-label">Opção</label>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Tipo</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="0">Selecione o tipo</option>
                             <option value="resumocfop">Resumo por CFOP</option>
@@ -47,10 +47,17 @@
                             <option value="incentivo">Incentivo</option>
                         </select>
                     </div>
-
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">Opção</label>
+                        <select name="opcao" class="form-control selectoption">
+                            <option value="0">Selecione uma opção</option>
+                            <option value="entrada">Entrada</option>
+                            <option value="saida">Saída</option>
+                        </select>
+                    </div>
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled/>
+                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled />
                     </div>
 
                 </div>

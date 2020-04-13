@@ -45,5 +45,11 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref typeClient);
             set => typeClient = value;
         }
+
+        [Display(Name = "Diferido")]
+        public bool Diferido { get; set; }
+
+        [Display(Name = "Percentual do Diferimento")]
+        public decimal ? Percentual { get; set; }
     }
 }
