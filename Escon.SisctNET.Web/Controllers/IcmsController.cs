@@ -48,7 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public async Task<IActionResult> RelatoryExit(int id, string year, string month, string type, string opcao, IFormFile arquivo)
+        public async Task<IActionResult> RelatoryExit(int id, string year, string month, string type, IFormFile arquivo)
         {
             try
             {
@@ -74,15 +74,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
+                    notes = import.NfeExit(directoryNfeExit, id, type, "all");
 
-                    if (opcao.Equals("entrada"))
+                    /*if (opcao.Equals("entrada"))
                     {
                         notes = import.NfeExit(directoryNfeEntrada, id, type, "all");
                     }
                     else if (opcao.Equals("saida"))
                     {
                         notes = import.NfeExit(directoryNfeExit, id, type, "all");
-                    }
+                    }*/
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
