@@ -154,9 +154,9 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
-                    if (comp.TypeCompany.Equals(false) && entity.Percentual != null)
+                    if (comp.TypeCompany.Equals(false))
                     {
-                        prod.Percentual = Convert.ToDecimal(entity.Percentual);
+                        prod.Percentual = entity.Percentual;
                     }
                     
                     _service.Update(prod, null);
@@ -170,6 +170,11 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
+                        if (comp.TypeCompany.Equals(false))
+                        {
+                            p.Percentual =  entity.Percentual;
+                        }
+
                         _service.Update(p, null);
                     }
                 }
@@ -183,12 +188,12 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id, int count)
+        public IActionResult Details(int companyId, int count)
         {
             try
             {
-                ViewBag.Id = id;
-                var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).Reverse();
+                ViewBag.CompanyId = companyId;
+                var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
                 var result = products.Take(count).ToList();
                 ViewBag.Count = count;
                 return View(result);
@@ -208,6 +213,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.Month = prod.Month;
                 ViewBag.Year = prod.Year;
+                ViewBag.TypeCompany = comp.TypeCompany;
+                ViewBag.Count = count;
                 return View(prod);
             }
             catch (Exception ex)
@@ -226,11 +233,17 @@ namespace Escon.SisctNET.Web.Controllers
                 var year = prod.Year;
                 var month = prod.Month;
 
+                var comp = _companyService.FindById(prod.CompanyId, null);
+
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
+                    if (comp.TypeCompany.Equals(false))
+                    {
+                        prod.Percentual = entity.Percentual;
+                    }
                     _service.Update(prod, null);
                 }
                 else
@@ -244,11 +257,15 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
+                        if (comp.TypeCompany.Equals(false))
+                        {
+                            p.Percentual = entity.Percentual;
+                        }
                         _service.Update(p, null);
                     }
                 }
 
-                return RedirectToAction("Details", new { id = companyId, count });
+                return RedirectToAction("Details", new { companyId = companyId, count = count });
             }
             catch (Exception ex)
             {
