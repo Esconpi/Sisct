@@ -48,20 +48,11 @@
                         </select>
                     </div>
 
-                    @if (ViewBag.TypeCompany == true)
-                    {
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                            <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                            <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled />
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                            <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                            <input type="file" class="form-control" name="arquivo" id="file" accept=".txt"  readonly />
-                        </div>
-                    }
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label"><strong>Selecione o arquivo</strong></label>
+                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled />
+                    </div>
+
 
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
