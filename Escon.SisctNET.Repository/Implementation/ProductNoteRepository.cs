@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 if (taxationType == 0)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf));
+                    var rst = _context.ProductNotes.Where(_ => _.Note.Chave.Equals(note.Chave));
                     products.AddRange(rst);
                 }
                 if (taxationType == 1)

@@ -25,7 +25,7 @@
                                 @Html.DisplayNameFor(model => model.Ie)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Taxpayer)
+                                @Html.DisplayNameFor(model => model.TypeClientId)
                             </th>
                         </tr>
                     </thead>
@@ -41,7 +41,7 @@
                                 @Html.DisplayFor(modelItem => Model.Ie)
                             </td>
                             <td>
-                                @Html.CheckBoxFor(modelItem => Model.Taxpayer, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = Model.Id, onclick = "return alert()", @class = "active" })
+                                @Html.DisplayFor(modelItem => Model.TypeClient.Name)
                             </td>
                         </tr>
                         

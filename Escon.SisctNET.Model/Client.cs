@@ -23,9 +23,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "IE")]
         public string Ie { get; set; }
 
-        [Display(Name = "Contribuinte")]
-        public bool Taxpayer { get; set; }
-
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
         [Required(ErrorMessage = "Obrigatório")]
@@ -36,6 +33,17 @@ namespace Escon.SisctNET.Model
         {
             get => LazyLoader.Load(this, ref company);
             set => company = value;
+        }
+
+        [Display(Name = "Tipo")]
+        [ForeignKey("TypeClient")]
+        public int ? TypeClientId { get; set; }
+
+        private TypeClient typeClient;
+        public TypeClient TypeClient
+        {
+            get => LazyLoader.Load(this, ref typeClient);
+            set => typeClient = value;
         }
     }
 }

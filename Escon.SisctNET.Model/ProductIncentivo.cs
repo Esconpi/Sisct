@@ -41,5 +41,7 @@ namespace Escon.SisctNET.Model
         public string Month { get; set; }
 
         public string Year { get; set; }
+
+        public decimal ? Percentual { get; set; }
     }
 }

@@ -14,11 +14,13 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IClientService _service;
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
+        private readonly ITypeClientService _typeClientService;
 
         public ClientController(
             IClientService service,
             ICompanyService companyService,
             IConfigurationService  configurationService,
+            ITypeClientService typeClientService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Client")
@@ -27,6 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
             _service = service;
             _companyService = companyService;
             _configurationService = configurationService;
+            _typeClientService = typeClientService;
         }
 
         [HttpGet]
@@ -110,8 +113,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 CompanyId = id,
                                 Document = CNPJ,
                                 CnpjRaiz = CNPJRaiz,
-                                Ie = IE ,
-                                Taxpayer = true,
+                                Ie = IE,
+                                TypeClientId = 1,
                                 Created = DateTime.Now,
                                 Updated = DateTime.Now
 
@@ -160,23 +163,6 @@ namespace Escon.SisctNET.Web.Controllers
             catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
-        {
-            try
-            {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
-                entity.Taxpayer = updateActive.Active;
-
-                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
-                return Ok(new { requestcode = 200, message = "ok" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
     }

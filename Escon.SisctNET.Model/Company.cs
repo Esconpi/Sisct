@@ -118,5 +118,8 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Icms p/ Não Contribuinte Fora do Estado")]
         public decimal? IcmsNContribuinteFora { get; set; }
+
+        [Display(Name = "Tipo")]
+        public bool TypeCompany { get; set; }
     }
 }
