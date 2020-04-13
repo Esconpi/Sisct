@@ -107,7 +107,7 @@
                     else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020"))
                     {
                         <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                            <label asp-for="Product1Id" class="control-label"></label>
+                            <label class="control-label">Produto</label>
                             <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
                         </div>
                     }
@@ -211,6 +211,12 @@
         }
     });
 
+    var product1 = @Model.Product1Id
+    $("#product1id").children('option').each(function () {
+        if ($(this).val() == product1id) {
+            $(this).attr('selected', true);
+        }
+    });
 
     var taxacao = @Model.TaxationTypeId;
     $("#taxaType").children('option').each(function () {
@@ -280,9 +286,11 @@
     $("#checkbox").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
             $("#productid").prop("disabled", false);
+            $("#product1id").prop("disabled", false);
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
+            $("#produc1tid").prop("disabled", true);
             $("#quant").prop("disabled", true);
         }
     });
