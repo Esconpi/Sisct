@@ -130,6 +130,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationNcmRepository, TaxationNcmRepository>();
             services.AddScoped<IProductIncentivoRepository, ProductIncentivoRepository>();
             services.AddScoped<IProduct1Repository, Product1Repository>();
+            services.AddScoped<ITypeClientRepository, TypeClientRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -163,6 +164,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationNcmService, TaxationNcmService>();
             services.AddScoped<IProductIncentivoService, ProductIncentivoService>();
             services.AddScoped<IProduct1Service, Product1Service>();
+            services.AddScoped<ITypeClientService, TypeClientService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }
