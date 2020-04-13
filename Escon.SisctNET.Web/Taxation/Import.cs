@@ -1384,5 +1384,19 @@ namespace Escon.SisctNET.Web.Taxation
             return products;
         }
 
+        public List<List<string>> spedCfop(string directorySped, int companyId)
+        {
+            List<List<string>> cfops = new List<List<string>>();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            return cfops;
+        }
     }
 }
