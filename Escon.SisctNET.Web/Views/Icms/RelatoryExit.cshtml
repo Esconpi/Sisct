@@ -625,7 +625,7 @@
                                     </tr>
                                     <tr>
                                         <th style="font-size:11px;">Total (R$)</th>
-                                        <th style="text-align:right">@ViewBag.ValorVendaNContribIncentivoForaDoEstado</th>
+                                        <th style="text-align:right">@ViewBag.ValorVendaNContribForaDoEstado</th>
                                         <td></td>
                                         <td style="text-align:right"></td>
                                         <td></td>
@@ -648,7 +648,7 @@
                             </table>
                         </div>
 
-                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:5px;">
+                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:3px;">
                             <table class="table" border="1" style="font-size:12px;">
                                 <thead>
                                     <tr>
@@ -714,7 +714,7 @@
                             </table>
                         </div>
 
-                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:2px;">
+                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:1px;">
                             <table class="table" style="font-size:12px;" border="1">
                                 <thead>
                                     <tr>
@@ -782,7 +782,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:2px;">
+                        <div style="width:100%; overflow:hidden; padding:20px; padding-top:1px;">
                             <table class="table" style="font-size:12px;" border="1">
                                 <thead>
                                     <tr>
@@ -825,14 +825,14 @@
                                                     <td style="text-align:center;">FUNEF</td>
                                                     <td style="text-align:center;"></td>
                                                     <td style="text-align:center;">PI</td>
-                                                    <td style="text-align:center;"></td>
+                                                    <td style="text-align:center;">@ViewBag.DarFunef</td>
                                                     <td style="text-align:right;">@ViewBag.TotalFunef</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">COTAC</td>
                                                     <td style="text-align:center;"></td>
                                                     <td style="text-align:center;">PI</td>
-                                                    <td style="text-align:center;"></td>
+                                                    <td style="text-align:center;">@ViewBag.DarCotac</td>
                                                     <td style="text-align:right;">@ViewBag.TotalCotac</td>
                                                 </tr>
                                                 <tr>
@@ -849,12 +849,29 @@
                                                     <td style="text-align:center;"></td>
                                                     <td style="text-align:right;"></td>
                                                 </tr>
+                                                @for (int i = 0; i < ViewBag.IcmsForaDoEstado.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align:center;">ICMS</td>
+                                                        <td style="text-align:center;">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
+                                                        <td style="text-align:center;">@ViewBag.IcmsForaDoEstado[i][0]</td>
+                                                        <td style="text-align:center;"></td>
+                                                        <td style="text-align:right;">@ViewBag.IcmsForaDoEstado[i][2]</td>
+                                                    </tr>
+                                                }
                                                 <tr>
-                                                    <td style="text-align:center;">ICMS</td>
-                                                    <td style="text-align:center;">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
-                                                    <td style="text-align:center;">MA</td>
+                                                    <th style="text-align:center;">Total (R$)</th>
                                                     <td style="text-align:center;"></td>
-                                                    <td style="text-align:right;">@ViewBag.ValorVendaNContribForaDoEstado</td>
+                                                    <td style="text-align:center;"></td>
+                                                    <td style="text-align:center;"></td>
+                                                    <th style="text-align:right;">@ViewBag.ValorVendaNContribForaDoEstado</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th style="text-align:right">&nbsp;</th>
+                                                    <td style="text-align:right">&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
                                                 </tr>
                                                 <tr>
                                                     <th style="text-align:center;">Total Geral (R$)</th>
@@ -1085,18 +1102,18 @@
                                             <table>
                                                 <tr>
                                                     <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">000</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DebitoNIncentivo</td>
 
                                                 </tr>
 
                                                 <tr>
                                                     <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">000</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.CreditoNIncentivo</td>
                                                 </tr>
 
                                                 <tr>
                                                     <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
-                                                    <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">000</th>
+                                                    <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.DifApuNNormal</th>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1115,19 +1132,65 @@
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td class="col-lg-3 col-sm-9 col-md-9" style="text-align:right;">Base de Calculo (R$)</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">000</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Base de Calculo FUNEF/COTAC(R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DifApuNormal</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DifApuNNormal</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Valor da FUNEF (R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.PercentFunef</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.ValorFunef</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Valor da COTAC (R$)</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.PercentCotac</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.ValorCotac</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table" style="font-size:12px;">
+                                <thead style="font-size:12px;">
+                                    <tr>
+                                        <th style="text-align:center; border:1px solid;">RESUMO DA APURAÇÃO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <th width="400px" style="text-align:center;">Imposto</th>
+                                                    <th width="400px" style="text-align:center;">Código Tributo</th>
+                                                    <th width="400px" style="text-align:center;">Valor (R$)</th>
 
                                                 </tr>
                                                 <tr>
-                                                    <td class="col-lg-3 col-sm-9 col-md-9" style="text-align:right;">Valor do FUNEF (R$)</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">000</td>
-                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">000</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">ICMS</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarIcms</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DifApuNNormal</td>
                                                 </tr>
-
                                                 <tr>
-                                                    <th class="col-lg-3 col-sm-9 col-md-9" style="text-align:right">Base de Calculo  (R$)</th>
-                                                    <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">000</th>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">FUNEF</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarFunef</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.ValorFunef</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">COTAC</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarCotac</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.ValorCotac</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">Total</td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;"></td>
+                                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.TotalDeImposto</td>
                                                 </tr>
                                             </table>
                                         </td>
