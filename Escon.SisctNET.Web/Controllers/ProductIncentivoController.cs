@@ -45,6 +45,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.SocialName = comp.SocialName;
                     ViewBag.Document = comp.Document;
                     ViewBag.Status = comp.Status;
+                    ViewBag.TypeCompany = comp.TypeCompany;
 
                     var result = _service.FindByAllProducts(companyId).TakeLast(1000);
                     return View(result);
@@ -154,9 +155,10 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
-                    if (comp.TypeCompany.Equals(false))
+                    if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
                     {
                         prod.Percentual = entity.Percentual;
+                        prod.DateStart = entity.DateStart;
                     }
                     
                     _service.Update(prod, null);
@@ -170,9 +172,10 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false))
+                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual =  entity.Percentual;
+                            p.DateStart = entity.DateStart;
                         }
 
                         _service.Update(p, null);
@@ -187,7 +190,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false))
+                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
                         }
@@ -196,7 +199,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { id = companyId });
+                return RedirectToAction("Index", new { companyId = companyId });
             }
             catch (Exception ex)
             {
@@ -210,9 +213,11 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.CompanyId = companyId;
+                var comp = _companyService.FindById(companyId, null);
                 var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
                 var result = products.Take(count).ToList();
                 ViewBag.Count = count;
+                ViewBag.TypeCompany = comp.TypeCompany;
                 return View(result);
             }
             catch (Exception ex)
@@ -259,9 +264,10 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
-                    if (comp.TypeCompany.Equals(false))
+                    if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
                     {
                         prod.Percentual = entity.Percentual;
+                        prod.DateStart = entity.DateStart;
                     }
                     _service.Update(prod, null);
                 }
@@ -275,9 +281,10 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false))
+                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
+                            p.DateStart = entity.DateStart;
                         }
                         _service.Update(p, null);
                     }
@@ -292,15 +299,59 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
                         p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false))
+                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
+                            p.DateStart = entity.DateStart;
                         }
                         _service.Update(p, null);
                     }
                 }
 
                 return RedirectToAction("Details", new { companyId = companyId, count = count });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Atualize(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(int id, Model.ProductIncentivo entity)
+        {
+            try
+            {
+                var result = _service.FindById(id, null);
+                result.Percentual = entity.Percentual;
+                result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                result.Updated = DateTime.Now;
+                _service.Update(result, null);
+
+                entity.Code = result.Code;
+                entity.Ncm = result.Ncm;
+                entity.Name = result.Name;
+                entity.Active = result.Active;
+                entity.CompanyId = result.CompanyId;
+                entity.Month = result.Month;
+                entity.Year = result.Year;
+                _service.Create(entity, null);
+
+
+                return RedirectToAction("Index", new { companyId = result.CompanyId });
             }
             catch (Exception ex)
             {
