@@ -126,6 +126,9 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                var comp = _companyService.FindById(result.CompanyId, null);
+                ViewBag.TypeCompany = comp.TypeCompany;
+                ViewBag.CompanyId = comp.Id;
                 return View(result);
             }
             catch (Exception ex)
