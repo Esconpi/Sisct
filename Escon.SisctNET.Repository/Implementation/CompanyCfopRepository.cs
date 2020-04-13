@@ -26,32 +26,32 @@ namespace Escon.SisctNET.Repository.Implementation
             }
             else if ((type.Equals("venda") || type.Equals("anexo") || type.Equals("foraAnexo")) && typeCfop.Equals("venda"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1)).ToList();
             }
             else if (type.Equals("incentivo") && typeCfop.Equals("vendaSt"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda ST")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(5)).ToList();
             }
             else if (type.Equals("venda") && typeCfop.Equals("transferencia"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Transferência")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(2)).ToList();
 
             }
             else if((type.Equals("venda") || type.Equals("incentivo")) && typeCfop.Equals("devolucao"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Devolução")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(3)).ToList();
             }
             else if (type.Equals("entrada") && typeCfop.Equals("compra"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && (_.CfopType.Name.Equals("Compra") || _.CfopType.Name.Equals("Devolução de Saida"))).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && (_.CfopTypeId.Equals(6) || _.CfopTypeId.Equals(7))).ToList();
             }
             else if (type.Equals("incentivo") && typeCfop.Equals("devolução de saida"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Devolução de Saida")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(7)).ToList();
             }
             else if (type.Equals("incentivo") && typeCfop.Equals("venda"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopType.Name.Equals("Venda") || _.CfopType.Name.Equals("Devolução")).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(3)).ToList();
             }
 
             AddLog(log);

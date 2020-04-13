@@ -1849,8 +1849,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-
-
                     ////Código do Dar
                     ViewBag.DarIcms = darIcms.Code;
                 }
