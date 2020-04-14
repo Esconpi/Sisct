@@ -1327,6 +1327,8 @@ namespace Escon.SisctNET.Web.Controllers
                     var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
                     var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
 
+                    var darIcms = _darService.FindAll(null).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
+
                     if (arquivo == null || arquivo.Length == 0)
                     {
                         ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1612,7 +1614,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 notesVendaSt.RemoveAt(i);
                             }
                             continue;
-                        }
+                        } 
 
                         for (int k = 0; k < notesVendaSt[i].Count(); k++)
                         {
@@ -1719,7 +1721,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var icmsNContribuinteForaDoEstadoNIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * naoContriForaDoEstadoNIncentivo / 100, 2);
 
                     //// Direfença de débito e crédito
-                    var diferenca = Math.Round(debitosIcms - creditosIcms);
+                    var diferenca = debitosIcms - creditosIcms;
 
                     //Total Icms
                     var totalIcms = icmsContribuinteIncentivo + icmsNContribuinteIncentivo;
@@ -1830,6 +1832,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalGeralIcmsIncentivo = Convert.ToDouble(totalIcmsGeralIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalGeralVendasIncentivo = Convert.ToDouble(totalGeralVendasIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+
+                    ////Código do Dar
+                    ViewBag.DarIcms = darIcms.Code;
                 }
 
                 return View();
