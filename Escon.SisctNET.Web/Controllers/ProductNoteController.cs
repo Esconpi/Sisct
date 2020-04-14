@@ -274,26 +274,41 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                             prod.TotalICMS = total_icms_pauta;
-                            prod.Pautado = true;
-
-                            if(product != null)
-                            {
-                                prod.ProductId = product.Id;
-                            }
-
-                            if (product1 != null)
-                            {
-                                prod.Product1Id = product1.Id;
-                            }
                            
-                            
+                        }
+
+                        prod.Pautado = true;
+
+                        if (product != null)
+                        {
+                            prod.ProductId = product.Id;
+                        }
+
+                        if (product1 != null)
+                        {
+                            prod.Product1Id = product1.Id;
                         }
 
                     }
-                    if (product.Group.Active.Equals(true))
+
+                    if (product != null)
                     {
-                        prod.Incentivo = true;
+                        if (product.Group.Active.Equals(true))
+                        {
+                            prod.Incentivo = true;
+                        }
                     }
+
+                    if (product1 != null)
+                    {
+                        if (product1.Group.Active.Equals(true))
+                        {
+                            prod.Incentivo = true;
+                        }
+                    }
+
+
+                   
                     prod.TaxationTypeId = Convert.ToInt32(taxaType);
                     prod.Updated = DateTime.Now;
                     prod.Status = true;
