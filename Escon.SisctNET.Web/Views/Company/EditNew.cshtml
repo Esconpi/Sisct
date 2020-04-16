@@ -28,15 +28,23 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input asp-for="Id" class="form-control" type="hidden" />
                     <div class="row">
-                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
                             @Html.LabelFor(model => model.TipoApuracao, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
                             <div class="checkbox">
                                 <label>
-                                    @Html.CheckBoxFor(model => model.TipoApuracao, new {@id = "tipoApu", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+                                    @Html.CheckBoxFor(model => model.TipoApuracao, new { @id = "tipoApu", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
                                 </label>
                             </div>
                         </div>
-                        <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            @Html.LabelFor(model => model.TypeCompany, "Tipo", htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.TypeCompany, new { @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary",@data_offstyle = "warning", @readonly = "true" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-8 col-md-8 col-xs-12">
                             <label asp-for="AnnexId" class="control-label"></label>
                             <select asp-items="@ViewBag.AnnexId" class="form-control selectoption" name="AnnexId" id="annex"></select>
                         </div>
@@ -197,16 +205,24 @@
         else
         {
             <div class="col-md-12">
-               <div class="row">
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         @Html.LabelFor(model => model.TipoApuracao, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
                             <label>
-                                @Html.CheckBoxFor(model => model.TipoApuracao, new {@id = "tipoApu", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @disabled = "true"})
+                                @Html.CheckBoxFor(model => model.TipoApuracao, new { @id = "tipoApu", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @disabled = "true" })
                             </label>
                         </div>
                     </div>
-                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        @Html.LabelFor(model => model.TypeCompany, "Tipo", htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.TypeCompany, new { @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary",@data_offstyle = "warning", @readonly = "true", @disabled = "true" })
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-8 col-md-8 col-xs-12">
                         @if (Model.AnnexId != null)
                         {
                             <input class="form-control" name="AnnexId" value="@Model.Annex.Description" disabled />

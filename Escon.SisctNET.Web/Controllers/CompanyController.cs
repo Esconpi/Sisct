@@ -224,6 +224,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 rst.TipoApuracao = entity.TipoApuracao;
+                rst.TypeCompany = entity.TypeCompany;
                 rst.AnnexId = entity.AnnexId.Equals(0) ? null : entity.AnnexId;
                 rst.Icms = entity.Icms;
                 rst.Funef = entity.Funef;

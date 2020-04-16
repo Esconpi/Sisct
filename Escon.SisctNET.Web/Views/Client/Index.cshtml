@@ -47,8 +47,9 @@
                             @Html.DisplayNameFor(model => model.Ie)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Taxpayer)
+                            @Html.DisplayNameFor(model => model.TypeClientId)
                         </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,9 +65,29 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Ie)
                             </td>
+                            @if (item.TypeClientId == 1)
+                            {
+                                <td style="color:blue">
+                                    @Html.DisplayFor(modelItem => item.TypeClient.Name)
+                                </td>
+                            }
+                            else if (item.TypeClientId == 2)
+                            {
+                                <td style="color:red">
+                                    @Html.DisplayFor(modelItem => item.TypeClient.Name)
+                                </td>
+                            }
+                            else if (item.TypeClientId == 3)
+                            {
+                                <td style="color:orange">
+                                    @Html.DisplayFor(modelItem => item.TypeClient.Name)
+                                </td>
+                            }
                             <td>
-                                @Html.CheckBoxFor(modelItem => item.Taxpayer, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
+                                @Html.ActionLink(" ", "Edit", new { id = item.Id, companyId = item.CompanyId }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+
                             </td>
+
                         </tr>
                     }
                 </tbody>

@@ -28,11 +28,11 @@ namespace Escon.SisctNET.Repository.Implementation
             List<string> result = null;
             if (type == "all")
             {
-                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Taxpayer.Equals(true)).Select(_ => _.Document).ToList();
+                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.TypeClientId.Equals(1)).Select(_ => _.Document).ToList();
             }
             else if (type == "raiz")
             {
-                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.Taxpayer.Equals(true)).Select(_ => _.CnpjRaiz).Distinct().ToList();
+                result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.TypeClientId.Equals(1)).Select(_ => _.CnpjRaiz).Distinct().ToList();
             }
             
             AddLog(log);

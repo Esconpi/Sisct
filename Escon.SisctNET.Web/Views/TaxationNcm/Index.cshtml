@@ -9,7 +9,7 @@
         <div class="box-header">
             <h3 class="box-title"><strong>Ncm</strong></h3>
             <div class="btn-group pull-right">
-                @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
+                @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month, type = @ViewBag.Type },
                                        new { onclick = "return confirm('Os arquivos foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
             </div>

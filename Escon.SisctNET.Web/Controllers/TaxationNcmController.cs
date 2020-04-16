@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Import(int id, string year, string month)
+        public IActionResult Import(int id, string year, string month,string type)
         {
             try
             {
@@ -51,8 +51,17 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     ncmsAll = _ncmService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Status.Equals(false)).ToList();
                 }
-                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+
+                var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+
+                if (type.Equals("saida"))
+                {
+                    confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                }
+
+                
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+
                 var import = new Import();
                 List<string> ncms = new List<string>();
                 ncms = import.FindByNcms(directoryNfe);
@@ -79,7 +88,7 @@ namespace Escon.SisctNET.Web.Controllers
                         _service.Create(taxationNcm, GetLog(Model.OccorenceLog.Create));
                     }
                 }
-                return RedirectToAction("Index", new { id = id, year = year, month = month });
+                return RedirectToAction("Index", new { id = id, year = year, month = month , type = type});
             }
             catch(Exception ex)
             {
@@ -87,13 +96,14 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(int id, string year, string month, string type)
         {
             try
             {
                 ViewBag.CompanyId = id;
                 ViewBag.Year = year;
                 ViewBag.Month = month;
+                ViewBag.Type = type;
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
                 return View(result);
             }
@@ -104,7 +114,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Ncm(int companyId, string year, string month, int id)
+        public IActionResult Ncm(int companyId, string year, string month, string type, int id)
         {
             try
             {
@@ -190,7 +200,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ncm.Status = true;
                 _service.Update(ncm, GetLog(Model.OccorenceLog.Update));
 
-                return RedirectToAction("Index" , new {id = company, year = year, month = month});
+                return RedirectToAction("Index" , new {id = company, year = year, month = month, type = type});
             }
             catch (Exception ex)
             {
