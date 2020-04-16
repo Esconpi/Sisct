@@ -69,42 +69,42 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 if (taxationType == 0)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
                     products.AddRange(rst);
                 }
                 if (taxationType == 1)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 2)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 3)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(2)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(2)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 4)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(4)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(4)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 5)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(3)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(3)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 6)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(7)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(7)));
                     products.AddRange(rst);
                 }
                 else if (taxationType == 7)
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(8)));
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)));
                     products.AddRange(rst);
                 }
             }

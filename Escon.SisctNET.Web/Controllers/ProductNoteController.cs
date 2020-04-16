@@ -252,7 +252,8 @@ namespace Escon.SisctNET.Web.Controllers
                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                             prod.ValorBCR = valorAgreg;
                             prod.BCR = Convert.ToDecimal(bcrForm);
-                            valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                            //valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                            valor_icms = 0;
                         }
                         if (fecop != null)
                         {
@@ -339,7 +340,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                                 prod.ValorBCR = valorAgreg;
                                 prod.BCR = Convert.ToDecimal(bcrForm);
-                                valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                                //valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                                valor_icms = 0;
                             } 
 
                             if (fecop != null)
@@ -414,7 +416,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcrForm), valorAgreg);
                                     item.ValorBCR = valorAgreg;
                                     item.BCR = Convert.ToDecimal(bcrForm);
-                                    valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                                    //valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
+                                    valor_icms = 0;
                                 }
 
                                 if (fecop != null)

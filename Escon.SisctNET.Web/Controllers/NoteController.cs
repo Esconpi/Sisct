@@ -443,7 +443,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.BCR != null)
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
-                                            valor_icms = valor_icms * Convert.ToDecimal(taxed.BCR) / 100;
+                                            //valor_icms = valor_icms * Convert.ToDecimal(taxed.BCR) / 100;
+                                            valor_icms = 0;
                                         }
 
                                         decimal percentFecop = 0;
