@@ -17,22 +17,40 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="companyId" value="@Model.CompanyId" />
                 <div class="row">
-                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                        <label asp-for="Document" class="control-label"></label>
-                        <input asp-for="Document" class="form-control" />
-                        <span asp-validation-for="Document" class="text-danger"></span>
-                    </div>
                     <div class="form-group col-lg-10 col-md-10 col-xs-12">
                         <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
+                        <input asp-for="Name" class="form-control" disabled/>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="Document" class="control-label"></label>
+                        <input asp-for="Document" class="form-control" disabled/>
+                        <span asp-validation-for="Document" class="text-danger"></span>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label asp-for="Ie" class="control-label"></label>
+                        <input asp-for="Ie" class="form-control" disabled/>
+                        <span asp-validation-for="Ie" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
                         <label asp-for="TypeClientId" class="control-label"></label>
                         <select asp-items="@ViewBag.TypeClientId" name="TypeClientId" class="form-control selectoption" id="typeClient"></select>
                         <span asp-validation-for="TypeClientId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12" id="checkbox">
+                        @Html.LabelFor(model => model.Diferido, "Diferido", htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true"})
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label asp-for="Percentual" class="control-label"></label>
+                        <input  type="text" name="percentual"  id="percentual" class="form-control money" value="@Model.Percentual" disabled />
                     </div>
 
                 </div>
@@ -47,11 +65,36 @@
     </div>
 </div>
 <script type="text/javascript">
-     var type = @Model.TypeClientId;
+    var type = @Model.TypeClientId;
     $("#typeClient").children('option').each(function () {
         if ($(this).val() == type) {
             $(this).attr('selected', true);
         }
+        if ($(this).val() === '3' && $(this).val() == type) {
+            $("#diferido").prop("disabled", false);
+        } else {
+            $("#diferido").prop("disabled", true);
+        }
     });
+
+    $("#typeClient").on("change", function () {
+        if ($(this).val() === '3') {
+            $("#diferido").prop("disabled", false);
+        } else {
+            $("#diferido").prop("checked", false);
+            $("#diferido").prop("disabled", true);
+            $("#percentual").val("");
+            $("#percentual").prop("disabled", true);
+        }
+    });
+
+     $("#checkbox").on("change", "input[type='checkbox']", function () {
+        if ($(this).prop("checked")) {
+            $("#percentual").prop("disabled", false);
+        } else {
+            $("#percentual").prop("disabled", true);
+        }
+    });
+
 
 </script>

@@ -186,7 +186,13 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                return View();
+                var rst = _service.FindById(id, null);
+                rst.Updated = DateTime.Now;
+                rst.TypeClientId = entity.TypeClientId;
+                rst.Diferido = entity.Diferido;
+                rst.Percentual = entity.Percentual;
+                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index", new { companyId = companyId});
             }
             catch (Exception ex)
             {
