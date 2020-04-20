@@ -9,8 +9,10 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produtos</strong></h3>
         <div class="btn-group pull-right">
-            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
-                                  new { onclick = "return confirm('Os arquivos foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
+            <a href="#" id=@ViewBag.Id class="btn btn-primary showImport">
+                <i class="fa fa-refresh"></i>
+                Tributar
+            </a>
         </div>
 
     </div>
@@ -63,7 +65,7 @@
                             </td>
                             
                             <td style="width:50px;">
-                                @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
                             </td>
                         </tr>
                     }
@@ -75,6 +77,17 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $('.showImport').click(function () {
+            console.log($(this).attr('id'));
+            $.get('ProductIncentivo/Import/' + $(this).attr('id'), function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+
         $("#tblIndex").on("change", ".active", function () {
             try {
 

@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
             _configurationService = configurationService;
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(int companyId)
         {
             try
             {
@@ -40,15 +40,13 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var comp = _companyService.FindById(id, null);
+                    var comp = _companyService.FindById(companyId, null);
                     ViewBag.Id = comp.Id;
-                    ViewBag.Year = year;
-                    ViewBag.Month = month;
                     ViewBag.SocialName = comp.SocialName;
                     ViewBag.Document = comp.Document;
                     ViewBag.Status = comp.Status;
 
-                    var result = _service.FindByProducts(id, year, month);
+                    var result = _service.FindByAllProducts(companyId).TakeLast(1000);
                     return View(result);
                 }
 
@@ -60,6 +58,21 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Import(int id)
+        {
+            try
+            {
+                var result = _companyService.FindById(id, null);
+                return PartialView(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
         public IActionResult Import(int id, string year, string month)
         {
             try
@@ -67,6 +80,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
 
+                int cont = 0;
                 var import = new Import();
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -75,10 +89,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 products = import.NfeExitProducts(directoryNfe);
 
-                foreach(var prod in products)
+                foreach (var prod in products)
                 {
-                    var prodImport = _service.FindByProduct(id, prod["cProd"]);
-                    if(prodImport == null)
+                    var prodImport = _service.FindByProduct(id, prod["cProd"], prod["NCM"]);
+                    if (prodImport == null)
                     {
                         var product = new Model.ProductIncentivo
                         {
@@ -93,20 +107,97 @@ namespace Escon.SisctNET.Web.Controllers
                             Created = DateTime.Now,
                             Updated = DateTime.Now
                         };
-                        _service.Create(entity:product, null);
+                        _service.Create(entity: product, null);
+                        cont++;
                     }
                 }
 
-                return RedirectToAction("Index", new { id = id, year = year, month = month });
+                return RedirectToAction("Details", new { id = id, count = cont });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
 
         [HttpGet]
-        public IActionResult Product(int id)
+        public IActionResult Edit(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Model.ProductIncentivo entity)
+        {
+            try
+            {
+                var prod = _service.FindById(id, null);
+                var companyId = prod.CompanyId;
+                var year = prod.Year;
+                var month = prod.Month;
+
+                var comp = _companyService.FindById(companyId, null);
+
+                if (Request.Form["type"].ToString() == "1")
+                {
+                    prod.TypeTaxation = Request.Form["taxation"].ToString();
+                    prod.Active = true;
+                    prod.Updated = DateTime.Now;
+                    if (comp.TypeCompany.Equals(false) && entity.Percentual != null)
+                    {
+                        prod.Percentual = Convert.ToDecimal(entity.Percentual);
+                    }
+                    
+                    _service.Update(prod, null);
+                }
+                else
+                {
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).ToList();
+
+                    foreach (var p in products)
+                    {
+                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.Active = true;
+                        p.Updated = DateTime.Now;
+                        _service.Update(p, null);
+                    }
+                }
+
+                return RedirectToAction("Index", new { id = companyId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id, int count)
+        {
+            try
+            {
+                ViewBag.Id = id;
+                var products = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).Reverse();
+                var result = products.Take(count).ToList();
+                ViewBag.Count = count;
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Product(int id, int count)
         {
             try
             {
@@ -116,14 +207,14 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Year = prod.Year;
                 return View(prod);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
 
         [HttpPost]
-        public IActionResult Product(int id, Model.ProductIncentivo entity)
+        public IActionResult Product(int id, int count, Model.ProductIncentivo entity)
         {
             try
             {
@@ -132,7 +223,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var year = prod.Year;
                 var month = prod.Month;
 
-                if(Request.Form["type"].ToString() == "1")
+                if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = Request.Form["taxation"].ToString();
                     prod.Active = true;
@@ -145,7 +236,7 @@ namespace Escon.SisctNET.Web.Controllers
                     _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm) &&
                     _.Active.Equals(false)).ToList();
 
-                    foreach(var p in products)
+                    foreach (var p in products)
                     {
                         p.TypeTaxation = Request.Form["taxation"].ToString();
                         p.Active = true;
@@ -154,9 +245,9 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { id = companyId, year = year, month = month });
+                return RedirectToAction("Details", new { id = companyId, count });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
