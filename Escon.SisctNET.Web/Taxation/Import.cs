@@ -1054,7 +1054,7 @@ namespace Escon.SisctNET.Web.Taxation
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000"))
+                    if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
                     {
                          totalDeCredito += Convert.ToDecimal(linha[15]);
                     }

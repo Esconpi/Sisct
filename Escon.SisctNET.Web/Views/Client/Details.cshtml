@@ -36,6 +36,7 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.TypeClientId)
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +70,10 @@
                                             @Html.DisplayFor(modelItem => item.TypeClient.Name)
                                         </td>
                                     }
+                                    <td>
+                                        @Html.ActionLink(" ", "Client", new { id = item.Id, count = ViewBag.Count }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+
+                                    </td>
                                 </tr>
                             }
                         </tbody>

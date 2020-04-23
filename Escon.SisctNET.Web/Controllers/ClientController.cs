@@ -126,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
                     
                 }
 
-                return RedirectToAction("Details",new {id = id,count = cont });
+                return RedirectToAction("Details",new {companyId = id,count = cont });
             }
             catch(Exception ex)
             {
@@ -150,12 +150,12 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id,int count)
+        public IActionResult Details(int companyId,int count)
         {
             try
             {
-                ViewBag.Id = id;
-                var client = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).Reverse();
+                ViewBag.Id = companyId;
+                var client = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
                 var result = client.Take(count).ToList();
                 ViewBag.Count = count;
                 return View(result);
@@ -186,12 +186,14 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var rst = _service.FindById(id, null);
-                rst.Updated = DateTime.Now;
-                rst.TypeClientId = entity.TypeClientId;
-                rst.Diferido = entity.Diferido;
-                rst.Percentual = entity.Percentual;
-                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+                var client = _service.FindById(id, null);
+                client.TypeClientId = entity.TypeClientId;
+                if (entity.TypeClientId.Equals(3))
+                {
+                    client.Diferido = entity.Diferido;
+                    client.Percentual = entity.Percentual;
+                }
+                _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { companyId = companyId});
             }
             catch (Exception ex)
@@ -199,5 +201,42 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public IActionResult Client(int id, int count)
+        {
+            try
+            {
+                ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Client(int id, int count, Model.Client entity)
+        {
+            try
+            {
+                var client = _service.FindById(id, null);
+                client.TypeClientId = entity.TypeClientId;
+                if (entity.TypeClientId.Equals(3))
+                {
+                    client.Diferido = entity.Diferido;
+                    client.Percentual = entity.Percentual;
+                }
+                _service.Update(client, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Details", new { companyId = client.CompanyId, count = count });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
     }
 } 

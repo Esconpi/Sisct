@@ -210,10 +210,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var prod = _service.FindById(id, null);
+                var comp = _companyService.FindById(prod.CompanyId, null);
+
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.Month = prod.Month;
                 ViewBag.Year = prod.Year;
-                ViewBag.TypeCompany = comp.TypeCompany;
+                //ViewBag.TypeCompany = comp.TypeCompany;
                 ViewBag.Count = count;
                 return View(prod);
             }
