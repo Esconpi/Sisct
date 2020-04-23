@@ -1836,7 +1836,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ////Código do Dar
                     ViewBag.DarIcms = darIcms.Code;
                 }
-               
+                else if (type.Equals("insdutria"))
+                {
+
+                }
                 return View();
             }
             catch(Exception ex)

@@ -39,7 +39,7 @@
                             {
                                 <strong>Venda Ncm Fora Anexo II</strong>
                             }
-                            else if (ViewBag.Type == "incentivo")
+                            else if (ViewBag.Type == "incentivo" || ViewBag.Type == "industria")
                             {
                                 <strong>Apuração Icms</strong>
                             }
@@ -860,7 +860,10 @@
                         </table>
                     </div>
                 }
-
+                else if (ViewBag.Type == "industria")
+                {
+                    
+                }
             </div>
         </div>
     </div>

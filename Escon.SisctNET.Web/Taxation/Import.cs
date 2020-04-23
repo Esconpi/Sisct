@@ -1048,9 +1048,9 @@ namespace Escon.SisctNET.Web.Taxation
             decimal totalDeCredito = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
             var cfopstransf = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            string line;
             try
             {
-                string line;
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
