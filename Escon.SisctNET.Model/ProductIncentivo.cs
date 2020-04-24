@@ -21,6 +21,14 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Descrição")]
         public string Name { get; set; }
 
+        [Display(Name = "Data Inicial")]
+        [DataType(DataType.Date)]
+        public DateTime ? DateStart { get; set; }
+
+        [Display(Name = "Data Final")]
+        [DataType(DataType.Date)]
+        public DateTime ? DateEnd { get; set; }
+
         public bool Active { get; set; }
 
         [Display(Name = "Tributação")]
