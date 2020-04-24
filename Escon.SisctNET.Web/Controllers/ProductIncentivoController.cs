@@ -215,7 +215,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.Month = prod.Month;
                 ViewBag.Year = prod.Year;
-                //ViewBag.TypeCompany = comp.TypeCompany;
+                ViewBag.TypeCompany = comp.TypeCompany;
                 ViewBag.Count = count;
                 return View(prod);
             }
