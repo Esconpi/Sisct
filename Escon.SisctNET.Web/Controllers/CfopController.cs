@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +37,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
+                    return View(null);
                 }
             }
             catch (Exception ex)
@@ -119,6 +121,67 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var cfopsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Cfop> cfops = new List<Cfop>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Cfop> cfopTemp = new List<Cfop>();
+                cfopsAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    s.Code = s.Code;
+                    cfopTemp.Add(s);
+                });
+
+                var ids = cfopTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                cfops = cfopsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var cfop = from r in cfops
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Description = r.Description
+
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = cfops.Count(), recordsFiltered = cfops.Count(), data = cfop.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var cfop = from r in cfopsAll
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Description = r.Description
+
+                           };
+                return Ok(new { draw = draw, recordsTotal = cfopsAll.Count(), recordsFiltered = cfopsAll.Count(), data = cfop.Skip(start).Take(lenght) });
+            }
+
         }
 
     }

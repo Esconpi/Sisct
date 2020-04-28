@@ -50,6 +50,7 @@ namespace Escon.SisctNET.Model
 
         public string Year { get; set; }
 
+        [Display(Name = "Incentivo %")]
         public decimal ? Percentual { get; set; }
     }
 }
