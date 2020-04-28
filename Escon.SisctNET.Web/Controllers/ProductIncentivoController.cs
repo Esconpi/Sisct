@@ -193,6 +193,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
+                            p.DateStart = entity.DateStart;
                         }
 
                         _service.Update(p, null);

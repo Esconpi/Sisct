@@ -11,5 +11,8 @@ namespace Escon.SisctNET.Service
         Model.ProductIncentivo FindByProduct(int company, string code, string ncm, Model.Log log = null);
 
         List<Model.ProductIncentivo> FindByAllProducts(int company, Model.Log log = null);
+
+        List<Model.ProductIncentivo> FindByDate(int company, DateTime date, Model.Log log = null);
+
     }
 }
