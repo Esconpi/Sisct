@@ -865,10 +865,10 @@
                     else
                     {
                         <div style="width:100%; padding:20px; padding-top:10px;">
-                            <table style="font-size:13px;" border="1">
+                            <table style="font-size:14px;" border="1">
                                 <thead style="font-size:14px;">
                                     <tr>
-                                        <th style="text-align:center" width="62%">Histórico</th>
+                                        <th style="text-align:center" width="50%">Histórico</th>
                                         <th style="text-align:center">Valor (R$)</th>
                                     </tr>
                                 </thead>
@@ -876,32 +876,112 @@
                                 <tbody>
                                     <tr>
                                         <td style="text-align:center">Total das Vendas</td>
-                                        <td style="text-align:right">0000</td>
+                                        <td style="text-align:right; padding-right:10px;">@ViewBag.TotalVendas</td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align:center">Vendas Incentivada</td>
-                                        <td style="text-align:right">0000</td>
+                                        <td style="text-align:right; padding-right:10px">@ViewBag.TotalVendasIncentivadas</td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align:center">Vendas não Incentivada</td>
-                                        <td style="text-align:right">0000</td>
+                                        <td style="text-align:right; padding-right:10px;">@ViewBag.TotalVendasNIncentivadas</td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <th>
                                             <table border="1">
                                                 <tr>
-                                                    <th style="text-align:center" width="350px">Base de Cálculo ICMS</th>
+                                                    <th style="text-align:center" width="150px">Base de Cálculo ICMS</th>
                                                     <th style="text-align:center" width="350px">Cálculo ICMS Normal</th>
                                                 </tr>
+                                                <tr>
+                                                    <th style="text-align:center" width="350px">Valor Base de ICMS (R$)</th>
+                                                    <th>
+                                                        <table border="1">
+                                                            <tr>
+                                                                <th style="text-align:center" width="350px">ICMS %</th>
+                                                                <th style="text-align:center" width="350px">ICMS (R$)</th>
+                                                            </tr>
+
+                                                        </table>
+                                                    </th>
+                                                </tr>
+                                                @for (int i = 0; i < ViewBag.ValoresIncentivo.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="350px">@ViewBag.ValoresIncentivo[i][0]</td>
+
+                                                        <th>
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align:center; font-weight: normal" width="350px">@ViewBag.ValoresIncentivo[i][1]</td>
+                                                                    <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="350px">@ViewBag.ValoresIncentivo[i][2]</td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </th>
+                                                    </tr>
+                                                }
+
+                                                <tr>
+                                                    <th style="text-align:center" width="350px">Valor débito ICMS (R$)</th>
+                                                    <th>
+                                                        <table>
+                                                            <tr>
+                                                                <th style="text-align:center" width="350px">&nbsp;</th>
+                                                                <td style="text-align:right; padding-right: 10px;" width="350px">@ViewBag.DebitoIncentivo</td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </th>
+                                                </tr>
+
                                             </table>
                                         </th>
                                         <th>
                                             <table border="1">
                                                 <tr>
-                                                    <th style="text-align:center" width="600px">Cálculo ICMS não Incentivado</th>
+                                                    <th style="text-align:center" width="150px">Base de Cálculo ICMS</th>
+                                                    <th style="text-align:center" width="350px">Cálculo ICMS não Incentivado</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align:center" width="350px">Valor Base de ICMS (R$)</th>
+                                                    <th>
+                                                        <table border="1">
+                                                            <tr>
+                                                                <th style="text-align:center" width="350px">ICMS %</th>
+                                                                <th style="text-align:center" width="350px">ICMS (R$)</th>
+                                                            </tr>
+                                                        </table>
+                                                    </th>
+                                                </tr>
+                                                @for (int i = 0; i < ViewBag.ValoresNIncentivo.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="350px">@ViewBag.ValoresNIncentivo[i][0]</td>
+
+                                                        <th>
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="text-align:center; font-weight: normal" width="350px">@ViewBag.ValoresNIncentivo[i][1]</td>
+                                                                    <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="350px">@ViewBag.ValoresNIncentivo[i][2]</td>
+                                                                </tr>
+                                                            </table>
+                                                        </th>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <th style="text-align:center" width="350px">&nbsp;</th>
+                                                    <th>
+                                                        <table>
+                                                            <tr>
+                                                                <td style="text-align:center" width="350px">&nbsp;</td>
+                                                                <td style="text-align:right; padding-right: 10px;" width="350px">@ViewBag.DebitoNIncentivo</td>
+                                                            </tr>
+                                                        </table>
+                                                    </th>
                                                 </tr>
                                             </table>
                                         </th>
@@ -910,10 +990,13 @@
                                 </tbody>
                                
                             </table>
-                         </div>
+                        </div>
+
+
+
                         <div style="width:100%; padding:20px; padding-top:10px;">
-                            <table class="table" style="font-size:12px;">
-                                <thead style="font-size:12px;">
+                            <table class="table" style="font-size:14px;">
+                                <thead style="font-size:14px;">
                                     <tr>
                                         <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">APURAÇÃO ICMS NORMAL</th>
                                         <th class="col-lg-1 col-md-1 col-sm-1" style="border:none"></th>
