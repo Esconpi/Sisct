@@ -24,6 +24,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IDarService _darService;
         private readonly IHostingEnvironment _appEnvironment;
         private readonly IProductIncentivoService _productIncentivoService;
+       
         public IcmsController(
             ICompanyService companyService,
             IConfigurationService configurationService,
@@ -1329,6 +1330,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
 
                     var darIcms = _darService.FindAll(null).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
+                    var darFunef = _darService.FindAll(null).Where(_ => _.Type.Equals("Funef")).FirstOrDefault();
+                    var darCotac = _darService.FindAll(null).Where(_ => _.Type.Equals("Cotac")).FirstOrDefault();
 
                     if (comp.TypeCompany.Equals(true))
                     {
@@ -1898,7 +1901,6 @@ namespace Escon.SisctNET.Web.Controllers
                         stream.Close();
                         decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id);
 
-
                         notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
 
                         decimal vendasIncentivada = 0, vendasNIncentivada = 0;
@@ -2254,7 +2256,15 @@ namespace Escon.SisctNET.Web.Controllers
                         var percentualCreditoNIncentivado = vendasNIncentivada / totalVendas;
                         var creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado;
 
-                        
+                        var difApuNNormal = debitoNIncentivo - creditoNIncentivado;
+
+                        //Funef e Cotac
+                        var baseDeCalcFunef = debitoIncetivo - debitoNIncentivo;
+                        decimal valorFunef = baseDeCalcFunef * Convert.ToDecimal(comp.Funef) / 100;
+                        decimal valorCotac = baseDeCalcFunef * Convert.ToDecimal(comp.Cotac) / 100;
+
+                        var totalImposto = difApuNNormal + valorCotac + valorCotac;
+
                         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                         List<List<string>> valoresIncentivo = new List<List<string>>();
@@ -2328,10 +2338,29 @@ namespace Escon.SisctNET.Web.Controllers
                         //Debito - ViewBag.DebitoIncentivo
                         ViewBag.CreditoIncentivo = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.DifApuNormal = Convert.ToDouble(difApuNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Apuração ñ Incentivada
+                        //Debito - ViewBag.DebitoNIncetivo
+                        //Credito - CreditoNIncentivo
+                        ViewBag.DifApuNNormal = Convert.ToDouble(difApuNNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        // Funef e COTAC
+                        // debitoNormal - debitoNNormal
+                        ViewBag.BaseDeCalcFunef = Convert.ToDouble(baseDeCalcFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.PercentFunef = comp.Funef;
+                        ViewBag.ValorFunef = Convert.ToDouble(valorFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
+                        ViewBag.PercentCotac = comp.Cotac;
+                        ViewBag.ValorCotac = Convert.ToDouble(valorCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        // Total De Imposto
+                        ViewBag.TotalDeImposto = Convert.ToDouble(totalImposto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     }
 
                     ////Código do Dar
                     ViewBag.DarIcms = darIcms.Code;
+                    ViewBag.DarFunef = darFunef.Code;
+                    ViewBag.DarCotac = darCotac.Code;
+
                     
                 }
 
