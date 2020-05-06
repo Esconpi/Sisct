@@ -1980,7 +1980,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
 
-                        notesSaidaDevoVenda = import.NfeExit(directoryNfeExit, id, type, "devolução de venda");
+                        //notesSaidaDevoVenda = import.NfeExit(directoryNfeExit, id, type, "devolução de venda");
 
                         decimal vendasIncentivada = 0, vendasNIncentivada = 0;
 
@@ -2314,7 +2314,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-                        for (int i = notesSaidaDevoVenda.Count - 1; i >= 0; i--)
+                        /*for (int i = notesSaidaDevoVenda.Count - 1; i >= 0; i--)
                         {
                             if (notesSaidaDevoVenda[i][2].ContainsKey("CNPJ"))
                             {
@@ -2331,7 +2331,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     creditosIcms += (Convert.ToDecimal(notesSaidaDevoVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesSaidaDevoVenda[i][k]["vBC"])) / 100;
                                 }
                             }
-                        }
+                        }*/
 
                         decimal debitoIncetivo = 0, debitoNIncentivo = 0;
 
