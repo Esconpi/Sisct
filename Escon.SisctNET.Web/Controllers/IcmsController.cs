@@ -1403,7 +1403,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             int posUf = -1;
-                            if (notesVenda[i][3].ContainsKey("UF"))
+                            if (notesVenda[i][3].ContainsKey("UF") && notesVenda[i][1]["idDest"].Equals("2"))
                             {
 
                                 for (int j = 0; j < icmsForaDoEstado.Count(); j++)
@@ -1418,8 +1418,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     List<string> uf = new List<string>();
                                     uf.Add(notesVenda[i][3]["UF"]);
-                                    uf.Add("0");
-                                    uf.Add("0");
+                                    uf.Add("0,00");
+                                    uf.Add("0,00");
                                     icmsForaDoEstado.Add(uf);
                                 }
 
@@ -1665,7 +1665,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             int posUf = -1;
-                            if (notesVendaSt[i][3].ContainsKey("UF"))
+                            if (notesVendaSt[i][3].ContainsKey("UF") && notesVendaSt[i][1]["idDest"].Equals("2"))
                             {
 
                                 for (int j = 0; j < icmsForaDoEstado.Count(); j++)
@@ -1817,6 +1817,11 @@ namespace Escon.SisctNET.Web.Controllers
                         var totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo, 2);
                         var icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * totalVendasNContribuinteForaDoEstado / 100, 2);
 
+                        for(int j = 0; j < icmsForaDoEstado.Count(); j++)
+                        {
+                            icmsForaDoEstado[j][2] = ((Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100).ToString();
+                        }
+
                         //// Direfença de débito e crédito
                         var diferenca = debitosIcms - creditosIcms;
 
@@ -1872,6 +1877,13 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalVendaNContribuinteForaDoEstado = Convert.ToDouble(totalVendasNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDouble(comp.IcmsNContribuinteFora.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.ValorVendaNContribForaDoEstado = Convert.ToDouble(icmsNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        for (int j = 0; j < icmsForaDoEstado.Count(); j++)
+                        {
+                            icmsForaDoEstado[j][2] = (Convert.ToDouble(icmsForaDoEstado[j][2].ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+                        }
+
+                        ViewBag.IcmsForaDoEstado = icmsForaDoEstado;
 
                         //// Produtos não incentivados
 
@@ -1936,7 +1948,7 @@ namespace Escon.SisctNET.Web.Controllers
                         List<string> codeProdIncentivado = new List<string>();
                         List<List<string>> percentuaisIncentivado = new List<List<string>>();
                         List<List<string>> percentuaisNIncentivado = new List<List<string>>();
-
+                        
                         if (arquivo == null || arquivo.Length == 0)
                         {
                             ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1964,7 +1976,11 @@ namespace Escon.SisctNET.Web.Controllers
                         stream.Close();
                         decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id);
 
+                        List<List<Dictionary<string, string>>> notesSaidaDevoVenda = new List<List<Dictionary<string, string>>>();
+
                         notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+
+                        notesSaidaDevoVenda = import.NfeExit(directoryNfeExit, id, type, "devolução de venda");
 
                         decimal vendasIncentivada = 0, vendasNIncentivada = 0;
 
@@ -2298,6 +2314,25 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        for (int i = notesSaidaDevoVenda.Count - 1; i >= 0; i--)
+                        {
+                            if (notesSaidaDevoVenda[i][2].ContainsKey("CNPJ"))
+                            {
+                                if (notesSaidaDevoVenda[i].Count <= 5)
+                                {
+                                    notesSaidaDevoVenda.RemoveAt(i);
+                                    continue;
+                                }
+                            }
+                            for (int k = 0; k < notesSaidaDevoVenda[i].Count; k++)
+                            {
+                                if (notesSaidaDevoVenda[i][k].ContainsKey("pICMS") && notesSaidaDevoVenda[i][k].ContainsKey("CST") && notesSaidaDevoVenda[i][k].ContainsKey("orig"))
+                                {
+                                    creditosIcms += (Convert.ToDecimal(notesSaidaDevoVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesSaidaDevoVenda[i][k]["vBC"])) / 100;
+                                }
+                            }
+                        }
+
                         decimal debitoIncetivo = 0, debitoNIncentivo = 0;
 
                         for (int i = 0; i < percentuaisIncentivado.Count(); i++) 
@@ -2323,11 +2358,11 @@ namespace Escon.SisctNET.Web.Controllers
                         var difApuNNormal = debitoNIncentivo - creditoNIncentivado;
 
                         //Funef e Cotac
-                        var baseDeCalcFunef = debitoIncetivo - debitoNIncentivo;
+                        var baseDeCalcFunef = difApuNormal - difApuNNormal;
                         decimal valorFunef = baseDeCalcFunef * Convert.ToDecimal(comp.Funef) / 100;
                         decimal valorCotac = baseDeCalcFunef * Convert.ToDecimal(comp.Cotac) / 100;
 
-                        var totalImposto = difApuNNormal + valorCotac + valorCotac;
+                        var totalImposto = difApuNNormal + valorFunef + valorCotac;
 
                         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -2409,7 +2444,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.DifApuNNormal = Convert.ToDouble(difApuNNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         // Funef e COTAC
-                        // debitoNormal - debitoNNormal
+                        // DifNormal - DifNIncentivada
                         ViewBag.BaseDeCalcFunef = Convert.ToDouble(baseDeCalcFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.PercentFunef = comp.Funef;
                         ViewBag.ValorFunef = Convert.ToDouble(valorFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
