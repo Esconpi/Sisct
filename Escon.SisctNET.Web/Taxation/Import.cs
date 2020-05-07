@@ -1054,9 +1054,12 @@ namespace Escon.SisctNET.Web.Taxation
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
+                    /*if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
                     {
                          totalDeCredito += Convert.ToDecimal(linha[15]);
+                    }*/
+                    if (linha[1].Equals("C190") && cfopstransf.Contains(linha[3])){
+                        totalDeCredito += Convert.ToDecimal(linha[7]);
                     }
                 }                
             }
@@ -1384,5 +1387,19 @@ namespace Escon.SisctNET.Web.Taxation
             return products;
         }
 
+        public List<List<string>> spedCfop(string directorySped, int companyId)
+        {
+            List<List<string>> cfops = new List<List<string>>();
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            return cfops;
+        }
     }
 }
