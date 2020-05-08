@@ -1903,7 +1903,7 @@ namespace Escon.SisctNET.Web.Controllers
                         //// Cálculos dos Totais
                         var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo, 2);
                         var totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2);
-                        var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte, 2);
+                        var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
 
 
 
