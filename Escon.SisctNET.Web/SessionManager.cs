@@ -277,5 +277,15 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<int>("CompanyIdSisctNET");
         }
+
+        public static void SetComparaInSession(int tipo)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("ComparaSisctNET", tipo);
+        }
+
+        public static int GetComparaInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("ComparaSisctNET");
+        }
     }
 }

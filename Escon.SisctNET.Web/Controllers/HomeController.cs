@@ -33,7 +33,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindByCompanies();
-                    return View(result);
+                    SessionManager.SetComparaInSession(0);
+                    return View(null);
                 }
             }
             catch (Exception ex)

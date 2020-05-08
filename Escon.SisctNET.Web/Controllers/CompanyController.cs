@@ -337,11 +337,11 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Compare(int id, int ident)
+        public IActionResult Compare(int id)
         {
             try
             {
-                ViewBag.Ident = ident;
+                ViewBag.Ident = SessionManager.GetComparaInSession();
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 return View(result);
             }
@@ -467,40 +467,73 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
-        public IActionResult GetAll(int draw, int start)
+        public IActionResult GetAllActive(int draw, int start)
         {
+
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
-            
-            List<Company> companies = new List<Company>();
 
-            companies = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+            var companies = _service.FindByCompanies();
+
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
+                List<Company> company = new List<Company>();
+
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Company> accTmp = new List<Company>();
+                List<Company> companyTemp = new List<Company>();
                 companies.ToList().ForEach(s =>
                 {
                     s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
                     s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
-                    accTmp.Add(s);
+                    companyTemp.Add(s);
                 });
 
-                var ids = accTmp.Where(c =>
+                var ids = companyTemp.Where(c =>
                     c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.SocialName.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Select(s => s.Id).ToList();
 
-                companies = companies.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+                company = companies.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var empresa = from r in company
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               SocialName = r.SocialName,
+                               FantasyName = r.FantasyName,
+                               Document = r.Document,
+                               Status = r.Status,
+                               Incentivo = r.Incentive
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = company.Count(), recordsFiltered = company.Count(), data = empresa.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var empresa = from r in companies
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               SocialName = r.SocialName,
+                               FantasyName = r.FantasyName,
+                               Document = r.Document,
+                               Status = r.Status,
+                               Incentivo = r.Incentive
+                           };
+                return Ok(new { draw = draw, recordsTotal = companies.Count(), recordsFiltered = companies.Count(), data = empresa.Skip(start).Take(lenght) });
             }
 
-            return Ok(new { draw = draw, recordsTotal = companies.Count, recordsFiltered = companies.Count, data = companies.Skip(start).Take(lenght) });
         }
 
     }
