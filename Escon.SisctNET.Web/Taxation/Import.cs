@@ -1388,13 +1388,14 @@ namespace Escon.SisctNET.Web.Taxation
             return products;
         }
 
-        public List<string> Sped(string directorySped)
+        public List<string> Sped(string directorySped, string directoryNfe)
         {
             List<string> sped = new List<string>();
 
             try
             {
-
+                List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+                notes = Nfe(directoryNfe);
             }
             catch (Exception ex)
             {

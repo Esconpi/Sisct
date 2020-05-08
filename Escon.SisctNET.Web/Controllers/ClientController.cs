@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.ClientId = clients;
                 var result = _service.FindByCompanyId(companyId).TakeLast(1000);
 
-                return View(result);
+                return View(null);
             }
             catch(Exception ex)
             {
@@ -167,13 +168,13 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id,int companyId)
+        public IActionResult Edit(int id)
         {
             try
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
-                ViewBag.Company = companyId;
+                ViewBag.Company = result.CompanyId;
                 return View(result);
             }
             catch (Exception ex)
@@ -183,7 +184,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, int companyId, Model.Client entity)
+        public IActionResult Edit(int id, Model.Client entity)
         {
             try
             {
@@ -195,7 +196,7 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Percentual = entity.Percentual;
                 }
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Index", new { companyId = companyId});
+                return RedirectToAction("Index", new { companyId = client.CompanyId});
             }
             catch (Exception ex)
             {
@@ -239,6 +240,74 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var clintesAll = _service.FindByCompanyId(SessionManager.GetCompanyIdInSession());
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Client> clientes = new List<Client>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Client> clientTemp = new List<Client>();
+                clintesAll.ToList().ForEach(s =>
+                {
+                    s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
+                    s.Document = s.Document;
+                    s.Ie = s.Ie;
+                    s.TypeClientId = s.TypeClientId;
+                    clientTemp.Add(s);
+                });
+
+                var ids = clientTemp.Where(c =>
+                    c.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ie.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                clientes = clintesAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var cfop = from r in clientes
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Name = r.Name,
+                               Document = r.Document,
+                               Ie = r.Ie,
+                               TypeClient = r.TypeClientId
+
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = clientes.Count(), recordsFiltered = clientes.Count(), data = cfop.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var cfop = from r in clintesAll
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Name = r.Name,
+                               Document = r.Document,
+                               Ie = r.Ie,
+                               TypeClient = r.TypeClientId
+
+                           };
+                return Ok(new { draw = draw, recordsTotal = clintesAll.Count(), recordsFiltered = clintesAll.Count(), data = cfop.Skip(start).Take(lenght) });
+            }
+
         }
 
     }
