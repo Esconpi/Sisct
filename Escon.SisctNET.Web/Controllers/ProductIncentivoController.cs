@@ -174,7 +174,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (Request.Form["type"].ToString() == "1")
                 {
-                    prod.TypeTaxation = Request.Form["taxation"].ToString();
+                    prod.TypeTaxation = entity.TypeTaxation;
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     foreach (var p in products)
                     {
-                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.TypeTaxation = entity.TypeTaxation;
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -209,7 +209,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     foreach (var p in products)
                     {
-                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.TypeTaxation = entity.TypeTaxation;
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -284,7 +284,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (Request.Form["type"].ToString() == "1")
                 {
-                    prod.TypeTaxation = Request.Form["taxation"].ToString();
+                    prod.TypeTaxation = entity.TypeTaxation;
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
@@ -301,7 +301,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     foreach (var p in products)
                     {
-                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.TypeTaxation = entity.TypeTaxation;
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -319,7 +319,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     foreach (var p in products)
                     {
-                        p.TypeTaxation = Request.Form["taxation"].ToString();
+                        p.TypeTaxation = entity.TypeTaxation;
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))

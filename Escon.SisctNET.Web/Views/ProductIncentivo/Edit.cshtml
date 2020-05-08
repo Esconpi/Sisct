@@ -39,11 +39,39 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Produto</label>
-                        <select class="form-control selectoption" name="taxation" id="taxation">
-                            <option value="Incentivado" selected>Incentivado</option>
-                            <option value="ST">ST</option>
-                            <option value="Isento">Isento</option>
-                        </select>
+                        @if (Model.TypeTaxation == "Incentivado")
+                        {
+                            <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <option value="Incentivado" selected>Incentivado</option>
+                                <option value="ST">ST</option>
+                                <option value="Isento">Isento</option>
+                            </select>
+                        }
+                        else if (Model.TypeTaxation == "ST")
+                        {
+                            <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <option value="Incentivado">Incentivado</option>
+                                <option value="ST" selected>ST</option>
+                                <option value="Isento">Isento</option>
+                            </select>
+                        }
+                        else if (Model.TypeTaxation == "Isento")
+                        {
+                            <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <option value="Incentivado">Incentivado</option>
+                                <option value="ST">ST</option>
+                                <option value="Isento" selected>Isento</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <option value="Incentivado">Incentivado</option>
+                                <option value="ST">ST</option>
+                                <option value="Isento">Isento</option>
+                            </select>
+                        }
+
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Tributar</label>
@@ -96,5 +124,5 @@
             $("#percentual").prop("disabled", true);
             $("#datestart").prop("disabled", true);
         }
-    });
+     });
 </script>

@@ -1048,7 +1048,7 @@ namespace Escon.SisctNET.Web.Taxation
             decimal totalDeCredito = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
             var cfopsCompra = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
-            var cfopsDevo = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            var cfopsDevo = _companyCfopService.FindByCfopActive(companyId, "entrada", "devolução de venda").Select(_ => _.Cfop.Code).ToList();
             string line;
             try
             {
@@ -1062,7 +1062,7 @@ namespace Escon.SisctNET.Web.Taxation
                             totalDeCredito += Convert.ToDecimal(linha[15]);
                     }*/
                         
-                    if (linha[1].Equals("C190") && cfopsCompra.Contains(linha[3]) && !linha[7].Equals(""))
+                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3])) && !linha[7].Equals(""))
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
                         if (!linha[4].Equals(""))
