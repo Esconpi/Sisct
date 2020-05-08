@@ -129,6 +129,10 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                if (result.DateEnd != null)
+                {
+                    return RedirectToAction("Index", new { id = result.CompanyId });
+                }
                 var comp = _companyService.FindById(result.CompanyId, null);
                 ViewBag.TypeCompany = comp.TypeCompany;
                 ViewBag.CompanyId = comp.Id;
@@ -202,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { companyId = companyId });
+                return RedirectToAction("Index", new { id = companyId });
             }
             catch (Exception ex)
             {
@@ -325,6 +329,10 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                if (result.DateEnd != null)
+                {
+                    return RedirectToAction("Index", new { id = result.CompanyId });
+                }
                 ViewBag.CompanyId = result.CompanyId;
                 return View(result);
             }
@@ -352,10 +360,11 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.CompanyId = result.CompanyId;
                 entity.Month = result.Month;
                 entity.Year = result.Year;
+                entity.DateEnd = null;
                 _service.Create(entity, null);
 
 
-                return RedirectToAction("Index", new { companyId = result.CompanyId });
+                return RedirectToAction("Index", new { id = result.CompanyId });
             }
             catch (Exception ex)
             {

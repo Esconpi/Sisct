@@ -196,7 +196,7 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Percentual = entity.Percentual;
                 }
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Index", new { companyId = client.CompanyId});
+                return RedirectToAction("Index", new { id = client.CompanyId});
             }
             catch (Exception ex)
             {
