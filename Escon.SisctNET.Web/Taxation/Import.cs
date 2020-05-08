@@ -1388,9 +1388,9 @@ namespace Escon.SisctNET.Web.Taxation
             return products;
         }
 
-        public List<List<string>> spedCfop(string directorySped)
+        public List<string> Sped(string directorySped)
         {
-            List<List<string>> cfops = new List<List<string>>();
+            List<string> sped = new List<string>();
 
             try
             {
@@ -1400,10 +1400,10 @@ namespace Escon.SisctNET.Web.Taxation
             {
                 Console.Out.WriteLine(ex.Message);
             }
-            return cfops;
+            return sped;
         }
 
-        public List<List<Dictionary<string, string>>> NfeExit(string directoryNfe)
+        public List<List<Dictionary<string, string>>> Nfe(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             try
