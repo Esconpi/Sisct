@@ -34,8 +34,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Status)
                             </th>
-                            <th></th>
-                            <th></th>
+                            <th style="width:80px;"></th>
                         </tr>
                     </thead>
                     
@@ -118,7 +117,10 @@
                     "mData": "id",
                     "mRender": function (data, type, row) {
                         return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> "+
-                               "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar' /> "
+                               "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar' id='" + row.id + "' /> "+
+                               "<a href='/Company/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " +
+                               "<a href='/Company/Details/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Incentivo' /> "
+
                     }
                 }
             ]

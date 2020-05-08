@@ -278,14 +278,14 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<int>("CompanyIdSisctNET");
         }
 
-        public static void SetComparaInSession(int tipo)
+        public static void SetTipoInSession(int tipo)
         {
-            _httpContextAccessor.HttpContext.Session.Set<int>("ComparaSisctNET", tipo);
+            _httpContextAccessor.HttpContext.Session.Set<int>("TipoSisctNET", tipo);
         }
 
-        public static int GetComparaInSession()
+        public static int GetTipoInSession()
         {
-            return _httpContextAccessor.HttpContext.Session.Get<int>("ComparaSisctNET");
+            return _httpContextAccessor.HttpContext.Session.Get<int>("TipoSisctNET");
         }
     }
 }

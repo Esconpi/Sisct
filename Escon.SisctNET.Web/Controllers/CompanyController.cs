@@ -256,13 +256,25 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Details(int id , int type)
+        public IActionResult Details(int id )
         {
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Id = result.Id;
-                ViewBag.Type = type;
+                ViewBag.Type = SessionManager.GetTipoInSession();
+                if(result.Incentive == false)
+                {
+                    if (SessionManager.GetTipoInSession() == 0)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "HomeExit");
+                    }
+                    
+                }
                 return View(result);
             }
             catch (Exception ex)
@@ -341,7 +353,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                ViewBag.Ident = SessionManager.GetComparaInSession();
+                ViewBag.Ident = SessionManager.GetTipoInSession();
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 return View(result);
             }

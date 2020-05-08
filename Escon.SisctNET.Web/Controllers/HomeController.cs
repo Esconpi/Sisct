@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     var result = _service.FindByCompanies();
-                    SessionManager.SetComparaInSession(0);
+                    SessionManager.SetTipoInSession(0);
                     return View(null);
                 }
             }

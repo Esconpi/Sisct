@@ -111,9 +111,14 @@
                     { "data": "nncm" },
                     {
                          "mData": "active",
-                         "mRender": function (data, type, row) {
-                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
-                         }
+                        "mRender": function (data, type, row) {
+                            if (data == true) {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                            }
+                            else {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                            }
+                        }
                     },
                     { "data": "tipoTaxation" },
                     {
@@ -171,8 +176,8 @@ else
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                             return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "+
-                                    "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "
+                             return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> "+
+                                    "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
                         }
                     }
                 ]
