@@ -60,11 +60,11 @@
                             @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
                             {
                                 <td>
-                                @Html.ActionLink(" ", "Delete", new { id = item.Id },
-                                       new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                            </td>
+                                    @Html.ActionLink(" ", "Delete", new { id = item.Id },
+                                           new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                </td>
                             }
-                        
+
                         </tr>
                     }
                 </tbody>
@@ -74,3 +74,68 @@
     </div>
     <div class="box-footer"></div>
 </div>
+
+@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblTaxation').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "ajax": "/Cfop/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "code" },
+                    { "data": "description" },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='/Cfop/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Cfop' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblTaxation').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "ajax": "/Cfop/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "code" },
+                    { "data": "description" },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='/Cfop/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Cfop' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

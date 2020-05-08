@@ -8,14 +8,16 @@
 <div class="box box-primary">
     <div class="box-header">
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        <h3 class="box-title"><strong>Clientes</strong> @ViewBag.SocialName - @ViewBag.Document</h3>
+        <h3 class="box-title"><strong>Clientes</strong></h3>
         <div class="btn-group pull-right">
             <a href="#" id=@ViewBag.Id class="btn btn-primary showAtualize">
                 <i class="fa fa-refresh"></i>
                 Atualizar
             </a>
         </div>
-
+        <div style="width:100%; text-align:center;">
+            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+        </div>
     </div>
     <div class="box-body">
        

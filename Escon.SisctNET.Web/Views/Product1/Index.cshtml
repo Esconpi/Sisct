@@ -94,8 +94,10 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        return  "<a href='/Product1/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> "+
+                        if (row.fim == "01/01/0001") {
+                            return "<a href='/Product1/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
                                 "<a href='/Product1/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                        }                        
                     }
                 }
             ]

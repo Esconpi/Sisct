@@ -41,8 +41,8 @@ namespace Escon.SisctNET.Web.Controllers
                     var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
                     ViewBag.Company = company.SocialName;
                     ViewBag.Document = company.Document;
-
-                    return View(result);
+                    SessionManager.SetCompanyIdInSession(companyId);
+                    return View(null);
                 }
                
             }
@@ -66,6 +66,67 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()); ;
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Taxation> taxation = new List<Taxation>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Taxation> taxationTemp = new List<Taxation>();
+                taxationAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    s.Code = s.Code;
+                    taxationTemp.Add(s);
+                });
+
+                var ids = taxationTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                taxation = taxationAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var cfop = from r in taxation
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Description = r.Description
+
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = taxation.Count(), recordsFiltered = taxation.Count(), data = cfop.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var cfop = from r in taxationAll
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Description = r.Description
+
+                           };
+                return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = cfop.Skip(start).Take(lenght) });
+            }
+
         }
     }
 }

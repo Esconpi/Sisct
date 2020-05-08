@@ -68,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                var import = new Import(_companyCfopService);
+                var import = new Import();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -2561,8 +2561,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         var difApuNormal = debitoIncetivo - creditosIcms;
 
-                        var percentualCreditoNIncentivado = vendasNIncentivada / totalVendas;
-                        var creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado;
+                        var percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100;
+                        var creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100;
 
                         var difApuNNormal = debitoNIncentivo - creditoNIncentivado;
 
