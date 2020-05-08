@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
@@ -47,8 +48,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Status = comp.Status;
                     ViewBag.TypeCompany = comp.TypeCompany;
 
-                    var result = _service.FindByAllProducts(companyId).TakeLast(1000);
-                    return View(result);
+                    SessionManager.SetCompanyIdInSession(companyId);
+
+                    return View(null);
                 }
 
             }
@@ -359,6 +361,82 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession());
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<ProductIncentivo> produtos = new List<ProductIncentivo>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<ProductIncentivo> productTemp = new List<ProductIncentivo>();
+                produtosAll.ToList().ForEach(s =>
+                {
+                    s.Code = s.Code;
+                    s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
+                    s.Ncm = s.Ncm;
+                    s.Active = s.Active;
+                    s.TypeTaxation = s.TypeTaxation;
+                    s.DateStart = s.DateStart;
+                    s.DateEnd = s.DateEnd;
+                    productTemp.Add(s);
+                });
+
+                var ids = productTemp.Where(c =>
+                    c.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ncm.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                produtos = produtosAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var product = from r in produtos
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Name = r.Name,
+                               Nncm = r.Ncm,
+                               Active = r.Active,
+                               TipoTaxation = r.TypeTaxation, 
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd-MM-yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd-MM-yyyy"),
+
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = produtos.Count(), recordsFiltered = produtos.Count(), data = product.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var product = from r in produtosAll
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Code = r.Code,
+                               Name = r.Name,
+                               Nncm = r.Ncm,
+                               Active = r.Active,
+                               TipoTaxation = r.TypeTaxation,
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd-MM-yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd-MM-yyyy"),
+
+                           };
+                return Ok(new { draw = draw, recordsTotal = produtosAll.Count(), recordsFiltered = produtosAll.Count(), data = product.Skip(start).Take(lenght) });
+            }
+
         }
 
     }

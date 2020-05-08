@@ -21,7 +21,7 @@
 
             @if (ViewBag.TypeCompany == true)
             {
-                <table class="table table-striped table-bordered" id="tblIndex2" style="width:100%">
+                <table class="table table-striped table-bordered" id="tblProductIncentivo" style="width:100%">
                     <thead>
                         <tr>
 
@@ -44,38 +44,13 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ncm)
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true" })
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TypeTaxation)
-                                </td>
-                                <td style="width:50px;">
-                                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                    
                 </table>
 
             }
             else
             {
-                <table class="table table-striped table-bordered" id="tblIndex2" style="width:100%">
+                <table class="table table-striped table-bordered" id="tblProductIncentivo" style="width:100%">
                     <thead>
                         <tr>
 
@@ -105,47 +80,106 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ncm)
-                                </td>
-                                <td>
-                                    @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true" })
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TypeTaxation)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateStart)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateEnd)
-                                </td>
-
-                                <td style="width:50px;">
-                                    @Html.ActionLink(" ", "Atualize", new { id = item.Id }, new { @class = "glyphicon glyphicon-refresh pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-
-                                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                    
                 </table>
             }
         </div>
     </div>
     <div class="box-footer"></div>
 </div>
+@if (ViewBag.TypeCompany == true)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblProductIncentivo').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "ajax": "/ProductIncentivo/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "code" },
+                    { "data": "name" },
+                    { "data": "nncm" },
+                    {
+                         "mData": "active",
+                         "mRender": function (data, type, row) {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data_offstyle = 'danger', data_onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                         }
+                    },
+                    { "data": "tipoTaxation" },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblProductIncentivo').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "ajax": "/ProductIncentivo/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "code" },
+                    { "data": "name" },
+                    { "data": "nncm" },
+                    {
+                         "mData": "active",
+                         "mRender": function (data, type, row) {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data_offstyle = 'danger', data_onstyle = 'success', disabled = 'true' id='" + row.id + "' />";
+                         }
+                    },
+                    { "data": "tipoTaxation" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == null) {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                         }
+                    },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                             return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "+
+                                    "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -158,6 +192,7 @@
             });
 
         });
+
 
         $("#tblIndex").on("change", ".active", function () {
             try {
@@ -181,5 +216,7 @@
                 console.log(e);
             }
         });
-    })
+    });
+
 </script>
+
