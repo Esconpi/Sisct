@@ -81,14 +81,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var result = _service.FindByProduct(entity.Code, entity.GroupId, entity.Description);
-                if (result != null)
-                {
-                    result.Updated = DateTime.Now;
-                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
-                }
-
                 var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = DateTime.Now;
@@ -151,6 +143,64 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Atualize(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+
+                if (result.DateEnd != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(result);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(int id, Model.Product1 entity)
+        {
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.Updated = DateTime.Now;
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.Price = price;
+                entity.Description = result.Description;
+                entity.GroupId = result.GroupId;
+                entity.Unity = result.Unity;
+                entity.Code = result.Code;
+                entity.Id = lastId + 1;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
         [HttpGet]
         public IActionResult Import()
         {
