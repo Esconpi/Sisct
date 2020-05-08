@@ -115,7 +115,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Details", new { id = id, count = cont });
+                return RedirectToAction("Details", new { companyId = id, count = cont });
             }
             catch (Exception ex)
             {
@@ -409,8 +409,8 @@ namespace Escon.SisctNET.Web.Controllers
                                Nncm = r.Ncm,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation, 
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd-MM-yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd-MM-yyyy"),
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
 
                            };
 
@@ -430,8 +430,8 @@ namespace Escon.SisctNET.Web.Controllers
                                Nncm = r.Ncm,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation,
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd-MM-yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd-MM-yyyy"),
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
 
                            };
                 return Ok(new { draw = draw, recordsTotal = produtosAll.Count(), recordsFiltered = produtosAll.Count(), data = product.Skip(start).Take(lenght) });
