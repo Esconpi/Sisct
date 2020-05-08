@@ -1234,7 +1234,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
-                       // List<List<Dictionary<string, string>>> notesSaidaDevoVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesSaidaDevoCompra = new List<List<Dictionary<string, string>>>();
                         List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -1636,25 +1635,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         }
 
-                        /*for (int i = notesSaidaDevoVenda.Count - 1; i >= 0; i--)
-                        {
-                            if (notesSaidaDevoVenda[i][2].ContainsKey("CNPJ"))
-                            {
-                                if (notesSaidaDevoVenda[i].Count <= 5)
-                                {
-                                    notesSaidaDevoVenda.RemoveAt(i);
-                                    continue;
-                                }
-                            }
-                            for (int k = 0; k < notesSaidaDevoVenda[i].Count; k++)
-                            {
-                                if (notesSaidaDevoVenda[i][k].ContainsKey("pICMS") && notesSaidaDevoVenda[i][k].ContainsKey("CST") && notesSaidaDevoVenda[i][k].ContainsKey("orig"))
-                                {
-                                    creditosIcms += (Convert.ToDecimal(notesSaidaDevoVenda[i][k]["pICMS"]) * Convert.ToDecimal(notesSaidaDevoVenda[i][k]["vBC"])) / 100;
-                                }
-                            }
-                        }*/
-
+ 
                         for (int i = notesSaidaDevoCompra.Count - 1; i >= 0; i--)
                         {
                             if (notesSaidaDevoCompra[i][2].ContainsKey("CNPJ"))
