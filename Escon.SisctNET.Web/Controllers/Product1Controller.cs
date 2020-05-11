@@ -241,7 +241,6 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
 
-
         public IActionResult GetAll(int draw, int start)
         {
 

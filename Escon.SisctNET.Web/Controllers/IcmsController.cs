@@ -82,7 +82,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> cfopsDesordenados = new List<List<string>>();
                     List<int> cfops = new List<int>();
 
-                    notes = import.NfeExit(directoryNfeExit);
+                    notes = import.Nfe(directoryNfeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
