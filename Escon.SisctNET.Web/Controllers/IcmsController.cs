@@ -440,8 +440,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesTranferencia = import.NfeExit(directoryNfeExit, id, type, "transferencia");
-                    notesSaidaDevolucao = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
-                    notesEntradaDevolucao = import.NfeExit(directoryNfeEntrada, id, type, "devolucao de compra");
+                    //notesSaidaDevolucao = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
+                    //notesEntradaDevolucao = import.NfeExit(directoryNfeEntrada, id, type, "devolucao de compra");
                     notesTransferenciaEntrada = import.NotesTransfer(directoryNfeEntrada, id);
                     var cfopstransf = _companyCfopService.FindByCfopActive(id, type, "transferencia").Select(_ => _.Cfop.Code).ToList();
 
@@ -482,32 +482,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal totalDevolucao = 0;
 
-                    for (int i = notesEntradaDevolucao.Count - 1; i >= 0; i--)
-                    {
-
-                        if (!notesEntradaDevolucao[i][3]["CNPJ"].Equals(comp.Document) || notesEntradaDevolucao[i].Count <= 5)
-                        {
-                            notesEntradaDevolucao.RemoveAt(i);
-                            continue;
-                        }
-                        totalDevolucao += Convert.ToDecimal(notesEntradaDevolucao[i][notesEntradaDevolucao[i].Count() - 1]["vNF"]);
-                    }
-
-                    for (int i = notesSaidaDevolucao.Count - 1; i >= 0; i--)
-                    {
-
-                        if (notesSaidaDevolucao[i].Count <= 5)
-                        {
-                            notesSaidaDevolucao.RemoveAt(i);
-                            continue;
-                        }
-                        totalDevolucao += Convert.ToDecimal(notesSaidaDevolucao[i][notesSaidaDevolucao[i].Count() - 1]["vNF"]);
-                    }
-
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     var contribuintesRaiz = _clientService.FindByContribuinte(id, "raiz");
                     var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
-                    decimal totalVendas = -totalDevolucao, totalNcm = 0, totalTranferencias = 0, totalSaida = 0;
+                    decimal totalVendas = 0, totalNcm = 0, totalTranferencias = 0, totalSaida = 0;
                     int contContribuintes = contribuintes.Count();
                     int contContribuintesRaiz = contribuintesRaiz.Count() + 1;
 
