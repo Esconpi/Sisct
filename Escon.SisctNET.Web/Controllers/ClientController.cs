@@ -53,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList clients = new SelectList(list_clients, "Id", "Name", null);
                 ViewBag.ClientId = clients;
                 var result = _service.FindByCompanyId(companyId).TakeLast(1000);
-
+                SessionManager.SetCompanyIdInSession(companyId);
                 return View(null);
             }
             catch(Exception ex)

@@ -480,8 +480,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    decimal totalDevolucao = 0;
-
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     var contribuintesRaiz = _clientService.FindByContribuinte(id, "raiz");
                     var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
