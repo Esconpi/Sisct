@@ -567,8 +567,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var icmsStnoteS = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                 var icmsStnoteI = _service.FindBySubscription(notesI.ToList(), typeTaxation);
 
-                ViewBag.IcmsStNoteS = Convert.ToDouble(Math.Round(icmsStnoteS, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                ViewBag.IcmsStNoteI = Convert.ToDouble(Math.Round(icmsStnoteI, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 ViewBag.SocialName = company.SocialName;
                 ViewBag.Document = company.Document;
                 ViewBag.Year = year;
@@ -583,6 +581,11 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         notes = notes.Where(_ => _.Nnf.Equals(nota)).ToList();
                         total = notes.Select(_ => _.Vnf).Sum();
+                        notesS = notes.Where(_ => _.Iest == "");
+                        notesI = notes.Where(_ => _.Iest != "");
+
+                        icmsStnoteS = _service.FindBySubscription(notesS.ToList(), typeTaxation);
+                        icmsStnoteI = _service.FindBySubscription(notesI.ToList(), typeTaxation);
                         result = _service.FindByProductsType(notes, typeTaxation);
                     }
 
@@ -667,7 +670,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalICMSNfe = Convert.ToDouble(result.Select(_ => _.Vicms).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    decimal icmsSt = Math.Round(Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum()), 2);
+                    decimal icmsSt = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest != "").Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalIcms = 0, valorDief = 0; 
                     ViewBag.TotalICMSST = Convert.ToDouble(icmsSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -1075,7 +1078,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.DarAp = darAp;
                 ViewBag.DarIm = darIm;
                 ViewBag.DarFunef = darFunef;
-
+                ViewBag.IcmsStNoteS = Convert.ToDouble(Math.Round(icmsStnoteS, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                ViewBag.IcmsStNoteI = Convert.ToDouble(Math.Round(icmsStnoteI, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 return View(result);
 
             }
