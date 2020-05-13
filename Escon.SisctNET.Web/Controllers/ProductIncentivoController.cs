@@ -29,7 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
             _configurationService = configurationService;
         }
 
-        public IActionResult Index(int companyId)
+        public IActionResult Index(int id)
         {
             try
             {
@@ -41,14 +41,14 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var comp = _companyService.FindById(companyId, null);
+                    var comp = _companyService.FindById(id, null);
                     ViewBag.Id = comp.Id;
                     ViewBag.SocialName = comp.SocialName;
                     ViewBag.Document = comp.Document;
                     ViewBag.Status = comp.Status;
                     ViewBag.TypeCompany = comp.TypeCompany;
 
-                    SessionManager.SetCompanyIdInSession(companyId);
+                    SessionManager.SetCompanyIdInSession(id);
 
                     return View(null);
                 }

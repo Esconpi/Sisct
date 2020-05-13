@@ -34,15 +34,15 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int companyId)
+        public IActionResult Index(int id)
         {
             try
             {
-                var comp = _companyService.FindById(companyId,GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(id,GetLog(Model.OccorenceLog.Read));
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
-                ViewBag.Id = companyId;
-                List<Model.Client> list_clients = _service.FindByCompanyId(companyId);
+                ViewBag.Id = id;
+                List<Model.Client> list_clients = _service.FindByCompanyId(id);
 
                 foreach (var client in list_clients)
                 {
@@ -52,8 +52,8 @@ namespace Escon.SisctNET.Web.Controllers
                 list_clients.Insert(0, new Model.Client() { Name = "Nennhum item selecionado", Id = 0 });
                 SelectList clients = new SelectList(list_clients, "Id", "Name", null);
                 ViewBag.ClientId = clients;
-                var result = _service.FindByCompanyId(companyId).TakeLast(1000);
-                SessionManager.SetCompanyIdInSession(companyId);
+                var result = _service.FindByCompanyId(id).TakeLast(1000);
+                SessionManager.SetCompanyIdInSession(id);
                 return View(null);
             }
             catch(Exception ex)
