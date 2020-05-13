@@ -583,7 +583,6 @@ namespace Escon.SisctNET.Web.Controllers
                         total = notes.Select(_ => _.Vnf).Sum();
                         notesS = notes.Where(_ => _.Iest == "");
                         notesI = notes.Where(_ => _.Iest != "");
-
                         icmsStnoteS = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                         icmsStnoteI = _service.FindBySubscription(notesI.ToList(), typeTaxation);
                         result = _service.FindByProductsType(notes, typeTaxation);
@@ -670,7 +669,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalICMSNfe = Convert.ToDouble(result.Select(_ => _.Vicms).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    decimal icmsSt = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest != "").Select(_ => _.IcmsST).Sum()), 2);
+                    decimal icmsSt = Math.Round(Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalIcms = 0, valorDief = 0; 
                     ViewBag.TotalICMSST = Convert.ToDouble(icmsSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 

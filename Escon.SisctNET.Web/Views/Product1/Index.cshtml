@@ -80,7 +80,17 @@
                 { "data": "price" },
                 { "data": "unity" },
                 { "data": "inicio" },
-                { "data": "fim" },
+                {
+                    "mData": "fim",
+                    "mRender": function (data, type, row) {
+                        if (data == "01/01/0001") {
+                            return ""
+                        }
+                        else {
+                            return data
+                        }
+                    }
+                },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {

@@ -112,7 +112,7 @@
                     {
                          "mData": "active",
                          "mRender": function (data, type, row) {
-                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data_offstyle = 'danger', data_onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
                          }
                     },
                     { "data": "tipoTaxation" },
@@ -152,7 +152,7 @@ else
                     {
                          "mData": "active",
                          "mRender": function (data, type, row) {
-                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data_offstyle = 'danger', data_onstyle = 'success', disabled = 'true' id='" + row.id + "' />";
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
                          }
                     },
                     { "data": "tipoTaxation" },
@@ -160,13 +160,13 @@ else
                     {
                         "mData": "fim",
                         "mRender": function (data, type, row) {
-                            if (data == null) {
+                            if (data == "01/01/0001") {
                                 return ""
                             }
                             else {
                                 return data
                             }
-                         }
+                        }
                     },
                     {
                         "mData": "id",

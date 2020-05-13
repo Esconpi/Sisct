@@ -51,7 +51,7 @@ namespace Escon.SisctNET.Repository.Implementation
             }
             else if (type.Equals("incentivo") && typeCfop.Equals("venda"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1)).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(4)).ToList();
             }
 
             AddLog(log);
