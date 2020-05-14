@@ -741,16 +741,16 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalICMSMva = Convert.ToDouble(totalIcmsMva).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         // Valores da dief resumo
-                        decimal icmsTemp = 0;
-                        if(gnrePaga < icmsSt)
+                        //decimal icmsTemp = 0;
+                        /*if(gnrePaga < icmsSt)
                         {
                             icmsTemp = icmsSt - gnrePaga;
                         }
                         else
                         {
                             icmsTemp = icmsSt;
-                        }
-                        decimal diefSt = Convert.ToDecimal(totalIcms - icmsTemp + gnreNPaga);
+                        }*/
+                        decimal diefSt = Convert.ToDecimal(totalIcms - icmsSt - gnrePaga + gnreNPaga);
                         ViewBag.ValorDief = Convert.ToDouble(diefSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         decimal icmsStnota = Math.Round(Convert.ToDecimal(notasTaxation.Select(_ => _.IcmsSt).Sum()), 2);
                         ViewBag.IcmsSt = Convert.ToDouble(icmsStnota).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -947,7 +947,7 @@ namespace Escon.SisctNET.Web.Controllers
                     
                         ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                        decimal icmsTemp = 0;
+                        /*decimal icmsTemp = 0;
                         if (gnrePaga < icmsSt)
                         {
                             icmsTemp = icmsSt - gnrePaga;
@@ -955,9 +955,9 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                             icmsTemp = icmsSt;
-                        }
+                        }*/
 
-                        valorDief = Convert.ToDecimal(totalIcms - icmsTemp + gnreNPaga);
+                        valorDief = Convert.ToDecimal(totalIcms - icmsSt - gnrePaga + gnreNPaga);
                         
                         ViewBag.ValorDief = Convert.ToDouble(valorDief).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsAp = Convert.ToDouble(icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
