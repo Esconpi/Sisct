@@ -71,7 +71,7 @@
 
         $('.showAtualize').click(function () {
             console.log($(this).attr('id'));
-            $.get('Client/Atualize/' + $(this).attr('id'), function (html) {
+            $.get('/Client/Atualize/' + $(this).attr('id'), function (html) {
                 $('#formShow .modal-body').empty();
                 $('#formShow .modal-body').append($(html));
                 $('#formShow').modal('show');
@@ -90,6 +90,7 @@
                 $('.showProduct').off();
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
+
             },
             "processing": true,
             "ordering": false,
