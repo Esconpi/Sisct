@@ -1200,6 +1200,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (comp.TypeCompany.Equals(true))
                     {
+                        SessionManager.SetTipoInSession(0);
                         var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
                         var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
                         var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
@@ -1818,7 +1819,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-
+                        SessionManager.SetTipoInSession(1);
                         List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                         List<ProductIncentivo> productincentivo = new List<ProductIncentivo>();
                         List<string> codeProdIncentivado = new List<string>();
