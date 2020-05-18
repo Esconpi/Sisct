@@ -43,7 +43,11 @@ namespace Escon.SisctNET.Repository.Implementation
             }
             else if (type.Equals("entrada") && typeCfop.Equals("compra"))
             {
-                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && (_.CfopTypeId.Equals(6) || _.CfopTypeId.Equals(7))).ToList();
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && (_.CfopTypeId.Equals(6) || _.CfopTypeId.Equals(8))).ToList();
+            }
+            else if (type.Equals("entrada") && typeCfop.Equals("devolução de venda"))
+            {
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) &&  _.CfopTypeId.Equals(7)).ToList();
             }
             else if (type.Equals("incentivo") && typeCfop.Equals("devolução de venda"))
             {

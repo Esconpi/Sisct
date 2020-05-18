@@ -94,7 +94,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach (var prod in products)
                 {
-                    var prodImport = _service.FindByProduct(id, prod["cProd"], prod["NCM"]);
+                    string cProd = "", ncm = "", cest = "";
+                    if (prod.ContainsKey("cProd"))
+                    {
+                        cProd = prod["cProd"];
+                    }
+
+                    if (prod.ContainsKey("NCM"))
+                    {
+                        ncm = prod["NCM"];
+                    }
+
+                    if (prod.ContainsKey("CEST"))
+                    {
+                        cest = prod["CEST"];
+                    }
+
+                    var prodImport = _service.FindByProduct(id, cProd, ncm, cest);
                     if (prodImport == null)
                     {
                         var product = new Model.ProductIncentivo
@@ -372,6 +388,51 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Lista(int id)
+        {
+            try
+            {
+                var result = _companyService.FindById(id, null);
+                ViewBag.CompanyId = id;
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Listagem(int id, string tipo)
+        {
+            try
+            {
+                List<ProductIncentivo> products = new List<ProductIncentivo>();
+                if (tipo.Equals("Incentivado"))
+                {
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado")).ToList();
+                }
+                else if (tipo.Equals("ST"))
+                {
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("ST")).ToList();
+                }
+                else if (tipo.Equals("Isento"))
+                {
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Isento")).ToList();
+                }
+                var comp = _companyService.FindById(id, null);
+                ViewBag.CompanyId = id;
+                ViewBag.Tipo = tipo;
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
+                return PartialView(products);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult GetAll(int draw, int start)
         {
 
@@ -416,6 +477,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Code,
                                Name = r.Name,
                                Nncm = r.Ncm,
+                               Ccest = r.Cest,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation, 
                                Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
@@ -437,6 +499,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Code,
                                Name = r.Name,
                                Nncm = r.Ncm,
+                               Ccest = r.Cest,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation,
                                Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),

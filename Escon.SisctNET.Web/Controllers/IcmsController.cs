@@ -1200,7 +1200,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (comp.TypeCompany.Equals(true))
                     {
-                        SessionManager.SetTipoInSession(0);
                         var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id)).ToList();
                         var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
                         var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
@@ -1235,7 +1234,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesVendaSt = new List<List<Dictionary<string, string>>>();
-                        List<List<Dictionary<string, string>>> notesSaidaDevoVenda = new List<List<Dictionary<string, string>>>();
+                       // List<List<Dictionary<string, string>>> notesSaidaDevoVenda = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> notesSaidaDevoCompra = new List<List<Dictionary<string, string>>>();
                         List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -1244,7 +1243,7 @@ namespace Escon.SisctNET.Web.Controllers
                         notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                         notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                         //notesSaidaDevoVenda = import.NfeExit(directoryNfeExit, id, type, "devolução de venda");
-                        //notesSaidaDevoCompra = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
+                        notesSaidaDevoCompra = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
 
                         decimal totalVendas = 0, naoContriForaDoEstadoIncentivo = 0, ContribuintesIncentivo = 0,
                             naoContribuinteIncentivo = 0, naoContriForaDoEstadoNIncentivo = 0,
@@ -1511,10 +1510,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     //debitosIcms += Convert.ToDecimal(notesVenda[i][k]["vICMS"]);
                                 }
 
-                                /*if (notesVenda[i][k].ContainsKey("pFCP") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
+                                if (notesVenda[i][k].ContainsKey("pFCP") && notesVenda[i][k].ContainsKey("CST") && notesVenda[i][k].ContainsKey("orig"))
                                 {
                                     debitosIcms += (Convert.ToDecimal(notesVenda[i][k]["pFCP"]) * Convert.ToDecimal(notesVenda[i][k]["vBC"])) / 100;
-                                }*/
+                                }
                             }
 
                         }
@@ -1656,7 +1655,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }*/
 
-                       /* for (int i = notesSaidaDevoCompra.Count - 1; i >= 0; i--)
+                        for (int i = notesSaidaDevoCompra.Count - 1; i >= 0; i--)
                         {
                             if (notesSaidaDevoCompra[i][2].ContainsKey("CNPJ"))
                             {
@@ -1672,14 +1671,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     debitosIcms += (Convert.ToDecimal(notesSaidaDevoCompra[i][k]["pICMS"]) * Convert.ToDecimal(notesSaidaDevoCompra[i][k]["vBC"])) / 100;
                                 }
-
-
-                                if (notesSaidaDevoCompra[i][k].ContainsKey("pFCP") && notesSaidaDevoCompra[i][k].ContainsKey("CST") && notesSaidaDevoCompra[i][k].ContainsKey("orig"))
-                                {
-                                    debitosIcms += (Convert.ToDecimal(notesSaidaDevoCompra[i][k]["pFCP"]) * Convert.ToDecimal(notesSaidaDevoCompra[i][k]["vBC"])) / 100;
-                                }
                             }
-                        }*/
+                        }
 
                         //// Cálculos dos Produtos  Incentivados
 
@@ -1819,7 +1812,6 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        SessionManager.SetTipoInSession(1);
                         List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                         List<ProductIncentivo> productincentivo = new List<ProductIncentivo>();
                         List<string> codeProdIncentivado = new List<string>();

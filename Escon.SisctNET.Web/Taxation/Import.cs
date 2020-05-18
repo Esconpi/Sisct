@@ -1047,60 +1047,44 @@ namespace Escon.SisctNET.Web.Taxation
         {
             decimal totalDeCredito = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
-            var cfopstransf = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            var cfopsCompra = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
+            var cfopsDevo = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
             string line;
             try
             {
-                if(SessionManager.GetTipoInSession() == 0)
+                
+                var fob = false;
+                while ((line = archiveSped.ReadLine()) != null)
                 {
-                    while ((line = archiveSped.ReadLine()) != null)
+                    string[] linha = line.Split('|');
+                    /*if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
                     {
-                        string[] linha = line.Split('|');
-                        /*if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
-                        {
-                             totalDeCredito += Convert.ToDecimal(linha[15]);
-                        }*/
-                        if (linha[1].Equals("C190") && cfopstransf.Contains(linha[3]) && !linha[7].Equals(""))
-                        {
-                            totalDeCredito += Convert.ToDecimal(linha[7]);
-                        }
-                    }
-                }
-                else
-                {
-                    var fob = false;
-                    while ((line = archiveSped.ReadLine()) != null)
-                    {
-                        string[] linha = line.Split('|');
-                        /*if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
-                        {
-                             totalDeCredito += Convert.ToDecimal(linha[15]);
-                        }*/
+                            totalDeCredito += Convert.ToDecimal(linha[15]);
+                    }*/
                         
-                        if (linha[1].Equals("C190") && cfopstransf.Contains(linha[3]) && !linha[7].Equals(""))
+                    if (linha[1].Equals("C190") && cfopsCompra.Contains(linha[3]) && !linha[7].Equals(""))
+                    {
+                        totalDeCredito += Convert.ToDecimal(linha[7]);
+                        if (!linha[4].Equals(""))
                         {
-                            totalDeCredito += Convert.ToDecimal(linha[7]);
-                            if (!linha[4].Equals(""))
+                            if (Convert.ToDecimal(linha[4]).Equals(17))
                             {
-                                if (Convert.ToDecimal(linha[4]).Equals(17))
-                                {
-                                    totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
-                                }
+                                //totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
                             }
+                        }
                            
-                        }
-                        if (linha[1].Equals("D100") && linha[17].Equals("1"))
-                        {
-                            fob = true;
-                        }
-                        else if(linha[1].Equals("D100") && !linha[17].Equals("1"))
-                        {
-                            fob = false;
-                        }
-                        if (fob.Equals(true) && cfopstransf.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
-                        {
-                            totalDeCredito += Convert.ToDecimal(linha[7]);
-                        }
+                    }
+                    if (linha[1].Equals("D100") && linha[17].Equals("1"))
+                    {
+                        fob = true;
+                    }
+                    else if(linha[1].Equals("D100") && !linha[17].Equals("1"))
+                    {
+                        fob = false;
+                    }
+                    if (fob.Equals(true) && cfopsCompra.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
+                    {
+                        totalDeCredito += Convert.ToDecimal(linha[7]);
                     }
                 }
                              

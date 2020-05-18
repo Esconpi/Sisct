@@ -18,6 +18,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Ncm")]
         public string Ncm { get; set; }
 
+        [Display(Name = "Cest")]
+        public string Cest { get; set; }
+
         [Display(Name = "Descrição")]
         public string Name { get; set; }
 

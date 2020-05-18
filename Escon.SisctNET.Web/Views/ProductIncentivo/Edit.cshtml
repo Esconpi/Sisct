@@ -9,13 +9,18 @@
     <div class="box-header">
 
         <a asp-controller="ProductIncentivo" asp-action="Index" asp-route-id="@ViewBag.CompanyId" siize="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        <h3 class="box-title"><strong>Tributação</strong></h3>
+        <h3 class="box-title"><strong>Editar</strong> - @Model.Name</h3>
     </div>
     <div class="box-body">
         <div class="col-lg-12">
             <form asp-action="Edit" method="post">
                 <div class="row">
-                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Code" class="control-label"></label>
+                        <input asp-for="Code" class="form-control" readonly />
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" readonly />
                         <span asp-validation-for="Name" class="text-danger"></span>
@@ -23,14 +28,14 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Code" class="control-label"></label>
-                        <input asp-for="Code" class="form-control" readonly />
-                        <span asp-validation-for="Code" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Ncm" class="control-label"></label>
                         <input asp-for="Ncm" class="form-control" readonly />
                         <span asp-validation-for="Ncm" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Cest" class="control-label"></label>
+                        <input asp-for="Cest" class="form-control" readonly />
+                        <span asp-validation-for="Cest" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Produto</label>
@@ -64,11 +69,11 @@
                     {
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Percentual" class="control-label"></label>
-                            <input  name="percentual" id="percentual" value="@Model.Percentual" class="form-control money">
+                            <input name="percentual" id="percentual" value="@Model.Percentual" class="form-control money">
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="DateStart" class="control-label"></label>
-                            <input asp-for="DateStart" name="datestart" id="datestart" class="form-control"/>
+                            <input asp-for="DateStart" name="datestart" id="datestart" class="form-control" />
                         </div>
                     }
 

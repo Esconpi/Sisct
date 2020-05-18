@@ -9,6 +9,9 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produtos</strong></h3>
         <div class="btn-group pull-right">
+
+            @Html.ActionLink("Relação de Produtos", "Lista", new { id = @ViewBag.Id },  new { @class = "btn btn-primary" })
+
             <a href="#" id=@ViewBag.Id class="btn btn-primary showImport">
                 <i class="fa fa-cloud-download"></i>
                 Importar
@@ -34,6 +37,9 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Ncm)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cest)
                             </th>
                             <th>
                                 Tributado
@@ -65,6 +71,9 @@
                                 @Html.DisplayNameFor(model => model.Ncm)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Cest)
+                            </th>
+                            <th>
                                 Tributado
                             </th>
                             <th>
@@ -87,6 +96,21 @@
     </div>
     <div class="box-footer"></div>
 </div>
+<script>
+    $(document).ready(function () {
+
+         $('.showImport').click(function () {
+            console.log($(this).attr('id'));
+            $.get('/ProductIncentivo/Import/' + $(this).attr('id'), function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+
+    });
+</script>
 @if (ViewBag.TypeCompany == true)
 {
     <script type="text/javascript">
@@ -109,6 +133,7 @@
                     { "data": "code" },
                     { "data": "name" },
                     { "data": "nncm" },
+                    { "data": "ccest" },
                     {
                          "mData": "active",
                         "mRender": function (data, type, row) {
@@ -154,6 +179,7 @@ else
                     { "data": "code" },
                     { "data": "name" },
                     { "data": "nncm" },
+                    { "data": "ccest" },
                     {
                          "mData": "active",
                          "mRender": function (data, type, row) {
@@ -185,43 +211,5 @@ else
         });
     </script>
 }
-<script type="text/javascript">
-    $(document).ready(function () {
 
-        $('.showImport').click(function () {
-            console.log($(this).attr('id'));
-            $.get('ProductIncentivo/Import/' + $(this).attr('id'), function (html) {
-                $('#formShow .modal-body').empty();
-                $('#formShow .modal-body').append($(html));
-                $('#formShow').modal('show');
-            });
-
-        });
-
-
-        $("#tblIndex").on("change", ".active", function () {
-            try {
-
-                $.ajax({
-                    url: '@(Url.Action("UpdateActive", "ProductIncentivo"))',
-                    dataType: 'json',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ "Id": $(this).prop('id'), "Active": $(this).prop('checked') }),
-                    processData: false,
-                    success: function (data, textStatus, jQxhr) {
-
-                    },
-                    error: function (jqXhr, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    }
-                });
-
-            } catch (e) {
-                console.log(e);
-            }
-        });
-    });
-
-</script>
 

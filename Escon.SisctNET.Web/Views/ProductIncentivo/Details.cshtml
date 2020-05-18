@@ -37,6 +37,9 @@
                                         @Html.DisplayNameFor(model => model.Ncm)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(model => model.Cest)
+                                    </th>
+                                    <th>
                                         Tributado
                                     </th>
                                     <th>
@@ -58,6 +61,9 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Ncm)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Cest)
                                         </td>
                                         <td>
                                             @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true" })
@@ -89,6 +95,9 @@
                                         @Html.DisplayNameFor(model => model.Ncm)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(model => model.Cest)
+                                    </th>
+                                    <th>
                                         Tributado
                                     </th>
                                     <th>
@@ -116,6 +125,9 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Ncm)
+                                        </td>
+                                         <td>
+                                            @Html.DisplayFor(modelItem => item.Cest)
                                         </td>
                                         <td>
                                             @Html.CheckBoxFor(modelItem => item.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true" })

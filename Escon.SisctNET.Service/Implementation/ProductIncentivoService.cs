@@ -51,9 +51,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
-        public ProductIncentivo FindByProduct(int company, string code, string ncm, Log log = null)
+        public ProductIncentivo FindByProduct(int company, string code, string ncm,string cest, Log log = null)
         {
-            return _repository.FindByProduct(company, code, ncm, log);
+            return _repository.FindByProduct(company, code, ncm, cest, log);
         }
 
         public List<ProductIncentivo> FindByProducts(int id, string year, string month, Log log = null)
