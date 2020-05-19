@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 
 namespace Escon.SisctNET.Web.Taxation
@@ -11,10 +12,11 @@ namespace Escon.SisctNET.Web.Taxation
     public class Import
     {
         private readonly ICompanyCfopService _companyCfopService;
-
-        public Import(ICompanyCfopService companyCfopService)
+        private readonly IClientService _clientService;
+        public Import(ICompanyCfopService companyCfopService, IClientService clientService)
         {
             _companyCfopService = companyCfopService;
+            _clientService = clientService;
         }
 
         public Import() { }
@@ -1641,5 +1643,29 @@ namespace Escon.SisctNET.Web.Taxation
 
             return notes;
         }
+
+        /*public List<List<List<string>>> SpedRuralProduct(string directorySped)
+        {
+            StreamReader archiveSped = new StreamReader(directorySped);
+            List<string> codParticipante = new List<string>();
+            List<string> prodRural = _clientService.FindAll(null).Where(_ => _.TypeClientId.Equals(3)).Select(_ => _.Document).ToList();
+            string line;
+            while ((line = archiveSped.ReadLine()) != null)
+            {
+                string[] linha = line.Split('|');
+                if (linha[1].Equals("0150") && (prodRural.Contains(linha[5]) || prodRural.Contains(linha[6])))
+                {
+                    if (!linha[5].Equals(""))
+                    {
+                        codParticipante.Add(linha[5]);
+                    }
+                    else
+                    {
+                        codParticipante.Add(linha[6]);
+                    }
+
+                }
+            }
+        }*/
     }
 }
