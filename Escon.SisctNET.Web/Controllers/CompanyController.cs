@@ -245,6 +245,8 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Suspension = entity.Suspension;
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
+                rst.IcmsAliqM25 = entity.IcmsAliqM25;
+                rst.Uf = entity.Uf;
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 

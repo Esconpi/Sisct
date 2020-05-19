@@ -498,8 +498,8 @@
                                 <thead style="font-size:14px;">
                                     <tr>
                                         <th style="text-align:center" width="320px">Histórico</th>
-                                        <th style="text-align:center" width="150px">Aliq. Inter do Produto até 25%</th>
-                                        <th style="text-align:center" width="180px">Aliq. Inter do Produto superior 25%</th>
+                                        <th style="text-align:center" width="150px">Aliq. Inter. do Produto até 25%</th>
+                                        <th style="text-align:center" width="180px">Aliq. Inter. do Produto superior 25%</th>
                                         <th style="text-align:center" width="120px">Receitas de Produtos ST</th>
                                         <th style="text-align:center" width="140px">Receitas de Produtos Isento</th>
                                         <th style="text-align:center" width="170px">Total (R$)</th>
@@ -517,7 +517,7 @@
                                     <tr>
                                         <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                                         <td style="text-align:right">@ViewBag.PercentualIcmsContrib %</td>
-                                        <td style="text-align:right">5,00 %</td>
+                                        <td style="text-align:right">@ViewBag.PercentualIcmsAiqM25Contrib %</td>
                                         <td></td>
                                         <td style="text-align:right"></td>
                                         <td></td>
@@ -706,7 +706,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS 5,00 % (R$)</td>
+                                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsAiqM25Contrib % (R$)</td>
                                                     <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribuinteAliM25</td>
                                                 </tr>
 
@@ -817,21 +817,21 @@
                                                 <tr>
                                                     <td style="text-align:center;">ICMS</td>
                                                     <td style="text-align:center;">@ViewBag.PercentualIcmsContrib %</td>
-                                                    <td style="text-align:center;">PI</td>
+                                                    <td style="text-align:center;">@ViewBag.Uf</td>
                                                     <td style="text-align:center;">@ViewBag.DarIcms</td>
                                                     <td style="text-align:right;">@ViewBag.ValorVendaContribIncentivo</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">ICMS</td>
-                                                    <td style="text-align:center;">5,00 %</td>
-                                                    <td style="text-align:center;">PI</td>
+                                                    <td style="text-align:center;">@ViewBag.PercentualIcmsAiqM25Contrib %</td>
+                                                    <td style="text-align:center;">@ViewBag.Uf</td>
                                                     <td style="text-align:center;">@ViewBag.DarIcms</td>
                                                     <td style="text-align:right;">@ViewBag.ValorVendaContribuinteAliM25</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">ICMS</td>
                                                     <td style="text-align:center;">@ViewBag.PercentualIcmsNContribuinte %</td>
-                                                    <td style="text-align:center;">PI</td>
+                                                    <td style="text-align:center;">@ViewBag.Uf</td>
                                                     <td style="text-align:center;">@ViewBag.DarIcms</td>
                                                     <td style="text-align:right;">@ViewBag.ValorVendaNContribIncentivo</td>
                                                 </tr>
@@ -852,14 +852,14 @@
                                                 <tr>
                                                     <td style="text-align:center;">FUNEF</td>
                                                     <td style="text-align:center;"></td>
-                                                    <td style="text-align:center;">PI</td>
+                                                    <td style="text-align:center;">@ViewBag.Uf</td>
                                                     <td style="text-align:center;">@ViewBag.DarFunef</td>
                                                     <td style="text-align:right;">@ViewBag.TotalFunef</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:center;">COTAC</td>
                                                     <td style="text-align:center;"></td>
-                                                    <td style="text-align:center;">PI</td>
+                                                    <td style="text-align:center;">@ViewBag.Uf</td>
                                                     <td style="text-align:center;">@ViewBag.DarCotac</td>
                                                     <td style="text-align:right;">@ViewBag.TotalCotac</td>
                                                 </tr>

@@ -58,6 +58,10 @@
                         @if (Model.TipoApuracao == true)
                         {
                             <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">Icms Aliq. Superior 25 %</label>
+                                <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                                 <label class="control-label">Icms P/ Não Contribuinte %</label>
                                 <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte" disabled />
                             </div>
@@ -69,23 +73,19 @@
                         else
                         {
                             <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">Icms Aliq. Superior 25  %</label>
+                                <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25"/>
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                                 <label class="control-label">Icms P/ Não Contribuinte %</label>
-                                <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte"/>
+                                <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte" />
                             </div>
                             <div class="form-group col-lg-4 col-md-6 col-xs-12">
                                 <label class="control-label">Icms P/ Não Contribuinte Fora do Estado %</label>
-                                <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora"/>
+                                <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora" />
                             </div>
                         }
 
-
-                        <div class="col-lg-1 col-md-6 col-xs-12">
-
-                        </div>
-                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                            <label asp-for="Fecop" class="control-label"></label>
-                            <input class="form-control money" value="@Model.Fecop" name="fecop" />
-                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -110,8 +110,8 @@
 
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                            <label asp-for="Suspension" class="control-label"></label>
-                            <input class="form-control money" value="@Model.Suspension" name="suspension" />
+                            <label asp-for="Fecop" class="control-label"></label>
+                            <input class="form-control money" value="@Model.Fecop" name="fecop" />
                         </div>
 
                     </div>
@@ -137,11 +137,14 @@
                         <div class="col-lg-2 col-md-6 col-xs-12">
 
                         </div>
-
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Suspension" class="control-label"></label>
+                            <input class="form-control money" value="@Model.Suspension" name="suspension" />
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                     
+
                         </div>
                         <div class="form-group col-lg-4 col-md-6 col-xs-12">
                             <br />
@@ -158,7 +161,11 @@
                         <div class="col-lg-2 col-md-6 col-xs-12">
 
                         </div>
-                        
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Uf" class="control-label"></label>
+                            <input class="form-control textformartmask" value="@Model.Uf" name="uf" />
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -237,7 +244,11 @@
                 <div class="row ">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Icms %</label>
-                        <input class="form-control money" name="Icms" value="@Model.Icms" disabled/>
+                        <input class="form-control money" name="Icms" value="@Model.Icms" disabled />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">Icms Aliq. Superior 25 %</label>
+                        <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25" disabled />
                     </div>
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Icms P/ Não Contribuinte %</label>
@@ -248,18 +259,11 @@
                         <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora" disabled />
                     </div>
 
-                    <div class="col-lg-1 col-md-6 col-xs-12">
-
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Fecop" class="control-label"></label>
-                        <input class="form-control money" value="@Model.Fecop" name="fecop" disabled/>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Funef" class="control-label"></label>
-                        <input class="form-control money" value="@Model.Funef" name="funef" disabled/>
+                        <input class="form-control money" value="@Model.Funef" name="funef" disabled />
                     </div>
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
                         <br />
@@ -269,18 +273,18 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Limite %</label>
-                        <input class="form-control money" value="@Model.TransferenciaInter" name="transferenciaInter" disabled/>
+                        <input class="form-control money" value="@Model.TransferenciaInter" name="transferenciaInter" disabled />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Excedente %</label>
-                        <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" disabled/>
+                        <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" disabled />
                     </div>
                     <div class="col-lg-2 col-md-6 col-xs-12">
 
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Suspension" class="control-label"></label>
-                        <input class="form-control money" value="@Model.Suspension" name="suspension" disabled/>
+                        <label asp-for="Fecop" class="control-label"></label>
+                        <input class="form-control money" value="@Model.Fecop" name="fecop" disabled />
                     </div>
 
                 </div>
@@ -288,7 +292,7 @@
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Cotac" class="control-label"></label>
-                        <input class="form-control money" value="@Model.Cotac" name="cotac" disabled/>
+                        <input class="form-control money" value="@Model.Cotac" name="cotac" disabled />
                     </div>
 
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -297,20 +301,23 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Limite %</label>
-                        <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContribuinte" disabled/>
+                        <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContribuinte" disabled />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Excedente %</label>
-                        <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" disabled/>
+                        <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" disabled />
                     </div>
                     <div class="col-lg-2 col-md-6 col-xs-12">
 
                     </div>
-
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Suspension" class="control-label"></label>
+                        <input class="form-control money" value="@Model.Suspension" name="suspension" disabled />
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                     
+
                     </div>
                     <div class="form-group col-lg-4 col-md-6 col-xs-12">
                         <br />
@@ -318,16 +325,19 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Limite %</label>
-                        <input class="form-control money" value="@Model.VendaCpf" name="vendaCpf" disabled/>
+                        <input class="form-control money" value="@Model.VendaCpf" name="vendaCpf" disabled />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Excedente %</label>
-                        <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfExcedente" disabled/>
+                        <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfExcedente" disabled />
                     </div>
                     <div class="col-lg-2 col-md-6 col-xs-12">
 
                     </div>
-                        
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Uf" class="control-label"></label>
+                        <input class="form-control" value="@Model.Uf" name="uf" disabled/>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -381,13 +391,19 @@
 
     $("#tipoApu").on("change", function () {
         if ($(this).prop('checked')) {
+            $('#icmsAliqM25').prop('disabled', true);
             $('#icmsNContri').prop('disabled', true);
             $('#icmsNContriFora').prop('disabled', true);
         } else {
+            $('#icmsAliqM25').prop('disabled', false);
             $('#icmsNContri').prop('disabled', false);
             $('#icmsNContriFora').prop('disabled', false);
         }
 
+    });
+
+    $(".textformartmask").on("input", function () {
+        $(this).val($(this).val().toUpperCase());
     });
 
 

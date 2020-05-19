@@ -519,6 +519,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                         bool status = false;
 
+                        string CNPJ = notesVenda[i][3].ContainsKey("CNPJ") ? notesVenda[i][3]["CNPJ"] : "escon";
+                        string indIEDest = notesVenda[i][3].ContainsKey("indIEDest") ? notesVenda[i][3]["indIEDest"] : "escon";
+                        string IE = notesVenda[i][3].ContainsKey("IE") ? notesVenda[i][3]["IE"] : "escon";
+
+
                         if (notesVenda[i][3].ContainsKey("CNPJ"))
                         {
                             if (contribuintesRaiz.Contains(notesVenda[i][3]["CNPJ"].Substring(0, 8)))
@@ -531,6 +536,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 posCliente = contribuintes.IndexOf(notesVenda[i][3]["CNPJ"]);
                             }
 
+                            if (indIEDest == "1" && (IE != "escon" || IE != "") && posCliente < 0)
+                            {
+                                throw new Exception("Há Clientes não Importados");
+                            }
                         }
 
                         for (int k = 0; k < notesVenda[i].Count(); k++)
@@ -1854,7 +1863,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //Contribuinte
                        var icmsContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.Icms) * ContribuintesIncentivo / 100, 2);
-                       var icmsContribuinteIncentivoAliqM25 = Math.Round(5 * ContribuintesIncentivoAliqM25 / 100, 2);
+                       var icmsContribuinteIncentivoAliqM25 = Math.Round(Convert.ToDecimal(comp.IcmsAliqM25) * ContribuintesIncentivoAliqM25 / 100, 2);
 
                         //Não Contribuinte
                         var totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo);
@@ -1914,6 +1923,8 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.ContribuinteIsento = Convert.ToDouble(ContribuinteIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.ContribuinteIncentivoAliM25 = Convert.ToDouble(ContribuintesIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.ValorVendaContribuinteAliM25 = Convert.ToDouble(icmsContribuinteIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDouble(comp.IcmsAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
 
                         //Não Contribuinte
                         ViewBag.VendaNContribIncentivo = Convert.ToDouble(naoContribuinteIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -1990,6 +2001,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalGeralVendaNContibuinteForaDoEstado = Convert.ToDouble((totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalGeralIcmsIncentivo = Convert.ToDouble(totalIcmsGeralIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalGeralVendasIncentivo = Convert.ToDouble(totalGeralVendasIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.Uf = comp.Uf;
 
                     }
                     else

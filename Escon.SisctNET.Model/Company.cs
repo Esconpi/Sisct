@@ -121,5 +121,11 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         public bool TypeCompany { get; set; }
+
+        [Display(Name = "Icms Aliq. SUperior a 25")]
+        public decimal ? IcmsAliqM25 { get; set; }
+
+        [Display(Name = "UF")]
+        public string Uf { get; set; }
     }
 }
