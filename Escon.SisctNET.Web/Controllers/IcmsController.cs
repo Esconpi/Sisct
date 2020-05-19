@@ -440,45 +440,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                     notesTranferencia = import.NfeExit(directoryNfeExit, id, type, "transferencia");
-                    //notesSaidaDevolucao = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");
-                    //notesEntradaDevolucao = import.NfeExit(directoryNfeEntrada, id, type, "devolucao de compra");
                     notesTransferenciaEntrada = import.NotesTransfer(directoryNfeEntrada, id);
                     var cfopstransf = _companyCfopService.FindByCfopActive(id, type, "transferencia").Select(_ => _.Cfop.Code).ToList();
 
-                    decimal totalEntradas = 0, totalTranferenciaInter = 0;
-                    for (int i = notesTransferenciaEntrada.Count - 1; i >= 0; i--)
-                    {
-                        if (!notesTransferenciaEntrada[i][3]["CNPJ"].Equals(comp.Document) && !notesTransferenciaEntrada[i][2]["CNPJ"].Equals(comp.Document))
-                        {
-                            notesTransferenciaEntrada.RemoveAt(i);
-                        }
-                        else
-                        {
-                            if (cfopstransf.Contains(notesTransferenciaEntrada[i][4]["CFOP"]) && notesTransferenciaEntrada[i][1]["idDest"].Equals("2"))
-                            {
-                                totalTranferenciaInter += Convert.ToDecimal(notesTransferenciaEntrada[i][notesTransferenciaEntrada[i].Count - 1]["vNF"]);
-                            }
-                            totalEntradas += Convert.ToDecimal(notesTransferenciaEntrada[i][notesTransferenciaEntrada[i].Count - 1]["vNF"]);
-                        }
-                    }
-
-                    for (int i = notesVenda.Count - 1; i >= 0; i--)
-                    {
-                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
-                        {
-                            notesVenda.RemoveAt(i);
-                        }
-
-                    }
-
-                    for (int i = notesTranferencia.Count - 1; i >= 0; i--)
-                    {
-                        if (!notesTranferencia[i][2]["CNPJ"].Equals(comp.Document) || notesTranferencia[i].Count <= 5)
-                        {
-                            notesTranferencia.RemoveAt(i);
-                        }
-
-                    }
 
                     var contribuintes = _clientService.FindByContribuinte(id, "all");
                     var contribuintesRaiz = _clientService.FindByContribuinte(id, "raiz");
@@ -513,8 +477,32 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    for (int i = 0; i < notesVenda.Count(); i++)
+                    decimal totalEntradas = 0, totalTranferenciaInter = 0;
+                    for (int i = notesTransferenciaEntrada.Count - 1; i >= 0; i--)
                     {
+                        if (!notesTransferenciaEntrada[i][3]["CNPJ"].Equals(comp.Document) && !notesTransferenciaEntrada[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notesTransferenciaEntrada.RemoveAt(i);
+                            continue;
+                        }
+                        else
+                        {
+                            if (cfopstransf.Contains(notesTransferenciaEntrada[i][4]["CFOP"]) && notesTransferenciaEntrada[i][1]["idDest"].Equals("2"))
+                            {
+                                totalTranferenciaInter += Convert.ToDecimal(notesTransferenciaEntrada[i][notesTransferenciaEntrada[i].Count - 1]["vNF"]);
+                            }
+                            totalEntradas += Convert.ToDecimal(notesTransferenciaEntrada[i][notesTransferenciaEntrada[i].Count - 1]["vNF"]);
+                        }
+                    }
+
+                    for (int i = notesVenda.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
+                        {
+                            notesVenda.RemoveAt(i);
+                            continue;
+                        }
+
                         int posClienteRaiz = contContribuintesRaiz - 1, posCliente = -1;
 
                         bool status = false;
@@ -716,11 +704,17 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                         }
+
                     }
 
-
-                    for (int i = 0; i < notesTranferencia.Count(); i++)
+                    for (int i = notesTranferencia.Count - 1; i >= 0; i--)
                     {
+                        if (!notesTranferencia[i][2]["CNPJ"].Equals(comp.Document) || notesTranferencia[i].Count <= 5)
+                        {
+                            notesTranferencia.RemoveAt(i);
+                            continue;
+                        }
+
                         int posClienteRaiz = contContribuintesRaiz - 1;
 
                         if (notesTranferencia[i][3].ContainsKey("CNPJ"))
@@ -781,6 +775,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
+
                     }
 
                     decimal totalNcontribuinte = Convert.ToDecimal(resumoCnpjRaiz[contContribuintesRaiz - 1, 1]);

@@ -77,22 +77,31 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id,string year,string month)
+        public IActionResult Atualize(int id,string year,string month,string opcao)
         {
             try
             {
                 int cont = 0;
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-
+                string directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntrada = confDBSisctNfEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 var import = new Import();
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = import.Client(directoryNfe);
+                if (opcao.Equals("entrada"))
+                {
+                    dets = import.Client(directoryNfeEntrada);
+                }
+                else
+                {
+                    dets = import.Client(directoryNfeSaida);
+                }
+                
 
                 foreach (var det in dets)
                 {

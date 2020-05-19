@@ -67,8 +67,8 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
 
+    $(document).ready(function () {
         $('.showAtualize').click(function () {
             console.log($(this).attr('id'));
             $.get('/Client/Atualize/' + $(this).attr('id'), function (html) {
@@ -78,11 +78,7 @@
             });
 
         });
-      
-     
-    })
 
-    $(document).ready(function () {
         $('#tblClient').DataTable({
             searchDelay: 300,
             "fnDrawCallback": function (oSettings) {
