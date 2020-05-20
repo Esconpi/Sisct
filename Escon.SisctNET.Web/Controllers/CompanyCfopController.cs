@@ -191,8 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = r.CfopTypeId,
-                               CfopType = r.CfopType
+                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
 
                            };
 
@@ -210,8 +209,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = r.CfopTypeId,
-                               CfopType = r.CfopType
+                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
 
                            };
                 return Ok(new { draw = draw, recordsTotal = cfopsAll.Count(), recordsFiltered = cfopsAll.Count(), data = cfop.Skip(start).Take(lenght) });

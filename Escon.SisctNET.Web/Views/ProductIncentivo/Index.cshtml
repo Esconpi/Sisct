@@ -8,18 +8,20 @@
     <div class="box-header">
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
-            <strong>Produtos</strong>  @ViewBag.SocialName - @ViewBag.Document
+            <strong>Produtos</strong>
         </h3>
         <div class="btn-group pull-right">
 
-            @Html.ActionLink("Relação de Produtos", "Lista", new { id = @ViewBag.Id },  new { @class = "btn btn-primary" })
+            @Html.ActionLink("Relação de Produtos", "Lista", new { id = @ViewBag.Id }, new { @class = "btn btn-primary" })
 
             <a href="#" id=@ViewBag.Id class="btn btn-primary showImport">
                 <i class="fa fa-cloud-download"></i>
                 Importar
             </a>
         </div>
-
+        <div style="width:100%; text-align:center;">
+            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+        </div>
     </div>
     <div class="box-body">
         <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -137,7 +139,7 @@
                     { "data": "nncm" },
                     { "data": "ccest" },
                     {
-                         "mData": "active",
+                        "mData": "active",
                         "mRender": function (data, type, row) {
                             if (data == true) {
                                 return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
@@ -204,8 +206,10 @@ else
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                             return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> "+
+                            if (row.fim == "01/01/0001") {
+                                return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
                                     "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                            }
                         }
                     }
                 ]

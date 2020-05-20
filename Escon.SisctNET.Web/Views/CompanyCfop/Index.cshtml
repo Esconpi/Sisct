@@ -24,8 +24,8 @@
         <div class="box-body">
 
             <div style="width:100%; padding:20px;">
-                <h5 style="color:blue;">Cfops entradas</h5>
-                <h5 style="color:red;">Cfops saídas</h5>
+                <h5 style="border-left:5px solid; border-color:blue;">Cfop entrada</h5>
+                <h5 style="border-left:5px solid; border-color:red;">Cfop saída</h5>
             </div>
 
             <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -42,7 +42,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Active)
                             </th>
-                            <th>
+                            <th width="200px">
                                 Tipo
                             </th>
                         </tr>
@@ -54,18 +54,19 @@
     </div>
 
     <script type="text/javascript">
-    $(document).ready(function () {
-        $(function () {
+        $(document).ready(function () {
+            $(function () {
           
-            $('#tblCompanyCfop').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                    $("#tblCompanyCfop").on("change", "input[type='checkbox']", function(){
-                        try {
+                $('#tblCompanyCfop').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
+                        $(".selectoption").select2();
+                        $("#tblCompanyCfop").on("change", "input[type='checkbox']", function(){
+                            try {
 
                                 $.ajax({
                                 url: '@(Url.Action("UpdateStatus", "CompanyCfop"))',
@@ -82,52 +83,96 @@
                                 }
                                 });
 
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    });
-
-                    $("#tblCompanyCfop").on("change", "select", function () {
-
-                        $.ajax({
-                            url: '@(Url.Action("UpdateCfopType", "CompanyCfop"))',
-                            dataType: 'json',
-                            type: 'post',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ "CompanyCfopId": $(this).attr("CfopTypeId"), "CfopTypeId": $(this).val() }),
-                            processData: false,
-                            success: function (data, textStatus, jQxhr) {
-
-                            },
-                            error: function (jqXhr, textStatus, errorThrown) {
-                                alert(errorThrown);
+                            } catch (e) {
+                                console.log(e);
                             }
                         });
 
-                    });
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "ajax": "/CompanyCfop/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "code" },
-                    { "data": "description" },
-                    {
-                        "mData": "active",
-                        "mRender": function (data, type, row) {
-                             if (data == true) {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  id='" + row.id + "' />";
-                            }
-                            else {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' id='" + row.id + "' />";
-                            }
-                        }
+                        $("#tblCompanyCfop").on("change", "select", function () {
+                            $.ajax({
+                                url: '@(Url.Action("UpdateCfopType", "CompanyCfop"))',
+                                dataType: 'json',
+                                type: 'post',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ "CompanyCfopId": $(this).attr("CfopTypeId"), "CfopTypeId": $(this).val() }),
+                                processData: false,
+                                success: function (data, textStatus, jQxhr) {
+                                },
+                                error: function (jqXhr, textStatus, errorThrown) {
+                                    alert(errorThrown);
+                                }
+                            });
+                        });
+ 
                     },
-                ]
-            });
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "ajax": "/CompanyCfop/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        {
+                            "mData": "code",
+                            "mRender": function (data, type, row) {
+                                 if (data < 5000) {
+                                    return "<div style='border-left:5px solid; border-color:blue;'> "+ data +"</div>";
+                                 }
+                                 else {
+                                    return "<div style='border-left:5px solid; border-color:red;'> "+ data +"</div>";
+                                 }
+                            }
+                        },
+                        { "data": "description" },
+                        {
+                            "mData": "active",
+                            "mRender": function (data, type, row) {
+                                 if (data == true) {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  id='" + row.id + "' />";
+                                 }
+                                 else {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' id='" + row.id + "' />";
+                                 }
+                            }
+                        },
+                        {
+                            "mData": "cfopTypeId",
+                            "mRender": function (data, type, row) {
+                                if (data == 1) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1' selected>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 2) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2' selected>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 3) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3' selected>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 4) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4' selected>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 5) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5' selected>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 6) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6' selected>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 7) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7' selected>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                                else if (data == 8) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='8' selected>Bonificação de Compra</option><option value='3'>Devolução de Compra</option><option value='8'</select>";
+                                }
+                                else if (data == 9) {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9' selected>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option><option value='8'</select>";
+                                }
+                                else
+                                {
+                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0' selected>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
+                                }
+                            }
+                        },
+                    ]
+                });
+            })
         })
-    })
     </script>
