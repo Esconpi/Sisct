@@ -101,7 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ListTypes = countingsTypes;
 
                     var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
+                    return View(null);
                 }
             }
             catch (Exception ex)
@@ -545,6 +545,79 @@ namespace Escon.SisctNET.Web.Controllers
                                Status = r.Status,
                                Incentivo = r.Incentive
                            };
+                return Ok(new { draw = draw, recordsTotal = companies.Count(), recordsFiltered = companies.Count(), data = empresa.Skip(start).Take(lenght) });
+            }
+
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var companies = _service.FindAll(null); ;
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Company> company = new List<Company>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Company> companyTemp = new List<Company>();
+                companies.ToList().ForEach(s =>
+                {
+                    s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
+                    s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
+                    companyTemp.Add(s);
+                });
+
+                var ids = companyTemp.Where(c =>
+                    c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.SocialName.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                company = companies.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var empresa = from r in company
+                              where ids.ToArray().Contains(r.Id)
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Code = r.Code,
+                                  SocialName = r.SocialName,
+                                  FantasyName = r.FantasyName,
+                                  Document = r.Document,
+                                  Active = r.Active,
+                                  Status = r.Status,
+                                  Incentivo = r.Incentive,
+                                  CountingTypeId = r.CountingTypeId
+                              };
+
+                return Ok(new { draw = draw, recordsTotal = company.Count(), recordsFiltered = company.Count(), data = empresa.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var empresa = from r in companies
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Code = r.Code,
+                                  SocialName = r.SocialName,
+                                  FantasyName = r.FantasyName,
+                                  Document = r.Document,
+                                  Active = r.Active,
+                                  Status = r.Status,
+                                  Incentivo = r.Incentive,
+                                  CountingTypeId = r.CountingTypeId
+                              };
                 return Ok(new { draw = draw, recordsTotal = companies.Count(), recordsFiltered = companies.Count(), data = empresa.Skip(start).Take(lenght) });
             }
 

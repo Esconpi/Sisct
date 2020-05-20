@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Index(int companyId)
+        public IActionResult Index(int id)
         {
             try
             {
@@ -37,11 +38,11 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindByCompany(companyId);
-                    var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                    var result = _service.FindByCompany(id);
+                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                     ViewBag.Company = company.SocialName;
                     ViewBag.Document = company.Document;
-                    SessionManager.SetCompanyIdInSession(companyId);
+                    SessionManager.SetCompanyIdInSession(id);
                     return View(null);
                 }
                
@@ -80,21 +81,24 @@ namespace Escon.SisctNET.Web.Controllers
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
-                List<Taxation> taxation = new List<Taxation>();
+                List<Model.Taxation> taxation = new List<Model.Taxation>();
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
-
-                List<Taxation> taxationTemp = new List<Taxation>();
+                
+                List<Model.Taxation> taxationTemp = new List<Model.Taxation>();
                 taxationAll.ToList().ForEach(s =>
                 {
-                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
-                    s.Code = s.Code;
+                    s.Ncm.Code = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Code);
+                    s.TaxationType.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.TaxationType.Description);
+                    s.Uf = s.Uf;
                     taxationTemp.Add(s);
                 });
 
                 var ids = taxationTemp.Where(c =>
-                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                    c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.TaxationType.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Uf.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                    )
                 .Select(s => s.Id).ToList();
 
                 taxation = taxationAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
@@ -104,8 +108,15 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Code,
-                               Description = r.Description
+                               Code = r.Ncm.Code,
+                               Description = r.TaxationType.Description,
+                               AliqInterna = r.AliqInterna,
+                               Mva = r.MVA,
+                               Bcr = r.BCR,
+                               Picms = r.Picms,
+                               Uf = r.Uf,
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                            };
 
@@ -116,15 +127,23 @@ namespace Escon.SisctNET.Web.Controllers
             {
 
 
-                var cfop = from r in taxationAll
+                var taxation = from r in taxationAll
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Code,
-                               Description = r.Description
+                               Code = r.Ncm.Code,
+                               Description = r.TaxationType.Description,
+                               AliqInterna = r.AliqInterna,
+                               Mva = r.MVA,
+                               Bcr = r.BCR,
+                               Picms = r.Picms,
+                               Uf = r.Uf,
+                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+
 
                            };
-                return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = cfop.Skip(start).Take(lenght) });
+                return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = taxation.Skip(start).Take(lenght) });
             }
 
         }

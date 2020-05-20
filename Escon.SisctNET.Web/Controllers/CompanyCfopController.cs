@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
                     }
                 }
-                return RedirectToAction("Index", new { companyId = companyId});
+                return RedirectToAction("Index", new { id = companyId});
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Index(int companyId)
+        public IActionResult Index(int id)
         {
             try
             {
@@ -75,8 +75,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.Id = companyId;
-                    var company = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                    ViewBag.Id = id;
+                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                     ViewBag.Document = company.Document;
                     ViewBag.Name = company.SocialName;
 
@@ -96,8 +96,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.CompanyName = company.SocialName;
                     ViewBag.Document = company.Document;
                     ViewBag.CompanyId = company.Id;
-                    var result = _service.FindByCompany(companyId);
-                    SessionManager.SetCompanyIdInSession(companyId);
+                    var result = _service.FindByCompany(id);
+                    SessionManager.SetCompanyIdInSession(id);
                     return View(null);
                 }
                

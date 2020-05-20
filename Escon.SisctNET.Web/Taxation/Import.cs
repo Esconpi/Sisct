@@ -12,11 +12,9 @@ namespace Escon.SisctNET.Web.Taxation
     public class Import
     {
         private readonly ICompanyCfopService _companyCfopService;
-        private readonly IClientService _clientService;
-        public Import(ICompanyCfopService companyCfopService, IClientService clientService)
+        public Import(ICompanyCfopService companyCfopService)
         {
             _companyCfopService = companyCfopService;
-            _clientService = clientService;
         }
 
         public Import() { }

@@ -68,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                var import = new Import();
+                var import = new Import(_companyCfopService);
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
