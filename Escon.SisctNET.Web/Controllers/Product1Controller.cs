@@ -344,7 +344,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                           };
 
-                r/eturn Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
+                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
 
             }
             else

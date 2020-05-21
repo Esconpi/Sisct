@@ -1354,7 +1354,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                     naoContriForaDoEstadoIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
                                                     icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(notesVenda[i][k]["vFrete"])).ToString();
                                                 }
-
                                             }
                                             else
                                             {
@@ -1362,12 +1361,10 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (Convert.ToDecimal(notesVenda[i][k]["pICMS"]) <= 25)
                                                     {
-
                                                         ContribuintesIncentivo += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
                                                     }
                                                     else
                                                     {
-
                                                         ContribuintesIncentivoAliqM25 += Convert.ToDecimal(notesVenda[i][k]["vFrete"]);
                                                     }
                                                 }
