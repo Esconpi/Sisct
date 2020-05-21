@@ -344,12 +344,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                           };
 
-                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
+                r/eturn Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
 
             }
             else
             {
-
 
                 var product = from r in productsAll
                               select new
