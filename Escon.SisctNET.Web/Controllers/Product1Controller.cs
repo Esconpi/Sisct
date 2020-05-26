@@ -206,6 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
+                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
                 return View();
             }
             catch (Exception ex)
@@ -215,7 +216,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(IFormFile arquivo, Model.Product1 entity)
+        public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product1 entity)
         {
             try
             {
@@ -255,7 +256,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < products.Count(); i++)
                 {
-                    var item = _service.FindByProduct(products[i][0], Convert.ToInt32(products[i][5]), products[i][1]);
+                    var item = _service.FindByProduct(products[i][0], groupId, products[i][1]);
 
                     if (item != null)
                     {
@@ -264,20 +265,24 @@ namespace Escon.SisctNET.Web.Controllers
                         _service.Update(item, GetLog(Model.OccorenceLog.Update));
                     }
 
-                    var id = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
-                    var product = new Model.Product1
+                    if (!products[i][0].Equals("") && !products[i][1].Equals("") && !products[i][3].Equals(""))
                     {
-                        Id = id + 1,
-                        Code = products[i][0],
-                        Description = products[i][1],
-                        Unity = products[i][2],
-                        Price = Convert.ToDecimal(products[i][3]),
-                        DateStart = Convert.ToDateTime(products[i][4]),
-                        GroupId = Convert.ToInt32(products[i][5]),
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now
-                    };
-                    _service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
+                        var id = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                        var product = new Model.Product1
+                        {
+                            Id = id + 1,
+                            Code = products[i][0],
+                            Description = products[i][1],
+                            Unity = products[i][2],
+                            Price = Convert.ToDecimal(products[i][3]),
+                            DateStart = Convert.ToDateTime(products[i][4]),
+                            GroupId = groupId,
+                            Created = DateTime.Now,
+                            Updated = DateTime.Now
+                        };
+                        _service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
+                    }
+                    
 
                 }
 

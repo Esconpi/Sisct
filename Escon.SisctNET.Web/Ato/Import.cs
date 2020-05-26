@@ -23,14 +23,15 @@ namespace Escon.SisctNET.Web.Ato
                     string[] linhas = line.Split(";");
                     foreach (var linha in linhas)
                     {
-                        if (!linha.Equals(""))
+                        /*if (!linha.Equals(""))
                         {
                             product.Add(linha);
-                        }                        
+                        }*/
+                        product.Add(linha);
                     }
                     if (product.Count > 0)
                     {
-                        if (product.Count.Equals(5))
+                        if (product.Count.Equals(4))
                         {
                             var ultimo = products[products.Count - 1];
                             ultimo[1] = (ultimo[1] + " " + product[0]);
