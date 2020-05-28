@@ -57,16 +57,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
-                ViewBag.CstEntradaId = cstE;
-
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
-                ViewBag.CstSaidaID = cstS;
-
                 return View();
             }
             catch (Exception ex)
@@ -81,16 +71,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                if (entity.CstEntradaId.Equals(0))
-                {
-                    entity.CstEntradaId = null;
-                }
-                if (entity.CstSaidaId.Equals(0))
-                {
-                    entity.CstSaidaId = null;
-                }
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
@@ -105,35 +85,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
-                ViewBag.CstEntradaId = cstE;
-
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
-                ViewBag.CstSaidaID = cstS;
-
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
-                if (result.CstSaidaId == null)
-                {
-                    result.CstSaidaId = 0;
-                }
-                if (result.CstEntradaId == null)
-                {
-                    result.CstEntradaId = 0;
-                }
-
-                if (result.CstSaidaRealId == null)
-                {
-                    result.CstSaidaRealId = 0;
-                }
-                if (result.CstEntradaRealId == null)
-                {
-                    result.CstEntradaRealId = 0;
-                }
 
                 return View(result);
             }
@@ -151,38 +103,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
-                if (entity.CstEntradaId.Equals(0))
-                {
-                    entity.CstEntradaId = null;
-                }
-                if (entity.CstSaidaId.Equals(0))
-                {
-                    entity.CstSaidaId = null;
-                }
-
-                if (entity.CstEntradaRealId.Equals(0))
-                {
-                    entity.CstEntradaRealId = null;
-                }
-                if (entity.CstSaidaRealId.Equals(0))
-                {
-                    entity.CstSaidaRealId = null;
-                }
-
-                bool status = false;
-                if (!entity.CstEntradaId.Equals(0) && !entity.CstSaidaId.Equals(0))
-                {
-                    status = true;
-                }
-                entity.Status = status;
-
-                bool statuReal = false;
-                if (!entity.CstEntradaRealId.Equals(0) && !entity.CstSaidaRealId.Equals(0))
-                {
-                    statuReal = true;
-                }
-                entity.StatusReal = statuReal;
-
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

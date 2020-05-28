@@ -970,9 +970,9 @@ namespace Escon.SisctNET.Web.Taxation
             return notes;
         }
 
-        public List<string> FindByNcms(string directoryNfe)
+        public List<List<string>> FindByNcms(string directoryNfe)
         {
-            List<string> ncms = new List<string>();
+            List<List<string>> ncms = new List<List<string>>();
             try
             {
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -997,32 +997,39 @@ namespace Escon.SisctNET.Web.Taxation
 
                                         case "prod":
 
-                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            List<string> prod = new List<string>();
                                             reader.Read();
+                                            string ncm = "", code = "";
+                                            bool status = false;
                                             while (reader.Name.ToString() != "prod")
                                             {
+                                                if (reader.Name == "cProd")
+                                                {
+                                                    code = reader.ReadString();
+                                                }
                                                 if (reader.Name == "NCM")
                                                 {
-                                                    bool status = false;
-                                                    string ncmTemp = reader.ReadString();
-                                                    foreach (var ncm in ncms)
-                                                    {
-                                                        if (ncm.Equals(ncmTemp))
-                                                        {
-                                                            status = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if(status == false)
-                                                    {
-                                                        ncms.Add(ncmTemp);
-                                                    }
-                                                   
-                                                    
+                                                    ncm = reader.ReadString();
                                                 }
 
                                                 reader.Read();
 
+                                            }
+
+                                            
+                                            for(int e = 0; e < ncms.Count(); e++)
+                                            {
+                                                if (ncms[e][0].Equals(code) && ncms[e][1].Equals(ncm))
+                                                {
+                                                    status = true;
+                                                }
+                                            }
+
+                                            if (ncms.Count == 0 || status.Equals(false))
+                                            {
+                                                prod.Add(code);
+                                                prod.Add(ncm);
+                                                ncms.Add(prod);
                                             }
                                             break;
 
@@ -1413,14 +1420,139 @@ namespace Escon.SisctNET.Web.Taxation
             return products;
         }
 
-        public List<string> Sped(string directorySped, string directoryNfe)
+        public List<string> Sped(string directorySped)
         {
             List<string> sped = new List<string>();
-
+            decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, novoValorNota = 0;
+            StreamReader archiveSped = new StreamReader(directorySped);
+            string line;
             try
             {
-                List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-                notes = Nfe(directoryNfe);
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        valorNota = 0;
+                        ipiNota = 0;
+                        descontoNota = 0;
+                        outrasDespesasNota = 0;
+                        freteNota = 0;
+                        seguroNota = 0;
+
+                        if(!linha[12].Equals(""))
+                        {
+                            valorNota = Convert.ToDecimal(linha[12]);
+                        }
+
+                        if (!linha[14].Equals(""))
+                        {
+                            descontoNota = Convert.ToDecimal(linha[14]);
+                        }
+
+                        if (!linha[18].Equals(""))
+                        {
+                            freteNota = Convert.ToDecimal(linha[18]);
+                        }
+
+                        if (!linha[19].Equals(""))
+                        {
+                            seguroNota = Convert.ToDecimal(linha[19]);
+                        }
+
+                        if (!linha[20].Equals(""))
+                        {
+                            outrasDespesasNota = Convert.ToDecimal(linha[20]);
+                        }
+                        if (!linha[25].Equals(""))
+                        {
+                            ipiNota = Convert.ToDecimal(linha[25]);
+                        }
+
+                        string textoC100 = "";
+                        if (!freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        {
+                            novoValorNota = Math.Round(valorNota + descontoNota + freteNota + seguroNota + outrasDespesasNota + ipiNota, 2);
+
+                            textoC100 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + linha[7] + "|" + linha[8] + "|"
+                                + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + novoValorNota.ToString() + "|" + linha[13] + "|" + "" + "|" + linha[15] + "|" + novoValorNota.ToString() + "|"
+                                + linha[17] + "|" + "" + "|" + "" + "|" + "" + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|" + linha[24] + "|" + "" + "|"
+                                + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|";
+                            sped.Add(textoC100);
+                        }
+                        else
+                        {
+                            foreach (var l in linha)
+                            {
+                                textoC100 += l + "|";
+                            }
+                            sped.Add(textoC100);
+                        }
+                    }
+
+                    if (linha[1].Equals("C170"))
+                    {
+                        string textoC170 = "";
+                        if (!freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        {
+                            decimal valorProduto = 0;
+                            if (!linha[7].Equals("")) {
+                                valorProduto = Convert.ToDecimal(linha[7]);
+                            }
+
+                            decimal percentual = (valorProduto * 100) / valorNota;
+
+                            decimal novoValorProduto = Math.Round(valorProduto + ((freteNota * percentual) / 100) + ((seguroNota * percentual) / 100) +
+                                ((outrasDespesasNota * percentual) / 100) + ((ipiNota * percentual) / 100), 2);
+
+                            textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + novoValorProduto.ToString() + "|" + "" + "|"
+                                + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + linha[13] + "|" + linha[14] + "|" + linha[15] + "|" + linha[16] + "|" + linha[17] + "|"
+                                + linha[18] + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
+                                + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|" + linha[34] + "|" + linha[35] + "|"
+                                + linha[36] + "|" + linha[37] + "|" + linha[38] + "|";
+                            sped.Add(textoC170);
+                        }
+                        else
+                        {
+                            foreach (var l in linha)
+                            {
+                                textoC170 += l + "|";
+                            }
+                            sped.Add(textoC170);
+                        }
+                    }
+
+                    if (linha[1].Equals("C190"))
+                    {
+                        string textoC190 = "";
+                        if (!freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        {
+                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + novoValorNota.ToString() + "|" + linha[6] + "|" + linha[7] + "|"
+                                + linha[8] + "|" + linha[9] + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
+                            sped.Add(textoC190);
+                        }
+                        else
+                        {
+                            foreach (var l in linha)
+                            {
+                                textoC190 += l + "|";
+                            }
+                            sped.Add(textoC190);
+                        }
+                    }
+                    
+                    if(!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190"))
+                    {
+                        string texto = "";
+                        foreach(var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -1642,28 +1774,5 @@ namespace Escon.SisctNET.Web.Taxation
             return notes;
         }
 
-        /*public List<List<List<string>>> SpedRuralProduct(string directorySped)
-        {
-            StreamReader archiveSped = new StreamReader(directorySped);
-            List<string> codParticipante = new List<string>();
-            List<string> prodRural = _clientService.FindAll(null).Where(_ => _.TypeClientId.Equals(3)).Select(_ => _.Document).ToList();
-            string line;
-            while ((line = archiveSped.ReadLine()) != null)
-            {
-                string[] linha = line.Split('|');
-                if (linha[1].Equals("0150") && (prodRural.Contains(linha[5]) || prodRural.Contains(linha[6])))
-                {
-                    if (!linha[5].Equals(""))
-                    {
-                        codParticipante.Add(linha[5]);
-                    }
-                    else
-                    {
-                        codParticipante.Add(linha[6]);
-                    }
-
-                }
-            }
-        }*/
     }
 }

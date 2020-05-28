@@ -1,0 +1,92 @@
+﻿@model Escon.SisctNET.Model.TaxationNcm
+
+@{
+    ViewData["Title"] = "Atualize";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="TaxationNcm" asp-action="IndexAll" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong>Atualizar:</strong> @Model.Ncm.Code</h3>
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Atualize">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label asp-for="CodeProduct" class="control-label"></label>
+                        <input asp-for="CodeProduct" class="form-control" disabled/>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label asp-for="Ncm.Code" class="control-label"></label>
+                        <input asp-for="Ncm.Code" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="Ncm.Description" class="control-label"></label>
+                        <input asp-for="Ncm.Description" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="CstEntradaId" class="control-label"></label>
+                        @if (Model.CstEntradaId == null)
+                        {
+                            <input class="form-control"  type="text" disabled />
+                        }
+                        else
+                        {
+                            <input class="form-control" type="text" value="@Model.CstEntrada.Code" disabled />
+                        }
+
+
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="CstSaidaId" class="control-label"></label>
+                        @if (Model.CstSaidaId == null)
+                        {
+                            <input class="form-control" type="text" disabled />
+                        }
+                        else
+                        {
+                            <input class="form-control" type="text" value="@Model.CstSaida.Code" disabled />
+                        }
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="NatReceita" class="control-label"></label>
+                        <input asp-for="NatReceita" class="form-control" disabled/>
+                        <span asp-validation-for="NatReceita" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="Pis" class="control-label"></label>
+                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" disabled/>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="Cofins" class="control-label"></label>
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" disabled/>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" required />
+                        <span asp-validation-for="DateStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="box-footer">
+
+    </div>
+</div>
+
+

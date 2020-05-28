@@ -16,7 +16,7 @@
 
 
             @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
-                                   new { onclick = "return confirm('Os arquivos CTes foram importados ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
+                                   new { onclick = "return confirm('Os arquivos NFes e CTes estão na pasta ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
 
             @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
