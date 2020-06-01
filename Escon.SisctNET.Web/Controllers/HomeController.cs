@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
+
     public class HomeController : ControllerBaseSisctNET
     {
 
@@ -103,6 +104,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                     nomeArquivo += ".tmp";
 
+
+                // Arquivo Sped Original
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
                 string caminhoDestinoArquivoUpload = caminho_WebRoot + "\\Uploads\\Speds\\";
                 string caminhoDestinoArquivoOriginalUpload = caminhoDestinoArquivoUpload + nomeArquivo;
@@ -112,6 +115,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     System.IO.File.Delete(caminhoDestinoArquivoOriginalUpload);
                 }
+
                 var stream = new FileStream(caminhoDestinoArquivoOriginalUpload, FileMode.Create);
                 await arquivo.CopyToAsync(stream);
                 stream.Close();
@@ -119,7 +123,24 @@ namespace Escon.SisctNET.Web.Controllers
                 List<string> sped = new List<string>();
                 sped = import.Sped(caminhoDestinoArquivoOriginalUpload);
 
-                
+                // Criando Novo Arquivo Sped
+                string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";
+                string caminhoDestinoArquivoOriginalDownload = caminhoDestinoArquivoDownload + nomeArquivo;
+
+                string[] paths_download_sped = Directory.GetFiles(caminhoDestinoArquivoDownload);
+                if (System.IO.File.Exists(caminhoDestinoArquivoOriginalDownload))
+                {
+                    System.IO.File.Delete(caminhoDestinoArquivoOriginalDownload);
+                }
+                StreamWriter novoArquivo = new StreamWriter(caminhoDestinoArquivoOriginalDownload);
+
+                foreach(var s in sped)
+                {
+                    novoArquivo.WriteLine(s);
+                }
+
+                novoArquivo.Close();
+
                 return RedirectToAction("Download", new { id = id});
             }
             catch (Exception ex)

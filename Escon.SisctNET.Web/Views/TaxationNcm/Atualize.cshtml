@@ -17,58 +17,71 @@
             <form asp-action="Atualize">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
-                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                        <label asp-for="CodeProduct" class="control-label"></label>
-                        <input asp-for="CodeProduct" class="form-control" disabled/>
-                    </div>
-                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                        <label asp-for="Ncm.Code" class="control-label"></label>
-                        <input asp-for="Ncm.Code" class="form-control" disabled />
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="Ncm.Description" class="control-label"></label>
+                        <input asp-for="Ncm.Description" class="form-control" readonly />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <label asp-for="Ncm.Description" class="control-label"></label>
-                        <input asp-for="Ncm.Description" class="form-control" disabled />
+
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="Ncm.Code" class="control-label"></label>
+                        <input asp-for="Ncm.Code" class="form-control" readonly />
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">Produto</label>
+                        <input asp-for="CodeProduct" class="form-control" readonly />
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">Tipo</label>
+                        @if (Model.Type.Equals("Monofásico"))
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal">Normal</option>
+                                <option value="Monofásico" selected>Monofásico</option>
+                            </select>
+                        }
+                        else if (Model.Type.Equals("Normal"))
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal" selected>Normal</option>
+                                <option value="Monofásico">Monofásico</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal">Normal</option>
+                                <option value="Monofásico">Monofásico</option>
+                            </select>
+                        }
+
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstEntradaId" class="control-label"></label>
-                        @if (Model.CstEntradaId == null)
-                        {
-                            <input class="form-control"  type="text" disabled />
-                        }
-                        else
-                        {
-                            <input class="form-control" type="text" value="@Model.CstEntrada.Code" disabled />
-                        }
-
+                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" name="CstEntradaId" id="cstEntrada"></select>
+                        <span asp-validation-for="CstEntradaId" class="text-danger"></span>
 
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="CstSaidaId" class="control-label"></label>
-                        @if (Model.CstSaidaId == null)
-                        {
-                            <input class="form-control" type="text" disabled />
-                        }
-                        else
-                        {
-                            <input class="form-control" type="text" value="@Model.CstSaida.Code" disabled />
-                        }
+                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" name="CstSaidaId" id="cstSaida"></select>
+                        <span asp-validation-for="CstSaidaId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="NatReceita" class="control-label"></label>
-                        <input asp-for="NatReceita" class="form-control" disabled/>
+                        <input asp-for="NatReceita" class="form-control" />
                         <span asp-validation-for="NatReceita" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="Pis" class="control-label"></label>
-                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" disabled/>
+                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="Cofins" class="control-label"></label>
-                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" disabled/>
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
                     </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>
@@ -88,5 +101,23 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+        var cstEnt = @Model.CstEntradaId;
+        $("#cstEntrada").children('option').each(function () {
+            if ($(this).val() == cstEnt) {
+                $(this).attr('selected', true);
+            }
+        });
+
+        var cstSai = @Model.CstSaidaId;
+        $("#cstSaida").children('option').each(function () {
+            if ($(this).val() == cstSai) {
+                $(this).attr('selected', true);
+            }
+        });
+
+
+</script>
 
 

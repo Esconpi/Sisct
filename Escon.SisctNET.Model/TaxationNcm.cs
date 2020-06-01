@@ -80,6 +80,8 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref cstSaida);
             set => cstSaida = value;
         }
+
+        public string Type { get; set; }
        
     }
 }

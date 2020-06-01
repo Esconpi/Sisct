@@ -15,25 +15,58 @@
             <div class="col-md-12">
                 <form asp-action="Ncm">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" name="type" value="@ViewBag.Type" />
                     <input type="hidden" name="company" value="@ViewBag.CompanyId" />
                     <input type="hidden" name="year" value="@ViewBag.Year" />
                     <input type="hidden" name="month" value="@ViewBag.Month" />
-                    <div class="row">
-                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                            <label asp-for="CodeProduct" class="control-label"></label>
-                            <input asp-for="CodeProduct" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                            <label asp-for="Ncm.Code" class="control-label"></label>
-                            <input asp-for="Ncm.Code" class="form-control" readonly />
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="form-group col-lg-12 col-md-12 col-xs-12">
                             <label asp-for="Ncm.Description" class="control-label"></label>
                             <input asp-for="Ncm.Description" class="form-control" readonly />
                         </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label asp-for="Ncm.Code" class="control-label"></label>
+                            <input asp-for="Ncm.Code" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label class="control-label">Produto</label>
+                            <input asp-for="CodeProduct" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label class="control-label">Tipo</label>
+                            @if (Model.Type.Equals("Monofásico"))
+                            {
+                                <select class="form-control selectoption" name="type">
+                                    <option value="Normal">Normal</option>
+                                    <option value="Monofásico" selected>Monofásico</option>
+                                </select>
+                            }
+                            else if (Model.Type.Equals("Normal"))
+                            {
+                                <select class="form-control selectoption" name="type">
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="Monofásico">Monofásico</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select class="form-control selectoption" name="type">
+                                    <option value="Normal">Normal</option>
+                                    <option value="Monofásico">Monofásico</option>
+                                </select>
+                            }
+
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label class="control-label">Opção</label>
+                            <select class="form-control selectoption" name="opcao">
+                                <option value="1" selected>Por Produto</option>
+                                <option value="2">Por Ncm</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -52,24 +85,24 @@
                             <input asp-for="NatReceita" class="form-control" />
                             <span asp-validation-for="NatReceita" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Pis" class="control-label"></label>
                             <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Cofins" class="control-label"></label>
                             <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="DateStart" class="control-label"></label>
                             <input asp-for="DateStart" class="form-control" required />
                             <span asp-validation-for="DateStart" class="text-danger"></span>
                         </div>
                     </div>
-                  
+
 
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                        <input type="submit" value="Tributar" class="btn btn-success pull-right" />
                     </div>
                 </form>
             </div>
@@ -94,4 +127,4 @@
         });
 
 
-     </script>
+    </script>

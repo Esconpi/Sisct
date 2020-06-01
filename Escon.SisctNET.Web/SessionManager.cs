@@ -287,5 +287,24 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<int>("TipoSisctNET");
         }
+
+        public static void SetYearInSession(string year)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<string>("YearSisctNET", year);
+        }
+
+        public static string GetYearInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<string>("YearSisctNET");
+        }
+        public static void SetMonthInSession(string month)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<string>("MonthSisctNET", month);
+        }
+
+        public static string GetMonthInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<string>("MonthSisctNET");
+        }
     }
 }
