@@ -57,6 +57,10 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(4)).ToList();
             }
+            else if (type.Equals("resumoncm") && typeCfop.Equals("venda"))
+            {
+                result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(4)).ToList();
+            }
 
             AddLog(log);
             return result;

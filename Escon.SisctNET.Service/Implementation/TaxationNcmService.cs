@@ -34,6 +34,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<TaxationNcm> FindAllInDate(DateTime dateProd, Log log = null)
+        {
+            return _repository.FindAllInDate(dateProd, log);
+        }
+
         public TaxationNcm FindById(int id, Log log)
         {
             return _repository.FindById(id, log);

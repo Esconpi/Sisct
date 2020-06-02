@@ -49,6 +49,20 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-        }       
+        }
+
+        public IActionResult PisCofins(int id)
+        {
+            try
+            {
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+        
     }
 }

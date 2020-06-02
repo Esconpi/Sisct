@@ -86,6 +86,7 @@ namespace Escon.SisctNET.Web.Controllers
                             Month = month,
                             Created = DateTime.Now,
                             Updated = DateTime.Now,
+                            Type = "Nenhum"
                         };
 
                         _service.Create(entity:taxationNcm, GetLog(Model.OccorenceLog.Create));

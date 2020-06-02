@@ -38,17 +38,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Código")]
         public string Code { get; set; }
 
-        [Display(Name = "Matriz")]
-        [ForeignKey("CompanyMatrix")]
-        public int? CompanyId { get; set; }
-
-        private Company companyMatrix;
-        public Company CompanyMatrix
-        {
-            get => LazyLoader.Load(this, ref companyMatrix);
-            set => companyMatrix = value;
-        }
-
         [Display(Name = "ICMS %")]
         public decimal ? Icms { get; set; }
 
@@ -127,5 +116,8 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "UF")]
         public string Uf { get; set; }
+
+        [Display(Name = "Inscrição Estadual")]
+        public string Ie { get; set; }
     }
 }

@@ -115,12 +115,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                List<Company> list_matrix = _service.FindAll(GetLog(OccorenceLog.Read));
-                list_matrix.Insert(0, new Company() { SocialName = "Nenhuma Matriz selecionada", Id = 0 });
-
-                SelectList matrix = new SelectList(list_matrix, "Id", "SocialName", null);
-                ViewBag.Matrix = matrix;
-
                 return View();
             }
             catch(Exception ex)
@@ -135,10 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-
-                if (entity.CompanyId == 0)
-                    entity.CompanyId = null;        
+                entity.Updated = entity.Created; 
 
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -156,12 +147,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                List<Model.Company> list_matrix = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                list_matrix.Insert(0, new Model.Company() { SocialName = "Nenhuma Matriz selecionada", Id = 0 });
-
-                SelectList matrix = new SelectList(list_matrix, "Id", "SocialName", result.CompanyId);
-                ViewBag.Matrix = matrix;
-
                 return View(result);
             }
             catch (Exception ex)
@@ -177,13 +162,18 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                if (entity.CompanyId == 0)
-                    entity.CompanyId = null;
+                rst.Updated = DateTime.Now;
+                rst.Active = entity.Active;
+                rst.Status = entity.Status;
+                rst.Incentive = entity.Incentive;
+                rst.SocialName = entity.SocialName;
+                rst.FantasyName = entity.FantasyName;
+                rst.Code = entity.Code;
+                rst.Document = entity.Document;
+                rst.Ie = entity.Ie;
+                rst.Uf = entity.Uf;
 
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
-
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -246,7 +236,6 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
                 rst.IcmsAliqM25 = entity.IcmsAliqM25;
-                rst.Uf = entity.Uf;
 
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
