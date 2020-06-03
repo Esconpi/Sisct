@@ -7,13 +7,13 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="Home" asp-action="Sped" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="Home" asp-action="Sped" size="large" asp-route-id="@Model.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"> <strong>Sped Corrigido:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
 
     </div>
     <div class="box-body">
-        <div class="col-lg-12">
-            
+        <div style="text-align:center">
+            <a asp-controller="Home" asp-action="DownloadSped" asp-route-id="@Model.Id">Fazer Download do Sped</a>
         </div>
     </div>
 </div>

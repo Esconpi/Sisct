@@ -15,10 +15,12 @@ namespace Escon.SisctNET.Web.Controllers
     {
 
         private readonly ICompanyService _service;
+        private readonly IConfigurationService _configurationService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public HomeController(
             ICompanyService service,
+            IConfigurationService configurationService,
             IHostingEnvironment env,
             Service.IFunctionalityService functionalityService, 
             IHttpContextAccessor httpContextAccessor)
@@ -26,6 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
+            _configurationService = configurationService;
             _appEnvironment = env;
         }
 
@@ -69,11 +72,15 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sped(int id, IFormFile arquivo)
+        public async Task<IActionResult> Sped(int id,string month, string year, IFormFile arquivo)
         {
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                var Nfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+
+                string directoryNfe = Nfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 var import = new Import();
 
@@ -97,12 +104,10 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(ViewData);
                 }
 
-                string nomeArquivo = comp.Document;
+                string nomeArquivo = comp.Document + year + month;
 
-                if (arquivo.FileName.Contains(".txt"))
-                    nomeArquivo += ".txt";
-                else
-                    nomeArquivo += ".tmp";
+              
+                nomeArquivo += ".txt";
 
 
                 // Arquivo Sped Original
@@ -121,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
                 stream.Close();
 
                 List<string> sped = new List<string>();
-                sped = import.Sped(caminhoDestinoArquivoOriginalUpload);
+                sped = import.Sped(caminhoDestinoArquivoOriginalUpload, directoryNfe);
 
                 // Criando Novo Arquivo Sped
                 string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";
@@ -149,17 +154,35 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Download(int id)
+        public IActionResult Download(int id, string year, string month)
         {
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Year = year;
+                ViewBag.Month = month;
                 return View(comp);
             }
             catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public FileResult DownloadSped(int id, string year, string month)
+        {
+
+            var comp = _service.FindById(id, null);
+
+            var nomeArquivo = comp.Document + year + month + ".txt";
+
+            string caminho_WebRoot = _appEnvironment.WebRootPath;
+            string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";
+            string caminhoDestinoArquivoOriginalUpload = caminhoDestinoArquivoDownload + nomeArquivo;
+
+            string contentType = "application/text";
+            return File(caminhoDestinoArquivoOriginalUpload, contentType, "Sped.txt");
+           
         }
 
     }

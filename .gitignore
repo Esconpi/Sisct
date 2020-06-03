@@ -13,3 +13,5 @@ Escon.SisctNET.Service/bin/*
 Escon.SisctNET.Service/obj/*
 Escon.SisctNET.Web/bin/*
 Escon.SisctNET.Web/obj/*
+Escon.SisctNET.Web/wwwroot/Uploads/*
+Escon.SisctNET.Web/wwwroot/Downloads/*

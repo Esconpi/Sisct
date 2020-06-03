@@ -56,6 +56,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Type = type;
 
+                if (comp.CountingTypeId == null)
+                {
+                    throw new Exception("Escolha o Tipo da Empresa");
+                }
+
                 if (type.Equals("resumoncm"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
@@ -80,7 +85,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (notesVenda[i][1].ContainsKey("dhEmi"))
                         {
-                            ncms = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(comp.CountingTypeId)).ToList();
+                            if (comp.CountingTypeId.Equals(1))
+                            {
+                                ncms = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
+                            }
+                            else
+                            {
+                                ncms = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                            }
                             codeProdMono = ncms.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
                             codeProdNormal = ncms.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.CodeProduct).ToList();
                         }
