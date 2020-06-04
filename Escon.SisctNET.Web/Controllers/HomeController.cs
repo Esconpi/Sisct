@@ -146,7 +146,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 novoArquivo.Close();
 
-                return RedirectToAction("Download", new { id = id});
+                return RedirectToAction("Download", new { id = id, year = year, month = month});
             }
             catch (Exception ex)
             {

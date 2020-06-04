@@ -1441,7 +1441,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                     if (linha[1].Equals("C100"))
                     {
-                        
+                        string textoC100 = "";
                         valorNota = 0;
                         ipiNota = 0;
                         descontoNota = 0;
@@ -1452,31 +1452,31 @@ namespace Escon.SisctNET.Web.Taxation
 
                         if(!linha[12].Equals(""))
                         {
-                            valorNota = Convert.ToDecimal(linha[12]);
+                            valorNota = Convert.ToDecimal(linha[12].Replace(",","."));
                         }
 
                         if (!linha[14].Equals(""))
                         {
-                            descontoNota = Convert.ToDecimal(linha[14]);
+                            descontoNota = Convert.ToDecimal(linha[14].Replace(",", "."));
                         }
 
                         if (!linha[18].Equals(""))
                         {
-                            freteNota = Convert.ToDecimal(linha[18]);
+                            freteNota = Convert.ToDecimal(linha[18].Replace(",", "."));
                         }
 
                         if (!linha[19].Equals(""))
                         {
-                            seguroNota = Convert.ToDecimal(linha[19]);
+                            seguroNota = Convert.ToDecimal(linha[19].Replace(",", "."));
                         }
 
                         if (!linha[20].Equals(""))
                         {
-                            outrasDespesasNota = Convert.ToDecimal(linha[20]);
+                            outrasDespesasNota = Convert.ToDecimal(linha[20].Replace(",", "."));
                         }
                         if (!linha[25].Equals(""))
                         {
-                            ipiNota = Convert.ToDecimal(linha[25]);
+                            ipiNota = Convert.ToDecimal(linha[25].Replace(",", "."));
                         }
 
                         if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
@@ -1489,6 +1489,20 @@ namespace Escon.SisctNET.Web.Taxation
                                     break;
                                 }
                             }
+                            valorNota = Math.Round(valorNota - descontoNota + freteNota + seguroNota + outrasDespesasNota + ipiNota, 2);
+                            textoC100 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + linha[7] + "|"
+                                             + linha[8] + "|" + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + valorNota.ToString().Replace(".",",") + "|" + linha[13] + "|" + "" + "|" + linha[15] + "|"
+                                             + valorNota.ToString().Replace(".", ",") + "|" + linha[17] + "|" + "" + "|" + "" + "|" + "" + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|"
+                                             + linha[24] + "|" + "" + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|";
+                            sped.Add(textoC100);
+                        }
+                        else
+                        {
+                            foreach (var l in linha)
+                            {
+                                textoC100 += l + "|";
+                            }
+                            sped.Add(textoC100);
                         }
                         
                     }
@@ -1500,9 +1514,8 @@ namespace Escon.SisctNET.Web.Taxation
 
                         if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
                         {
-                            decimal valorProduto = 0, vProd = 0, qCom = 0;
+                            decimal valorProduto = 0, vProd = 0;
                             int posCfop = -1, nItem = 1;
-                            string uCom = "";
 
                             for (int i = 0; i < cfops.Count(); i++)
                             {
@@ -1529,12 +1542,8 @@ namespace Escon.SisctNET.Web.Taxation
                                     if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                     {
                                         vProd = Convert.ToDecimal(notes[i][j]["vProd"]);
-                                        qCom = Convert.ToDecimal(notes[i][j]["qCom"]);
                                         nItem = Convert.ToInt32(notes[i][j]["nItem"]);
-                                        uCom = notes[i][j]["uCom"];
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && linha[6].Equals(notes[i][j]["uCom"]) &&
-                                            Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["qCom"]))
-                                            )
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"]))  && Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])))
                                         {
                                             valorProduto += Convert.ToDecimal(notes[i][j]["vProd"]);
                                         }
@@ -1542,8 +1551,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                     if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                     {
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && linha[6].Equals(notes[i][j]["uCom"]) &&
-                                            Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["qCom"]))
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"]))
                                             )
                                         {
                                             valorProduto += Convert.ToDecimal(notes[i][j]["vFrete"]);
@@ -1552,9 +1560,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                     if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                     {
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && linha[6].Equals(notes[i][j]["uCom"]) &&
-                                            Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["qCom"]))
-                                            )
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])))
                                         {
                                             valorProduto -= Convert.ToDecimal(notes[i][j]["vDesc"]);
                                         }
@@ -1563,9 +1569,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                     if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                     {
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && linha[6].Equals(notes[i][j]["uCom"]) &&
-                                            Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["qCom"]))
-                                            )
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])))
                                         {
                                             valorProduto += Convert.ToDecimal(notes[i][j]["vOutro"]);
                                         }
@@ -1573,9 +1577,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                     if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                     {
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && linha[6].Equals(notes[i][j]["uCom"]) &&
-                                            Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["qCom"]))
-                                            )
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(Convert.ToDecimal(notes[i][j]["vProd"])) && Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])))
                                         {
                                             valorProduto += Convert.ToDecimal(notes[i][j]["vSeg"]);
                                         }
@@ -1583,9 +1585,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                     if (notes[i][j].ContainsKey("pIPI"))
                                     {
-                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd) && linha[6].Equals(uCom) &&
-                                            Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[5].Replace(",", ".")).Equals(qCom)
-                                            )
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd) &&  Convert.ToInt32(linha[2]).Equals(nItem))
                                         {
                                             valorProduto += Math.Round((Convert.ToDecimal(notes[i][j]["pIPI"]) * Convert.ToDecimal(notes[i][j]["vBC"]) / 100), 4);
                                         }
@@ -1595,7 +1595,7 @@ namespace Escon.SisctNET.Web.Taxation
                             }
 
                             valorProduto = Math.Round(valorProduto, 2);
-                            cfops[posCfop][1] = (Convert.ToDecimal(cfops[posCfop][1]) + valorProduto).ToString();
+                            cfops[posCfop][1] = (Math.Round(Convert.ToDecimal(cfops[posCfop][1]) + valorProduto,2)).ToString();
                             textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + valorProduto.ToString().Replace(".",",") + "|" + "" + "|"
                                 + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + linha[13] + "|" + linha[14] + "|" + linha[15] + "|" + linha[16] + "|" + linha[17] + "|"
                                 + linha[18] + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
@@ -1616,7 +1616,7 @@ namespace Escon.SisctNET.Web.Taxation
                     if (linha[1].Equals("C190"))
                     {
                         string textoC190 = "";
-                        if (!freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
                         {
                             for(int i = 0; i < cfops.Count(); i++)
                             {
@@ -1639,7 +1639,7 @@ namespace Escon.SisctNET.Web.Taxation
                         }
                     }
                     
-                    if(!linha[1].Equals("C170") && !linha[1].Equals("C190"))
+                    if(!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190"))
                     {
                         string texto = "";
                         foreach(var l in linha)

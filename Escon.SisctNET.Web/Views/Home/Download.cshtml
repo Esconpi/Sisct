@@ -13,7 +13,7 @@
     </div>
     <div class="box-body">
         <div style="text-align:center">
-            <a asp-controller="Home" asp-action="DownloadSped" asp-route-id="@Model.Id">Fazer Download do Sped</a>
+            <a asp-controller="Home" asp-action="DownloadSped" asp-route-id="@Model.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month">Fazer Download do Sped</a>
         </div>
     </div>
 </div>
