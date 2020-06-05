@@ -30,6 +30,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -53,6 +58,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult PisCofins(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, null);

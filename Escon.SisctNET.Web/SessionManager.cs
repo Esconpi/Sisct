@@ -268,6 +268,26 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<int>("HomeExitSisctNET");
         }
 
+        public static void SetClientInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("ClientSisctNET", functionalityId);
+        }
+
+        public static int GetClientInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("ClientSisctNET");
+        }
+
+        public static void SetTaxationNcmInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("TaxationNcmSisctNET", functionalityId);
+        }
+
+        public static int GetTaxationNcmInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("TaxationNcmSisctNET");
+        }
+
         public static void SetCompanyIdInSession(int companyId)
         {
             _httpContextAccessor.HttpContext.Session.Set<int>("CompanyIdSisctNET", companyId);

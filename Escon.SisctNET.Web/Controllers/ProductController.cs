@@ -36,6 +36,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -60,6 +65,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -79,6 +89,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Product entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindByProduct(entity.Code, entity.GroupId,entity.Description);
@@ -109,6 +123,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -134,6 +152,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Product entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -154,6 +176,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 return View();
@@ -167,6 +193,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(IFormFile arquivo, Model.Product entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 if (arquivo == null || arquivo.Length == 0)

@@ -23,6 +23,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -48,6 +53,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 return View();
@@ -63,6 +73,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Attachment entity)
         {
+            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 entity.Created = DateTime.Now;
@@ -80,6 +95,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -95,6 +115,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Attachment entity)
         {
+            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));

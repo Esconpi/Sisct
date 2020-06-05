@@ -64,7 +64,7 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
-        [Display(Name = "Ncm")]
+        [Display(Name = "NCM")]
         [ForeignKey("Ncm")]
         public int NcmId { get; set; }
 

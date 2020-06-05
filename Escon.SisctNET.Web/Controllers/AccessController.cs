@@ -26,6 +26,12 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int profileId)
         {
+
+            if (!SessionManager.GetAccessInSession().Equals(4))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -53,6 +59,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetAccessInSession().Equals(4))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));

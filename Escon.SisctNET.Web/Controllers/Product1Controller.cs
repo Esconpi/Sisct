@@ -36,6 +36,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -60,6 +65,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -79,6 +88,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Product1 entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
@@ -101,6 +114,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -126,6 +143,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Product1 entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -146,6 +167,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -171,6 +196,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.Product1 entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, null);
@@ -204,6 +233,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import()
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
@@ -218,6 +251,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product1 entity)
         {
+            if (!SessionManager.GetProductInSession().Equals(3))
+            {
+                return Unauthorized();
+            }
             try
             {
                 if (arquivo == null || arquivo.Length == 0)

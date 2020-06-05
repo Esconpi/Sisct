@@ -31,6 +31,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -63,6 +68,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _companyService.FindById(id, null);
@@ -78,6 +88,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Import(int id, string year, string month)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _companyService.FindById(id, null);
@@ -142,6 +157,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, null);
@@ -163,6 +183,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.ProductIncentivo entity)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var prod = _service.FindById(id, null);
@@ -230,9 +254,14 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+
         [HttpGet]
         public IActionResult Details(int companyId, int count)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 ViewBag.CompanyId = companyId;
@@ -252,6 +281,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Product(int id, int count)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var prod = _service.FindById(id, null);
@@ -273,6 +306,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Product(int id, int count, Model.ProductIncentivo entity)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var prod = _service.FindById(id, null);
@@ -342,6 +379,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, null);
@@ -361,6 +402,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.ProductIncentivo entity)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, null);
@@ -391,6 +436,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Lista(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _companyService.FindById(id, null);
@@ -405,6 +454,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Listagem(int id, string tipo)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 List<ProductIncentivo> products = new List<ProductIncentivo>();

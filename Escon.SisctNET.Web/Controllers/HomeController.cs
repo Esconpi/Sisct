@@ -35,6 +35,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -60,6 +64,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sped(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -74,6 +83,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Sped(int id,string month, string year, IFormFile arquivo)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -156,6 +170,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Download(int id, string year, string month)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -174,15 +193,16 @@ namespace Escon.SisctNET.Web.Controllers
 
             var comp = _service.FindById(id, null);
 
-            var nomeArquivo = comp.Document + year + month + ".txt";
+            var nomeArquivo = comp.Document + year + month + ".txt"; 
 
             string caminho_WebRoot = _appEnvironment.WebRootPath;
-            string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";
-            string caminhoDestinoArquivoOriginalUpload = caminhoDestinoArquivoDownload + nomeArquivo;
-
+            string caminhoDestinoArquivoDownload = caminho_WebRoot + "/Downloads/Speds/";
+            string caminhoDestinoArquivoOriginalDownload = caminhoDestinoArquivoDownload + nomeArquivo;
             string contentType = "application/text";
-            return File(caminhoDestinoArquivoOriginalUpload, contentType, "Sped.txt");
-           
+            byte[] fileBytes = System.IO.File.ReadAllBytes(caminhoDestinoArquivoOriginalDownload);
+            string fileName = "ESCON - Sped Fiscal " + comp.Document + " " + month + "/" + year + ".txt";
+
+            return File(fileBytes, contentType, fileName);
         }
 
     }

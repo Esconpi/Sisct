@@ -34,6 +34,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int companyId)
         {
+            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var cfops = _cfopService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -65,6 +70,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
+            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -112,6 +122,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
@@ -129,6 +144,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
         {
+            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            {
+                return Unauthorized();
+            }
 
             try
             {

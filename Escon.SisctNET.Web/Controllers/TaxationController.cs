@@ -28,6 +28,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
+            if (!SessionManager.GetTaxationInSession().Equals(18))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -57,6 +62,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetTaxationInSession().Equals(18))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -109,6 +118,7 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
+                               cest = r.Cest,
                                Description = r.TaxationType.Description,
                                AliqInterna = r.AliqInterna,
                                Mva = r.MVA,
@@ -132,6 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
+                               cest = r.Cest,
                                Description = r.TaxationType.Description,
                                AliqInterna = r.AliqInterna,
                                Mva = r.MVA,

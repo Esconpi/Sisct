@@ -1450,9 +1450,9 @@ namespace Escon.SisctNET.Web.Taxation
                         seguroNota = 0;
                         cfops.Clear();
 
-                        if(!linha[12].Equals(""))
+                        if(!linha[16].Equals(""))
                         {
-                            valorNota = Convert.ToDecimal(linha[12].Replace(",","."));
+                            valorNota = Convert.ToDecimal(linha[16].Replace(",","."));
                         }
 
                         if (!linha[14].Equals(""))
@@ -1587,7 +1587,7 @@ namespace Escon.SisctNET.Web.Taxation
                                     {
                                         if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd) &&  Convert.ToInt32(linha[2]).Equals(nItem))
                                         {
-                                            valorProduto += Math.Round((Convert.ToDecimal(notes[i][j]["pIPI"]) * Convert.ToDecimal(notes[i][j]["vBC"]) / 100), 4);
+                                            valorProduto += Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
                                     }
                                 }
@@ -1598,7 +1598,7 @@ namespace Escon.SisctNET.Web.Taxation
                             cfops[posCfop][1] = (Math.Round(Convert.ToDecimal(cfops[posCfop][1]) + valorProduto,2)).ToString();
                             textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + valorProduto.ToString().Replace(".",",") + "|" + "" + "|"
                                 + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + linha[13] + "|" + linha[14] + "|" + linha[15] + "|" + linha[16] + "|" + linha[17] + "|"
-                                + linha[18] + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
+                                + linha[18] + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
                                 + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|" + linha[34] + "|" + linha[35] + "|"
                                 + linha[36] + "|" + linha[37] + "|" + linha[38] + "|";
                             sped.Add(textoC170);

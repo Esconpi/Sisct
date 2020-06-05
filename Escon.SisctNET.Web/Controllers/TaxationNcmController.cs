@@ -40,6 +40,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int id, string year, string month)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var ncmsMonofasicoAll = _service.FindAll(null);
@@ -107,6 +111,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id, string year, string month)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var comp = _companyService.FindById(id, null);
@@ -129,6 +137,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult IndexAll()
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 return View(null);
@@ -142,6 +154,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Ncm(int id)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
@@ -181,6 +197,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Ncm(int id, Model.TaxationNcm entity)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var rst = _service.FindById(id, null);
@@ -267,6 +287,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
                 list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
@@ -300,6 +324,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.TaxationNcm entity)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var rst = _service.FindById(id, null);
@@ -341,6 +369,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
@@ -374,6 +406,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.TaxationNcm entity)
         {
+            if (!SessionManager.GetTaxationNcmInSession().Equals(26))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var rst = _service.FindById(id, null);

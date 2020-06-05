@@ -23,7 +23,10 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Ncm)
+                            @Html.DisplayNameFor(model => model.NcmId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cest)
                         </th>
                         <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
                         <th>@Html.DisplayNameFor(model => model.AliqInterna)</th>
@@ -68,6 +71,7 @@
                 },
                 "columns": [
                     { "data": "code" },
+                    { "data": "cest" },
                     { "data": "description" },
                     { "data": "aliqInterna" },
                     { "data": "mva" },
@@ -118,6 +122,7 @@ else
                 },
                 "columns": [
                     { "data": "code" },
+                    { "data": "cest" },
                     { "data": "description" },
                     { "data": "aliqInterna" },
                     { "data": "mva" },

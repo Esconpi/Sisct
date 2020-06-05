@@ -28,6 +28,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
 
@@ -52,6 +56,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
                 ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
@@ -66,6 +74,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Person entity)
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
 
@@ -89,6 +101,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -106,6 +122,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Person person)
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -133,6 +153,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult EditNew(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -147,6 +171,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult EditNew(int id, Model.Person person)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -175,6 +203,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
@@ -189,6 +221,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetPersonInSession().Equals(5))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));

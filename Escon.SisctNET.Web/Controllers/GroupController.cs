@@ -28,6 +28,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -52,6 +57,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 List<Model.Attachment> list_anexos = _attachmentService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -69,6 +79,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Group entity)
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 entity.Created = DateTime.Now;
@@ -86,6 +101,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -101,6 +121,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id , Model.Group entity)
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -118,6 +143,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetGroupInSession().Equals(9))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));

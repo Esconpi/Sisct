@@ -77,6 +77,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 
@@ -113,6 +117,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 return View();
@@ -126,6 +135,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Company entity)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 entity.Created = DateTime.Now;
@@ -143,6 +157,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -158,6 +177,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Company entity)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -185,6 +209,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult EditNew(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -210,6 +239,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult EditNew(int id, Model.Company entity)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -249,6 +283,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Details(int id )
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -277,6 +316,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
@@ -291,6 +335,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
@@ -308,6 +357,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateIncentive([FromBody] Model.UpdateIncentive updateIncentive)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateIncentive.Id, GetLog(Model.OccorenceLog.Read));
@@ -325,6 +379,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateStatus updateStatus)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateStatus.Id, GetLog(Model.OccorenceLog.Read));

@@ -25,6 +25,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -50,6 +54,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 ViewBag.AnnexId = new SelectList(_annexService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
@@ -64,6 +73,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.NcmConvenio entity)
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
             try
             {
                 entity.Created = DateTime.Now;
@@ -80,6 +93,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -95,6 +112,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.NcmConvenio entity)
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -112,6 +133,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            {
+                return Unauthorized();
+            }
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));

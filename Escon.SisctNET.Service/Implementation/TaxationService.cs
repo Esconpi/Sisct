@@ -34,9 +34,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Taxation FindByCode(string code, DateTime data, Log log = null)
+        public Taxation FindByCode(string code, string cest, DateTime data, Log log = null)
         {
-            return _repository.FindByCode(code, data, log);
+            return _repository.FindByCode(code, cest, data, log);
         }
 
         public Taxation FindByCode2(string code2, Log log = null)
@@ -54,9 +54,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
-        public Taxation FindByNcm(string code, Log log = null)
+        public Taxation FindByNcm(string code, string cest, Log log = null)
         {
-            return _repository.FindByNcm(code, log);
+            return _repository.FindByNcm(code, cest, log);
         }
 
         public Taxation Update(Taxation entity, Log log)

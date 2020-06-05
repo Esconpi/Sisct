@@ -50,6 +50,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int id, string year, string month)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -83,6 +87,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int id, string year, string month)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -361,7 +369,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
-                                var taxed = _taxationService.FindByCode(code, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+                                var taxed = _taxationService.FindByCode(code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                                 bool incentivo = false;
 
@@ -588,6 +596,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -603,6 +615,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Note entity)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -639,6 +655,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Audita(int id, string year, string month)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var notes = _service.FindByNotes(id, year, month);
@@ -658,6 +678,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Delete(int id, string year, string month)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var notes = _service.FindByNotes(id, year, month);
@@ -686,6 +710,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult DeleteNote(int id,int company, string year, string month)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var products = _itemService.FindByNotes(id);
@@ -706,6 +734,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult UpdateView(int id)
         {
+            if (!SessionManager.GetNoteInSession().Equals(2))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));

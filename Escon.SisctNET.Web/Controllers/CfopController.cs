@@ -26,6 +26,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -50,6 +55,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 return View();
@@ -64,6 +74,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Cfop entity)
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 entity.Created = DateTime.Now;
@@ -81,6 +96,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -95,6 +115,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Cfop entity)
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -112,6 +137,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetCfopInSession().Equals(13))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));

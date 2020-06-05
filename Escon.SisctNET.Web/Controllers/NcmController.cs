@@ -28,8 +28,13 @@ namespace Escon.SisctNET.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Index(int page = 1)
+        public IActionResult Index()
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -55,6 +60,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 return View();
@@ -69,6 +79,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Ncm entity)
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
@@ -83,6 +98,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -98,6 +118,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Ncm entity)
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -115,6 +140,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
@@ -129,6 +159,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetNcmInSession().Equals(7))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));

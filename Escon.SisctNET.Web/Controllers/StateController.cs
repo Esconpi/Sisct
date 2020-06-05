@@ -21,6 +21,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
+            if (!SessionManager.GetStateInSession().Equals(14))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -45,6 +49,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetStateInSession().Equals(14))
+            {
+                return Unauthorized();
+            }
             try
             {
                 return View();
@@ -58,6 +66,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.State entity)
         {
+            if (!SessionManager.GetStateInSession().Equals(14))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var aliq = _service.FindAll(GetLog(Model.OccorenceLog.Create));
@@ -84,6 +96,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetStateInSession().Equals(14))
+            {
+                return Unauthorized();
+            }
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));

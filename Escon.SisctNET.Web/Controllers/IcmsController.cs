@@ -54,6 +54,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public async Task<IActionResult> RelatoryExit(int id, string year, string month, string type, IFormFile arquivo)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
 

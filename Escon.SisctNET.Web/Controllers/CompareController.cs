@@ -31,6 +31,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public async Task<IActionResult> Index(IFormFile arquivo)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var login = SessionManager.GetLoginInSession();

@@ -36,6 +36,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _companyService.FindById(id,GetLog(Model.OccorenceLog.Read));
@@ -65,6 +70,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -79,6 +89,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id,string year,string month,string opcao)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 int cont = 0;
@@ -147,6 +162,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Filter(int id)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
@@ -162,6 +182,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Details(int companyId,int count)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 ViewBag.Id = companyId;
@@ -179,6 +204,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
@@ -195,6 +225,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Client entity)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var client = _service.FindById(id, null);
@@ -216,6 +251,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Client(int id, int count)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
@@ -233,6 +273,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Client(int id, int count, Model.Client entity)
         {
+            if (!SessionManager.GetClientInSession().Equals(25))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var client = _service.FindById(id, null);

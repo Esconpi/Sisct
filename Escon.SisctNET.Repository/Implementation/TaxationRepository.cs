@@ -18,11 +18,11 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Taxation FindByCode(string code, DateTime data, Log log = null)
+        public Taxation FindByCode(string code, string cest, DateTime data, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");
             Taxation result = null;
-            var taxations = _context.Taxations.Where(_ => _.Code.Equals(code));
+            var taxations = _context.Taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest));
             
             foreach(var t in taxations)
             {
@@ -58,9 +58,9 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public Taxation FindByNcm(string code, Log log = null)
+        public Taxation FindByNcm(string code, string cest, Log log = null)
         {
-            var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.DateEnd == null).FirstOrDefault();
+            var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);
             return rst;
         }

@@ -17,6 +17,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -41,6 +46,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 return View();
@@ -55,6 +65,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Configuration entity)
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 entity.Created = DateTime.Now;
@@ -72,6 +87,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -86,6 +106,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Configuration entity)
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -104,6 +129,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
@@ -118,6 +148,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
+            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));

@@ -54,6 +54,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int noteId)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
 
             try
             {
@@ -91,6 +95,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Product(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(OccorenceLog.Read));
@@ -158,6 +166,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Product(int id, Model.ProductNote entity)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             { 
                 var rst = _service.FindById(id, GetLog(OccorenceLog.Read));
@@ -492,7 +504,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     string code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms;
 
-                    var taxationcm = _taxationService.FindByNcm(code);
+                    var taxationcm = _taxationService.FindByNcm(code, rst.Cest);
 
                     if (taxationcm != null)
                     {
@@ -553,6 +565,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Relatory(int id, int typeTaxation, int type, string year, string month, string nota)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));

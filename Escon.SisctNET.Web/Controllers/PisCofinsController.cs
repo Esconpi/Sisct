@@ -39,6 +39,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult RelatoryExit(int id, string year, string month, string type)
         {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var comp = _companyService.FindById(id, null);
@@ -73,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notesVenda = import.NfeExit(directoryNfeExit, comp.Id, type, "venda");
 
-                    decimal valorPis = 0, valorCofins = 0; 
+                    decimal valorProduto = 0, valorPis = 0, valorCofins = 0; 
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -122,9 +127,43 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncmTemp.Add(nn.Description);
                                         ncmTemp.Add("0");
                                         ncmTemp.Add("0");
+                                        ncmTemp.Add("0");
                                         resumoNcm.Add(ncmTemp);
                                         pos = resumoNcm.Count() - 1;
                                     }
+                                    if(pos >= 0)
+                                    {
+                                        if (notesVenda[i][j].ContainsKey("vProd"))
+                                        {
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vProd"])).ToString();
+                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vProd"]);
+                                        }
+
+                                        if (notesVenda[i][j].ContainsKey("vFrete"))
+                                        {
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vFrete"])).ToString();
+                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vFrete"]);
+                                        }
+
+                                        if (notesVenda[i][j].ContainsKey("vDesc"))
+                                        {
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) - Convert.ToDecimal(notesVenda[i][j]["vDesc"])).ToString();
+                                            valorProduto -= Convert.ToDecimal(notesVenda[i][j]["vDesc"]);
+                                        }
+
+                                        if (notesVenda[i][j].ContainsKey("vOutro"))
+                                        {
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vOutro"])).ToString();
+                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vOutro"]);                                        }
+
+                                        if (notesVenda[i][j].ContainsKey("vSeg"))
+                                        {
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vSeg"])).ToString();
+                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                        }
+
+                                    }
+
                                 }
                                 else if (codeProdNormal.Contains(notesVenda[i][j]["cProd"]))
                                 {
@@ -166,9 +205,12 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         resumoNcm[i][2] = (Convert.ToDouble(resumoNcm[i][2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
                         resumoNcm[i][3] = (Convert.ToDouble(resumoNcm[i][3].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+                        resumoNcm[i][4] = (Convert.ToDouble(resumoNcm[i][4].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+
                     }
 
                     ViewBag.Ncm = resumoNcm;
+                    ViewBag.ValorProduto = valorProduto;
                     ViewBag.ValorPis = Convert.ToDouble(valorPis.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorCofins = Convert.ToDouble(valorCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
