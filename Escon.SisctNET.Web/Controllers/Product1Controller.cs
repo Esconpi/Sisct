@@ -293,7 +293,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < products.Count(); i++)
                 {
-                    var item = _service.FindByProduct(products[i][0], groupId, products[i][1]);
+                    var item = _service.FindByProduct(products[i][0], groupId);
 
                     if (item != null)
                     {
