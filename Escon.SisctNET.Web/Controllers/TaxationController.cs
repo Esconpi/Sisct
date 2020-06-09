@@ -69,8 +69,27 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                SessionManager.SetCompanyIdInSession(comp.CompanyId);
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
-                return RedirectToAction("Index", new { companyId = comp.CompanyId});
+                return RedirectToAction("Index", new { companyId = SessionManager.GetCompanyIdInSession()});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            if (!SessionManager.GetTaxationInSession().Equals(18))
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(result);
             }
             catch (Exception ex)
             {

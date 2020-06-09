@@ -17,7 +17,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
-        [Display(Name = "Aliquota Interna")]
+        [Display(Name = "Aliq. Inter")]
         public decimal? AliqInterna { get; set; }
 
         [Display(Name = "Dif")]

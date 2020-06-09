@@ -1426,9 +1426,10 @@ namespace Escon.SisctNET.Web.Taxation
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             List<List<string>> cfops = new List<List<string>>();
 
-            decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0;
+            decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, icmsRetidoST = 0, valorNotaNF = 0;
             int posC100 = -1;
             string line;
+            bool diferenca = false;
 
             notes = Nfe(directoryNfe);
             StreamReader archiveSped = new StreamReader(directorySped);
@@ -1448,6 +1449,8 @@ namespace Escon.SisctNET.Web.Taxation
                         outrasDespesasNota = 0;
                         freteNota = 0;
                         seguroNota = 0;
+                        icmsRetidoST = 0;
+                        valorNotaNF = 0;
                         cfops.Clear();
 
                         if(!linha[16].Equals(""))
@@ -1474,26 +1477,49 @@ namespace Escon.SisctNET.Web.Taxation
                         {
                             outrasDespesasNota = Convert.ToDecimal(linha[20].Replace(",", "."));
                         }
+
+                        if (!linha[24].Equals(""))
+                        {
+                            icmsRetidoST = Convert.ToDecimal(linha[24].Replace(",", "."));
+                        }
+
                         if (!linha[25].Equals(""))
                         {
                             ipiNota = Convert.ToDecimal(linha[25].Replace(",", "."));
                         }
 
-                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        for (int i = 0; i < notes.Count(); i++)
                         {
-                            for (int i = 0; i < notes.Count(); i++)
+                            if (notes[i][0]["chave"].Equals(linha[9]))
                             {
-                                if (notes[i][0]["chave"].Equals(linha[9]))
+                                posC100 = i;
+                                break;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+
+                        for (int i = posC100; i < posC100 + 1; i++)
+                        {
+                            for (int j = 0; j < notes[i].Count(); j++)
+                            {
+                                if (notes[i][j].ContainsKey("vNF"))
                                 {
-                                    posC100 = i;
-                                    break;
+                                    valorNotaNF += Convert.ToDecimal(notes[i][j]["vNF"]);
                                 }
                             }
-                            valorNota = Math.Round(valorNota - descontoNota + freteNota + seguroNota + outrasDespesasNota + ipiNota, 2);
+                        }
+
+                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF))
+                        {
+                            diferenca = true;
+                            valorNota = Math.Round(valorNotaNF, 2);
                             textoC100 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + linha[7] + "|"
                                              + linha[8] + "|" + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + valorNota.ToString().Replace(".",",") + "|" + linha[13] + "|" + "" + "|" + linha[15] + "|"
-                                             + valorNota.ToString().Replace(".", ",") + "|" + linha[17] + "|" + "" + "|" + "" + "|" + "" + "|" + linha[21] + "|" + linha[22] + "|" + linha[23] + "|"
-                                             + linha[24] + "|" + "" + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|";
+                                             + valorNota.ToString().Replace(".", ",") + "|" + linha[17] + "|" + "" + "|" + "" + "|" + "" + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|"
+                                             + "" + "|" + "" + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|";
                             sped.Add(textoC100);
                         }
                         else
@@ -1512,7 +1538,7 @@ namespace Escon.SisctNET.Web.Taxation
                         string textoC170 = "";
 
 
-                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
                         {
                             decimal valorProduto = 0, vProd = 0;
                             int posCfop = -1, nItem = 1;
@@ -1590,6 +1616,14 @@ namespace Escon.SisctNET.Web.Taxation
                                             valorProduto += Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
                                     }
+
+                                    if (notes[i][j].ContainsKey("vICMSST"))
+                                    {
+                                        if (Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd) && Convert.ToInt32(linha[2]).Equals(nItem))
+                                        {
+                                            valorProduto += Convert.ToDecimal(notes[i][j]["vICMSST"]);
+                                        }
+                                    }
                                 }
 
                             }
@@ -1597,8 +1631,8 @@ namespace Escon.SisctNET.Web.Taxation
                             valorProduto = Math.Round(valorProduto, 2);
                             cfops[posCfop][1] = (Math.Round(Convert.ToDecimal(cfops[posCfop][1]) + valorProduto,2)).ToString();
                             textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + valorProduto.ToString().Replace(".",",") + "|" + "" + "|"
-                                + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + linha[13] + "|" + linha[14] + "|" + linha[15] + "|" + linha[16] + "|" + linha[17] + "|"
-                                + linha[18] + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
+                                + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + linha[13] + "|" + linha[14] + "|" + linha[15] + "|" + "" + "|" + "" + "|"
+                                + "" + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|" + linha[25] + "|" + linha[26] + "|"
                                 + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|" + linha[34] + "|" + linha[35] + "|"
                                 + linha[36] + "|" + linha[37] + "|" + linha[38] + "|";
                             sped.Add(textoC170);
@@ -1616,14 +1650,14 @@ namespace Escon.SisctNET.Web.Taxation
                     if (linha[1].Equals("C190"))
                     {
                         string textoC190 = "";
-                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0))
+                        if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
                         {
                             for(int i = 0; i < cfops.Count(); i++)
                             {
                                 if (cfops[i][0].Equals(linha[3]))
                                 {
                                     textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + cfops[i][1].Replace(".",",") + "|" + linha[6] + "|" + linha[7] + "|"
-                                                    + linha[8] + "|" + linha[9] + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
+                                                    + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
                                     sped.Add(textoC190);
                                 }
                             }
@@ -1844,6 +1878,246 @@ namespace Escon.SisctNET.Web.Taxation
                                                 reader.Read();
                                             }
                                             nota.Add(cofins);
+                                            break;
+
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+
+                                                reader.Read();
+
+                                            }
+                                            nota.Add(total);
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                        notes.Add(nota);
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return notes;
+        }
+
+        public List<List<Dictionary<string, string>>> NfeExit(string directoryNfe, string codeCfop)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        bool cfop = true;
+                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            nota.Add(infNFe);
+                                            break;
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name != "ide" && reader.Name != "NFref")
+                                            {
+                                                ide.Add(reader.Name, reader.ReadString());
+                                                reader.Read();
+                                            }
+                                            nota.Add(ide);
+                                            break;
+
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            nota.Add(emit);
+                                            break;
+
+                                        case "dest":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            nota.Add(dest);
+                                            break;
+
+                                        case "prod":
+
+                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            cfop = true;
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
+                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
+                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
+                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
+                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
+                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
+                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
+                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
+                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
+                                                    reader.Name == "nRECOPI")
+                                                {
+
+                                                    prod.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+
+                                            }
+
+                                            if (!prod["CFOP"].Equals(codeCfop))
+                                            {
+                                                cfop = false;
+                                            }
+
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(prod);
+                                            }
+
+                                            break;
+
+                                        case "ICMS00":
+                                        case "ICMS10":
+                                        case "ICMS20":
+                                        case "ICMS30":
+                                        case "ICMS40":
+                                        case "ICMS51":
+                                        case "ICMS60":
+                                        case "ICMS70":
+                                        case "ICMS90":
+                                        case "ICMSPart":
+                                        case "ICMSST":
+                                        case "ICMSSN101":
+                                        case "ICMSSN102":
+                                        case "ICMSSN201":
+                                        case "ICMSSN202":
+                                        case "ICMSSN500":
+                                        case "ICMSSN900":
+                                            Dictionary<string, string> icms = new Dictionary<string, string>();
+                                            while (reader.Name != "ICMS")
+                                            {
+                                                if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
+                                                    reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
+                                                {
+                                                    icms.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(icms);
+                                            }
+
+                                            break;
+
+                                        case "IPI":
+                                            Dictionary<string, string> ipi = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "IPI")
+                                            {
+                                                if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
+                                                reader.Name == "pIPI" || reader.Name == "vIPI")
+                                                {
+                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(ipi);
+                                            }
+
+                                            break;
+
+                                        case "PIS":
+                                            Dictionary<string, string> pis = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "PIS")
+                                            {
+                                                if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
+                                                {
+                                                    pis.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(pis);
+                                            }
+
+                                            break;
+
+                                        case "COFINS":
+                                            Dictionary<string, string> cofins = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "COFINS")
+                                            {
+                                                if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
+                                                {
+                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            if (cfop == true)
+                                            {
+                                                nota.Add(cofins);
+                                            }
+
                                             break;
 
                                         case "ICMSTot":

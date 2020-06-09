@@ -25,7 +25,7 @@
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             @if (ViewBag.Type == "resumocfop")
                             {
-                                <strong>Resumo por CFOP</strong>
+                                <strong>Resumo CFOP</strong>
                             }
                             else if (ViewBag.Type == "venda")
                             {
@@ -42,6 +42,10 @@
                             else if (ViewBag.Type == "incentivo")
                             {
                                 <strong>Apuração Icms</strong>
+                            }
+                            else if (ViewBag.Type == "resumoporcfop")
+                            {
+                                <strong>Resumo por CFOP - @ViewBag.Code</strong>
                             }
 
                         </div>
@@ -949,7 +953,7 @@
                                                     <th style="text-align:center" width="1100px">Cálculo ICMS Normal</th>
                                                 </tr>
                                                 <tr>
-                                                    
+
                                                     <th>
                                                         <table border="1">
                                                             <tr>
@@ -1227,6 +1231,73 @@
                         </div>
                     }
 
+                }
+                else if (ViewBag.Type == "resumoporcfop")
+                {
+                    <table style="border:1px solid;">
+                        <thead>
+                            <tr style="border:1px solid;">
+                                <th style="border:1px solid; text-align:center;" width="300px">
+                                    N° Nota
+                                </th>
+                                <th style="border:1px solid; text-align:center;" width="200px">
+                                    Valor Contábil
+                                </th>
+                                <th style="border:1px solid; text-align:center;" width="200px">
+                                    Base de Cálculo Icms
+                                </th>
+                                <th style="border:1px solid; text-align:center;" width="170px">
+                                    Valor Icms
+                                </th>
+                                <th style="border:1px solid; text-align:center;" width="150px">
+                                    Valor Fecop
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+                            {
+
+                                <tr style="border:1px solid;">
+                                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                                        @ViewBag.Cfop[i][1]
+                                    </td>
+                                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                        <b>@ViewBag.Cfop[i][2]</b>
+                                    </td>
+                                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                        <b>@ViewBag.Cfop[i][3]</b>
+                                    </td>
+                                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                        <b>@ViewBag.Cfop[i][4]</b>
+                                    </td>
+                                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                        <b>@ViewBag.Cfop[i][5]</b>
+                                    </td>
+                                </tr>
+                                
+                            }
+                        </tbody>
+                        <tbody>
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                                    <b>Total</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorContabil</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.BaseIcms</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorIcms</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorFecop</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 }
 
             </div>

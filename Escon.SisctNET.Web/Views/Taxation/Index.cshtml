@@ -30,17 +30,11 @@
                         </th>
                         <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
                         <th>@Html.DisplayNameFor(model => model.AliqInterna)</th>
-                        <th>@Html.DisplayNameFor(model => model.MVA)</th>
-                        <th>@Html.DisplayNameFor(model => model.BCR)</th>
                         <th>@Html.DisplayNameFor(model => model.Picms)</th>
                         <th>@Html.DisplayNameFor(model => model.Uf)</th>
                         <th>@Html.DisplayNameFor(model => model.DateStart)</th>
                         <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
-
-                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
-                        {
-                            <th></th>
-                        }
+                        <th></th>
 
                     </tr>
                 </thead>
@@ -50,8 +44,26 @@
     </div>
     <div class="box-footer"></div>
 </div>
+<div class="modal modal_default fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><strong>Detalhe da Tributação</strong></h4>
+            </div>
+            <div class="modal-body">
 
-@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (SessionManager.GetPersonInSession().Profile.Id.Equals(1))
 {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -62,6 +74,14 @@
                     $('.showProduct').off();
                     $('[data-toggle="tooltip"]').tooltip();
                     $("input[type='checkbox']").bootstrapToggle();
+                    $('.showTaxation').click(function () {
+                        $.get('/Taxation/Details/' + $(this).attr('id'), function (html) {
+                            $('#formShow .modal-body').empty();
+                            $('#formShow .modal-body').append($(html));
+                            $('#formShow').modal('show');
+                        });
+
+                    });
                 },
                 "processing": true,
                 "ordering": false,
@@ -74,8 +94,6 @@
                     { "data": "cest" },
                     { "data": "description" },
                     { "data": "aliqInterna" },
-                    { "data": "mva" },
-                    { "data": "bcr" },
                     { "data": "picms" },
                     { "data": "uf" },
                     { "data": "inicio" },
@@ -94,7 +112,8 @@
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='/Taxation/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Cfop' /> "
+                            return "<a href='#" + data + "' class = 'showTaxation glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhe da Tributação' id='" + row.id + "' /> " +
+                            "<a href='/Taxation/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
                         }
                     }
                 ]
@@ -113,6 +132,14 @@ else
                     $('.showProduct').off();
                     $('[data-toggle="tooltip"]').tooltip();
                     $("input[type='checkbox']").bootstrapToggle();
+                    $('.showTaxation').click(function () {
+                        $.get('/Taxation/Details/' + $(this).attr('id'), function (html) {
+                            $('#formShow .modal-body').empty();
+                            $('#formShow .modal-body').append($(html));
+                            $('#formShow').modal('show');
+                        });
+
+                    });
                 },
                 "processing": true,
                 "ordering": false,
@@ -125,8 +152,6 @@ else
                     { "data": "cest" },
                     { "data": "description" },
                     { "data": "aliqInterna" },
-                    { "data": "mva" },
-                    { "data": "bcr" },
                     { "data": "picms" },
                     { "data": "uf" },
                     { "data": "inicio" },
@@ -140,6 +165,12 @@ else
                             else {
                                 return data
                             }
+                        }
+                    },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='#" + data + "' class = 'showTaxation glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhe da Tributação' id='" + row.id + "' /> "
                         }
                     }
                 ]

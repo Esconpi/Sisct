@@ -21,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IAnnexService _annexService;
         private readonly ICountingTypeService _countingTypeService;
+        private readonly ICfopService _cfopService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -32,6 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
             IConfigurationService configurationService,
             IAnnexService annexService,
             ICountingTypeService countingTypeService,
+            ICfopService cfopService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -46,6 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
             _configurationService = configurationService;
             _annexService = annexService;
             _countingTypeService = countingTypeService;
+            _cfopService = cfopService;
         }
 
         [HttpGet]
@@ -463,6 +466,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                List<Cfop> list_cfop = _cfopService.FindAll(null);
+                foreach (var cfop in list_cfop)
+                {
+                    cfop.Description = cfop.Code +" - " + cfop.Description;
+                }
+                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
+                ViewBag.CfopId = cfops;
                 ViewBag.TypeCompany = result.TypeCompany;
                 return View(result);
             }

@@ -69,10 +69,11 @@ namespace Escon.SisctNET.Web.Controllers
                 if (type.Equals("resumoncm"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-                    List<TaxationNcm> ncms = new List<TaxationNcm>();
+                    List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
                     List<string> codeProdNormal = new List<string>();
                     List<List<string>> resumoNcm = new List<List<string>>();
+                    List<int> ncms = new List<int>();
 
                     var ncmsAll = _ncmService.FindAll(null);
 
@@ -92,14 +93,14 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (comp.CountingTypeId.Equals(1))
                             {
-                                ncms = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
                             }
                             else
                             {
-                                ncms = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
                             }
-                            codeProdMono = ncms.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncms.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.CodeProduct).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.CodeProduct).ToList();
                         }
 
                         int pos = -1;
@@ -129,6 +130,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncmTemp.Add("0");
                                         ncmTemp.Add("0");
                                         resumoNcm.Add(ncmTemp);
+                                        ncms.Add(Convert.ToInt32(nn.Code));
                                         pos = resumoNcm.Count() - 1;
                                     }
                                     if(pos >= 0)
@@ -199,7 +201,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
+                    ncms.Sort();
+
                     System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                    List<List<string>> resumoNcmOrdenado = new List<List<string>>();
+
 
                     for (int i = 0; i < resumoNcm.Count; i++)
                     {
@@ -209,7 +216,28 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    ViewBag.Ncm = resumoNcm;
+                    for (int i = 0; i < ncms.Count(); i++)
+                    {
+                        int pos = 0;
+                        for (int j = 0; i < resumoNcm.Count(); j++)
+                        {
+                            if (ncms[i] == Convert.ToInt32(resumoNcm[j][0]))
+                            {
+                                pos = j;
+                                break;
+                            }
+                        }
+
+                        List<string> cc = new List<string>();
+                        cc.Add(resumoNcm[pos][0]);
+                        cc.Add(resumoNcm[pos][1]);
+                        cc.Add(resumoNcm[pos][2]);
+                        cc.Add(resumoNcm[pos][3]);
+                        cc.Add(resumoNcm[pos][4]);
+                        resumoNcmOrdenado.Add(cc);
+                    }
+
+                    ViewBag.Ncm = resumoNcmOrdenado;
                     ViewBag.ValorProduto = Convert.ToDouble(valorProduto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorPis = Convert.ToDouble(valorPis.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorCofins = Convert.ToDouble(valorCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
