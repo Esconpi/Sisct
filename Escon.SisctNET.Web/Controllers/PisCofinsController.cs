@@ -55,7 +55,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
 
-                var import = new Import(_companyCfopService);
+                var import = new Import(_companyCfopService, _service);
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
@@ -77,7 +77,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmsAll = _ncmService.FindAll(null);
 
-                    notesVenda = import.NfeExit(directoryNfeExit, comp.Id, type, "venda");
+                    notesVenda = import.NfeExit(directoryNfeExit, comp.Id, Convert.ToInt32(comp.CountingTypeId));
 
                     decimal valorProduto = 0, valorPis = 0, valorCofins = 0; 
 

@@ -16,12 +16,12 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<ProductNote> FindByNcmUfAliq(List<Note> notes, string ncm, decimal aliq, Log log = null)
+        public List<ProductNote> FindByNcmUfAliq(List<Note> notes, string ncm, decimal aliq, string cest, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Pautado.Equals(false));
+                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Cest.Equals(cest) && _.Pautado.Equals(false));
                 products.AddRange(rst);                
             }
             AddLog(log);

@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal valor_fecop = 0;
                 string code2 = "";
                 var notes = _noteService.FindByUf(note.Company.Id,note.AnoRef,note.MesRef,note.Uf);
-                var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms);
+                var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms, rst.Cest);
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
 

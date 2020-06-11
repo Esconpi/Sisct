@@ -71,7 +71,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 SessionManager.SetCompanyIdInSession(comp.CompanyId);
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
-                return RedirectToAction("Index", new { companyId = SessionManager.GetCompanyIdInSession()});
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession()});
             }
             catch (Exception ex)
             {

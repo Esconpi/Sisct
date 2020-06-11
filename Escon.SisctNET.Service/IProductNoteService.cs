@@ -13,7 +13,7 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByProductsType(List<Model.Note> notes, int taxationType, Model.Log log = null);
 
-        List<Model.ProductNote> FindByNcmUfAliq(List<Model.Note> notes, string ncm, decimal aliq, Model.Log log = null);
+        List<Model.ProductNote> FindByNcmUfAliq(List<Model.Note> notes, string ncm, decimal aliq, string cest, Model.Log log = null);
 
         List<Model.ProductNote> FindByCnpjCprod(List<Model.Note> notes, string cnpj, string cprod, string ncm, string cest, Model.Log log = null);
 

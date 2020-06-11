@@ -44,6 +44,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
+        {
+            return _repository.FindMono(typeCompany, log);
+        }
+
         public TaxationNcm Update(TaxationNcm entity, Log log)
         {
             return _repository.Update(entity, log);

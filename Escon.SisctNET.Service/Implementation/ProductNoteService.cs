@@ -59,9 +59,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByProductsType(notes, taxationType, log);
         }
 
-        public List<ProductNote> FindByNcmUfAliq(List<Note> notes, string ncm, decimal aliq, Log log = null)
+        public List<ProductNote> FindByNcmUfAliq(List<Note> notes, string ncm, decimal aliq,string cest, Log log = null)
         {
-            return _repository.FindByNcmUfAliq(notes, ncm, aliq, log);
+            return _repository.FindByNcmUfAliq(notes, ncm, aliq, cest, log);
         }
 
         public List<ProductNote> FindByCnpjCprod(List<Note> notes, string cnpj, string cprod, string ncm, string cest, Log log = null)
