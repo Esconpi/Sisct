@@ -16,8 +16,8 @@
             <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
-            <div style="float:left;">Periodo: @ViewBag.Mes/@ViewBag.Ano</div>
-            <div style="float:right;">Data: @DateTime.Now.ToString("dd/MM/yyyy")</div>
+            <div style="float:left;"><strong>Periodo:</strong> @ViewBag.Mes/@ViewBag.Ano</div>
+            <div style="float:right;"><strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")</div>
         </div>
     </div>
     <div class="box-body">
@@ -50,7 +50,8 @@
                                     <td>@ViewBag.Notas[i][1]["tpNF"]</td>
                                     <td>@ViewBag.Notas[i][2]["UF"]</td>
                                     <td>@ViewBag.Notas[i][1]["nNF"]</td>
-                                    @if (ViewBag.Notas[i][2].ContainsKey("CNPJ")) { 
+                                    @if (ViewBag.Notas[i][2].ContainsKey("CNPJ"))
+                                    {
                                         <td>@ViewBag.Notas[i][2]["CNPJ"]</td>
                                     }
                                     else
@@ -120,23 +121,58 @@
                                 <tr>
                                     <td>@valor[0]</td>
                                     <td>@valor[1]</td>
-                                    <td>@valor[2]</td>
-                                    <td>@valor[3]</td>
-                                    <td style="background-color:lightgray;">@valor[4]</td>
-                                    <td>@valor[5]</td>
-                                    <td>@valor[6]</td>
-                                    <td style="background-color:lightgray;">@valor[7]</td>
-                                    <td>@valor[8]</td>
-                                    <td>@valor[9]</td>
-                                    <td style="background-color:lightgray;">@valor[10]</td>
-                                    <td>@valor[11]</td>
-                                    <td>@valor[12]</td>
-                                    <td style="background-color:lightgray;">@valor[13]</td>
-                                    <td>@valor[14]</td>
-                                    <td>@valor[15]</td>
-                                    <td style="background-color:lightgray;">@valor[16]</td>
+                                    <td style="text-align:right;">@valor[2]</td>
+                                    <td style="text-align:right;">@valor[3]</td>
+                                    <td style="background-color:lightgray; text-align:right;">@valor[4]</td>
+                                    <td style="text-align:right;">@valor[5]</td>
+                                    <td style="text-align:right;">@valor[6]</td>
+                                    <td style="background-color:lightgray; text-align:right;">@valor[7]</td>
+                                    <td style="text-align:right;">@valor[8]</td>
+                                    <td style="text-align:right;">@valor[9]</td>
+                                    <td style="background-color:lightgray; text-align:right;">@valor[10]</td>
+                                    <td style="text-align:right;">@valor[11]</td>
+                                    <td style="text-align:right;">@valor[12]</td>
+                                    <td style="background-color:lightgray; text-align:right;">@valor[13]</td>
+                                    <td style="text-align:right;">@valor[14]</td>
+                                    <td style="text-align:right;">@valor[15]</td>
+                                    <td style="background-color:lightgray; text-align:right;">@valor[16]</td>
                                 </tr>
                             }
+                        </tbody>
+                    </table>
+                }
+                else if (ViewBag.ordem == "4")
+                {
+                    <table class="table table-striped table-bordered" style="width:100%;font-size:12px;">
+                        <thead>
+                            <tr>
+                                <th>Nº NFe</th>
+                                <th>Fornecedor</th>
+                                <th>Total NFe</th>
+                                <th>Total Sped</th>
+                                <th>DIFERENÇA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var valor in ViewBag.Valores)
+                            {
+                                <tr>
+                                    <td>@valor[0]</td>
+                                    <td>@valor[1]</td>
+                                    <td style="text-align:right;">@valor[2]</td>
+                                    <td style="text-align:right">@valor[3]</td>
+                                    <td style="background-color:lightgray;text-align:right;">@valor[4]</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td></td>
+                                <td style="text-align:right;"><strong>@ViewBag.TotalXml</strong></td>
+                                <td style="text-align:right;"><strong>@ViewBag.TotalSped</strong></td>
+                                <td style="background-color:lightgray; text-align:right;"><strong>@ViewBag.TotalDif </strong></td>
+                            </tr>
                         </tbody>
                     </table>
                 }
@@ -151,7 +187,7 @@
                             {
                                 @ViewBag.Notas.Count
                             }
-                            else if (ViewBag.ordem == "3")
+                            else if (ViewBag.ordem == "3" || ViewBag.ordem == "4")
                             {
                                 @ViewBag.Valores.Count
                             }

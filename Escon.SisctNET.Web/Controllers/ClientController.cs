@@ -87,13 +87,12 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id,string year,string month,string opcao)
+        public IActionResult Atualize(int id,string year,string month)
         {
             if (!SessionManager.GetClientInSession().Equals(25))
             {
                 return Unauthorized();
             }
-
             try
             {
                 int cont = 0;
@@ -108,47 +107,41 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                if (opcao.Equals("entrada"))
-                {
-                    dets = import.Client(directoryNfeEntrada);
-                }
-                else
-                {
-                    dets = import.Client(directoryNfeSaida);
-                }
-                
+                dets = import.Client(directoryNfeSaida);                
 
                 foreach (var det in dets)
                 {
-                    string CNPJ = det.ContainsKey("CNPJ") ? det["CNPJ"] : "escon";
-                    string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "escon";
-                    string IE = det.ContainsKey("IE") ? det["IE"] : "escon";   
-
-                    if (indIEDest == "1" && (IE != "escon" || IE != ""))
+                    
+                    if (det.ContainsKey("CNPJ") && det.ContainsKey("indIEDest") && det.ContainsKey("IE"))
                     {
-                        var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
-
-                        var CNPJRaiz = CNPJ.Substring(0, 8);
-
-                        if (existCnpj == null)
+                        string CNPJ = det["CNPJ"];
+                        string indIEDest = det["indIEDest"];
+                        string IE = det["IE"];
+                        if (indIEDest == "1" && (!IE.Equals("escon") || !IE.Equals("")) && (!CNPJ.Equals("escon") || !CNPJ.Equals("")))
                         {
-                            var client = new Model.Client
-                            {
-                                Name = det["xNome"],
-                                CompanyId = id,
-                                Document = CNPJ,
-                                CnpjRaiz = CNPJRaiz,
-                                Ie = IE,
-                                TypeClientId = 1,
-                                Created = DateTime.Now,
-                                Updated = DateTime.Now
+                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
-                            };
-                            _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
-                            cont++;
+                            if (existCnpj == null)
+                            {
+                                var CNPJRaiz = CNPJ.Substring(0, 8);
+                                var client = new Model.Client
+                                {
+                                    Name = det["xNome"],
+                                    CompanyId = id,
+                                    Document = CNPJ,
+                                    CnpjRaiz = CNPJRaiz,
+                                    Ie = IE,
+                                    TypeClientId = 1,
+                                    Created = DateTime.Now,
+                                    Updated = DateTime.Now
+
+                                };
+                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
+                                cont++;
+                            }
                         }
                     }
-                    
+                  
                 }
 
                 return RedirectToAction("Details",new {companyId = id,count = cont });
@@ -289,6 +282,21 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Details", new { companyId = client.CompanyId, count = count });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+        public IActionResult Contribuinte(int id)
+        {
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
+                var clients = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.TypeClientId.Equals(1)).ToList();
+                return View(clients);
             }
             catch (Exception ex)
             {

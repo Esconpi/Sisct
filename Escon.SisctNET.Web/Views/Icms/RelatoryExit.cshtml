@@ -175,23 +175,43 @@
                                 </tr>
                             }
                         </tbody>
-                        <tbody>
+                         <tbody>
                             <tr style="border:1px solid;">
                                 <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
-                                    <b>Total</b>
+                                    <b>Total Entrada</b>
                                 </td>
                                 <td></td>
                                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                                    <b>@ViewBag.ValorContabil</b>
+                                    <b>@ViewBag.ValorContabilEntrada</b>
                                 </td>
                                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                                    <b>@ViewBag.BaseIcms</b>
+                                    <b>@ViewBag.BaseIcmsEntrada</b>
                                 </td>
                                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                                    <b>@ViewBag.ValorIcms</b>
+                                    <b>@ViewBag.ValorIcmsEntrada</b>
                                 </td>
                                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                                    <b>@ViewBag.ValorFecop</b>
+                                    <b>@ViewBag.ValorFecopEntrada</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
+                                    <b>Total Saída</b>
+                                </td>
+                                <td></td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorContabilSaida</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.BaseIcmsSaida</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorIcmsSaida</b>
+                                </td>
+                                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                                    <b>@ViewBag.ValorFecopSaida</b>
                                 </td>
                             </tr>
                         </tbody>
@@ -200,62 +220,92 @@
                 }
                 else if (ViewBag.Type == "venda")
                 {
-                    <table class="table" style="font-size:12px;">
+                    <table class="table" style="font-size:12px; border:2px solid;">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="border:1px solid;">
 
                                 </th>
-                                <th>
-                                    Valor
+                                <th style="text-align:center; border:1px solid;">
+                                    Total
+                                </th>
+                                <th style="text-align:center; border:1px solid;">
+                                    Devolução
+                                </th>
+                                <th style="text-align:center; border:1px solid;">
+                                    Base de Cálculo
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th>
-                                    Base de Cálculo
+                                <th style="border: 1px solid; text-align:center;">
+                                    Venda
                                 </th>
-                                <td>
-                                    @ViewBag.TotalSaida
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalVenda
                                 </td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalDevo
+                                </td>
+                                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.BaseCalc
+                                </th>
                             </tr>
                             <tr>
-                                <th>
+                                <th style="border: 1px solid; text-align:center;">
                                     Vendas P/ Contribuintes
                                 </th>
-                                <td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
                                     @ViewBag.Contribuinte
                                 </td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalDevoContrib
+                                </td>
+                                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.BaseCalcContrib
+                                </th>
                             </tr>
-
                             <tr>
-                                <th>
+                                <th style="border: 1px solid; text-align:center;">
                                     Vendas P/ Não Contribuintes
                                 </th>
-                                <td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
                                     @ViewBag.NContribuinte
                                 </td>
-                            </tr>
-
-                            <tr>
-                                <th>
-                                    Vendas P/ CNPJ maior que @ViewBag.PercentualCNPJ %
-                                </th>
-                                <td>
-                                    @ViewBag.TotalExecedente
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalDevoNContrib
                                 </td>
+                                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.BaseCalcNContrib
+                                </th>
                             </tr>
-
                             <tr>
-                                <th>
+                                <th style="border: 1px solid; text-align:center;">
                                     Vendas do Anexo II
                                 </th>
-                                <td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
                                     @ViewBag.VendaAnexo
                                 </td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalDevoAnexo
+                                </td>
+                                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.BaseCalcAnexo
+                                </th>
                             </tr>
-
+                            <tr>
+                                <th style="border: 1px solid; text-align:center;">
+                                    Vendas P/ CNPJ maior que @ViewBag.PercentualCNPJ %
+                                </th>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                    @ViewBag.TotalExecedente
+                                </td>
+                                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                                </td>
+                                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                                </th>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -380,7 +430,7 @@
                                                 <th>ICMS excedente contribuinte</th>
                                                 <td>@ViewBag.LimiteContribuinte</td>
                                                 <th>-</th>
-                                                <td>@ViewBag.Contribuinte</td>
+                                                <td>@ViewBag.BaseCalcContrib</td>
                                                 <th>=</th>
                                                 <td>@ViewBag.ExcedenteContribuinte</td>
                                                 <th>x</th>

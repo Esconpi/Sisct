@@ -141,6 +141,8 @@ namespace Escon.SisctNET.Web.Compare
                         sped.Add(linha[5]);
                         sped.Add(linha[8]);
                         sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
                         spedNf.Add(sped);
                     }
                 }               

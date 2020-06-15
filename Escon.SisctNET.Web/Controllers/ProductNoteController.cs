@@ -790,6 +790,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFinalFecopCalculada = Convert.ToDouble(Math.Round(totalfecop1 + totalfecop2, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         ViewBag.Incetive = company.Incentive;
+                        ViewBag.TypeIncetive = company.TipoApuracao;
 
                         //Relatorio das empresas incentivadas
                         if (company.Incentive == true)
@@ -819,7 +820,6 @@ namespace Escon.SisctNET.Web.Controllers
                             icmsStnota = Math.Round(Convert.ToDecimal(notasTaxationNormal.Select(_ => _.IcmsSt).Distinct().Sum()), 2);
 
                             ViewBag.IcmsPagar = Convert.ToDouble(diefSt - icmsStnota).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
 
                             base1 = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                             base1 += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -926,7 +926,13 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(taxaFunef, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                             decimal totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
-                            ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo,2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            if(typeTaxation == 1 && type != 8) {
+                                ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo + (diefSt - icmsStnota) + (totalfecop1 + totalfecop2), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            }
+                            else if(typeTaxation == 1 && type == 7)
+                            {
+                                ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            }
 
                             ViewBag.ImpostoGeral = impostoGeral;
                         }

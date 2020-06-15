@@ -1074,7 +1074,7 @@ namespace Escon.SisctNET.Web.Taxation
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    /*if (linha[1].Equals("C170") && cfopstransf.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
+                    /*if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
                     {
                             totalDeCredito += Convert.ToDecimal(linha[15]);
                     }*/
@@ -1082,14 +1082,17 @@ namespace Escon.SisctNET.Web.Taxation
                     if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3])) && !linha[7].Equals(""))
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
-                        if (!linha[4].Equals(""))
+                        /*if (cfopsDevo.Contains(linha[3]))
                         {
-                            if (Convert.ToDecimal(linha[4]).Equals(17))
+                            if (!linha[4].Equals(""))
                             {
-                                //totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
+                                if (Convert.ToDecimal(linha[4]).Equals(17))
+                                {
+                                    totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
+                                }
                             }
-                        }
-                           
+                        }*/
+                        
                     }
                     if (linha[1].Equals("D100") && linha[17].Equals("1"))
                     {
@@ -1606,8 +1609,7 @@ namespace Escon.SisctNET.Web.Taxation
 
                                         if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"]))
-                                                )
+                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])))
                                             {
                                                 valorProduto += Convert.ToDecimal(notes[i][j]["vFrete"]);
                                             }
@@ -1734,88 +1736,101 @@ namespace Escon.SisctNET.Web.Taxation
 
                     if (linha[1].Equals("C190") && tipoOperacao.Equals("0") && emissao.Equals("0"))
                     {
-                        decimal valorCfop = 0;
                         string textoC190 = "";
-                        string cfop = "", cst = "";
-                        decimal valorCfopTemp = 0;
-
-                        for (int i = posC100; i < posC100 + 1; i++)
+                        if (posC100 >= 0)
                         {
-                            for (int j = 0; j < notes[i].Count(); j++)
+                            decimal valorCfop = 0;
+                            string cfop = "", cst = "";
+                            decimal valorCfopTemp = 0;
+
+                            for (int i = posC100; i < posC100 + 1; i++)
                             {
-                                if (notes[i][j].ContainsKey("cProd"))
+                                for (int j = 0; j < notes[i].Count(); j++)
                                 {
-                                    if (!cst.Equals("") && !cfop.Equals(""))
+                                    if (notes[i][j].ContainsKey("cProd"))
                                     {
-                                        if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(cst)) && Convert.ToInt32(linha[3]).Equals(Convert.ToInt32(cfop)))
+                                        if (!cst.Equals("") && !cfop.Equals(""))
                                         {
-                                            valorCfop += valorCfopTemp;
+                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(cst)) && Convert.ToInt32(linha[3]).Equals(Convert.ToInt32(cfop)))
+                                            {
+                                                valorCfop += valorCfopTemp;
+                                            }
                                         }
+                                        cfop = "";
+                                        cst = "";
+                                        valorCfopTemp = 0;
                                     }
-                                    cfop = "";
-                                    cst = "";
-                                    valorCfopTemp = 0;
-                                }
 
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                {
-                                    cfop = notes[i][j]["CFOP"];
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                    {
+                                        cfop = notes[i][j]["CFOP"];
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                {
-                                    valorCfopTemp -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                    {
+                                        valorCfopTemp -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("pIPI"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vIPI"]);
-                                }
+                                    if (notes[i][j].ContainsKey("pIPI"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vIPI"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vICMSST"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    valorCfopTemp += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                }
+                                    if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        valorCfopTemp += Convert.ToDecimal(notes[i][j]["vFCPST"]);
+                                    }
 
-                                if (notes[i][j].ContainsKey("orig"))
-                                {
-                                    cst = notes[i][j]["CST"];
-                                }
+                                    if (notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cst = notes[i][j]["CST"];
+                                    }
 
+                                }
                             }
-                        }
 
-                        if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(cst)) && Convert.ToInt32(linha[3]).Equals(Convert.ToInt32(cfop)))
+                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(cst)) && Convert.ToInt32(linha[3]).Equals(Convert.ToInt32(cfop)))
+                            {
+                                valorCfop += valorCfopTemp;
+                            }
+
+                            valorCfop = Math.Round(valorCfop, 2);
+
+                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + valorCfop.ToString().Replace(".", ",") + "|" + linha[6] + "|" + linha[7] + "|"
+                                                            + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
+                            sped.Add(textoC190);
+                        }
+                        else
                         {
-                            valorCfop += valorCfopTemp;
+                            textoC190 = "";
+                            foreach (var l in linha)
+                            {
+                                textoC190 += l + "|";
+                            }
+                            sped.Add(textoC190);
                         }
-
-                        valorCfop = Math.Round(valorCfop, 2);
-
-                        textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + valorCfop.ToString().Replace(".", ",") + "|" + linha[6] + "|" + linha[7] + "|"
-                                                        + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
-                        sped.Add(textoC190);
+                       
 
                     }
 

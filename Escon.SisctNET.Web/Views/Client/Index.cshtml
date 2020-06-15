@@ -10,11 +10,13 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Clientes</strong></h3>
         <div class="btn-group pull-right">
+            @Html.ActionLink("Relação de Contribuintes", "Contribuinte", new { id = @ViewBag.Id }, new { @class = "btn btn-primary" })
             <a href="#" id=@ViewBag.Id class="btn btn-primary showAtualize">
                 <i class="fa fa-refresh"></i>
                 Atualizar
             </a>
         </div>
+        
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
         </div>

@@ -109,7 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach (var prod in products)
                 {
-                    string cProd = "", ncm = "", cest = "";
+                    string cProd = "", ncm = "", cest = null;
                     if (prod.ContainsKey("cProd"))
                     {
                         cProd = prod["cProd"];
@@ -123,6 +123,10 @@ namespace Escon.SisctNET.Web.Controllers
                     if (prod.ContainsKey("CEST"))
                     {
                         cest = prod["CEST"];
+                        if (cest.Equals(""))
+                        {
+                            cest = null;
+                        }
                     }
 
                     var prodImport = _service.FindByProduct(id, cProd, ncm, cest);
@@ -133,6 +137,7 @@ namespace Escon.SisctNET.Web.Controllers
                             Code = prod["cProd"],
                             Ncm = prod["NCM"],
                             Name = prod["xProd"],
+                            Cest = cest,
                             TypeTaxation = "",
                             Active = false,
                             CompanyId = id,
