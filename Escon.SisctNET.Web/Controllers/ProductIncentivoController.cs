@@ -52,7 +52,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Document = comp.Document;
                     ViewBag.Status = comp.Status;
                     ViewBag.TypeCompany = comp.TypeCompany;
-
                     SessionManager.SetCompanyIdInSession(id);
 
                     return View(null);
@@ -484,6 +483,25 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.SocialName = comp.SocialName;
                 ViewBag.Document = comp.Document;
                 return PartialView(products);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Delete(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var product = _service.FindById(id, null);
+                var comp = _companyService.FindById(product.CompanyId, null);
+                _service.Delete(id, null);
+                return RedirectToAction("Index", new { id = comp.Id});
             }
             catch (Exception ex)
             {

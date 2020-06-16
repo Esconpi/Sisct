@@ -132,7 +132,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 foreach (var note in notes)
                 {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.IcmsST).Sum());
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
                 }
             }
             else if (taxaid == 2)

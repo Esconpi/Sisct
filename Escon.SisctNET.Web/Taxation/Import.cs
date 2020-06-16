@@ -897,7 +897,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {
@@ -1260,7 +1260,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {
@@ -1998,7 +1998,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {
@@ -2222,7 +2222,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {
@@ -2468,7 +2468,7 @@ namespace Escon.SisctNET.Web.Taxation
                                             while (reader.Name != "ICMS")
                                             {
                                                 if (reader.Name == "orig" || reader.Name == "CST" || reader.Name == "modBC" || reader.Name == "vBC" ||
-                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
+                                                    reader.Name == "pICMS" || reader.Name == "pFCP" || reader.Name == "vFCP" || reader.Name == "vICMS" || reader.Name == "vBCST" || reader.Name == "vICMSST" ||
                                                     reader.Name == "vICMSSTRet" || reader.Name == "vBCFCPST" || reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" ||
                                                     reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" || reader.Name == "vFCPSTRet")
                                                 {

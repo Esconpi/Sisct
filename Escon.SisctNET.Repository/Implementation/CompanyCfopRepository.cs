@@ -49,7 +49,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) &&  _.CfopTypeId.Equals(7)).ToList();
             }
-            else if (type.Equals("incentivo") && typeCfop.Equals("devolução de venda"))
+            else if (type.Equals("incentivo") && typeCfop.Equals("devolução"))
             {
                 result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true) && _.CfopTypeId.Equals(7)).ToList();
             }

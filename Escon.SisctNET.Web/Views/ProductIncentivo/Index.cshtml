@@ -54,7 +54,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    
+
                 </table>
 
             }
@@ -93,7 +93,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    
+
                 </table>
             }
         </div>
@@ -103,7 +103,7 @@
 <script>
     $(document).ready(function () {
 
-         $('.showImport').click(function () {
+        $('.showImport').click(function () {
             console.log($(this).attr('id'));
             $.get('/ProductIncentivo/Import/' + $(this).attr('id'), function (html) {
                 $('#formShow .modal-body').empty();
@@ -115,110 +115,227 @@
 
     });
 </script>
-@if (ViewBag.TypeCompany == true)
+@if (SessionManager.GetPersonInSession().ProfileId.Equals(1))
 {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblProductIncentivo').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "ajax": "/ProductIncentivo/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "code" },
-                    { "data": "name" },
-                    { "data": "nncm" },
-                    { "data": "ccest" },
-                    {
-                        "mData": "active",
-                        "mRender": function (data, type, row) {
-                            if (data == true) {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
-                            }
-                            else {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
-                            }
-                        }
+    @if (ViewBag.TypeCompany == true)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tblProductIncentivo').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
                     },
-                    { "data": "tipoTaxation" },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "ajax": "/ProductIncentivo/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "code" },
+                        { "data": "name" },
+                        { "data": "nncm" },
+                        { "data": "ccest" },
+                        {
+                            "mData": "active",
+                            "mRender": function (data, type, row) {
+                                if (data == true) {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                                }
+                                else {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                                }
+                            }
+                        },
+                        { "data": "tipoTaxation" },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> " +
+                                    "<a href='/ProductIncentivo/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+
+                            }
                         }
-                    }
-                ]
+                    ]
+                });
             });
-        });
-    </script>
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tblProductIncentivo').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
+                    },
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "ajax": "/ProductIncentivo/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "code" },
+                        { "data": "name" },
+                        { "data": "nncm" },
+                        { "data": "ccest" },
+                        {
+                            "mData": "active",
+                            "mRender": function (data, type, row) {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                            }
+                        },
+                        { "data": "tipoTaxation" },
+                        { "data": "inicio" },
+                        {
+                            "mData": "fim",
+                            "mRender": function (data, type, row) {
+                                if (data == "01/01/0001") {
+                                    return ""
+                                }
+                                else {
+                                    return data
+                                }
+                            }
+                        },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+
+                                }
+                                else {
+                                    return ""
+                                }
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+    }
+
 }
 else
 {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblProductIncentivo').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "ajax": "/ProductIncentivo/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "code" },
-                    { "data": "name" },
-                    { "data": "nncm" },
-                    { "data": "ccest" },
-                    {
-                         "mData": "active",
-                         "mRender": function (data, type, row) {
-                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
-                         }
+    @if (ViewBag.TypeCompany == true)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tblProductIncentivo').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
                     },
-                    { "data": "tipoTaxation" },
-                    { "data": "inicio" },
-                    {
-                        "mData": "fim",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "ajax": "/ProductIncentivo/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "code" },
+                        { "data": "name" },
+                        { "data": "nncm" },
+                        { "data": "ccest" },
+                        {
+                            "mData": "active",
+                            "mRender": function (data, type, row) {
+                                if (data == true) {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                                }
+                                else {
+                                    return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  disabled = 'true' id='" + row.id + "' />";
+                                }
                             }
-                            else {
-                                return data
+                        },
+                        { "data": "tipoTaxation" },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> " 
                             }
                         }
-                    },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            if (row.fim == "01/01/0001") {
-                                return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
-                                    "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
-                            }
-                            else {
-                                return ""
-                            }
-                        }
-                    }
-                ]
+                    ]
+                });
             });
-        });
-    </script>
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tblProductIncentivo').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
+                    },
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "ajax": "/ProductIncentivo/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "code" },
+                        { "data": "name" },
+                        { "data": "nncm" },
+                        { "data": "ccest" },
+                        {
+                            "mData": "active",
+                            "mRender": function (data, type, row) {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                            }
+                        },
+                        { "data": "tipoTaxation" },
+                        { "data": "inicio" },
+                        {
+                            "mData": "fim",
+                            "mRender": function (data, type, row) {
+                                if (data == "01/01/0001") {
+                                    return ""
+                                }
+                                else {
+                                    return data
+                                }
+                            }
+                        },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                                }
+                                else {
+                                    return ""
+                                }
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+    }
+
 }
 
 

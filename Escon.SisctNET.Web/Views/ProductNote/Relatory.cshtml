@@ -85,7 +85,10 @@
                             {
                                 <strong>&nbsp;Produto Não Incentivado</strong>
                             }
-
+                            @if (ViewBag.type == 9)
+                            {
+                                <strong>&nbsp;ICMS ST NFe sem IE</strong>
+                            }
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
                             <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
@@ -96,7 +99,7 @@
 
         </div>
         <div class="box-body">
-            <div style="width:100%; overflow:hidden; padding:20px;">
+            <div style="width:100%; overflow:hidden; padding:20px; padding-right:23px;">
                 <table class="table" style="font-size:8px; border: 2px solid;">
                     @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8)
                     {
@@ -642,12 +645,45 @@
                         </tbody>
 
                     }
+                    else if (ViewBag.type == 9)
+                    {
+                        <thead style="font-size:13px;">
+                            <tr>
+                                <th>Nº NFE</th>
+                                <th>Fornecedor</th>
+                                <th>Data</th>
+                                <th>ICMS ST Nfe</th>
+                                <th>Fecop ST Nfe</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:11px;">
+                            @for (int i = 0; i < @ViewBag.Fornecedores.Count; i++)
+                            {
+                                <tr>
+                                    <td>@ViewBag.Fornecedores[i][2]</td>
+                                    <td>@ViewBag.Fornecedores[i][3]</td>
+                                    <td>@ViewBag.Fornecedores[i][1]</td>
+                                    <td>@ViewBag.Fornecedores[i][4]</td>
+                                    <td>@ViewBag.Fornecedores[i][6]</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tbody style="font-size:11px;">
+                            <tr style="border:2px solid">
+                                <td><strong>Total</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td>@ViewBag.IcmsStTotal</td>
+                                <td>@ViewBag.FecopStTotal</td>
+                            </tr>
+                        </tbody>
+                    }
                 </table>
             </div>
 
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <table class="table" style="font-size:8px; border:2px solid;">
-                    @if ((@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7) && ViewBag.type != 6)
+                    @if ((@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7) && ViewBag.type != 6 && ViewBag.type != 9)
                     {
                         <thead>
                             <tr>
@@ -684,7 +720,7 @@
                             </tr>
                         </tbody>
                     }
-                    @if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5 && ViewBag.type != 6)
+                    @if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5 && ViewBag.type != 6 && ViewBag.type != 9)
                     {
                         <thead>
                             <tr>
@@ -712,7 +748,7 @@
                             </tr>
                         </tbody>
                     }
-                    @if (ViewBag.TaxationType == 6 && ViewBag.type != 6)
+                    @if (ViewBag.TaxationType == 6 && ViewBag.type != 6 && ViewBag.type != 9)
                     {
                         <thead>
                             <tr>
@@ -1054,7 +1090,7 @@
             </div>
 
 
-            @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true)
+            @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true)
             {
                 <br />
                 if (ViewBag.type != 8)

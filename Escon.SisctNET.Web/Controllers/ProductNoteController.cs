@@ -942,6 +942,14 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         totalIcms = result.Select(_ => _.IcmsApurado).Sum();
 
+                        decimal valorNfe1Normal = Math.Round(Convert.ToDecimal(result.Where(_ => _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
+                        decimal valorNfe1Ret = Math.Round(Convert.ToDecimal(result.Where(_ => _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
+                        decimal valorNfe2Normal = Math.Round(Convert.ToDecimal(result.Where(_ => _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
+                        decimal valorNfe2Ret = Math.Round(Convert.ToDecimal(result.Where(_ => _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
+
+                        icmsStnoteS += valorNfe1Normal + valorNfe1Ret + valorNfe2Normal + valorNfe2Ret;
+                        icmsSt += valorNfe1Normal + valorNfe1Ret + valorNfe2Normal + valorNfe2Ret;
+
                         decimal gnrePaga = 0, gnreNPaga = 0;
                         decimal? icmsAp = 0;
                         if (typeTaxation == 2)
@@ -978,6 +986,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             icmsTemp = icmsSt;
                         }*/
+                        
 
                         valorDief = Convert.ToDecimal(totalIcms - icmsSt - gnrePaga + gnreNPaga);
                         
@@ -994,7 +1003,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     var prod = result.Where(_ => _.Pautado.Equals(false));
                     ViewBag.product = prod;
-                }else if (type == 6)
+                }
+                else if (type == 6)
                 {
                     result = _service.FindByProducts(notes);
 
@@ -1083,6 +1093,68 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalIcmsPagoGeral = Convert.ToDouble(totalIcmsPagoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalAPagaGeral = Convert.ToDouble(totalAPagaGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     
+                }
+                else if (type == 9)
+                {
+                    result = _service.FindByProductsType(notesS.ToList(), typeTaxation);
+                    List<List<string>> fornecedores = new List<List<string>>();
+                    decimal icmsStTotal = 0, fecopStTotal = 0;
+                    
+                    foreach (var prod in result)
+                    {
+                        int pos = -1;
+                        for(int i = 0; i < fornecedores.Count(); i++)
+                        {
+                            if (prod.NoteId.Equals(Convert.ToInt32(fornecedores[i][0])))
+                            {
+                                pos = i;
+                                break;
+                            }
+                        }
+
+                        if (pos < 0)
+                        {
+                            List<string> forenecedor = new List<string>();
+                            forenecedor.Add(prod.NoteId.ToString());
+                            forenecedor.Add(prod.Note.Dhemi.ToString("dd-MM-yyyy"));
+                            forenecedor.Add(prod.Note.Nnf);
+                            forenecedor.Add(prod.Note.Xnome);
+                            forenecedor.Add("0,00");
+                            if (typeTaxation.Equals("1"))
+                            {
+                                forenecedor.Add(prod.Note.GnreSt.ToString());
+                            }
+                            else if (typeTaxation.Equals("2"))
+                            {
+                                forenecedor.Add(prod.Note.GnreAp.ToString());
+                            }
+                            else if (typeTaxation.Equals("3"))
+                            {
+                                forenecedor.Add(prod.Note.GnreCo.ToString());
+                            }
+                            else if (typeTaxation.Equals("5"))
+                            {
+                                forenecedor.Add(prod.Note.GnreIm.ToString());
+                            }
+                            else
+                            {
+                                forenecedor.Add("0,00");
+                            }
+                            forenecedor.Add("0,00");
+                            fornecedores.Add(forenecedor);
+                            pos = fornecedores.Count() - 1;
+                        }
+
+                        fornecedores[pos][4] = (Convert.ToDecimal(fornecedores[pos][4]) + prod.IcmsST).ToString();
+                        fornecedores[pos][6] = (Convert.ToDecimal(fornecedores[pos][6]) + prod.VfcpST + prod.VfcpSTRet).ToString();
+                        icmsStTotal += Convert.ToDecimal(prod.IcmsST);
+                        fecopStTotal += (Convert.ToDecimal(prod.VfcpST + prod.VfcpSTRet));
+                    }
+
+                    ViewBag.Fornecedores = fornecedores;
+                    ViewBag.IcmsStTotal = Convert.ToDouble(Math.Round(icmsStTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.FecopStTotal = Convert.ToDouble(Math.Round(icmsStTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                 }
 
                 var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
