@@ -3,6 +3,7 @@ using Escon.SisctNET.Repository;
 using Escon.SisctNET.Repository.Implementation;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Service.Implementation;
+using Escon.SisctNET.Web.Middleware;
 using Escon.SisctNET.Web.Security;
 using Escon.SisctNET.Web.Security.Configuration;
 using Escon.SisctNET.Web.Security.Implementation;
@@ -122,6 +123,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<ICompanyCfopRepository, CompanyCfopRepository>();
             services.AddScoped<IDarRepository, DarRepository>();
+            services.AddScoped<IDarDocumentRepository, DarDocumentRepository>();
             services.AddScoped<IAnnexRepository, AnnexRepository>();
             services.AddScoped<INcmConvenioRepository, NcmConvenioRepository>();
             services.AddScoped<ICstRepository, CstRepository>();
@@ -155,6 +157,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAuthentication, Authentication>();
             services.AddScoped<ICompanyCfopService, CompanyCfopService>();
             services.AddScoped<IDarService, DarService>();
+            services.AddScoped<IDarDocumentService, DarDocumentService>();
             services.AddScoped<IAnnexService, AnnexService>();
             services.AddScoped<INcmConvenioService, NcmConvenioService>();
             services.AddScoped<ICstService, CstService>();
@@ -183,6 +186,9 @@ namespace Escon.SisctNET.Web
             app.UseSession();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseValidateSessionExtension();
 
             app.UseMvc(routes =>
             {

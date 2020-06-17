@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Escon.SisctNET.Fortes\Escon.SisctNET.Fortes.csproj" />
+    <ProjectReference Include="..\Escon.SisctNET.IntegrationDarWeb\Escon.SisctNET.IntegrationDarWeb.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Model\Escon.SisctNET.Model.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Repository\Escon.SisctNET.Repository.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Service\Escon.SisctNET.Service.csproj" />

@@ -569,6 +569,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return Unauthorized();
             }
+
             try
             {
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));

@@ -4,14 +4,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
-    public class DarRepository : Repository<Dar>, IDarRepository
+    public class DarDocumentRepository : Repository<DarDocument>, IDarDocumentRepository
     {
         private readonly ContextDataBase _context;
 
-        public DarRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
+        public DarDocumentRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
         {
             _context = context;
         }
-
     }
 }
