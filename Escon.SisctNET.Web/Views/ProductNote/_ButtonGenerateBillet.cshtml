@@ -1,0 +1,20 @@
+﻿
+<input type="hidden" id="CpfCnpjIE" value="@ViewBag.document" />
+<input type="hidden" id="TypeTaxation" value="@ViewBag.TaxationType" />
+<input type="hidden" id="ValorTotal" value="@ViewBag.IcmsPagar" />
+<input type="hidden" id="PeriodoReferencia" value="@ViewBag.PeriodReferenceDarWs" />
+
+<input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="@ViewBag.IcmsPagarSIE" />
+<input type="hidden" id="DarFecop" data-code="@ViewBag.DarFecop" value="@ViewBag.TotalFinalFecopCalculadaSIE" />
+<input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms" value="@ViewBag.ImpostoIcms" />
+<input type="hidden" id="DarFecopEI" data-code="@ViewBag.DarFecop" value="@ViewBag.ImpostoFecop" />
+<input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="@ViewBag.TaxaFunef" />
+<input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="@ViewBag.IcmsPagarSIE" />
+<input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="@ViewBag.IcmsPagarSIE" />
+
+<button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnSendBillet">
+    <div id="loaderBillet" class="loader pull-left" style="display:none;"></div>
+    ENVIAR BOLETO PARA O CLIENTE
+</button>
+
+<script src="~/app/productNote.js"></script>

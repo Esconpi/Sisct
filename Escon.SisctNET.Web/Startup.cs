@@ -170,6 +170,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITypeClientService, TypeClientService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
+            services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -15,6 +15,6 @@ namespace Escon.SisctNET.Model
 
         public int ControlNumber { get; set; }
 
-        public int DocumentNumber { get; set; }
+        public long DocumentNumber { get; set; }
     }
 }

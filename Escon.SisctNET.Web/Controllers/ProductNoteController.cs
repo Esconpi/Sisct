@@ -1,6 +1,8 @@
-﻿using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.IntegrationDarWeb;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
+using Escon.SisctNET.Web.ViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -22,7 +25,10 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationService _taxationService;
         private readonly ICompanyService _companyService;
         private readonly IDarService _darService;
+        private readonly IDarDocumentService _darDocumentService;
         private readonly IProduct1Service _product1Service;
+        private readonly IIntegrationWsDar _integrationWsDar;
+        private readonly IConfigurationService _configurationService;
 
         public ProductNote(
             IProductNoteService service,
@@ -34,8 +40,11 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationService taxationService,
             ICompanyService companyService,
             IDarService darService,
+            IDarDocumentService darDocumentService,
             IProduct1Service product1Service,
             IFunctionalityService functionalityService,
+            IIntegrationWsDar integrationWsDar,
+            IConfigurationService configurationService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
         {
@@ -49,6 +58,10 @@ namespace Escon.SisctNET.Web.Controllers
             _companyService = companyService;
             _darService = darService;
             _product1Service = product1Service;
+            _integrationWsDar = integrationWsDar;
+            _configurationService = configurationService;
+            _darDocumentService = darDocumentService;
+
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -84,7 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     return View(result);
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -105,7 +118,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var note = _noteService.FindByNote(result.Note.Chave);
                 var ncm = _ncmService.FindByCode(result.Ncm);
 
-                if(ncm == null)
+                if (ncm == null)
                 {
                     string message = "O Ncm " + result.Ncm + " não estar cadastrado";
                     throw new Exception(message);
@@ -115,10 +128,10 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.DataNote = note.Dhemi;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
-                                             
+
                 list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
-                
-                
+
+
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
 
@@ -131,7 +144,7 @@ namespace Escon.SisctNET.Web.Controllers
                 list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList products = new SelectList(list_product, "Id", "Description", null);
                 ViewBag.ProductId = products;
-            
+
                 List<Product1> list_product1 = _service.FindAllInDate1(result.Note.Dhemi);
                 foreach (var prod in list_product1)
                 {
@@ -140,7 +153,7 @@ namespace Escon.SisctNET.Web.Controllers
                 list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
                 ViewBag.Product1Id = products1;
-               
+
 
                 ViewBag.TaxationTypeId = taxationtypes;
                 ViewBag.Uf = note.Uf;
@@ -171,7 +184,7 @@ namespace Escon.SisctNET.Web.Controllers
                 return Unauthorized();
             }
             try
-            { 
+            {
                 var rst = _service.FindById(id, GetLog(OccorenceLog.Read));
                 var note = _noteService.FindByNote(rst.Note.Chave);
                 var calculation = new Calculation();
@@ -190,8 +203,8 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal valorAgreg = 0, dif = 0;
                 decimal valor_fecop = 0;
                 string code2 = "";
-                var notes = _noteService.FindByUf(note.Company.Id,note.AnoRef,note.MesRef,note.Uf);
-                var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms, rst.Cest);
+                var notes = _noteService.FindByUf(note.Company.Id, note.AnoRef, note.MesRef, note.Uf);
+                var products = _service.FindByNcmUfAliq(notes, entity.Ncm, entity.Picms, rst.Cest);
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
 
@@ -199,7 +212,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
 
-                
+
 
                 if (entity.Pautado == true)
                 {
@@ -224,7 +237,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal total_icms_pauta = 0;
                         decimal total_icms = 0;
                         baseCalc = prod.Vbasecalc + prod.Vdesc;
-                        
+
 
 
                         decimal quantParaCalc = 0;
@@ -252,7 +265,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal valorAgreAliqInt = calculation.valorAgregadoAliqInt(AliqInt, Convert.ToDecimal(fecop), vAgre);
                         decimal icms_pauta = valorAgreAliqInt - valor_icms;
                         total_icms_pauta = icms_pauta + valor_fecop;
-                        
+
                         if (mva != null)
                         {
                             valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
@@ -277,7 +290,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(AliqInt), Convert.ToDecimal(prod.Fecop), valorAgreg);
                         prod.ValorAC = valorAgre_AliqInt;
                         total_icms = valorAgre_AliqInt - valor_icms;
-                        
+
                         decimal total = Convert.ToDecimal(entity.TotalICMS) + valor_fecop;
 
                         if (total_icms > total_icms_pauta)
@@ -287,7 +300,7 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                             prod.TotalICMS = total_icms_pauta;
-                           
+
                         }
 
                         prod.Pautado = true;
@@ -321,7 +334,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
 
-                   
+
                     prod.TaxationTypeId = Convert.ToInt32(taxaType);
                     prod.Updated = DateTime.Now;
                     prod.Status = true;
@@ -354,7 +367,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 prod.BCR = Convert.ToDecimal(bcrForm);
                                 //valor_icms = valor_icms * Convert.ToDecimal(bcrForm) / 100;
                                 valor_icms = 0;
-                            } 
+                            }
 
                             if (fecop != null)
                             {
@@ -485,7 +498,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-              
+
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
@@ -534,7 +547,7 @@ namespace Escon.SisctNET.Web.Controllers
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
 
-                    
+
                 }
 
                 foreach (var prod in products)
@@ -586,14 +599,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.SocialName = company.SocialName;
                 ViewBag.Document = company.Document;
+
                 ViewBag.Year = year;
                 ViewBag.Month = month;
+
+                ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
+
                 ViewBag.TaxationType = typeTaxation;
                 ViewBag.type = type;
 
-              
                 if (type == 1 || type == 2 || type == 4 || type == 5 || type == 7 || type == 8)
-                {    
+                {
                     if (type == 2)
                     {
                         notes = notes.Where(_ => _.Nnf.Equals(nota)).ToList();
@@ -610,7 +626,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         ViewBag.NotasTaxation = notasTaxation;
                         ViewBag.Products = result;
-                       
+
                     }
 
                     if (type == 7)
@@ -635,7 +651,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notesAgrup.Add(notasTaxation[i].Xnome.ToString());
                             notesAgrup.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
                             notesAgrup.Add(Convert.ToDouble(notasTaxation[i].Vnf).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            var Vprod = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vprod).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
+                            var Vprod = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vprod).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             var Vipi = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             var frete = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             var bcTotal = Convert.ToDouble(result.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vbasecalc).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -687,7 +703,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     decimal icmsSt = Math.Round(Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum()), 2);
-                    decimal? totalIcms = 0, valorDief = 0; 
+                    decimal? totalIcms = 0, valorDief = 0;
                     ViewBag.TotalICMSST = Convert.ToDouble(icmsSt).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
@@ -753,7 +769,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                        ViewBag.TotalICMSSTNota = Convert.ToDouble(totalIcms - totalIcmsPauta).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");                        
+                        ViewBag.TotalICMSSTNota = Convert.ToDouble(totalIcms - totalIcmsPauta).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalICMSPauta = Convert.ToDouble(totalIcmsPauta).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalICMSMva = Convert.ToDouble(totalIcmsMva).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -898,7 +914,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.Fecop = company.Fecop;
 
                             decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
-                            ViewBag.Base = Convert.ToDouble(Math.Round(baseIcms,2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.Base = Convert.ToDouble(Math.Round(baseIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             decimal impostoIcms = Convert.ToDecimal(baseIcms * (company.Icms / 100));
                             ViewBag.ImpostoIcms = Convert.ToDouble(Math.Round(impostoIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
@@ -927,10 +943,11 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(taxaFunef, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                             decimal totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
-                            if(typeTaxation == 1 && type != 8) {
+                            if (typeTaxation == 1 && type != 8)
+                            {
                                 ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo + (diefSt - icmsStnota) + (totalfecop1 + totalfecop2), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             }
-                            else if(typeTaxation == 1 && type == 7)
+                            else if (typeTaxation == 1 && type == 7)
                             {
                                 ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(totalImpostoIncentivo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             }
@@ -975,7 +992,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalGNREnPaga = Convert.ToDouble(gnreNPaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalGNREPaga = Convert.ToDouble(gnrePaga).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    
+
                         ViewBag.TotalICMS = Convert.ToDouble(totalIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         /*decimal icmsTemp = 0;
@@ -987,15 +1004,15 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             icmsTemp = icmsSt;
                         }*/
-                        
+
 
                         valorDief = Convert.ToDecimal(totalIcms - icmsSt - gnrePaga + gnreNPaga);
-                        
+
                         ViewBag.ValorDief = Convert.ToDouble(valorDief).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsAp = Convert.ToDouble(icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsPagar = Convert.ToDouble(valorDief - icmsAp).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     }
-                    
+
                     ViewBag.TotalFecop = Convert.ToDouble(totalFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalFrete = Convert.ToDouble(result.Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalIpi = Convert.ToDouble(result.Select(_ => _.Vipi).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -1026,7 +1043,7 @@ namespace Escon.SisctNET.Web.Controllers
                     // Antecipação Parcial
                     decimal? gnrePagaAP = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreAp).Distinct().Sum()), 2);
                     decimal? gnreNPagaAP = Math.Round(Convert.ToDecimal(result.Select(_ => _.Note.GnreNAp).Distinct().Sum()), 2);
-                    decimal? icmsStAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2);              
+                    decimal? icmsStAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalApuradoAP = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2) - icmsStAP + gnreNPagaAP + gnrePagaAP;
                     var n = notes.Select(_ => _.IcmsAp);
                     decimal? totalIcmsPagoAP = Math.Round(Convert.ToDecimal(notes.Select(_ => _.IcmsAp).Sum()), 2);
@@ -1093,18 +1110,18 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalApuradoGeral = Convert.ToDouble(totalApuradoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalIcmsPagoGeral = Convert.ToDouble(totalIcmsPagoGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalAPagaGeral = Convert.ToDouble(totalAPagaGeral).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    
+
                 }
                 else if (type == 9)
                 {
                     result = _service.FindByProductsType(notesS.ToList(), typeTaxation);
                     List<List<string>> fornecedores = new List<List<string>>();
                     decimal icmsStTotal = 0, fecopStTotal = 0;
-                    
+
                     foreach (var prod in result)
                     {
                         int pos = -1;
-                        for(int i = 0; i < fornecedores.Count(); i++)
+                        for (int i = 0; i < fornecedores.Count(); i++)
                         {
                             if (prod.NoteId.Equals(Convert.ToInt32(fornecedores[i][0])))
                             {
@@ -1166,6 +1183,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var darAp = dar.Where(_ => _.Type.Equals("AP")).Select(_ => _.Code).FirstOrDefault();
                 var darIm = dar.Where(_ => _.Type.Equals("IM")).Select(_ => _.Code).FirstOrDefault();
                 var darFunef = dar.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
+
                 ViewBag.DarFecop = darFecop;
                 ViewBag.DarSTCO = darStCo;
                 ViewBag.DarIcms = darIcms;
@@ -1182,6 +1200,110 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-           
+
+        [HttpPost]
+        public async Task<IActionResult> GenerateBillet([FromBody] RequestBarCode requestBarCode)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            var accessToken = _configurationService.FindByName("TokenAccessDarWs", null);
+            if (accessToken == null) return BadRequest(new { code = 400, message = "O token de acesso não foi encontrado na base de dados" });
+
+            var organCode = _configurationService.FindByName("CodigoOrgaoDarWs", null);
+            if (organCode == null) return BadRequest(new { code = 400, message = "O código do orgão não foi encontrado na base de dados" });
+
+            var dueDate = _configurationService.FindByName("DiasVencimentoBoletoDarWs", null);
+            if (organCode == null) return BadRequest(new { code = 400, message = "A date de vencimento para o boleto não foi encontrado na base de dados" });
+
+            var messageResponse = new List<object>();
+
+            var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => x.RecipeCode);
+            var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
+
+            foreach (var item in recipeCode)
+            {
+                try
+                {
+                    if (requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode.Equals(item.Key) && string.IsNullOrEmpty(x.Value)).FirstOrDefault() != null)
+                        continue;
+
+                    var valueTotal = requestBarCode.RecipeCodeValues
+                        .Where(x => x.RecipeCode.Equals(item.Key) && !string.IsNullOrEmpty(x.Value))
+                        .Sum(x => Convert.ToDecimal(x.Value))
+                        .ToString();
+
+                    var response = await _integrationWsDar.GetBarCodeAsync(new IntegrationDarService.solicitarCodigoBarrasRequest()
+                    {
+                        codigoOrgao = organCode.Value,
+                        codigoReceita = item.Key,
+                        cpfCnpjIE = requestBarCode.CpfCnpjIE,
+                        dataVencimento = DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy"),
+                        numeroDocumento = requestBarCode.PeriodoReferencia,
+                        periodoReferencia = requestBarCode.PeriodoReferencia,
+                        tokenAcesso = accessToken.Value,
+                        valorTotal = valueTotal
+                    });
+
+                    if (response.MessageType.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.Message });
+
+                    var darDoc = _darDocumentService.Create(new DarDocument()
+                    {
+                        BarCode = response.BarCode,
+                        ControlNumber = int.Parse(response.ControlNumber),
+                        Message = response.Message,
+                        Created = DateTime.Now,
+                        DigitableLine = response.DigitableLine,
+                        DocumentNumber = long.Parse($"{response.DocumentNumber}{item.Key}"),
+                        MessageType = response.MessageType,
+                        Updated = DateTime.Now
+                    }, null);
+
+                    if (darDoc.Id <= 0) return BadRequest(new { code = 500, message = "falha ao tentar gravar dados de resposta do ws." });
+
+                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description, barcode = response.BarCode, line = response.DigitableLine });
+                }
+                catch (Exception ex)
+                {
+                    messageResponse.Add(new { code = 500, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description, recipecode = item.Key, message = ex.Message });
+                }
+            }
+
+            return Ok(new { code = 200, response = messageResponse });
+
+        }
+
+        private int GetIntMonth(string month)
+        {
+            switch (month.ToLowerInvariant())
+            {
+                case "janeiro":
+                    return 1;
+                case "fevereiro":
+                    return 2;
+                case "março":
+                    return 3;
+                case "abril":
+                    return 4;
+                case "maio":
+                    return 5;
+                case "junho":
+                    return 6;
+                case "julho":
+                    return 7;
+                case "agosto":
+                    return 8;
+                case "setembro":
+                    return 9;
+                case "outubro":
+                    return 10;
+                case "novembro":
+                    return 11;
+                case "dezembro":
+                    return 12;
+                default:
+                    return 0;
+            }
+        }
+
     }
 }

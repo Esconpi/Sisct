@@ -14,7 +14,7 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
         {
             _configuration = configuration;
 
-            var urlBase = _configuration["Sefaz:Url"];
+            var urlBase = _configuration["Sefaz:UrlBase"];
 
             wsClient = new DocumentoArrecadacaoWSClient(DocumentoArrecadacaoWSClient.EndpointConfiguration.DocumentoArrecadacaoWSPort, urlBase);
         }
