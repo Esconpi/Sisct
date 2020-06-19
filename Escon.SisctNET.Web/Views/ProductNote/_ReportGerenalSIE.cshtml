@@ -1,0 +1,211 @@
+﻿<div style="border:2px solid; text-align:center;">
+    <strong>Empresas sem Inscrição Estadual</strong>
+</div>
+<table class="table" style="font-size:8px; border: 2px solid;">
+    <thead style="font-size:10px;">
+        <tr>
+            <th style="font-size:11px;">Tributação</th>
+            <th>Código do Dar</th>
+            <th>Produtos</th>
+            <th>Icms Apurado</th>
+            <th>(-) GNRE Paga</th>
+            <th>(+) GNRE Não Paga</th>
+            <th>(-) Icms ST</th>
+            <th width="70px">(=) Valor DIEF</th>
+            <th>(-) Icms Pago - Posto Fiscal</th>
+            <th width="70px">Icms A Pagar</th>
+            <th></th>
+            <th>Fecop Apurada</th>
+            <th>(-) GNRE Paga</th>
+            <th>(+) GNRE Não Paga</th>
+            <th>(-) Fecop ST</th>
+            <th width="70px">(=) Valor DIEF</th>
+            <th>(-) Fecop Pago - Posto Fiscal</th>
+            <th width="70px">Fecop A Pagar</th>
+
+        </tr>
+    </thead>
+    <tbody style="font-size:11px;">
+        <tr>
+            <th>Icms ST</th>
+            <td>@ViewBag.DarSTCO</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsSTSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarSTSIE</th>
+            <td></td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Fecop ST</th>
+            <td>@ViewBag.DarFecop</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdSTSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td></td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopCalculadaSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREPagaFecopSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREnPagaFecopSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopNfeSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopDiefSTSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsFecopSTSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.TotalFinalFecopCalculadaSTSIE</th>
+        </tr>
+        <tr>
+            <th>Antecipação Parcial</th>
+            <td>@ViewBag.DarAp</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefAPSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarAPSIE</th>
+            <th></th>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Consumo</th>
+            <td>@ViewBag.DarSTCO</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefCOSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsCOSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarCOSIE</th>
+            <th></th>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Consumo p/ Revenda</th>
+            <td>@ViewBag.DarSTCO</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdCORSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCORSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoCORSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefCORSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarCORSIE</th>
+            <th></th>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Imobilizado</th>
+            <td>@ViewBag.DarIm</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefIMSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsIMSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarIMSIE</th>
+            <th></th>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Icms AT</th>
+            <td>@ViewBag.DarSTCO</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoATSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefATSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarATSIE</th>
+            <td></td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+        <tr>
+            <th>Fecop AT</th>
+            <td>@ViewBag.DarFecop</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdATSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td></td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopCalculadaATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREPagaFecopATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREnPagaFecopATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopNfeATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopDiefATSIE</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsFecopATSIE</td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.TotalFinalFecopCalculadaATSIE</th>
+        </tr>
+        <tr>
+            <th>Isento</th>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdIsentoSIE</td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td></td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+            <td style="text-align:center"> ---- </td>
+        </tr>
+
+    </tbody>
+</table>

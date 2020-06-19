@@ -1,0 +1,15 @@
+﻿<div style="width:100%; overflow:hidden; padding:20px;">
+
+    @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 4 || ViewBag.type == 5 || ViewBag.type == 8 || ViewBag.type == 7)
+    {
+        @if (ViewBag.type != 7)
+        {
+
+            @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
+
+            @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
+        }
+
+    }
+
+</div>

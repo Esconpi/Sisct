@@ -1,0 +1,185 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+
+@if (ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+{
+
+    @foreach (var note in ViewBag.NotasTaxation)
+    {
+        <thead>
+            <tr>
+                <th>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número da Nota</th>
+                                <th>Fornecedor</th>
+                                <th>Valor da Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-weight:normal;">
+                                <td>@note.Nnf</td>
+                                <td>@note.Xnome</td>
+                                <td>@note.Vnf</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>UF</th>
+                                <th>Dia/Mês</th>
+                                <th>Valor da Nota</th>
+                                <th>Valor dos Produtos</th>
+                                <th>Frete NFe</th>
+                                <th>Frete Nº</th>
+                                <th>Frete CTe</th>
+                                <th>Valor IPI</th>
+                                <th>Base de Cálculo ICMS</th>
+                                <th>Aliq Intra(%)</th>
+                                <th>Aliq Inter(%)</th>
+                                <th>Dif</th>
+                                <th>ICMS Apurado</th>
+                                <th>ICMS ST NFe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                @if (note.Id.Equals(item.NoteId))
+                                {
+                                    <tr>
+                                        <td>@item.Xprod</td>
+                                        <td>@item.Note.Uf</td>
+                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                                        <td>@item.Note.Vnf</td>
+                                        <td>@item.Vprod</td>
+                                        <td>@item.Vfrete</td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@item.Freterateado</td>
+                                        <td>@item.Vipi</td>
+                                        <td>@item.Vbasecalc</td>
+                                        <td>@item.Aliqinterna</td>
+                                        <td>@item.Picms</td>
+                                        <td>@item.Diferencial</td>
+                                        <td>@item.IcmsApurado</td>
+                                        <td>@item.IcmsST</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+
+    }
+
+}
+else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
+{
+    @foreach (var note in ViewBag.NotasTaxation)
+    {
+        <thead>
+            <tr>
+                <th>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número da Nota</th>
+                                <th>Fornecedor</th>
+                                <th>Valor da Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-weight:normal;">
+                                <td>@note.Nnf</td>
+                                <td>@note.Xnome</td>
+                                <td>@note.Vnf</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nota</th>
+                                <th>Produto</th>
+                                <th>Dia/Mês</th>
+                                <th>Valor da Nota</th>
+                                <th>Valor dos Produtos</th>
+                                <th>Valor IPI</th>
+                                <th>Frete Nº</th>
+                                <th>Valor Frete</th>
+                                <th>Total BC</th>
+                                <th>MVA(%)</th>
+                                <th>Base de Cálculo ICMS</th>
+                                @if (@ViewBag.TaxationType == 1)
+                                {
+                                    <th>BCR(%)</th>
+                                    <th>Base de Cálculo Reduzida</th>
+                                }
+                                <th>Aliq Int(%)</th>
+                                <th>Valor imp AC</th>
+                                <th>Nfe</th>
+                                <th>CTe</th>
+                                <th>ICMS ST NFe</th>
+                                <th>Total ICMS</th>
+                                <th>Total Fecop</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                @if (note.Id.Equals(item.NoteId))
+                                {
+                                    <tr>
+                                        <td>@item.Nnf</td>
+                                        <td>@item.Xprod</td>
+                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                                        <td>@item.Note.Vnf</td>
+                                        <td>@item.Vprod</td>
+                                        <td>@item.Vipi</td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@item.Freterateado</td>
+                                        <td>@item.Vbasecalc</td>
+                                        <td>@item.Mva</td>
+                                        <td>@item.Valoragregado</td>
+                                        @if (@ViewBag.TaxationType == 1)
+                                        {
+                                            <td>@item.BCR</td>
+                                            <td>@item.ValorBCR</td>
+                                        }
+                                        <td>@item.Aliqinterna</td>
+                                        <td>@item.ValorAC</td>
+                                        <td>@item.Vicms</td>
+                                        <td>@item.IcmsCTe</td>
+                                        <td>@item.IcmsST</td>
+                                        <td>@item.TotalICMS</td>
+                                        <td>@item.TotalFecop</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    }
+}

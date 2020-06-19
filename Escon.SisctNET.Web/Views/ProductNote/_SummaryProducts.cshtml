@@ -1,0 +1,79 @@
+﻿<div style="width:100%; overflow:hidden; padding:20px;">
+    <table class="table" style="font-size:8px; border:2px solid;">
+        @if ((@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7) && ViewBag.type != 6 && ViewBag.type != 9)
+        {
+            <thead>
+                <tr>
+                    <th>Quantidade de Registros</th>
+                    <th>Total</th>
+                    <th>Valor dos Produtos</th>
+                    <th>Valor dos fretes</th>
+                    <th>Total da Base de Cálculo</th>
+                    <th>Base de Cálculo ICMS</th>
+                    <th>Base de Cálculo Reduzida</th>
+                    <th>Valor do Imp. Antes Crédito</th>
+                    <th>ICMS NFe</th>
+                    <th>ICMS CTe</th>
+                    <th>ICMS ST NFe</th>
+                    <th>Total ICMS</th>
+                    <th>Total FECOP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewBag.Registro</td>
+                    <td>@ViewBag.TotalNotas</td>
+                    <td>@ViewBag.ValorProd</td>
+                    <td>@ViewBag.TotalFrete</td>
+                    <td>@ViewBag.TotalBC</td>
+                    <td>@ViewBag.TotalBcICMS</td>
+                    <td>@ViewBag.TotalBCR</td>
+                    <td>@ViewBag.TotalAC</td>
+                    <td>@ViewBag.TotalICMSNfe</td>
+                    <td>@ViewBag.TotalICMSCte</td>
+                    <td>@ViewBag.TotalICMSST</td>
+                    <td>@ViewBag.TotalICMS</td>
+                    <td>@ViewBag.TotalFecop</td>
+                </tr>
+            </tbody>
+        }
+        @if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5 && ViewBag.type != 6 && ViewBag.type != 9)
+        {
+            <thead style="font-size:12px;">
+                <tr>
+                    <th>Quantidade de Registros</th>
+                    <th>Total</th>
+                    <th>Valor dos Produtos</th>
+                    <th>Frete</th>
+                    <th>IPI</th>
+                    <th>Total da Base de Cálculo</th>
+                    <th>ICMS ST NFe</th>
+                    <th>Total ICMS</th>
+
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;">
+                <tr>
+                    <td>@ViewBag.Registro</td>
+                    <td>@ViewBag.TotalNotas</td>
+                    <td>@ViewBag.ValorProd</td>
+                    <td>@ViewBag.TotalFrete</td>
+                    <td>@ViewBag.TotalIpi</td>
+                    <td>@ViewBag.TotalBC</td>
+                    <td>@ViewBag.TotalICMSST</td>
+                    <td>@ViewBag.TotalICMS</td>
+                </tr>
+            </tbody>
+        }
+        @if (ViewBag.TaxationType == 6 && ViewBag.type != 6 && ViewBag.type != 9)
+        {
+            <thead style="font-size:12px;">
+                <tr>
+                    <th>Quantidade de Registros</th>
+                    <td>@ViewBag.Registro</td>
+                </tr>
+            </thead>
+        }
+    </table>
+
+</div>

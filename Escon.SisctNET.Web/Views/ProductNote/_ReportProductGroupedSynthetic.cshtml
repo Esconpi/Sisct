@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+
+@if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
+{
+    <thead>
+        <tr style="border:1px solid;">
+            <th>Nota</th>
+            <th>Fornecedor</th>
+            <th>Dia/Mês</th>
+            <th>Valor da Nota</th>
+            <th>Valor dos Produtos</th>
+            <th>Valor IPI</th>
+            <th>Frete Nº</th>
+            <th>Valor Frete</th>
+            <th>Total BC</th>
+            <th>Base de Cálculo ICMS</th>
+            @if (@ViewBag.TaxationType == 1)
+            {
+                <th>Base de Cálculo Reduzida</th>
+            }
+            <th>Valor imp AC</th>
+            <th>Nfe</th>
+            <th>CTe</th>
+            <th>ICMS ST NFe</th>
+            <th>Total ICMS</th>
+            <th>Total Fecop</th>
+        </tr>
+    </thead>
+    @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
+    {
+        <tbody style="border:1px solid;">
+            <tr>
+                <td>@ViewBag.NotasTaxation[i][0]</td>
+                <td>@ViewBag.NotasTaxation[i][1]</td>
+                <td>@ViewBag.NotasTaxation[i][2]</td>
+                <td>@ViewBag.NotasTaxation[i][3]</td>
+                <td>@ViewBag.NotasTaxation[i][4]</td>
+                <td>@ViewBag.NotasTaxation[i][5]</td>
+                <td>@ViewBag.NotasTaxation[i][6]</td>
+                <td>@ViewBag.NotasTaxation[i][7]</td>
+                <td>@ViewBag.NotasTaxation[i][8]</td>
+                <td>@ViewBag.NotasTaxation[i][9]</td>
+                @if (@ViewBag.TaxationType == 1)
+                {
+                    <td>@ViewBag.NotasTaxation[i][10]</td>
+                }
+                <td>@ViewBag.NotasTaxation[i][11]</td>
+                <td>@ViewBag.NotasTaxation[i][12]</td>
+                <td>@ViewBag.NotasTaxation[i][13]</td>
+                <td>@ViewBag.NotasTaxation[i][14]</td>
+                <td>@ViewBag.NotasTaxation[i][15]</td>
+                <td>@ViewBag.NotasTaxation[i][16]</td>
+            </tr>
+        </tbody>
+    }
+}
+else if (ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+{
+    <thead>
+        <tr>
+            <th>Nota</th>
+            <th>Fornecedor</th>
+            <th>Dia/Mês</th>
+            <th>Valor da Nota</th>
+            <th>Valor dos Produtos</th>
+            <th>Frete NFe</th>
+            <th>Frete Nº</th>
+            <th>Frete CTe</th>
+            <th>Valor IPI</th>
+            <th>Base de Cálculo ICMS</th>
+            <th>ICMS Apurado</th>
+            <th>ICMS ST NFe</th>
+        </tr>
+    </thead>
+
+    @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
+    {
+        <tbody>
+            <tr>
+                <td>@ViewBag.NotasTaxation[i][0]</td>
+                <td>@ViewBag.NotasTaxation[i][1]</td>
+                <td>@ViewBag.NotasTaxation[i][2]</td>
+                <td>@ViewBag.NotasTaxation[i][3]</td>
+                <td>@ViewBag.NotasTaxation[i][4]</td>
+                <td>@ViewBag.NotasTaxation[i][17]</td>
+                <td>@ViewBag.NotasTaxation[i][6]</td>
+                <td>@ViewBag.NotasTaxation[i][7]</td>
+                <td>@ViewBag.NotasTaxation[i][5]</td>
+                <td>@ViewBag.NotasTaxation[i][8]</td>
+                <td>@ViewBag.NotasTaxation[i][18]</td>
+                <td>@ViewBag.NotasTaxation[i][14]</td>
+            </tr>
+        </tbody>
+    }
+
+}

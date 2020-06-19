@@ -1,0 +1,57 @@
+﻿
+@if (@ViewBag.type == 3 && ViewBag.type != 9)
+{
+    <strong>Produtos sem preço de referência &nbsp;</strong>
+}
+@if (ViewBag.type == 4 && ViewBag.type != 9)
+{
+    <strong>Agrupado - Analítico &nbsp;</strong>
+}
+@if (ViewBag.type == 5 && ViewBag.type != 9)
+{
+    <strong>Agrupado - Sintético &nbsp;</strong>
+}
+@if (ViewBag.type == 6 && ViewBag.type != 9)
+{
+    <strong>Resumo Geral das Entradas &nbsp;</strong>
+}
+@if (@ViewBag.TaxationType == 1 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Substituição Tributária por MVA</strong>
+}
+else if (@ViewBag.TaxationType == 2 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Antecipação Parcial</strong>
+}
+else if (@ViewBag.TaxationType == 3 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Consumo</strong>
+}
+else if (@ViewBag.TaxationType == 4 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Consumo p/ Revenda</strong>
+}
+else if (@ViewBag.TaxationType == 5 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Imobilizado</strong>
+}
+else if (@ViewBag.TaxationType == 6 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Isento</strong>
+}
+else if (@ViewBag.TaxationType == 7 && ViewBag.type != 9 && ViewBag.type != 6)
+{
+    <strong>Antecipação Total</strong>
+}
+@if (ViewBag.type == 7)
+{
+    <strong>&nbsp;Produto Incentivado</strong>
+}
+@if (ViewBag.type == 8)
+{
+    <strong>&nbsp;Produto Não Incentivado</strong>
+}
+@if (ViewBag.type == 9)
+{
+    <strong>GNRE de Fornecedor sem Inscrição Estadual</strong>
+}

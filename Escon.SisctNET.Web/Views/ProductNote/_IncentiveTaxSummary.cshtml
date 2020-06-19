@@ -1,0 +1,194 @@
+﻿<div style="width: 100%; overflow: hidden; padding: 20px; font-size:12px; page-break-before: always;">
+    <div style="border:2px solid; text-align:center;">
+        <strong>APURAÇÂO INCENTIVADA</strong>
+    </div>
+
+    <table class="table" style="border: 2px solid;">
+        <thead>
+            <tr>
+                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; margin-right:10px;">IMPOSTO INCENTIVADO</th>
+                <th class="col-lg-1 col-md-1 col-sm-1"></th>
+                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; margin-left:10px;">IMPOSTO FUNEF</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-lg-5 col-md-5 col-sm-5">
+                    <table class="col-lg-12 col-sm-12">
+                        <thead>
+                            <tr style="border:1px solid;">
+                                <th>
+                                    Base de Cálculo Regime
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Icms %
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Imposto Icms
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.Base
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                    x
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.Icms
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                    =
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.ImpostoIcms
+                                </th>
+                            </tr>
+                            <tr style="border:1px solid; padding-top:100px;">
+                                <th>
+                                    Base de Cálculo Fecop
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Fecop %
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Imposto Fecop
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.Base
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                    x
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.Fecop
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                    =
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.ImpostoFecop
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </td>
+                <td></td>
+                <td class="col-lg-6 col-md-6 col-sm-6">
+                    <table class="col-lg-12 col-sm-12">
+                        <thead>
+                            <tr style="border:1px solid;">
+                                <th>
+                                    Imposto Normal
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Imposto Incetivado
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Base de Cálculo Funef
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Funef %
+                                </th>
+                                <th></th>
+                                <th>
+                                    Taxa Funef
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.ImpostoGeral
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1" style="font-size:15px;">
+                                    -
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.ImpostoIcms
+                                </th>
+                                <th class="col-lg-1 col-md-1 col-sm-1">
+                                    =
+                                </th>
+                                <th class="col-lg-2 col-md-2 col-sm-2">
+                                    @ViewBag.BaseFunef
+                                </th>
+                                <th>
+                                    x
+                                </th>
+                                <th style="text-align:center">
+                                    @ViewBag.Funef
+                                </th>
+                                <th>
+                                    =
+                                </th>
+                                <th style="text-align:center">
+                                    @ViewBag.TaxaFunef
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div style="width:100%; overflow:hidden; padding:20px;">
+    <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
+        <strong>RESUMO DOS IMPOSTOS</strong>
+    </div>
+    <table class="table" style="border: 2px solid;">
+        <thead>
+            <tr style="border: 2px solid;">
+                <th width="500px"></th>
+                <th style="text-align:center">Valor do Imposto</th>
+                <th style="text-align:center">Código DAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="text-align:center">ICMS</th>
+                <td style="text-align:right"> @ViewBag.ImpostoIcms</td>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
+            </tr>
+            <tr>
+                <th style="text-align:center">Fecop</th>
+                <td style="text-align:right">@ViewBag.ImpostoFecop</td>
+                <td style="text-align:center">@ViewBag.DarFecop</td>
+            </tr>
+            <tr>
+                <th style="text-align:center">Funef</th>
+                <td style="text-align:right">@ViewBag.TaxaFunef</td>
+                <td style="text-align:center">@ViewBag.DarFunef</td>
+            </tr>
+            <tr style="border: 2px solid;">
+                <th style="text-align:center">Total</th>
+                <td style="text-align:right"><strong>@ViewBag.TotalImpostoIncentivo</strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
