@@ -52,11 +52,11 @@
             <div style="width:100%; overflow:hidden; padding:20px;">
                 @if (ViewBag.type == 6)
                 {
-                    @await Html.PartialAsync("_ReportGeneral", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.type == 9)
                 {
-                    @await Html.PartialAsync("_ReportGnre", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
                 }
             </div>
         }
@@ -67,19 +67,19 @@
                 <table class="table" style="font-size:8px; border: 2px solid;">
                     @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8)
                     {
-                        @await Html.PartialAsync("_ReportProduct", Model, new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.type == 3)
                     {
-                        @await Html.PartialAsync("_ReportProductFPauta", Model, new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.type == 4)
                     {
-                        @await Html.PartialAsync("_ReportProductGroupedAnalytical", Model, new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_ProductGroupedAnalyticalReport", Model, new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.type == 5)
                     {
-                        @await Html.PartialAsync("_ReportProductGroupedSynthetic", Model, new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_ProductGroupedSyntheticReport", Model, new ViewDataDictionary(ViewData))
                     }
 
                 </table>
