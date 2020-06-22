@@ -1,0 +1,64 @@
+﻿<table style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;" width="300px">
+                N° Nota
+            </th>
+            <th style="border:1px solid; text-align:center;" width="220px">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;" width="220px">
+                Base de Cálculo Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="170px">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="150px">
+                Valor Fecop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        {
+
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                    @ViewBag.Cfop[i][1]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][2]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][3]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][4]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][5]
+                </td>
+            </tr>
+
+        }
+    </tbody>
+    <tbody>
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
+                <b>Total</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorContabil</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.BaseIcms</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorIcms</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorFecop</b>
+            </td>
+        </tr>
+    </tbody>
+</table>

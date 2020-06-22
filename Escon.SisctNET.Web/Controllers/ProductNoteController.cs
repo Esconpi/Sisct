@@ -590,7 +590,10 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.TaxationType = typeTaxation;
                 ViewBag.type = type;
 
-              
+                ViewBag.Incetive = company.Incentive;
+                ViewBag.TypeIncetive = company.TipoApuracao;
+
+
                 if (type == 1 || type == 2 || type == 4 || type == 5 || type == 7 || type == 8)
                 {    
                     if (type == 2)
@@ -701,10 +704,11 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (Convert.ToDecimal(prod.Aliqinterna) > 0)
                                 {
-                                    totalFreteIE += Convert.ToDecimal((prod.Freterateado / (prod.Aliqinterna * 100)));
+                                    totalFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Aliqinterna) / 100);
                                 }
                             }
                         }
+
                         ViewBag.TotalFreteIE = Convert.ToDouble(totalFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         decimal totalIcmsPautaSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Pautado.Equals(true) && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2);
@@ -893,9 +897,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFinalFecopCalculadaIE = Convert.ToDouble(Math.Round(totalfecop1IE + totalfecop2IE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalFinalFecopCalculadaSIE = Convert.ToDouble(Math.Round(totalfecop1SIE + totalfecop2SIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                        ViewBag.Incetive = company.Incentive;
-                        ViewBag.TypeIncetive = company.TipoApuracao;
-
                         //Relatorio das empresas incentivadas
                         if (company.Incentive == true && company.TipoApuracao == true)
                         {
@@ -912,7 +913,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     if (Convert.ToDecimal(prod.Aliqinterna) > 0)
                                     {
-                                        totalFreteIE += Convert.ToDecimal((prod.Freterateado / (prod.Aliqinterna * 100)));
+                                        totalFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Aliqinterna) / 100);
                                     }
                                 }
                             }
@@ -1155,7 +1156,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (Convert.ToDecimal(prod.Diferencial) > 0)
                                 {
-                                    totalFreteIE += Convert.ToDecimal((prod.Freterateado / (prod.Diferencial * 100)));
+                                    totalFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
                                 }
                             }
                         }
@@ -1255,18 +1256,34 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     result = _service.FindByProducts(notes);
 
+                    // Substituição Tributária
 
-                    // Icms Substituição Tributária
+                    decimal totalFreteSTIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && (prod.TaxationTypeId.Equals(5) || prod.TaxationTypeId.Equals(6)))
+                        {
+                            if (Convert.ToDecimal(prod.Aliqinterna) > 0)
+                            {
+                                totalFreteSTIE += Convert.ToDecimal((prod.Freterateado * prod.Aliqinterna) / 100);
+                            }
+                        }
+                    }
+
+
+                    ViewBag.TotalFreteSTIE = Convert.ToDouble(totalFreteSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal? gnrePagaSTIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2);
                     decimal? gnreNPagaSTIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ =>_.GnreNSt).Sum()), 2);
                     decimal? gnrePagaSTSIE = Math.Round(Convert.ToDecimal(notes.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2);
                     decimal? gnreNPagaSTSIE = Math.Round(Convert.ToDecimal(notes.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreNSt).Sum()), 2);
-                    
+
                     decimal? icmsStSTIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? icmsStSTSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalApuradoSTIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.TotalICMS).Sum()), 2);
                     decimal? totalApuradoSTSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.TotalICMS).Sum()), 2);
-                    decimal? totalDiefSTSIE = totalApuradoSTSIE - icmsStSTSIE + gnreNPagaSTSIE - gnrePagaSTSIE;
+                    decimal? totalDiefSTSIE = (totalApuradoSTSIE + totalFreteSTIE) - icmsStSTSIE + gnreNPagaSTSIE - gnrePagaSTSIE;
                     decimal? totalDiefSTIE = totalApuradoSTIE - icmsStSTIE + gnreNPagaSTIE - gnrePagaSTIE;
                     int? qtdSTSIE = result.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Count();
                     int? qtdSTIE = result.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Count();
@@ -1355,7 +1372,172 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFinalFecopCalculadaSTSIE = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
+                    //Produtos Incentivo
+                    if (company.Incentive == true && company.TipoApuracao == true)
+                    {
+                        //Produtos não incentivados
+                        var productsNormal = _service.FindByNormal(notes);
+                        productsNormal = productsNormal.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).ToList();
+
+
+                        totalFreteSTIE = 0;
+
+                        foreach (var prod in productsNormal)
+                        {
+                            if (!prod.Note.Iest.Equals("") && (prod.TaxationTypeId.Equals(5) || prod.TaxationTypeId.Equals(6)))
+                            {
+                                if (Convert.ToDecimal(prod.Aliqinterna) > 0)
+                                {
+                                    totalFreteSTIE += Convert.ToDecimal((prod.Freterateado * prod.Aliqinterna) / 100);
+                                }
+                            }
+                        }
+
+                        ViewBag.TotalFreteSTIE = Convert.ToDouble(totalFreteSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        gnrePagaSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreSt).Distinct().Sum()), 2);
+                        gnreNPagaSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreNSt).Distinct().Sum()), 2);
+                        gnrePagaSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreSt).Distinct().Sum()), 2);
+                        gnreNPagaSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreNSt).Distinct().Sum()), 2);
+
+                        icmsStSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.IcmsST).Sum()), 2);
+                        icmsStSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.IcmsST).Sum()), 2);
+                        totalApuradoSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.TotalICMS).Sum()), 2);
+                        totalApuradoSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.TotalICMS).Sum()), 2);
+                        totalDiefSTSIE = (totalApuradoSTSIE + totalFreteSTIE) - icmsStSTSIE + gnreNPagaSTSIE - gnrePagaSTSIE;
+                        totalDiefSTIE = totalApuradoSTIE - icmsStSTIE + gnreNPagaSTIE - gnrePagaSTIE;
+
+                        ViewBag.TotatlApuradoSTIE = Convert.ToDouble(totalApuradoSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotatlApuradoSTSIE = Convert.ToDouble(totalApuradoSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalIcmsPagoSTIE = Convert.ToDouble(icmsStSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalIcmsPagoSTSIE = Convert.ToDouble(icmsStSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        ViewBag.GnrePagaSTSIE = Convert.ToDouble(gnrePagaSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.GnrePagaSTIE = Convert.ToDouble(gnrePagaSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.GnreNPagaSTSIE = Convert.ToDouble(gnreNPagaSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.GnreNPagaSTIE = Convert.ToDouble(gnreNPagaSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        ViewBag.TotalDiefSTSIE = Convert.ToDouble(totalDiefSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalDiefSTIE = Convert.ToDouble(totalDiefSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        icmsStnotaIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.IcmsSt).Distinct().Sum()), 2);
+                        icmsStnotaSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.IcmsSt).Distinct().Sum()), 2);
+                        ViewBag.IcmsSTIE = Convert.ToDouble(icmsStnotaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.IcmsSTSIE = Convert.ToDouble(icmsStnotaSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        IcmsAPagarSTSIE = Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE);
+                        IcmsAPagarSTIE = Convert.ToDecimal(totalDiefSTIE - icmsStnotaIE);
+                        ViewBag.IcmsAPagarSTSIE = Convert.ToDouble(IcmsAPagarSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.IcmsAPagarSTIE = Convert.ToDouble(IcmsAPagarSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        valorbase1STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2);
+                        valorbase1STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2);
+                        valorbase2STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2);
+                        valorbase2STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2);
+
+                        TotalFecopCalcSTIE = valorbase1STIE + valorbase2STIE;
+                        TotalFecopCalcSTSIE = valorbase1STSIE + valorbase2STSIE;
+                        ViewBag.TotalFecopCalculadaSTIE = Convert.ToDouble(Math.Round(TotalFecopCalcSTIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalFecopCalculadaSTSIE = Convert.ToDouble(Math.Round(TotalFecopCalcSTSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+
+                        valorNfe1NormalSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
+                        valorNfe1RetSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
+                        valorNfe1NormalSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
+                        valorNfe1RetSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
+
+                        valorNfe2NormalSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
+                        valorNfe2RetSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
+                        valorNfe2NormalSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
+                        valorNfe2RetSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
+
+                        TotalFecopNfeSTIE = valorNfe1NormalSTIE + valorNfe1RetSTIE + valorNfe2NormalSTIE + valorNfe2RetSTIE;
+                        TotalFecopNfeSTSIE = valorNfe1NormalSTSIE + valorNfe1RetSTSIE + valorNfe2NormalSTSIE + valorNfe2RetSTSIE;
+                        ViewBag.TotalFecopNfeSTIE = Convert.ToDouble(Math.Round(TotalFecopNfeSTIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalFecopNfeSTSIE = Convert.ToDouble(Math.Round(TotalFecopNfeSTSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        gnreNPagaFecopSTIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreFecop).Distinct().Sum()), 2);
+                        gnreNPagaFecopSTSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.GnreFecop).Distinct().Sum()), 2);
+                        ViewBag.GNREnPagaFecopSTIE = Convert.ToDouble(gnreNPagaFecopSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.GNREnPagaFecopSTSIE = Convert.ToDouble(gnreNPagaFecopSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        gnrePagaFecop1STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.FecopGnre1).Distinct().Sum()), 2);
+                        gnrePagaFecop1STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.FecopGnre1).Distinct().Sum()), 2);
+                        gnrePagaFecop2STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.FecopGnre2).Distinct().Sum()), 2);
+                        gnrePagaFecop2STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.FecopGnre2).Distinct().Sum()), 2);
+                        ViewBag.GNREPagaFecopSTIE = Convert.ToDouble(gnrePagaFecop2STIE + gnrePagaFecop1STIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.GNREPagaFecopSTSIE = Convert.ToDouble(gnrePagaFecop2STSIE + gnrePagaFecop1STSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        totalGnreFecopSTIE = gnrePagaFecop1STIE + gnrePagaFecop2STIE;
+                        ViewBag.TotalGnreFecopSTIE = Convert.ToDouble(totalGnreFecopSTIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        totalGnreFecopSTSIE = gnrePagaFecop1STSIE + gnrePagaFecop2STSIE;
+                        ViewBag.TotalGnreFecopSTSIE = Convert.ToDouble(totalGnreFecopSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        totalfecopDiefSTIE = TotalFecopCalcSTIE - totalGnreFecopSTIE + (gnrePagaFecop2STIE + gnrePagaFecop1STIE) - TotalFecopNfeSTIE;
+                        totalfecopDiefSTSIE = TotalFecopCalcSTSIE - totalGnreFecopSTSIE + (gnrePagaFecop2STSIE + gnrePagaFecop1STSIE) - TotalFecopNfeSTSIE;
+                        ViewBag.TotalFecopDiefSTIE = Convert.ToDouble(Math.Round(totalfecopDiefSTIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalFecopDiefSTSIE = Convert.ToDouble(Math.Round(totalfecopDiefSTSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        icmsFecop1STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.Fecop1).Distinct().Sum()), 2);
+                        icmsFecop1STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.Fecop1).Distinct().Sum()), 2);
+                        icmsFecop2STIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.Fecop2).Distinct().Sum()), 2);
+                        icmsFecop2STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.Fecop2).Distinct().Sum()), 2);
+                        ViewBag.IcmsFecopSTIE = Convert.ToDouble(icmsFecop1STIE + icmsFecop2STIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.IcmsFecopSTSIE = Convert.ToDouble(icmsFecop1STSIE + icmsFecop2STSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        ViewBag.TotalFinalFecopCalculadaSTIE = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalFinalFecopCalculadaSTSIE = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Produto incentivados
+                        var productsIncentive = _service.FindByIncentive(notes);
+                        productsIncentive = productsIncentive.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).ToList();
+
+                        ViewBag.Icms = company.Icms;
+                        ViewBag.Fecop = company.Fecop;
+
+                        decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
+                        ViewBag.Base = Convert.ToDouble(Math.Round(baseIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal impostoIcms = Convert.ToDecimal(baseIcms * (company.Icms / 100));
+                        ViewBag.ImpostoIcms = Convert.ToDouble(Math.Round(impostoIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        decimal impostoFecop = Convert.ToDecimal(baseIcms * (company.Fecop / 100));
+                        ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        decimal? impostoGeral = 0;
+
+                        impostoGeral = result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalICMS).Sum() + result.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalFecop).Sum();
+
+                        decimal? basefunef = impostoGeral - impostoIcms;
+                        ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.Funef = company.Funef;
+                        decimal taxaFunef = Convert.ToDecimal(basefunef * (company.Funef / 100));
+                        ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(taxaFunef, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        decimal totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
+
+                        ViewBag.TotalImpostoIncentivo = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalImpostoIncentivo + IcmsAPagarSTSIE + (totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE))), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        ViewBag.ImpostoGeral = impostoGeral;
+
+                    }
+
+
                     // Antecipação Parcial
+
+                    decimal totalFreteAPIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(1))
+                        {
+                            if (Convert.ToDecimal(prod.Diferencial) > 0)
+                            {
+                                totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            }
+                        }
+                    }
+
+                    ViewBag.TotalFreteAPIE = Convert.ToDouble(totalFreteAPIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal valorNfe1NormalAPSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
                     decimal valorNfe1RetAPSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
                     decimal valorNfe2NormalAPSIE = Math.Round(Convert.ToDecimal(result.Where( _ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
@@ -1374,7 +1556,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? icmsStAPSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPSIE + valorNfe1RetAPSIE + valorNfe2NormalAPSIE + valorNfe2RetAPSIE;
                     decimal? totalApuradoAPIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalApuradoAPSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2);
-                    decimal? totalDiefAPSIE = totalApuradoAPSIE - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE;
+                    decimal? totalDiefAPSIE = (totalApuradoAPSIE + totalFreteAPIE) - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE;
                     decimal? totalDiefAPIE = totalApuradoAPIE - icmsStAPIE + gnreNPagaAPIE - gnrePagaAPIE;
                     int? qtdAPSIE = result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count();
                     int? qtdAPIE = result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count();
@@ -1406,6 +1588,22 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     // Consumo
+
+                    decimal totalFreteCOIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(2))
+                        {
+                            if (Convert.ToDecimal(prod.Diferencial) > 0)
+                            {
+                                totalFreteCOIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            }
+                        }
+                    }
+
+                    ViewBag.TotalFreteCOIE = Convert.ToDouble(totalFreteCOIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal valorNfe1NormalCOSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
                     decimal valorNfe1RetCOSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
                     decimal valorNfe2NormalCOSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(2) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
@@ -1424,7 +1622,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? icmsStCOSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalCOSIE + valorNfe1RetCOSIE + valorNfe2NormalCOSIE + valorNfe2RetCOSIE;
                     decimal? totalApuradoCOIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalApuradoCOSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(2)).Select(_ => _.IcmsApurado).Sum()), 2);
-                    decimal? totalDiefCOSIE = totalApuradoCOSIE - icmsStCOSIE + gnreNPagaCOSIE - gnrePagaCOSIE;
+                    decimal? totalDiefCOSIE = (totalApuradoCOSIE + totalFreteCOIE) - icmsStCOSIE + gnreNPagaCOSIE - gnrePagaCOSIE;
                     decimal? totalDiefCOIE = totalApuradoCOIE - icmsStCOIE + gnreNPagaCOIE - gnrePagaCOIE;
                     int? qtdCOSIE = result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(2)).Count();
                     int? qtdCOIE = result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(2)).Count();
@@ -1456,6 +1654,22 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     // Consumo para Revenda
+
+                    decimal totalFreteCORIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(4))
+                        {
+                            if (Convert.ToDecimal(prod.Diferencial) > 0)
+                            {
+                                totalFreteCORIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            }
+                        }
+                    }
+
+                    ViewBag.TotalFreteCORIE = Convert.ToDouble(totalFreteCORIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal valorNfe1NormalCORSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
                     decimal valorNfe1RetCORSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
                     decimal valorNfe2NormalCORSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(4) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
@@ -1469,7 +1683,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? icmsStCORSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalCORSIE + valorNfe1RetCORSIE + valorNfe2NormalCORSIE + valorNfe2RetCORSIE;
                     decimal? totalApuradoCORIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalApuradoCORSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(4)).Select(_ => _.IcmsApurado).Sum()), 2);
-                    decimal? totalDiefCORSIE = totalApuradoCORSIE - icmsStCORSIE;
+                    decimal? totalDiefCORSIE = (totalApuradoCORSIE + totalFreteCORIE) - icmsStCORSIE;
                     decimal? totalDiefCORIE = totalApuradoCORIE - icmsStCORIE;
                     int? qtdCORSIE = result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(4)).Count();
                     int? qtdCORIE = result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(4)).Count();
@@ -1491,6 +1705,22 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     // Imobilizado
+
+                    decimal totalFreteIMIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(3))
+                        {
+                            if (Convert.ToDecimal(prod.Diferencial) > 0)
+                            {
+                                totalFreteIMIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            }
+                        }
+                    }
+
+                    ViewBag.TotalFreteIMIE = Convert.ToDouble(totalFreteIMIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal valorNfe1NormalIMSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
                     decimal valorNfe1RetIMSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
                     decimal valorNfe2NormalIMSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.TaxationTypeId.Equals(3) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
@@ -1509,7 +1739,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? icmsStIMSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalIMSIE + valorNfe1RetIMSIE + valorNfe2NormalIMSIE + valorNfe2RetIMSIE;
                     decimal? totalApuradoIMIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalApuradoIMSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(3)).Select(_ => _.IcmsApurado).Sum()), 2);
-                    decimal? totalDiefIMSIE = totalApuradoIMSIE - icmsStIMSIE + gnreNPagaIMSIE - gnrePagaIMSIE;
+                    decimal? totalDiefIMSIE = (totalApuradoIMSIE + totalFreteIMIE) - icmsStIMSIE + gnreNPagaIMSIE - gnrePagaIMSIE;
                     decimal? totaDiefIMIE = totalApuradoIMIE - icmsStIMIE + gnreNPagaIMIE - gnrePagaIMIE;
                     int? qtdIMSIE = result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(3)).Count();
                     int? qtdIMIE = result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(3)).Count();
@@ -1541,11 +1771,27 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     // Antecipação Total
+                    decimal totalFreteATIE = 0;
+
+                    foreach (var prod in result)
+                    {
+                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(8))
+                        {
+                            if (Convert.ToDecimal(prod.Aliqinterna) > 0)
+                            {
+                                totalFreteATIE += Convert.ToDecimal((prod.Freterateado * prod.Aliqinterna) / 100);
+                            }
+                        }
+                    }
+
+
+                    ViewBag.TotalFreteATIE = Convert.ToDouble(totalFreteATIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     decimal? icmsStATIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? icmsStATSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalApuradoATIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2);
                     decimal? totalApuradoATSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2);
-                    decimal? totalDiefATSIE = totalApuradoATSIE - icmsStATSIE;
+                    decimal? totalDiefATSIE = (totalApuradoATSIE + totalFreteATIE) - icmsStATSIE;
                     decimal? totalDiefATIE = totalApuradoATIE - icmsStATIE;
                     int? qtdATSIE = result.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Count();
                     int? qtdATIE = result.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Count();

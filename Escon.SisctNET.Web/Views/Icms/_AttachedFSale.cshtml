@@ -1,0 +1,35 @@
+﻿<diV class="pull-right">
+    <strong>Total Vendas: </strong> @ViewBag.TotalVendas
+</diV>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ncm
+            </th>
+            <th>
+                Valor
+            </th>
+            <th>
+                Percentual %
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.Ncm.Count; i++)
+        {
+            <tr>
+                <td>@ViewBag.Ncm[i][0]</td>
+                <td>@ViewBag.Ncm[i][1]</td>
+                <td style="width:150px;">@ViewBag.Ncm[i][2]</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Total</th>
+            <td>@ViewBag.TotalNcm</td>
+            <td>@ViewBag.PercentualTotal</td>
+        </tr>
+    </tfoot>
+</table>

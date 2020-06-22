@@ -1,0 +1,43 @@
+﻿<table border="1">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="text-align:center" width="120px">
+                NCM
+            </th>
+            <th style="border: 1px solid; text-align: center;" width="660px">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;" width="200px">
+                Valor Produto
+            </th>
+            <th style="border:1px solid; text-align:center;" width="140px">
+                Valor PIS
+            </th>
+
+            <th style="border:1px solid; text-align:center;" width="140px">
+                Valor Cofins
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.Ncm.Count; i++)
+        {
+            <tr>
+                <td style="padding-left:1%">@ViewBag.Ncm[i][0]</td>
+                <td style="padding-left:1%">@ViewBag.Ncm[i][1]</td>
+                <td style="padding-right:1%; text-align:right;">@ViewBag.Ncm[i][4]</td>
+                <td style="padding-right:1%; text-align:right;">@ViewBag.Ncm[i][2]</td>
+                <td style="padding-right:1%; text-align:right;">@ViewBag.Ncm[i][3]</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:center;">Total</th>
+            <td style="padding-left:1%"></td>
+            <th style="padding-right:1%; text-align:right;">@ViewBag.ValorProduto</th>
+            <th style="padding-right:1%; text-align:right;">@ViewBag.ValorPis</th>
+            <th style="padding-right:1%; text-align:right;">@ViewBag.ValorCofins</th>
+        </tr>
+    </tfoot>
+</table>

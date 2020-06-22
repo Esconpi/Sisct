@@ -1,0 +1,24 @@
+﻿@if (ViewBag.Type == "resumocfop")
+{
+    <strong>Resumo CFOP</strong>
+}
+else if (ViewBag.Type == "venda")
+{
+    <strong>Relatório de Penalidade</strong>
+}
+else if (ViewBag.Type == "anexo")
+{
+    <strong>Venda Ncm Anexo II</strong>
+}
+else if (ViewBag.Type == "foraAnexo")
+{
+    <strong>Venda Ncm Fora Anexo II</strong>
+}
+else if (ViewBag.Type == "incentivo")
+{
+    <strong>Apuração Icms</strong>
+}
+else if (ViewBag.Type == "resumoporcfop")
+{
+    <strong>Resumo por CFOP - @ViewBag.Code</strong>
+}

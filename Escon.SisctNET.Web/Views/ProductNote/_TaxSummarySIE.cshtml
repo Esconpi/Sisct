@@ -18,20 +18,33 @@
                 <tr>
                     <td class="col-lg-4 col-sm-4">
                         <table>
-                            <tr>
-                                <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Substituição Tributária MVA</td>
-
-                                <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSMvaSIE</td>
-
-                            </tr>
-                            @if (@ViewBag.TaxationType == 1 && ViewBag.Incetive == false)
+                            @if (@ViewBag.TaxationType == 1)
                             {
                                 <tr>
-                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
+                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Substituição Tributária MVA</td>
 
-                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSPautaSIE</td>
+                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSMvaSIE</td>
+
+                                </tr>
+                                @if (@ViewBag.TaxationType == 1 && ViewBag.Incetive == false)
+                                {
+                                    <tr>
+                                        <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
+
+                                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSPautaSIE</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Antecipação Total</td>
+
+                                    <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSMvaSIE</td>
+
                                 </tr>
                             }
+
                             <tr>
                                 <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">(+) Icms Frete com IE R$</td>
                                 <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalFrete</td>

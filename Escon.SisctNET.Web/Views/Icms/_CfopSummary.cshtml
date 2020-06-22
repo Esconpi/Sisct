@@ -1,0 +1,154 @@
+﻿<table style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;" width="100px">
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;" width="150px">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;" width="150px">
+                Base de Cálculo Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="120px">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="120px">
+                Valor Fecop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        {
+
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.Cfop[i][0]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.Cfop[i][1]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][2]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][3]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][4]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][5]</b>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="border:1px solid; padding-left:1%;"><b>Com CPF</b></td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][6]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][7]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][8]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][9]
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="border:1px solid; padding-left:1%;"><b>Sem CPF</b></td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][10]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][11]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][12]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][13]
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="border:1px solid; padding-left:1%;"><b>Com CNPJ com Inscrição Estadual</b></td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][14]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][15]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][16]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][17]
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="border:1px solid; padding-left:1%;"><b>Com CNPJ sem Inscrição Estadual</b></td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][18]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][19]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][20]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @ViewBag.Cfop[i][21]
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
+                <b>Total Entrada</b>
+            </td>
+            <td></td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorContabilEntrada</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.BaseIcmsEntrada</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorIcmsEntrada</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorFecopEntrada</b>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
+                <b>Total Saída</b>
+            </td>
+            <td></td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorContabilSaida</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.BaseIcmsSaida</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorIcmsSaida</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.ValorFecopSaida</b>
+            </td>
+        </tr>
+    </tbody>
+</table>

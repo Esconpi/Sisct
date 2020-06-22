@@ -54,6 +54,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sincronize()
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
