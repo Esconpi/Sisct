@@ -1,0 +1,39 @@
+﻿<table class="table table-striped table-bordered" style="width:100%;font-size:10px;">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Modelo</th>
+            <th>Tipo</th>
+            <th>UF</th>
+            <th>Nota</th>
+            <th>CNPJ/CPF</th>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Chave</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < ViewBag.Notas.Count; i++)
+        {
+            <tr>
+                <td>@ViewBag.Notas[i][1]["dhEmi"]</td>
+                <td>@ViewBag.Notas[i][1]["mod"]</td>
+                <td>@ViewBag.Notas[i][1]["tpNF"]</td>
+                <td>@ViewBag.Notas[i][2]["UF"]</td>
+                <td>@ViewBag.Notas[i][1]["nNF"]</td>
+                @if (ViewBag.Notas[i][2].ContainsKey("CNPJ"))
+                {
+                    <td>@ViewBag.Notas[i][2]["CNPJ"]</td>
+                }
+                else
+                {
+                    <td>@ViewBag.Notas[i][2]["CPF"]</td>
+                }
+                <td>@ViewBag.Notas[i][2]["xNome"]</td>
+                <td>@ViewBag.Notas[i][4]["vNF"]</td>
+                <td>@ViewBag.Notas[i][0]["chave"]</td>
+            </tr>
+        }
+    </tbody>
+</table>

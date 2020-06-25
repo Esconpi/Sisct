@@ -4,5 +4,18 @@
 
 @if (ViewBag.Incetive == true && ViewBag.TypeIncetive == true)
 {
-    @await Html.PartialAsync("_GeneralIncentiveReport", new ViewDataDictionary(ViewData))
+    @await Html.PartialAsync("_GeneralReportIncentiveEntry", new ViewDataDictionary(ViewData))
+
+    @await Html.PartialAsync("_SummaryGeneralTaxEntry", new ViewDataDictionary(ViewData))
 }
+else if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false)
+{
+    @await Html.PartialAsync("_GeneralReportIncentiveExit", new ViewDataDictionary(ViewData))
+
+    @await Html.PartialAsync("_GeneralTaxExitSummary", new ViewDataDictionary(ViewData))
+}
+else
+{
+    @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))
+}
+

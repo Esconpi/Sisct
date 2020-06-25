@@ -22,3 +22,9 @@ else if (ViewBag.Type == "resumoporcfop")
 {
     <strong>Resumo por CFOP - @ViewBag.Code</strong>
 }
+else if (ViewBag.Type == "suspensao")
+{
+    <div>
+        <strong>Suspensão: </strong> @ViewBag.Inicio à @ViewBag.Fim
+    </div>
+}

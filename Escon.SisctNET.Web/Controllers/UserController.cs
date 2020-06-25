@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -56,7 +56,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -74,7 +74,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Person entity)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -101,7 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -122,7 +122,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Person person)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -203,7 +203,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }
@@ -221,7 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (!SessionManager.GetUserInSession().Equals(5))
             {
                 return Unauthorized();
             }

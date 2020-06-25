@@ -7,7 +7,7 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title"><strong>Suspensões Cadastrados</strong></h3>
+        <h3 class="box-title"><strong>Suspensões Cadastradas</strong></h3>
         <div class="btn-group pull-right">
 
             <a asp-action="Create" class="btn btn-primary">
@@ -34,7 +34,6 @@
                         <th>
                             @Html.DisplayNameFor(model => model.DateEnd)
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
 
@@ -44,8 +43,6 @@
     <div class="box-footer"></div>
 </div>
 
-@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
-{
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tblSuspension').DataTable({
@@ -59,52 +56,28 @@
                 "processing": true,
                 "ordering": false,
                 "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
                 "ajax": "/Suspension/GetAll",
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
                     { "data": "inicio" },
-                    { "data": "fim" },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            return "<a href='/Suspension/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
-                        }
-                    }
+                    { "data": "fim" }
                 ]
             });
         });
     </script>
-}
-else
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblSuspension').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "ajax": "/Suspension/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "inicio" },
-                    { "data": "fim" },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            return ""
-                        }
-                    }
-                ]
-            });
-        });
-    </script>
-}

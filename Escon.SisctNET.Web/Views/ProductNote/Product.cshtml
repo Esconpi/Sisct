@@ -93,23 +93,55 @@
                         <label asp-for="Pautado" class="control-label"></label>
                         @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
                     </div>
-                    <div class="form-group col-lg-2 col-md-3 col-xs-12">
-                        <label class="control-label">Quantidade da Pauta</label>
-                        <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
-                    </div>
+                    @if (Model.Pautado == true)
+                    {
+                        <div class="form-group col-lg-2 col-md-3 col-xs-12">
+                            <label class="control-label">Quantidade da Pauta</label>
+                            <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-lg-2 col-md-3 col-xs-12">
+                            <label class="control-label">Quantidade da Pauta</label>
+                            <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
+                        </div>
+                    }
+
                     @if (Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("10/02/2020"))
                     {
-                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                            <label asp-for="ProductId" class="control-label"></label>
-                            <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
-                        </div>
+                        @if (Model.Pautado == true)
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label asp-for="ProductId" class="control-label"></label>
+                                <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid"></select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label asp-for="ProductId" class="control-label"></label>
+                                <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
+                            </div>
+                        }
+
                     }
                     else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020"))
                     {
-                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                            <label class="control-label">Produto</label>
-                            <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
-                        </div>
+                        if (Model.Pautado == true)
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label class="control-label">Produto</label>
+                                <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id"></select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label class="control-label">Produto</label>
+                                <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
+                            </div>
+                        }
                     }
 
                 </div>
@@ -204,10 +236,11 @@
         }
     }
 
-    var product = @Model.ProductId;
+    var product = @Model.ProductId
     $("#productid").children('option').each(function () {
         if ($(this).val() == product) {
             $(this).attr('selected', true);
+
         }
     });
 
@@ -218,7 +251,7 @@
         }
     });
 
-    var taxacao = @Model.TaxationTypeId;
+    var taxacao = @Model.TaxationTypeId
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
             $(this).attr('selected', true);
@@ -235,6 +268,7 @@
                 $("input[name=fecop]").prop("disabled", true);
                 $("input[name=bcr]").prop("disabled", true);
             }
+            document.getElementById('taxar').disabled = false;
         }
     });
 
@@ -262,7 +296,7 @@
             $("input[name=bcr]").prop("disabled", true);
             $("input[name=bcr]").prop("value", "");
         }
-       
+
     });
 
     $("input[name=AliqInt]").focusout(function () {
@@ -290,11 +324,8 @@
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
-            $("#produc1tid").prop("disabled", true);
+            $("#product1id").prop("disabled", true);
             $("#quant").prop("disabled", true);
         }
     });
-
-
-
 </script>

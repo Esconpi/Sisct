@@ -67,6 +67,10 @@
                 {
                     @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "suspensao")
+                {
+                    @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
+                }
 
             </div>
         </div>

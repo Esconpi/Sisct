@@ -45,7 +45,7 @@ namespace Escon.SisctNET.Web
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.IdleTimeout = TimeSpan.FromMinutes(120);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

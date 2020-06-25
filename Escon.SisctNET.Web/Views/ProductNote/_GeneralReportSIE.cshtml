@@ -6,7 +6,6 @@
         <tr>
             <th style="font-size:11px;">Tributação</th>
             <th>Código do Dar</th>
-            <th>Produtos</th>
             <th>Icms Apurado</th>
             <th>(+) Icms Frete com IE</th>
             <th>(-) GNRE Paga</th>
@@ -26,11 +25,10 @@
 
         </tr>
     </thead>
-    <tbody style="font-size:11px;">
+    <tbody style="font-size:10px;">
         <tr>
             <th>Icms ST</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdSTSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoSTSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteSTIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaSTSIE</td>
@@ -51,7 +49,6 @@
         <tr>
             <th>Fecop ST</th>
             <td>@ViewBag.DarFecop</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdSTSIE</td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -72,7 +69,6 @@
         <tr>
             <th>Antecipação Parcial</th>
             <td>@ViewBag.DarAp</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdAPSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoAPSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteAPIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaAPSIE</td>
@@ -93,7 +89,6 @@
         <tr>
             <th>Consumo</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdCOSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCOSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteCOIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaCOSIE</td>
@@ -114,7 +109,6 @@
         <tr>
             <th>Consumo p/ Revenda</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdCORSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCORSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteCORIE</td>
             <td style="text-align:center"> ---- </td>
@@ -135,7 +129,6 @@
         <tr>
             <th>Imobilizado</th>
             <td>@ViewBag.DarIm</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdIMSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoIMSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteIMIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaIMSIE</td>
@@ -156,7 +149,6 @@
         <tr>
             <th>Icms AT</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdATSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoATSIE</td>
             <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteATIE</td>
             <td style="text-align:center"> ---- </td>
@@ -177,7 +169,6 @@
         <tr>
             <th>Fecop AT</th>
             <td>@ViewBag.DarFecop</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdATSIE</td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -195,27 +186,5 @@
             <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsFecopATSIE</td>
             <th style="text-align:right; padding-right:1%;">@ViewBag.TotalFinalFecopCalculadaATSIE</th>
         </tr>
-        <tr>
-            <th>Isento</th>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.QtdIsentoSIE</td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td></td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-            <td style="text-align:center"> ---- </td>
-        </tr>
-
     </tbody>
 </table>

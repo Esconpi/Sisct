@@ -77,7 +77,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaAnexoExcedente { get; set; }
 
-        [Display(Name = "Fecop")]
+        [Display(Name = "Fecop %")]
         public decimal ? Fecop { get; set; }
 
         [Display(Name = "Anexo")]

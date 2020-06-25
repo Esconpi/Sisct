@@ -1,0 +1,120 @@
+﻿<div style="border:2px solid; text-align:center; page-break-before: always;">
+    <strong>ICMS Excedente</strong>
+</div>
+<table class="table" style="font-size: 12px; border:2px solid;">
+    <thead>
+        <tr>
+            <th style="width:200px;"></th>
+            <th style="width:120px;">Vendas</th>
+            <th></th>
+            <th style="width:120px;">Limite (MÁXIMO)</th>
+            <th></th>
+            <th style="width:100px;">Excedente</th>
+            <th></th>
+            <th style="width:100px;">Adicional</th>
+            <th></th>
+            <th style="width:100px;">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Grupo)
+        {
+            <tr>
+                <th>ICMS excedente</th>
+                <td>@item[3]</td>
+                <th style="font-size:17px; text-align:center">-</th>
+                <td>@item[4]</td>
+                <th style="font-size:17px; text-align:center">=</th>
+                <td>@item[5]</td>
+                <th style="text-align:center">x</th>
+                <td>@item[6]</td>
+                <th style="font-size:17px">=</th>
+                <td style="text-align:right; padding-right:1%;">@item[7]</td>
+            </tr>
+        }
+        <tr>
+            <th>Transferência Interestadual</th>
+            <td>@ViewBag.TotalTransferencia</td>
+            <th style="font-size:17px; text-align:center">-</th>
+            <td>@ViewBag.LimiteTransferencia</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td>@ViewBag.ExcedenteTransferencia</td>
+            <th style="text-align:center">x</th>
+            <td>@ViewBag.PercentaulTransferencia</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteTransferencia</td>
+        </tr>
+        <tr>
+            <th style="width:200px;"></th>
+            <th style="width:120px;">Limite (MÍNIMO)</th>
+            <th></th>
+            <th style="width:120px;">Vendas</th>
+            <th></th>
+            <th style="width:100px;">Excedente</th>
+            <th></th>
+            <th style="width:100px;">Adicional</th>
+            <th></th>
+            <th style="width:100px;">Total</th>
+        </tr>
+        <tr>
+            <th>ICMS excedente contribuinte</th>
+            <td>@ViewBag.LimiteContribuinte</td>
+            <th style="font-size:17px; text-align:center">-</th>
+            <td>@ViewBag.BaseCalcContrib</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td>@ViewBag.ExcedenteContribuinte</td>
+            <th style="text-align:center">x</th>
+            <td>@ViewBag.PercentualExcedenteContribuinte</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteContribuinte</td>
+        </tr>
+        <tr>
+            <th>Venda conforme anexo</th>
+            <td>@ViewBag.LimiteAnexo</td>
+            <th style="font-size:17px; text-align:center">-</th>
+            <td>@ViewBag.VendaAnexo</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td>@ViewBag.ExcedenteAnexo</td>
+            <th style="text-align:center">x</th>
+            <td>@ViewBag.PercentualExcedenteAnexo</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteAnexo</td>
+        </tr>
+        <tr>
+            <th style="width:200px;"></th>
+            <th style="width:120px;">Base de Cálculo</th>
+            <th></th>
+            <th style="width:120px;"></th>
+            <th></th>
+            <th style="width:100px;"></th>
+            <th></th>
+            <th style="width:100px;">Adicional</th>
+            <th></th>
+            <th style="width:100px;">Total</th>
+        </tr>
+        <tr>
+            <th>Suspensão</th>
+            <td>@ViewBag.BaseCalcSuspensao</td>
+            <th></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th style="text-align:center">x</th>
+            <td>@ViewBag.PercentaulSuspensao</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalSuspensao</td>
+        </tr>
+        <tr>
+            <th>Total Icms Excedente</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th></th>
+            <td></td>
+            <th style="text-align:right; padding-right:1%;">@ViewBag.TotalIcms</th>
+        </tr>
+    </tbody>
+</table>

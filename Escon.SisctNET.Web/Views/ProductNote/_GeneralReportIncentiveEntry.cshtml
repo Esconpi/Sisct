@@ -1,8 +1,7 @@
-﻿<div style="width: 100%; overflow: hidden; padding: 20px; font-size:12px; page-break-before: always;">
+﻿<div style="width: 100%; font-size:12px;">
     <div style="border:2px solid; text-align:center;">
-        <strong>APURAÇÂO INCENTIVADA</strong>
+        <strong>Apuração Incentivada</strong>
     </div>
-
     <table class="table" style="border: 2px solid;">
         <thead>
             <tr>
@@ -154,11 +153,13 @@
         </tbody>
     </table>
 
+    @await Html.PartialAsync("_GeneralReportEntryIncentiveSurplus", new ViewDataDictionary(ViewData))
+
 </div>
 
-<div style="width:100%; overflow:hidden; padding:20px;">
+<div style="width:100%;">
     <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
-        <strong>RESUMO DOS IMPOSTOS</strong>
+        <strong>Imposto Incentivo</strong>
     </div>
     <table class="table" style="border: 2px solid;">
         <thead>
@@ -170,19 +171,14 @@
         </thead>
         <tbody>
             <tr>
-                <th style="text-align:center">ICMS por MVA</th>
-                <td style="text-align:right"> @ViewBag.IcmsAPagarSTSIE</td>
-                <td style="text-align:center">@ViewBag.DarSTCO</td>
-            </tr>
-            <tr>
                 <th style="text-align:center">ICMS Incentivo</th>
                 <td style="text-align:right"> @ViewBag.ImpostoIcms</td>
                 <td style="text-align:center">@ViewBag.DarIcms</td>
             </tr>
             <tr>
-                <th style="text-align:center">Fecop por MVA</th>
-                <td style="text-align:right">@ViewBag.TotalFinalFecopCalculadaSTSIE</td>
-                <td style="text-align:center">@ViewBag.DarFecop</td>
+                <th style="text-align:center">ICMS Excedente</th>
+                <td style="text-align:right"> @ViewBag.TotalIcms</td>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
             </tr>
             <tr>
                 <th style="text-align:center">Fecop Incentivo</th>
@@ -193,11 +189,6 @@
                 <th style="text-align:center">Funef</th>
                 <td style="text-align:right">@ViewBag.TaxaFunef</td>
                 <td style="text-align:center">@ViewBag.DarFunef</td>
-            </tr>
-            <tr style="border: 2px solid;">
-                <th style="text-align:center">Total</th>
-                <td style="text-align:right"><strong>@ViewBag.TotalImpostoIncentivo</strong></td>
-                <td></td>
             </tr>
         </tbody>
     </table>

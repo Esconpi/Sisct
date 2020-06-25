@@ -23,10 +23,13 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
-        [Display(Name = "Data Inicio")]
+        [Display(Name = "Suspensão")]
         public DateTime DateStart { get; set; }
 
-        [Display(Name = "Data Fim")]
-        public DateTime? DateEnd { get; set; }
+        [Display(Name = "Reativação")]
+        public DateTime DateEnd { get; set; }
+
+        [Display(Name = "Percentual %")]
+        public decimal Percentual { get; set; }
     }
 }
