@@ -1,0 +1,225 @@
+﻿<div style="width:100%; padding-top:20px; page-break-before: always;">
+    <table class="table" style="font-size:12px; border:2px solid">
+        <thead>
+            <tr>
+                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid;">APURAÇÃO DO ICMS NORMAL</th>
+                <th class="col-lg-1 col-md-1 col-sm-1"></th>
+                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">DADOS PARA CÁLCULO DA FUNEF e COTAC</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:14px;">
+            <tr>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Debito</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Credito</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.Diferenca</th>
+                        </tr>
+
+                    </table>
+
+                </td>
+                <td></td>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsContrib % (R$)</td>
+
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribIncentivo</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsAiqM25Contrib % (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribuinteAliM25</td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsNContribuinte % (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaNContribIncentivo</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Total (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalIcms</th>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div style="width:100%; padding-top:1px;">
+    <table class="table" style="font-size:12px; border:2px solid;">
+        <thead>
+            <tr>
+                <th style="text-align:center; border:1px solid;">BASE DE CÁLCULO DA FUNEF E COTAC</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:14px;">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="text-align:right;" width="300px">Icms Apurado Normal (R$)</td>
+                            <td style="text-align:right;" width="200px">@ViewBag.Diferenca</td>
+                            <td width="200px">&nbsp;</td>
+                            <td width="200px">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;">Icms Apurado Incentivado (R$)</td>
+                            <td style="text-align:right;">@ViewBag.TotalIcms</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:right">Total (R$)</th>
+                            <th style="text-align:right">@ViewBag.BaseCalculo</th>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:right">&nbsp;</th>
+                            <th style="text-align:right">&nbsp;</th>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:right"></th>
+                            <th style="text-align:right">Base de Cálculo</th>
+                            <th style="text-align:right">Percentual %</th>
+                            <th style="text-align:right">Valor (R$)</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align:right">FUNEF</th>
+                            <td style="text-align:right">@ViewBag.BaseCalculo</td>
+                            <td style="text-align:right">@ViewBag.PercentualFunef %</td>
+                            <td style="text-align:right">@ViewBag.TotalFunef</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:right">COTAC</th>
+                            <td style="text-align:right">@ViewBag.BaseCalculo</td>
+                            <td style="text-align:right">@ViewBag.PercentualCotac %</td>
+                            <td style="text-align:right">@ViewBag.TotalCotac</td>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div style="width:100%; padding-top:1px;">
+    <table class="table" style="font-size:12px; border:2px solid">
+        <thead>
+            <tr>
+                <th style="text-align:center; border:1px solid;">Resumo Incentivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <th style="text-align:center;" width="300px">IMPOSTO</th>
+                            <th style="text-align:center;" width="150px">Percentual %</th>
+                            <th style="text-align:center;" width="100px">UF</th>
+                            <th style="text-align:center;" width="150px">Código DAR</th>
+                            <th style="text-align:right;" width="250px">Valor (R$)</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">ICMS</td>
+                            <td style="text-align:center;">@ViewBag.PercentualIcmsContrib %</td>
+                            <td style="text-align:center;">@ViewBag.Uf</td>
+                            <td style="text-align:center;">@ViewBag.DarIcms</td>
+                            <td style="text-align:right;">@ViewBag.ValorVendaContribIncentivo</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">ICMS</td>
+                            <td style="text-align:center;">@ViewBag.PercentualIcmsAiqM25Contrib %</td>
+                            <td style="text-align:center;">@ViewBag.Uf</td>
+                            <td style="text-align:center;">@ViewBag.DarIcms</td>
+                            <td style="text-align:right;">@ViewBag.ValorVendaContribuinteAliM25</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">ICMS</td>
+                            <td style="text-align:center;">@ViewBag.PercentualIcmsNContribuinte %</td>
+                            <td style="text-align:center;">@ViewBag.Uf</td>
+                            <td style="text-align:center;">@ViewBag.DarIcms</td>
+                            <td style="text-align:right;">@ViewBag.ValorVendaNContribIncentivo</td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align:center;">FUNEF</td>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:center;">@ViewBag.Uf</td>
+                            <td style="text-align:center;">@ViewBag.DarFunef</td>
+                            <td style="text-align:right;">@ViewBag.TotalFunef</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">COTAC</td>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:center;">@ViewBag.Uf</td>
+                            <td style="text-align:center;">@ViewBag.DarCotac</td>
+                            <td style="text-align:right;">@ViewBag.TotalCotac</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">&nbsp;</td>
+                            <td style="text-align:center;">&nbsp;</td>
+                            <th style="text-align:center;">&nbsp;</th>
+                            <td style="text-align:center;">&nbsp;</td>
+                            <td style="text-align:right;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:center;"></td>
+                            <th style="text-align:center;">DIFAL</th>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:right;"></td>
+                        </tr>
+                        @for (int i = 0; i < ViewBag.IcmsForaDoEstado.Count; i++)
+                        {
+                            @if (Convert.ToDecimal(ViewBag.IcmsForaDoEstado[i][2]) > 0)
+                            {
+                                <tr>
+
+                                    <td style="text-align:center;">ICMS</td>
+                                    <td style="text-align:center;">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
+                                    <td style="text-align:center;">@ViewBag.IcmsForaDoEstado[i][0]</td>
+                                    <td style="text-align:center;"></td>
+                                    <td style="text-align:right;">@ViewBag.IcmsForaDoEstado[i][2]</td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <th style="text-align:center;">Total (R$)</th>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:center;"></td>
+                            <td style="text-align:center;"></td>
+                            <th style="text-align:right;">@ViewBag.ValorVendaNContribForaDoEstado</th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))

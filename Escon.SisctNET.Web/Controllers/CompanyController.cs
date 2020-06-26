@@ -409,6 +409,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Compare(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 ViewBag.Ident = SessionManager.GetTipoInSession();
@@ -424,6 +428,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Taxation(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -439,6 +447,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult TaxationNcm(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -454,9 +466,15 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Relatory(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Incentive = result.Incentive;
+                ViewBag.TypeIncentive = result.TipoApuracao;
                 return View(result);
             }
             catch (Exception ex)
@@ -468,6 +486,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult RelatoryExit(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -490,6 +512,10 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Ncm(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _taxationService.FindByCompany(id);
@@ -507,6 +533,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult TaxationProduct(int id)
         {
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -522,7 +552,10 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {
-
+            if (!SessionManager.GetCompanyInSession().Equals(11))
+            {
+                return Unauthorized();
+            }
             try
             {
                 var entity = _service.FindById(updateCountingType.CompanyId, GetLog(Model.OccorenceLog.Read));

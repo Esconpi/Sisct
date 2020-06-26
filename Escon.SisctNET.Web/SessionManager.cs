@@ -326,5 +326,7 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<string>("MonthSisctNET");
         }
+
     }
+
 }

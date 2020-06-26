@@ -355,7 +355,7 @@ namespace Escon.SisctNET.Web.Controllers
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
                     s.Code = s.Code;
                     s.Price = s.Price;
-                    s.GroupId = s.GroupId;
+                    s.Group.Description = s.Group.Description;
                     s.Unity = s.Unity;
                     s.DateStart = s.DateStart;
                     s.DateEnd = s.DateEnd;

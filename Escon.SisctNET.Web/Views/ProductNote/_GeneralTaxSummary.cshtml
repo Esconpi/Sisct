@@ -1,30 +1,123 @@
-﻿<div style="border:2px solid; text-align:center;">
-    <strong>RESUMO DOS IMPOSTOS</strong>
-</div>
+﻿@if (ViewBag.Incetive == true && ViewBag.TypeIncetive == true)
+{
+    <div style="border:2px solid; text-align:center; page-break-before: always;">
+        <strong>RESUMO DOS IMPOSTOS</strong>
+    </div>
 
-<table class="table" style="font-size: 12px; border:2px solid;">
-    <thead>
-        <tr>
-            <th style="width:120px; text-align:center">Código DAR</th>
-            <th style="width:100px; text-align:center">Total do Imposto</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="text-align:center">@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarSTCO</td>
-        </tr>
-        <tr>
-            <td style="text-align:center">@ViewBag.DarAp</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarAp</td>
-        </tr>
-        <tr>
-            <td style="text-align:center">@ViewBag.DarIm</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIm</td>
-        </tr>
-        <tr>
-            <td style="text-align:center">@ViewBag.DarFecop</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFecop</td>
-        </tr>
-    </tbody>
-</table>
+    <table class="table" style="font-size: 12px; border:2px solid;">
+        <thead>
+            <tr>
+                <th style="width:120px; text-align:center">Código DAR</th>
+                <th style="width:100px; text-align:center">Total do Imposto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIcms</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarSTCO</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarSTCO</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarAp</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarAp</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarIm</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIm</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarFecop</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFecop</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFunef</td>
+            </tr>
+        </tbody>
+    </table>
+
+}
+else if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false)
+{
+    <div style="border:2px solid; text-align:center; page-break-before: always;">
+        <strong>RESUMO DOS IMPOSTOS</strong>
+    </div>
+
+    <table class="table" style="font-size: 12px; border:2px solid;">
+        <thead>
+            <tr>
+                <th style="width:120px; text-align:center">Código DAR</th>
+                <th style="width:100px; text-align:center">Total do Imposto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIcms</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarSTCO</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarSTCO</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarAp</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarAp</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarIm</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIm</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarFecop</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFecop</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarCotac</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarCotac</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFunef</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <div style="border:2px solid; text-align:center; page-break-before: always;">
+        <strong>RESUMO DOS IMPOSTOS</strong>
+    </div>
+
+    <table class="table" style="font-size: 12px; border:2px solid;">
+        <thead>
+            <tr>
+                <th style="width:120px; text-align:center">Código DAR</th>
+                <th style="width:100px; text-align:center">Total do Imposto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarSTCO</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarSTCO</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarAp</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarAp</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarIm</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarIm</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">@ViewBag.DarFecop</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDarFecop</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+
+

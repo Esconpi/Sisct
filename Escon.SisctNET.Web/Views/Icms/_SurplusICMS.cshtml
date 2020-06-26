@@ -74,7 +74,7 @@
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
-                Vendas P/ CNPJ maior que @ViewBag.PercentualCNPJ %
+                Vendas P/ mesmo grupo maior que @ViewBag.PercentualCNPJ %
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.TotalExecedente
@@ -89,7 +89,7 @@
 
 @if (ViewBag.Grupo.Count == 0)
 {
-    <h6 style="padding-left:20px;"><strong>Não houve vendas para contribuites maior que @ViewBag.PercentualCNPJ %</strong></h6>
+    <h6 style="padding-left:20px;"><strong>Não houve vendas para o mesmo grupo maior que @ViewBag.PercentualCNPJ %</strong></h6>
 }
 else
 {
@@ -156,7 +156,7 @@ else
                         @foreach (var item in ViewBag.Grupo)
                         {
                             <tr>
-                                <th>ICMS excedente</th>
+                                <th>ICMS Excedente Grupo</th>
                                 <td>@item[3]</td>
                                 <th style="font-size:17px">-</th>
                                 <td>@item[4]</td>
@@ -191,6 +191,7 @@ else
             <td>
                 <table class="table">
                     <thead>
+                      
                         <tr>
                             <th style="width:200px;"></th>
                             <th style="width:120px;">Limite (MÍNIMO)</th>
@@ -206,7 +207,7 @@ else
                     </thead>
                     <tbody>
                         <tr>
-                            <th>ICMS excedente contribuinte</th>
+                            <th>ICMS Excedente Contribuinte</th>
                             <td>@ViewBag.LimiteContribuinte</td>
                             <th style="font-size:17px">-</th>
                             <td>@ViewBag.BaseCalcContrib</td>
@@ -218,7 +219,7 @@ else
                             <td>@ViewBag.TotalExcedenteContribuinte</td>
                         </tr>
                         <tr>
-                            <th>Venda conforme anexo</th>
+                            <th>Venda Conforme Anexo</th>
                             <td>@ViewBag.LimiteAnexo</td>
                             <th style="font-size:17px">-</th>
                             <td>@ViewBag.VendaAnexo</td>
@@ -257,9 +258,9 @@ else
                             <td>@ViewBag.BaseCalcSuspensao</td>
                             <th></th>
                             <td></td>
-                            <th>X</th>
-                            <td></td>
                             <th></th>
+                            <td></td>
+                            <th>x</th>
                             <td>@ViewBag.PercentaulSuspensao</td>
                             <th style="font-size:17px">=</th>
                             <td>@ViewBag.TotalSuspensao</td>

@@ -1,8 +1,8 @@
-﻿<div style="width:100%; padding:20px; padding-top:0px;">
+﻿<div style="width:100%; padding-top:0px; border:2px solid; page-break-before: always;">
     <table style="font-size:12px;" border="1">
         <thead style="font-size:14px;">
             <tr>
-                <th style="text-align:center" width="320px">Histórico</th>
+                <th style="text-align:center;" width="320px">Histórico</th>
                 <th style="text-align:center" width="150px">Aliq. Inter. do Produto até 25%</th>
                 <th style="text-align:center" width="180px">Aliq. Inter. do Produto superior 25%</th>
                 <th style="text-align:center" width="120px">Receitas de Produtos ST</th>
@@ -55,8 +55,8 @@
                 <td style="font-size:11px;">Venda p/ Não Contribuintes ST (R$)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivo</td>
                 <td></td>
-                <td style="text-align:right"></td>
-                <td style="text-align:right"></td>
+                <td style="text-align:right; padding-right:1%;"></td>
+                <td style="text-align:right; padding-right:1%;"></td>
                 <td style="text-align:right"></td>
             </tr>
             <tr>
@@ -110,7 +110,7 @@
             <tr>
                 <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado (R$)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNForaEstadoContribuinteIncetivo</td>
-                <td style="text-align:right"></td>
+                <td style="text-align:right; padding-right:1%;"></td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.NaoContribuinteForaDoEstadoIsento</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.TotalGeralVendaNContibuinteForaDoEstado</td>
@@ -167,70 +167,4 @@
     </table>
 </div>
 
-<div style="width:100%; overflow:hidden; padding:20px; padding-top:3px;">
-    <table class="table" border="1" style="font-size:12px;">
-        <thead>
-            <tr>
-                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid;">APURAÇÃO DO ICMS NORMAL</th>
-                <th class="col-lg-1 col-md-1 col-sm-1"></th>
-                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">DADOS PARA CÁLCULO DA FUNEF e COTAC</th>
-            </tr>
-        </thead>
-        <tbody style="font-size:14px;">
-            <tr>
-                <td class="col-lg-6 col-sm-6">
-                    <table>
-                        <tr>
-                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Debito</td>
-
-                        </tr>
-
-                        <tr>
-                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.Credito</td>
-                        </tr>
-
-                        <tr>
-                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
-                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.Diferenca</th>
-                        </tr>
-
-                    </table>
-
-                </td>
-                <td></td>
-                <td class="col-lg-6 col-sm-6">
-                    <table>
-
-                        <tr>
-                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsContrib % (R$)</td>
-
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribIncentivo</td>
-
-                        </tr>
-
-                        <tr>
-                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsAiqM25Contrib % (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaContribuinteAliM25</td>
-                        </tr>
-
-                        <tr>
-                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @ViewBag.PercentualIcmsNContribuinte % (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.ValorVendaNContribIncentivo</td>
-                        </tr>
-
-                        <tr>
-                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Total (R$)</th>
-                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalIcms</th>
-                        </tr>
-
-                    </table>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-@await Html.PartialAsync("_ProductTaxSummary", new ViewDataDictionary(ViewData))
+@await Html.PartialAsync("_GeneralSummaryTaxIncentiveProduct", new ViewDataDictionary(ViewData))
