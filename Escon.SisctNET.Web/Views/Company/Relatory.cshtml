@@ -3,21 +3,7 @@
     ViewData["Title"] = "Relatory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    #myProgress {
-        position: relative;
-        width: 100%;
-        height: 30px;
-        background-color: #ddd;
-    }
 
-    #myBar {
-        position: absolute;
-        width: 1%;
-        height: 100%;
-        background-color: #4CAF50;
-    }
-</style>
 <div class="box box-primary">
     <div class="box-header">
         <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
@@ -25,9 +11,6 @@
 
     </div>
     <div class="box-body">
-        <div id="myProgress" hidden>
-            <div id="myBar"></div>
-        </div>
         <div class="col-lg-12">
             <form asp-controller="ProductNote" asp-action="Relatory" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -122,151 +105,45 @@
                 }
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="move()" />
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right"/>
                 </div>
             </form>
         </div>
     </div>
 </div>
-@if (Model.Incentive == true && Model.TipoApuracao == false)
-{
-    <script>
-        var time = 20;
-        $("#type").on("change", function () {
-            if ($(this).val() == 2) {
-                console.log('entrou')
-                $('input[name=nota]').prop('type', 'text');
-            }
-            else if ($(this).val() == 6) {
-                $('input[name=nota]').prop('type', 'hidden');
-                time = 1200;
-            }
-            else {
-                $('input[name=nota]').prop('type', 'hidden');
-            }
-        });
 
-        var valor = document.getElementById('type').value;
 
-        $("#type option:selected").each(function () {
-            console.log($(this).attr('selected'));
-            if ($(this).val() == 2) {
-                $('input[name=nota]').prop('type', 'text');
-            }
-        });
-
-        function ativar_button() {
-            var tipo = document.getElementById("type").value;
-
-            if (tipo == "6") {
-                document.getElementById("file").disabled = false;
-
-            }
-            else {
-                document.getElementById("file").disabled = true;
-            }
+<script>
+    $("#type").on("change", function () {
+        if ($(this).val() == 2) {
+            console.log('entrou')
+            $('input[name=nota]').prop('type', 'text');
         }
-
-        function move() {
-            document.getElementById("myProgress").hidden = false;
-            var elem = document.getElementById("myBar");
-            var width = 1;
-            var id = setInterval(frame, time);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                } else {
-                    width++;
-                    elem.style.width = width + '%';
-                }
-            }
+        else {
+            $('input[name=nota]').prop('type', 'hidden');
         }
+    });
 
-    </script>
-}
-else
-{
-    if (Model.Incentive == true)
-    {
-        <script>
-            var time = 20;
-            $("#type").on("change", function () {
-                if ($(this).val() == 2) {
-                    console.log('entrou')
-                    $('input[name=nota]').prop('type', 'text');
-                }
-                else if ($(this).val() == 6){
-                    $('input[name=nota]').prop('type', 'hidden');
-                    time = 500;
-                }
-                else {
-                    $('input[name=nota]').prop('type', 'hidden');
-                }
-            });
+    var valor = document.getElementById('type').value;
 
-            var valor = document.getElementById('type').value;
+    $("#type option:selected").each(function () {
+        console.log($(this).attr('selected'));
+        if ($(this).val() == 2) {
+            $('input[name=nota]').prop('type', 'text');
+        }
+    });
 
-            $("#type option:selected").each(function () {
-                console.log($(this).attr('selected'));
-                if ($(this).val() == 2) {
-                    $('input[name=nota]').prop('type', 'text');
-                }
-            });
+    function ativar_button() {
+        var tipo = document.getElementById("type").value;
 
-            function move() {
-                document.getElementById("myProgress").hidden = false;
-                var elem = document.getElementById("myBar");
-                var width = 1;
-                var id = setInterval(frame, time);
-                function frame() {
-                    if (width >= 100) {
-                        clearInterval(id);
-                    } else {
-                        width++;
-                        elem.style.width = width + '%';
-                    }
-                }
-            }
-        </script>
-    }
-    else
-    {
-        <script>
-            $("#type").on("change", function () {
-                if ($(this).val() == 2) {
-                    console.log('entrou')
-                    $('input[name=nota]').prop('type', 'text');
-                }
-                else {
-                    $('input[name=nota]').prop('type', 'hidden');
-                }
-            });
+        if (tipo == "6") {
+            document.getElementById("file").disabled = false;
 
-            var valor = document.getElementById('type').value;
-
-            $("#type option:selected").each(function () {
-                console.log($(this).attr('selected'));
-                if ($(this).val() == 2) {
-                    $('input[name=nota]').prop('type', 'text');
-                }
-            });
-
-            function move() {
-                document.getElementById("myProgress").hidden = false;
-                var elem = document.getElementById("myBar");
-                var width = 1;
-                var id = setInterval(frame, 20);
-                function frame() {
-                    if (width >= 100) {
-                        clearInterval(id);
-                    } else {
-                        width++;
-                        elem.style.width = width + '%';
-                    }
-                }
-            }
-        </script>
+        }
+        else {
+            document.getElementById("file").disabled = true;
+        }
     }
 
-}
+</script>
 
