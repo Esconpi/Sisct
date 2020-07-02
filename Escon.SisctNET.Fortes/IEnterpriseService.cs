@@ -4,6 +4,6 @@ namespace Escon.SisctNET.Fortes
 {
     public interface IEnterpriseService
     {
-        List<Model.Company> GetCompanies(int lastCodigo, string connectionString);
+        List<Model.Company> GetCompanies(string connectionString);
     }
 }

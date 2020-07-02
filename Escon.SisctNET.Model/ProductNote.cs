@@ -196,5 +196,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Origem")]
         public int ? Orig { get; set; }
 
+        [Display(Name = "Validade Inicial")]
+        public DateTime ? DateStart { get; set; }
     }
 }

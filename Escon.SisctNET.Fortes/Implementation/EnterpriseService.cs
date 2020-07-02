@@ -13,7 +13,16 @@ namespace Escon.SisctNET.Fortes.Implementation
 
         }
 
-        public List<Company> GetCompanies(int lastCodigo, string connectionString)
+        /**
+         * Campos tabela EMP
+         * Codigo, Nome, USU_Codigo, Modelo, RazaoSocial, NmFantasia, CNPJBase, CPF, CEI, FatAnualSup, 
+         * FGTSContribSocial, Tributacao, LiminarContribSocial, CentralizaFGTS, logotipo, SetorPublico, 
+         * ProdRural, DtIniAtiv, Desativada, OptanteSimples, IntegraPainel, MEI, Bloqueada, CNPJSCP,
+         * Guid, DtAdesaoReinfProd, DtAdesaoReinfHomo, GuidProdReinf, GuidHomoReinf, AmbienteAtivoReinf, 
+         * AdesaoFilialReinf, BloqueioESocial, ReintegradoReinf, DataReintegracaoReinf, ADESAOMANUAL
+         */
+
+        public List<Company> GetCompanies(string connectionString)
         {
             List<Company> companies = new List<Company>();
 
@@ -26,7 +35,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                     using (_SqlCommand = new System.Data.SqlClient.SqlCommand())
                     {
                         _SqlCommand.Connection = _SqlConnection;
-                        _SqlCommand.CommandText = $"select * from EMP where CAST(codigo as Int)>{lastCodigo} order by cast(Codigo as int) asc";
+                        _SqlCommand.CommandText = $"select * from EMP order by cast(Codigo as int) asc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
@@ -34,16 +43,15 @@ namespace Escon.SisctNET.Fortes.Implementation
                             {
                                 Company c = new Company();
                                 c.Code = _SqlDataReader["Codigo"].ToString();
+     
+                                List<Company> establishments = new List<Company>();
+                                establishments = GetEstablishment(c.Code, connectionString);
+
                                 if (!string.IsNullOrEmpty(_SqlDataReader["CNPJBase"].ToString()))
                                 {
-                                    List<string> establishment = new List<string>();
-
                                     string cnpj = _SqlDataReader["CNPJBase"].ToString();
 
-
-                                    establishment = SeqCnpj(c.Code, connectionString);
-
-                                    for (int i = 0; i < establishment.Count; i++)
+                                    foreach(var establishment in establishments)
                                     {
                                         Company company = new Company();
                                         company.Active = false;
@@ -54,28 +62,45 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.SocialName = _SqlDataReader["RazaoSocial"].ToString();
                                         company.FantasyName = _SqlDataReader["NmFantasia"].ToString();
                                         company.Code = _SqlDataReader["Codigo"].ToString();
-
-
-                                        string seqCnpj = establishment[i];
+                                        string seqCnpj = establishment.Document;
                                         string digit = DigitCnpj(cnpj + seqCnpj);
                                         company.Document = cnpj + seqCnpj + digit;
+                                        company.Ie = establishment.Ie;
+                                        company.Logradouro = establishment.Logradouro;
+                                        company.Number = establishment.Number;
+                                        company.Complement = establishment.Complement;
+                                        company.District = establishment.District;
+                                        company.Cep = establishment.Cep;
+                                        company.Uf = establishment.Uf;
+                                        company.City = establishment.City;
                                         companies.Add(company);
                                     }
                                 }
                                 else
                                 {
-                                    Company company = new Company();
-
-                                    company.Active = false;
-                                    company.Incentive = false;
-                                    company.Status = true;
-                                    company.Created = DateTime.Now;
-                                    company.Updated = company.Created;
-                                    company.SocialName = _SqlDataReader["RazaoSocial"].ToString();
-                                    company.FantasyName = _SqlDataReader["NmFantasia"].ToString();
-                                    company.Code = _SqlDataReader["Codigo"].ToString();
-                                    company.Document = _SqlDataReader["CPF"].ToString();
-                                    companies.Add(company);
+                                    
+                                    foreach (var establishment in establishments)
+                                    {
+                                        Company company = new Company();
+                                        company.Active = false;
+                                        company.Incentive = false;
+                                        company.Status = true;
+                                        company.Created = DateTime.Now;
+                                        company.Updated = company.Created;
+                                        company.SocialName = _SqlDataReader["RazaoSocial"].ToString();
+                                        company.FantasyName = _SqlDataReader["NmFantasia"].ToString();
+                                        company.Code = _SqlDataReader["Codigo"].ToString();
+                                        company.Document = _SqlDataReader["CPF"].ToString();
+                                        company.Ie = establishment.Ie;
+                                        company.Logradouro = establishment.Logradouro;
+                                        company.Number = establishment.Number;
+                                        company.Complement = establishment.Complement;
+                                        company.District = establishment.District;
+                                        company.Cep = establishment.Cep;
+                                        company.Uf = establishment.Uf;
+                                        company.City = establishment.City; 
+                                        companies.Add(company);
+                                    }
                                 }
 
                             }
@@ -95,9 +120,21 @@ namespace Escon.SisctNET.Fortes.Implementation
             return companies;
         }
 
-        public List<string> SeqCnpj(string codeEmp, string connectionString)
+        /**
+         * Campos tabela EST
+         * EMP_Codigo, Codigo, Nome, SeqCNPJ, EndLogradouro, EndNumero, EndComplemento, Bairro, CEP, MUN_UFD_Sigla,
+         * MUN_Codigo, DDD, Fone, Fax, Email, IE, IM, CEFCodigoFGTS, FPAS, CNAE_Fiscal, GerouCAGED, DtEncerramento, 
+         * AtividadeEconomica, Matriz, CentralizadorFGTS, AliquotaSAT, CodigoTerceiros, CodigoGPS, INSSAliqTerceiros, 
+         * NaturezaJuridica, NrProprietarios, MesDataBase, ParticipaPAT, PercServicoProprio, PercAdministracaoCozinha, 
+         * PercRefeicaoConvenio, PercRefeicoesTransportadas, PercCestaAlimento, PercAlimentacaoConvenio, INSSAliqContrib,
+         * PessoaContato, CTA_Codigo, SociedSimples, IPI, ICMS, ISS, Telefonica, DTINIATIV, CentroCustoProsoft, NIRC, 
+         * CNAE2_Codigo, EST_CODIGO_AG, Energia, Comunicacao, Tranporte, Varejista, CodigoWebContabil, COD_EST_CONTABIL,
+         * Combustiveis, SUFRAMA, EST_CODIGO_CONTABIL, PrestadorServSaude, CNES, VeiculosUsados, ESOCIAL, SociedUniprofissional, CEI, CAD_ITR
+         */
+        
+        public List<Company> GetEstablishment(string codeEmp, string connectionString)
         {
-            List<string> establishment = new List<string>();
+            List<Company> establishments = new List<Company>();
             try
             {
                 using (System.Data.SqlClient.SqlConnection ctx = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -113,7 +150,17 @@ namespace Escon.SisctNET.Fortes.Implementation
                         {
                             while (reader.Read())
                             {
-                                establishment.Add(reader["SeqCNPJ"].ToString());
+                                Company establishment = new Company();
+                                establishment.Document = reader["SeqCNPJ"].ToString();
+                                establishment.Ie = reader["IE"].ToString();
+                                establishment.Logradouro = reader["EndLogradouro"].ToString();
+                                establishment.Number = reader["EndNumero"].ToString();
+                                establishment.Complement = reader["EndComplemento"].ToString();
+                                establishment.District = reader["Bairro"].ToString();
+                                establishment.Cep = reader["CEP"].ToString();
+                                establishment.Uf = reader["MUN_UFD_Sigla"].ToString();
+                                establishment.City = GetetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString);
+                                establishments.Add(establishment);
                             }
                         }
                     }
@@ -124,7 +171,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                 Console.Out.WriteLine(ex.Message);
             }
 
-            return establishment;
+            return establishments;
         }
 
         public string DigitCnpj(string cnpj)
@@ -173,5 +220,44 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             return digit;
         }
+
+        /**
+         * Campos tabela MUN
+         * UFD_Sigla, Codigo, Nome, CodMunDIPJ, CodMunGIA, CODMUNDIEFPA, CODMUNBAHIA, CodMunRJ, CODDMISS, CodMunSEF, CodMunGIMPB,
+         * CodMunDIMESC, CodMunGIARS, CodMunDIEFES, CodMunMarituba, CodMunGoiania, CodMunDOTES
+         */
+
+        public string GetetCity(string codeMun, string uf, string connectionString)
+        {
+            string city = "";
+            try
+            {
+                using (System.Data.SqlClient.SqlConnection ctx = new System.Data.SqlClient.SqlConnection(connectionString))
+                {
+                    ctx.Open();
+                    using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand())
+                    {
+                        string query = $"select * from MUN where Codigo='{codeMun}' and UFD_Sigla='{uf}'";
+
+                        cmd.Connection = ctx;
+                        cmd.CommandText = query;
+                        using (System.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                city = reader["Nome"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return city;
+        }
+        
     }
 }

@@ -39,26 +39,26 @@ namespace Escon.SisctNET.Model
         public string Code { get; set; }
 
         [Display(Name = "ICMS %")]
-        public decimal ? Icms { get; set; }
+        public decimal? Icms { get; set; }
 
         [Display(Name = "Funef %")]
-        public decimal ? Funef { get; set; }
+        public decimal? Funef { get; set; }
 
         [Display(Name = "Cotac %")]
-        public decimal ? Cotac { get; set; }
+        public decimal? Cotac { get; set; }
 
         [Display(Name = "Suspensão %")]
-        public decimal ? Suspension { get; set; }
+        public decimal? Suspension { get; set; }
 
-        public decimal ? VendaCpf { get; set; }
+        public decimal? VendaCpf { get; set; }
 
         public decimal? VendaCpfExcedente { get; set; }
 
-        public decimal ? VendaContribuinte { get; set; }
+        public decimal? VendaContribuinte { get; set; }
 
         public decimal? VendaContribuinteExcedente { get; set; }
 
-        public decimal ? Transferencia { get; set; }
+        public decimal? Transferencia { get; set; }
 
         public decimal? TransferenciaExcedente { get; set; }
 
@@ -78,11 +78,11 @@ namespace Escon.SisctNET.Model
         public decimal? VendaAnexoExcedente { get; set; }
 
         [Display(Name = "Fecop %")]
-        public decimal ? Fecop { get; set; }
+        public decimal? Fecop { get; set; }
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
-        public int ? AnnexId { get; set; }
+        public int? AnnexId { get; set; }
 
         private Annex annex;
         public Annex Annex
@@ -93,7 +93,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("CountingType")]
-        public int ? CountingTypeId { get; set; }
+        public int? CountingTypeId { get; set; }
 
         private CountingType countingType;
         public CountingType CountingType
@@ -112,12 +112,30 @@ namespace Escon.SisctNET.Model
         public bool TypeCompany { get; set; }
 
         [Display(Name = "Icms Aliq. SUperior a 25")]
-        public decimal ? IcmsAliqM25 { get; set; }
+        public decimal? IcmsAliqM25 { get; set; }
 
         [Display(Name = "UF")]
         public string Uf { get; set; }
 
         [Display(Name = "Inscrição Estadual")]
         public string Ie { get; set; }
+
+        [Display(Name = "Logradouro")]
+        public string Logradouro { get; set; }
+
+        [Display(Name = "Número")]
+        public string Number { get; set; }
+
+        [Display(Name = "Complemento")]
+        public string Complement { get; set; }
+
+        [Display(Name = "Bairro")]
+        public string District { get; set; }
+
+        [Display(Name = "Cep")]
+        public string Cep { get; set; }
+
+        [Display(Name = "Cidade")]
+        public string City { get; set; }
     }
 }

@@ -63,15 +63,45 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                if(result.Count <= 0)
+               
+                var empFortes = _fortesEnterpriseService.GetCompanies(confDbFortes.Value);
+
+                List<Company> commpanies = new List<Company>();
+
+                if (result.Count <= 0)
                 {
                     result.Add(new Company() { Id = 0, Code = "0000" });
+                    commpanies = empFortes;
                 }
-                var lastCode = result.Max(m => Convert.ToInt32(m.Code));
 
-                var empFortes = _fortesEnterpriseService.GetCompanies(lastCode, confDbFortes.Value);
+                foreach(var emp in empFortes) 
+                {
+                    var company = result.Where(c => c.Document.Equals(emp.Document) && c.Code.Equals(emp.Code)).FirstOrDefault();
+
+                    if(company == null)
+                    {
+                        commpanies.Add(emp);
+                    }
+                    else
+                    {
+                        company.Code = emp.Code;
+                        company.SocialName = emp.SocialName;
+                        company.FantasyName = emp.FantasyName;
+                        company.Document = emp.Document;
+                        company.Ie = emp.Ie;
+                        company.Logradouro = emp.Logradouro;
+                        company.Number = emp.Number;
+                        company.Complement = emp.Complement;
+                        company.District = emp.District;
+                        company.Cep = emp.Cep;
+                        company.Uf = emp.Uf;
+                        company.City = emp.City;
+                        company.Updated = DateTime.Now;
+                        _service.Update(company, GetLog(OccorenceLog.Update));
+                    }
+                }
                
-                _service.Create(empFortes, GetLog(OccorenceLog.Create));
+                _service.Create(commpanies, GetLog(OccorenceLog.Create));
 
 
                 return RedirectToAction("Index");
@@ -194,7 +224,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                rst.Updated = DateTime.Now;
                 rst.Active = entity.Active;
                 rst.Status = entity.Status;
                 rst.Incentive = entity.Incentive;
@@ -204,6 +233,14 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Document = entity.Document;
                 rst.Ie = entity.Ie;
                 rst.Uf = entity.Uf;
+                rst.Logradouro = entity.Logradouro;
+                rst.Number = entity.Number;
+                rst.Complement = entity.Complement;
+                rst.District = entity.District;
+                rst.Cep = entity.Cep;
+                rst.Uf = entity.Uf;
+                rst.City = entity.City;
+                rst.Updated = DateTime.Now;
 
                 var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");

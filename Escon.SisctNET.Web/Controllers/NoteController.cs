@@ -373,7 +373,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 bool incentivo = false;
 
-                                if (nota.Company.Incentive && nota.Company.AnnexId.Equals(1))
+                                if (nota.Company.Incentive && !nota.Company.AnnexId.Equals(2))
                                 {
                                     incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }
@@ -540,7 +540,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             NoteId = noteId,
                                             Nitem = det["nItem"],
                                             Orig = Convert.ToInt32(det["orig"]),
-                                            Incentivo = incentivo
+                                            Incentivo = incentivo,
+                                            DateStart = Convert.ToDateTime(taxed.DateStart)
                                         };
 
                                         _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
@@ -665,7 +666,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var products = _itemService.FindByProducts(notes);
 
                 products = products.Where(_ => _.Status.Equals(false)).ToList();
+
+                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+
                 ViewBag.Registro = products.Count();
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
                 return View(products);
 
             }

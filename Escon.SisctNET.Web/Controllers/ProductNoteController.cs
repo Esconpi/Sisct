@@ -223,8 +223,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
 
-                
-
                 if (entity.Pautado == true)
                 {
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -367,6 +365,8 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Updated = DateTime.Now;
                     prod.Status = true;
                     prod.Vbasecalc = baseCalc;
+                    prod.Incentivo = true;
+                    prod.DateStart = Convert.ToDateTime(dateStart);
 
                     _service.Update(prod, GetLog(Model.OccorenceLog.Read));
                 }
@@ -475,7 +475,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.ProductId = null;
                         prod.Product1Id = null;
                         prod.Pautado = false;
-
+                        prod.DateStart = Convert.ToDateTime(dateStart);
                         if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
                         {
                             prod.Incentivo = false;
@@ -588,6 +588,7 @@ namespace Escon.SisctNET.Web.Controllers
                             item.ProductId = null;
                             item.Product1Id = null;
                             item.Pautado = false;
+                            item.DateStart = Convert.ToDateTime(dateStart);
 
                             if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
                             {
