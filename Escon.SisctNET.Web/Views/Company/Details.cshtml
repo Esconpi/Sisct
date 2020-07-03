@@ -29,6 +29,31 @@
     <div class="box-body">
         <div class="col-md-12">
             <div class="row">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label asp-for="AnnexId" class="control-label"></label>
+                    @if (Model.AnnexId != null && Model.AnnexId != 0)
+                    {
+                        <input class="form-control" name="AnnexId" value="@Model.Annex.Description" disabled />
+                    }
+                    else
+                    {
+                        <input class="form-control" name="AnnexId" disabled />
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-8 col-md-8 col-xs-12">
+                    <label asp-for="SectionId" class="control-label"></label>
+                    @if (Model.SectionId != null && Model.SectionId != 0)
+                    {
+                        <input class="form-control" name="SectionId" value="@Model.Section.Name" disabled />
+                    }
+                    else
+                    {
+
+                        <input class="form-control" name="SectionId" disabled />
+                    }
+                </div>
                 <div class="form-group col-lg-2 col-md-2 col-xs-12">
                     @Html.LabelFor(model => model.TipoApuracao, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
                     <div class="checkbox">
@@ -41,22 +66,10 @@
                     @Html.LabelFor(model => model.TypeCompany, "Tipo", htmlAttributes: new { @class = "control-label col-md-12" })
                     <div class="checkbox">
                         <label>
-                            @Html.CheckBoxFor(model => model.TypeCompany, new { @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary",@data_offstyle = "warning", @readonly = "true", @disabled = "true" })
+                            @Html.CheckBoxFor(model => model.TypeCompany, new { @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @data_offstyle = "warning", @readonly = "true", @disabled = "true" })
                         </label>
                     </div>
                 </div>
-                <div class="form-group col-lg-8 col-md-8 col-xs-12">
-                    <label asp-for="AnnexId" class="control-label"></label>
-                    @if (Model.AnnexId != null)
-                    {
-                        <input class="form-control" name="AnnexId" value="@Model.Annex.Description" disabled />
-                    }
-                    else
-                    {
-                        <input class="form-control" name="AnnexId" disabled />
-                    }
-                </div>
-
             </div>
             <div class="row ">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -82,6 +95,11 @@
                     <label asp-for="Funef" class="control-label"></label>
                     <input class="form-control money" value="@Model.Funef" name="funef" disabled />
                 </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Fecop" class="control-label"></label>
+                    <input class="form-control money" value="@Model.Fecop" name="fecop" disabled />
+                </div>
+
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <br />
                     <div>
@@ -96,14 +114,6 @@
                     <label class="control-label">Excedente %</label>
                     <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" disabled />
                 </div>
-                <div class="col-lg-2 col-md-6 col-xs-12">
-
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Fecop" class="control-label"></label>
-                    <input class="form-control money" value="@Model.Fecop" name="fecop" disabled />
-                </div>
-
             </div>
 
             <div class="row">
@@ -111,7 +121,10 @@
                     <label asp-for="Cotac" class="control-label"></label>
                     <input class="form-control money" value="@Model.Cotac" name="cotac" disabled />
                 </div>
-
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="Suspension" class="control-label"></label>
+                    <input class="form-control money" value="@Model.Suspension" name="suspension" disabled />
+                </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <br />
                     <strong>Venda p/ Contribuinte</strong>
@@ -124,15 +137,12 @@
                     <label class="control-label">Excedente %</label>
                     <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" disabled />
                 </div>
-                <div class="col-lg-2 col-md-6 col-xs-12">
-
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Suspension" class="control-label"></label>
-                    <input class="form-control money" value="@Model.Suspension" name="suspension" disabled />
-                </div>
             </div>
             <div class="row">
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="AliqInterna" class="control-label"></label>
+                    <input class="form-control money" value="@Model.AliqInterna" name="AliqInterna" id="AliqInterna" disabled />
+                </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
 
                 </div>
@@ -151,10 +161,16 @@
                 <div class="col-lg-2 col-md-6 col-xs-12">
 
                 </div>
+
             </div>
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-
+                    <label asp-for="IncIInterna" class="control-label"></label>
+                    <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna" disabled />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="IncIInterestadual" class="control-label"></label>
+                    <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" disabled />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <br />
@@ -172,7 +188,12 @@
 
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-
+                    <label asp-for="IncIIInterna" class="control-label"></label>
+                    <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna" disabled />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label asp-for="IncIIInterestadual" class="control-label"></label>
+                    <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual" disabled />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <br />

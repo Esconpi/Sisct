@@ -182,6 +182,14 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             SessionManager.SetTaxationNcmInSession(access.FunctionalityId);
                         }
+                        if (access.FunctionalityId.Equals(30))
+                        {
+                            SessionManager.SetSectionInSession(access.FunctionalityId);
+                        }
+                        if (access.FunctionalityId.Equals(31))
+                        {
+                            SessionManager.SetChapterInSession(access.FunctionalityId);
+                        }
 
                     }
                     SessionManager._httpContextAccessor.HttpContext.Request.Headers.Add("Authorization", "bearer " + auth.AccessToken);
@@ -238,6 +246,8 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetCstInSession(0);
                 SessionManager.SetClientInSession(0);
                 SessionManager.SetTaxationNcmInSession(0);
+                SessionManager.SetSectionInSession(0);
+                SessionManager.SetChapterInSession(0);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

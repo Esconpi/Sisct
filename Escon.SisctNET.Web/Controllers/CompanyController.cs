@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -22,6 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IAnnexService _annexService;
         private readonly ICountingTypeService _countingTypeService;
         private readonly ICfopService _cfopService;
+        private readonly ISectionService _sectionService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -34,6 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
             IAnnexService annexService,
             ICountingTypeService countingTypeService,
             ICfopService cfopService,
+            ISectionService sectionService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -49,6 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
             _annexService = annexService;
             _countingTypeService = countingTypeService;
             _cfopService = cfopService;
+            _sectionService = sectionService;
         }
 
         [HttpGet]
@@ -265,14 +269,33 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Id = result.Id;
 
                 List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                foreach (var annex in list_annex)
+                {
+                    annex.Description = annex.Description + " - " + annex.Convenio;
+                }
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
+
+                List<Section> list_sections = _sectionService.FindAll(null);
+                foreach (var section in list_sections)
+                {
+                    section.Name = section.Name + " - " + section.Description;
+                }
+                list_sections.Insert(0, new Section() { Name = "Nenhuma seção selecionada", Id = 0 });
+                SelectList sections = new SelectList(list_sections, "Id", "Name", null);
+                ViewBag.SectionId = sections;
 
                 if(result.AnnexId == null)
                 {
                     result.AnnexId = 0;
                 }
+                
+                if(result.SectionId == null)
+                {
+                    result.SectionId = 0;
+                }
+
                 return View(result);
             }
             catch(Exception ex)
@@ -315,7 +338,12 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
                 rst.IcmsAliqM25 = entity.IcmsAliqM25;
-
+                rst.SectionId = entity.SectionId.Equals(0) ? null : entity.SectionId;
+                rst.AliqInterna = entity.AliqInterna;
+                rst.IncIInterna = entity.IncIInterna;
+                rst.IncIInterestadual = entity.IncIInterestadual;
+                rst.IncIIInterna = entity.IncIIInterna;
+                rst.IncIIInterestadual = entity.IncIIInterestadual;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");

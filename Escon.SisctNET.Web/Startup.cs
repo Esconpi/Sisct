@@ -132,6 +132,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProduct1Repository, Product1Repository>();
             services.AddScoped<ITypeClientRepository, TypeClientRepository>();
             services.AddScoped<ISuspensionRepository, SuspensionRepository>();
+            services.AddScoped<ISectionRepository, SectionRepository>();
+            services.AddScoped<IChapterRepository, ChapterRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -167,6 +169,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProduct1Service, Product1Service>();
             services.AddScoped<ITypeClientService, TypeClientService>();
             services.AddScoped<ISuspensionService, SuspensionService>();
+            services.AddScoped<ISectionService, SectionService>();
+            services.AddScoped<IChapterService, ChapterService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }

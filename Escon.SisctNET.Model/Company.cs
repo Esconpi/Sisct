@@ -102,16 +102,16 @@ namespace Escon.SisctNET.Model
             set => countingType = value;
         }
 
-        [Display(Name = "Icms p/ Não Contribuinte")]
+        [Display(Name = "Icms p/ Não Contribuinte %")]
         public decimal? IcmsNContribuinte { get; set; }
 
-        [Display(Name = "Icms p/ Não Contribuinte Fora do Estado")]
+        [Display(Name = "Icms p/ Não Contribuinte Fora do Estado %")]
         public decimal? IcmsNContribuinteFora { get; set; }
 
         [Display(Name = "Tipo")]
         public bool TypeCompany { get; set; }
 
-        [Display(Name = "Icms Aliq. SUperior a 25")]
+        [Display(Name = "Icms Aliq. SUperior a 25 %")]
         public decimal? IcmsAliqM25 { get; set; }
 
         [Display(Name = "UF")]
@@ -137,5 +137,31 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cidade")]
         public string City { get; set; }
+
+        [Display(Name = "Seção")]
+        [ForeignKey("Section")]
+        public int? SectionId { get; set; }
+
+        private Section section;
+        public Section Section
+        {
+            get => LazyLoader.Load(this, ref section);
+            set => section = value;
+        }
+
+        [Display(Name = "Aliq. Interna %")]
+        public decimal ? AliqInterna { get; set; }
+
+        [Display(Name = "Inc. I Interna %")]
+        public decimal ? IncIInterna { get; set; }
+
+        [Display(Name = "Inc. I Interestadual %")]
+        public decimal? IncIInterestadual { get; set; }
+
+        [Display(Name = "Inc. II Interna %")]
+        public decimal? IncIIInterna { get; set; }
+
+        [Display(Name = "Inc. II Interestadual %")]
+        public decimal? IncIIInterestadual { get; set; }
     }
 }

@@ -75,5 +75,9 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Suspension> Suspensions { get; set; }
 
+        public DbSet<Section> Sections { get; set; }
+
+        public DbSet<Chapter> Chapters { get; set; }
+
     }
 }

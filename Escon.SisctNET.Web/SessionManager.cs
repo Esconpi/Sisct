@@ -327,6 +327,25 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<string>("MonthSisctNET");
         }
 
+        public static void SetSectionInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("SectionSisctNET", functionalityId);
+        }
+
+        public static int GetSectionInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("SectionSisctNET");
+        }
+
+        public static void SetChapterInSession(int functionalityId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("ChapterSisctNET", functionalityId);
+        }
+
+        public static int GetChapterInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("ChapterSisctNET");
+        }
     }
 
 }

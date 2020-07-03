@@ -11,7 +11,7 @@
 
             @if (SessionManager.GetProfileInSession().Equals(1))
             {
-                <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-circle-o"></i>Perfil</a></li>
+                <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-circle-o"></i>Perfis</a></li>
             }
 
             @if (SessionManager.GetUserInSession().Equals(5))
@@ -92,7 +92,8 @@
 
 }
 
-@if (SessionManager.GetAnnexInSession().Equals(20) || SessionManager.GetNcmConvenioInSession().Equals(21))
+@if (SessionManager.GetAnnexInSession().Equals(20) || SessionManager.GetNcmConvenioInSession().Equals(21) || SessionManager.GetSectionInSession().Equals(30)
+    || SessionManager.GetChapterInSession().Equals(31))
 {
     <li class="treeview menu">
         <a href="#">
@@ -102,9 +103,19 @@
             </span>
         </a>
         <ul class="treeview-menu" style="display:none;">
+            @if (SessionManager.GetChapterInSession().Equals(31))
+            {
+                <li><a href="@Url.Action("Index","Chapter")"><i class="fa fa-circle-o"></i>Capítulos</a></li>
+            }
+
+            @if (SessionManager.GetSectionInSession().Equals(30))
+            {
+                <li><a href="@Url.Action("Index","Section")"><i class="fa fa-circle-o"></i>Seções</a></li>
+            }
+
             @if (SessionManager.GetAnnexInSession().Equals(20))
             {
-                <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
+                <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexos</a></li>
             }
 
             @if (SessionManager.GetNcmConvenioInSession().Equals(21))

@@ -13,9 +13,9 @@ namespace Escon.SisctNET.Web.Controllers
         ICestService _service;
         public CestController(
             ICestService service,
-                IFunctionalityService functionalityService,
-                IHttpContextAccessor httpContextAccessor) 
-                : base(functionalityService, "Cest")
+            IFunctionalityService functionalityService,
+            IHttpContextAccessor httpContextAccessor) 
+            : base(functionalityService, "Cest")
         {
             _service = service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
