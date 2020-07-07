@@ -127,7 +127,8 @@
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <br />
-                    <strong>Venda p/ Contribuinte</strong>
+                    <strong>Venda p/ Contribuinte</strong> <br />
+                    <span style="font-size:12px; color:darkblue;">OBS. Contribuintes credenciados no  Art. 781</span>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Limite %</label>
@@ -165,11 +166,11 @@
             </div>
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterna" class="control-label"></label>
+                    <label asp-for="IncIInterna" class="control-label"></label> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna" disabled />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterestadual" class="control-label"></label>
+                    <label asp-for="IncIInterestadual" class="control-label"></label> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" disabled />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -188,11 +189,11 @@
 
             <div class="row">
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterna" class="control-label"></label>
+                    <label asp-for="IncIInterna" class="control-label"></label> <span style="color:red;">Deselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna" disabled />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterestadual" class="control-label"></label>
+                    <label asp-for="IncIIInterestadual" class="control-label"></label> <span style="color:red;">Deselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual" disabled />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">

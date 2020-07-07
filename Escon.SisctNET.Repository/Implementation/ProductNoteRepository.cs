@@ -197,7 +197,16 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var n in ncms)
             {
                 int contaChar = n.Length;
-                string substring = ncm.Substring(0, contaChar);
+                string substring = "";
+                if (contaChar < 8)
+                {
+                    substring = ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = ncm;
+                }
+               
                 if (n.Equals(substring) && !contaChar.Equals(0))
                 {
                     NcmIncentivo = true;

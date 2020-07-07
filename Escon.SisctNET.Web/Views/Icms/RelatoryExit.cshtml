@@ -53,13 +53,25 @@
                 }
                 else if (ViewBag.Type == "incentivo")
                 {
-                    if (ViewBag.TypeCompany == true)
+                    if (ViewBag.AnnexId != 3)
                     {
-                        @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
+                        if (ViewBag.TypeCompany == true)
+                        {
+                            @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
+                        }
+                        else
+                        {
+                            @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
+                        }
                     }
-                    else
+                    else if (ViewBag.AnnexId == 3)
                     {
-                        @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
+                        if (ViewBag.SectionId == 1)
+                        {
+
+                            @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
+                        }
+                        
                     }
 
                 }

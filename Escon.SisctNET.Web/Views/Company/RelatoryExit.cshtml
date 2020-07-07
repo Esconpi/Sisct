@@ -72,33 +72,67 @@
     </div>
 </div>
 
-<script type="text/javascript">
-
-    function ativar_button() {
-        var tipo = document.getElementById("status").value;
-        var cfop = document.getElementById("cfopid").value;
-        if (tipo == "0") {
-            document.getElementById("ativa").disabled = true;
-        }
-        else if (tipo == "incentivo") {
-            document.getElementById("file").disabled = false;
-            document.getElementById("ativa").disabled = false;
-            document.getElementById("cfopid").disabled = true;
-        }
-        else if (tipo == "resumoporcfop") {
-            document.getElementById("cfopid").disabled = false;
-            document.getElementById("file").disabled = true;
-            if (cfop == "0") {
+@if (!Model.AnnexId.Equals(3))
+{
+    <script type="text/javascript">
+        function ativar_button() {
+            var tipo = document.getElementById("status").value;
+            var cfop = document.getElementById("cfopid").value;
+            if (tipo == "0") {
                 document.getElementById("ativa").disabled = true;
+            }
+            else if (tipo == "incentivo") {
+                document.getElementById("file").disabled = false;
+                document.getElementById("ativa").disabled = false;
+                document.getElementById("cfopid").disabled = true;
+            }
+            else if (tipo == "resumoporcfop") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("file").disabled = true;
+                if (cfop == "0") {
+                    document.getElementById("ativa").disabled = true;
+                }
+                else {
+                    document.getElementById("ativa").disabled = false;
+                }
             }
             else {
                 document.getElementById("ativa").disabled = false;
+                document.getElementById("file").disabled = true;
+                document.getElementById("cfopid").disabled = true;
             }
         }
-        else {
-            document.getElementById("ativa").disabled = false;
-            document.getElementById("file").disabled = true;
-            document.getElementById("cfopid").disabled = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        function ativar_button() {
+            var tipo = document.getElementById("status").value;
+            var cfop = document.getElementById("cfopid").value;
+            if (tipo == "0") {
+                document.getElementById("ativa").disabled = true;
+            }
+            else if (tipo == "incentivo") {
+                document.getElementById("file").disabled = true;
+                document.getElementById("ativa").disabled = false;
+                document.getElementById("cfopid").disabled = true;
+            }
+            else if (tipo == "resumoporcfop") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("file").disabled = true;
+                if (cfop == "0") {
+                    document.getElementById("ativa").disabled = true;
+                }
+                else {
+                    document.getElementById("ativa").disabled = false;
+                }
+            }
+            else {
+                document.getElementById("ativa").disabled = false;
+                document.getElementById("file").disabled = true;
+                document.getElementById("cfopid").disabled = true;
+            }
         }
-    }
-</script>
+    </script>
+}

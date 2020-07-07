@@ -112,12 +112,12 @@ namespace Escon.SisctNET.Web.Controllers
                 foreach (var det in dets)
                 {
                     
-                    if (det.ContainsKey("CNPJ") && det.ContainsKey("indIEDest") && det.ContainsKey("IE"))
+                    if (det.ContainsKey("CNPJ"))
                     {
                         string CNPJ = det["CNPJ"];
-                        string indIEDest = det["indIEDest"];
-                        string IE = det["IE"];
-                        if (indIEDest == "1" && (!IE.Equals("escon") || !IE.Equals("")) && (!CNPJ.Equals("escon") || !CNPJ.Equals("")))
+                        string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "";
+                        string IE = det.ContainsKey("IE") ? det["IE"] : "";
+                        if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
                             var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
