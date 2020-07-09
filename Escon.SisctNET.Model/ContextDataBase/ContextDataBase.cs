@@ -79,5 +79,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Chapter> Chapters { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
     }
 }

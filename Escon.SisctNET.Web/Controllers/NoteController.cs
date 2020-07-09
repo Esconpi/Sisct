@@ -373,7 +373,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 bool incentivo = false;
 
-                                if (nota.Company.Incentive && !nota.Company.AnnexId.Equals(2))
+                                if (nota.Company.Incentive && (!nota.Company.AnnexId.Equals(2) && nota.Company.AnnexId != null))
                                 {
                                     incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }

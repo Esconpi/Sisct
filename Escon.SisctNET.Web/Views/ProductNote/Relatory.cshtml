@@ -102,14 +102,18 @@
 
         @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true && (ViewBag.type != 6 && ViewBag.type != 9))
         {
-            @if (ViewBag.TaxationType == 1 && ViewBag.type != 8 && ViewBag.type != 7)
-            {
-                @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
-            }
-            else
-            {
-                @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
-            }
+            <div style="width:100%; overflow:hidden; padding:20px;">
+                @if (ViewBag.TaxationType == 1 && ViewBag.type != 8 && ViewBag.type != 7)
+                {
+                    @await Html.PartialAsync("_GeneralReportIncentiveEntry", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_GeneralSummaryTaxIncentiveEntry", new ViewDataDictionary(ViewData))
+                }
+                else
+                {
+                    @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
+                }
+            </div>
+            
 
         }
 

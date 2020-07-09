@@ -28,6 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICfopService _cfopService;
         private readonly ISuspensionService _suspensionService;
         private readonly IProductNoteService _itemService;
+        private readonly INotificationService _notificationService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -41,6 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICfopService cfopService,
             ISuspensionService suspensionService,
             IProductNoteService itemService,
+            INotificationService notificationService,
             IHostingEnvironment env,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "NoteExit")
@@ -55,6 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
             _cfopService = cfopService;
             _suspensionService = suspensionService;
             _itemService = itemService;
+            _notificationService = notificationService;
             _appEnvironment = env;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -1462,8 +1465,18 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("anexo"))
                 {
+                    ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
+
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    if (comp.AnnexId.Equals(3))
+                    {
+                        notesVenda = import.Nfe(directoryNfeExit);
+                    }
+                    else
+                    {
+                        notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    }
+                    
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
                     var contNcm = ncms.Count();
@@ -1501,7 +1514,17 @@ namespace Escon.SisctNET.Web.Controllers
                                 for (int k = 0; k < ncms.Count; k++)
                                 {
                                     int tamanho = ncms[k].Ncm.Length;
-                                    if (ncms[k].Ncm.Equals(notesVenda[i][j]["NCM"].Substring(0, tamanho)))
+                                    string ncm = "";
+
+                                    if(tamanho < 8)
+                                    {
+                                        ncm = notesVenda[i][j]["NCM"].Substring(0, tamanho);
+                                    }
+                                    else
+                                    {
+                                        ncm = notesVenda[i][j]["NCM"];
+                                    }
+                                    if (ncms[k].Ncm.Equals(ncm))
                                     {
                                         status = true;
                                         pos = k;
@@ -1776,10 +1799,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("incentivo"))
                 {
-
-                    var darIcms = _darService.FindAll(null).Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
-                    var darFunef = _darService.FindAll(null).Where(_ => _.Type.Equals("Funef")).FirstOrDefault();
-                    var darCotac = _darService.FindAll(null).Where(_ => _.Type.Equals("Cotac")).FirstOrDefault();
+                    var dars = _darService.FindAll(null);
 
                     if (!comp.AnnexId.Equals(3))
                     {
@@ -3495,14 +3515,18 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (comp.AnnexId.Equals(3))
                     {
                         List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
-                        var clientesAll = _clientService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.TypeClientId.Equals(1)).Select(_ => _.Document).ToList();
+                        var clientesAll = _clientService.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
+                        var contribuintes = clientesAll.Where(_ => _.TypeClientId.Equals(1)).Select(_ => _.Document).ToList();
 
+                        var cfopVenda = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(4) || _.CfopTypeId.Equals(5))).Select(_ => _.Cfop.Code).ToList();
+                        
                         if (comp.SectionId.Equals(1))
                         {
                             exitNotes = import.Nfe(directoryNfeExit);
 
-                            decimal vendasInternasElencadas = 0, vendasInterestadualElencadas = 0, vendasInternasElencadasPortaria = 0, vendasInterestadualElencadasPortaria = 0,
-                                vendasInternasDeselencadas = 0, vendasInterestadualDeselencadas = 0, vendasInternasDeselencadasPortaria = 0, vendasInterestadualDeselencadasPortaria = 0,
+                            decimal vendasInternasElencadas = 0, vendasInterestadualElencadas = 0, vendasInternasDeselencadas = 0, vendasInterestadualDeselencadas = 0,
+                                InternasElencadas = 0, InterestadualElencadas = 0, InternasElencadasPortaria = 0, InterestadualElencadasPortaria = 0,
+                                InternasDeselencadas = 0, InterestadualDeselencadas = 0, InternasDeselencadasPortaria = 0, InterestadualDeselencadasPortaria = 0,
                                 vendasContribuintes = 0, vendas = 0;
                              
                             for(int i = exitNotes.Count - 1; i >= 0; i--)
@@ -3513,12 +3537,24 @@ namespace Escon.SisctNET.Web.Controllers
                                     continue;
                                 }
 
-                                bool contribuinte = false, ncm = false;
+                                bool contribuinte = false, ncm = false, cfop = false;
 
                                 if (exitNotes[i][3].ContainsKey("CNPJ")) {
-                                    if (clientesAll.Contains(exitNotes[i][3]["CNPJ"]))
+                                    if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
                                     {
                                         contribuinte = true;
+                                    }
+
+                                    bool existe = false;
+
+                                    if (clientesAll.Select(_ => _.Document).Contains(exitNotes[i][3]["CNPJ"]))
+                                    {
+                                        existe = true;
+                                    }
+
+                                    if (existe == false)
+                                    {
+                                        throw new Exception("Há Clientes não Importados");
                                     }
                                 }
 
@@ -3529,119 +3565,188 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncm = _itemService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId), exitNotes[i][j]["NCM"].ToString());
                                     }
 
-                                    if(contribuinte == true)
+                                    if (exitNotes[i][j].ContainsKey("CFOP"))
+                                    {
+                                        if (cfopVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                        {
+                                            cfop = true;
+                                        }
+                                    }
+
+                                    if (contribuinte == true)
                                     {
                                         if (exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            if(cfop == true)
+                                            {
+                                                vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                }
+
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                InternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                InterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 }
                                             }
                                         }
 
                                         if(exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                            if(cfop == true)
+                                            {
+                                                vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                InternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                InterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendasContribuintes -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                            vendas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                            if(cfop == true)
+                                            {
+                                                vendasContribuintes -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                vendas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                InternasElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    InternasElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                InterestadualElencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    InterestadualElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                            if(cfop == true)
+                                            {
+                                                vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
 
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                }
+                                            }
+                                            
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                InternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                InterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                            if(cfop == true)
+                                            {
+                                                vendasContribuintes += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
 
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                }
+                                            }
+                                            
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                InternasElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                InterestadualElencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 }
                                             }
                                         }
@@ -3650,110 +3755,166 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            if(cfop == true)
+                                            {
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                InternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                InterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                            if(cfop == true)
+                                            {
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                InternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                            if(cfop == true)
+                                            {
+                                                vendas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                InternasDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    InternasDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                InterestadualDeselencadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    InterestadualDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-
+                                            if(cfop == true)
+                                            {
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                }
+                                            }
+                                           
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                InternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                InterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                 }
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            vendas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                            if(cfop == true)
+                                            {
+                                                vendas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                if (exitNotes[i][1]["idDest"] == "1")
+                                                {
+                                                    vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                }
+                                                else
+                                                {
+                                                    vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                }
+                                            }
 
                                             if (exitNotes[i][1]["idDest"] == "1")
                                             {
-                                                vendasInternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                InternasDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 }
                                             }
                                             else
                                             {
-                                                vendasInterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                InterestadualDeselencadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 if (ncm == true)
                                                 {
-                                                    vendasInterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                 }
                                             }
                                         }
@@ -3764,41 +3925,44 @@ namespace Escon.SisctNET.Web.Controllers
 
                             //  Elencadas
                             // Internas
-                            decimal icmsInternaElencada = (vendasInternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaElencada = (vendasInternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal icmsInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
+                            decimal fecopInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
                             decimal totalInternasElencada = icmsInternaElencada + fecopInternaElencada;
-                            decimal icmsPresumidoInternaElencada = (vendasInternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
+                            decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
                             decimal totalIcmsInternaElencada = totalInternasElencada - icmsPresumidoInternaElencada;
 
                             // Interestadual
-                            decimal icmsInterestadualElencada = (vendasInterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualElencada = (vendasInterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
+                            decimal fecopInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
                             decimal totalInterestadualElencada = icmsInterestadualElencada + fecopInterestadualElencada;
-                            decimal icmsPresumidoInterestadualElencada = (vendasInterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
+                            decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
                             decimal totalIcmsInterestadualElencada = totalInterestadualElencada - icmsPresumidoInterestadualElencada;
 
                             //  Deselencadas
                             //  Internas
-                            decimal icmsInternaDeselencada = (vendasInternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaDeselencada = (vendasInternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
+                            decimal fecopInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
                             decimal totalInternasDeselencada = icmsInternaDeselencada + fecopInternaDeselencada;
-                            decimal icmsPresumidoInternaDeselencada = (vendasInternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
+                            decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
                             decimal totalIcmsInternaDeselencada = totalInternasDeselencada - icmsPresumidoInternaDeselencada;
 
                             // Interestadual
-                            decimal icmsInterestadualDeselencada = (vendasInterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualDeselencada = (vendasInterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
+                            decimal fecopInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
                             decimal totalInterestadualDeselencada = icmsInterestadualDeselencada + fecopInterestadualDeselencada;
-                            decimal icmsPresumidoInterestadualDeselencada = (vendasInterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
+                            decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
                             decimal totalIcmsInterestadualDeselencada = totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada;
 
+                            //  Percentual
+                            decimal percentual = (vendasContribuintes * 100) / vendas;
 
                             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                             //  Elencadas
                             // Internas
                             ViewBag.VendasInternasElencadas = Convert.ToDouble(vendasInternasElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendasInternasElencadasPortaria = Convert.ToDouble(vendasInternasElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InternasElencadas = Convert.ToDouble(InternasElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InternasElencadasPortaria = Convert.ToDouble(InternasElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.IcmsInternasElencadas = Convert.ToDouble(icmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.FecopInternasElencadas = Convert.ToDouble(fecopInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalInternasElencadas = Convert.ToDouble(totalInternasElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3807,7 +3971,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             // Interestadual
                             ViewBag.VendasInterestadualElencadas = Convert.ToDouble(vendasInterestadualElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendasInterestadualElencadasPortaria = Convert.ToDouble(vendasInterestadualElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InterestadualElencadas = Convert.ToDouble(InterestadualElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InterestadualElencadasPortaria = Convert.ToDouble(InterestadualElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.IcmsInterestadualElencadas = Convert.ToDouble(icmsInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.FecopInterestadualElencadas = Convert.ToDouble(fecopInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalInterestadualElencadas = Convert.ToDouble(totalInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3817,7 +3982,8 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Deselencadas
                             //  Internas
                             ViewBag.VendasInternasDeselencadas = Convert.ToDouble(vendasInternasDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendasInternasDeselencadasPortaria = Convert.ToDouble(vendasInternasDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.IcmsInternasElencadas = Convert.ToDouble(icmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InternasDeselencadas = Convert.ToDouble(InternasDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InternasDeselencadasPortaria = Convert.ToDouble(InternasDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.IcmsInternasElencadas = Convert.ToDouble(icmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.IcmsInternasDeselencadas = Convert.ToDouble(icmsInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.FecopInternasDeselencadas = Convert.ToDouble(fecopInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalInternasDeselencadas = Convert.ToDouble(totalInternasDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3827,30 +3993,36 @@ namespace Escon.SisctNET.Web.Controllers
 
                             // Interestadual
                             ViewBag.VendasInterestadualDeselencadas = Convert.ToDouble(vendasInterestadualDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendasInterestadualDeselencadasPortaria = Convert.ToDouble(vendasInterestadualDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InterestadualDeselencadas = Convert.ToDouble(InterestadualDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.InterestadualDeselencadasPortaria = Convert.ToDouble(InterestadualDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.IcmsInterestadualDeselencadas = Convert.ToDouble(icmsInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.FecopInterestadualDeselencadas = Convert.ToDouble(fecopInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalInterestadualDeselencadas = Convert.ToDouble(totalInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.IcmsPresumidoInterestadualDeselencadas = Convert.ToDouble(icmsPresumidoInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalIcmsInterestadualDeselencadas = Convert.ToDouble(totalIcmsInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+
+                            //  Percentual
+                            ViewBag.Percentual = percentual;
                         }
 
                         ViewBag.AliqInterna = comp.AliqInterna;
                         ViewBag.Fecop = comp.Fecop;
+
                         //  Elencadas
                         ViewBag.IncIInterna = comp.IncIInterna;
                         ViewBag.IncIInterestadual = comp.IncIInterestadual;
+
                         //  Deselencadas
                         ViewBag.IncIIInterna = comp.IncIIInterna;
                         ViewBag.IncIIInterestadual = comp.IncIIInterestadual;
                     }
                     
-
                     ////Código do Dar
-                    ViewBag.DarIcms = darIcms.Code;
-                    ViewBag.DarFunef = darFunef.Code;
-                    ViewBag.DarCotac = darCotac.Code;
+                    ViewBag.DarIcms = dars.Where(_ => _.Type.Equals("Icms")).Select(_ => _.Code).FirstOrDefault();
+                    ViewBag.DarFunef = dars.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
+                    ViewBag.DarCotac = dars.Where(_ => _.Type.Equals("Cotac")).Select(_ => _.Code).FirstOrDefault();
+                    ViewBag.DarFecop = dars.Where(_ => _.Type.Equals("Fecop")).Select(_ => _.Code).FirstOrDefault() ;
 
 
                 }

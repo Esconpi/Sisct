@@ -275,7 +275,13 @@
                 $("input[name=fecop]").prop("disabled", true);
                 $("input[name=bcr]").prop("disabled", true);
             }
-            document.getElementById('taxar').disabled = false;
+            if (taxacao == 0) {
+                document.getElementById('taxar').disabled = true;
+            }
+            else {
+                document.getElementById('taxar').disabled = false;
+            }
+            
         }
     });
 

@@ -1,16 +1,14 @@
-﻿<diV class="pull-right">
-    <strong>Total Vendas: </strong> @ViewBag.TotalVendas
-</diV>
-<table class="table">
+﻿<table class="table">
     <thead>
         <tr>
             <th>
                 Ncm
             </th>
+            <th>Descrição</th>
             <th>
                 Valor
             </th>
-            <th>
+            <th width="130px">
                 Percentual %
             </th>
         </tr>
@@ -20,16 +18,18 @@
         {
             <tr>
                 <td>@ViewBag.ResumoNcm[i][0]</td>
-                <td>@ViewBag.ResumoNcm[i][2]</td>
-                <td style="width:150px;">@ViewBag.ResumoNcm[i][3]</td>
+                <td>@ViewBag.ResumoNcm[i][1]</td>
+                <td style="text-align:right">@ViewBag.ResumoNcm[i][2]</td>
+                <td style="text-align:right">@ViewBag.ResumoNcm[i][3]</td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
             <th>Total</th>
-            <td>@ViewBag.TotalNcm</td>
-            <td>@ViewBag.PercentualTotal</td>
+            <th></th>
+            <th style="text-align:right">@ViewBag.TotalNcm</th>
+            <th style="text-align:right">@ViewBag.PercentualTotal</th>
         </tr>
     </tfoot>
 </table>

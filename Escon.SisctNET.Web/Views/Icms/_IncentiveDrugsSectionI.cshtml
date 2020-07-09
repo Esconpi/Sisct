@@ -1,3 +1,9 @@
-﻿@await Html.PartialAsync("_IncentiveDrugsSectionIListed", new ViewDataDictionary(ViewData))
+﻿
+<div style="width:100%; padding-top:10px;">
+    <div class="pull-right" style="padding-right:1%;"><strong>Vendas P/ Contribuintes :</strong> @ViewBag.Percentual %</div>
+</div>
+<br />
+
+@await Html.PartialAsync("_IncentiveDrugsSectionIListed", new ViewDataDictionary(ViewData))
 
 @await Html.PartialAsync("_IncentiveDrugsSectionIUnlisted", new ViewDataDictionary(ViewData))
