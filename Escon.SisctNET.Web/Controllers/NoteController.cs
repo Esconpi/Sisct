@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Escon.SisctNET.Web.Taxation;
-using System.Threading;
-using MySql.Data.MySqlClient;
 using System.Linq;
-using System.Text;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -666,8 +663,13 @@ namespace Escon.SisctNET.Web.Controllers
                 var products = _itemService.FindByProducts(notes);
 
                 products = products.Where(_ => _.Status.Equals(false)).ToList();
-
+                
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                if (comp.AnnexId.Equals(3))
+                {
+                    products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
+                }
 
                 ViewBag.Registro = products.Count();
                 ViewBag.Year = year;

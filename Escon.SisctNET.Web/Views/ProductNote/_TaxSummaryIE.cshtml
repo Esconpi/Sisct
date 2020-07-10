@@ -44,7 +44,10 @@
 
                                 </tr>
                             }
-
+                            <tr>
+                                <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">(-) ICMS Frete com IE R$</td>
+                                <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalIcmsFreteIE</td>
+                            </tr>
                             <tr>
                                 <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">(-) GNRE Paga R$</td>
                                 <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalGNREPagaIE</td>
@@ -99,6 +102,14 @@
                                 <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.base2IE</td>
                                 <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.valorbase2IE</td>
                                 <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopCalculadaIE</td>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-4 col-sm-4" style="text-align:right;">(-) FECOP Frete com IE R$</td>
+                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.BaseFecop1FreteIE</td>
+                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop1FreteIE</td>
+                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.BaseFecop2FreteIE</td>
+                                <td class="col-lg-1 col-sm-1" style="text-align:center;">@ViewBag.TotalFecop2FreteIE</td>
+                                <td class="col-lg-2 col-sm-2" style="text-align:center;">@ViewBag.TotalFecopFreteIE</td>
                             </tr>
                             <tr>
                                 <td class="col-lg-4 col-sm-4" style="text-align:right;">(+) GNRE não Paga R$</td>
@@ -205,6 +216,10 @@
                                 }
 
                                 <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalICMSIE</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right" width="500px">(-) ICMS Frete com IE R$</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalFreteIE</td>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(-) GNRE Paga R$</td>

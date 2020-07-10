@@ -1,9 +1,34 @@
 ﻿
 <div style="width:100%; padding-top:10px;">
-    <div class="pull-right" style="padding-right:1%;"><strong>Vendas P/ Contribuintes :</strong> @ViewBag.Percentual %</div>
+    <div class="pull-right" style="padding-right:1%;"><strong>Vendas P/ Contribuintes :</strong> @ViewBag.PercentualVendas %</div>
 </div>
 <br />
 
 @await Html.PartialAsync("_IncentiveDrugsSectionIListed", new ViewDataDictionary(ViewData))
 
 @await Html.PartialAsync("_IncentiveDrugsSectionIUnlisted", new ViewDataDictionary(ViewData))
+
+<div style="width:100%; padding-top:10px;">
+    <table style="border:2px solid">
+        <thead>
+            <tr style="border:1px solid">
+                <th width="200px"></th>
+                <th style="text-align:center" width="500px">Saídas (Port. GSF 355/2009)</th>
+                <th width="20px"></th>
+                <th style="text-align:center" width="200px">Adicional</th>
+                <th width="20px"></th>
+                <th style="text-align:center" width="200px">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Suspensão</th>
+                <td style="text-align:center">@ViewBag.Suspensao</td>
+                <th>x</th>
+                <td style="text-align:center">@ViewBag.PercentualSuspensao</td>
+                <th style="font-size:17px">=</th>
+                <th style="text-align:center">@ViewBag.TotalSuspensao</th>
+            </tr>
+        </tbody>
+    </table>
+</div>

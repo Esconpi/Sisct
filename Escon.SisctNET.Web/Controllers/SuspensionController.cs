@@ -25,6 +25,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             _service = service;
             _companyService = companyService;
+            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
         public IActionResult Index(int id)
