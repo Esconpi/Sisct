@@ -1,8 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -18,6 +16,11 @@ namespace Escon.SisctNET.Service.Implementation
         public CompanyCfop Create(CompanyCfop entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public void Create(List<CompanyCfop> cfopCompanies, Log log = null)
+        {
+            _repository.Create(cfopCompanies, log);
         }
 
         public void Delete(int id, Log log)

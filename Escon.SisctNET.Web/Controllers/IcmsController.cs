@@ -1862,9 +1862,10 @@ namespace Escon.SisctNET.Web.Controllers
                             notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
                             notesSaidaDevoCompra = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");*/
 
-                            var cfopsDevo = _companyCfopService.FindByCfopActive(id, "incentivo", "devolucao de compra").Select(_ => _.Cfop.Code);
+                            var cfopsDevoCompra = _companyCfopService.FindByCfopActive(id, "incentivo", "devolucao de compra").Select(_ => _.Cfop.Code);
                             var cfopsVendaST = _companyCfopService.FindByCfopActive(id, "incentivo", "vendaSt").Select(_ => _.Cfop.Code);
                             var cfopsVenda = _companyCfopService.FindByCfopActive(id, "incentivo", "venda").Select(_ => _.Cfop.Code);
+                            var cfospDevoVenda = _companyCfopService.FindByCfopActive(id, "entrada", "devolução de venda").Select(_ => _.Cfop.Code);
 
                             decimal totalVendas = 0, naoContriForaDoEstadoIncentivo = 0, ContribuintesIncentivo = 0,
                                 naoContribuinteIncentivo = 0, naoContriForaDoEstadoNIncentivo = 0,
@@ -2467,7 +2468,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            // Devolução Saida
+                            // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
                                 if (exitNotes[i][2].ContainsKey("CNPJ"))
@@ -2485,7 +2486,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][k].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsDevo.Contains(exitNotes[i][k]["CFOP"]))
+                                        if (cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -2495,6 +2496,28 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
                                     {
                                         debitosIcms += Convert.ToDecimal(exitNotes[i][k]["vICMS"]);
+                                    }
+                                }
+                            }
+
+                            // Devolução de Venda
+                            for (int i = exitNotes.Count - 1; i >= 0; i--)
+                            {
+                                bool cfop = false;
+
+                                for (int k = 0; k < exitNotes[i].Count(); k++)
+                                {
+                                    if (exitNotes[i][k].ContainsKey("CFOP"))
+                                    {
+                                        cfop = false;
+                                        if (cfospDevoVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                        {
+                                            cfop = true;
+                                        }
+                                    }
+                                    if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                    {
+                                        creditosIcms += Convert.ToDecimal(exitNotes[i][k]["vFCP"]);
                                     }
                                 }
                             }
@@ -2667,8 +2690,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             exitNotes = import.Nfe(directoryNfeExit);
 
-                            var cfopsDevo = _companyCfopService.FindByCfopActive(id, "incentivo", "devolucao de compra").Select(_ => _.Cfop.Code);
+                            var cfopsDevoCompra = _companyCfopService.FindByCfopActive(id, "incentivo", "devolucao de compra").Select(_ => _.Cfop.Code);
                             var cfopsVenda = _companyCfopService.FindByCfopActive(id, "incentivo", "venda").Select(_ => _.Cfop.Code);
+                            var cfospDevoVenda = _companyCfopService.FindByCfopActive(id, "entrada", "devolução de venda").Select(_ => _.Cfop.Code);
 
                             decimal vendasIncentivada = 0, vendasNIncentivada = 0, debitoIncetivo = 0, debitoNIncentivo = 0;
 
@@ -3082,7 +3106,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            // Devolução Saida
+                            // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
                                 if (exitNotes[i].Count <= 5)
@@ -3090,6 +3114,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     exitNotes.RemoveAt(i);
                                     continue;
                                 }
+
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
                                     productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
@@ -3127,7 +3152,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (exitNotes[i][k].ContainsKey("CFOP"))
                                         {
                                             cfop = false;
-                                            if (cfopsDevo.Contains(exitNotes[i][k]["CFOP"]))
+                                            if (cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
@@ -3402,6 +3427,28 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
+                                }
+                            }
+
+                            // Devolução de Venda
+                            for(int i = exitNotes.Count - 1; i >= 0; i--)
+                            {
+                                bool cfop = false;
+
+                                for (int k = 0; k < exitNotes[i].Count(); k++)
+                                {
+                                    if (exitNotes[i][k].ContainsKey("CFOP"))
+                                    {
+                                        cfop = false;
+                                        if (cfospDevoVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                        {
+                                            cfop = true;
+                                        }
+                                    }
+                                    if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                    {
+                                        creditosIcms += Convert.ToDecimal(exitNotes[i][k]["vFCP"]);
+                                    }
                                 }
                             }
 

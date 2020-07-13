@@ -70,12 +70,13 @@ namespace Escon.SisctNET.Web.Controllers
                
                 var empFortes = _fortesEnterpriseService.GetCompanies(confDbFortes.Value);
 
-                List<Company> commpanies = new List<Company>();
+                List<Company> addCompany = new List<Company>();
+                List<Company> updateCompany = new List<Company>();
 
                 if (result.Count <= 0)
                 {
                     result.Add(new Company() { Id = 0, Code = "0000" });
-                    commpanies = empFortes;
+                    addCompany = empFortes;
                 }
 
                 foreach(var emp in empFortes) 
@@ -84,7 +85,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if(company == null)
                     {
-                        commpanies.Add(emp);
+                        addCompany.Add(emp);
                     }
                     else
                     {
@@ -101,12 +102,13 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Uf = emp.Uf;
                         company.City = emp.City;
                         company.Updated = DateTime.Now;
-                        _service.Update(company, GetLog(OccorenceLog.Update));
+                        updateCompany.Add(company);
+                        //_service.Update(company, GetLog(OccorenceLog.Update));
                     }
                 }
                
-                _service.Create(commpanies, GetLog(OccorenceLog.Create));
-
+                _service.Create(addCompany, GetLog(OccorenceLog.Create));
+                _service.Update(updateCompany, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("Index");
             }

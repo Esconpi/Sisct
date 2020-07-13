@@ -123,5 +123,15 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindAllInDate1(dateProd, log);
         }
+
+        public void Create(List<ProductNote> products, Log log = null)
+        {
+            _repository.Create(products, log);
+        }
+
+        public void Delete(List<ProductNote> products, Log log = null)
+        {
+            _repository.Delete(products, log);
+        }
     }
 }

@@ -188,6 +188,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                     int noteId = nota.Id;
 
+                    List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
+
                     for (int j = 0; j < notes[i].Count; j++)
                     {
                         if (notes[i][j].ContainsKey("nItem"))
@@ -375,11 +377,49 @@ namespace Escon.SisctNET.Web.Controllers
                                     incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }
 
+                                Model.ProductNote prod = new Model.ProductNote();
+
                                 if (taxed == null)
                                 {
                                     try
                                     {
-                                        var item = new Model.ProductNote
+                                        prod.Nnf = notes[i][1]["nNF"];
+                                        prod.Cprod = det["cProd"];
+                                        prod.Ncm = NCM;
+                                        prod.Cest = CEST;
+                                        prod.Cfop = CFOP;
+                                        prod.Xprod = det["xProd"];
+                                        prod.Vprod = Convert.ToDecimal(det["vProd"]);
+                                        prod.Qcom = Convert.ToDecimal(det["qCom"]);
+                                        prod.Ucom = det["uCom"];
+                                        prod.Vuncom = vUnCom;
+                                        prod.Vicms = vICMS;
+                                        prod.Picms = pICMS;
+                                        prod.Vipi = vIPI;
+                                        prod.Vpis = vPIS;
+                                        prod.Vcofins = vCOFINS;
+                                        prod.Vbasecalc = baseDeCalc;
+                                        prod.Vfrete = vFrete;
+                                        prod.Vseg = vSeg;
+                                        prod.Voutro = vOutro;
+                                        prod.Vdesc = vDesc;
+                                        prod.Created = DateTime.Now;
+                                        prod.Updated = DateTime.Now;
+                                        prod.IcmsST = vICMSST;
+                                        prod.VbcFcpSt = vBCFCPST;
+                                        prod.VbcFcpStRet = vBCFCPSTRet;
+                                        prod.pFCPST = pFCPST;
+                                        prod.pFCPSTRET = pFCPSTRet;
+                                        prod.VfcpST = vFCPST;
+                                        prod.VfcpSTRet = vFCPSTRet;
+                                        prod.IcmsCTe = frete_icms;
+                                        prod.Freterateado = frete_prod;
+                                        prod.NoteId = noteId;
+                                        prod.Nitem = det["nItem"];
+                                        prod.Status = false;
+                                        prod.Orig = Convert.ToInt32(det["orig"]);
+                                        prod.Incentivo = incentivo;
+                                        /*var item = new Model.ProductNote
                                         {
                                             Nnf = notes[i][1]["nNF"],
                                             Cprod = det["cProd"],
@@ -418,7 +458,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             Orig = Convert.ToInt32(det["orig"]),
                                             Incentivo = incentivo
                                         };
-                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
+                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));*/
                                     }
                                     catch
                                     {
@@ -487,7 +527,58 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     try
                                     {
-                                        var item = new Model.ProductNote
+                                        prod.Nnf = notes[i][1]["nNF"];
+                                        prod.Cprod = det["cProd"];
+                                        prod.Ncm = NCM;
+                                        prod.Cest = CEST;
+                                        prod.Cfop = CFOP;
+                                        prod.Xprod = det["xProd"];
+                                        prod.Vprod = Convert.ToDecimal(det["vProd"]);
+                                        prod.Qcom = Convert.ToDecimal(det["qCom"]);
+                                        prod.Ucom = det["uCom"];
+                                        prod.Vuncom = vUnCom;
+                                        prod.Vicms = vICMS;
+                                        prod.Picms = pICMS;
+                                        prod.Vipi = vIPI;
+                                        prod.Vpis = vPIS;
+                                        prod.Vcofins = vCOFINS;
+                                        prod.Vbasecalc = baseCalc;
+                                        prod.Vfrete = vFrete;
+                                        prod.Vseg = vSeg;
+                                        prod.Voutro = vOutro;
+                                        prod.Vdesc = vDesc;
+                                        prod.Created = DateTime.Now;
+                                        prod.Updated = DateTime.Now;
+                                        prod.IcmsST = vICMSST;
+                                        prod.VbcFcpSt = vBCFCPST;
+                                        prod.VbcFcpStRet = vBCFCPSTRet;
+                                        prod.pFCPST = pFCPST;
+                                        prod.pFCPSTRET = pFCPSTRet;
+                                        prod.VfcpST = vFCPST;
+                                        prod.VfcpSTRet = vFCPSTRet;
+                                        prod.IcmsCTe = frete_icms;
+                                        prod.Freterateado = frete_prod;
+                                        prod.Aliqinterna = taxed.AliqInterna;
+                                        prod.Mva = taxed.MVA;
+                                        prod.BCR = taxed.BCR;
+                                        prod.Fecop = taxed.Fecop;
+                                        prod.Valoragregado = valorAgreg;
+                                        prod.ValorBCR = valorbcr;
+                                        prod.ValorAC = valorAgre_AliqInt;
+                                        prod.TotalICMS = cms;
+                                        prod.TotalFecop = valor_fecop;
+                                        prod.Diferencial = dif;
+                                        prod.IcmsApurado = icmsApu;
+                                        prod.Status = true;
+                                        prod.Pautado = false;
+                                        prod.TaxationTypeId = taxed.TaxationTypeId;
+                                        prod.NoteId = noteId;
+                                        prod.Nitem = det["nItem"];
+                                        prod.Orig = Convert.ToInt32(det["orig"]);
+                                        prod.Incentivo = incentivo;
+                                        prod.DateStart = Convert.ToDateTime(taxed.DateStart);
+
+                                        /*var item = new Model.ProductNote
                                         {
                                             Nnf = notes[i][1]["nNF"],
                                             Cprod = det["cProd"],
@@ -541,7 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             DateStart = Convert.ToDateTime(taxed.DateStart)
                                         };
 
-                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));
+                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));*/
                                     }
                                     catch
                                     {
@@ -551,7 +642,9 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                                     det.Clear();
-                                }   
+                                }
+
+                                addProduct.Add(prod);
                             }
                             else
                             {
@@ -560,7 +653,8 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-
+                    _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
+                    addProduct.Clear();
                     var productsTaxation = _itemService.FindByTaxation(noteId);
 
                     if (productsTaxation.Count == 0)
@@ -698,17 +792,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var products = _itemService.FindByProducts(notes);
 
+                List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
+                List<Model.Note> deleteNote = new List<Model.Note>();
+
                 foreach (var product in products)
                 {
-                    _itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
+                    deleteProduct.Add(product);
+                    //_itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
                 }
 
                 foreach (var note in notes)
                 {
-                    _service.Delete(note.Id, GetLog(Model.OccorenceLog.Delete));
+                    deleteNote.Add(note);
+                    //_service.Delete(note.Id, GetLog(Model.OccorenceLog.Delete));
                 }
 
-
+                _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
+                _service.Delete(deleteNote, GetLog(OccorenceLog.Delete));
                 return RedirectToAction("Index", new { id = id, year = year, month = month });
 
             }
@@ -727,12 +827,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var products = _itemService.FindByNotes(id);
+                List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
                 foreach (var product in products)
                 {
-                    _itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
+                    deleteProduct.Add(product);
+                   // _itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
                 }
+                _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
-
                 return RedirectToAction("Index", new { id = company, year = year, month = month });
             }
             catch(Exception ex)

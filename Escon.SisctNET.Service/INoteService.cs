@@ -5,6 +5,8 @@ namespace Escon.SisctNET.Service
 {
     public interface INoteService : IServiceBase<Model.Note>
     {
+        void Delete(List<Model.Note> notes, Model.Log log = null);
+
         Model.Note FindByCompany(string company, Model.Log log = null);
 
         Model.Note FindByNote(string chave, Model.Log log = null);

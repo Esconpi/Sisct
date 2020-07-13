@@ -291,5 +291,27 @@ namespace Escon.SisctNET.Repository.Implementation
 
             return products;
         }
+
+        public void Create(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Add(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
+        public void Delete(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Remove(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
     }
 }

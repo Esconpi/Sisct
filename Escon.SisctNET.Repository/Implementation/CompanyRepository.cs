@@ -43,7 +43,13 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public void Update(List<Company> companies, Log log = null)
         {
+            foreach (var c in companies)
+            {
+                _context.Companies.Update(c);
+            }
 
+            AddLog(log);
+            _context.SaveChanges();
         }
 
         public List<Model.Company> FindByCompanies(Log log = null)

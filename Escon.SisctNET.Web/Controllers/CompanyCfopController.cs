@@ -2,7 +2,9 @@
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,23 +44,25 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var cfops = _cfopService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                List<CompanyCfop> addCompanyCfop = new List<CompanyCfop>();
                 foreach (var cfop in cfops)
                 {
-                    var companycfop = _service.FindByCompanyCfop(companyId, cfop.Id);
-                    if (companycfop == null)
+                    var companyCfop = _service.FindByCompanyCfop(companyId, cfop.Id);
+                    if (companyCfop == null)
                     {
-                        var companyCfop = new Model.CompanyCfop
-                        {
-                            CompanyId = companyId,
-                            CfopId = cfop.Id,
-                            Active = false,
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-
-                        var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
+                        CompanyCfop cc = new CompanyCfop();
+                        cc.CompanyId = companyId;
+                        cc.CfopId = cfop.Id;
+                        cc.Active = false;
+                        cc.CfopTypeId = null;
+                        cc.Created = DateTime.Now;
+                        cc.Updated = DateTime.Now;
+                        addCompanyCfop.Add(cc);
+                        //var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
                     }
                 }
+                _service.Create(addCompanyCfop, GetLog(OccorenceLog.Create));
                 return RedirectToAction("Index", new { id = companyId});
             }
             catch (Exception ex)

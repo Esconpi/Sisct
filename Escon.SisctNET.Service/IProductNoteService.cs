@@ -1,12 +1,15 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service
 {
     public interface IProductNoteService : IServiceBase<Model.ProductNote>
     {
-      
+
+        void Create(List<Model.ProductNote> products, Model.Log log = null);
+
+        void Delete(List<Model.ProductNote> products, Model.Log log = null);
+
         List<Model.ProductNote> FindByNotes(int noteId, Model.Log log = null);
 
         List<Model.ProductNote> FindByProducts(List<Model.Note> notes, Model.Log log = null);

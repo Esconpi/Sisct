@@ -16,6 +16,17 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Create(List<CompanyCfop> cfopCompanies, Log log = null)
+        {
+            foreach (var c in cfopCompanies)
+            {
+                _context.CompanyCfops.Add(c);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public List<CompanyCfop> FindByCfopActive(int companyId, string type, string typeCfop, Log log = null)
         {
             List<CompanyCfop> result = null;

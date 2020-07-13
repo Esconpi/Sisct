@@ -67,5 +67,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByCompanies(log);
         }
+
+        public void Update(List<Company> companies, Log log = null)
+        {
+            _repository.Update(companies, log);
+        }
     }
 }
