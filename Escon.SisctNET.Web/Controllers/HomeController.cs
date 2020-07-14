@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sped(int id,string month, string year, IFormFile arquivo)
+        public async Task<IActionResult> Sped(int id,string month, string year,string option, IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -140,7 +140,16 @@ namespace Escon.SisctNET.Web.Controllers
                 stream.Close();
 
                 List<string> sped = new List<string>();
-                sped = import.Sped(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+
+                if (option.Equals("all"))
+                {
+                    sped = import.SpedAll(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                }
+                else if (option.Equals("entry"))
+                {
+                    sped = import.SpedEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                }
+                
 
                 // Criando Novo Arquivo Sped
                 string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";

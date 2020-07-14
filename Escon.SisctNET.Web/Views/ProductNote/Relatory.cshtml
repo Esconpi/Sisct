@@ -49,7 +49,7 @@
     </div>
     <div class="box-body">
 
-        @if (ViewBag.type == 6 || ViewBag.type == 9)
+        @if (ViewBag.type == 6 || ViewBag.type == 9 || ViewBag.type == 10)
         {
             <div style="width:100%; overflow:hidden; padding:20px;">
                 @if (ViewBag.type == 6)
@@ -60,10 +60,14 @@
                 {
                     @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.type == 10)
+                {
+                    @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
+                }
             </div>
         }
 
-        @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8 || ViewBag.type == 3 || ViewBag.type == 4 || ViewBag.type == 5)
+        @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8 || ViewBag.type == 3 || ViewBag.type == 4 || ViewBag.type == 5 && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
             <div style="width:100%; overflow:hidden; padding:20px; padding-left:1% ; padding-right:1%;">
                 <table class="table" style="font-size:8px; border: 2px solid;">
@@ -88,19 +92,19 @@
             </div>
         }
 
-        @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 4 || ViewBag.type == 5 || ViewBag.type == 8 || ViewBag.type == 7 && (ViewBag.type != 6 && ViewBag.type != 9))
+        @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 4 || ViewBag.type == 5 || ViewBag.type == 8 || ViewBag.type == 7 && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
             @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
 
         }
 
-        @if ((ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 4 || ViewBag.type == 5 || ViewBag.type == 8 || ViewBag.type == 7 && (ViewBag.type != 6 && ViewBag.type != 9)) && ViewBag.TaxationType != 6)
+        @if ((ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 4 || ViewBag.type == 5 || ViewBag.type == 8 || ViewBag.type == 7 && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10)) && ViewBag.TaxationType != 6)
         {
             @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
 
         }
 
-        @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true && (ViewBag.type != 6 && ViewBag.type != 9))
+        @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
             <div style="width:100%; overflow:hidden; padding:20px;">
                 @if (ViewBag.TaxationType == 1 && ViewBag.type != 8 && ViewBag.type != 7)

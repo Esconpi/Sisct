@@ -15,6 +15,10 @@
 {
     <strong>Resumo Geral</strong>
 }
+@if (ViewBag.type == 10)
+{
+    <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
+}
 @if (@ViewBag.TaxationType == 1 && ViewBag.type != 9 && ViewBag.type != 6)
 {
     <strong>Substituição Tributária por MVA</strong>
@@ -43,6 +47,7 @@ else if (@ViewBag.TaxationType == 7 && ViewBag.type != 9 && ViewBag.type != 6)
 {
     <strong>Antecipação Total</strong>
 }
+
 @if (ViewBag.type == 7)
 {
     <strong>&nbsp;Produto Incentivado</strong>

@@ -23,6 +23,9 @@
                 <thead>
                     <tr>
                         <th>
+                            @Html.DisplayNameFor(model => model.AnnexId)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Cest)
                         </th>
                         <th>
@@ -30,9 +33,6 @@
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.AnnexId)
                         </th>
                         <th></th>
                     </tr>
@@ -75,10 +75,10 @@
             "initComplete": function (settings, json) {
             },
             "columns": [
+                { "data": "anexx" },
                 { "data": "cest" },
                 { "data": "code" },
                 { "data": "description" },
-                { "data": "anexx" },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {

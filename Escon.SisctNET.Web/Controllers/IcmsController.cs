@@ -1875,12 +1875,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
-
                                 int posCliente = -1;
 
                                 if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
@@ -2350,20 +2344,7 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas ST
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if ((exitNotes[i].Count <= 5))
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
-                                else if (exitNotes[i][3].ContainsKey("CNPJ"))
-                                {
-                                    if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
-                                    {
-                                        exitNotes.RemoveAt(i);
-                                    }
-                                    continue;
-                                }
-
+                              
                                 int posUf = -1;
                                 if (exitNotes[i][3].ContainsKey("UF") && exitNotes[i][1]["idDest"].Equals("2"))
                                 {
@@ -2471,15 +2452,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i][2].ContainsKey("CNPJ"))
-                                {
-                                    if (exitNotes[i].Count <= 5)
-                                    {
-                                        exitNotes.RemoveAt(i);
-                                        continue;
-                                    }
-                                }
-
                                 bool cfop = false;
                                 for (int k = 0; k < exitNotes[i].Count; k++)
                                 {
@@ -2699,11 +2671,7 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
+
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
                                     productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
@@ -3109,11 +3077,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {

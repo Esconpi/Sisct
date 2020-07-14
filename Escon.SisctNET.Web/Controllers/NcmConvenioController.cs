@@ -64,7 +64,14 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.AnnexId = new SelectList(_annexService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                foreach (var annex in list_annex)
+                {
+                    annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
                 return View();
             }
             catch (Exception ex)
@@ -103,7 +110,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.AnnexId = new SelectList(_annexService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                foreach (var annex in list_annex)
+                {
+                    annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
                 return View(result);
             }
             catch(Exception ex)
@@ -193,7 +207,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description
+                              Anexx = r.Annex.Description + r.Annex.Convenio
 
                           };
 
@@ -211,7 +225,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description
+                              Anexx = r.Annex.Description + r.Annex.Convenio
 
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });

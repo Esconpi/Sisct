@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -816,9 +817,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal icmsStIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
                     decimal icmsStSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
-                    decimal? totalIcmsIE = 0, totalIcmsSIE = 0, valorDiefIE = 0; 
-                    ViewBag.TotalICMSST = Convert.ToDouble(icmsStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
+                    decimal? totalIcmsIE = 0, totalIcmsSIE = 0, valorDiefIE = 0;
+                    decimal totalGeralIcmsST = Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum());
+                    ViewBag.TotalICMSST = Convert.ToDouble(totalGeralIcmsST).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    decimal totalGeralIcms = Convert.ToDecimal(result.Select(_ => _.TotalICMS).Sum());
+                    ViewBag.TotalICMSGeral = Convert.ToDouble(totalGeralIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     if (typeTaxation == 1 || typeTaxation == 7)
                     {
@@ -3685,12 +3688,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
-
                                 int posCliente = -1;
 
                                 if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
@@ -4160,19 +4157,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas ST
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if ((exitNotes[i].Count <= 5))
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
-                                else if (exitNotes[i][3].ContainsKey("CNPJ"))
-                                {
-                                    if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
-                                    {
-                                        exitNotes.RemoveAt(i);
-                                    }
-                                    continue;
-                                }
 
                                 int posUf = -1;
                                 if (exitNotes[i][3].ContainsKey("UF") && exitNotes[i][1]["idDest"].Equals("2"))
@@ -4281,15 +4265,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i][2].ContainsKey("CNPJ"))
-                                {
-                                    if (exitNotes[i].Count <= 5)
-                                    {
-                                        exitNotes.RemoveAt(i);
-                                        continue;
-                                    }
-                                }
-
                                 bool cfop = false;
                                 for (int k = 0; k < exitNotes[i].Count; k++)
                                 {
@@ -4509,11 +4484,7 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
+
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
                                     productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
@@ -4919,11 +4890,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Devolução de Compra
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                if (exitNotes[i].Count <= 5)
-                                {
-                                    exitNotes.RemoveAt(i);
-                                    continue;
-                                }
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
@@ -5884,7 +5850,38 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.GnreFecopPagaTotal = Convert.ToDouble(Math.Round(gnrefecopPagaTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
+                else if(type == 10)
+                {
 
+                    var query =  notes.GroupJoin(result.Where(_ => _.Status.Equals(true)).ToList(),
+                      n => n,
+                      p => p.Note,
+                      (n, pCollection) =>
+                          new
+                          {
+                              nNf = n.Nnf,
+                              dhemi = n.Dhemi,
+                              xNome = n.Xnome,
+                              cnpj = n.Cnpj,
+                              vNF = n.Vnf,
+                              IcmsST = pCollection.Sum(_ => _.IcmsST)
+                          }).Where(_ => _.IcmsST > 0);
+
+                    List<List<string>> nnotes = new List<List<string>>();
+                    foreach (var item in query.ToList())
+                    {
+                        List<string> nnote = new List<string>();
+                        nnote.Add(item.nNf);
+                        nnote.Add(item.dhemi.ToString("dd/MM/yyy"));
+                        nnote.Add(item.xNome);
+                        nnote.Add(item.cnpj);
+                        nnote.Add(Convert.ToDouble(Math.Round(item.vNF, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                        nnote.Add(Convert.ToDouble(Math.Round(Convert.ToDecimal(item.IcmsST), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                        nnotes.Add(nnote);
+                    }
+                    ViewBag.NNotes = nnotes;
+
+                }
 
                 ViewBag.IcmsStNoteS = Convert.ToDouble(Math.Round(icmsStnoteSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 ViewBag.IcmsStNoteI = Convert.ToDouble(Math.Round(icmsStnoteIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
