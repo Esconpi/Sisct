@@ -1,11 +1,12 @@
-﻿<div style="width:100%; padding-top:0px; border:2px solid; page-break-before: always;">
+﻿<div style="width:100%; padding-top:0px; page-break-before: always;">
     <table style="font-size:12px;" border="1">
         <thead style="font-size:14px;">
             <tr>
-                <th style="text-align:center;" width="320px">Histórico</th>
+                <th style="text-align:center" width="320px">Histórico</th>
                 <th style="text-align:center" width="150px">Aliq. Inter. do Produto até 25%</th>
                 <th style="text-align:center" width="180px">Aliq. Inter. do Produto superior 25%</th>
-                <th style="text-align:center" width="120px">Receitas de Produtos ST</th>
+                <th style="text-align:center" width="120px">Receitas de Produtos ST - Normal</th>
+                <th style="text-align:center" width="120px">Receitas de Produtos ST - ST</th>
                 <th style="text-align:center" width="140px">Receitas de Produtos Isento</th>
                 <th style="text-align:center" width="170px">Total (R$)</th>
             </tr>
@@ -16,6 +17,7 @@
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaContribuinteIncentivo</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.ContribuinteIncentivoAliM25</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaContribuinteNIncentivo</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.VendaSTContribuinte</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.ContribuinteIsento</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.TotalVendaContibuinte</td>
             </tr>
@@ -23,6 +25,7 @@
                 <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.PercentualIcmsContrib %</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.PercentualIcmsAiqM25Contrib %</td>
+                <td></td>
                 <td></td>
                 <td style="text-align:right"></td>
                 <td></td>
@@ -32,10 +35,12 @@
                 <th style="text-align:right; padding-right:1%;">@ViewBag.ValorVendaContribIncentivo</th>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.ValorVendaContribuinteAliM25</td>
                 <td></td>
+                <td></td>
                 <td style="text-align:right"></td>
                 <td></td>
             </tr>
             <tr>
+                <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th style="text-align:right">&nbsp;</th>
                 <td style="text-align:right">&nbsp;</td>
@@ -48,28 +53,14 @@
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribIncentivo</td>
                 <td></td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivo</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.VendaSTNContribuinte</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.NaoContribuinteIsento</td>
-                <td style="text-align:right; padding-right:1%;">@ViewBag.TotalGeralVendaNContibuinte</td>
-            </tr>
-            <tr>
-                <td style="font-size:11px;">Venda p/ Não Contribuintes ST (R$)</td>
-                <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivo</td>
-                <td></td>
-                <td style="text-align:right; padding-right:1%;"></td>
-                <td style="text-align:right; padding-right:1%;"></td>
-                <td style="text-align:right"></td>
-            </tr>
-            <tr>
-                <td style="font-size:11px;">Base de Cálculo (R$)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.TotalVendaNContribuinte</td>
-                <td></td>
-                <td style="text-align:right"></td>
-                <td style="text-align:right"></td>
-                <td style="text-align:right"></td>
             </tr>
             <tr>
                 <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.PercentualIcmsNContribuinte %</td>
+                <td></td>
                 <td></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
@@ -79,6 +70,7 @@
                 <th style="font-size:11px;">Total (R$)</th>
                 <th style="text-align:right; padding-right:1%;">@ViewBag.ValorVendaNContribIncentivo</th>
                 <td></td>
+                <td></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td></td>
@@ -89,15 +81,17 @@
                 <td style="text-align:right">&nbsp;</td>
                 <td>&nbsp;</td>
                 <td style="text-align:right"></td>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <th style="font-size:11px;">Total das Vendas (R$)</th>
-                <th style="text-align:right; padding-right:1%;">@ViewBag.TotalGeralVendasIncentivo</th>
+                <td></td>
                 <td></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
+                <th style="text-align:right; padding-right:1%;">@ViewBag.TotalGeralVendasIncentivo</th>
             </tr>
             <tr>
                 <th>&nbsp;</th>
@@ -105,19 +99,22 @@
                 <td style="text-align:right">&nbsp;</td>
                 <td>&nbsp;</td>
                 <td style="text-align:right"></td>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado (R$)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNForaEstadoContribuinteIncetivo</td>
-                <td style="text-align:right; padding-right:1%;"></td>
+                <td style="text-align:right"></td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
+                <td style="text-align:right; padding-right:1%;">@ViewBag.VendaSTForaEstadoNContribuinte</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.NaoContribuinteForaDoEstadoIsento</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.TotalGeralVendaNContibuinteForaDoEstado</td>
             </tr>
             <tr>
                 <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.VendaNContribuinteNIncentivoForaDoEstado</td>
+                <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
@@ -130,10 +127,12 @@
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
             </tr>
             <tr>
                 <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
                 <td style="text-align:right; padding-right:1%;">@ViewBag.PercentualIcmsNaoContribForaDoEstado %</td>
+                <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
@@ -145,6 +144,7 @@
                 <td></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
                 <td></td>
             </tr>
             <tr>
@@ -152,6 +152,7 @@
                 <th style="text-align:right">&nbsp;</th>
                 <td style="text-align:right">&nbsp;</td>
                 <td>&nbsp;</td>
+                <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td>&nbsp;</td>
             </tr>
@@ -162,6 +163,7 @@
                 <td></td>
                 <td style="text-align:right"></td>
                 <th style="text-align:right"></th>
+                <td style="text-align:right"></td>
             </tr>
         </tbody>
     </table>

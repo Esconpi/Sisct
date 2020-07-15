@@ -815,8 +815,12 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalICMSNfe = Convert.ToDouble(result.Select(_ => _.Vicms).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(result.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    decimal icmsStIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
-                    decimal icmsStSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal icmsGeralStIE = Math.Round(Convert.ToDecimal(result.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
+                    decimal icmsGeralStSIE = Math.Round(Convert.ToDecimal(result.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
+
+                    ViewBag.IcmsGeralSTIE = icmsGeralStIE;
+                    ViewBag.IcmsGeralSTSIE = icmsGeralStSIE;
+
                     decimal? totalIcmsIE = 0, totalIcmsSIE = 0, valorDiefIE = 0;
                     decimal totalGeralIcmsST = Convert.ToDecimal(result.Select(_ => _.IcmsST).Sum());
                     ViewBag.TotalICMSST = Convert.ToDouble(totalGeralIcmsST).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -1012,8 +1016,8 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             icmsTemp = icmsSt;
                         }*/
-                        decimal diefStIE = Convert.ToDecimal(totalIcmsIE - icmsStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
-                        decimal diefStSIE = Convert.ToDecimal(totalIcmsSIE - icmsStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
+                        decimal diefStIE = Convert.ToDecimal(totalIcmsIE - icmsGeralStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
+                        decimal diefStSIE = Convert.ToDecimal(totalIcmsSIE - icmsGeralStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
                         ViewBag.ValorDiefIE = Convert.ToDouble(diefStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.ValorDiefSIE = Convert.ToDouble(diefStSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                        
@@ -1069,10 +1073,14 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal? totalIcmsNormalSIE = productsNormal.Where(_ => _.TaxationType.Type.Equals("ST") && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum();
 
                             var notasTaxationNormal = productsNormal.Select(_ => _.Note).Distinct();
-
+                            totalIcmsFreteIE = 0;
+                            totalFecop1FreteIE = 0;
+                            totalFecop2FreteIE = 0;
+                            base1FecopFreteIE = 0;
+                            base2FecopFreteIE = 0;
                             foreach (var prod in productsNormal)
                             {
-                                if (!prod.Note.Iest.Equals(""))
+                                if (!prod.Note.Iest.Equals("") && prod.Incentivo.Equals(false))
                                 {
                                     if (Convert.ToDecimal(prod.Aliqinterna) > 0)
                                     {
@@ -1107,11 +1115,18 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalIcmsFreteIE = Convert.ToDouble(totalIcmsFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalFecop1FreteIE = Convert.ToDouble(totalFecop1FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalFecop2FreteIE = Convert.ToDouble(totalFecop2FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.BaseFecop1FreteIE = Convert.ToDouble(base1FecopFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.BaseFecop2FreteIE = Convert.ToDouble(base2FecopFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalFecopFreteIE = Convert.ToDouble(totalFecop1FreteIE + totalFecop2FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
-                            icmsStIE = Math.Round(Convert.ToDecimal(productsNormal.Select(_ => _.IcmsST).Sum()), 2);
-                            ViewBag.TotalICMSST = Convert.ToDouble(icmsStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            icmsGeralStIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
+                            icmsGeralStSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
+
+                            ViewBag.IcmsGeralSTIE = icmsGeralStIE;
+                            ViewBag.IcmsGeralSTSIE = icmsGeralStSIE;
+
+                            ViewBag.TotalICMSST = Convert.ToDouble(icmsGeralStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             gnreNPagaSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreNSt).Distinct().Sum()), 2);
                             gnrePagaSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreSt).Distinct().Sum()), 2);
                             gnreNPagaIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreNSt).Distinct().Sum()), 2);
@@ -1121,8 +1136,8 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalGNREnPagaIE = Convert.ToDouble(gnreNPagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.TotalGNREPagaIE = Convert.ToDouble(gnrePagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                            diefStIE = Convert.ToDecimal(totalIcmsNormalIE - icmsStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
-                            diefStSIE = Convert.ToDecimal(totalIcmsNormalSIE - icmsStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
+                            diefStIE = Convert.ToDecimal(totalIcmsNormalIE - icmsGeralStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
+                            diefStSIE = Convert.ToDecimal(totalIcmsNormalSIE - icmsGeralStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
                             ViewBag.ValorDiefIE = Convert.ToDouble(diefStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.ValorDiefSIE = Convert.ToDouble(diefStSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -2384,7 +2399,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     decimal totalDarSTCO = 0, totalDarFecop = 0, totalDarAp = 0, totalDarIm = 0, totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
                     result = _service.FindByProducts(notes);
-
                     // Substituição Tributária
 
                     decimal totalIcmsFreteSTIE = 0, totalFecop1FreteSTIE = 0, totalFecop2FreteSTIE = 0;
@@ -2508,8 +2522,8 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal totalGnreFecopSTSIE = gnrePagaFecop1STSIE + gnrePagaFecop2STSIE;
                     ViewBag.TotalGnreFecopSTSIE = Convert.ToDouble(totalGnreFecopSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                    decimal totalfecopDiefSTIE = TotalFecopCalcSTIE - totalGnreFecopSTIE + (gnrePagaFecop2STIE + gnrePagaFecop1STIE) - TotalFecopNfeSTIE - totalFecop1FreteSTIE - totalFecop2FreteSTIE;
-                    decimal totalfecopDiefSTSIE = TotalFecopCalcSTSIE - totalGnreFecopSTSIE + (gnrePagaFecop2STSIE + gnrePagaFecop1STSIE) - TotalFecopNfeSTSIE + totalFecop1FreteSTIE + totalFecop2FreteSTIE;
+                    decimal totalfecopDiefSTIE = TotalFecopCalcSTIE - totalGnreFecopSTIE + gnreNPagaFecopSTIE - TotalFecopNfeSTIE - totalFecop1FreteSTIE - totalFecop2FreteSTIE;
+                    decimal totalfecopDiefSTSIE = TotalFecopCalcSTSIE - totalGnreFecopSTSIE + gnreNPagaFecopSTSIE - TotalFecopNfeSTSIE + totalFecop1FreteSTIE + totalFecop2FreteSTIE;
                     ViewBag.TotalFecopDiefSTIE = Convert.ToDouble(Math.Round(totalfecopDiefSTIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.TotalFecopDiefSTSIE = Convert.ToDouble(Math.Round(totalfecopDiefSTSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -2531,10 +2545,13 @@ namespace Escon.SisctNET.Web.Controllers
                         var productsNormal = _service.FindByNormal(notes);
                         productsNormal = productsNormal.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).ToList();
 
+                        totalIcmsFreteSTIE = 0;
+                        totalFecop1FreteSTIE = 0;
+                        totalFecop2FreteSTIE = 0;
 
                         foreach (var prod in productsNormal)
                         {
-                            if (!prod.Note.Iest.Equals("") && (prod.TaxationTypeId.Equals(5) || prod.TaxationTypeId.Equals(6)))
+                            if (!prod.Note.Iest.Equals("") && (prod.TaxationTypeId.Equals(5) || prod.TaxationTypeId.Equals(6)) && prod.Incentivo.Equals(false))
                             {
                                 if (Convert.ToDecimal(prod.Aliqinterna) > 0)
                                 {
@@ -2647,8 +2664,8 @@ namespace Escon.SisctNET.Web.Controllers
                         totalGnreFecopSTSIE = gnrePagaFecop1STSIE + gnrePagaFecop2STSIE;
                         ViewBag.TotalGnreFecopSTSIE = Convert.ToDouble(totalGnreFecopSTSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                        totalfecopDiefSTIE = TotalFecopCalcSTIE - totalGnreFecopSTIE + (gnrePagaFecop2STIE + gnrePagaFecop1STIE) - TotalFecopNfeSTIE - totalFecop1FreteSTIE - totalFecop2FreteSTIE;
-                        totalfecopDiefSTSIE = TotalFecopCalcSTSIE - totalGnreFecopSTSIE + (gnrePagaFecop2STSIE + gnrePagaFecop1STSIE) - TotalFecopNfeSTSIE + totalFecop1FreteSTIE + totalFecop2FreteSTIE;
+                        totalfecopDiefSTIE = TotalFecopCalcSTIE - totalGnreFecopSTIE +  gnreNPagaFecopSTIE - TotalFecopNfeSTIE - totalFecop1FreteSTIE - totalFecop2FreteSTIE;
+                        totalfecopDiefSTSIE = TotalFecopCalcSTSIE - totalGnreFecopSTSIE + gnreNPagaFecopSTSIE - TotalFecopNfeSTSIE + totalFecop1FreteSTIE + totalFecop2FreteSTIE;
                         ViewBag.TotalFecopDiefSTIE = Convert.ToDouble(Math.Round(totalfecopDiefSTIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalFecopDiefSTSIE = Convert.ToDouble(Math.Round(totalfecopDiefSTSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -3680,10 +3697,10 @@ namespace Escon.SisctNET.Web.Controllers
                             var cfopsVenda = _companyCfopService.FindByCfopActive(id, "incentivo", "venda").Select(_ => _.Cfop.Code);
                             var cfospDevoVenda = _companyCfopService.FindByCfopActive(id, "entrada", "devolução de venda").Select(_ => _.Cfop.Code);
 
-                            decimal totalVendas = 0, naoContriForaDoEstadoIncentivo = 0, ContribuintesIncentivo = 0,
-                                naoContribuinteIncentivo = 0, naoContriForaDoEstadoNIncentivo = 0,
-                                ContribuintesNIncentivo = 0, naoContribuinteNIncetivo = 0, ContribuintesIncentivoAliqM25 = 0,
-                                ContribuinteIsento = 0, NaoContribuiteIsento = 0, NaoContribuinteForaDoEstadoIsento = 0;
+                            decimal totalVendas = 0, naoContribuinteIncentivo = 0, naoContribuinteNIncetivo = 0, vendaCfopSTNaoContribuinteNIncetivo = 0, NaoContribuiteIsento = 0,
+                                naoContriForaDoEstadoIncentivo = 0, naoContriForaDoEstadoNIncentivo = 0, vendaCfopSTNaoContriForaDoEstadoNIncentivo = 0, NaoContribuinteForaDoEstadoIsento = 0,
+                                ContribuintesNIncentivo = 0, ContribuintesIncentivoAliqM25 = 0, ContribuintesIncentivo = 0, vendaCfopSTContribuintesNIncentivo = 0,
+                                ContribuinteIsento = 0;
 
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
@@ -3763,7 +3780,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (cfop == true)
                                         {
-                                            if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]))
+                                            if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
                                             {
                                                 if (cestIncentivado.Contains(cest))
                                                 {
@@ -3943,7 +3960,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
                                                 }
                                             }
-                                            else if (codeProdST.Contains(exitNotes[i][k]["cProd"]))
+                                            else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
                                             {
                                                 if (exitNotes[i][k].ContainsKey("vProd"))
                                                 {
@@ -4041,7 +4058,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     totalVendas += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
                                                 }
                                             }
-                                            else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]))
+                                            else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
                                             {
                                                 if (exitNotes[i][k].ContainsKey("vProd"))
                                                 {
@@ -4157,6 +4174,29 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas ST
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
+                                int posCliente = -1;
+
+                                if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
+                                {
+                                    string CNPJ = exitNotes[i][3]["CNPJ"];
+                                    string indIEDest = exitNotes[i][3]["indIEDest"];
+                                    string IE = exitNotes[i][3]["IE"];
+                                    if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
+                                    {
+                                        posCliente = contribuintes.IndexOf(exitNotes[i][3]["CNPJ"]);
+                                    }
+
+                                    bool existe = false;
+                                    if (clientesAll.Contains(exitNotes[i][3]["CNPJ"]))
+                                    {
+                                        existe = true;
+                                    }
+
+                                    if (existe == false)
+                                    {
+                                        throw new Exception("Há Clientes não Importados");
+                                    }
+                                }
 
                                 int posUf = -1;
                                 if (exitNotes[i][3].ContainsKey("UF") && exitNotes[i][1]["idDest"].Equals("2"))
@@ -4185,6 +4225,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int k = 0; k < exitNotes[i].Count(); k++)
                                 {
+                                    string cest = null;
+                                    if (exitNotes[i][k].ContainsKey("CEST"))
+                                    {
+                                        cest = exitNotes[i][k]["CEST"];
+                                        if (cest.Equals(""))
+                                        {
+                                            cest = null;
+                                        }
+                                    }
+
                                     if (exitNotes[i][k].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
@@ -4197,66 +4247,111 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (cfop == true)
                                     {
-                                        if (exitNotes[i][k].ContainsKey("vProd") && exitNotes[i][k].ContainsKey("cProd"))
+                                        if (exitNotes[i][k].ContainsKey("cProd"))
                                         {
-                                            naoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                            if (exitNotes[i][k].ContainsKey("vProd"))
                                             {
-                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vProd"])).ToString();
+                                                if (posCliente < 0)
+                                                {
+                                                    vendaCfopSTNaoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                                                    if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                    {
+                                                        vendaCfopSTNaoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                                                        icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vProd"])).ToString();
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    vendaCfopSTContribuintesNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                                                }
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
 
                                             }
-                                            totalVendas += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
 
-                                        }
-
-                                        if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd"))
-                                        {
-                                            naoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                            if (exitNotes[i][k].ContainsKey("vFrete"))
                                             {
-                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
-                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vFrete"])).ToString();
+                                                if (posCliente < 0)
+                                                {
+                                                    vendaCfopSTNaoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+                                                    if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                    {
+                                                        vendaCfopSTNaoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+                                                        icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vFrete"])).ToString();
 
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    vendaCfopSTContribuintesNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+                                                }
+
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
                                             }
-                                            totalVendas += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
-                                        }
 
-                                        if (exitNotes[i][k].ContainsKey("vDesc") && exitNotes[i][k].ContainsKey("cProd"))
-                                        {
-                                            naoContribuinteNIncetivo -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                            if (exitNotes[i][k].ContainsKey("vDesc"))
                                             {
-                                                naoContriForaDoEstadoNIncentivo -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) - Convert.ToDecimal(exitNotes[i][k]["vDesc"])).ToString();
+                                                if (posCliente < 0)
+                                                {
+                                                    vendaCfopSTNaoContribuinteNIncetivo -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+                                                    if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                    {
+                                                        vendaCfopSTNaoContriForaDoEstadoNIncentivo -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+                                                        icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) - Convert.ToDecimal(exitNotes[i][k]["vDesc"])).ToString();
 
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    vendaCfopSTContribuintesNIncentivo -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+                                                }
+
+                                                totalVendas -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
                                             }
-                                            totalVendas -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                        }
 
-                                        if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd"))
-                                        {
-                                            naoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                            if (exitNotes[i][k].ContainsKey("vOutro"))
                                             {
-                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["Outro"]);
-                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vOutro"])).ToString();
+                                                if (posCliente < 0)
+                                                {
+                                                    vendaCfopSTNaoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+                                                    if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                    {
+                                                        vendaCfopSTNaoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["Outro"]);
+                                                        icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vOutro"])).ToString();
 
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    vendaCfopSTContribuintesNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+                                                }
+
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
                                             }
-                                            totalVendas += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
-                                        }
 
-                                        if (exitNotes[i][k].ContainsKey("vSeg") && exitNotes[i][k].ContainsKey("cProd"))
-                                        {
-                                            naoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                            if (exitNotes[i][k].ContainsKey("vSeg"))
                                             {
-                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
-                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vSeg"])).ToString();
+                                                if (posCliente < 0)
+                                                {
+                                                    vendaCfopSTNaoContribuinteNIncetivo += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                                                    if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                    {
+                                                        vendaCfopSTNaoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                                                        icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vSeg"])).ToString();
 
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    vendaCfopSTContribuintesNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                                                }
+
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
                                             }
-                                            totalVendas += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
                                         }
+
+
+
                                     }
 
                                 }
@@ -4314,11 +4409,11 @@ namespace Escon.SisctNET.Web.Controllers
                             var icmsContribuinteIncentivoAliqM25 = Math.Round(Convert.ToDecimal(comp.IcmsAliqM25) * ContribuintesIncentivoAliqM25 / 100, 2);
 
                             //Não Contribuinte
-                            var totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo);
-                            var icmsNContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * totalVendasNContribuinte / 100, 2);
+                            var totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo + vendaCfopSTNaoContribuinteNIncetivo, 2);
+                            var icmsNContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContribuinteIncentivo / 100, 2);
 
                             //Não Contribuinte Fora do Estado
-                            var totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo, 2);
+                            var totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2);
                             var icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * totalVendasNContribuinteForaDoEstado / 100, 2);
 
                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
@@ -4354,7 +4449,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var totalImpostoGeral = totalImposto + icmsNContribuinteForaDoEstado;
 
                             //// Cálculos dos Totais
-                            var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo, 2);
+                            var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo + vendaCfopSTContribuintesNIncentivo, 2);
                             var totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2);
                             var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
 
@@ -4372,6 +4467,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.ContribuinteIncentivoAliM25 = Convert.ToDouble(ContribuintesIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.ValorVendaContribuinteAliM25 = Convert.ToDouble(icmsContribuinteIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDouble(comp.IcmsAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaSTContribuinte = Convert.ToDouble(vendaCfopSTContribuintesNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
                             //Não Contribuinte
@@ -4380,6 +4476,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.PercentualIcmsNContribuinte = Convert.ToDouble(comp.IcmsNContribuinte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.ValorVendaNContribIncentivo = Convert.ToDouble(icmsNContribuinteIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.NaoContribuinteIsento = Convert.ToDouble(NaoContribuiteIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaSTNContribuinte = Convert.ToDouble(vendaCfopSTNaoContribuinteNIncetivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                             //Não Contribuinte Fora do Estado
                             ViewBag.VendaNForaEstadoContribuinteIncetivo = Convert.ToDouble(naoContriForaDoEstadoIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -4387,6 +4484,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDouble(comp.IcmsNContribuinteFora.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.ValorVendaNContribForaDoEstado = Convert.ToDouble(icmsNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             ViewBag.NaoContribuinteForaDoEstadoIsento = Convert.ToDouble(NaoContribuinteForaDoEstadoIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaSTForaEstadoNContribuinte = Convert.ToDouble(vendaCfopSTNaoContriForaDoEstadoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
 
                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
@@ -5334,7 +5432,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Total De Imposto
                             ViewBag.TotalDeImposto = Convert.ToDouble(totalImposto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         }
-
                     }
 
                     totalDarSTCO += Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE);
