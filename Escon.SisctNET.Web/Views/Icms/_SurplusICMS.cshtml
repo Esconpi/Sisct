@@ -13,6 +13,9 @@
             <th style="text-align:center; border:1px solid;">
                 Base de Cálculo
             </th>
+            <th style="text-align:center; border:1px solid;">
+                Percentual (%)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +32,7 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.BaseCalc
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
@@ -42,6 +46,9 @@
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.BaseCalcContrib
+            </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.PercentualVendaContribuinte %
             </th>
         </tr>
         <tr>
@@ -57,6 +64,9 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.BaseCalcNContrib
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.PercentualVendaNContribuinte %
+            </th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
@@ -71,6 +81,9 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.BaseCalcAnexo
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.PercentualVendaAnexo %
+            </th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
@@ -83,6 +96,7 @@
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
             </th>
+            <td style="text-align:right; padding-right:1%; border:1px solid;"></td>
         </tr>
     </tbody>
 </table>
@@ -180,7 +194,18 @@ else
                             <th style="font-size:17px">=</th>
                             <td>@ViewBag.TotalExcedenteTransferencia</td>
                         </tr>
-
+                        <tr>
+                            <th>ICMS Excedente P/ Não Contribuinte</th>
+                            <td>@ViewBag.BaseCalcContrib</td>
+                            <th style="font-size:17px">-</th>
+                            <td>@ViewBag.LimiteContribuinte</td>
+                            <th style="font-size:17px">=</th>
+                            <td>@ViewBag.ExcedenteContribuinte</td>
+                            <th>x</th>
+                            <td>@ViewBag.PercentualExcedenteContribuinte</td>
+                            <th style="font-size:17px">=</th>
+                            <td>@ViewBag.TotalExcedenteContribuinte</td>
+                        </tr>
                     </tbody>
 
                 </table>
@@ -206,18 +231,6 @@ else
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>ICMS Excedente Contribuinte</th>
-                            <td>@ViewBag.LimiteContribuinte</td>
-                            <th style="font-size:17px">-</th>
-                            <td>@ViewBag.BaseCalcContrib</td>
-                            <th style="font-size:17px">=</th>
-                            <td>@ViewBag.ExcedenteContribuinte</td>
-                            <th>x</th>
-                            <td>@ViewBag.PercentualExcedenteContribuinte</td>
-                            <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalExcedenteContribuinte</td>
-                        </tr>
                         <tr>
                             <th>Venda Conforme Anexo</th>
                             <td>@ViewBag.LimiteAnexo</td>

@@ -73,6 +73,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Cep = establishment.Cep;
                                         company.Uf = establishment.Uf;
                                         company.City = establishment.City;
+                                        company.Phone = establishment.Phone;
                                         companies.Add(company);
                                     }
                                 }
@@ -98,7 +99,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.District = establishment.District;
                                         company.Cep = establishment.Cep;
                                         company.Uf = establishment.Uf;
-                                        company.City = establishment.City; 
+                                        company.City = establishment.City;
+                                        company.Phone = establishment.Phone;
                                         companies.Add(company);
                                     }
                                 }
@@ -159,6 +161,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 establishment.District = reader["Bairro"].ToString();
                                 establishment.Cep = reader["CEP"].ToString();
                                 establishment.Uf = reader["MUN_UFD_Sigla"].ToString();
+                                establishment.Phone = "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
                                 establishment.City = GetetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString);
                                 establishments.Add(establishment);
                             }

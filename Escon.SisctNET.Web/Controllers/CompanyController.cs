@@ -101,6 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Cep = emp.Cep;
                         company.Uf = emp.Uf;
                         company.City = emp.City;
+                        company.Phone = emp.Phone;
                         company.Updated = DateTime.Now;
                         updateCompany.Add(company);
                         //_service.Update(company, GetLog(OccorenceLog.Update));
@@ -246,6 +247,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Cep = entity.Cep;
                 rst.Uf = entity.Uf;
                 rst.City = entity.City;
+                rst.Phone = entity.Phone;
                 rst.Updated = DateTime.Now;
 
                 var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));

@@ -25,6 +25,22 @@ else if (ViewBag.Type == "resumoporcfop")
 else if (ViewBag.Type == "suspensao")
 {
     <div>
-        <strong>Suspensão: </strong> @ViewBag.Inicio à @ViewBag.Fim
+        <strong>Suspensão: </strong> <br />
+        @foreach(var p in ViewBag.Periodos)
+        {
+            <p>@p[1] à @p[2]</p>
+        }
+    </div>
+}
+else if (ViewBag.Type == "anexoAutoPecas")
+{
+    <div>
+        <strong> ANEXO CCCXVI</strong>
+    </div>
+}
+else if (ViewBag.Type == "anexoMedicamento")
+{
+    <div>
+        <strong> ANEXO CLIX</strong>
     </div>
 }

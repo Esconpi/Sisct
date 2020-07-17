@@ -138,6 +138,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Cidade")]
         public string City { get; set; }
 
+        [Display(Name = "Telefone")]
+        public string Phone { get; set; }
+
         [Display(Name = "Seção")]
         [ForeignKey("Section")]
         public int? SectionId { get; set; }

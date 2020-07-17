@@ -71,7 +71,7 @@
 
                             @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
                         }
-                        
+
                     }
 
                 }
@@ -82,6 +82,18 @@
                 else if (ViewBag.Type == "suspensao")
                 {
                     @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "anexoAutoPecas")
+                {
+                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                    @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "anexoMedicamento")
+                {
+                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                    @await Html.PartialAsync("_AttachmentMedicine", new ViewDataDictionary(ViewData))
                 }
 
             </div>
