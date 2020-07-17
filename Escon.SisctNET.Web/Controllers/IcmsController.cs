@@ -617,28 +617,76 @@ namespace Escon.SisctNET.Web.Controllers
                     // Transferência Entrada
                     for (int i = entryNotes.Count - 1; i >= 0; i--)
                     {
-                        if (!entryNotes[i][3]["CNPJ"].Equals(comp.Document) && !entryNotes[i][2]["CNPJ"].Equals(comp.Document))
+                        if (!entryNotes[i][3]["CNPJ"].Equals(comp.Document))
                         {
                             entryNotes.RemoveAt(i);
                             continue;
                         }
-                        else
+
+                        bool cfop = false;
+
+                        for (int j = 0; j < entryNotes[i].Count; j++)
                         {
-                            if (cfopsTransf.Contains(entryNotes[i][4]["CFOP"]))
+                            if (entryNotes[i][j].ContainsKey("CFOP"))
                             {
-                                if (cfopsTransf.Contains(entryNotes[i][4]["CFOP"]) && entryNotes[i][1]["idDest"].Equals("2"))
+                                cfop = false;
+                                if (cfopsTransf.Contains(entryNotes[i][j]["CFOP"]))
                                 {
-                                    totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][entryNotes[i].Count - 1]["vNF"]);
+                                    cfop = true;
                                 }
-                                totalEntradas += Convert.ToDecimal(entryNotes[i][entryNotes[i].Count - 1]["vNF"]);
+
+                            }
+                            if (cfop == true)
+                            {
+                                if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vProd"))
+                                {
+                                    if (entryNotes[i][1]["idDest"].Equals("2"))
+                                    {
+                                        totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                    }
+                                    totalEntradas += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                }
+                                if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vFrete"))
+                                {
+                                    if (entryNotes[i][1]["idDest"].Equals("2"))
+                                    {
+                                        totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                    }
+                                    totalEntradas += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                }
+                                if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vDesc"))
+                                {
+                                    if (entryNotes[i][1]["idDest"].Equals("2"))
+                                    {
+                                        totalTranferenciaInter -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                    }
+                                    totalEntradas -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                }
+                                if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vOutro"))
+                                {
+                                    if (entryNotes[i][1]["idDest"].Equals("2"))
+                                    {
+                                        totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                    }
+                                    totalEntradas += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                }
+                                if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vSeg"))
+                                {
+                                    if (entryNotes[i][1]["idDest"].Equals("2"))
+                                    {
+                                        totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                    }
+                                    totalEntradas += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                }
                             }
                         }
+
                     }
 
                     // Vendas 
                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {
-                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i].Count <= 5)
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             exitNotes.RemoveAt(i);
                             continue;
@@ -921,7 +969,7 @@ namespace Escon.SisctNET.Web.Controllers
                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {
 
-                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i].Count <= 5)
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             exitNotes.RemoveAt(i);
                             continue;
@@ -1043,6 +1091,12 @@ namespace Escon.SisctNET.Web.Controllers
                     // Devolução Saida
                     for (int i = 0; i < exitNotes.Count(); i++)
                     {
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            exitNotes.RemoveAt(i);
+                            continue;
+                        }
+
                         bool existe = false, status = false, cfop = false;
 
                         if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("IE") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][1]["mod"].Equals("55"))
@@ -1192,6 +1246,12 @@ namespace Escon.SisctNET.Web.Controllers
                     // Devolução Entrada
                     for (int i = 0; i < entryNotes.Count(); i++)
                     {
+                        if (!entryNotes[i][3]["CNPJ"].Equals(comp.Document))
+                        {
+                            entryNotes.RemoveAt(i);
+                            continue;
+                        }
+
                         bool existe = false;
 
                         if (entryNotes[i][3].ContainsKey("CNPJ") && entryNotes[i][3].ContainsKey("IE") && entryNotes[i][3].ContainsKey("indIEDest") && entryNotes[i][1]["mod"].Equals("55"))
@@ -1344,12 +1404,10 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseCalcContribuinte = totalContribuinte - totalDevoContribuinte;
                     decimal totalDevoNContribuinte = totalDevo - totalDevoContribuinte;
                     decimal baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte;
-
                     
-
                     totalSaida = baseCalc + totalTranferencias;
                     totalVendas = totalVendas + totalTranferencias;
-                    decimal limiteNContribuinte = (baseCalc * (100 - Convert.ToDecimal(comp.VendaContribuinte))) / 100,
+                    decimal limiteNContribuinte = (baseCalc * (Convert.ToDecimal(comp.VendaCpf))) / 100,
                         limiteNcm = (baseCalc * Convert.ToDecimal(comp.VendaAnexo)) / 100,
                         limiteGrupo = (totalSaida * Convert.ToDecimal(comp.VendaMGrupo)) / 100,
                         limiteTransferencia = (totalEntradas * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
@@ -1401,7 +1459,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (baseCalcNContribuinte > limiteNContribuinte)
                     {
                         excedenteContribuinte = baseCalcNContribuinte - limiteNContribuinte;
-                        impostoContribuinte = (excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100;
+                        impostoContribuinte = (excedenteContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100;
                     }
 
                     // Transferência inter
@@ -1889,6 +1947,12 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
+                                if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                                {
+                                    exitNotes.RemoveAt(i);
+                                    continue;
+                                }
+
                                 int posCliente = -1;
 
                                 if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
@@ -2490,6 +2554,11 @@ namespace Escon.SisctNET.Web.Controllers
                             // Vendas
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
+                                if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                                {
+                                    exitNotes.RemoveAt(i);
+                                    continue;
+                                }
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
@@ -3989,7 +4058,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        if (notes[i].Count <= 5)
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             notes.RemoveAt(i);
                             continue;
@@ -4107,13 +4176,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = entryNotes.Count - 1; i >= 0; i--)
                     {
-                        List<string> note = new List<string>();
-                        if (entryNotes[i].Count <= 5)
+                        
+                        if (!entryNotes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             entryNotes.RemoveAt(i);
                             continue;
                         }
-
+                        List<string> note = new List<string>();
                         bool  suspenso = false,cfop = false;
 
                         if (entryNotes[i][1].ContainsKey("dhEmi"))
