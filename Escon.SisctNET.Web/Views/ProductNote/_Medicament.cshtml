@@ -1,0 +1,65 @@
+﻿<div style="border:2px solid; text-align:center;">
+    <strong>APURAÇÂO INCENTIVADA</strong>
+</div>
+<table class="table" style="border: 2px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th>
+                Imposto Normal
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Imposto Incetivado
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Base de Cálculo Funef
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Funef %
+            </th>
+            <th></th>
+            <th>
+                Taxa Funef
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                @ViewBag.ImpostoGeral
+            </th>
+            <th style="font-size:15px;">
+                -
+            </th>
+            <th>
+                @ViewBag.ImpostoIcms
+            </th>
+            <th>
+                =
+            </th>
+            <th>
+                @ViewBag.BaseFunef
+            </th>
+            <th>
+                x
+            </th>
+            <th style="text-align:center">
+                @ViewBag.Funef
+            </th>
+            <th>
+                =
+            </th>
+            <th style="text-align:center">
+                @ViewBag.TaxaFunef
+            </th>
+        </tr>
+    </tbody>
+</table>

@@ -91,7 +91,7 @@
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <br />
                 <div>
-                    <strong>Transferências Interestaduais entradas</strong>
+                    <strong>Transferências Interestaduais Entradas</strong>
                 </div>
             </div>
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -167,22 +167,22 @@
             @if (Model.AnnexId.Equals(3))
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterna" class="control-label"></label> <span>Elencadas</span>
+                    <label asp-for="IncIInterna" class="control-label"></label><br /> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna"/>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterestadual" class="control-label"></label> <span>Elencadas</span>
+                    <label asp-for="IncIInterestadual" class="control-label"></label><br /> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" />
                 </div>
             }
             else
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterna" class="control-label"></label> <span>Elencadas</span>
+                    <label asp-for="IncIInterna" class="control-label"></label> <br /> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna" disabled />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterestadual" class="control-label"></label><span>Elencadas</span>
+                    <label asp-for="IncIInterestadual" class="control-label"></label> <br /> <span>Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" disabled />
                 </div>
             }
@@ -205,22 +205,22 @@
             @if (Model.AnnexId.Equals(3))
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterna" class="control-label"></label><span style="color:red;">Deselencadas</span>
+                    <label asp-for="IncIIInterna" class="control-label"></label><br /> <span style="color:red;">Deselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna"/>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterestadual" class="control-label"></label> <span style="color:red;">Deselencadas</span>
+                    <label asp-for="IncIIInterestadual" class="control-label"></label> <br /> <span style="color:red;">Deselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual"/>
                 </div>
             }
             else
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterna" class="control-label"></label> <span style="color:red;">Daselencadas</span>
+                    <label asp-for="IncIIInterna" class="control-label"></label> <br /> <span style="color:red;">Daselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna" disabled />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterestadual" class="control-label"></label> <span style="color:red;">Daselencadas</span>
+                    <label asp-for="IncIIInterestadual" class="control-label"></label> <br /> <span style="color:red;">Daselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual" disabled />
                 </div>
             }

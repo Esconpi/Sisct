@@ -757,13 +757,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var products = _itemService.FindByProducts(notes);
 
                 products = products.Where(_ => _.Status.Equals(false)).ToList();
-                
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                if (comp.AnnexId.Equals(3))
-                {
-                    products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
-                }
+                var comp = _companyService.FindById(id, null);
 
                 ViewBag.Registro = products.Count();
                 ViewBag.Year = year;

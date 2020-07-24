@@ -36,13 +36,12 @@
                                 <th>Produto</th>
                                 <th>UF</th>
                                 <th>Dia/Mês</th>
-                                <th>Valor da Nota</th>
-                                <th>Valor dos Produtos</th>
-                                <th>Frete NFe</th>
+                                <th>V. Nota</th>
+                                <th>V. Produtos</th>
                                 <th>Frete Nº</th>
-                                <th>Frete CTe</th>
-                                <th>Valor IPI</th>
-                                <th>Base de Cálculo ICMS</th>
+                                <th>V. Frete</th>
+                                <th>IPI</th>
+                                <th>BC ICMS</th>
                                 <th>Aliq Intra(%)</th>
                                 <th>Aliq Inter(%)</th>
                                 <th>Dif</th>
@@ -59,9 +58,8 @@
                                         <td>@item.Xprod</td>
                                         <td>@item.Note.Uf</td>
                                         <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                        <td>@item.Note.Vnf</td>
-                                        <td>@item.Vprod</td>
-                                        <td>@item.Vfrete</td>
+                                        <td>@Convert.ToDecimal(item.Note.Vnf)</td>
+                                        <td>@Convert.ToDecimal(item.Vprod + item.Vseg + item.Voutro + item.Vfrete - item.Vdesc)</td>
                                         <td>@item.Note.Nct</td>
                                         <td>@item.Freterateado</td>
                                         <td>@item.Vipi</td>
@@ -121,21 +119,21 @@ else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
                                 <th>Nota</th>
                                 <th>Produto</th>
                                 <th>Dia/Mês</th>
-                                <th>Valor da Nota</th>
-                                <th>Valor dos Produtos</th>
-                                <th>Valor IPI</th>
+                                <th>V. Nota</th>
+                                <th>V. Produtos</th>
+                                <th>IPI</th>
                                 <th>Frete Nº</th>
-                                <th>Valor Frete</th>
-                                <th>Total BC</th>
+                                <th>V> Frete</th>
+                                <th>BC</th>
                                 <th>MVA(%)</th>
-                                <th>Base de Cálculo ICMS</th>
+                                <th>BC ICMS</th>
                                 @if (@ViewBag.TaxationType == 1)
                                 {
                                     <th>BCR(%)</th>
-                                    <th>Base de Cálculo Reduzida</th>
+                                    <th>BCR</th>
                                 }
                                 <th>Aliq Int(%)</th>
-                                <th>Valor imp AC</th>
+                                <th>V. imp. AC</th>
                                 <th>Nfe</th>
                                 <th>CTe</th>
                                 <th>ICMS ST NFe</th>
@@ -152,8 +150,8 @@ else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
                                         <td>@item.Nnf</td>
                                         <td>@item.Xprod</td>
                                         <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                        <td>@item.Note.Vnf</td>
-                                        <td>@item.Vprod</td>
+                                        <td>@Convert.ToDecimal(item.Note.Vnf)</td>
+                                        <td>@Convert.ToDecimal(item.Vprod + item.Vseg + item.Voutro + item.Vfrete - item.Vdesc)</td>
                                         <td>@item.Vipi</td>
                                         <td>@item.Note.Nct</td>
                                         <td>@item.Freterateado</td>

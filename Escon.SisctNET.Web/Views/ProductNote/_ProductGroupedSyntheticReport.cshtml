@@ -7,18 +7,18 @@
             <th>Nota</th>
             <th>Fornecedor</th>
             <th>Dia/Mês</th>
-            <th>Valor da Nota</th>
-            <th>Valor dos Produtos</th>
-            <th>Valor IPI</th>
+            <th>V. Nota</th>
+            <th>V. Produtos</th>
+            <th>IPI</th>
             <th>Frete Nº</th>
-            <th>Valor Frete</th>
+            <th>V. Frete</th>
             <th>Total BC</th>
-            <th>Base de Cálculo ICMS</th>
+            <th>BC ICMS</th>
             @if (@ViewBag.TaxationType == 1)
             {
-                <th>Base de Cálculo Reduzida</th>
+                <th>BCR</th>
             }
-            <th>Valor imp AC</th>
+            <th>V. Imp. AC</th>
             <th>Nfe</th>
             <th>CTe</th>
             <th>ICMS ST NFe</th>
@@ -61,13 +61,12 @@ else if (ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
             <th>Nota</th>
             <th>Fornecedor</th>
             <th>Dia/Mês</th>
-            <th>Valor da Nota</th>
-            <th>Valor dos Produtos</th>
-            <th>Frete NFe</th>
+            <th>V. Nota</th>
+            <th>V. Produtos</th>
             <th>Frete Nº</th>
-            <th>Frete CTe</th>
-            <th>Valor IPI</th>
-            <th>Base de Cálculo ICMS</th>
+            <th>V. Frete</th>
+            <th>IPI</th>
+            <th>BC ICMS</th>
             <th>ICMS Apurado</th>
             <th>ICMS ST NFe</th>
         </tr>
@@ -82,7 +81,6 @@ else if (ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
                 <td>@ViewBag.NotasTaxation[i][2]</td>
                 <td>@ViewBag.NotasTaxation[i][3]</td>
                 <td>@ViewBag.NotasTaxation[i][4]</td>
-                <td>@ViewBag.NotasTaxation[i][17]</td>
                 <td>@ViewBag.NotasTaxation[i][6]</td>
                 <td>@ViewBag.NotasTaxation[i][7]</td>
                 <td>@ViewBag.NotasTaxation[i][5]</td>

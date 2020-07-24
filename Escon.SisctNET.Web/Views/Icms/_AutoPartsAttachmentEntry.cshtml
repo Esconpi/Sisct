@@ -1,0 +1,189 @@
+﻿<div style="width:100%; padding-top:10px;">
+    <div style="border:2px solid;padding-left:1%;"><strong>2. DADOS DAS OPERAÇÕES</strong></div>
+    <table style="border:2px solid; font-size:12px;">
+        <thead>
+            <tr>
+                <th style="text-align:center;border:1px solid;" width="900px" colspan="3">
+                    OPERAÇÕES DE ENTRADAS
+                </th>
+                <th style="text-align:center;border:1px solid;" width="250px">
+                    BASE DE CÁLCULO
+                </th>
+                <th style="text-align:center;border:1px solid;" width="100px">
+                    ALÍQUOTA
+                </th>
+                <th style="text-align:center;border:1px solid;" width="200px">
+                    VALOR DO ICMS
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" rowspan="2">
+                    1 - Aquisições de mercadorias tributadas normalmente e não alcançadas pelo Regime
+                </td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" width="50px">(+)</td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" width="200px">Operações Internas</td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.ComprasInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.ComprasInternas[i][0]</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.ComprasInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:center; padding-right:10px" width="900px">@ViewBag.ComprasInternas[i][1] %</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.ComprasInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.ComprasInternas[i][2]</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">(+)</td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Interestaduais</td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.BaseCalcCompraInterestadual4</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcCompraInterestadual7</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcCompraInterestadual12</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center" width="900px">4 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">7 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">12 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.IcmsCompraInterestadual4</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsCompraInterestadual7</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsCompraInterestadual12</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" rowspan="2">
+                    3 - Devolução a Fornecedores
+                </td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">(-)</td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Internas</td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.DevoFornecedorInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.DevoFornecedorInternas[i][0]</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.DevoFornecedorInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:center; padding-right:10px" width="900px">@ViewBag.DevoFornecedorInternas[i][1] %</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @for (int i = 0; i < ViewBag.DevoFornecedorInternas.Count; i++)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.DevoFornecedorInternas[i][2]</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">(-)</td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Interestaduais</td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.BaseCalcDevoFornInterestadual4</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcDevoFornInterestadual7</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcDevoFornInterestadual12</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center" width="900px">4 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">7 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">12 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.IcmsDevoFornInterestadual4</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsDevoFornInterestadual7</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsDevoFornInterestadual12</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align:right; padding-right:1%; border:1px solid;" colspan="3">TOTAL (a)</th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">@ViewBag.BaseCalcTotalA</th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">@ViewBag.IcmsTotalA</th>
+            </tr>
+        </tbody>
+    </table>
+</div>

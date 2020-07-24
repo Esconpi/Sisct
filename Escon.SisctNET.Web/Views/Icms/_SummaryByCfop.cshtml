@@ -21,25 +21,27 @@
     <tbody>
         @for (int i = 0; i < ViewBag.Cfop.Count; i++)
         {
+            @if (Convert.ToDecimal(ViewBag.Cfop[i][2]) > 0)
+            {
+                <tr style="border:1px solid;">
+                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                        @ViewBag.Cfop[i][1]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @ViewBag.Cfop[i][2]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @ViewBag.Cfop[i][3]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @ViewBag.Cfop[i][4]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @ViewBag.Cfop[i][5]
+                    </td>
+                </tr>
 
-            <tr style="border:1px solid;">
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @ViewBag.Cfop[i][1]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][2]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][3]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][4]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][5]
-                </td>
-            </tr>
-
+            }
         }
     </tbody>
     <tbody>

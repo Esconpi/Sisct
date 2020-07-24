@@ -90,13 +90,17 @@
                 Vendas P/ mesmo grupo maior que @ViewBag.PercentualCNPJ %
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalExecedente
+                @ViewBag.TotalVendaGrupo
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.TotalDevoGrupo
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.TotalExecedente
             </th>
-            <td style="text-align:right; padding-right:1%; border:1px solid;"></td>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">
+                @ViewBag.PercentualVendaGrupo %
+            </th>
         </tr>
     </tbody>
 </table>
@@ -107,13 +111,14 @@
 }
 else
 {
+    
     <table class="table" style="font-size: 12px; border:2px solid;">
         <thead>
             <tr style="border: 1px solid;">
                 <th style="border: 1px solid; text-align:center;">CNPJ</th>
                 <th style="border: 1px solid; text-align:center;">Cliente</th>
+                <th style="border: 1px solid;">Base de Cálculo</th>
                 <th style="border: 1px solid;">Percentual</th>
-                <th style="border: 1px solid;">Valor</th>
             </tr>
         </thead>
         <tbody>
@@ -123,8 +128,9 @@ else
                 <tr>
                     <td>@item[0]</td>
                     <td>@item[1]</td>
-                    <td>@item[2]</td>
                     <td>@item[3]</td>
+                    <td>@item[2]</td>
+
                 </tr>
             }
 
@@ -180,15 +186,15 @@ else
         </tr>
         <tr>
             <th>ICMS Excedente P/ Não Contribuinte</th>
-            <td>@ViewBag.BaseCalcContrib</td>
+            <td>@ViewBag.BaseCalcNContrib</td>
             <th style="font-size:17px; text-align:center">-</th>
-            <td>@ViewBag.LimiteContribuinte</td>
+            <td>@ViewBag.LimiteNContribuinte</td>
             <th style="font-size:17px; text-align:center">=</th>
-            <td>@ViewBag.ExcedenteContribuinte</td>
-            <th style="text-align:center">x</th>
-            <td>@ViewBag.PercentualExcedenteContribuinte</td>
+            <td>@ViewBag.ExcedenteNContribuinte</td>
+            <th style="text-align: center">x</th>
+            <td>@ViewBag.PercentualExcedenteNContribuinte</td>
             <th style="font-size:17px; text-align:center">=</th>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteContribuinte</td>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteNContribuinte</td>
         </tr>
         <tr>
             <th style="width:200px;">&nbsp;</th>

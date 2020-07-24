@@ -207,7 +207,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description + r.Annex.Convenio
+                              Anexx = r.Annex.Description + " - " + r.Annex.Convenio
 
                           };
 
@@ -225,7 +225,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description + r.Annex.Convenio
+                              Anexx = r.Annex.Description + " - " + r.Annex.Convenio
 
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });

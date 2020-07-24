@@ -1,8 +1,10 @@
-﻿<div style="width:100%">
-    <table style="border:1px solid;">
+﻿
+<div style="width:100%">
+    <div style="border:2px solid;padding-left:1%;"><strong>1. IDENTIFICAÇÃO DO ESTABELECIMENTO</strong></div>
+    <table style="border:2px solid; font-size:12px;">
         <thead>
             <tr>
-                <td style="padding-left:1%;border:1px solid;" width="1000px">
+                <td style="padding-left:1%;border:1px solid;" width="1000px" colspan="3">
                     <strong>NOME EMPRESARIAL</strong> <br />
                     @ViewBag.Company.SocialName
                 </td>
@@ -12,7 +14,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="padding-left:1%;border:1px solid;">
+                <td style="padding-left:1%;border:1px solid;" colspan="3">
                     <strong>ENDEREÇO</strong> <br />
                     @ViewBag.Company.Logradouro @ViewBag.Company.Number @ViewBag.Company.Complement
                 </td>
@@ -22,30 +24,24 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td style="padding-left:1%;border:1px solid;" width="700px">
-                                <strong>BAIRRO OU DISTRITO</strong> <br />
-                                @ViewBag.Company.District
-                            </td>
-                            <td style="padding-left:1%;border:1px solid;" width="500px">
-                                <strong>MUNICÍPIO</strong> <br />
-                                @ViewBag.Company.City
-                            </td>
-                            <td style="padding-left:1%;border:1px solid;" width="100px">
-                                <strong>CEP</strong> <br />
-                                @ViewBag.Company.Cep
-                            </td>
-                        </tr>
-                    </table>
-
+                <td style="padding-left:1%;border:1px solid;" width="700px">
+                    <strong>BAIRRO OU DISTRITO</strong> <br />
+                    @ViewBag.Company.District
+                </td>
+                <td style="padding-left:1%;border:1px solid;" width="500px">
+                    <strong>MUNICÍPIO</strong> <br />
+                    @ViewBag.Company.City
+                </td>
+                <td style="padding-left:1%;border:1px solid;" width="100px">
+                    <strong>CEP</strong> <br />
+                    @ViewBag.Company.Cep
                 </td>
                 <td style="padding-left:1%;border:1px solid;">
                     <strong>FONE</strong> <br />
                     @ViewBag.Company.Phone
                 </td>
             </tr>
+
 
         </thead>
     </table>

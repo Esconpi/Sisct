@@ -129,26 +129,9 @@
                                         <td></td>
                                     }
 
-                                    @if (ViewBag.Incentivo == true && ViewBag.Anexo == 3)
-                                    {
-                                        @if(item.Incentivo == true)
-                                        {
-                                            <td style="color:blue">Tributado na Saída</td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                            </td>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <td>
-                                            @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                        </td>
-                                    }
-
+                                    <td>
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                    </td>
                                 </tr>
                             }
                             else
@@ -194,27 +177,9 @@
                                         <td></td>
                                     }
 
-                                    @if (ViewBag.Incentivo == true && ViewBag.Anexo == 3)
-                                    {
-                                        @if(item.Incentivo == true)
-                                        {
-                                            <td style="color:blue">Tributado na Saída</td>
-                                        }
-                                        else
-                                        {
-                                             <td>
-                                                @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                            </td>
-                                        }
-                                    }
-                                    else
-                                    {
-                                         <td>
-                                            @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                        </td>
-                                    }
-                                   
-
+                                    <td>
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                    </td>
                                 </tr>
                             }
 

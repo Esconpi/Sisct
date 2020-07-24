@@ -51,7 +51,7 @@
 
         @if (ViewBag.type == 6 || ViewBag.type == 9 || ViewBag.type == 10)
         {
-            <div style="width:100%; overflow:hidden; padding:20px;">
+            <div style="width:100%; overflow:hidden; padding:10px;">
                 @if (ViewBag.type == 6)
                 {
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
@@ -104,13 +104,15 @@
 
         }
 
-        @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.TypeIncetive == true && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
+        @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.Anexo != null && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
-            <div style="width:100%; overflow:hidden; padding:20px;">
+            <div style="width:100%; overflow:hidden; padding:10px;">
                 @if (ViewBag.TaxationType == 1 && ViewBag.type != 8 && ViewBag.type != 7)
                 {
-                    @await Html.PartialAsync("_GeneralReportIncentiveEntry", new ViewDataDictionary(ViewData))
-                    @await Html.PartialAsync("_GeneralSummaryTaxIncentiveEntry", new ViewDataDictionary(ViewData))
+
+                     @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
+                     @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
+                    
                 }
                 else
                 {

@@ -162,7 +162,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 establishment.Cep = reader["CEP"].ToString();
                                 establishment.Uf = reader["MUN_UFD_Sigla"].ToString();
                                 establishment.Phone = "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
-                                establishment.City = GetetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString);
+                                establishment.City = GetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString);
                                 establishments.Add(establishment);
                             }
                         }
@@ -230,7 +230,7 @@ namespace Escon.SisctNET.Fortes.Implementation
          * CodMunDIMESC, CodMunGIARS, CodMunDIEFES, CodMunMarituba, CodMunGoiania, CodMunDOTES
          */
 
-        public string GetetCity(string codeMun, string uf, string connectionString)
+        public string GetCity(string codeMun, string uf, string connectionString)
         {
             string city = "";
             try
