@@ -4,20 +4,17 @@ using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Escon.SisctNET.Web.Controllers
 {
     public class IcmsController : ControllerBaseSisctNET
     {
-
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
         private readonly ICompanyCfopService _companyCfopService;
@@ -30,6 +27,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ISuspensionService _suspensionService;
         private readonly IProductNoteService _itemService;
         private readonly INotificationService _notificationService;
+        private readonly INoteService _noteService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -45,6 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             IProductNoteService itemService,
             INotificationService notificationService,
             IHostingEnvironment env,
+            INoteService noteService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "NoteExit")
         {
@@ -60,6 +59,7 @@ namespace Escon.SisctNET.Web.Controllers
             _itemService = itemService;
             _notificationService = notificationService;
             _appEnvironment = env;
+            _noteService = noteService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -4361,6 +4361,38 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 
+                    var notes = _noteService.FindByNotes(id, year, month);
+                    var products = _itemService.FindByProductsType(notes, 2);
+
+                    decimal totalIcmsFreteIE = 0;
+
+                    foreach (var prod in products)
+                    {
+                        if (!prod.Note.Iest.Equals(""))
+                        {
+                            if (Convert.ToDecimal(prod.Diferencial) > 0)
+                            {
+                                totalIcmsFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            }
+                        }
+                    }
+
+                    decimal totalIcmsSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsApurado).Sum());
+                    decimal icmsStnoteSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum());
+
+                    decimal valorNfe1NormalSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2);
+                    decimal valorNfe1RetSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2);
+                    decimal valorNfe2NormalSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2);
+                    decimal valorNfe2RetSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
+                    icmsStnoteSIE += valorNfe1NormalSIE + valorNfe1RetSIE + valorNfe2NormalSIE + valorNfe2RetSIE;
+
+                    decimal gnrePagaSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.Note.GnreAp).Distinct().Sum()), 2);
+                    decimal gnreNPagaSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.Note.GnreNAp).Distinct().Sum()), 2);
+                    decimal icmsApSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.Note.IcmsAp).Distinct().Sum());
+
+                    decimal valorDiefSIE = Convert.ToDecimal((totalIcmsSIE + totalIcmsFreteIE) - icmsStnoteSIE - gnrePagaSIE + gnreNPagaSIE);
+                    decimal icmsAPAPagar = valorDiefSIE - icmsApSIE;
+
                     exitNotes = import.Nfe(directoryNfeExit);
                     entryNotes = import.Nfe(directoryNfeEntrada);
 
@@ -4422,7 +4454,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && exitNotes[i][1]["finNFe"] != "4")
+                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && exitNotes[i][1]["finNFe"] != "4" && ncm == false)
                             {
                                 if (exitNotes[i][1]["idDest"].Equals("1"))
                                 {
@@ -4629,7 +4661,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        bool ncm = false, cfop = false;
+                        bool ncm = false;
 
                         for (int k = 0; k < entryNotes[i].Count(); k++)
                         {
@@ -4649,7 +4681,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            if (entryNotes[i][k].ContainsKey("pICMS") && entryNotes[i][k].ContainsKey("CST") && entryNotes[i][k].ContainsKey("orig") && entryNotes[i][1]["finNFe"] != "4")
+                            if (entryNotes[i][k].ContainsKey("pICMS") && entryNotes[i][k].ContainsKey("CST") && entryNotes[i][k].ContainsKey("orig") && entryNotes[i][1]["finNFe"] != "4" && ncm == false)
                             {
                                 if (entryNotes[i][1]["idDest"].Equals("1"))
                                 {
@@ -4858,12 +4890,25 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalcTotalB = Convert.ToDouble(baseCalcTotalB.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.IcmsTotalB = Convert.ToDouble(icmsTotalB.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+
+                    // CRÉDITO DA ANTECIPAÇÃO PARCIAL PAGA
+                    ViewBag.APPagar = Convert.ToDouble(icmsAPAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    // Saldo Devedor
+                    decimal saldoDevedor = icmsTotalB - icmsTotalA - icmsAPAPagar;
+                    ViewBag.SaldoDevedor = Convert.ToDouble(saldoDevedor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    // Saldo Credor
+                    decimal saldoCredor = icmsTotalA + icmsAPAPagar - icmsTotalB;
+                    ViewBag.SaldoCredor = Convert.ToDouble(saldoCredor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                 }
                 else if (type.Equals("anexoMedicamento"))
                 {
 
                 }
-                    return View();
+
+                return View();
             }
             catch (Exception ex)
             {
