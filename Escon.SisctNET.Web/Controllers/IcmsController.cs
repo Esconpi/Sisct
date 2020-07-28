@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
+using Escon.SisctNET.Web.Period;
 using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IProductNoteService _itemService;
         private readonly INotificationService _notificationService;
         private readonly INoteService _noteService;
+        private readonly ICreditBalanceService _creditBalanceService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -44,6 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
             INotificationService notificationService,
             IHostingEnvironment env,
             INoteService noteService,
+            ICreditBalanceService creditBalanceService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "NoteExit")
         {
@@ -60,6 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
             _notificationService = notificationService;
             _appEnvironment = env;
             _noteService = noteService;
+            _creditBalanceService = creditBalanceService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -87,6 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
                 var import = new Import(_companyCfopService);
+                var mes = new Month();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -4360,7 +4365,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
-
+                    
                     var notes = _noteService.FindByNotes(id, year, month);
                     var products = _itemService.FindByProductsType(notes, 2);
 
@@ -4425,7 +4430,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        bool ncm = false, cfop = false;
+                        bool ncm = false;
 
                         for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
@@ -4445,16 +4450,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            if (exitNotes[i][k].ContainsKey("CFOP"))
-                            {
-                                cfop = false;
-                                if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]))
-                                {
-                                    cfop = true;
-                                }
-                            }
-
-                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && exitNotes[i][1]["finNFe"] != "4" && ncm == false)
+                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false)
                             {
                                 if (exitNotes[i][1]["idDest"].Equals("1"))
                                 {
@@ -4516,21 +4512,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                         string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "";
 
-                        bool cfop = false;
-
                         for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
-
-                            if (exitNotes[i][k].ContainsKey("CFOP"))
-                            {
-                                cfop = false;
-                                if (cfopsDevo.Contains(exitNotes[i][k]["CFOP"]))
-                                {
-                                    cfop = true;
-                                }
-                            }
-
-                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && CNPJ.Equals(comp.Document))
+                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && CNPJ.Equals(comp.Document))
                             {
                                 if (exitNotes[i][1]["idDest"].Equals("1"))
                                 {
@@ -4587,21 +4571,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                         string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "";
 
-                        bool cfop = false;
-
                         for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
-
-                            if (exitNotes[i][k].ContainsKey("CFOP"))
-                            {
-                                cfop = false;
-                                if (cfopsDevo.Contains(exitNotes[i][k]["CFOP"]))
-                                {
-                                    cfop = true;
-                                }
-                            }
-
-                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && !CNPJ.Equals(comp.Document))
+                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !CNPJ.Equals(comp.Document))
                             {
                                 if (exitNotes[i][1]["idDest"].Equals("1"))
                                 {
@@ -4788,6 +4760,24 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
+                    var mesAtual = mes.NumberMonth(month);
+                    var mesAnterior = mes.NameMonth(mesAtual);
+                    decimal saldoCredorAnterior = 0;
+
+                    string ano = year;
+
+                    if (mesAtual.Equals(1))
+                    {
+                        ano = (Convert.ToInt32(year) - 1).ToString();
+                    }
+
+                    var creditLast = _creditBalanceService.FindByLastMonth(id, mesAnterior, ano);
+
+                    if (creditLast != null)
+                    {
+                        saldoCredorAnterior = Convert.ToDecimal(creditLast.Saldo);
+                    }
+
                     System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                     //  VENDAS
@@ -4890,18 +4880,40 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalcTotalB = Convert.ToDouble(baseCalcTotalB.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.IcmsTotalB = Convert.ToDouble(icmsTotalB.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                    // Saldo Credor Mes Anterior
+                    ViewBag.SaldoCredorAnterior = Convert.ToDouble(saldoCredorAnterior.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // CRÉDITO DA ANTECIPAÇÃO PARCIAL PAGA
                     ViewBag.APPagar = Convert.ToDouble(icmsAPAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Saldo Devedor
-                    decimal saldoDevedor = icmsTotalB - icmsTotalA - icmsAPAPagar;
+                    decimal saldoDevedor = icmsTotalB - icmsTotalA - icmsAPAPagar - saldoCredorAnterior;
                     ViewBag.SaldoDevedor = Convert.ToDouble(saldoDevedor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     // Saldo Credor
-                    decimal saldoCredor = icmsTotalA + icmsAPAPagar - icmsTotalB;
+                    decimal saldoCredor = icmsTotalA + icmsAPAPagar + saldoCredorAnterior - icmsTotalB;
                     ViewBag.SaldoCredor = Convert.ToDouble(saldoCredor.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
+                    var creditCurrent = _creditBalanceService.FindByLastMonth(id, month, year);
+
+                    if (creditCurrent == null)
+                    {
+                        Model.CreditBalance credit = new Model.CreditBalance();
+                        credit.CompanyId = id;
+                        credit.MesRef = month;
+                        credit.AnoRef = year;
+                        credit.Saldo = saldoCredor;
+                        credit.Created = DateTime.Now;
+                        credit.Updated = credit.Created;
+                        _creditBalanceService.Create(credit, GetLog(Model.OccorenceLog.Create));
+                    }
+                    else
+                    {
+                        creditCurrent.Updated = DateTime.Now;
+                        creditCurrent.Saldo = saldoCredor;
+                        _creditBalanceService.Update(creditCurrent,GetLog(Model.OccorenceLog.Update));
+                    }
+                    
                 }
                 else if (type.Equals("anexoMedicamento"))
                 {

@@ -1,0 +1,36 @@
+﻿<div style="width:100%; padding-top:10px;">
+    @if (ViewBag.Type == "anexoAutoPecas")
+    {
+        <div style="text-align:center;">
+            <strong>
+                *ANEXO CCCXVI <br />
+                *ANEXO CCCXVI acrescentado pelo Dec. 17.292, de 04/08/17, art 2°,XII.
+            </strong>
+        </div>
+        <br />
+        <div style="text-align:center;">
+            <strong>
+                DEMONSTRATIVO DA BASE DE CÁLCULO E APURAÇÃO DO ICMS (Art.813-M, §6°) <br />
+            </strong>
+            MÊS/ANO DE REFERÊNCIA: @ViewBag.Month/@ViewBag.Year
+        </div>
+
+    }
+    else if (ViewBag.Type == "anexoMedicamento")
+    {
+        <div style="text-align:center;">
+            <strong>
+                *ANEXO CLIX
+            </strong>
+            (Art. 784, do RICMS)
+            <br />
+            <strong>*ANEXO CLIX com redação dada pelo Dec. 14.154, de 23/03/2010, art. 2°</strong>
+        </div>
+        <div style="text-align:center;">
+            <strong>
+                DEMONSTRATIVO DE APROPRIAÇÃO DE CRÉDITO PRESUMIDO<br />
+            </strong>
+            MÊS/ANO DE REFERÊNCIA: @ViewBag.Month/@ViewBag.Year
+        </div>
+    }
+</div>

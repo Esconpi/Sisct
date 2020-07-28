@@ -1,8 +1,5 @@
 ﻿using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Repository.Implementation
 {

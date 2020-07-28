@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("notification")]
-    public class Notification : EntityBase
+    [Table("creditBalance")]
+    public class CreditBalance : EntityBase
     {
         public ILazyLoader LazyLoader { get; set; }
 
@@ -20,16 +20,12 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
-        [Display(Name = "Mês")]
+        public decimal Saldo { get; set; }
+
+        [Display(Name = "Mes")]
         public string MesRef { get; set; }
 
         [Display(Name = "Ano")]
         public string AnoRef { get; set; }
-
-        [Display(Name = "Percentual")]
-        public decimal Percentual { get; set; }
-
-        [Display(Name = "Descriçâo")]
-        public string Description { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-﻿
-<div style="width:100%">
+﻿@await Html.PartialAsync("_Header", new ViewDataDictionary(ViewData))
+
+<div style="width:100%; padding-top:10px;">
     <div style="border:2px solid;padding-left:1%;"><strong>1. IDENTIFICAÇÃO DO ESTABELECIMENTO</strong></div>
     <table style="border:2px solid; font-size:12px;">
         <thead>
@@ -16,7 +17,7 @@
             <tr>
                 <td style="padding-left:1%;border:1px solid;" colspan="3">
                     <strong>ENDEREÇO</strong> <br />
-                    @ViewBag.Company.Logradouro @ViewBag.Company.Number @ViewBag.Company.Complement
+                    @ViewBag.Company.Logradouro
                 </td>
                 <td style="padding-left:1%;border:1px solid;">
                     <strong>CNPJ</strong> <br />

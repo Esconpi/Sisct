@@ -81,5 +81,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Notification> Notifications { get; set; }
 
+        public DbSet<CreditBalance> CreditBalances { get; set; }
+
     }
 }

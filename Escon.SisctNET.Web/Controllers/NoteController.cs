@@ -102,8 +102,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> notas = new  List<Note>();
 
-                notes = import.Nfe(directoryNfe, directotyCte);          
+                notes = import.Nfe(directoryNfe, directotyCte);
 
+                
+                Dictionary<string, string> det = new Dictionary<string, string>();
+                
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
                     if (notes[i][1]["finNFe"] == "4")
@@ -121,13 +124,9 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                         }
                     }
-                }
-                
-                Dictionary<string, string> det = new Dictionary<string, string>();
-                
-                for (int i = 0; i < notes.Count; i++)
-                {
+
                     var notaImport = _service.FindByNote(notes[i][0]["chave"]);
+
                     if (notaImport == null)
                     {
                         int lastposicao = notes[i].Count;
@@ -349,7 +348,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nItem = det.ContainsKey("nItem") ? det["nItem"] : nItem;
 
                             var productImport = _itemService.FindByProduct(noteId, nItem);
-
                             if (productImport == null)
                             {
 
