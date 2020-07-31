@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,7 @@ namespace Escon.SisctNET.Repository
         List<Model.ProductIncentivo> FindByAllProducts(int company, Model.Log log = null);
 
         List<Model.ProductIncentivo> FindByDate(int company, DateTime date, Model.Log log = null);
+
+        List<Model.ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos,int company, DateTime date, Model.Log log = null);
     }
 }

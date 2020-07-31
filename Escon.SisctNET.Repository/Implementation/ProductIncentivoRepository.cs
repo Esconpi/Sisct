@@ -50,6 +50,31 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
+        public List<ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, int company, DateTime date, Log log = null)
+        {
+            List<ProductIncentivo> products = new List<ProductIncentivo>();
+
+            var productsIncentivo = productIncentivos.Where(_ => _.CompanyId.Equals(company));
+
+            foreach (var prod in productsIncentivo)
+            {
+                var dataInicial = DateTime.Compare(Convert.ToDateTime(prod.DateStart), date);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), date);
+
+                if (dataInicial <= 0 && prod.DateEnd == null)
+                {
+                    products.Add(prod);
+                    continue;
+                }
+                else if (dataInicial <= 0 && dataFinal > 0)
+                {
+                    products.Add(prod);
+                    continue;
+                }
+            }
+            return products;
+        }
+
         public ProductIncentivo FindByProduct(int company, string code, string ncm, string cest, Log log)
         {
             var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(company) &&  _.Code.Equals(code) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).FirstOrDefault();

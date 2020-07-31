@@ -100,7 +100,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var suspensionsAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession())).ToList();
+            var suspensionsAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession())).OrderByDescending(_ => _.Id).ToList();
 
 
             var suspension = from r in suspensionsAll

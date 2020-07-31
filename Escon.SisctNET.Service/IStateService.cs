@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,7 @@ namespace Escon.SisctNET.Service
         void Create(List<Model.State> states, Model.Log log = null);
 
         Model.State FindByUf(string uf, Model.Log log = null);
+
+        Model.State FindByUf(List<State> states, DateTime data, string uf, Model.Log log = null);
     }
 }

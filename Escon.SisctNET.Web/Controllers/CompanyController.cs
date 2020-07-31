@@ -348,6 +348,9 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IncIInterestadual = entity.IncIInterestadual;
                 rst.IncIIInterna = entity.IncIIInterna;
                 rst.IncIIInterestadual = entity.IncIIInterestadual;
+                rst.VendaArt781 = entity.VendaArt781;
+                rst.VendaArt781Excedente = entity.VendaArt781Excedente;
+                rst.Updated = DateTime.Now;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");

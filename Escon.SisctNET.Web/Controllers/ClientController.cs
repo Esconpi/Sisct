@@ -107,7 +107,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = import.Client(directoryNfeSaida);                
+                dets = import.Client(directoryNfeSaida);
+
+                int tipoCliente = 1;
+
+                if(comp.AnnexId.Equals(3)){
+                    tipoCliente = 2;
+                }
 
                 foreach (var det in dets)
                 {
@@ -131,7 +137,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     Document = CNPJ,
                                     CnpjRaiz = CNPJRaiz,
                                     Ie = IE,
-                                    TypeClientId = 1,
+                                    TypeClientId = tipoCliente,
                                     Created = DateTime.Now,
                                     Updated = DateTime.Now
 

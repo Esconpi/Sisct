@@ -6,6 +6,9 @@ namespace Escon.SisctNET.Repository
     public interface INcmConvenioRepository : IRepository<Model.NcmConvenio>
     {
         List<string> FindByAnnex(int annexId, Log log = null);
+
         List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null);
+
+        bool FindByNcmAnnex(List<NcmConvenio> ncms,int Annex, string ncm, Model.Log log = null);
     }
 }

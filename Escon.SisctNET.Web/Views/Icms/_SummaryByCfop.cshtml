@@ -5,6 +5,9 @@
                 N° Nota
             </th>
             <th style="border:1px solid; text-align:center;" width="220px">
+                Total Nota
+            </th>
+            <th style="border:1px solid; text-align:center;" width="220px">
                 Valor Contábil
             </th>
             <th style="border:1px solid; text-align:center;" width="220px">
@@ -28,6 +31,9 @@
                         @ViewBag.Cfop[i][1]
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @ViewBag.Cfop[i][6]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
                         @ViewBag.Cfop[i][2]
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
@@ -48,6 +54,9 @@
         <tr style="border:1px solid;">
             <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
                 <b>Total</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@ViewBag.TotalNota</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
                 <b>@ViewBag.ValorContabil</b>

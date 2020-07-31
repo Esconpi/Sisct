@@ -116,8 +116,7 @@
             </div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <br />
-                <strong>Venda p/ Contribuinte</strong> <br />
-                <span style="font-size:12px; color:darkblue;">OBS. Contribuintes credenciados no  Art. 781</span>
+                <strong>Venda p/ Contribuinte</strong>
             </div>
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
                 <label class="control-label">Limite %</label>
@@ -205,11 +204,11 @@
             @if (Model.AnnexId.Equals(3))
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterna" class="control-label"></label><br /> <span style="color:red;">Deselencadas</span>
+                    <label asp-for="IncIIInterna" class="control-label"></label><br /> <span style="color:red;">Daselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna"/>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIIInterestadual" class="control-label"></label> <br /> <span style="color:red;">Deselencadas</span>
+                    <label asp-for="IncIIInterestadual" class="control-label"></label> <br /> <span style="color:red;">Daselencadas</span>
                     <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual"/>
                 </div>
             }
@@ -237,6 +236,38 @@
                 <label class="control-label">Excedente %</label>
                 <input class="form-control money" value="@Model.VendaAnexoExcedente" name="vendaAnexoExcedente" />
             </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <br />
+                <strong>Venda p/ Cliente Credenciado no Art. 781</strong>
+            </div>
+            @if (Model.AnnexId.Equals(3))
+            {
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label">Limite %</label>
+                    <input class="form-control money" value="@Model.VendaArt781" name="VendaArt781" id="VendaArt781" />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label">Excedente %</label>
+                    <input class="form-control money" value="@Model.VendaArt781Excedente" name="VendaArt781Excedente" id="VendaArt781Excedente" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label">Limite %</label>
+                    <input class="form-control money" value="@Model.VendaArt781" name="VendaArt781" disabled />
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label class="control-label">Excedente %</label>
+                    <input class="form-control money" value="@Model.VendaArt781Excedente" name="VendaArt781Excedente" disabled />
+                </div>
+            }
         </div>
 
         <div class="form-group col-lg-12 col-md-12 col-xs-12">

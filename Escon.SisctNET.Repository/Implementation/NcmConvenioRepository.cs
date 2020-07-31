@@ -28,5 +28,31 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return result;
         }
+
+        public bool FindByNcmAnnex(List<NcmConvenio> ncms, int Annex, string ncm, Log log = null)
+        {
+            var ncmsAll = ncms.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
+            bool NcmIncentivo = false;
+            foreach (var n in ncmsAll)
+            {
+                int contaChar = n.Length;
+                string substring = "";
+                if (contaChar < 8)
+                {
+                    substring = ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = ncm;
+                }
+
+                if (n.Equals(substring) && !contaChar.Equals(0))
+                {
+                    NcmIncentivo = true;
+                    break;
+                }
+            }
+            return NcmIncentivo;
+        }
     }
 }

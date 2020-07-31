@@ -21,6 +21,9 @@
                 <thead>
                     <tr>
                         <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.MesRef)
                         </th>
                         <th>
@@ -70,6 +73,7 @@
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
+                    { "data": "description" },
                     { "data": "mes" },
                     { "data": "ano" },
                     { "data": "percentual" }

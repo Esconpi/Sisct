@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Taxation;
@@ -70,6 +69,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
+                    List<TaxationNcm> ncmsMonofasico = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
                     List<string> codeProdNormal = new List<string>();
                     List<List<string>> resumoNcm = new List<List<string>>();
@@ -77,13 +77,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmsAll = _ncmService.FindAll(null);
 
-                    notesVenda = import.NfeExit(directoryNfeExit, comp.Id, Convert.ToInt32(comp.CountingTypeId));
+                    if (comp.CountingTypeId.Equals(1))
+                    {
+                        ncmsMonofasico = _service.FindAll(null).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
+                    }
+                    else
+                    {
+                        ncmsMonofasico = _service.FindAll(null).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                    }
+
+                    //notesVenda = import.NfeExit(directoryNfeExit, comp.Id, Convert.ToInt32(comp.CountingTypeId));
+                    notesVenda = import.Nfe(directoryNfeExit);
 
                     decimal valorProduto = 0, valorPis = 0, valorCofins = 0; 
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
-                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
+                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i][1]["finNFe"] == "4")
                         {
                             notesVenda.RemoveAt(i);
                             continue;
@@ -93,11 +103,11 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (comp.CountingTypeId.Equals(1))
                             {
-                                ncmsTaxation = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
                             }
                             else
                             {
-                                ncmsTaxation = _service.FindAllInDate(Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
                             }
                             codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
                             codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.CodeProduct).ToList();
@@ -120,6 +130,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             pos = k;
                                         }
                                     }
+
                                     if (pos < 0)
                                     {
                                         var nn = ncmsAll.Where(_ => _.Code.Equals(notesVenda[i][j]["NCM"])).FirstOrDefault();
@@ -133,6 +144,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncms.Add(Convert.ToInt32(nn.Code));
                                         pos = resumoNcm.Count() - 1;
                                     }
+
                                     if(pos >= 0)
                                     {
                                         if (notesVenda[i][j].ContainsKey("vProd"))
@@ -174,28 +186,22 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else
                                 {
-                                    throw new Exception("Há Ncm não Importado");
+                                    throw new Exception("Há Ncm não Tributado");
                                 }
 
                             }
 
 
-                            if (notesVenda[i][j].ContainsKey("pPIS") && notesVenda[i][j].ContainsKey("CST"))
+                            if (notesVenda[i][j].ContainsKey("pPIS") && notesVenda[i][j].ContainsKey("CST") && pos >= 0)
                             {
-                                if(pos >= 0)
-                                {
-                                    resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + ((Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
-                                    valorPis += (Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
-                                }
+                                resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + ((Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
+                                valorPis += (Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
                             }
 
-                            if (notesVenda[i][j].ContainsKey("pCOFINS") && notesVenda[i][j].ContainsKey("CST"))
+                            if (notesVenda[i][j].ContainsKey("pCOFINS") && notesVenda[i][j].ContainsKey("CST") && pos >= 0)
                             {
-                                if(pos >= 0)
-                                {
-                                    resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + ((Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
-                                    valorCofins += (Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
-                                }
+                                resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + ((Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
+                                valorCofins += (Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
                             }
                         }
 

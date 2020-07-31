@@ -58,6 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
                              select new
                              {
                                  Id = r.Id.ToString(),
+                                 Description = r.Description,
                                  Mes = r.MesRef,
                                  Ano = r.AnoRef,
                                  Percentual = r.Percentual

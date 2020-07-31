@@ -19,6 +19,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IConfigurationService _configurationService;
         private readonly IStateService _stateService;
+        private readonly INcmConvenioService _ncmConvenioService;
 
         public NoteController(
             INoteService service,
@@ -30,6 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             IFunctionalityService functionalityService,
             IConfigurationService configurationService,
             IStateService stateService,
+            INcmConvenioService ncmConvenioService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
         {
@@ -41,6 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxationService = taxationService;
             _stateService = stateService;
             _taxationTypeService = taxationTypeService;
+            _ncmConvenioService = ncmConvenioService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -104,6 +107,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 notes = import.Nfe(directoryNfe, directotyCte);
 
+                var taxationCompany = _taxationService.FindByCompany(id);
+                var ncmConvenio = _ncmConvenioService.FindAll(null);
+                var states = _stateService.FindAll(null);
                 
                 Dictionary<string, string> det = new Dictionary<string, string>();
                 
@@ -361,18 +367,20 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (!number.Equals("4.00"))
                                 {
-                                    var state = _stateService.FindByUf(notes[i][2]["UF"]);
+                                    //var state = _stateService.FindByUf(notes[i][2]["UF"]);
+                                    var state = _stateService.FindByUf(states, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"]);
                                     number = state.Aliquota.ToString();
                                 }
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
-                                var taxed = _taxationService.FindByCode(code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+                                var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                                 bool incentivo = false;
 
                                 if (nota.Company.Incentive && (!nota.Company.AnnexId.Equals(2) && nota.Company.AnnexId != null))
                                 {
-                                    incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
+                                    //incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
+                                    incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }
 
                                 Model.ProductNote prod = new Model.ProductNote();

@@ -104,7 +104,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()); ;
+            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code);
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

@@ -43,6 +43,30 @@ namespace Escon.SisctNET.Repository.Implementation
             return ncms;
         }
 
+        public List<TaxationNcm> FindAllInDate(List<TaxationNcm> ncms, DateTime dateProd, Log log = null)
+        {
+            List<TaxationNcm> ncmsAll = new List<TaxationNcm>();
+
+            foreach (var ncm in ncms)
+            {
+                var dataInicial = DateTime.Compare(Convert.ToDateTime(ncm.DateStart), dateProd);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(ncm.DateEnd), dateProd);
+
+                if ((dataInicial <= 0 || ncm.DateStart == null) && ncm.DateEnd == null)
+                {
+                    ncmsAll.Add(ncm);
+                    continue;
+                }
+                else if ((dataInicial <= 0 || ncm.DateStart == null) && dataFinal > 0)
+                {
+                    ncmsAll.Add(ncm);
+                    continue;
+                }
+            }
+
+            return ncmsAll;
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();

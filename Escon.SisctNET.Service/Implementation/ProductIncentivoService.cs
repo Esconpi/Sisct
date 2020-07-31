@@ -46,6 +46,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDate(company, date, log);
         }
 
+        public List<ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, int company, DateTime date, Log log = null)
+        {
+            return _repository.FindByDate(productIncentivos, company, date, log);
+        }
+
         public ProductIncentivo FindById(int id, Log log)
         {
             return _repository.FindById(id, log);

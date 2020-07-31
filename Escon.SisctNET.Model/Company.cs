@@ -166,5 +166,9 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Inc. II Interestadual %")]
         public decimal? IncIIInterestadual { get; set; }
+
+        public decimal? VendaArt781 { get; set; }
+
+        public decimal? VendaArt781Excedente { get; set; }
     }
 }

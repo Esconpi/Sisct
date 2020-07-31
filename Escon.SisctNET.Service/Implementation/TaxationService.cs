@@ -39,6 +39,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCode(code, cest, data, log);
         }
 
+        public Taxation FindByCode(List<Taxation> taxations, string code, string cest, DateTime data, Log log = null)
+        {
+            return _repository.FindByCode(taxations, code, cest, data, log);
+        }
+
         public Taxation FindByCode2(string code2, Log log = null)
         {
             return _repository.FindByCode2(code2, log);
