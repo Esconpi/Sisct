@@ -43,5 +43,32 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
 
             return codigoBarrasResponse;
         }
+
+        public async Task<ResponseBarCodeDarService> GetBarCodePdfAsync(solicitarCodigoBarrasPDFRequest request)
+        {
+            //TODO - Voltar no método quando o WS estiver finalizado
+            var response = await wsClient.solicitarCodigoBarrasPDFAsync(
+                request.cpfCnpjIE,
+                request.numeroDocumento,
+                request.valorTotal,
+                request.dataVencimento,
+                request.periodoReferencia,
+                request.codigoOrgao,
+                request.codigoReceita,
+                request.tokenAcesso);
+
+            ResponseBarCodeDarService codigoBarrasResponse = new ResponseBarCodeDarService()
+            {
+                BarCode = response.@return.codigoBarras,
+                ControlNumber = response.@return.numeroControle,
+                DigitableLine = response.@return.linhaDigitavel,
+                DocumentNumber = response.@return.numeroDocumento,
+                Message = response.@return.mensagemRetorno1,
+                MessageType = response.@return.tipoRetorno,
+                Base64 = response.@return.boletoBytes
+            };
+
+            return codigoBarrasResponse;
+        }
     }
 }

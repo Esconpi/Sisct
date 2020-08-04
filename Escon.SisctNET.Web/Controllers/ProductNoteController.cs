@@ -1232,7 +1232,7 @@ namespace Escon.SisctNET.Web.Controllers
                         .Sum(x => Convert.ToDecimal(x.Value))
                         .ToString();
 
-                    var response = await _integrationWsDar.GetBarCodeAsync(new IntegrationDarService.solicitarCodigoBarrasRequest()
+                    var response = await _integrationWsDar.GetBarCodePdfAsync(new IntegrationDarService.solicitarCodigoBarrasPDFRequest()
                     {
                         codigoOrgao = organCode.Value,
                         codigoReceita = item.Key,
@@ -1245,6 +1245,15 @@ namespace Escon.SisctNET.Web.Controllers
                     });
 
                     if (response.MessageType.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.Message });
+
+                    var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Billets");
+                    if (!System.IO.Directory.Exists(dirOutput))
+                        System.IO.Directory.CreateDirectory(dirOutput);
+
+                    var fileOutput =$"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
+                    fileOutput = System.IO.Path.Combine(dirOutput, fileOutput);
+
+                    System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.Base64));
 
                     var darDoc = _darDocumentService.Create(new DarDocument()
                     {

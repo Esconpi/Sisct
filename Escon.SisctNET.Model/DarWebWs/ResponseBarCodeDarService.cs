@@ -32,5 +32,10 @@
         /// </summary>
         public string DocumentNumber { get; set; }
 
+        /// <summary>
+        /// Arquivo boleto em formato base64
+        /// </summary>
+        public string Base64 { get; set; }
+
     }
 }

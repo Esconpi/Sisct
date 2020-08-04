@@ -7,47 +7,113 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IntegrationDarService
+namespace ConsultaDocumentoArrecadacaoDarWeb
 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", ConfigurationName="IntegrationDarService.DocumentoArrecadacaoWS")]
-    public interface DocumentoArrecadacaoWS
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", ConfigurationName="ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS")]
+    public interface ConsultaDocumentoArrecadacaoWS
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasIPVAReq" +
-            "uest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasIPVARes" +
-            "ponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosN" +
+            "aoPagosRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosN" +
+            "aoPagosResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasIPVAResponse> solicitarCodigoBarrasIPVAAsync(IntegrationDarService.solicitarCodigoBarrasIPVARequest request);
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosResponse> consultarDocumentosNaoPagosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasRequest" +
-            "", ReplyAction="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasRespons" +
-            "e")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasResponse> solicitarCodigoBarrasAsync(IntegrationDarService.solicitarCodigoBarrasRequest request);
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosResponse> consultarDocumentosEmitidosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasPDFRequ" +
-            "est", ReplyAction="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarCodigoBarrasPDFResp" +
-            "onse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "orNumeroDocumentoRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "orNumeroDocumentoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasPDFResponse> solicitarCodigoBarrasPDFAsync(IntegrationDarService.solicitarCodigoBarrasPDFRequest request);
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoResponse> consultarDocumentosPorNumeroDocumentoAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarDarIcmsRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarDarIcmsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "orNumeroControleRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "orNumeroControleResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarDarIcmsResponse> solicitarDarIcmsAsync(IntegrationDarService.solicitarDarIcmsRequest request);
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleResponse> consultarDocumentosPorNumeroControleAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarDarAInfracaoAvisoDe" +
-            "bRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/DocumentoArrecadacaoWS/solicitarDarAInfracaoAvisoDe" +
-            "bResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorNumerosDocumentosRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorNumerosDocumentosResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarDarAInfracaoAvisoDebResponse> solicitarDarAInfracaoAvisoDebAsync(IntegrationDarService.solicitarDarAInfracaoAvisoDebRequest request);
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosResponse> consultarDocumentosEmitidosPorNumerosDocumentosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorPeriodoReferenciaRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorPeriodoReferenciaResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaResponse> consultarDocumentosEmitidosPorPeriodoReferenciaAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorCpfCnpjIERequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorCpfCnpjIEResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIEResponse> consultarDocumentosEmitidosPorCpfCnpjIEAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIERequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorIntervaloDataRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosE" +
+            "mitidosPorIntervaloDataResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataResponse> consultarDocumentosEmitidosPorIntervaloDataAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "agosRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarDocumentosP" +
+            "agosResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosResponse> consultarDocumentosPagosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/boletoPDFRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/boletoPDFResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.boletoPDFResponse> boletoPDFAsync(ConsultaDocumentoArrecadacaoDarWeb.boletoPDFRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarPDFPorNumer" +
+            "oControleRequest", ReplyAction="http://ws.dar.sefaz.pi.gov.br/ConsultaDocumentoArrecadacaoWS/consultarPDFPorNumer" +
+            "oControleResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(mensagemRetorno))]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleResponse> consultarPDFPorNumeroControleAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleRequest request);
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/")]
+    public partial class consultaBoletoRetorno : mensagemRetorno
+    {
+        
+        private boletoRetorno[] boletoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("boleto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        public boletoRetorno[] boleto
+        {
+            get
+            {
+                return this.boletoField;
+            }
+            set
+            {
+                this.boletoField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -980,6 +1046,7 @@ namespace IntegrationDarService
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(boletoRetorno))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(consultaBoletoRetorno))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/")]
@@ -1022,65 +1089,280 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarrasIPVA", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasIPVARequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosNaoPagos", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosNaoPagosRequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string renavam;
+        public string codigoOrgao;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cpfCnpjIE;
+        public string tokenAcesso;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
+        public consultarDocumentosNaoPagosRequest()
+        {
+        }
+        
+        public consultarDocumentosNaoPagosRequest(string codigoOrgao, string tokenAcesso)
+        {
+            this.codigoOrgao = codigoOrgao;
+            this.tokenAcesso = tokenAcesso;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosNaoPagosResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosNaoPagosResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
+        
+        public consultarDocumentosNaoPagosResponse()
+        {
+        }
+        
+        public consultarDocumentosNaoPagosResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidos", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigoOrgao;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string tokenAcesso;
+        
+        public consultarDocumentosEmitidosRequest()
+        {
+        }
+        
+        public consultarDocumentosEmitidosRequest(string codigoOrgao, string tokenAcesso)
+        {
+            this.codigoOrgao = codigoOrgao;
+            this.tokenAcesso = tokenAcesso;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
+        
+        public consultarDocumentosEmitidosResponse()
+        {
+        }
+        
+        public consultarDocumentosEmitidosResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPorNumeroDocumento", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPorNumeroDocumentoRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string numeroDocumento;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=3)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string numeroCota;
+        public string codigoOrgao;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=4)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string valorTotal;
+        public string tokenAcesso;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=5)]
+        public consultarDocumentosPorNumeroDocumentoRequest()
+        {
+        }
+        
+        public consultarDocumentosPorNumeroDocumentoRequest(string numeroDocumento, string codigoOrgao, string tokenAcesso)
+        {
+            this.numeroDocumento = numeroDocumento;
+            this.codigoOrgao = codigoOrgao;
+            this.tokenAcesso = tokenAcesso;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPorNumeroDocumentoResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPorNumeroDocumentoResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dataVencimento;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=6)]
+        public consultarDocumentosPorNumeroDocumentoResponse()
+        {
+        }
+        
+        public consultarDocumentosPorNumeroDocumentoResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPorNumeroControle", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPorNumeroControleRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string numeroControle;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigoOrgao;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string tokenAcesso;
+        
+        public consultarDocumentosPorNumeroControleRequest()
+        {
+        }
+        
+        public consultarDocumentosPorNumeroControleRequest(string numeroControle, string codigoOrgao, string tokenAcesso)
+        {
+            this.numeroControle = numeroControle;
+            this.codigoOrgao = codigoOrgao;
+            this.tokenAcesso = tokenAcesso;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPorNumeroControleResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPorNumeroControleResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
+        
+        public consultarDocumentosPorNumeroControleResponse()
+        {
+        }
+        
+        public consultarDocumentosPorNumeroControleResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorNumerosDocumentos", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorNumerosDocumentosRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string numerosDocumentos;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigoOrgao;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string tokenAcesso;
+        
+        public consultarDocumentosEmitidosPorNumerosDocumentosRequest()
+        {
+        }
+        
+        public consultarDocumentosEmitidosPorNumerosDocumentosRequest(string numerosDocumentos, string codigoOrgao, string tokenAcesso)
+        {
+            this.numerosDocumentos = numerosDocumentos;
+            this.codigoOrgao = codigoOrgao;
+            this.tokenAcesso = tokenAcesso;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorNumerosDocumentosResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorNumerosDocumentosResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
+        
+        public consultarDocumentosEmitidosPorNumerosDocumentosResponse()
+        {
+        }
+        
+        public consultarDocumentosEmitidosPorNumerosDocumentosResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorPeriodoReferencia", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorPeriodoReferenciaRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string periodoReferencia;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=7)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string codigoOrgao;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=8)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoReceita;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=9)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string tokenAcesso;
         
-        public solicitarCodigoBarrasIPVARequest()
+        public consultarDocumentosEmitidosPorPeriodoReferenciaRequest()
         {
         }
         
-        public solicitarCodigoBarrasIPVARequest(string renavam, string cpfCnpjIE, string numeroDocumento, string numeroCota, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public consultarDocumentosEmitidosPorPeriodoReferenciaRequest(string periodoReferencia, string codigoOrgao, string tokenAcesso)
         {
-            this.renavam = renavam;
-            this.cpfCnpjIE = cpfCnpjIE;
-            this.numeroDocumento = numeroDocumento;
-            this.numeroCota = numeroCota;
-            this.valorTotal = valorTotal;
-            this.dataVencimento = dataVencimento;
             this.periodoReferencia = periodoReferencia;
             this.codigoOrgao = codigoOrgao;
-            this.codigoReceita = codigoReceita;
             this.tokenAcesso = tokenAcesso;
         }
     }
@@ -1088,19 +1370,19 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarrasIPVAResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasIPVAResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorPeriodoReferenciaResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorPeriodoReferenciaResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public IntegrationDarService.boletoRetorno @return;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        public solicitarCodigoBarrasIPVAResponse()
+        public consultarDocumentosEmitidosPorPeriodoReferenciaResponse()
         {
         }
         
-        public solicitarCodigoBarrasIPVAResponse(IntegrationDarService.boletoRetorno @return)
+        public consultarDocumentosEmitidosPorPeriodoReferenciaResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
         {
             this.@return = @return;
         }
@@ -1109,8 +1391,8 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarras", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorCpfCnpjIE", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorCpfCnpjIERequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
@@ -1119,45 +1401,20 @@ namespace IntegrationDarService
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string numeroDocumento;
+        public string codigoOrgao;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string valorTotal;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dataVencimento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string periodoReferencia;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoOrgao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=6)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoReceita;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=7)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string tokenAcesso;
         
-        public solicitarCodigoBarrasRequest()
+        public consultarDocumentosEmitidosPorCpfCnpjIERequest()
         {
         }
         
-        public solicitarCodigoBarrasRequest(string cpfCnpjIE, string numeroDocumento, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public consultarDocumentosEmitidosPorCpfCnpjIERequest(string cpfCnpjIE, string codigoOrgao, string tokenAcesso)
         {
             this.cpfCnpjIE = cpfCnpjIE;
-            this.numeroDocumento = numeroDocumento;
-            this.valorTotal = valorTotal;
-            this.dataVencimento = dataVencimento;
-            this.periodoReferencia = periodoReferencia;
             this.codigoOrgao = codigoOrgao;
-            this.codigoReceita = codigoReceita;
             this.tokenAcesso = tokenAcesso;
         }
     }
@@ -1165,19 +1422,19 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarrasResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorCpfCnpjIEResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorCpfCnpjIEResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public IntegrationDarService.boletoRetorno @return;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        public solicitarCodigoBarrasResponse()
+        public consultarDocumentosEmitidosPorCpfCnpjIEResponse()
         {
         }
         
-        public solicitarCodigoBarrasResponse(IntegrationDarService.boletoRetorno @return)
+        public consultarDocumentosEmitidosPorCpfCnpjIEResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
         {
             this.@return = @return;
         }
@@ -1186,55 +1443,35 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarrasPDF", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasPDFRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorIntervaloData", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorIntervaloDataRequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cpfCnpjIE;
+        public string dataInicial;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string numeroDocumento;
+        public string dataFinal;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string valorTotal;
+        public string codigoOrgao;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dataVencimento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string periodoReferencia;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoOrgao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=6)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoReceita;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=7)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string tokenAcesso;
         
-        public solicitarCodigoBarrasPDFRequest()
+        public consultarDocumentosEmitidosPorIntervaloDataRequest()
         {
         }
         
-        public solicitarCodigoBarrasPDFRequest(string cpfCnpjIE, string numeroDocumento, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public consultarDocumentosEmitidosPorIntervaloDataRequest(string dataInicial, string dataFinal, string codigoOrgao, string tokenAcesso)
         {
-            this.cpfCnpjIE = cpfCnpjIE;
-            this.numeroDocumento = numeroDocumento;
-            this.valorTotal = valorTotal;
-            this.dataVencimento = dataVencimento;
-            this.periodoReferencia = periodoReferencia;
+            this.dataInicial = dataInicial;
+            this.dataFinal = dataFinal;
             this.codigoOrgao = codigoOrgao;
-            this.codigoReceita = codigoReceita;
             this.tokenAcesso = tokenAcesso;
         }
     }
@@ -1242,19 +1479,19 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarCodigoBarrasPDFResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarCodigoBarrasPDFResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosEmitidosPorIntervaloDataResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosEmitidosPorIntervaloDataResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public IntegrationDarService.boletoRetorno @return;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        public solicitarCodigoBarrasPDFResponse()
+        public consultarDocumentosEmitidosPorIntervaloDataResponse()
         {
         }
         
-        public solicitarCodigoBarrasPDFResponse(IntegrationDarService.boletoRetorno @return)
+        public consultarDocumentosEmitidosPorIntervaloDataResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
         {
             this.@return = @return;
         }
@@ -1263,69 +1500,24 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarDarIcms", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarDarIcmsRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPagos", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPagosRequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoReceita;
+        public string codigoOrgao;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string inscricao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string substitoTributo;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string periodoReferencia;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dataVencimento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string dataPagamento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=6)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string taxaEmissao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=7)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string valorTotal;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=8)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string numeroDocumento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=9)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoOrgao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=10)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string tokenAcesso;
         
-        public solicitarDarIcmsRequest()
+        public consultarDocumentosPagosRequest()
         {
         }
         
-        public solicitarDarIcmsRequest(string codigoReceita, string inscricao, string substitoTributo, string periodoReferencia, string dataVencimento, string dataPagamento, string taxaEmissao, string valorTotal, string numeroDocumento, string codigoOrgao, string tokenAcesso)
+        public consultarDocumentosPagosRequest(string codigoOrgao, string tokenAcesso)
         {
-            this.codigoReceita = codigoReceita;
-            this.inscricao = inscricao;
-            this.substitoTributo = substitoTributo;
-            this.periodoReferencia = periodoReferencia;
-            this.dataVencimento = dataVencimento;
-            this.dataPagamento = dataPagamento;
-            this.taxaEmissao = taxaEmissao;
-            this.valorTotal = valorTotal;
-            this.numeroDocumento = numeroDocumento;
             this.codigoOrgao = codigoOrgao;
             this.tokenAcesso = tokenAcesso;
         }
@@ -1334,19 +1526,19 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarDarIcmsResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarDarIcmsResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarDocumentosPagosResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarDocumentosPagosResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public IntegrationDarService.boletoRetorno @return;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        public solicitarDarIcmsResponse()
+        public consultarDocumentosPagosResponse()
         {
         }
         
-        public solicitarDarIcmsResponse(IntegrationDarService.boletoRetorno @return)
+        public consultarDocumentosPagosResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
         {
             this.@return = @return;
         }
@@ -1355,49 +1547,76 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarDarAInfracaoAvisoDeb", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarDarAInfracaoAvisoDebRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="boletoPDF", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class boletoPDFRequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoReceita;
+        public ConsultaDocumentoArrecadacaoDarWeb.boletoImpresso arg0;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string cpfCnpjIE;
+        public string arg1;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string numeroDocumento;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string taxaEmissao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string valorParcial;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string codigoOrgao;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=6)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public string tokenAcesso;
-        
-        public solicitarDarAInfracaoAvisoDebRequest()
+        public boletoPDFRequest()
         {
         }
         
-        public solicitarDarAInfracaoAvisoDebRequest(string codigoReceita, string cpfCnpjIE, string numeroDocumento, string taxaEmissao, string valorParcial, string codigoOrgao, string tokenAcesso)
+        public boletoPDFRequest(ConsultaDocumentoArrecadacaoDarWeb.boletoImpresso arg0, string arg1)
         {
-            this.codigoReceita = codigoReceita;
-            this.cpfCnpjIE = cpfCnpjIE;
-            this.numeroDocumento = numeroDocumento;
-            this.taxaEmissao = taxaEmissao;
-            this.valorParcial = valorParcial;
+            this.arg0 = arg0;
+            this.arg1 = arg1;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="boletoPDFResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class boletoPDFResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", IsNullable=true)]
+        public byte[] @return;
+        
+        public boletoPDFResponse()
+        {
+        }
+        
+        public boletoPDFResponse(byte[] @return)
+        {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarPDFPorNumeroControle", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarPDFPorNumeroControleRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string numeroControle;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string codigoOrgao;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string tokenAcesso;
+        
+        public consultarPDFPorNumeroControleRequest()
+        {
+        }
+        
+        public consultarPDFPorNumeroControleRequest(string numeroControle, string codigoOrgao, string tokenAcesso)
+        {
+            this.numeroControle = numeroControle;
             this.codigoOrgao = codigoOrgao;
             this.tokenAcesso = tokenAcesso;
         }
@@ -1406,32 +1625,32 @@ namespace IntegrationDarService
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="solicitarDarAInfracaoAvisoDebResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
-    public partial class solicitarDarAInfracaoAvisoDebResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="consultarPDFPorNumeroControleResponse", WrapperNamespace="http://ws.dar.sefaz.pi.gov.br/", IsWrapped=true)]
+    public partial class consultarPDFPorNumeroControleResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.dar.sefaz.pi.gov.br/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public IntegrationDarService.boletoRetorno @return;
+        public ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return;
         
-        public solicitarDarAInfracaoAvisoDebResponse()
+        public consultarPDFPorNumeroControleResponse()
         {
         }
         
-        public solicitarDarAInfracaoAvisoDebResponse(IntegrationDarService.boletoRetorno @return)
+        public consultarPDFPorNumeroControleResponse(ConsultaDocumentoArrecadacaoDarWeb.consultaBoletoRetorno @return)
         {
             this.@return = @return;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    public interface DocumentoArrecadacaoWSChannel : IntegrationDarService.DocumentoArrecadacaoWS, System.ServiceModel.IClientChannel
+    public interface ConsultaDocumentoArrecadacaoWSChannel : ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    public partial class DocumentoArrecadacaoWSClient : System.ServiceModel.ClientBase<IntegrationDarService.DocumentoArrecadacaoWS>, IntegrationDarService.DocumentoArrecadacaoWS
+    public partial class ConsultaDocumentoArrecadacaoWSClient : System.ServiceModel.ClientBase<ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS>, ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS
     {
         
         /// <summary>
@@ -1441,141 +1660,199 @@ namespace IntegrationDarService
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        public DocumentoArrecadacaoWSClient() : 
-                base(DocumentoArrecadacaoWSClient.GetDefaultBinding(), DocumentoArrecadacaoWSClient.GetDefaultEndpointAddress())
+        public ConsultaDocumentoArrecadacaoWSClient() : 
+                base(ConsultaDocumentoArrecadacaoWSClient.GetDefaultBinding(), ConsultaDocumentoArrecadacaoWSClient.GetDefaultEndpointAddress())
         {
-            this.Endpoint.Name = EndpointConfiguration.DocumentoArrecadacaoWSPort.ToString();
+            this.Endpoint.Name = EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public DocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration) : 
-                base(DocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), DocumentoArrecadacaoWSClient.GetEndpointAddress(endpointConfiguration))
-        {
-            this.Endpoint.Name = endpointConfiguration.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
-        public DocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
-                base(DocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
+        public ConsultaDocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration) : 
+                base(ConsultaDocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), ConsultaDocumentoArrecadacaoWSClient.GetEndpointAddress(endpointConfiguration))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public DocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(DocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
+        public ConsultaDocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+                base(ConsultaDocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        public DocumentoArrecadacaoWSClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ConsultaDocumentoArrecadacaoWSClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(ConsultaDocumentoArrecadacaoWSClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
+        {
+            this.Endpoint.Name = endpointConfiguration.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
+        }
+        
+        public ConsultaDocumentoArrecadacaoWSClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress)
         {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasIPVAResponse> IntegrationDarService.DocumentoArrecadacaoWS.solicitarCodigoBarrasIPVAAsync(IntegrationDarService.solicitarCodigoBarrasIPVARequest request)
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosNaoPagosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosRequest request)
         {
-            return base.Channel.solicitarCodigoBarrasIPVAAsync(request);
+            return base.Channel.consultarDocumentosNaoPagosAsync(request);
         }
         
-        public System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasIPVAResponse> solicitarCodigoBarrasIPVAAsync(string renavam, string cpfCnpjIE, string numeroDocumento, string numeroCota, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosResponse> consultarDocumentosNaoPagosAsync(string codigoOrgao, string tokenAcesso)
         {
-            IntegrationDarService.solicitarCodigoBarrasIPVARequest inValue = new IntegrationDarService.solicitarCodigoBarrasIPVARequest();
-            inValue.renavam = renavam;
-            inValue.cpfCnpjIE = cpfCnpjIE;
-            inValue.numeroDocumento = numeroDocumento;
-            inValue.numeroCota = numeroCota;
-            inValue.valorTotal = valorTotal;
-            inValue.dataVencimento = dataVencimento;
-            inValue.periodoReferencia = periodoReferencia;
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosNaoPagosRequest();
             inValue.codigoOrgao = codigoOrgao;
-            inValue.codigoReceita = codigoReceita;
             inValue.tokenAcesso = tokenAcesso;
-            return ((IntegrationDarService.DocumentoArrecadacaoWS)(this)).solicitarCodigoBarrasIPVAAsync(inValue);
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosNaoPagosAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasResponse> IntegrationDarService.DocumentoArrecadacaoWS.solicitarCodigoBarrasAsync(IntegrationDarService.solicitarCodigoBarrasRequest request)
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosEmitidosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosRequest request)
         {
-            return base.Channel.solicitarCodigoBarrasAsync(request);
+            return base.Channel.consultarDocumentosEmitidosAsync(request);
         }
         
-        public System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasResponse> solicitarCodigoBarrasAsync(string cpfCnpjIE, string numeroDocumento, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosResponse> consultarDocumentosEmitidosAsync(string codigoOrgao, string tokenAcesso)
         {
-            IntegrationDarService.solicitarCodigoBarrasRequest inValue = new IntegrationDarService.solicitarCodigoBarrasRequest();
-            inValue.cpfCnpjIE = cpfCnpjIE;
-            inValue.numeroDocumento = numeroDocumento;
-            inValue.valorTotal = valorTotal;
-            inValue.dataVencimento = dataVencimento;
-            inValue.periodoReferencia = periodoReferencia;
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosRequest();
             inValue.codigoOrgao = codigoOrgao;
-            inValue.codigoReceita = codigoReceita;
             inValue.tokenAcesso = tokenAcesso;
-            return ((IntegrationDarService.DocumentoArrecadacaoWS)(this)).solicitarCodigoBarrasAsync(inValue);
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosEmitidosAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasPDFResponse> IntegrationDarService.DocumentoArrecadacaoWS.solicitarCodigoBarrasPDFAsync(IntegrationDarService.solicitarCodigoBarrasPDFRequest request)
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosPorNumeroDocumentoAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoRequest request)
         {
-            return base.Channel.solicitarCodigoBarrasPDFAsync(request);
+            return base.Channel.consultarDocumentosPorNumeroDocumentoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<IntegrationDarService.solicitarCodigoBarrasPDFResponse> solicitarCodigoBarrasPDFAsync(string cpfCnpjIE, string numeroDocumento, string valorTotal, string dataVencimento, string periodoReferencia, string codigoOrgao, string codigoReceita, string tokenAcesso)
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoResponse> consultarDocumentosPorNumeroDocumentoAsync(string numeroDocumento, string codigoOrgao, string tokenAcesso)
         {
-            IntegrationDarService.solicitarCodigoBarrasPDFRequest inValue = new IntegrationDarService.solicitarCodigoBarrasPDFRequest();
-            inValue.cpfCnpjIE = cpfCnpjIE;
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroDocumentoRequest();
             inValue.numeroDocumento = numeroDocumento;
-            inValue.valorTotal = valorTotal;
-            inValue.dataVencimento = dataVencimento;
-            inValue.periodoReferencia = periodoReferencia;
             inValue.codigoOrgao = codigoOrgao;
-            inValue.codigoReceita = codigoReceita;
             inValue.tokenAcesso = tokenAcesso;
-            return ((IntegrationDarService.DocumentoArrecadacaoWS)(this)).solicitarCodigoBarrasPDFAsync(inValue);
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosPorNumeroDocumentoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarDarIcmsResponse> IntegrationDarService.DocumentoArrecadacaoWS.solicitarDarIcmsAsync(IntegrationDarService.solicitarDarIcmsRequest request)
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosPorNumeroControleAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleRequest request)
         {
-            return base.Channel.solicitarDarIcmsAsync(request);
+            return base.Channel.consultarDocumentosPorNumeroControleAsync(request);
         }
         
-        public System.Threading.Tasks.Task<IntegrationDarService.solicitarDarIcmsResponse> solicitarDarIcmsAsync(string codigoReceita, string inscricao, string substitoTributo, string periodoReferencia, string dataVencimento, string dataPagamento, string taxaEmissao, string valorTotal, string numeroDocumento, string codigoOrgao, string tokenAcesso)
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleResponse> consultarDocumentosPorNumeroControleAsync(string numeroControle, string codigoOrgao, string tokenAcesso)
         {
-            IntegrationDarService.solicitarDarIcmsRequest inValue = new IntegrationDarService.solicitarDarIcmsRequest();
-            inValue.codigoReceita = codigoReceita;
-            inValue.inscricao = inscricao;
-            inValue.substitoTributo = substitoTributo;
-            inValue.periodoReferencia = periodoReferencia;
-            inValue.dataVencimento = dataVencimento;
-            inValue.dataPagamento = dataPagamento;
-            inValue.taxaEmissao = taxaEmissao;
-            inValue.valorTotal = valorTotal;
-            inValue.numeroDocumento = numeroDocumento;
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPorNumeroControleRequest();
+            inValue.numeroControle = numeroControle;
             inValue.codigoOrgao = codigoOrgao;
             inValue.tokenAcesso = tokenAcesso;
-            return ((IntegrationDarService.DocumentoArrecadacaoWS)(this)).solicitarDarIcmsAsync(inValue);
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosPorNumeroControleAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<IntegrationDarService.solicitarDarAInfracaoAvisoDebResponse> IntegrationDarService.DocumentoArrecadacaoWS.solicitarDarAInfracaoAvisoDebAsync(IntegrationDarService.solicitarDarAInfracaoAvisoDebRequest request)
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosEmitidosPorNumerosDocumentosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosRequest request)
         {
-            return base.Channel.solicitarDarAInfracaoAvisoDebAsync(request);
+            return base.Channel.consultarDocumentosEmitidosPorNumerosDocumentosAsync(request);
         }
         
-        public System.Threading.Tasks.Task<IntegrationDarService.solicitarDarAInfracaoAvisoDebResponse> solicitarDarAInfracaoAvisoDebAsync(string codigoReceita, string cpfCnpjIE, string numeroDocumento, string taxaEmissao, string valorParcial, string codigoOrgao, string tokenAcesso)
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosResponse> consultarDocumentosEmitidosPorNumerosDocumentosAsync(string numerosDocumentos, string codigoOrgao, string tokenAcesso)
         {
-            IntegrationDarService.solicitarDarAInfracaoAvisoDebRequest inValue = new IntegrationDarService.solicitarDarAInfracaoAvisoDebRequest();
-            inValue.codigoReceita = codigoReceita;
-            inValue.cpfCnpjIE = cpfCnpjIE;
-            inValue.numeroDocumento = numeroDocumento;
-            inValue.taxaEmissao = taxaEmissao;
-            inValue.valorParcial = valorParcial;
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorNumerosDocumentosRequest();
+            inValue.numerosDocumentos = numerosDocumentos;
             inValue.codigoOrgao = codigoOrgao;
             inValue.tokenAcesso = tokenAcesso;
-            return ((IntegrationDarService.DocumentoArrecadacaoWS)(this)).solicitarDarAInfracaoAvisoDebAsync(inValue);
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosEmitidosPorNumerosDocumentosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosEmitidosPorPeriodoReferenciaAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaRequest request)
+        {
+            return base.Channel.consultarDocumentosEmitidosPorPeriodoReferenciaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaResponse> consultarDocumentosEmitidosPorPeriodoReferenciaAsync(string periodoReferencia, string codigoOrgao, string tokenAcesso)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorPeriodoReferenciaRequest();
+            inValue.periodoReferencia = periodoReferencia;
+            inValue.codigoOrgao = codigoOrgao;
+            inValue.tokenAcesso = tokenAcesso;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosEmitidosPorPeriodoReferenciaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIEResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosEmitidosPorCpfCnpjIEAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIERequest request)
+        {
+            return base.Channel.consultarDocumentosEmitidosPorCpfCnpjIEAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIEResponse> consultarDocumentosEmitidosPorCpfCnpjIEAsync(string cpfCnpjIE, string codigoOrgao, string tokenAcesso)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIERequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorCpfCnpjIERequest();
+            inValue.cpfCnpjIE = cpfCnpjIE;
+            inValue.codigoOrgao = codigoOrgao;
+            inValue.tokenAcesso = tokenAcesso;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosEmitidosPorCpfCnpjIEAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosEmitidosPorIntervaloDataAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataRequest request)
+        {
+            return base.Channel.consultarDocumentosEmitidosPorIntervaloDataAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataResponse> consultarDocumentosEmitidosPorIntervaloDataAsync(string dataInicial, string dataFinal, string codigoOrgao, string tokenAcesso)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosEmitidosPorIntervaloDataRequest();
+            inValue.dataInicial = dataInicial;
+            inValue.dataFinal = dataFinal;
+            inValue.codigoOrgao = codigoOrgao;
+            inValue.tokenAcesso = tokenAcesso;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosEmitidosPorIntervaloDataAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarDocumentosPagosAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosRequest request)
+        {
+            return base.Channel.consultarDocumentosPagosAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosResponse> consultarDocumentosPagosAsync(string codigoOrgao, string tokenAcesso)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarDocumentosPagosRequest();
+            inValue.codigoOrgao = codigoOrgao;
+            inValue.tokenAcesso = tokenAcesso;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarDocumentosPagosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.boletoPDFResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.boletoPDFAsync(ConsultaDocumentoArrecadacaoDarWeb.boletoPDFRequest request)
+        {
+            return base.Channel.boletoPDFAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.boletoPDFResponse> boletoPDFAsync(ConsultaDocumentoArrecadacaoDarWeb.boletoImpresso arg0, string arg1)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.boletoPDFRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.boletoPDFRequest();
+            inValue.arg0 = arg0;
+            inValue.arg1 = arg1;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).boletoPDFAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleResponse> ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS.consultarPDFPorNumeroControleAsync(ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleRequest request)
+        {
+            return base.Channel.consultarPDFPorNumeroControleAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleResponse> consultarPDFPorNumeroControleAsync(string numeroControle, string codigoOrgao, string tokenAcesso)
+        {
+            ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleRequest inValue = new ConsultaDocumentoArrecadacaoDarWeb.consultarPDFPorNumeroControleRequest();
+            inValue.numeroControle = numeroControle;
+            inValue.codigoOrgao = codigoOrgao;
+            inValue.tokenAcesso = tokenAcesso;
+            return ((ConsultaDocumentoArrecadacaoDarWeb.ConsultaDocumentoArrecadacaoWS)(this)).consultarPDFPorNumeroControleAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
@@ -1590,7 +1867,7 @@ namespace IntegrationDarService
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.DocumentoArrecadacaoWSPort))
+            if ((endpointConfiguration == EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -1604,27 +1881,28 @@ namespace IntegrationDarService
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.DocumentoArrecadacaoWSPort))
+            if ((endpointConfiguration == EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://webas.sefaz.pi.gov.br/emiteDarService-homolog/DocumentoArrecadacaoWS");
+                return new System.ServiceModel.EndpointAddress("http://webas.sefaz.pi.gov.br/emiteDarService-homolog/ConsultaDocumentoArrecadacao" +
+                        "WS");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
-            return DocumentoArrecadacaoWSClient.GetBindingForEndpoint(EndpointConfiguration.DocumentoArrecadacaoWSPort);
+            return ConsultaDocumentoArrecadacaoWSClient.GetBindingForEndpoint(EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort);
         }
         
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
-            return DocumentoArrecadacaoWSClient.GetEndpointAddress(EndpointConfiguration.DocumentoArrecadacaoWSPort);
+            return ConsultaDocumentoArrecadacaoWSClient.GetEndpointAddress(EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort);
         }
         
         public enum EndpointConfiguration
         {
             
-            DocumentoArrecadacaoWSPort,
+            ConsultaDocumentoArrecadacaoWSPort,
         }
     }
 }
