@@ -48,7 +48,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Model.Company> FindByCompanies(Log log = null)
         {
-            var rst = _context.Companies.Where(_ => _.Active.Equals(true)).ToList();
+            var rst = _context.Companies
+                .Where(_ => _.Active.Equals(true))
+                .Include(e => e.EmaiResponsibles)
+                .ToList();
+
             AddLog(log);
             return rst;
         }

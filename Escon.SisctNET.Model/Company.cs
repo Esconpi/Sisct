@@ -119,5 +119,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Inscrição Estadual")]
         public string Ie { get; set; }
+
+        public virtual IList<EmailResponsible> EmaiResponsibles { get; set; }
     }
 }

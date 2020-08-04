@@ -31,6 +31,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Occurrence> Occurrences { get; set; }
 
+        public DbSet<CountingType> CountingTypes { get; set; }
+
         public DbSet<Person> Persons { get; set; }
 
         public DbSet<Profile> Profiles { get; set; }
@@ -74,6 +76,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<ProductIncentivo> ProductIncentivos { get; set; }
 
         public DbSet<Product1> Product1s { get; set; }
+        public DbSet<EmailResponsible> Product1s { get; set; }
 
     }
 }
