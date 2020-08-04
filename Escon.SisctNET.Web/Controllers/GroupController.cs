@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -57,7 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -79,7 +80,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Group entity)
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -101,7 +102,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -121,7 +122,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id , Model.Group entity)
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -144,7 +145,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetGroupInSession().Equals(9))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

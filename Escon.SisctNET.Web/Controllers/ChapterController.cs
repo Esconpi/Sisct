@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +22,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetChapterInSession().Equals(31))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -44,7 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetChapterInSession().Equals(31))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -63,7 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Chapter entity)
         {
-            if (!SessionManager.GetChapterInSession().Equals(31))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -85,7 +83,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetChapterInSession().Equals(31))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -104,7 +102,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Chapter entity)
         {
-            if (!SessionManager.GetChapterInSession().Equals(31))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

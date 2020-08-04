@@ -30,7 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -52,7 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -70,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Suspension entity)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

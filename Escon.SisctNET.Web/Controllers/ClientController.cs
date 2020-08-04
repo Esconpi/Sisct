@@ -36,7 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -70,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -89,7 +89,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id,string year,string month)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -161,7 +161,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Filter(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -181,7 +181,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Details(int companyId,int count)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -203,7 +203,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -224,7 +224,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Client entity)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -250,7 +250,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Client(int id, int count)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -272,7 +272,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Client(int id, int count, Model.Client entity)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -294,6 +294,7 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+        
         public IActionResult Contribuinte(int id)
         {
             try
@@ -312,7 +313,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());

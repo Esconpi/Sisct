@@ -2,9 +2,7 @@
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int companyId)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -74,7 +72,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -126,7 +124,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -148,7 +146,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -177,7 +175,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());

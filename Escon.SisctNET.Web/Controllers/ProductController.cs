@@ -36,7 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -65,7 +65,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -88,7 +88,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Product1 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -114,7 +114,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -143,7 +143,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Product1 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -167,7 +167,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -196,7 +196,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.Product1 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -233,7 +233,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import()
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -251,7 +251,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product1 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

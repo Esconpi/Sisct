@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,34 +7,22 @@ namespace Escon.SisctNET.Model
     [Table("access")]
     public class Access : EntityBase
     {
-        public ILazyLoader LazyLoader { get; set; }
-
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Funcionalidade")]
         [ForeignKey("Functionality")]
-        public int FunctionalityId { get; set; }
+        public Nullable<int> FunctionalityId { get; set; }
 
-        private Functionality functionality;
-        public Functionality Functionality
-        {
-            get => LazyLoader.Load(this, ref functionality);
-            set => functionality = value;
-        }
+        public virtual Functionality Functionality { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório")]
-        [Display(Name = "Perfil")]
+        [Required(ErrorMessage = "Obrigatório!")]
+        [Display(Name = "Pefil")]
         [ForeignKey("Profile")]
-        public int ProfileId { get; set; }
+        public Nullable<int> ProfileId { get; set; }
 
-        private Profile profile;
-        public Profile Profile
-        {
-            get => LazyLoader.Load(this, ref profile);
-            set => profile = value;
-        }
+        public virtual Profile Profile { get; set; }
 
         [Display(Name = "Liberado")]
         public bool Active { get; set; }
-       
+
     }
 }

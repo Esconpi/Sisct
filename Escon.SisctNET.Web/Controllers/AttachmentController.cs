@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -53,7 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -73,7 +74,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Attachment entity)
         {
-            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -95,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -115,7 +116,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Attachment entity)
         {
-            if (!SessionManager.GetAttachmentInSession().Equals(8))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

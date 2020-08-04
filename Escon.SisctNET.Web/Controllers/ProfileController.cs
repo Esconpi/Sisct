@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +23,12 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
+
             try
             {
                 var login = SessionManager.GetLoginInSession();
@@ -50,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -67,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Profile entity)
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -88,7 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -106,7 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Profile entity)
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -127,7 +130,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -145,7 +148,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetProfileInSession().Equals(1))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -83,7 +83,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.NcmConvenio entity)
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -103,7 +103,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.NcmConvenio entity)
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -150,7 +150,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetNcmConvenioInSession().Equals(21))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

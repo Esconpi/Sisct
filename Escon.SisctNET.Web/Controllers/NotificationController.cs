@@ -25,7 +25,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

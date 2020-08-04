@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -62,7 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -82,7 +82,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

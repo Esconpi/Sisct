@@ -50,7 +50,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int id, string year, string month)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -87,7 +87,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int id, string year, string month)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -694,7 +694,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -713,7 +713,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Note entity)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -753,7 +753,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Audita(int id, string year, string month)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -783,7 +783,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Delete(int id, string year, string month)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -821,7 +821,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult DeleteNote(int id,int company, string year, string month)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -847,7 +847,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult UpdateView(int id)
         {
-            if (!SessionManager.GetNoteInSession().Equals(2))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

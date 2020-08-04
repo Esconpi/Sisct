@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -27,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int profileId)
         {
 
-            if (!SessionManager.GetAccessInSession().Equals(4))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -59,7 +60,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetAccessInSession().Equals(4))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

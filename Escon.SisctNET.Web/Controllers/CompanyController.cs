@@ -1,7 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -58,11 +57,6 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sincronize()
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
-            {
-                return Unauthorized();
-            }
-
             try
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
@@ -122,7 +116,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -162,7 +156,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -180,7 +174,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Company entity)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -202,7 +196,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -222,7 +216,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Company entity)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -262,7 +256,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult EditNew(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -311,7 +305,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult EditNew(int id, Model.Company entity)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -363,7 +357,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Details(int id )
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -396,7 +390,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -415,7 +409,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -437,7 +431,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateIncentive([FromBody] Model.UpdateIncentive updateIncentive)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -459,7 +453,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateStatus updateStatus)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -481,7 +475,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Compare(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -500,7 +494,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Taxation(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -519,7 +513,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult TaxationNcm(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -538,7 +532,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Relatory(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -555,10 +549,11 @@ namespace Escon.SisctNET.Web.Controllers
             }
             
         }
+       
         [HttpGet]
         public IActionResult RelatoryExit(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -584,7 +579,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Ncm(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -605,7 +600,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult TaxationProduct(int id)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -624,7 +619,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {
-            if (!SessionManager.GetCompanyInSession().Equals(11))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
