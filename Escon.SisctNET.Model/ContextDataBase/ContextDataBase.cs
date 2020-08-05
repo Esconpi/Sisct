@@ -76,7 +76,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<ProductIncentivo> ProductIncentivos { get; set; }
 
         public DbSet<Product1> Product1s { get; set; }
-        public DbSet<EmailResponsible> Product1s { get; set; }
+
+        public DbSet<EmailResponsible> EmailResponsible { get; set; }
 
     }
 }
