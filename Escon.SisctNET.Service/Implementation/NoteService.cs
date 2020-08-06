@@ -68,5 +68,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.Update(entity, log);
         }
+
+        public void Update(List<Note> notes, Log log = null)
+        {
+            _repository.Update(notes, log);
+        }
     }
 }

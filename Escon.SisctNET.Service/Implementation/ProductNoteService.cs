@@ -133,5 +133,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             _repository.Delete(products, log);
         }
+
+        public void Update(List<ProductNote> products, Log log = null)
+        {
+            _repository.Update(products, log);
+        }
     }
 }

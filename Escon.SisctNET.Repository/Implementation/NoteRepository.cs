@@ -52,5 +52,16 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst.ToList();
         }
+
+        public void Update(List<Note> notes, Log log = null)
+        {
+            foreach (var n in notes)
+            {
+                _context.Notes.Update(n);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
     }
 }

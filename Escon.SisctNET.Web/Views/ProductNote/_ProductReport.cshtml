@@ -97,8 +97,8 @@ else if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
             <th>Aliq Intra(%)</th>
             <th>Aliq Inter(%)</th>
             <th>Dif</th>
-            <th>ICMS Apurado</th>
             <th>ICMS ST NFe</th>
+            <th>ICMS Apurado</th>
         </tr>
     </thead>
     <tbody style="font-size:9px;">
@@ -126,8 +126,9 @@ else if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
                 <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
                 <td>@Html.DisplayFor(modelItem => item.Picms)</td>
                 <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
-                <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
                 <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
+                <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
+
             </tr>
 
         }

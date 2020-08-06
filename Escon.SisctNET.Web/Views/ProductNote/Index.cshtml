@@ -130,7 +130,12 @@
                                     }
 
                                     <td>
-                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                                        {
+                                             @Html.ActionLink(" ", "Delete", new { id = item.Id},
+                                                new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -178,7 +183,12 @@
                                     }
 
                                     <td>
-                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                                        {
+                                             @Html.ActionLink(" ", "Delete", new { id = item.Id},
+                                                new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                        }
                                     </td>
                                 </tr>
                             }

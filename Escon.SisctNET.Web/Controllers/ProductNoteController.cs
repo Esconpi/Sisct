@@ -217,6 +217,7 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal valor_fecop = 0;
                 string code2 = "";
                 var notes = _noteService.FindByUf(note.Company.Id,note.AnoRef,note.MesRef,note.Uf);
+
                 var products = _service.FindByNcmUfAliq(notes,entity.Ncm,entity.Picms, rst.Cest);
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
@@ -488,6 +489,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
+                        List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
+
                         foreach (var item in products)
                         {
                             decimal baseCalc = 0;
@@ -597,8 +600,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.Incentivo = false;
                             }
 
-                            var result = _service.Update(item, GetLog(OccorenceLog.Update));
+                            updateProducts.Add(item);
+                            //var result = _service.Update(item, GetLog(OccorenceLog.Update));
                         }
+
+                       _service.Update(updateProducts);
                     }
                 }
 
@@ -652,6 +658,8 @@ namespace Escon.SisctNET.Web.Controllers
                     
                 }
 
+                List<Note> updateNote = new List<Note>();
+
                 foreach (var prod in products)
                 {
                     bool status = false;
@@ -666,8 +674,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     nota.Status = status;
 
-                    _noteService.Update(nota, GetLog(OccorenceLog.Update));
+                    updateNote.Add(nota);
+
+                    //_noteService.Update(nota, GetLog(OccorenceLog.Update));
                 }
+
+                _noteService.Update(updateNote);
 
                 return RedirectToAction("Index", new { noteId = note.Id });
             }
@@ -688,7 +700,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var notes = _noteService.FindByNotes(id, year, month);
-                var products = _service.FindByProductsType(notes, typeTaxation);
+                var products = _service.FindByProductsType(notes, typeTaxation).OrderBy(_ => _.Note.Iest).ToList();
                 var notasTaxation = products.Select(_ => _.Note).Distinct().ToList();
                 var notas = products.Select(_ => _.Nnf).Distinct();
                 var total = _service.FindByTotal(notas.ToList());
@@ -808,9 +820,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Notes = notes;
 
-
+                    decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + 
+                        products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() +
+                        products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
                     ViewBag.ValorProd = Convert.ToDouble(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalBC = Convert.ToDouble(Math.Round(products.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    //ViewBag.TotalBC = Convert.ToDouble(Math.Round(products.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalBC = Convert.ToDouble(Math.Round(baseCalculo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     ViewBag.TotalNotas = Convert.ToDouble(total).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                     ViewBag.TotalFecop = Convert.ToDouble(totalFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -1333,7 +1349,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 registros = productsNormal.Count();
                                 vProds = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() + productsNormal.Select(_ => _.Vseg).Sum() - productsNormal.Select(_ => _.Vdesc).Sum() + productsNormal.Select(_ => _.Vfrete).Sum());
                                 freterateado = Convert.ToDecimal(productsNormal.Select(_ => _.Freterateado).Sum());
-                                totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vbasecalc).Sum());
+
+                                totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() +
+                                                productsNormal.Select(_ => _.Vseg).Sum() - productsNormal.Select(_ => _.Vdesc).Sum() + productsNormal.Select(_ => _.Vfrete).Sum() +
+                                                productsNormal.Select(_ => _.Freterateado).Sum() + productsNormal.Select(_ => _.Vipi).Sum());
+                                //totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vbasecalc).Sum());
                                 totalIpi = Convert.ToDecimal(productsNormal.Select(_ => _.Vipi).Sum());
                                 totalBcIcms = Convert.ToDecimal(productsNormal.Select(_ => _.Valoragregado).Sum());
                                 totalBCR = Convert.ToDecimal(productsNormal.Select(_ => _.ValorBCR).Sum());
@@ -1346,9 +1366,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             if (type == 7)
-                            {
-                               
-                               
+                            {                               
                                 totalIcmsIE = productsAll.Select(_ => _.TotalICMS).Sum();
                                 var totalFecop1 = productsAll.Select(_ => _.TotalFecop).Sum();
 
@@ -1357,7 +1375,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 vProds = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() + productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum());
                                 freterateado = Convert.ToDecimal(productsP.Select(_ => _.Freterateado).Sum());
-                                totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vbasecalc).Sum());
+                                totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() +
+                                                productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() +
+                                                productsP.Select(_ => _.Freterateado).Sum() + productsP.Select(_ => _.Vipi).Sum());
+
+                                //totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vbasecalc).Sum());
                                 totalIpi = Convert.ToDecimal(productsP.Select(_ => _.Vipi).Sum());
                                 totalBcIcms = Convert.ToDecimal(productsP.Select(_ => _.Valoragregado).Sum());
                                 totalBCR = Convert.ToDecimal(productsP.Select(_ => _.ValorBCR).Sum());
@@ -1415,7 +1437,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 var cfopVenda = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(4) || _.CfopTypeId.Equals(5))).Select(_ => _.Cfop.Code).ToList();
 
-                                if (comp.SectionId.Equals(1))
+                                if (comp.SectionId.Equals(2))
                                 {
                                     exitNotes = import.Nfe(directoryNfeExit);
 
@@ -2045,7 +2067,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.Icms = comp.Icms;
                                 ViewBag.Fecop = comp.Fecop;
 
-                                decimal baseIcms = productsP.Select(_ => _.Vbasecalc).Sum();
+                                //decimal baseIcms = productsP.Select(_ => _.Vbasecalc).Sum();
+                                decimal baseIcms = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() +
+                                                productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() +
+                                                productsP.Select(_ => _.Freterateado).Sum() + productsP.Select(_ => _.Vipi).Sum());
                                 ViewBag.Base = Convert.ToDouble(Math.Round(baseIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 impostoIcms = Convert.ToDecimal(baseIcms * (comp.Icms / 100));
                                 impostoFecop = Convert.ToDecimal(baseIcms * (comp.Fecop / 100));
@@ -6817,6 +6842,25 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-           
+        
+        public IActionResult Delete(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var prod = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+
+                return RedirectToAction("Index", new { noteId = prod.NoteId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }

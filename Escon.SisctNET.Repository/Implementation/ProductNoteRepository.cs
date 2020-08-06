@@ -313,5 +313,16 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             _context.SaveChanges();
         }
+
+        public void Update(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Update(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
     }
 }

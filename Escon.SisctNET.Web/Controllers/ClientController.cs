@@ -127,6 +127,11 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
+                            if (IE == "")
+                            {
+                                tipoCliente = 2;
+                            }
+
                             if (existCnpj == null)
                             {
                                 var CNPJRaiz = CNPJ.Substring(0, 8);

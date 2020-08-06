@@ -825,6 +825,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return Unauthorized();
             }
+
             try
             {
                 var products = _itemService.FindByNotes(id);

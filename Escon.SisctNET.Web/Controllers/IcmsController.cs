@@ -3550,7 +3550,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         decimal totalDarFecop = 0, totalDarIcms = 0;
 
-                        if (comp.SectionId.Equals(1))
+                        if (comp.SectionId.Equals(2))
                         {
                             exitNotes = import.Nfe(directoryNfeExit);
 

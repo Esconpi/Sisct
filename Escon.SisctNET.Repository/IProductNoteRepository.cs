@@ -9,6 +9,8 @@ namespace Escon.SisctNET.Repository
 
         void Delete(List<Model.ProductNote> products, Model.Log log = null);
 
+        void Update(List<Model.ProductNote> products, Model.Log log = null);
+
         List<Model.ProductNote> FindByNotes(int noteId, Model.Log log = null);
 
         List<Model.ProductNote> FindByProducts(List<Model.Note> notes, Model.Log log = null);
