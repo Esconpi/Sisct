@@ -616,6 +616,43 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Tax(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult Tax(int id, Model.Company entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {

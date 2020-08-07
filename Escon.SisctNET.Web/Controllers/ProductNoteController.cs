@@ -3139,7 +3139,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 ViewBag.TotalVenda = Math.Round(Convert.ToDouble(totalVendas.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                                ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(baseCalcNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                                ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 ViewBag.TotalTransferencia = Math.Round(Convert.ToDouble(totalTranferenciaInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 ViewBag.TotalDevo = Math.Round(Convert.ToDouble(totalDevo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                                 ViewBag.BaseCalc = Math.Round(Convert.ToDouble(baseCalc.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3585,7 +3585,6 @@ namespace Escon.SisctNET.Web.Controllers
                         icmsFecop2STSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6))).Select(_ => _.Note.Fecop2).Distinct().Sum()), 2);
                         ViewBag.IcmsFecopSTIE = Convert.ToDouble(icmsFecop1STIE + icmsFecop2STIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.IcmsFecopSTSIE = Convert.ToDouble(icmsFecop1STSIE + icmsFecop2STSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
                         ViewBag.TotalFinalFecopCalculadaSTIE = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalFinalFecopCalculadaSTSIE = Convert.ToDouble(Math.Round(Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
@@ -3597,7 +3596,11 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.Icms = comp.Icms;
                         ViewBag.Fecop = comp.Fecop;
 
-                        decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
+                        ///decimal baseIcms = productsIncentive.Select(_ => _.Vbasecalc).Sum();
+                        decimal baseIcms = Convert.ToDecimal(productsIncentive.Select(_ => _.Vprod).Sum() + productsIncentive.Select(_ => _.Voutro).Sum() +
+                        productsIncentive.Select(_ => _.Vseg).Sum() - productsIncentive.Select(_ => _.Vdesc).Sum() + productsIncentive.Select(_ => _.Vfrete).Sum() +
+                        productsIncentive.Select(_ => _.Freterateado).Sum() + productsIncentive.Select(_ => _.Vipi).Sum());
+
                         ViewBag.Base = Convert.ToDouble(Math.Round(baseIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         decimal impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
                         ViewBag.ImpostoIcms = Convert.ToDouble(Math.Round(impostoIcms, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3605,9 +3608,22 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.ImpostoFecop = Convert.ToDouble(Math.Round(impostoFecop, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 
-                        decimal? impostoGeral = 0;
+                        //ecimal? impostoGeral = 0;
 
-                        impostoGeral = products.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalICMS).Sum() + products.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalFecop).Sum();
+                        //impostoGeral = products.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalICMS).Sum() + products.Where(_ => _.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)).Select(_ => _.TotalFecop).Sum();
+
+                        decimal icmsGeralNormal = IcmsAPagarSTSIE + IcmsAPagarSTIE;
+                        decimal icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum());
+                        decimal fecopGeralNomal = Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) + Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE));
+                        decimal fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum());
+                        decimal impostoGeral = icmsGeralNormal + icmsGeralIncetivo + fecopGeralNomal + fecopGeralIncentivo;
+
+                        ViewBag.IcmsNormal = Convert.ToDouble(Math.Round(icmsGeralNormal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FecopNormal = Convert.ToDouble(Math.Round(fecopGeralNomal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.IcmsIncentivo = Convert.ToDouble(Math.Round(icmsGeralIncetivo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FecopIncentivo = Convert.ToDouble(Math.Round(fecopGeralIncentivo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        ViewBag.ImpostoGeral = Convert.ToDouble(Math.Round(Convert.ToDecimal(impostoGeral), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                         decimal? basefunef = impostoGeral - impostoIcms;
                         ViewBag.BaseFunef = Convert.ToDouble(Math.Round(Convert.ToDecimal(basefunef), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
@@ -3615,7 +3631,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal taxaFunef = Convert.ToDecimal(basefunef * (Convert.ToDecimal(comp.Funef) / 100));
                         ViewBag.TaxaFunef = Convert.ToDouble(Math.Round(taxaFunef, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
-                        ViewBag.ImpostoGeral = Convert.ToDouble(Math.Round(Convert.ToDecimal(impostoGeral), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                       
 
                         totalDarIcms += impostoIcms;
                         totalDarFecop += impostoFecop;
@@ -4652,7 +4668,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalVenda = Math.Round(Convert.ToDouble(totalVendas.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(baseCalcNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalTransferencia = Math.Round(Convert.ToDouble(totalTranferenciaInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.TotalDevo = Math.Round(Convert.ToDouble(totalDevo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                         ViewBag.BaseCalc = Math.Round(Convert.ToDouble(baseCalc.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");

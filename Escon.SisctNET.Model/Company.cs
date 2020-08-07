@@ -170,5 +170,17 @@ namespace Escon.SisctNET.Model
         public decimal? VendaArt781 { get; set; }
 
         public decimal? VendaArt781Excedente { get; set; }
+
+        [Display(Name = "IRPJ %")]
+        public decimal? IRPJ { get; set; }
+
+        [Display(Name = "CSLL %")]
+        public decimal? CSLL { get; set; }
+
+        [Display(Name = "CPRB %")]
+        public decimal? CPRB { get; set; }
+
+        public bool SatusCPRB { get; set; }
+
     }
 }
