@@ -72,7 +72,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Document = comp.Document;
                     ViewBag.Status = comp.Status;
 
-                    var result = _service.FindByNotes(id, year, month);
+                    var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
                     ViewBag.Count = result.Count();
                     return View(result);
                 }
@@ -583,6 +583,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Orig = Convert.ToInt32(det["orig"]);
                                         prod.Incentivo = incentivo;
                                         prod.DateStart = Convert.ToDateTime(taxed.DateStart);
+                                        prod.Produto = "Normal";
 
                                         /*var item = new Model.ProductNote
                                         {

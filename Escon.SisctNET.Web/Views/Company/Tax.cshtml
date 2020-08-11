@@ -1,1 +1,33 @@
 ﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Tax";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+
+        <h3 class="box-title">
+            <strong>Percetuais PIS/COFINS</strong>
+        </h3>
+        <div style="text-align:center;">
+            <strong> @Model.SocialName - @Model.Document</strong>
+        </div>
+        <br />
+    </div>
+
+    <div class="box-body">
+        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1))
+        {
+            @await Html.PartialAsync("_PermissionTax", Model, new ViewDataDictionary(ViewData))
+        }
+        else
+        {
+            @await Html.PartialAsync("_NoPermissionTax", Model, new ViewDataDictionary(ViewData))
+        }
+
+    </div>
+</div>

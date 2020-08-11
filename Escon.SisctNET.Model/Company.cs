@@ -180,7 +180,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CPRB %")]
         public decimal? CPRB { get; set; }
 
-        public bool SatusCPRB { get; set; }
+        public bool StatusCPRB { get; set; }
 
     }
 }

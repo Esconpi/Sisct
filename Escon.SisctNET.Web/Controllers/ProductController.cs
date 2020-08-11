@@ -72,6 +72,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
                 lista_group.Insert(0, new Model.Group() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList groups = new SelectList(lista_group, "Id", "Description", null);
                 ViewBag.GroupId = groups;
@@ -122,7 +128,14 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
 
                 if (result.DateEnd != null)
                 {
@@ -175,7 +188,14 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
 
                 if (result.DateEnd != null)
                 {
@@ -230,6 +250,7 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+        
         [HttpGet]
         public IActionResult Import()
         {
@@ -239,7 +260,14 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
                 return View();
             }
             catch (Exception ex)
@@ -332,10 +360,8 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         public IActionResult GetAll(int draw, int start)
         {
-
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
@@ -378,7 +404,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Code = r.Code,
                               Description = r.Description,
-                              GroupName = r.Group.Description,
+                              GroupName = r.Group.Item + " - " + r.Group.Description,
                               Price = r.Price.ToString().Replace(".", ","),
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
@@ -398,7 +424,7 @@ namespace Escon.SisctNET.Web.Controllers
                                   Id = r.Id.ToString(),
                                   Code = r.Code,
                                   Description = r.Description,
-                                  GroupName = r.Group.Description,
+                                  GroupName = r.Group.Item + " - " + r.Group.Description,
                                   Price = r.Price.ToString().Replace(".", ","),
                                   Unity = r.Unity,
                                   Inicio = r.DateStart.ToString("dd/MM/yyyy"),

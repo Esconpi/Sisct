@@ -198,5 +198,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Validade Inicial")]
         public DateTime ? DateStart { get; set; }
+
+        public string Produto { get; set; }
     }
 }

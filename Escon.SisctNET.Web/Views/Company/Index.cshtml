@@ -99,7 +99,7 @@
 
                 });
 
-                 $("#tblCompany").on("change", ".active", function(){
+                $("#tblCompany").on("change", ".active", function(){
                     try {
 
                         $.ajax({
@@ -120,9 +120,9 @@
                     } catch (e) {
                         console.log(e);
                     }
-                 });
+                });
 
-                 $("#tblCompany").on("change", ".incentive", function(){
+                $("#tblCompany").on("change", ".incentive", function(){
                     try {
 
                         $.ajax({
@@ -143,9 +143,9 @@
                     } catch (e) {
                         console.log(e);
                     }
-                 });
+                });
 
-                 $("#tblCompany").on("change", ".status", function(){
+                $("#tblCompany").on("change", ".status", function(){
                     try {
 
                         $.ajax({
@@ -165,10 +165,10 @@
 
                     } catch (e) {
                         console.log(e);
-                    }
-                 });
+                }
+                });
 
-                 $("#tblCompany").on("change", "select", function () {
+                $("#tblCompany").on("change", "select", function () {
 
                     $.ajax({
                         url: '@(Url.Action("UpdateCountingType", "Company"))',
@@ -185,7 +185,7 @@
                         }
                     });
 
-                 });
+                });
 
             },
             "processing": true,
@@ -274,6 +274,7 @@
                                 "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncms Trbutados' /> " +
                                 "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfops' /> " +
                                 "<a href='/Company/EditNew/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Incentivo' /> " +
+                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar PIS/COFINS' /> " +
                                 "<a href='/Suspension/Index/" + data + "' class = 'fa fa-calendar-minus-o pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Suspensões' /> " +
                                 "<a href='/Notification/Index/" + data + "' class = 'fa fa-exclamation-triangle pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Notificaçõas' /> "
                         }
@@ -281,7 +282,7 @@
                             
                               return "<a href='/Company/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Empresa' /> " +
                                 "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncms Trbutados' /> " +
-                                "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfops' /> "
+                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar PIS/COFINS' /> " 
                         }
 
                     }

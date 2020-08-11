@@ -94,7 +94,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                //SessionManager.SetLogoutInSession();
                 SessionManager.SetAccessesInSession(null);
                 SessionManager.SetLoginInSession(null);
                 SessionManager.SetUserIdInSession(0);

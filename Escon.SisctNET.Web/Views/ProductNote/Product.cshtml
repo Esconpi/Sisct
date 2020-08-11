@@ -104,7 +104,7 @@
                     {
                         <div class="form-group col-lg-2 col-md-3 col-xs-12">
                             <label class="control-label">Quantidade da Pauta</label>
-                            <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" />
+                            <input type="text" class="form-control" id="quant" name="quantAlterada" value="@Model.Qpauta" style="font-size:12px;" />
                         </div>
                     }
                     else
@@ -218,8 +218,25 @@
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Produto</label>
                         <select class="form-control selectoption" name="produto">
-                            <option value="1" selected>Normal</option>
-                            <option value="2">Especial</option>
+                            @if (Model.Produto == null)
+                            {
+                                <option value="1" selected>Normal</option>
+                                <option value="2">Especial</option>
+                            }
+                            else
+                            {
+                                @if (Model.Produto.Equals("Especial"))
+                                {
+                                    <option value="1">Normal</option>
+                                    <option value="2" selected>Especial</option>
+                                }
+                                else
+                                {
+                                    <option value="1" selected>Normal</option>
+                                    <option value="2">Especial</option>
+                                }
+                            }
+
                         </select>
                     </div>
                 </div>

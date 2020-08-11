@@ -53,11 +53,6 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<Access>>("AccessesSisctNET");
         }
 
-        public static void SetLogoutInSession()
-        {
-            _httpContextAccessor.HttpContext.Session.Clear();
-        }
-
         public static void SetCompanyIdInSession(int companyId)
         {
             _httpContextAccessor.HttpContext.Session.Set<int>("CompanyIdSisctNET", companyId);

@@ -93,7 +93,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read));
+                    var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read)).OrderBy(_ => _.Status).ToList();
                     var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
                     ViewBag.Id = rst.CompanyId;
                     ViewBag.Year = rst.AnoRef;
@@ -147,7 +147,6 @@ namespace Escon.SisctNET.Web.Controllers
                 
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
-
 
                 List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
                 foreach (var prod in list_product)
@@ -226,7 +225,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
 
-                if (entity.Pautado == true)
+                if (entity.Pautado == true) 
                 {
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
@@ -250,8 +249,6 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal total_icms = 0;
                         baseCalc = prod.Vbasecalc + prod.Vdesc;
                         
-
-
                         decimal quantParaCalc = 0;
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
                         if (quantPauta != "")
@@ -370,6 +367,7 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Vbasecalc = baseCalc;
                     prod.Incentivo = true;
                     prod.DateStart = Convert.ToDateTime(dateStart);
+                    prod.Produto = "Especial";
 
                     _service.Update(prod, GetLog(Model.OccorenceLog.Read));
                 }
@@ -479,11 +477,14 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Product1Id = null;
                         prod.Pautado = false;
                         prod.DateStart = Convert.ToDateTime(dateStart);
+
                         if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
                         {
                             prod.Incentivo = false;
                         }
 
+                        prod.Qpauta = null;
+                        prod.Produto = "Especial";
 
                         var result = _service.Update(prod, GetLog(OccorenceLog.Update));
                     }
@@ -600,6 +601,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.Incentivo = false;
                             }
 
+                            item.Qpauta = null;
+                            item.Produto = "Normal";
+          
                             updateProducts.Add(item);
                             //var result = _service.Update(item, GetLog(OccorenceLog.Update));
                         }

@@ -626,7 +626,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
+                return View(result);
             }
             catch (Exception ex)
             {
@@ -645,6 +645,11 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                result.IRPJ = entity.IRPJ;
+                result.CSLL = entity.CSLL;
+                result.CPRB = entity.CPRB;
+                result.StatusCPRB = entity.StatusCPRB;
+                _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
