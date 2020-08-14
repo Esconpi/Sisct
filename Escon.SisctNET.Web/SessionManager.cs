@@ -91,6 +91,16 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<string>("MonthSisctNET");
         }
+
+        public static void SetProductsSped(List<List<string>> products)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<List<string>>>("ProductsSpedSisctNET", products);
+        }
+
+        public static List<List<string>> GetProductsSped()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<List<string>>>("ProductsSpedSisctNET");
+        }
     }
 
 }

@@ -62,9 +62,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
-                var import = new Import();
+                var importXml = new Xml.Import();
                 List<List<string>> ncms = new List<List<string>>();
-                ncms = import.FindByNcms(directoryNfe);
+                ncms = importXml.FindByNcms(directoryNfe);
 
                 TaxationNcm ncmMonofasicoTemp = new TaxationNcm();
 

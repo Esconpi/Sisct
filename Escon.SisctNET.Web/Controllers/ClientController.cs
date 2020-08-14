@@ -103,15 +103,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntrada = confDBSisctNfEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                var import = new Import();
+                var importXml = new Xml.Import();
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = import.Client(directoryNfeSaida);
+                dets = importXml.Client(directoryNfeSaida);
 
                 int tipoCliente = 1;
 
-                if(comp.AnnexId.Equals(3)){
+                if(Convert.ToInt32(comp.AnnexId).Equals(3)){
                     tipoCliente = 2;
                 }
 
@@ -127,13 +127,13 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
 
-                            if (IE == "")
-                            {
-                                tipoCliente = 2;
-                            }
-
                             if (existCnpj == null)
                             {
+                                if (IE.Equals(""))
+                                {
+                                    tipoCliente = 2;
+                                }
+
                                 var CNPJRaiz = CNPJ.Substring(0, 8);
                                 var client = new Model.Client
                                 {
@@ -243,6 +243,7 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
+                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = client.CompanyId});
             }
@@ -291,6 +292,7 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
+                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Details", new { companyId = client.CompanyId, count = count });
             }

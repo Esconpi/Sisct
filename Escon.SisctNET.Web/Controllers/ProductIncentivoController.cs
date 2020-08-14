@@ -98,13 +98,13 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
 
                 int cont = 0;
-                var import = new Import();
+                var importXml = new Xml.Import();
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
 
-                products = import.NfeExitProducts(directoryNfe);
+                products = importXml.NfeExitProducts(directoryNfe);
 
                 foreach (var prod in products)
                 {

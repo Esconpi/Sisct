@@ -96,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfe = Nfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
-                var import = new Import();
+                var importSped = new Sped.Import();
 
                 string dirUpload = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
 
@@ -143,11 +143,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (option.Equals("all"))
                 {
-                    sped = import.SpedAll(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                    sped = importSped.SpedAll(caminhoDestinoArquivoOriginalUpload, directoryNfe);
                 }
                 else if (option.Equals("entry"))
                 {
-                    sped = import.SpedEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                    sped = importSped.SpedEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
                 }
                 
 

@@ -90,7 +90,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                var import = new Import(_companyCfopService);
+                var importXml = new Xml.Import(_companyCfopService);
+                var importSped = new Sped.Import(_companyCfopService);
                 var mes = new Month();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -111,7 +112,7 @@ namespace Escon.SisctNET.Web.Controllers
                         valorContabilEntrada = 0, baseCalcIcmsEntrada = 0, valorIcmsEntrada = 0, valorFecopEntrada = 0;
                     int codeCfop = 0;
 
-                    notes = import.Nfe(directoryNfeExit);
+                    notes = importXml.Nfe(directoryNfeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -565,8 +566,8 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesDevoSaida = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesDevoEntrada = new List<List<Dictionary<string, string>>>();*/
 
-                    exitNotes = import.Nfe(directoryNfeExit);
-                    entryNotes = import.Nfe(directoryNfeEntrada);
+                    exitNotes = importXml.Nfe(directoryNfeExit);
+                    entryNotes = importXml.Nfe(directoryNfeEntrada);
 
                     var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
                     var clientesAll = _clientService.FindAll(null).Where(_ => _.CompanyId.Equals(id)).Select(_ => _.Document).ToList();
@@ -1650,11 +1651,11 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
                     if (comp.AnnexId.Equals(3))
                     {
-                        notesVenda = import.Nfe(directoryNfeExit);
+                        notesVenda = importXml.Nfe(directoryNfeExit);
                     }
                     else
                     {
-                        notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                        notesVenda = importXml.NfeExit(directoryNfeExit, id, type, "venda");
                     }
 
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
@@ -1821,7 +1822,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("foraAnexo"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-                    notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
+                    notesVenda = importXml.NfeExit(directoryNfeExit, id, type, "venda");
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
@@ -2022,7 +2023,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var cestST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
                             var cestIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
 
-                            decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id),
+                            decimal creditosIcms = importSped.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id),
                                     debitosIcms = 0;
 
                             /*List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
@@ -2034,7 +2035,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var contribuintes = _clientService.FindByContribuinte(id, "all");
                             var clientesAll = _clientService.FindAll(null).Where(_ => _.CompanyId.Equals(id)).Select(_ => _.Document).ToList();
 
-                            exitNotes = import.Nfe(directoryNfeExit);
+                            exitNotes = importXml.Nfe(directoryNfeExit);
 
                             /*notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                             notesVendaSt = import.NfeExit(directoryNfeExit, id, type, "vendaSt");
@@ -2657,12 +2658,12 @@ namespace Escon.SisctNET.Web.Controllers
                             List<List<string>> percentuaisNIncentivado = new List<List<string>>();
 
 
-                            decimal creditosIcms = import.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id);
+                            decimal creditosIcms = importSped.SpedCredito(caminhoDestinoArquivoOriginal, comp.Id);
 
                             /*notesVenda = import.NfeExit(directoryNfeExit, id, type, "venda");
                             notesDevo = import.NfeExit(directoryNfeExit, id, type, "devolucao de compra");*/
 
-                            exitNotes = import.Nfe(directoryNfeExit);
+                            exitNotes = importXml.Nfe(directoryNfeExit);
 
                             var cfopsDevoCompra = _companyCfopService.FindByCfopActive(id, "incentivo", "devolucao de compra").Select(_ => _.Cfop.Code);
                             var cfopsVenda = _companyCfopService.FindByCfopActive(id, "incentivo", "venda").Select(_ => _.Cfop.Code);
@@ -2728,7 +2729,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (cfop == true)
                                         {
-                                            if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]))
+                                            if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
                                             {
                                                 if (cestIncentivado.Contains(cest))
                                                 {
@@ -2799,7 +2800,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
 
                                             }
-                                            else if (codeProdST.Contains(exitNotes[i][k]["cProd"]))
+                                            else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
                                             {
                                                 if (cestST.Contains(cest))
                                                 {
@@ -2832,7 +2833,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     percent = 0;
                                                 }
                                             }
-                                            else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]))
+                                            else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
                                             {
                                                 if (cestIsento.Contains(cest))
                                                 {
@@ -3094,6 +3095,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     continue;
                                 }
 
+                                string CNPJ = exitNotes[i][2].ContainsKey("CNPJ") ? exitNotes[i][2]["CNPJ"] : "";
+
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
                                     //productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
@@ -3174,7 +3177,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     }
 
-                                    if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                    if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && CNPJ.Equals(comp.Document))
                                     {
                                         if (status == 1)
                                         {
@@ -3259,6 +3262,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 debitoIncetivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
 
+                                                pos = -1;
                                             }
                                         }
                                         else if (status == 2)
@@ -3290,7 +3294,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
-                                    if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                    if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && CNPJ.Equals(comp.Document))
                                     {
                                         if (status == 1)
                                         {
@@ -3552,7 +3556,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (comp.SectionId.Equals(2))
                         {
-                            exitNotes = import.Nfe(directoryNfeExit);
+                            exitNotes = importXml.Nfe(directoryNfeExit);
 
                             decimal vendasInternasElencadas = 0, vendasInterestadualElencadas = 0, vendasInternasDeselencadas = 0, vendasInterestadualDeselencadas = 0,
                                 InternasElencadas = 0, InterestadualElencadas = 0, InternasElencadasPortaria = 0, InterestadualElencadasPortaria = 0,
@@ -4215,7 +4219,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Code = cfop.Code;
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                    notes = import.NfeExit(directoryNfeExit, cfop.Code);
+                    notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
 
                     List<List<string>> resumoNote = new List<List<string>>();
 
@@ -4336,7 +4340,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var suspensions = _suspensionService.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
 
-                    entryNotes = import.Nfe(directoryNfeExit);
+                    entryNotes = importXml.Nfe(directoryNfeExit);
 
                     decimal valorTotal = 0;
 
@@ -4465,8 +4469,8 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal valorDiefSIE = Convert.ToDecimal((totalIcmsSIE + totalIcmsFreteIE) - icmsStnoteSIE - gnrePagaSIE + gnreNPagaSIE);
                     decimal icmsAPAPagar = valorDiefSIE - icmsApSIE;
 
-                    exitNotes = import.Nfe(directoryNfeExit);
-                    entryNotes = import.Nfe(directoryNfeEntrada);
+                    exitNotes = importXml.Nfe(directoryNfeExit);
+                    entryNotes = importXml.Nfe(directoryNfeEntrada);
 
                     var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
 
@@ -4993,7 +4997,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> daselencadaInterna = new List<List<string>>();
                     List<List<string>> daselencadaInterestadual = new List<List<string>>();
 
-                    exitNotes = import.Nfe(directoryNfeExit);
+                    exitNotes = importXml.Nfe(directoryNfeExit);
 
                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {

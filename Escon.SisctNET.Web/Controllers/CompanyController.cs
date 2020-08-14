@@ -645,10 +645,19 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                result.IRPJ = entity.IRPJ;
-                result.CSLL = entity.CSLL;
+                result.IRPJ1 = entity.IRPJ1;
+                result.IRPJ2 = entity.IRPJ2;
+                result.IRPJ3 = entity.IRPJ3;
+                result.IRPJ4 = entity.IRPJ4;
+                result.CSLL1 = entity.CSLL1;
+                result.CSLL2 = entity.CSLL2;
                 result.CPRB = entity.CPRB;
                 result.StatusCPRB = entity.StatusCPRB;
+                result.PercentualIRPJ = entity.PercentualIRPJ;
+                result.PercentualCSLL = entity.PercentualCSLL;
+                result.PercentualCofins = entity.PercentualCofins;
+                result.PercentualPis = entity.PercentualPis;
+                result.Updated = DateTime.Now;
                 _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

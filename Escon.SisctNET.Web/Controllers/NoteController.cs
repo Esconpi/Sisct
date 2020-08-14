@@ -96,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
-                var import = new Import();
+                var importXml = new Xml.Import();
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -105,7 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> notas = new  List<Note>();
 
-                notes = import.Nfe(directoryNfe, directotyCte);
+                notes = importXml.Nfe(directoryNfe, directotyCte);
 
                 var taxationCompany = _taxationService.FindByCompany(id);
                 var ncmConvenio = _ncmConvenioService.FindAll(null);

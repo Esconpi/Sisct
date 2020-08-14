@@ -112,6 +112,7 @@
                                     <td class="money">
                                         @Html.DisplayFor(modelItem => item.Vprod)
                                     </td>
+
                                     @if (item.TaxationTypeId != null)
                                     {
                                          <td>@item.TaxationType.Description</td>
@@ -120,6 +121,7 @@
                                     {
                                         <td></td>
                                     }
+
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>

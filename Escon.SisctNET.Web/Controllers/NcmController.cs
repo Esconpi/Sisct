@@ -85,6 +85,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
