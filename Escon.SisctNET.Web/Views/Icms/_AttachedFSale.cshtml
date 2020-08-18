@@ -7,6 +7,7 @@
             <th>
                 Ncm
             </th>
+            <th>Descrição</th>
             <th>
                 Valor
             </th>
@@ -20,16 +21,18 @@
         {
             <tr>
                 <td>@ViewBag.Ncm[i][0]</td>
+                <td>@ViewBag.Ncm[i][3]</td>
                 <td>@ViewBag.Ncm[i][1]</td>
-                <td style="width:150px;">@ViewBag.Ncm[i][2]</td>
+                <td style="width:150px;">@ViewBag.Ncm[i][2] %</td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
             <th>Total</th>
+            <th></th>
             <td>@ViewBag.TotalNcm</td>
-            <td>@ViewBag.PercentualTotal</td>
+            <td>@ViewBag.PercentualTotal %</td>
         </tr>
     </tfoot>
 </table>

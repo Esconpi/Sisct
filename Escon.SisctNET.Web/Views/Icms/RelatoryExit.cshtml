@@ -102,6 +102,10 @@
 
                     @await Html.PartialAsync("_MedicineAttachmentPart2", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "vendaforaincentivo")
+                {
+                    @await Html.PartialAsync("_Non-IncentiveSales", new ViewDataDictionary(ViewData))
+                }
 
             </div>
         </div>

@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th style="text-align:center;border:1px solid;" width="1200px" colspan="8">
-                    A - Operações Internas e Interestaduais, estas a não contribuinte
+                    A - Operações Internas
                 </th>
             </tr>
         </thead>
@@ -33,24 +33,53 @@
                 <td style="text-align:center;border:1px solid;">
                     Valor da NF
                 </td>
-                <td style="text-align:center;border:1px solid;">
+                <td style="text-align:center;border:1px solid;" width="100px">
                     % de Crédito Presumido
                 </td>
                 <td style="text-align:center;border:1px solid;">
                     Valor do Crédito
                 </td>
             </tr>
+            @for (int i = 0; i < ViewBag.ElencadaInterna.Count; i++)
+            {
+                <tr>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterna[i][0]
+                    </td>
+                    <td style="text-align:left;border:1px solid;padding-left:1%;">
+                        @ViewBag.ElencadaInterna[i][1]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterna[i][2]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterna[i][3]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterna[i][4]
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterna[i][5]
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterna[i][7] %
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterna[i][6]
+                    </td>
+                </tr>
+            }
             <tr>
                 <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="5">
                     TOTAL
                 </td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.ValorElencadaInterna</td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.PercentualElencadaInterna %</td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.ValorCreditoElencadaInterna</td>
             </tr>
             <tr>
                 <th style="text-align:center;border:1px solid;" width="1200px" colspan="8">
-                    B - Operações Interestaduais a contribuinte
+                    B - Operações Interestaduais
                 </th>
             </tr>
             <tr>
@@ -79,13 +108,42 @@
                     Valor do Crédito
                 </td>
             </tr>
+            @for (int i = 0; i < ViewBag.ElencadaInterestadual.Count; i++)
+            {
+                <tr>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterestadual[i][0]
+                    </td>
+                    <td style="text-align:left;border:1px solid;padding-left:1%;">
+                        @ViewBag.ElencadaInterestadual[i][1]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterestadual[i][2]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterestadual[i][3]
+                    </td>
+                    <td style="text-align:center;border:1px solid;">
+                        @ViewBag.ElencadaInterestadual[i][4]
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterestadual[i][5]
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterestadual[i][7] %
+                    </td>
+                    <td style="text-align:right;border:1px solid;padding-right:1%;">
+                        @ViewBag.ElencadaInterestadual[i][6]
+                    </td>
+                </tr>
+            }
             <tr>
                 <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="5">
                     TOTAL
                 </td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
-                <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.ValorElencadaInterestadual</td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.PercentualElencadaInterestadual %</td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">@ViewBag.ValorCreditoElencadaInterestadual</td>
             </tr>
         </tbody>
     </table>

@@ -149,6 +149,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 };
                                 _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
                                 cont++;
+
+                                tipoCliente = 1;
+
+                                if (Convert.ToInt32(comp.AnnexId).Equals(3))
+                                {
+                                    tipoCliente = 2;
+                                }
+
                             }
                         }
                     }

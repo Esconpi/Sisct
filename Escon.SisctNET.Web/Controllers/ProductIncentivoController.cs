@@ -516,7 +516,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession());
+            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Active).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
