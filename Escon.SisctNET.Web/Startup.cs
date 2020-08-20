@@ -3,6 +3,7 @@ using Escon.SisctNET.Repository;
 using Escon.SisctNET.Repository.Implementation;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Service.Implementation;
+using Escon.SisctNET.Web.Email;
 using Escon.SisctNET.Web.Middleware;
 using Escon.SisctNET.Web.Security;
 using Escon.SisctNET.Web.Security.Configuration;
@@ -173,6 +174,19 @@ namespace Escon.SisctNET.Web
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
+
+            try
+            {
+                var configSMTP = _configuration.GetSection("EmailConfiguration");
+                var confs = configSMTP.Get<EmailConfiguration>();
+
+                services.AddSingleton<IEmailConfiguration>(confs);
+                services.AddTransient<IEmailService, EmailService>();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

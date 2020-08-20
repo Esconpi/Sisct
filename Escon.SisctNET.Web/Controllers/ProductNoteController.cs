@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.IntegrationDarWeb;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
+using Escon.SisctNET.Web.Email;
 using Escon.SisctNET.Web.Taxation;
 using Escon.SisctNET.Web.ViewsModel;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,10 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IIntegrationWsDar _integrationWsDar;
         private readonly IConfigurationService _configurationService;
 
+        private readonly IEmailService _serviceEmail;
+        private readonly IEmailConfiguration _emailConfiguration;
+        private readonly IEmailResponsibleService _emailResponsibleService;
+
         public ProductNote(
             IProductNoteService service,
             INoteService noteService,
@@ -45,7 +50,10 @@ namespace Escon.SisctNET.Web.Controllers
             IFunctionalityService functionalityService,
             IIntegrationWsDar integrationWsDar,
             IConfigurationService configurationService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IEmailService serviceEmail,
+            IEmailConfiguration emailConfiguration,
+            IEmailResponsibleService emailResponsibleService)
             : base(functionalityService, "ProductNote")
         {
             _service = service;
@@ -61,6 +69,9 @@ namespace Escon.SisctNET.Web.Controllers
             _integrationWsDar = integrationWsDar;
             _configurationService = configurationService;
             _darDocumentService = darDocumentService;
+            _serviceEmail = serviceEmail;
+            _emailConfiguration = emailConfiguration;
+            _emailResponsibleService = emailResponsibleService;
 
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -1250,7 +1261,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!System.IO.Directory.Exists(dirOutput))
                         System.IO.Directory.CreateDirectory(dirOutput);
 
-                    var fileOutput =$"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
+                    var fileOutput = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
                     fileOutput = System.IO.Path.Combine(dirOutput, fileOutput);
 
                     System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.Base64));
@@ -1266,6 +1277,29 @@ namespace Escon.SisctNET.Web.Controllers
                         MessageType = response.MessageType,
                         Updated = DateTime.Now
                     }, null);
+
+
+                    //Enviar Email
+
+                    var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description}";
+                    var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description} 
+                                  referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy")}";
+
+                    var emailFrom = _emailConfiguration.SmtpUsername;
+
+                    List<EmailAddress> emailto = new List<EmailAddress>();
+                    foreach (var to in await _emailResponsibleService.GetByCompanyAsync(SessionManager.GetCompanyInSession()))
+                        emailto.Add(new EmailAddress() { Address = to.Email, Name = "" });
+
+                    EmailMessage email = new EmailMessage()
+                    {
+                        Content = body,
+                        FromAddresses = new List<EmailAddress>() { new EmailAddress() { Address = _emailConfiguration.SmtpUsername, Name = "Sistems SisCT - ESCONPI" } },
+                        Subject = subject,
+                        ToAddresses = emailto
+                    };
+
+                    _serviceEmail.Send(email, new string[] { fileOutput });
 
                     if (darDoc.Id <= 0) return BadRequest(new { code = 500, message = "falha ao tentar gravar dados de resposta do ws." });
 
