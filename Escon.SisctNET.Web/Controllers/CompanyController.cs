@@ -645,20 +645,30 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                result.IRPJ1 = entity.IRPJ1;
-                result.IRPJ2 = entity.IRPJ2;
-                result.IRPJ3 = entity.IRPJ3;
-                result.IRPJ4 = entity.IRPJ4;
-                result.CSLL1 = entity.CSLL1;
-                result.CSLL2 = entity.CSLL2;
-                result.CPRB = entity.CPRB;
-                result.StatusCPRB = entity.StatusCPRB;
-                result.PercentualIRPJ = entity.PercentualIRPJ;
-                result.PercentualCSLL = entity.PercentualCSLL;
-                result.PercentualCofins = entity.PercentualCofins;
-                result.PercentualPis = entity.PercentualPis;
-                result.Updated = DateTime.Now;
-                _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                var companies = _service.FindAll(null).Where(_ => _.Document.Substring(0, 8).Equals(result.Document.Substring(0, 8))).ToList();
+
+                List<Model.Company> comps = new List<Company>();
+
+                foreach (var c in companies)
+                {
+                    c.IRPJ1 = entity.IRPJ1;
+                    c.IRPJ2 = entity.IRPJ2;
+                    c.IRPJ3 = entity.IRPJ3;
+                    c.IRPJ4 = entity.IRPJ4;
+                    c.CSLL1 = entity.CSLL1;
+                    c.CSLL2 = entity.CSLL2;
+                    c.CPRB = entity.CPRB;
+                    c.StatusCPRB = entity.StatusCPRB;
+                    c.PercentualIRPJ = entity.PercentualIRPJ;
+                    c.PercentualCSLL = entity.PercentualCSLL;
+                    c.PercentualCofins = entity.PercentualCofins;
+                    c.PercentualPis = entity.PercentualPis;
+                    c.Updated = DateTime.Now;
+                    comps.Add(c);
+                }
+                
+                _service.Update(comps);
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

@@ -69,7 +69,7 @@
 
         @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8 || ViewBag.type == 3 || ViewBag.type == 4 || ViewBag.type == 5 && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
-            <div style="width:100%; overflow:hidden; padding:20px; padding-left:1% ; padding-right:1%;">
+            <div style="width:100%; padding:20px; padding-left:1% ; padding-right:1%;">
                 <table class="table" style="font-size:8px; border: 2px solid;">
                     @if (ViewBag.type == 1 || ViewBag.type == 2 || ViewBag.type == 7 || ViewBag.type == 8)
                     {
@@ -106,7 +106,7 @@
 
         @if (ViewBag.Incetive == true && ViewBag.type != 8 && ViewBag.type != 9 && ViewBag.TaxationType == 1 && ViewBag.Anexo != null && (ViewBag.type != 6 && ViewBag.type != 9 && ViewBag.type != 10))
         {
-            <div style="width:100%; overflow:hidden; padding:10px;">
+            <div style="width:100%; padding:10px;">
                 @if (ViewBag.TaxationType == 1 && ViewBag.type != 8 && ViewBag.type != 7)
                 {
 

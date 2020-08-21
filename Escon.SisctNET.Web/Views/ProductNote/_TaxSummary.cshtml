@@ -10,6 +10,12 @@
             @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
 
         }
+        else if (ViewBag.Anexo == 3)
+        {
+            @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
+
+            @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
+        }
 
     }
 

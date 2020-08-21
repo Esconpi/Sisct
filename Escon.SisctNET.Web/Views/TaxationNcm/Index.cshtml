@@ -34,6 +34,7 @@
                             @Html.DisplayNameFor(model => model.Ncm.Description)
                         </th>
                         <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th>Tipo</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -90,15 +91,12 @@
                             }
                         }
                     },
+                    { "data": "tipo" },
+ 
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            if (row.status == true) {
-                                return ""
-                            }
-                            else {
-                                return "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
-                            }
+                            return "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
                         }
                     }
                 ]

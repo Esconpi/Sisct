@@ -36,7 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult RelatoryExit(int id, string year, string month, string type)
+        public IActionResult RelatoryExit(int id, string year, string month,string trimestre, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -53,25 +53,32 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Document = comp.Document;
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 ViewBag.Type = type;
+                ViewBag.Trimestre = trimestre;
 
                 if (comp.CountingTypeId == null)
                 {
                     throw new Exception("Escolha o Tipo da Empresa");
                 }
 
+
                 if (type.Equals("resumoncm"))
                 {
-                    List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
+
+                    List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                     List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                     List<TaxationNcm> ncmsMonofasico = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
                     List<string> codeProdNormal = new List<string>();
+                    List<string> ncmMono = new List<string>();
+                    List<string> ncmNormal = new List<string>();
                     List<List<string>> resumoNcm = new List<List<string>>();
                     List<int> ncms = new List<int>();
 
@@ -87,45 +94,47 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     //notesVenda = import.NfeExit(directoryNfeExit, comp.Id, Convert.ToInt32(comp.CountingTypeId));
-                    notesVenda = importXml.Nfe(directoryNfeExit);
+                    exitNotes = importXml.Nfe(directoryNfeExit);
 
                     decimal valorProduto = 0, valorPis = 0, valorCofins = 0; 
 
-                    for (int i = notesVenda.Count - 1; i >= 0; i--)
+                    for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {
-                        if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i][1]["finNFe"] == "4")
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i][1]["finNFe"] == "4")
                         {
-                            notesVenda.RemoveAt(i);
+                            exitNotes.RemoveAt(i);
                             continue;
                         }
 
-                        if (notesVenda[i][1].ContainsKey("dhEmi"))
+                        if (exitNotes[i][1].ContainsKey("dhEmi"))
                         {
                             if (comp.CountingTypeId.Equals(1))
                             {
-                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(exitNotes[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(1)).ToList();
                             }
                             else
                             {
-                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(notesVenda[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                                ncmsTaxation = _service.FindAllInDate(ncmsMonofasico, Convert.ToDateTime(exitNotes[i][1]["dhEmi"])).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
                             }
                             codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
                             codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal") || _.Type.Equals("Nenhum")).Select(_ => _.Ncm.Code).ToList();
                         }
 
                         int pos = -1;
 
-                        for (int j = 0; j < notesVenda[i].Count(); j++)
+                        for (int j = 0; j < exitNotes[i].Count(); j++)
                         {
-                            if (notesVenda[i][j].ContainsKey("cProd") && notesVenda[i][j].ContainsKey("NCM"))
+                            if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
                             {
 
-                                if (codeProdMono.Contains(notesVenda[i][j]["cProd"]))
+                                if (codeProdMono.Contains(exitNotes[i][j]["cProd"]) && ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                 {
                                     pos = -1;
                                     for (int k = 0; k < resumoNcm.Count(); k++)
                                     {
-                                        if (resumoNcm[k][0].Equals(notesVenda[i][j]["NCM"]))
+                                        if (resumoNcm[k][0].Equals(exitNotes[i][j]["NCM"]))
                                         {
                                             pos = k;
                                         }
@@ -133,7 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (pos < 0)
                                     {
-                                        var nn = ncmsAll.Where(_ => _.Code.Equals(notesVenda[i][j]["NCM"])).FirstOrDefault();
+                                        var nn = ncmsAll.Where(_ => _.Code.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
                                         List<string> ncmTemp = new List<string>();
                                         ncmTemp.Add(nn.Code);
                                         ncmTemp.Add(nn.Description);
@@ -147,39 +156,39 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if(pos >= 0)
                                     {
-                                        if (notesVenda[i][j].ContainsKey("vProd"))
+                                        if (exitNotes[i][j].ContainsKey("vProd"))
                                         {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vProd"])).ToString();
-                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vProd"]);
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
+                                            valorProduto += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                         }
 
-                                        if (notesVenda[i][j].ContainsKey("vFrete"))
+                                        if (exitNotes[i][j].ContainsKey("vFrete"))
                                         {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vFrete"])).ToString();
-                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vFrete"]);
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
+                                            valorProduto += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                         }
 
-                                        if (notesVenda[i][j].ContainsKey("vDesc"))
+                                        if (exitNotes[i][j].ContainsKey("vDesc"))
                                         {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) - Convert.ToDecimal(notesVenda[i][j]["vDesc"])).ToString();
-                                            valorProduto -= Convert.ToDecimal(notesVenda[i][j]["vDesc"]);
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
+                                            valorProduto -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                         }
 
-                                        if (notesVenda[i][j].ContainsKey("vOutro"))
+                                        if (exitNotes[i][j].ContainsKey("vOutro"))
                                         {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vOutro"])).ToString();
-                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vOutro"]);                                        }
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
+                                            valorProduto += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);                                        }
 
-                                        if (notesVenda[i][j].ContainsKey("vSeg"))
+                                        if (exitNotes[i][j].ContainsKey("vSeg"))
                                         {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(notesVenda[i][j]["vSeg"])).ToString();
-                                            valorProduto += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
+                                            valorProduto += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                         }
 
                                     }
 
                                 }
-                                else if (codeProdNormal.Contains(notesVenda[i][j]["cProd"]))
+                                else if (codeProdNormal.Contains(exitNotes[i][j]["cProd"]) && ncmNormal.Contains(exitNotes[i][j]["NCM"]))
                                 {
                                     pos = -1;
                                     continue;
@@ -192,16 +201,16 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
 
-                            if (notesVenda[i][j].ContainsKey("pPIS") && notesVenda[i][j].ContainsKey("CST") && pos >= 0)
+                            if (exitNotes[i][j].ContainsKey("pPIS") && exitNotes[i][j].ContainsKey("CST") && pos >= 0)
                             {
-                                resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + ((Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
-                                valorPis += (Convert.ToDecimal(notesVenda[i][j]["pPIS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
+                                resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + ((Convert.ToDecimal(exitNotes[i][j]["pPIS"]) * Convert.ToDecimal(exitNotes[i][j]["vBC"])) / 100)).ToString();
+                                valorPis += (Convert.ToDecimal(exitNotes[i][j]["pPIS"]) * Convert.ToDecimal(exitNotes[i][j]["vBC"])) / 100;
                             }
 
-                            if (notesVenda[i][j].ContainsKey("pCOFINS") && notesVenda[i][j].ContainsKey("CST") && pos >= 0)
+                            if (exitNotes[i][j].ContainsKey("pCOFINS") && exitNotes[i][j].ContainsKey("CST") && pos >= 0)
                             {
-                                resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + ((Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100)).ToString();
-                                valorCofins += (Convert.ToDecimal(notesVenda[i][j]["pCOFINS"]) * Convert.ToDecimal(notesVenda[i][j]["vBC"])) / 100;
+                                resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + ((Convert.ToDecimal(exitNotes[i][j]["pCOFINS"]) * Convert.ToDecimal(exitNotes[i][j]["vBC"])) / 100)).ToString();
+                                valorCofins += (Convert.ToDecimal(exitNotes[i][j]["pCOFINS"]) * Convert.ToDecimal(exitNotes[i][j]["vBC"])) / 100;
                             }
                         }
 
@@ -247,6 +256,192 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorProduto = Convert.ToDouble(valorProduto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorPis = Convert.ToDouble(valorPis.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorCofins = Convert.ToDouble(valorCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                }
+                else if (type.Equals("imposto"))
+                {
+                    var companies = _companyService.FindByCompanies().Where(_ => _.Document.Substring(0,8).Equals(comp.Document.Substring(0,8))).ToList();
+
+                    ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2).ToString().Replace(".", ",");
+                    ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4).ToString().Replace(".", ",");
+
+                    if (trimestre == "Nenhum")
+                    {
+                        decimal receitaComercio = 0, devolucaoComercio = 0, receitaServico = 0, devolucaoServico = 0,
+                            receitaMono = 0, creditoDevMono = 0;
+
+                        foreach (var c in companies)
+                        {
+                            List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
+                            List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
+
+                            directoryNfeExit = NfeExit.Value + "\\" + c.Document + "\\" + year + "\\" + month;
+                            directoryNfeEntry = NfeEntry.Value + "\\" + c.Document + "\\" + year + "\\" + month;
+
+                            exitNotes = importXml.Nfe(directoryNfeExit);
+                            entryNotes = importXml.Nfe(directoryNfeEntry);
+
+                            for (int i = exitNotes.Count - 1; i >= 0; i--)
+                            {
+                                if (!exitNotes[i][2]["CNPJ"].Equals(c.Document))
+                                {
+                                    exitNotes.RemoveAt(i);
+                                    continue;
+                                }
+
+                                for (int j = 0; j < exitNotes[i].Count; j++)
+                                {
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][1]["finNFe"] != "4")
+                                    {
+                                        receitaComercio += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][1]["finNFe"] != "4")
+                                    {
+                                        receitaComercio += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][1]["finNFe"] != "4")
+                                    {
+                                        receitaComercio -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][1]["finNFe"] != "4")
+                                    {
+                                        receitaComercio += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][1]["finNFe"] != "4")
+                                    {
+                                        receitaComercio += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                    }
+                                }
+                            }
+
+                            for (int i = exitNotes.Count - 1; i >= 0; i--)
+                            {
+                                if (exitNotes[i][1]["finNFe"] != "4")
+                                {
+                                    exitNotes.RemoveAt(i);
+                                    continue;
+                                }
+
+                                for (int j = 0; j < exitNotes[i].Count; j++)
+                                {
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vProd"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vFrete"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vDesc"))
+                                    {
+                                        devolucaoComercio -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vOutro"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                    }
+
+                                    if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vSeg"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                    }
+                                }
+                            }
+
+                            for (int i = entryNotes.Count - 1; i >= 0; i--)
+                            {
+                                if (entryNotes[i][1]["finNFe"] != "4" || !entryNotes[i][3]["CNPJ"].Equals(c.Document))
+                                {
+                                    entryNotes.RemoveAt(i);
+                                    continue;
+                                }
+
+                                for (int j = 0; j < entryNotes[i].Count; j++)
+                                {
+                                    if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vProd"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                    }
+
+                                    if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vFrete"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                    }
+
+                                    if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vDesc"))
+                                    {
+                                        devolucaoComercio -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                    }
+
+                                    if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vOutro"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                    }
+
+                                    if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vSeg"))
+                                    {
+                                        devolucaoComercio += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                    }
+                                }
+                            }
+                        }
+
+                        decimal baseCalcAntesMono = receitaComercio + receitaServico;
+                        decimal baseCalcPisCofins = baseCalcAntesMono - receitaMono;
+
+                        //PIS
+                        decimal pisApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualPis)) / 100;
+                        decimal pisRetido = (creditoDevMono * Convert.ToDecimal(comp.PercentualPis)) / 100;
+                        decimal pisAPagar = pisApurado - pisRetido;
+
+                        //COFINS
+                        decimal cofinsApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualCofins)) / 100;
+                        decimal cofinsRetido = (creditoDevMono * Convert.ToDecimal(comp.PercentualCofins)) / 100;
+                        decimal cofinsAPagar = cofinsApurado - cofinsRetido;
+
+                        //CSLL
+                        decimal percentualCsll1 = (Convert.ToDecimal(comp.CSLL1) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
+                        decimal percentualCsll2 = (Convert.ToDecimal(comp.CSLL2) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
+                        decimal csllApurado = ((receitaComercio - devolucaoComercio) * percentualCsll1 / 100) + ((receitaServico - devolucaoServico) * percentualCsll2 / 100);
+
+                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                        //Comércio
+                        ViewBag.FaturamentoComercio = Convert.ToDouble(receitaComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.DevolucaoComercio = Convert.ToDouble(devolucaoComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Serviço
+                        ViewBag.FaturamentoServico = Convert.ToDouble(receitaServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.DevolucaoServico = Convert.ToDouble(devolucaoServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Dados PIS e COFINS
+                        ViewBag.BaseCalcAntesMono = Convert.ToDouble(baseCalcAntesMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseCalcMono = Convert.ToDouble(receitaMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CreditoDevMono = Convert.ToDouble(creditoDevMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseCalcPisCofins = Convert.ToDouble(baseCalcPisCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //PIS
+                        ViewBag.PisApurado = Convert.ToDouble(pisApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.PisRetido = Convert.ToDouble(pisRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.PisAPagar = Convert.ToDouble(pisAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //COFINS
+                        ViewBag.CofinsApurado = Convert.ToDouble(cofinsApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CofinsRetido = Convert.ToDouble(cofinsRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CofinsAPagar = Convert.ToDouble(cofinsAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    }
+                    else
+                    {
+
+                    }
 
                 }
                 return View();

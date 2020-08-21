@@ -27,17 +27,38 @@
                             @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
-                            <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
+                            @if (ViewBag.Trimestre == "Nenhum")
+                            {
+                                <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
+                            }
+                            else
+                            {
+                                <strong>Trimestre</strong>
+                            }
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="box-body">
-            <div style="width:100%; padding:20px;">
+            <div style="width:100%; padding:10px;">
                 @if (ViewBag.Type == "resumoncm")
                 {
-                    @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))}
+                    @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "imposto")
+                {
+                    @if (ViewBag.Trimestre == "Nenhum")
+                    {
+                        @await Html.PartialAsync("_TaxMonth", new ViewDataDictionary(ViewData))
+                    }
+                    else
+                    {
+
+                    }
+
+                }
             </div>
         </div>
     </div>

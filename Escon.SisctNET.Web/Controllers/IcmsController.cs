@@ -1,4 +1,4 @@
-﻿using Escon.SisctNET.Model;
+﻿ using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Period;
 using Microsoft.AspNetCore.Hosting;

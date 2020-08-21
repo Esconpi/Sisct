@@ -118,16 +118,19 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][1]["finNFe"] == "4")
                     {
                         notes.RemoveAt(i);
+                        continue;
                     }
                     else if (!notes[i][3]["CNPJ"].Equals(comp.Document))
                     {
                         notes.RemoveAt(i);
+                        continue;
                     }
                     else if (notes[i][1]["idDest"] == "1" && comp.Status == true)
                     {
                         if (notes[i][2]["UF"] == notes[i][3]["UF"])
                         {
                             notes.RemoveAt(i);
+                            continue;
                         }
                     }
 

@@ -553,6 +553,7 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
+                              Tipo = r.Type,
                               Status = r.Status
 
                           };
@@ -571,6 +572,7 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
+                              Tipo = r.Type,
                               Status = r.Status
 
                           };
