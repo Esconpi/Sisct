@@ -596,6 +596,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                SessionManager.SetCompanyIdInSession(id);
+
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var notes = _noteService.FindByNotes(id, year, month);
                 var result = _service.FindByProductsType(notes, typeTaxation);
@@ -1257,12 +1259,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (response.MessageType.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.Message });
 
-                    var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Billets");
+                    var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot/Billets");
                     if (!System.IO.Directory.Exists(dirOutput))
                         System.IO.Directory.CreateDirectory(dirOutput);
 
-                    var fileOutput = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
-                    fileOutput = System.IO.Path.Combine(dirOutput, fileOutput);
+                    var fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
+                    var fileOutput = System.IO.Path.Combine(dirOutput, fileName);
 
                     System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.Base64));
 
@@ -1275,9 +1277,15 @@ namespace Escon.SisctNET.Web.Controllers
                         DigitableLine = response.DigitableLine,
                         DocumentNumber = long.Parse($"{response.DocumentNumber}{item.Key}"),
                         MessageType = response.MessageType,
-                        Updated = DateTime.Now
+                        Updated = DateTime.Now,
+                        CompanyId = SessionManager.GetCompanyIdInSession(),
+                        DarId = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id,
+                        PaidOut = false,
+                        PeriodReference = Convert.ToInt32(requestBarCode.PeriodoReferencia),
+                        DueDate = DateTime.Now.AddDays(int.Parse(dueDate.Value)),
+                        BilletPath = fileName,
+                        Canceled = false
                     }, null);
-
 
                     //Enviar Email
 
@@ -1288,7 +1296,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var emailFrom = _emailConfiguration.SmtpUsername;
 
                     List<EmailAddress> emailto = new List<EmailAddress>();
-                    foreach (var to in await _emailResponsibleService.GetByCompanyAsync(SessionManager.GetCompanyInSession()))
+                    foreach (var to in await _emailResponsibleService.GetByCompanyAsync(SessionManager.GetCompanyIdInSession()))
                         emailto.Add(new EmailAddress() { Address = to.Email, Name = "" });
 
                     EmailMessage email = new EmailMessage()
@@ -1303,7 +1311,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (darDoc.Id <= 0) return BadRequest(new { code = 500, message = "falha ao tentar gravar dados de resposta do ws." });
 
-                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description, barcode = response.BarCode, line = response.DigitableLine });
+                    var recipe = dar.FirstOrDefault(x => x.Code.Equals(item.Key));
+                    var recipedesc = recipe.Description;
+
+                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc, barcode = response.BarCode, line = response.DigitableLine, download = fileName });
                 }
                 catch (Exception ex)
                 {

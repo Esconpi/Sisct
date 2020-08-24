@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
@@ -16,5 +17,25 @@ namespace Escon.SisctNET.Model
         public int ControlNumber { get; set; }
 
         public long DocumentNumber { get; set; }
+
+        public bool Canceled { get; set; }
+
+        [ForeignKey("Dar")]
+        public int DarId { get; set; }
+
+        public virtual Dar Dar { get; set; }
+
+        [ForeignKey("Company")]
+        public int CompanyId { get; set; }
+
+        public virtual Company Company { get; set; }
+
+        public int PeriodReference { get; set; }
+
+        public DateTime DueDate { get; set; }
+
+        public bool PaidOut { get; set; }
+
+        public string BilletPath { get; set; }
     }
 }
