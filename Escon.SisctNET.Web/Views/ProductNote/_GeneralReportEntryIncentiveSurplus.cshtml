@@ -96,7 +96,7 @@
                 @ViewBag.TotalDevoGrupo
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalExecedente
+                @ViewBag.TotalBaseCalcuGrupo
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @ViewBag.PercentualVendaGrupo %
@@ -105,11 +105,7 @@
     </tbody>
 </table>
 
-@if (ViewBag.Grupo.Count == 0)
-{
-    <h6 style="padding-left:20px;"><strong>Não houve vendas para o mesmo grupo maior que @ViewBag.PercentualCNPJ %</strong></h6>
-}
-else
+@if (ViewBag.Grupo.Count > 0)
 {
     
     <table class="table" style="font-size: 12px; border:2px solid;">
@@ -128,9 +124,8 @@ else
                 <tr>
                     <td>@item[0]</td>
                     <td>@item[1]</td>
-                    <td>@item[3]</td>
-                    <td>@item[2] %</td>
-
+                    <td>@item[2]</td>
+                    <td>@item[3] %</td>
                 </tr>
             }
 
@@ -157,21 +152,18 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in ViewBag.Grupo)
-        {
-            <tr>
-                <th>ICMS Excedente Grupo</th>
-                <td>@item[3]</td>
-                <th style="font-size:17px; text-align:center">-</th>
-                <td>@item[4]</td>
-                <th style="font-size:17px; text-align:center">=</th>
-                <td>@item[5]</td>
-                <th style="text-align:center">x</th>
-                <td>@item[6]</td>
-                <th style="font-size:17px; text-align:center;">=</th>
-                <td style="text-align:right; padding-right:1%;">@item[7]</td>
-            </tr>
-        }
+        <tr>
+            <th>ICMS Excedente Grupo</th>
+            <td>@ViewBag.TotalBaseCalcuGrupo</td>
+            <th style="font-size:17px; text-align:center">-</th>
+            <td>@ViewBag.LimiteGrupo</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td>@ViewBag.ExcedenteGrupo</td>
+            <th style="text-align:center">x</th>
+            <td>@ViewBag.PercentualExcedenteGrupo</td>
+            <th style="font-size:17px; text-align:center">=</th>
+            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalExcedenteGrupo</td>
+        </tr>
         <tr>
             <th>Transferência Interestadual</th>
             <td>@ViewBag.TotalTransferencia</td>

@@ -19,6 +19,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public void Create(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _repository.Create(taxationNcms, log);
+        }
+
         public void Delete(int id, Log log)
         {
             _repository.Delete(id, log);
@@ -57,6 +62,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationNcm Update(TaxationNcm entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _repository.Update(taxationNcms, log);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -46,10 +45,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var ncmsMonofasicoAll = _service.FindAll(null);
-                var ncmsAll = _ncmService.FindAll(null);
-
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                var ncmsMonofasicoAll = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
+                var ncmsAll = _ncmService.FindAll(null);                
 
                 if (comp.CountingTypeId == null)
                 {
@@ -68,20 +67,31 @@ namespace Escon.SisctNET.Web.Controllers
 
                 TaxationNcm ncmMonofasicoTemp = new TaxationNcm();
 
+                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                    if (comp.CountingTypeId.Equals(1))
-                    {
-                        ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1]) && _.Company.CountingTypeId.Equals(1)).FirstOrDefault();
-                    }
-                    else
-                    {
-                        ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1]) && (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3))).FirstOrDefault();
-                    }
+                   
+                    ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
+
                     if (ncmMonofasicoTemp == null && ncmTemp != null) 
                     {
-                        var taxationNcm = new Model.TaxationNcm
+                        TaxationNcm tricutacao = new TaxationNcm();
+
+                        tricutacao.CompanyId = id;
+                        tricutacao.NcmId = ncmTemp.Id;
+                        tricutacao.CodeProduct = ncms[i][0];
+                        tricutacao.Year = year;
+                        tricutacao.Month = month;
+                        tricutacao.Created = DateTime.Now;
+                        tricutacao.Updated = DateTime.Now;
+                        tricutacao.Type = "Nenhum";
+
+                        tributacoes.Add(tricutacao);
+
+                        /*var taxationNcm = new Model.TaxationNcm
                         {
                             CompanyId = id,
                             NcmId = ncmTemp.Id,
@@ -93,14 +103,18 @@ namespace Escon.SisctNET.Web.Controllers
                             Type = "Nenhum"
                         };
 
-                        _service.Create(entity:taxationNcm, GetLog(Model.OccorenceLog.Create));
+                        _service.Create(entity:taxationNcm, GetLog(Model.OccorenceLog.Create));*/
                     }
+
                     if (ncmTemp == null)
                     {
                         string message = "O NCM " + ncms[i][1] + " não estar cadastrado";
                         throw new Exception(message);
                     }
                 }
+
+                _service.Create(tributacoes, null); 
+
                 return RedirectToAction("Index", new { id = id, year = year, month = month});
             }
             catch(Exception ex)
@@ -204,6 +218,8 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, null);
 
+                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+
                 if (Request.Form["opcao"].ToString() == "1")
                 {
                     rst.Updated = DateTime.Now;
@@ -233,8 +249,8 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.DateStart = entity.DateStart;
                     rst.Type = Request.Form["type"].ToString();
 
-
-                    _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+                    tributacoes.Add(rst);
+                    //_service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 }
                 else if(Request.Form["opcao"].ToString() == "2")
@@ -269,11 +285,13 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Cofins = entity.Cofins;
                         n.DateStart = entity.DateStart;
                         n.Type = Request.Form["type"].ToString();
-                        _service.Update(n, null);
+
+                        tributacoes.Add(n);
+                        //_service.Update(n, null);
                     }
                 }
 
-               
+                _service.Update(tributacoes, null);
 
                 return RedirectToAction("Index" , new {id = rst.CompanyId, year = rst.Year, month = rst.Month});
             }
@@ -447,7 +465,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-
 
         public IActionResult GetAll(int draw, int start)
         {

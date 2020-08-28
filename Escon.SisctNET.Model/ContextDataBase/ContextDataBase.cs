@@ -83,5 +83,9 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<CreditBalance> CreditBalances { get; set; }
 
+        public DbSet<Tax> Taxes { get; set; }
+
+        public DbSet<Grupo> Grupos { get; set; }
+
     }
 }

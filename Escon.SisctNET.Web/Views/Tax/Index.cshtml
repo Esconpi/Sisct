@@ -1,0 +1,209 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
+        <div class="btn-group pull-right">
+
+            <a asp-action="Import" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="fa fa-cloud-download pull-left"></a>
+        </div>
+
+        <div style="width:100%; text-align:center;">
+            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+        </div>
+
+        <br />
+
+        <div style="width:100%; text-align:right; padding-right:1%;">
+            <strong>@ViewBag.Month/@ViewBag.Year</strong>
+        </div>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:10px;">
+            <nr></nr>
+            <div style="text-align:center">
+                <strong>ICMS</strong>
+            </div>
+            <table class="table" style="font-size:9px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;border:1px solid;" colspan="13">
+                            DADOS
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (ViewBag.Comp.TipoApuracao.Equals(true))
+                    {
+                        @await Html.PartialAsync("_InputData", Model, new ViewDataDictionary(ViewData))
+                    }
+                    else
+                    {
+                        @if (ViewBag.Comp.AnnexId != 3)
+                        {
+
+                        }
+                        else if (ViewBag.Comp.AnnexId.Equals(3))
+                        {
+                            @if (ViewBag.Comp.SectionId.Equals(2))
+                            {
+                                @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+
+            <hr />
+
+            <div style="text-align:center">
+                <strong>PIS/COFINS</strong>
+            </div>
+            <table class="table" style="font-size:9px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;border:1px solid;" colspan="12">
+                            DADOS
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;border:1px solid;" colspan="4">
+                            RECEITA BRUTA
+                        </td>
+                        <td style="text-align:center;border:1px solid;" colspan="4">
+                            DEVOLUÇÃO
+                        </td>
+                        <td style="text-align:center;border:1px solid;" width="100px" rowspan="2">
+                            RECEITA MONOFÁSICO
+                        </td>
+                        <td style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+                            CRÉDITO DEV. MONOFÁSICO
+                        </td>
+                        <td style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+                            CSLL RETIDO
+                        </td>
+                        <td style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+                            IRPJ RETIDO
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td style="text-align:center;border:1px solid;">
+                            PETRÓLEO @ViewBag.PercentualPetroleo %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            COMÉRCIO @ViewBag.PercentualComercio %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            TRASNPORTE @ViewBag.PercentualTransporte %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            SERVIÇO @ViewBag.PercentualServico %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            PETRÓLEO @ViewBag.PercentualPetroleo %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            COMÉRCIO @ViewBag.PercentualComercio %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            TRASNPORTE @ViewBag.PercentualTransporte %
+                        </td>
+                        <td style="text-align:center;border:1px solid;">
+                            SERVIÇO @ViewBag.PercentualServico %
+                        </td>
+                    </tr>
+                    <tr style="font-size:11px;">
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Receita1)
+                            }
+
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Receita2)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Receita3)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Receita4)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Devolucao1Entrada + Model.Devolucao1Saida)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Devolucao2Entrada + Model.Devolucao2Saida)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Devolucao3Entrada + Model.Devolucao3Saida)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.Devolucao4Entrada + Model.Devolucao4Saida)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.ReceitaMono)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.DevolucaoMonoEntrada + Model.DevolucaoMonoSaida)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.CsllRetido)
+                            }
+                        </td>
+                        <td style="text-align:right;border:1px solid;padding-right:1%;">
+                            @if (Model != null)
+                            {
+                                @Convert.ToDecimal(Model.IrpjRetido)
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

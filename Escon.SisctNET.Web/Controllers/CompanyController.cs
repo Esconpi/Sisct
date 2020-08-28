@@ -663,6 +663,7 @@ namespace Escon.SisctNET.Web.Controllers
                     c.PercentualCSLL = entity.PercentualCSLL;
                     c.PercentualCofins = entity.PercentualCofins;
                     c.PercentualPis = entity.PercentualPis;
+                    c.AdicionalIRPJ = entity.AdicionalIRPJ;
                     c.Updated = DateTime.Now;
                     comps.Add(c);
                 }

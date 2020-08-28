@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1081,6 +1082,96 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
             return totalDeCredito;
+        }
+        
+        public decimal SpedDevolucao(string directorySped, string company)
+        {
+            decimal totalDevolucao = 0;
+            StreamReader archiveSped = new StreamReader(directorySped);
+            var cfopsDevo = _companyCfopService.FindByCfopActive(company, "devolucao").Select(_ => _.Cfop.Code).ToList();
+            string line, tipo = "";
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipo = linha[2];
+                    }
+
+                    if (tipo == "0")
+                    {
+                        if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals(""))
+                        {
+                            totalDevolucao += Convert.ToDecimal(linha[7]);
+                        } 
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return totalDevolucao;
+        }
+        
+        public decimal SpedDevolucaoMono(string directorySped, string company, List<Model.TaxationNcm> ncmsMonofasico)
+        {
+            decimal totalDevolucao = 0;
+            StreamReader archiveSped = new StreamReader(directorySped);
+            var cfopsDevo = _companyCfopService.FindByCfopActive(company, "devolucao").Select(_ => _.Cfop.Code).ToList();
+            string line, tipo = "";
+
+            List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
+            List<string> codeProdMono = new List<string>();
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipo = linha[2];
+                    }
+
+                    if (linha[1].Equals("C100") && tipo == "0")
+                    {
+                        DateTime dataNota = Convert.ToDateTime(linha[10].Substring(0, 2) + "/" + linha[10].Substring(2, 2) + "/" + linha[10].Substring(4, 2));
+                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsMonofasico, dataNota).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                        codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                    }
+
+                    if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals("") && tipo == "0")
+                    {
+                        if (codeProdMono.Contains(linha[3]))
+                        {
+                            totalDevolucao += Convert.ToDecimal(linha[7]);
+                        }
+                    }
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return totalDevolucao;
         }
     }
 }

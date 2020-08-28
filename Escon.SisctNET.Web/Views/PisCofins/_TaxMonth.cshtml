@@ -1,7 +1,7 @@
 ﻿<table class="table" style="font-size:9px;">
     <thead>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="4">
+            <th style="text-align:center;border:1px solid;" colspan="8">
                 FATURAMENTO
             </th>
             <th style="text-align:center;border:1px solid;" colspan="4">
@@ -12,10 +12,10 @@
     </thead>
     <tbody>
         <tr>
-            <td style="text-align:center;border:1px solid;" colspan="2">
+            <td style="text-align:center;border:1px solid;" colspan="4">
                 RECEITA BRUTA
             </td>
-            <td style="text-align:center;border:1px solid;" colspan="2">
+            <td style="text-align:center;border:1px solid;" colspan="4">
                 DEVOLUÇÃO
             </td>
             <td style="text-align:center;border:1px solid;" width="120px" rowspan="2">
@@ -33,29 +33,53 @@
         </tr>
 
         <tr>
-            <td style="text-align:center;border:1px solid;" width="150px">
+            <td style="text-align:center;border:1px solid;">
+                PETRÓLEO @ViewBag.PercentualPetroleo %
+            </td>
+            <td style="text-align:center;border:1px solid;">
                 COMÉRCIO @ViewBag.PercentualComercio %
             </td>
-            <td style="text-align:center;border:1px solid;" width="150px">
+            <td style="text-align:center;border:1px solid;">
+                TRASNPORTE @ViewBag.PercentualTransporte %
+            </td>
+            <td style="text-align:center;border:1px solid;">
                 SERVIÇO @ViewBag.PercentualServico %
             </td>
-            <td style="text-align:center;border:1px solid;" width="150px">
+            <td style="text-align:center;border:1px solid;">
+                PETRÓLEO @ViewBag.PercentualPetroleo %
+            </td>
+            <td style="text-align:center;border:1px solid;">
                 COMÉRCIO @ViewBag.PercentualComercio %
             </td>
-            <td style="text-align:center;border:1px solid;" width="150px">
+            <td style="text-align:center;border:1px solid;">
+                TRASNPORTE @ViewBag.PercentualTransporte %
+            </td>
+            <td style="text-align:center;border:1px solid;">
                 SERVIÇO @ViewBag.PercentualServico %
             </td>
         </tr>
 
         <tr style="font-size:11px;">
             <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.FaturamentoPetroleo
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.FaturamentoComercio
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                @ViewBag.FaturamentoTransporte
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.FaturamentoServico
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.DevolucaoPetroleo
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.DevolucaoComercio
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                @ViewBag.DevolucaoTransporte
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.DevolucaoServico
@@ -85,6 +109,15 @@
             <th style="text-align:center;border:1px solid;" colspan="3">
                 COFINS
             </th>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                CSLL
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                IRPJ
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                CPRB
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -107,6 +140,27 @@
             <th style="text-align:center;border:1px solid;">
                 A PAGAR
             </th>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                @ViewBag.PercentualCPRB %
+            </th>
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
@@ -119,13 +173,34 @@
                 @ViewBag.PisAPagar
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-               @ViewBag.CofinsApurado
+                @ViewBag.CofinsApurado
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.CofinsRetido
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @ViewBag.CofinsAPagar
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.CsllApurado
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.CsllRetido
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.CsllAPagar
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.IrpjApurado
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.IrpjRetido
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.IrpjAPagar
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.CprbAPagar
             </td>
         </tr>
     </tbody>

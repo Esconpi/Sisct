@@ -136,6 +136,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IChapterRepository, ChapterRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICreditBalanceRepository, CreditBalanceRepository>();
+            services.AddScoped<ITaxRepository, TaxRepository>();
+            services.AddScoped<IGrupoRepository, GrupoRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -175,6 +177,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IChapterService, ChapterService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICreditBalanceService, CreditBalanceService>();
+            services.AddScoped<ITaxService, TaxService>();
+            services.AddScoped<IGrupoService, GrupoService>();
 
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();

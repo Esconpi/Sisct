@@ -17,6 +17,17 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Create(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            foreach (var t in taxationNcms)
+            {
+                _context.TaxationNcms.Add(t);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public List<TaxationNcm> FindAllInDate(DateTime dateProd, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();
@@ -80,6 +91,17 @@ namespace Escon.SisctNET.Repository.Implementation
                 ncms = _context.TaxationNcms.Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && _.Type.Equals("Monofásico")).ToList();
             }
             return ncms;
+        }
+
+        public void Update(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            foreach (var t in taxationNcms)
+            {
+                _context.TaxationNcms.Update(t);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
         }
     }
 }

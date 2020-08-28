@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -171,13 +170,13 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaArt781Excedente { get; set; }
 
-        [Display(Name = "IRPJ %")]
+        [Display(Name = "IRPJ Petróleo %")]
         public decimal? IRPJ1 { get; set; }
 
         [Display(Name = "IRPJ Comércio %")]
         public decimal? IRPJ2 { get; set; }
 
-        [Display(Name = "IRPJ %")]
+        [Display(Name = "IRPJ Transporte %")]
         public decimal? IRPJ3 { get; set; }
 
         [Display(Name = "IRPJ Serviço %")]
@@ -206,7 +205,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CSLL Normal %")]
         public decimal? PercentualCSLL { get; set; }
 
-        
+        [Display(Name = "Adicional IRPJ %")]
+        public decimal? AdicionalIRPJ { get; set; }
+
 
     }
 }
