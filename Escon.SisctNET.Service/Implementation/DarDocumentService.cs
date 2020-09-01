@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -37,6 +38,14 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindById(id, log);
         }
+
+        public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) => 
+            await _repository.GetByCompanyAndPeriodReferenceAndDarAsync(companyid, period, darId);
+
+        public async Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled) => 
+            await _repository.GetByCompanyAndPeriodReferenceAsync(companyid, period, canceled);
+
+        public async Task<List<DarDocument>> GetByCompanyIdAsync(int id) => await _repository.GetByCompanyIdAsync(id);
 
         public DarDocument Update(DarDocument entity, Log log)
         {

@@ -151,8 +151,8 @@
                     }
 
                     @if (SessionManager.GetCfopInSession().Equals(13) || SessionManager.GetCestInSession().Equals(10) || SessionManager.GetNcmInSession().Equals(7) || SessionManager.GetAttachmentInSession().Equals(8) ||
-                       SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
-                       SessionManager.GetDarInSession().Equals(19))
+                     SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
+                     SessionManager.GetDarInSession().Equals(19))
                     {
                         <li class="treeview menu">
                             <a href="#">
@@ -266,6 +266,22 @@
                         </li>
                     }
 
+                    <li class="treeview menu">
+                        <a href="#">
+                            <i class="fa fa-barcode"></i> <span>Boletos DAR</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display:none;">
+
+                            <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Consultar</a></li>
+                            <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Boletos Pendentes</a></li>
+                            <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Boletos Pagos</a></li>
+
+                        </ul>
+                    </li>
+
                 </ul>
             </section>
         </aside>
@@ -325,18 +341,18 @@
                 'placeholder': ''
             });
 
-             $(".number").inputmask('decimal', {
-                 'alias': 'numeric',
-                 'digits': 0,
-                 'groupSeparator': '',
-                 'radixPoint': ""
+            $(".number").inputmask('decimal', {
+                'alias': 'numeric',
+                'digits': 0,
+                'groupSeparator': '',
+                'radixPoint': ""
             });
 
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR'
             });
-            
+
             $('#tblIndex').DataTable();
 
             $('#tblIndex2').DataTable({

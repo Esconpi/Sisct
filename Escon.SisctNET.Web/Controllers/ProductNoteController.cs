@@ -612,6 +612,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.SocialName = company.SocialName;
                 ViewBag.Document = company.Document;
+                ViewBag.CompanyId = company.Id;
 
                 ViewBag.Year = year;
                 ViewBag.Month = month;
@@ -1245,6 +1246,7 @@ namespace Escon.SisctNET.Web.Controllers
                         .Sum(x => Convert.ToDecimal(x.Value))
                         .ToString();
 
+                    //Chama web services para criar o Dar
                     var response = await _integrationWsDar.GetBarCodePdfAsync(new IntegrationDarService.solicitarCodigoBarrasPDFRequest()
                     {
                         codigoOrgao = organCode.Value,
@@ -1268,6 +1270,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                     System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.Base64));
 
+                    //Cancelar caso já existe o documento na base de dados
+                    var darDc = await _darDocumentService
+                        .GetByCompanyAndPeriodReferenceAndDarAsync(
+                            SessionManager.GetCompanyIdInSession(),
+                            Convert.ToInt32(requestBarCode.PeriodoReferencia),
+                            Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id)
+                        );
+
+                    if (darDc != null)
+                    {
+                        darDc.Canceled = true;
+                        _darDocumentService.Update(darDc, GetLog(OccorenceLog.Update));
+                    }
+
+                    //Gera novo Dar
                     var darDoc = _darDocumentService.Create(new DarDocument()
                     {
                         BarCode = response.BarCode,
@@ -1288,7 +1305,6 @@ namespace Escon.SisctNET.Web.Controllers
                     }, null);
 
                     //Enviar Email
-
                     var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description}";
                     var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description} 
                                   referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy")}";
@@ -1324,6 +1340,22 @@ namespace Escon.SisctNET.Web.Controllers
 
             return Ok(new { code = 200, response = messageResponse });
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDocumentsDar([FromQuery] int companyId, [FromQuery] int periodReference)
+        {
+            var messageResponse = new List<object>();
+
+            var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
+            var documents = await _darDocumentService.GetByCompanyAndPeriodReferenceAsync(companyId, periodReference, false);
+            foreach (var dc in documents)
+            {
+                var dr = dar.FirstOrDefault(x => x.Id.Equals(dc.DarId));
+                messageResponse.Add(new { code = 200, recipecode = dr.Code, recipedesc = dr.Description, barcode = dc.BarCode, line = dc.DigitableLine, download = dc.BilletPath });
+            }
+
+            return Ok(new { code = 200, response = messageResponse });
         }
 
         private int GetIntMonth(string month)
