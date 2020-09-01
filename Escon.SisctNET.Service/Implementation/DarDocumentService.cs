@@ -39,13 +39,15 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
-        public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) => 
+        public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) =>
             await _repository.GetByCompanyAndPeriodReferenceAndDarAsync(companyid, period, darId);
 
-        public async Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled) => 
+        public async Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled) =>
             await _repository.GetByCompanyAndPeriodReferenceAsync(companyid, period, canceled);
 
         public async Task<List<DarDocument>> GetByCompanyIdAsync(int id) => await _repository.GetByCompanyIdAsync(id);
+
+        public async Task<List<DarDocument>> ListFull() => await _repository.ListFull();
 
         public DarDocument Update(DarDocument entity, Log log)
         {

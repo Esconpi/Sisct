@@ -1,0 +1,50 @@
+			
+			## Substituição Tributária por MVA - Empresas não Incentivadas
+
+		* Código DAR			* Valor
+			
+		ViewBag.DarSTCO			ViewBag.IcmsPagarSIE
+		ViewBag.DarFecop		ViewBag.TotalFinalFecopCalculadaSIE
+	
+
+
+			## Substituição Tributária por MVA - Empresas Incentivadas
+
+		* Código DAR			* Valor
+
+		ViewBag.DarSTCO			ViewBag.IcmsPagarSIE
+		ViewBag.DarFecop		ViewBag.TotalFinalFecopCalculadaSIE
+		ViewBag.DarIcms			ViewBag.ImpostoIcms
+		ViewBag.DarFecop		ViewBag.ImpostoFecop
+		ViewBag.DarFunef		ViewBag.TaxaFunef
+				
+
+	
+			## Antecipação Parcial
+		
+		* Código DAR			* Valor
+
+		ViewBag.DarAp			ViewBag.IcmsPagarSIE
+
+
+
+			## Consumo ou Consumo p/ Revenda
+
+		* Código DAR			* Valor
+
+		ViewBag.DarSTCO			ViewBag.IcmsPagarSIE
+		
+
+
+			## Imobilizado
+
+		* Código DAR			* Valor
+	
+		ViewBag.DarIm			ViewBag.IcmsPagarSIE
+
+		
+		
+
+
+		
+

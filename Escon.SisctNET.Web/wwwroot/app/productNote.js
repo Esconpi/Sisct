@@ -115,6 +115,7 @@ $(document).ready(function () {
         GenerateBillet();
     });
 
-    LoadBillets();
+    setTimeout(LoadBillets(), 2000);
+   
 
 });

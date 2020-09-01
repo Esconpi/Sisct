@@ -6,6 +6,8 @@ namespace Escon.SisctNET.Service
 {
     public interface IDarDocumentService : IServiceBase<Model.DarDocument>
     {
+        Task<List<DarDocument>> ListFull();
+
         Task<List<DarDocument>> GetByCompanyIdAsync(int id);
 
         Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId );
