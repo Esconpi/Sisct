@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -56,5 +57,7 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public async Task<List<Company>> ListAllActiveAsync(Log log) => await _context.Companies.Where(x => x.Active).ToListAsync();
     }
 }

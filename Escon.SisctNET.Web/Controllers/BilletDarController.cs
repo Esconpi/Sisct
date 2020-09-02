@@ -13,6 +13,7 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class BilletDarController : ControllerBaseSisctNET
     {
+        private readonly ICompanyService _companyService;
         private readonly IDarService _darService;
         private readonly IDarDocumentService _darDocumentService;
         private readonly IEmailResponsibleService _emailResponsibleService;
@@ -20,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IEmailConfiguration _emailConfiguration;
 
         public BilletDarController(
+            ICompanyService companyService,
             IDarService darService,
             IDarDocumentService darDocumentService,
             IEmailResponsibleService emailResponsibleService,
@@ -35,16 +37,16 @@ namespace Escon.SisctNET.Web.Controllers
             _darService = darService;
             _serviceEmail = serviceEmail;
             _emailConfiguration = emailConfiguration;
+            _companyService = companyService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
-            FillPeriodReference();
+            await FillPeriodReference();
             var result = await _darDocumentService.ListFull();
-            FillDar();
-
+            await FillDar();
 
             return View(result);
         }
@@ -68,10 +70,10 @@ namespace Escon.SisctNET.Web.Controllers
                 switch (sit)
                 {
                     case "0":
-                        canceled = false;
+                        canceled = true;
                         break;
                     case "1":
-                        canceled = true;
+                        canceled = false;
                         break;
                     case "2":
                         canceled = null;
@@ -105,6 +107,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 await FillPeriodReference();
                 await FillDar();
+
                 var result = await _darDocumentService.SearchAsync(canceled, paidout, period, darid, companyid);
 
                 return View("Index", result);
@@ -156,10 +159,17 @@ namespace Escon.SisctNET.Web.Controllers
 
         private async Task FillDar()
         {
-            List<Model.Dar> list_dar = await _darService.FindAllAsync(GetLog(Model.OccorenceLog.Read));
-            list_dar.Insert(0, new Model.Dar() { Description = "Todos", Id = 0 });
-            SelectList dar = new SelectList(list_dar, "Id", "Description", null);
-            ViewBag.DarId = dar;
+            try
+            {
+                List<Model.Dar> list_dar = await _darService.FindAllAsync(GetLog(Model.OccorenceLog.Read));
+                list_dar.Insert(0, new Model.Dar() { Description = "Todos", Id = 0 });
+                SelectList dar = new SelectList(list_dar, "Id", "Description", null);
+                ViewBag.DarId = dar;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private async Task FillPeriodReference()
