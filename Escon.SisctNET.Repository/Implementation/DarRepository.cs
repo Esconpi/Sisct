@@ -1,6 +1,9 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -13,5 +16,11 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public async Task<List<Dar>> FindAllAsync(Log log)
+        {
+            base.AddLog(log);
+            var result = await _context.Dars.ToListAsync();
+            return result;
+        }
     }
 }
