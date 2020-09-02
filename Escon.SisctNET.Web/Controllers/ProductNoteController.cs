@@ -1238,7 +1238,19 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 try
                 {
-                    if (requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode.Equals(item.Key) && string.IsNullOrEmpty(x.Value)).FirstOrDefault() != null)
+                    var hasValue = false;
+                    var darCodes = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode.Equals(item.Key));
+
+                    foreach (var darC in darCodes)
+                    {
+                        if (!string.IsNullOrEmpty(darC.Value))
+                        {
+                            hasValue = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasValue)
                         continue;
 
                     var valueTotal = requestBarCode.RecipeCodeValues

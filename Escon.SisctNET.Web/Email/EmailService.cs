@@ -90,6 +90,9 @@ namespace Escon.SisctNET.Web.Email
                 }
                 catch (Exception ex)
                 {
+                    if (!System.IO.Directory.Exists("Logs"))
+                        System.IO.Directory.CreateDirectory("Logs");
+
                     System.IO.File.AppendAllText($"Logs/Log_{DateTime.Now.ToString("ddMMyyHH")}.txt", ex.Message + ex.StackTrace);
                     return new Tuple<bool, string>(false, ex.Message);
                 }

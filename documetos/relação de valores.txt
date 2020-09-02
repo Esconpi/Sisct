@@ -5,7 +5,7 @@
 			
 		ViewBag.DarSTCO			ViewBag.IcmsPagarSIE
 		ViewBag.DarFecop		ViewBag.TotalFinalFecopCalculadaSIE
-	
+		-> CARLEAN ALVES LIMA - 09423892000108
 
 
 			## Substituição Tributária por MVA - Empresas Incentivadas
@@ -17,7 +17,7 @@
 		ViewBag.DarIcms			ViewBag.ImpostoIcms
 		ViewBag.DarFecop		ViewBag.ImpostoFecop
 		ViewBag.DarFunef		ViewBag.TaxaFunef
-				
+		-> CASA DAS MOLAS DISTRIBUIDORA DE AUTOPECAS LTDA - 22030835000127
 
 	
 			## Antecipação Parcial
@@ -25,7 +25,7 @@
 		* Código DAR			* Valor
 
 		ViewBag.DarAp			ViewBag.IcmsPagarSIE
-
+		->SUPERMERCADO OLINDA LTDA - 19681032000128
 
 
 			## Consumo ou Consumo p/ Revenda
@@ -33,18 +33,12 @@
 		* Código DAR			* Valor
 
 		ViewBag.DarSTCO			ViewBag.IcmsPagarSIE
-		
+		->SUPERMERCADO OLINDA LTDA - 19681032000128
 
 
 			## Imobilizado
 
 		* Código DAR			* Valor
-	
 		ViewBag.DarIm			ViewBag.IcmsPagarSIE
 
 		
-		
-
-
-		
-

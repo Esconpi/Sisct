@@ -8,7 +8,15 @@
 <input type="hidden" id="PeriodoReferencia" value="@ViewBag.PeriodReferenceDarWs" />
 
 <!--ICMS por MVA-->
-<input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="@ViewBag.IcmsPagar" />
+@if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 3 || ViewBag.TaxationType == 4)
+{
+    <input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="@ViewBag.IcmsPagar" />
+}
+else
+{
+    <input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="" />
+}
+
 
 <!--Fecop por MVA-->
 <input type="hidden" id="DarFecop" data-code="@ViewBag.DarFecop" value="@ViewBag.TotalFinalFecopCalculada" />
@@ -22,8 +30,24 @@
 <!--Funef-->
 <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="@ViewBag.TaxaFunef" />
 
-<input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="@ViewBag.IcmsPagarSIE" />
-<input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="@ViewBag.IcmsPagarSIE" />
+@if (ViewBag.TaxationType == 2)
+{
+    <input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="@ViewBag.IcmsPagar" />
+}
+else
+{
+    <input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="" />
+}
+
+@if (ViewBag.TaxationType == 5)
+{
+    <input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="@ViewBag.IcmsPagar" />
+}
+else
+{
+    <input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="" />
+}
+
 
 <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnSendBillet">
     <div id="loaderBillet" class="loader pull-left" style="display:none;"></div>
