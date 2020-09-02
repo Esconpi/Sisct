@@ -1301,7 +1301,8 @@ namespace Escon.SisctNET.Web.Controllers
                         PeriodReference = Convert.ToInt32(requestBarCode.PeriodoReferencia),
                         DueDate = DateTime.Now.AddDays(int.Parse(dueDate.Value)),
                         BilletPath = fileName,
-                        Canceled = false
+                        Canceled = false,
+                        Value = Convert.ToDecimal(valueTotal)
                     }, null);
 
                     //Enviar Email

@@ -2,6 +2,7 @@
 using Escon.SisctNET.Web.Email;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,16 +41,71 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Index()
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+            FillPeriodReference();
             var result = await _darDocumentService.ListFull();
+            FillDar();
+
+
             return View(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(FormCollection forms)
+        public async Task<IActionResult> Index(IFormCollection forms)
         {
+
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
-            var result = await _darDocumentService.ListFull();
-            return View(result);
+
+            bool? canceled = null, paidout = null;
+            int? darid = null, period = null, companyid = null;
+
+            var sit = forms["Situation"].ToString();
+            var pa = forms["PaidOut"].ToString();
+            var dar = forms["DarId"].ToString();
+            var pe = forms["PeriodId"].ToString();
+
+            switch (sit)
+            {
+                case "0":
+                    canceled = false;
+                    break;
+                case "1":
+                    canceled = true;
+                    break;
+                case "2":
+                    canceled = null;
+                    break;
+                default:
+                    canceled = null;
+                    break;
+            }
+
+            switch (pa)
+            {
+                case "0":
+                    paidout = false;
+                    break;
+                case "1":
+                    paidout = true;
+                    break;
+                case "2":
+                    paidout = null;
+                    break;
+                default:
+                    canceled = null;
+                    break;
+            }
+
+            if (!dar.Equals("0"))
+                darid = Convert.ToInt32(dar);
+
+            if (!pe.Equals("0"))
+                period = Convert.ToInt32(pe);
+
+
+            var result = await _darDocumentService.SearchAsync(canceled, paidout, period, darid, companyid);
+            FillPeriodReference();
+            FillDar();
+            return View("Index", result);
         }
 
         [HttpGet]
@@ -88,6 +144,29 @@ namespace Escon.SisctNET.Web.Controllers
 
             return Ok(new { code = 200, message = "ok" });
 
+        }
+
+
+        private void FillDar()
+        {
+            List<Model.Dar> list_dar = _darService.FindAll(GetLog(Model.OccorenceLog.Read));
+            list_dar.Insert(0, new Model.Dar() { Description = "Todos", Id = 0 });
+            SelectList dar = new SelectList(list_dar, "Id", "Description", null);
+            ViewBag.DarId = dar;
+        }
+
+        private async void FillPeriodReference()
+        {
+            var periods = await _darDocumentService.GetPeriodsReferenceAsync();
+            List<object> itens = new List<object>();
+
+            itens.Add(new SelectListItem("Todos", "0"));
+            foreach (var item in periods)
+                itens.Add(new { Text = string.Format("{0}-{1}", item.ToString().Substring(4, 2), item.ToString().Substring(0, 4)), Value = item.ToString() });
+
+            SelectList selectPeriods = new SelectList(itens, "Value", "Text");
+
+            ViewBag.PeriodId = selectPeriods;
         }
     }
 }

@@ -37,5 +37,7 @@ namespace Escon.SisctNET.Model
         public bool PaidOut { get; set; }
 
         public string BilletPath { get; set; }
+
+        public decimal Value { get; set; }
     }
 }

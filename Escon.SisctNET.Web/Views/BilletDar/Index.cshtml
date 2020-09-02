@@ -14,50 +14,44 @@
 
     <div class="box-body">
         <div class="col-md-12">
-            <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                <label class="control-label">Situação</label>
-                <select class="form-control">
-                    <option>Todos</option>
-                    <option>Ativos</option>
-                    <option>Cancelados</option>
-                </select>
-            </div>
+            <form asp-action="Post" method="post">
 
-            <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                <label class="control-label">Situação Pgto</label>
-                <select class="form-control">
-                    <option>Todos</option>
-                    <option>Pagos</option>
-                    <option>Não Pagos</option>
-                </select>
-            </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <label class="control-label">Situação</label>
+                    <select class="form-control selectoption" name="Situation" id="Situation">
+                        <option value="2">Todos</option>
+                        <option value="1">Ativos</option>
+                        <option value="0">Cancelados</option>
+                    </select>
+                </div>
 
-            <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                <label class="control-label">Perído de Referência</label>
-                <select class="form-control">
-                    <option>01-2020</option>
-                    <option>02-2020</option>
-                    <option>03-2020</option>
-                </select>
-            </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <label class="control-label">Situação Pgto</label>
+                    <select class="form-control selectoption" name="PaidOut" id="PaidOut">
+                        <option value="2">Todos</option>
+                        <option value="1">Pagos</option>
+                        <option value="0">Não Pagos</option>
+                    </select>
+                </div>
 
-            <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                <label class="control-label">Dar</label>
-                <select class="form-control">
-                    <option>Todos</option>
-                    <option>Ativos</option>
-                    <option>Cancelados</option>
-                </select>
-            </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <label class="control-label">Perído de Referência</label>
+                    <select asp-items="@ViewBag.PeriodId" name="PeriodId" class="form-control selectoption" id="PeriodId"></select>
+                </div>
 
-            <div class="form-group col-lg-1 col-md-1 col-xs-12">
-                <label class="control-label">&nbsp;</label>
-                <button type="button" class="form-control btn btn-primary" value="Filtrar">
-                    <i class="fa fa-search"></i>
-                    Filtrar
-                </button>
-            </div>
+                <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                    <label class="control-label">Dar</label>
+                    <select asp-items="@ViewBag.DarId" name="DarId" class="form-control selectoption" id="DarId"></select>
+                </div>
 
+                <div class="form-group col-lg-1 col-md-1 col-xs-12">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="submit" class="form-control btn btn-primary" value="Filtrar">
+                        <i class="fa fa-search"></i>
+                        Filtrar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -103,6 +97,9 @@
                         <th>
                             Pago
                         </th>
+                        <th>
+                            Valor
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -138,6 +135,9 @@
                             </td>
                             <td style="text-align:center">
                                 @Html.DisplayFor(modelItem => item.PaidOut)
+                            </td>
+                            <td style="text-align:center">
+                                @String.Format("{0:C}", item.Value.ToString())
                             </td>
                             <td style="width:50px;">
                                 <a href='/Billets/@(item.BilletPath)' target='blank'><i class='fa fa-download'></i></a>
