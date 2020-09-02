@@ -45,8 +45,10 @@ namespace Escon.SisctNET.Web.Controllers
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
             await FillPeriodReference();
-            var result = await _darDocumentService.ListFull();
             await FillDar();
+            await FillCompany();
+
+            var result = await _darDocumentService.ListFull();
 
             return View(result);
         }
@@ -66,6 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var pa = forms["PaidOut"].ToString();
                 var dar = forms["DarId"].ToString();
                 var pe = forms["PeriodId"].ToString();
+                var company = forms["CompanyId"].ToString();
 
                 switch (sit)
                 {
@@ -105,8 +108,12 @@ namespace Escon.SisctNET.Web.Controllers
                 if (!pe.Equals("0"))
                     period = Convert.ToInt32(pe);
 
+                if (!company.Equals("0"))
+                    companyid = Convert.ToInt32(company);
+
                 await FillPeriodReference();
                 await FillDar();
+                await FillCompany();
 
                 var result = await _darDocumentService.SearchAsync(canceled, paidout, period, darid, companyid);
 
@@ -159,17 +166,15 @@ namespace Escon.SisctNET.Web.Controllers
 
         private async Task FillDar()
         {
-            try
-            {
-                List<Model.Dar> list_dar = await _darService.FindAllAsync(GetLog(Model.OccorenceLog.Read));
-                list_dar.Insert(0, new Model.Dar() { Description = "Todos", Id = 0 });
-                SelectList dar = new SelectList(list_dar, "Id", "Description", null);
-                ViewBag.DarId = dar;
-            }
-            catch (Exception ex)
-            {
+            List<Object> source = new List<object>();
 
-            }
+            List<Model.Dar> list_dar = await _darService.FindAllAsync(GetLog(Model.OccorenceLog.Read));
+
+            source.Add(new { Text = "Todos", Value = "0" });
+            list_dar.ForEach(x => source.Add(new { Text = string.Format("[{0}] - {1}", x.Code, x.Description), Value = x.Id }));
+
+            SelectList dar = new SelectList(source, "Value", "Text", null);
+            ViewBag.DarId = dar;
         }
 
         private async Task FillPeriodReference()
@@ -184,6 +189,18 @@ namespace Escon.SisctNET.Web.Controllers
             SelectList selectPeriods = new SelectList(itens, "Value", "Text");
 
             ViewBag.PeriodId = selectPeriods;
+        }
+
+        private async Task FillCompany()
+        {
+            List<Object> source = new List<object>();
+            List<Model.Company> list_dar = await _companyService.ListAllActiveAsync(GetLog(Model.OccorenceLog.Read));
+
+            source.Add(new { Text = "Todos", Value = "0" });
+            list_dar.ForEach(x => source.Add(new { Text = string.Format("[{0}] - [{1}] - {2}", x.Code, x.Document, x.SocialName), Value = x.Id }));
+
+            SelectList dar = new SelectList(source, "Value", "Text");
+            ViewBag.CompanyId = dar;
         }
     }
 }
