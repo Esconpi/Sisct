@@ -126,6 +126,40 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Watcher()
+        {
+            var currentPeriod = Convert.ToInt32(DateTime.Now.Year.ToString() + "" + DateTime.Now.Month.ToString("00"));
+
+            await FillPeriodReference();
+            await FillCompany();
+
+            var result = await _darDocumentService.FindByPeriodReferenceAsync(currentPeriod, null);
+
+            ViewBag.Period = DateTime.Now.Month.ToString("00") + "-" + DateTime.Now.Year.ToString();
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Watcher(IFormCollection forms)
+        {
+            var pe = forms["PeriodId"].ToString();
+            var company = forms["CompanyId"].ToString();
+
+            int? companyid = null;
+
+            if (!company.Equals("0"))
+                companyid = Convert.ToInt32(company);
+
+            await FillPeriodReference();
+            await FillCompany();
+
+            var result = await _darDocumentService.FindByPeriodReferenceAsync(Convert.ToInt32(pe), companyid);
+
+            ViewBag.Period = pe.Substring(4, 2) + "-" + pe.Substring(0, 4);
+            return View(result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> SendBillet(int id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
@@ -163,7 +197,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-
         private async Task FillDar()
         {
             List<Object> source = new List<object>();
@@ -177,12 +210,14 @@ namespace Escon.SisctNET.Web.Controllers
             ViewBag.DarId = dar;
         }
 
-        private async Task FillPeriodReference()
+        private async Task FillPeriodReference(bool ignoreAll = false)
         {
             var periods = await _darDocumentService.GetPeriodsReferenceAsync();
             List<object> itens = new List<object>();
 
-            itens.Add(new SelectListItem("Todos", "0"));
+            if (ignoreAll)
+                itens.Add(new SelectListItem("Todos", "0"));
+
             foreach (var item in periods)
                 itens.Add(new { Text = string.Format("{0}-{1}", item.ToString().Substring(4, 2), item.ToString().Substring(0, 4)), Value = item.ToString() });
 

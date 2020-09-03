@@ -18,6 +18,30 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public async Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyid)
+        {
+            List<object> parameters = new List<object>();
+            parameters.Add(periodReference);
+
+            var query = "select DISTINCT company.id,company.document, company.socialname, dardocument.periodreference, dar.code darcode, dar.description dardescription"
+                    + "  from company "
+                    + "  left join dardocument on dardocument.companyid = company.id "
+                    + "  left join dar on dar.id = dardocument.darid "
+                    + " WHERE dardocument.periodreference = {0} OR dardocument.periodreference IS NULL "
+                    + "  and company.active = 1 ";
+
+            if (companyid != null)
+            {
+                query += " and company.id = {1}";
+                parameters.Add(companyid.Value);
+            }
+
+            query += " ORDER BY company.socialname";
+
+            var result = await _context.DarDocumentCompanies.FromSql(query, parameters.ToArray()).ToListAsync();
+            return result;
+        }
+
         public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) =>
             await _context.DarDocuments
             .Include(x => x.Company)

@@ -39,6 +39,8 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public async Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyId) => await _repository.FindByPeriodReferenceAsync(periodReference, companyId);
+
         public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) =>
             await _repository.GetByCompanyAndPeriodReferenceAndDarAsync(companyid, period, darId);
 
