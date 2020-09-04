@@ -1220,6 +1220,19 @@ namespace Escon.SisctNET.Web.Controllers
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
+            var messageResponse = new List<object>();
+
+            List<EmailAddress> emailto = new List<EmailAddress>();
+            foreach (var to in await _emailResponsibleService.GetByCompanyAsync(SessionManager.GetCompanyIdInSession()))
+                emailto.Add(new EmailAddress() { Address = to.Email, Name = "" });
+
+            if (emailto.Count <= 0)
+            {
+                messageResponse.Add(new { code = 500, recipedesc = "Email", recipecode = "Não cadastrado", message = "Essa empresa não possui destinatários cadastrados. Por favor, faça o cadastro dos destinatários dos boletos para esta empresa" });
+                return Ok(new { code = 200, response = messageResponse });
+
+            }
+            
             var accessToken = _configurationService.FindByName("TokenAccessDarWs", null);
             if (accessToken == null) return BadRequest(new { code = 400, message = "O token de acesso não foi encontrado na base de dados" });
 
@@ -1228,8 +1241,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             var dueDate = _configurationService.FindByName("DiasVencimentoBoletoDarWs", null);
             if (organCode == null) return BadRequest(new { code = 400, message = "A date de vencimento para o boleto não foi encontrado na base de dados" });
-
-            var messageResponse = new List<object>();
 
             var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => x.RecipeCode);
             var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
@@ -1323,10 +1334,6 @@ namespace Escon.SisctNET.Web.Controllers
                                   referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy")}";
 
                     var emailFrom = _emailConfiguration.SmtpUsername;
-
-                    List<EmailAddress> emailto = new List<EmailAddress>();
-                    foreach (var to in await _emailResponsibleService.GetByCompanyAsync(SessionManager.GetCompanyIdInSession()))
-                        emailto.Add(new EmailAddress() { Address = to.Email, Name = "" });
 
                     EmailMessage email = new EmailMessage()
                     {

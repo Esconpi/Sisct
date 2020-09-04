@@ -94,6 +94,8 @@
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
                         <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
+                        <input type="hidden" value="@(@ViewBag.Year)" id="periodYear" />
+                        <input type="hidden" value="@(@ViewBag.Month)" id="periodMonth" />
                     </div>
                 </div>
             </div>

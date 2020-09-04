@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<input type="hidden" value="@(@ViewBag.Year)" id="periodYear" />
+<input type="hidden" value="@(@ViewBag.Month)" id="periodMonth" />
+
 <div class="box box-primary">
     <div class="box-header">
         <div class="box-title">
@@ -109,59 +112,61 @@
                             Valor
                         </th>
                         <th></th>
+                        <th style="width:20px;"></th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @item.Id
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ControlNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DocumentNumber)
-                        </td>
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ControlNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DocumentNumber)
+                            </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Dar.Code)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Company.Document)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Company.FantasyName)
-                        </td>
-                        <td>
-                            @string.Format("{0}-{1}", item.PeriodReference.ToString().Substring(4, 2), item.PeriodReference.ToString().Substring(0, 4))
-                        </td>
-                        <td>
-                            @item.DueDate.ToString("dd/MM/yyyy")
-                        </td>
-                        <td style="text-align:center">
-                            @Html.DisplayFor(modelItem => item.Canceled)
-                        </td>
-                        <td style="text-align:center">
-                            @Html.DisplayFor(modelItem => item.PaidOut)
-                        </td>
-                        <td style="text-align:center">
-                            @String.Format("{0:C}", item.Value.ToString())
-                        </td>
-                        <td style="width:50px;">
-                            <a href='/Billets/@(item.BilletPath)' target='blank'><i class='fa fa-download'></i></a>
-                            &nbsp;&nbsp;
-                            @if (!item.Canceled)
-                            {
-                                <a style="cursor:pointer;" class="btnSendBillet" data-billet="@(item.Id)">
-                                    <i class="fa fa-send"></i>
-                                </a>
-                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Dar.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Company.Document)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Company.FantasyName)
+                            </td>
+                            <td>
+                                @string.Format("{0}-{1}", item.PeriodReference.ToString().Substring(4, 2), item.PeriodReference.ToString().Substring(0, 4))
+                            </td>
+                            <td>
+                                @item.DueDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.Canceled)
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.PaidOut)
+                            </td>
+                            <td style="text-align:center">
+                                @String.Format("{0:C}", item.Value.ToString())
+                            </td>
+                            <td style="width:50px;">
+                                <a href='/Billets/@(item.BilletPath)' target='blank'><i class='fa fa-download'></i></a>
+                                &nbsp;&nbsp;
+                                @if (!item.Canceled)
+                                {
+                                    <a style="cursor:pointer;" class="btnSendBillet" data-billet="@(item.Id)">
+                                        <i class="fa fa-send"></i>
+                                    </a>
+                                }
 
-                        </td>
-                    </tr>
+                            </td>
+                           
+                        </tr>
                     }
                 </tbody>
             </table>

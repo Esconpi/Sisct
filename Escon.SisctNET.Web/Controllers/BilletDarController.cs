@@ -44,9 +44,9 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Index()
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
-            await FillPeriodReference();
+            FillPeriodReference(null);
             await FillDar();
-            await FillCompany();
+            await FillCompany(null);
 
             var result = await _darDocumentService.ListFull();
 
@@ -111,9 +111,9 @@ namespace Escon.SisctNET.Web.Controllers
                 if (!company.Equals("0"))
                     companyid = Convert.ToInt32(company);
 
-                await FillPeriodReference();
+                FillPeriodReference(null);
                 await FillDar();
-                await FillCompany();
+                await FillCompany(company);
 
                 var result = await _darDocumentService.SearchAsync(canceled, paidout, period, darid, companyid);
 
@@ -130,12 +130,15 @@ namespace Escon.SisctNET.Web.Controllers
         {
             var currentPeriod = Convert.ToInt32(DateTime.Now.Year.ToString() + "" + DateTime.Now.Month.ToString("00"));
 
-            await FillPeriodReference();
-            await FillCompany();
+            ViewBag.Year = DateTime.Now.Year.ToString();
+            ViewBag.Month = GetStringMonth(DateTime.Now.Month);
+
+            FillPeriodReference(null);
+            await FillCompany(null);
 
             var result = await _darDocumentService.FindByPeriodReferenceAsync(currentPeriod, null);
 
-            ViewBag.Period = DateTime.Now.Month.ToString("00") + "-" + DateTime.Now.Year.ToString();
+            ViewBag.Period = DateTime.Now.Month.ToString("00") + "/" + DateTime.Now.Year.ToString();
             return View(result);
         }
 
@@ -150,12 +153,18 @@ namespace Escon.SisctNET.Web.Controllers
             if (!company.Equals("0"))
                 companyid = Convert.ToInt32(company);
 
-            await FillPeriodReference();
-            await FillCompany();
+            FillPeriodReference(pe);
+            await FillCompany(company);
 
             var result = await _darDocumentService.FindByPeriodReferenceAsync(Convert.ToInt32(pe), companyid);
 
-            ViewBag.Period = pe.Substring(4, 2) + "-" + pe.Substring(0, 4);
+            ViewBag.Period = pe.Substring(4, 2) + "/" + pe.Substring(0, 4);
+            ViewBag.PeriodSelected = pe;
+            ViewBag.CompanySelected = company;
+
+            ViewBag.Year = pe.Substring(0, 4);
+            ViewBag.Month = GetStringMonth(Convert.ToInt32(pe.Substring(4, 2)));
+
             return View(result);
         }
 
@@ -210,23 +219,23 @@ namespace Escon.SisctNET.Web.Controllers
             ViewBag.DarId = dar;
         }
 
-        private async Task FillPeriodReference(bool ignoreAll = false)
+        private void FillPeriodReference(string periodSelected, bool ignoreAll = false)
         {
-            var periods = await _darDocumentService.GetPeriodsReferenceAsync();
             List<object> itens = new List<object>();
 
             if (ignoreAll)
                 itens.Add(new SelectListItem("Todos", "0"));
 
-            foreach (var item in periods)
-                itens.Add(new { Text = string.Format("{0}-{1}", item.ToString().Substring(4, 2), item.ToString().Substring(0, 4)), Value = item.ToString() });
+            for (int i = 2020; i < 2030; i++)
+                for (int z = 1; z <= 12; z++)
+                    itens.Add(new { Text = string.Format("{0}/{1}", z.ToString("00"), i.ToString()), Value = string.Format("{0}{1}", i.ToString("0000"), z.ToString("00")) });
 
-            SelectList selectPeriods = new SelectList(itens, "Value", "Text");
+            SelectList selectPeriods = new SelectList(itens, "Value", "Text", periodSelected);
 
             ViewBag.PeriodId = selectPeriods;
         }
 
-        private async Task FillCompany()
+        private async Task FillCompany(string companyId)
         {
             List<Object> source = new List<object>();
             List<Model.Company> list_dar = await _companyService.ListAllActiveAsync(GetLog(Model.OccorenceLog.Read));
@@ -234,8 +243,41 @@ namespace Escon.SisctNET.Web.Controllers
             source.Add(new { Text = "Todos", Value = "0" });
             list_dar.ForEach(x => source.Add(new { Text = string.Format("[{0}] - [{1}] - {2}", x.Code, x.Document, x.SocialName), Value = x.Id }));
 
-            SelectList dar = new SelectList(source, "Value", "Text");
+            SelectList dar = new SelectList(source, "Value", "Text", companyId);
             ViewBag.CompanyId = dar;
+        }
+
+        private string GetStringMonth(int month)
+        {
+            switch (month)
+            {
+                case 1:
+                    return "Janeiro";
+                case 2:
+                    return "Fevereiro";
+                case 3:
+                    return "Março";
+                case 4:
+                    return "Abril";
+                case 5:
+                    return "Maio";
+                case 6:
+                    return "Junho";
+                case 7:
+                    return "Julho";
+                case 8:
+                    return "Agosto";
+                case 9:
+                    return "Setembro";
+                case 10:
+                    return "Outubro";
+                case 11:
+                    return "Novembro";
+                case 12:
+                    return "Dezembro";
+                default:
+                    return "None";
+            }
         }
     }
 }
