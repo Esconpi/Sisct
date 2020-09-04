@@ -62,47 +62,47 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public List<ProductNote> FindByProductsType(List<Note> notes, int taxationType, Log log = null)
+        public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                if (taxationType == 0)
+                if (taxationType.Equals(Model.TypeTaxation.Nenhum))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
                     products.AddRange(rst);
                 }
-                if (taxationType == 1)
+                if (taxationType.Equals(Model.TypeTaxation.ST))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 2)
+                else if (taxationType.Equals(Model.TypeTaxation.AP))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 3)
+                else if (taxationType.Equals(Model.TypeTaxation.CO))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(2)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 4)
+                else if (taxationType.Equals(Model.TypeTaxation.COR))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(4)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 5)
+                else if (taxationType.Equals(Model.TypeTaxation.IM))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(3)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 6)
+                else if (taxationType.Equals(Model.TypeTaxation.Isento))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(7)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 7)
+                else if (taxationType.Equals(Model.TypeTaxation.AT))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)));
                     products.AddRange(rst);
@@ -124,23 +124,24 @@ namespace Escon.SisctNET.Repository.Implementation
             return total;
         }
 
-        public decimal FindBySubscription(List<Note> notes, int taxaid, Log log = null)
+        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             decimal icmsTotalSt = 0;
 
-            if (taxaid == 1 || taxaid == 7)
+            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.AT))
             {
                 foreach (var note in notes)
                 {
                     icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
                 }
             }
-            else if (taxaid >= 2 && taxaid <= 5)
+            else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
+                    taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
             {
-                foreach (var note in notes)
-                {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
-                }
+                    foreach (var note in notes)
+                    {
+                        icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
+                    }
             }
             return icmsTotalSt;
         }

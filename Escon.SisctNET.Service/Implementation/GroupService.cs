@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 

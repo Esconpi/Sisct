@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
 
-@if (ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+@if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
+    ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
 {
 
     @foreach (var note in ViewBag.NotasTaxation)
@@ -82,7 +83,7 @@
     }
 
 }
-else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
+else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
 {
     @foreach (var note in ViewBag.NotasTaxation)
     {
@@ -127,7 +128,7 @@ else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
                                 <th>BC</th>
                                 <th>MVA(%)</th>
                                 <th>BC ICMS</th>
-                                @if (@ViewBag.TaxationType == 1)
+                                @if (ViewBag.TypeTaxation == "ST")
                                 {
                                     <th>BCR(%)</th>
                                     <th>BCR</th>
@@ -158,7 +159,7 @@ else if (ViewBag.TaxationType == 1 || ViewBag.TaxationType == 7)
                                         <td>@item.Vbasecalc</td>
                                         <td>@item.Mva</td>
                                         <td>@item.Valoragregado</td>
-                                        @if (@ViewBag.TaxationType == 1)
+                                        @if (ViewBag.TypeTaxation == "ST")
                                         {
                                             <td>@item.BCR</td>
                                             <td>@item.ValorBCR</td>

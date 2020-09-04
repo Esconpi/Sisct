@@ -377,7 +377,12 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr2.Close();
                         }
-                        notes.Add(nota);
+
+                        if (nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
+                        
                     }
                 }
             }
@@ -551,7 +556,12 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             ct.Close();
                         }
-                        ctes.Add(cte);
+
+                        if (cte.Count() > 0)
+                        {
+                            ctes.Add(cte);
+                        }
+                        
                     }
                 }
 
@@ -682,7 +692,27 @@ namespace Escon.SisctNET.Web.Xml
                                                 }
                                                 reader.Read();
                                             }
-                                            dets.Add(dest);
+                                            bool status = false;
+
+                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+
+                                            for (int e = 0; e < dets.Count(); e++)
+                                            {
+                                                if (dets[e].ContainsKey("CNPJ"))
+                                                {
+                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                            if(dets.Count() == 0 || status == false)
+                                            {
+                                                dets.Add(dest);
+                                            }
+                                            
                                             break;
                                     }
                                 }
@@ -760,7 +790,12 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
+
+                        if(nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
+                        
                     }
                 }
 
@@ -969,7 +1004,12 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
+
+                        if (nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
+                       
                     }
                 }
 
@@ -1034,6 +1074,7 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (ncms[e][0].Equals(code) && ncms[e][1].Equals(ncm))
                                                 {
                                                     status = true;
+                                                    break;
                                                 }
                                             }
 
@@ -1289,8 +1330,12 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
 
+                        if (nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
+                        
                     }
                 }
 
@@ -1354,7 +1399,26 @@ namespace Escon.SisctNET.Web.Xml
 
                                             }
 
-                                            products.Add(prod);
+                                            bool status = false;
+
+                                            string CEST = prod.ContainsKey("CEST") ? prod["CEST"] : "";
+
+                                            for (int e = 0; e < products.Count(); e++)
+                                            {
+                                                string cestTemp = products[e].ContainsKey("CEST") ? products[e]["CEST"] : "";
+
+                                                if (products[e]["cProd"].Equals(prod["cProd"]) && products[e]["NCM"].Equals(prod["NCM"]) && CEST.Equals(cestTemp))
+                                                {
+                                                    status = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (products.Count == 0 || status.Equals(false))
+                                            {
+                                                products.Add(prod);
+                                            }
+                                            
                                             break;
                                     }
                                 }
@@ -1576,7 +1640,11 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
+
+                        if(nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
 
                     }
                 }
@@ -1816,7 +1884,11 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
+
+                        if(nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
 
                     }
                 }
@@ -2062,7 +2134,11 @@ namespace Escon.SisctNET.Web.Xml
                             reader.Close();
                             sr.Close();
                         }
-                        notes.Add(nota);
+
+                        if(nota.Count() > 0)
+                        {
+                            notes.Add(nota);
+                        }
 
                     }
                 }
@@ -2076,5 +2152,222 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
+        public List<List<Dictionary<string, string>>> Cte(string directotyCte)
+        {
+            List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesCtes = Directory.GetFiles(directotyCte);
+
+                for (int i = 0; i < archivesCtes.Count(); i++)
+                {
+                    if (new FileInfo(archivesCtes[i]).Length != 0 && archivesCtes[i].Contains(".xml"))
+                    {
+                        List<Dictionary<string, string>> cte = new List<Dictionary<string, string>>();
+
+                        Dictionary<string, string> infCte = new Dictionary<string, string>();
+                        Dictionary<string, string> toma = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        Dictionary<string, string> vPrest = new Dictionary<string, string>();
+                        Dictionary<string, string> infCarga = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+
+                        using (XmlReader reader = XmlReader.Create(new StreamReader(archivesCtes[i], Encoding.UTF8)))
+                        {
+
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infCte":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infCte.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            cte.Add(infCte);
+                                            break;
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name != "ide")
+                                            {
+                                                if (reader.Name.Equals("toma4"))
+                                                {
+                                                    break;
+                                                }
+                                                if (reader.Name != "toma3")
+                                                {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+                                            }
+                                            cte.Add(ide);
+                                            break;
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            cte.Add(emit);
+                                            break;
+
+                                        case "dest":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            cte.Add(dest);
+                                            break;
+
+                                        case "vTPrest":
+                                            vPrest.Add(reader.Name, reader.ReadString());
+                                            cte.Add(vPrest);
+                                            break;
+                                    }
+                                }
+
+                            }
+                            reader.Close();
+                        }
+
+                        if (cte.Count() > 0)
+                        {
+                            ctes.Add(cte);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            return ctes;
+        }
+
+        public List<List<Dictionary<string, string>>> NfeResume(string directoryNfe)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    if (new FileInfo(archivesNfes[i]).Length != 0)
+                    {
+                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+
+                        List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
+                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(arq))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            note.Add(infNFe);
+                                            break;
+
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ide" && reader.Name != "NFref")
+                                            {
+                                                if (reader.Name.ToString() == "dhEmi")
+                                                {
+                                                    string data = Convert.ToDateTime(reader.ReadString().Substring(0, 10)).ToString("dd/MM/yyyy");
+                                                    ide.Add(reader.Name, data);
+                                                }
+                                                else
+                                                {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(ide);
+                                            break;
+
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(emit);
+                                            break;
+
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+                                                reader.Read();
+                                            }
+                                            note.Add(total);
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            arq.Close();
+                        }
+
+                        if(note.Count > 0)
+                        {
+                            notes.Add(note);
+                        }
+                        
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            return notes;
+        }
     }
 }

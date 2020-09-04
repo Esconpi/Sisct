@@ -45,7 +45,7 @@
 
     @if (ViewBag.Anexo == 3)
     {
-        @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
+        @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
         
         <div style="width: 100%; font-size:12px; padding-top:10px;">
             @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))

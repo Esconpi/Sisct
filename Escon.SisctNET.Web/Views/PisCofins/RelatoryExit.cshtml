@@ -33,7 +33,7 @@
                             }
                             else
                             {
-                                <strong>Trimestre</strong>
+                                <strong>@ViewBag.Trimestre Trimestre</strong>
                             }
 
                         </div>
@@ -55,7 +55,7 @@
                     }
                     else
                     {
-
+                        @await Html.PartialAsync("_TaxTrimestre", new ViewDataDictionary(ViewData))
                     }
 
                 }

@@ -97,7 +97,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
 
-                int cont = 0;
                 var importXml = new Xml.Import();
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -106,9 +105,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                 products = importXml.NfeExitProducts(directoryNfe);
 
+                var productsAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
+
+                List<Model.ProductIncentivo> addProducts = new List<Model.ProductIncentivo>();
+
                 foreach (var prod in products)
                 {
-                    string cProd = "", ncm = "", cest = null;
+                    string cProd = "", ncm = "", cest = "";
                     if (prod.ContainsKey("cProd"))
                     {
                         cProd = prod["cProd"];
@@ -124,14 +127,29 @@ namespace Escon.SisctNET.Web.Controllers
                         cest = prod["CEST"];
                         if (cest.Equals(""))
                         {
-                            cest = null;
+                            cest = "";
                         }
                     }
 
-                    var prodImport = _service.FindByProduct(id, cProd, ncm, cest);
+                    //var prodImport = _service.FindByProduct(id, cProd, ncm, cest);
+                    var prodImport = productsAll.Where(_ => _.Code.Equals(cProd) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).FirstOrDefault();
                     if (prodImport == null)
                     {
-                        var product = new Model.ProductIncentivo
+                        Model.ProductIncentivo product = new Model.ProductIncentivo();
+                        product.Code = prod["cProd"];
+                        product.Ncm = prod["NCM"];
+                        product.Name = prod["xProd"];
+                        product.Cest = cest;
+                        product.TypeTaxation = "";
+                        product.Active = false;
+                        product.CompanyId = id;
+                        product.Month = month;
+                        product.Year = year;
+                        product.Created = DateTime.Now;
+                        product.Updated = DateTime.Now;
+
+                        addProducts.Add(product);
+                        /*var product = new Model.ProductIncentivo
                         {
                             Code = prod["cProd"],
                             Ncm = prod["NCM"],
@@ -144,13 +162,14 @@ namespace Escon.SisctNET.Web.Controllers
                             Year = year,
                             Created = DateTime.Now,
                             Updated = DateTime.Now
-                        };
-                        _service.Create(entity: product, null);
-                        cont++;
+                        };*/
+                        //_service.Create(entity: product, null);
                     }
                 }
 
-                return RedirectToAction("Details", new { companyId = id, count = cont });
+                _service.Create(addProducts);
+
+                return RedirectToAction("Details", new { companyId = id, year = year, month = month });
             }
             catch (Exception ex)
             {
@@ -260,7 +279,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Details(int companyId, int count)
+        public IActionResult Details(int companyId, string year, string month)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -270,11 +289,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.CompanyId = companyId;
                 var comp = _companyService.FindById(companyId, null);
-                var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
-                var result = products.Take(count).ToList();
-                ViewBag.Count = count;
+                var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
                 ViewBag.TypeCompany = comp.TypeCompany;
-                return View(result);
+                ViewBag.Count = products.Count();
+                return View(products);
             }
             catch (Exception ex)
             {
@@ -283,7 +301,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Product(int id, int count)
+        public IActionResult Product(int id, string year, string month)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -295,10 +313,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(prod.CompanyId, null);
 
                 ViewBag.CompanyId = prod.CompanyId;
-                ViewBag.Month = prod.Month;
-                ViewBag.Year = prod.Year;
                 ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Count = count;
+                ViewBag.Mes = month;
+                ViewBag.Ano = year;
                 return View(prod);
             }
             catch (Exception ex)
@@ -308,7 +325,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Product(int id, int count, Model.ProductIncentivo entity)
+        public IActionResult Product(int id, string year, string month, Model.ProductIncentivo entity)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -318,10 +335,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var prod = _service.FindById(id, null);
                 var companyId = prod.CompanyId;
-                var year = prod.Year;
-                var month = prod.Month;
 
                 var comp = _companyService.FindById(prod.CompanyId, null);
+
+                List<Model.ProductIncentivo> updateProducts = new List<Model.ProductIncentivo>();
 
                 if (Request.Form["type"].ToString() == "1")
                 {
@@ -333,7 +350,8 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Percentual = entity.Percentual;
                         prod.DateStart = entity.DateStart;
                     }
-                    _service.Update(prod, null);
+                    updateProducts.Add(prod);
+                    //_service.Update(prod, null);
                 }
                 else if (Request.Form["type"].ToString() == "2")
                 {
@@ -350,7 +368,8 @@ namespace Escon.SisctNET.Web.Controllers
                             p.Percentual = entity.Percentual;
                             p.DateStart = entity.DateStart;
                         }
-                        _service.Update(p, null);
+                        updateProducts.Add(p);
+                        //_service.Update(p, null);
                     }
                 }
                 else if (Request.Form["type"].ToString() == "3")
@@ -368,11 +387,12 @@ namespace Escon.SisctNET.Web.Controllers
                             p.Percentual = entity.Percentual;
                             p.DateStart = entity.DateStart;
                         }
-                        _service.Update(p, null);
+                        updateProducts.Add(p);
+                        //_service.Update(p, null);
                     }
                 }
-
-                return RedirectToAction("Details", new { companyId = companyId, count = count });
+                _service.Update(updateProducts);
+                return RedirectToAction("Details", new { companyId = companyId, year = year, month = month });
             }
             catch (Exception ex)
             {

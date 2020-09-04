@@ -62,7 +62,7 @@
                         </label>
                     </div>
                 </div>
-                
+
             </div>
             
             <div class="row">
@@ -80,6 +80,15 @@
                         <input id="cprb" class="form-control money" name="CPRB" value="@Model.CPRB" />
                     </div>
                 }
+
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    @Html.LabelFor(model => model.Sped, "Gerar Sped", htmlAttributes: new { @class = "control-label col-md-12" })
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(model => model.Sped, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group col-lg-12 col-md-12 col-xs-12">

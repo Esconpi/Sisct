@@ -72,14 +72,6 @@
                 $('.showProduct').off();
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
-                $('.showTaxation').click(function () {
-                    $.get('Company/TaxationNcm/' + $(this).attr('id'), function (html) {
-                        $('#formShow .modal-body').empty();
-                        $('#formShow .modal-body').append($(html));
-                        $('#formShow').modal('show');
-                    });
-
-                });
                 $('.showImport').click(function () {
                     $.get('HomeExit/Import/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
@@ -143,7 +135,7 @@
                         if (row.incentivo == true) {
 
                             return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
-                                "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm Pis/Cofins' id='" + row.id + "' /> " +
+                                "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Ncm Pis/Cofins' /> " +
                                 "<a href='/ProductIncentivo/Index/" + data + "' class = 'glyphicon glyphicon-tag pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Produtos' /> " +
                                 "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Clientes' /> " +
                                 "<a href='#" + data + "' class = 'showImport fa fa-cloud-download pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
@@ -154,7 +146,7 @@
                         else {
                             
                             return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
-                                "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm Pis/Cofins' id='" + row.id + "' /> " +
+                                "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Ncm Pis/Cofins' /> " +
                                 "<a href='/ProductIncentivo/Index/" + data + "' class = 'glyphicon glyphicon-tag pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Produtos' /> " +
                                 "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Clientes' /> " +
                                 "<a href='#" + data + "' class = 'showImport fa fa-cloud-download pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +

@@ -87,5 +87,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Grupo> Grupos { get; set; }
 
+        public DbSet<TypeNcm> TypeNcms { get; set; }
+
     }
 }

@@ -1083,57 +1083,24 @@ namespace Escon.SisctNET.Web.Sped
             }
             return totalDeCredito;
         }
-        
-        public decimal SpedDevolucao(string directorySped, string company)
+
+        public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
         {
-            decimal totalDevolucao = 0;
-            StreamReader archiveSped = new StreamReader(directorySped);
-            var cfopsDevo = _companyCfopService.FindByCfopActive(company, "devolucao").Select(_ => _.Cfop.Code).ToList();
-            string line, tipo = "";
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
+            List<decimal> Devolucoes = new List<decimal>();
 
-                    if (linha[1].Equals("C100"))
-                    {
-                        tipo = linha[2];
-                    }
-
-                    if (tipo == "0")
-                    {
-                        if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals(""))
-                        {
-                            totalDevolucao += Convert.ToDecimal(linha[7]);
-                        } 
-                    }
-
-                }
-
-            }
-
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return totalDevolucao;
-        }
-        
-        public decimal SpedDevolucaoMono(string directorySped, string company, List<Model.TaxationNcm> ncmsMonofasico)
-        {
-            decimal totalDevolucao = 0;
-            StreamReader archiveSped = new StreamReader(directorySped);
-            var cfopsDevo = _companyCfopService.FindByCfopActive(company, "devolucao").Select(_ => _.Cfop.Code).ToList();
-            string line, tipo = "";
+            var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
+            var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+            var codeProd3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
+            var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
             List<string> codeProdMono = new List<string>();
 
+            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoMono = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped);
+
+            string line, tipo = "";
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1148,17 +1115,85 @@ namespace Escon.SisctNET.Web.Sped
                     if (linha[1].Equals("C100") && tipo == "0")
                     {
                         DateTime dataNota = Convert.ToDateTime(linha[10].Substring(0, 2) + "/" + linha[10].Substring(2, 2) + "/" + linha[10].Substring(4, 2));
-                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsMonofasico, dataNota).Where(_ => _.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)).ToList();
+                        ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                         codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
                     }
 
-                    if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals("") && tipo == "0")
+                    if (tipo == "0")
                     {
-                        if (codeProdMono.Contains(linha[3]))
+                        if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals(""))
                         {
-                            totalDevolucao += Convert.ToDecimal(linha[7]);
+                            if (codeProd1.Contains(linha[3]))
+                            {
+                                devolucaoPetroleo += Convert.ToDecimal(linha[7]);
+                            }
+                            else if (codeProd2.Contains(linha[3]))
+                            {
+                                devolucaoComercio += Convert.ToDecimal(linha[7]);
+                            }
+                            else if (codeProd3.Contains(linha[3]))
+                            {
+                                devolucaoTransporte += Convert.ToDecimal(linha[7]);
+                            }
+                            else if (codeProd4.Contains(linha[3]))
+                            {
+                                devolucaoServico += Convert.ToDecimal(linha[7]);
+                            }
+
+                            if (codeProdMono.Contains(linha[3]))
+                            {
+                                devolucaoMono += Convert.ToDecimal(linha[7]);
+                            }
                         }
                     }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            Devolucoes.Add(devolucaoPetroleo);
+            Devolucoes.Add(devolucaoComercio);
+            Devolucoes.Add(devolucaoTransporte);
+            Devolucoes.Add(devolucaoServico);
+            Devolucoes.Add(devolucaoMono);
+
+            return Devolucoes;
+        }
+
+        public decimal SpedBonificacao(string directorySped, List<string> cfopsBoni)
+        {
+            decimal bonificacao = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped);
+
+            string line, tipo = "";
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipo = linha[2];
+                    }
+
+                    if (tipo == "0")
+                    {
+                        if (linha[1].Equals("C170") && cfopsBoni.Contains(linha[11]) && !linha[7].Equals(""))
+                        {
+                            bonificacao += Convert.ToDecimal(linha[7]);
+                        }
+                    }
+
                 }
 
             }
@@ -1171,7 +1206,147 @@ namespace Escon.SisctNET.Web.Sped
             {
                 archiveSped.Close();
             }
-            return totalDevolucao;
+
+            return bonificacao;
         }
+
+        public List<List<string>> SpedNfe(string directorySped)
+        {
+            List<List<string>> spedNf = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+            string line;
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && (linha[2] == "1" || linha[2] == "0"))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
+                        spedNf.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNf;
+        }
+
+        public List<List<string>> SpedNfeSaida(string directorySped)
+        {
+            List<List<string>> spedNf = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+
+            string line;
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2] == "1" && linha[6] != "05" && linha[6] != "03" && linha[6] != "02")
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        spedNf.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNf;
+        }
+
+        public List<List<string>> SpedDif(string directorySped)
+        {
+            List<List<string>> sped = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    List<string> linhaSped = new List<string>();
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2] == "0")
+                    {
+                        linhaSped.Add(linha[8]);
+                        linhaSped.Add(linha[9]);
+                        linhaSped.Add(linha[12]);
+                        linhaSped.Add(linha[14]);
+                        linhaSped.Add(linha[18]);
+                        linhaSped.Add(linha[19]);
+                        linhaSped.Add(linha[20]);
+                        linhaSped.Add(linha[24]);
+                        linhaSped.Add(linha[25]);
+                        sped.Add(linhaSped);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return sped;
+
+        }
+
+        public List<string> SpedCte(string directorySped)
+        {
+            List<string> sped = new List<string>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+
+            string line;
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "D100")
+                    {
+                        sped.Add(linha[10]);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return sped;
+        }
+    
     }
 }

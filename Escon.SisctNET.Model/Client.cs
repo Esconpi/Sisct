@@ -51,5 +51,9 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Percentual do Diferimento")]
         public decimal ? Percentual { get; set; }
+
+        public string MesRef { get; set; }
+
+        public string AnoRef { get; set; }
     }
 }

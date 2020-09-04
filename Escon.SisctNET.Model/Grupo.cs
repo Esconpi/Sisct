@@ -24,6 +24,8 @@ namespace Escon.SisctNET.Model
 
         public string Cnpj { get; set; }
 
+        public string Uf { get; set; }
+
         public string Nome { get; set; }
 
         public decimal? Vendas { get; set; }
@@ -41,5 +43,6 @@ namespace Escon.SisctNET.Model
         public decimal? Icms { get; set; }
 
         public decimal? IcmsNIncentivo { get; set; }
+
     }
 }

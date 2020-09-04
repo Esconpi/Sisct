@@ -13,7 +13,11 @@ namespace Escon.SisctNET.Service
 
         List<CompanyCfop> FindByCfopActive(int companyId, string type, string typeCfop, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopActive(string company, string type, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevolucao(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopVendas(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopBonificacao(string company, Log log = null);
 
     }
 }

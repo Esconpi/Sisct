@@ -7,7 +7,14 @@
 
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title"><strong>Ncm Monofásico</strong></h3>
+            <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <h3 class="box-title"><strong>Ncm</strong></h3>
+            <div class="btn-group pull-right">
+                <a asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="btn btn-primary fa fa-cloud-download pull-left"> Importar</a>
+            </div>
+            <div style="width:100%; text-align:center;">
+                <strong>@ViewBag.Name - @ViewBag.Document</strong>
+            </div>
         </div>
         <div class="box-body">
             <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -23,6 +30,12 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Ncm.Description)
+                            </th>
+                            <th>
+                                Tipo Receita
+                            </th>
+                            <th>
+                                Tipo Tributação
                             </th>
                             <th>@Html.DisplayNameFor(model => model.DateStart)</th>
                             <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
@@ -70,6 +83,21 @@
                     { "data": "codeProd" },
                     { "data": "code" },
                     { "data": "description" },
+                    { "data": "tipoNcm" },
+                    {
+                        "mData": "type",
+                        "mRender": function (data, type, row) {
+                            if (data == "Nenhum") {
+                                return "<div style='color:red'>Nenhum</div>"
+                            }
+                            else if (data == "Monofásico") {
+                                return "<div style='color:green'>Monofásico</div>"
+                            }
+                            else if (data == "Normal") {
+                                return "<div style='color:blue'>Normal</div>"
+                            }
+                        }
+                    },
                     {
                         "mData": "inicio",
                         "mRender": function (data, type, row) {

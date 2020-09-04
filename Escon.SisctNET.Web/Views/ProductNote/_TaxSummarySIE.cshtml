@@ -4,9 +4,9 @@
 </div>
 <table class="table" style="font-size:11px; border:2px solid;">
 
-    @if (ViewBag.TaxationType != 6 && ViewBag.TaxationType != 0)
+    @if (ViewBag.TypeTaxation != "Isento" && ViewBag.TypeTaxation != "Nenhum")
     {
-        if (@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7)
+        if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
         {
             <thead>
                 <tr>
@@ -19,7 +19,7 @@
                 <tr>
                     <td class="col-lg-4 col-sm-4">
                         <table>
-                            @if (@ViewBag.TaxationType == 1)
+                            @if (ViewBag.TypeTaxation == "ST")
                             {
                                 <tr>
                                     <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Substituição Tributária MVA</td>
@@ -27,7 +27,7 @@
                                     <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.TotalICMSMvaSIE</td>
 
                                 </tr>
-                                @if (@ViewBag.TaxationType == 1 && ViewBag.Incetive == false)
+                                @if (ViewBag.Incetive == false)
                                 {
                                     <tr>
                                         <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Subst.Tributária Preço Pauta</td>
@@ -199,19 +199,19 @@
                     <td>
                         <table>
                             <tr>
-                                @if (@ViewBag.TaxationType == 2)
+                                @if (ViewBag.TypeTaxation == "AP")
                                 {
                                     <td style="text-align:right" width="500px">ICMS Antecipação Parcial</td>
                                 }
-                                else if (@ViewBag.TaxationType == 3)
+                                else if (ViewBag.TypeTaxation == "CO")
                                 {
                                     <td style="text-align:right" width="500px">ICMS Consumo</td>
                                 }
-                                else if (@ViewBag.TaxationType == 4)
+                                else if (ViewBag.TypeTaxation == "COR")
                                 {
                                     <td style="text-align:right" width="500px">ICMS Consumo p/ Revenda</td>
                                 }
-                                else if (@ViewBag.TaxationType == 5)
+                                else if (ViewBag.TypeTaxation == "IM")
                                 {
                                     <td style="text-align:right" width="500px">ICMS Imobilizado</td>
                                 }
@@ -253,15 +253,15 @@
                             </tr>
                             <tr>
                                 <th style="text-align:right" width="500px">Código DAR</th>
-                                @if (ViewBag.TaxationType == 3 || ViewBag.TaxationType == 4)
+                                @if (ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR")
                                 {
                                     <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarSTCO</b></td>
                                 }
-                                @if (ViewBag.TaxationType == 2)
+                                @if (ViewBag.TypeTaxation == "AP")
                                 {
                                     <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarAp</b></td>
                                 }
-                                @if (ViewBag.TaxationType == 5)
+                                @if (ViewBag.TypeTaxation == "IM")
                                 {
                                     <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarIm</b></td>
                                 }

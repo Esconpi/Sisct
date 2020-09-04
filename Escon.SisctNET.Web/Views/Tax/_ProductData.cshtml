@@ -1,156 +1,168 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
-<tr>
-    <td style="text-align:center;border:1px solid;" colspan="6">
-        OPERAÇÕES INCENTIVADAS - ESTABELECIMENTOS REFERIDOS NO ART. 781
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="6">
-        OPERAÇÕES PESSOAS JURÍRIDAS DISTINTAS DASELENCADAS NO ART. 781
+<tr style="font-size:8px;">
+    <td style="text-align:center;border:1px solid;" colspan="15">
+        VENDAS
     </td>
     <td style="text-align:center;border:1px solid;" rowspan="3">
-        VENDAS A CLIENTES CREDENCIADOS
+        CRÈDITOS
     </td>
     <td style="text-align:center;border:1px solid;" rowspan="3">
-        SUSPENSÂO
-    </td>
-</tr>
-<tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
-        INTERNAS
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="3">
-        INTERESTADUAIS
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="3">
-        INTERNAS
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="3">
-        INTERESTADUAIS
-    </td>
-</tr>
-<tr>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS PORTARIA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        VENDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS PORTARIA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        VENDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS PORTARIA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        VENDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        SAÍDAS PORTARIA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        VENDAS
+        DÉBITOS
     </td>
 </tr>
 
-<tr style="font-size:11px;">
+<tr style="font-size:8px;">
+    <td style="text-align:center;border:1px solid;" colspan="5">
+        CONTRIBUINTES
+    </td>
+    <td style="text-align:center;border:1px solid;" colspan="5">
+        NÂO CONTRIBUINTES
+    </td>
+    <td style="text-align:center;border:1px solid;" colspan="5">
+        NÂO CONTRIBUINTES FORA DO ESTADO
+    </td>
+</tr>
+<tr style="font-size:8px;">
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO ATÉ 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO SUPERIOR 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO ATÉ 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO SUPERIOR 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO ATÉ 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO SUPERIOR 25%
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </td>
+    <td style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </td>
+</tr>
+<tr style="font-size:10px;">
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterna1)
+            @Convert.ToDecimal(Model.VendasContribuinte1)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaPortInterna1)
+            @Convert.ToDecimal(Model.VendasContribuinte2)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.VendasInternas1)
+            @Convert.ToDecimal(Model.ReceitaNormal1)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterestadual1)
+            @Convert.ToDecimal(Model.ReceitaST1)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterestadual1)
+            @Convert.ToDecimal(Model.ReceitaIsento1)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.VendasInterestadual1)
+            @Convert.ToDecimal(Model.VendasNContribuinte)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @Convert.ToDecimal(Model.ReceitaNormal2)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @Convert.ToDecimal(Model.ReceitaST2)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @Convert.ToDecimal(Model.ReceitaIsento2)
         }
     </td>
 
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterna2)
+            @Convert.ToDecimal(Model.VendasNContribuinteFora)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @Convert.ToDecimal(Model.ReceitaNormal3)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaPortInterna2)
+            @Convert.ToDecimal(Model.ReceitaST3)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.VendasInternas2)
+            @Convert.ToDecimal(Model.ReceitaIsento3)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterestadual2)
+            @Convert.ToDecimal(Convert.ToDecimal(Model.CreditoEntrada) + Convert.ToDecimal(Model.CreditoSaida))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.SaidaInterestadual2)
+            @Convert.ToDecimal(Model.Debito)
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @Convert.ToDecimal(Model.VendasInterestadual2)
-        }
-    </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @Convert.ToDecimal(Model.VendasClientes)
-        }
-    </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @Convert.ToDecimal(Model.Suspensao)
-        }
-    </td>
+
 </tr>

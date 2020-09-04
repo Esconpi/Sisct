@@ -82,6 +82,17 @@ namespace Escon.SisctNET.Model
         }
 
         public string Type { get; set; }
-       
+
+        [Display(Name = "Tipo Ncm")]
+        [ForeignKey("TypeNcm")]
+        public int? TypeNcmId { get; set; }
+
+        private TypeNcm typeNcm;
+        public TypeNcm TypeNcm
+        {
+            get => LazyLoader.Load(this, ref typeNcm);
+            set => typeNcm = value;
+        }
+
     }
 }

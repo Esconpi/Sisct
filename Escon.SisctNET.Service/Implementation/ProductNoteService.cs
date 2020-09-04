@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByProducts(notes, log);
         }
 
-        public List<ProductNote> FindByProductsType(List<Note> notes, int taxationType, Log log = null)
+        public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             return _repository.FindByProductsType(notes, taxationType, log);
         }
@@ -74,9 +74,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByTotal(notes, log);
         }
 
-        public decimal FindBySubscription(List<Note> notes, int taxaid, Log log = null)
+        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
-            return _repository.FindBySubscription(notes, taxaid, log);
+            return _repository.FindBySubscription(notes, taxationType, log);
         }
 
         public List<ProductNote> FindByTaxation(int noteId, Log log = null)

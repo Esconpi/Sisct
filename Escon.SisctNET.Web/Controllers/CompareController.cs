@@ -52,13 +52,17 @@ namespace Escon.SisctNET.Web.Controllers
                     var id = Request.Form["id"];
                     var month = Request.Form["month"];
                     var ordem = Request.Form["ordem"];
+                    var ident = Request.Form["ident"];
+
                     ViewBag.opcao = opcao;
+                    ViewBag.ident = ident;
+
+                    var importXml = new Xml.Import();
+                    var importSped = new Sped.Import();
 
                     if (opcao.Equals("1"))
                     {
                         var confDBSisctNfe = new Model.Configuration();
-                        var import = new Import();
-                        var ident = Request.Form["ident"];
 
                         List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
                         List<List<string>> sped = new List<List<string>>();
@@ -75,7 +79,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var company = _companyService.FindById(Convert.ToInt32(id), null);
                         string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 
-                        notes = import.Nfe(directoryNfe);
+                        notes = importXml.NfeResume(directoryNfe);
 
                         if (arquivo == null || arquivo.Length == 0)
                         {
@@ -105,17 +109,17 @@ namespace Escon.SisctNET.Web.Controllers
                         stream.Close();
                         if (ordem.Equals("difereValor") || ordem.Equals("sisct"))
                         {
-                            SpedDif = import.SpedDif(caminhoDestinoArquivoOriginal);
+                            SpedDif = importSped.SpedDif(caminhoDestinoArquivoOriginal);
                         }
                         else
                         {
                             if (ident.Equals("0"))
                             {
-                                sped = import.SpedNfe(caminhoDestinoArquivoOriginal);
+                                sped = importSped.SpedNfe(caminhoDestinoArquivoOriginal);
                             }
                             else if (ident.Equals("1"))
                             {
-                                sped = import.SpedNfeSaida(caminhoDestinoArquivoOriginal);
+                                sped = importSped.SpedNfeSaida(caminhoDestinoArquivoOriginal);
                             }
                         }
                         List<List<Dictionary<string, string>>> notas = new List<List<Dictionary<string, string>>>();
@@ -282,15 +286,14 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (opcao.Equals("2"))
                     {
                         var confDBSisctCte = _configurationService.FindByName("CTe");
-                        var import = new Import();
                         var company = _companyService.FindById(Convert.ToInt32(id), null);
                         string directoryCte = confDBSisctCte.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 
                         List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
                         List<string> sped = new List<string>();
 
-
-                        ctes = import.Cte(directoryCte);
+                      
+                        ctes = importXml.Cte(directoryCte);
 
                         if (arquivo == null || arquivo.Length == 0)
                         {
@@ -320,7 +323,7 @@ namespace Escon.SisctNET.Web.Controllers
                         await arquivo.CopyToAsync(stream);
                         stream.Close();
 
-                        sped = import.SpedCte(caminhoDestinoArquivoOriginal);
+                        sped = importSped.SpedCte(caminhoDestinoArquivoOriginal);
 
                         List<List<Dictionary<string, string>>> ctes_nao_encontrados = new List<List<Dictionary<string, string>>>();
                         foreach (var cte in ctes)
@@ -364,14 +367,14 @@ namespace Escon.SisctNET.Web.Controllers
                         var confDBSisctNfe = new Model.Configuration();
                         confDBSisctNfe = _configurationService.FindByName("NFe");
                         var import = new Import();
-                        var ident = Request.Form["ident"];
+                        
 
                         List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
                         var company = _companyService.FindById(Convert.ToInt32(id), null);
                         string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
 
-                        notes = import.Nfe(directoryNfe);
+                        notes = importXml.NfeResume(directoryNfe);
 
                     }
                     return View();

@@ -17,5 +17,9 @@ namespace Escon.SisctNET.Repository
 
         Client FindByRaiz(string raiz, Model.Log log = null);
 
+        void Create(List<Model.Client> clients, Model.Log log = null);
+
+        void Update(List<Model.Client> clients, Model.Log log = null);
+
     }
 }

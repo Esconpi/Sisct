@@ -7,10 +7,10 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="TaxationNcm" asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
         <div class="btn-group pull-right">
-            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
+            @Html.ActionLink(" Importar", "Sicronize", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
                                    new { onclick = "return confirm('Os arquivos estão na pasta ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
         </div>
@@ -39,8 +39,14 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Ncm.Description)
                         </th>
-                        <th>@Html.DisplayNameFor(model => model.Status)</th>
-                        <th>Tipo</th>
+                        <th>
+                            Tipo Receita
+                        </th>
+                        <th>
+                            Tipo Tributação
+                        </th>
+                        <th>@Html.DisplayNameFor(model => model.DateStart)</th>
+                        <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -86,19 +92,43 @@
                     { "data": "codeProd" },
                     { "data": "code" },
                     { "data": "description" },
+                    { "data": "tipoNcm" },
                     {
-                        "mData": "status",
+                        "mData": "type",
                         "mRender": function (data, type, row) {
-                            if (data == true) {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger', data-onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                            if (data == "Nenhum") {
+                                return "<div style='color:red'>Nenhum</div>"
                             }
-                            else {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger', data-onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                            else if (data == "Monofásico") {
+                                return "<div style='color:green'>Monofásico</div>"
+                            }
+                            else if (data == "Normal") {
+                                return "<div style='color:blue'>Normal</div>"
                             }
                         }
                     },
-                    { "data": "tipo" },
- 
+                    {
+                        "mData": "inicio",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                        }
+                    },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                        }
+                    },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {

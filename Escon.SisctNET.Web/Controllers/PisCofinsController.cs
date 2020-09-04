@@ -59,6 +59,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);
+                var importPeriod = new Period.Trimestre();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -266,11 +267,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                         decimal receitaPetroleo = Convert.ToDecimal(imp.Receita1),receitaComercio = Convert.ToDecimal(imp.Receita2), receitaTransporte = Convert.ToDecimal(imp.Receita3),
                             receitaServico = Convert.ToDecimal(imp.Receita4), receitaMono = Convert.ToDecimal(imp.ReceitaMono),
-                            devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Entrada),
-                            devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Entrada),
-                            devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Entrada),
-                            devolucaoServico = Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Entrada),
-                            devolucaoMono = devolucaoServico = Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida);
+                            devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida),
+                            devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida),
+                            devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida),
+                            devolucaoServico = Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida),
+                            devolucaoMono = Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida);
 
                         decimal baseCalcAntesMono = receitaComercio + receitaServico + receitaPetroleo;
                         decimal baseCalcPisCofins = baseCalcAntesMono - receitaMono;
@@ -290,7 +291,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal percentualCsll2 = (Convert.ToDecimal(comp.CSLL2) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
                         decimal csllApurado = ((receitaComercio - devolucaoComercio) * percentualCsll1 / 100) + ((receitaPetroleo - devolucaoPetroleo) * percentualCsll1 / 100) +
                            ((receitaTransporte - devolucaoTransporte) * percentualCsll1 / 100)  + ((receitaServico - devolucaoServico) * percentualCsll2 / 100);
-                        decimal csllRetido = 0;
+                        decimal csllRetido = Convert.ToDecimal(imp.CsllRetido);
                         decimal csllAPagar = csllApurado - csllRetido;
 
                         //IRPJ
@@ -300,7 +301,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal percentualIrpj4 = (Convert.ToDecimal(comp.IRPJ4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100;
                         decimal irpjApurado = ((receitaPetroleo - devolucaoPetroleo) * percentualIrpj1 / 100) + ((receitaComercio - devolucaoComercio) * percentualIrpj2 / 100) +
                             ((receitaTransporte - devolucaoTransporte) * percentualIrpj3 / 100)  + ((receitaServico - devolucaoServico) * percentualIrpj4 / 100);
-                        decimal irpjRetido = 0;
+                        decimal irpjRetido = Convert.ToDecimal(imp.IrpjRetido);
 
                         decimal irpjAPagar = irpjApurado - irpjRetido;
 
@@ -357,7 +358,36 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
+                        var meses = importPeriod.Months(trimestre);
+                        List<List<string>> impostos = new List<List<string>>();
 
+                        foreach(var m in meses)
+                        {
+                            var imp = _taxService.FindByMonth(id, m, year);
+
+                            if (imp == null)
+                            {
+                                continue;
+                            }
+
+                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                            List<string> imposto = new List<string>();
+
+                            imposto.Add(imp.MesRef);
+                            imposto.Add(Convert.ToDecimal(imp.Receita1.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(imp.Receita2.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(imp.Receita3.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(imp.Receita4.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            impostos.Add(imposto);
+
+                        }
+
+                        ViewBag.Impostos = impostos;
                     }
 
                 }

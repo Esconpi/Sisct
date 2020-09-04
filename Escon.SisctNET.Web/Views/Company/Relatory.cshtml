@@ -38,73 +38,22 @@
                         </select>
                     </div>
                     <div class="form-group col-lg-7 col-md-7 col-xs-12">
-                        <label class="control-label">Tipo de tributação</label>
-                        <select name="typeTaxation" class="form-control selectoption">
-                            <option value="0">Selecione o tipo</option>
-                            <option value="1">Substituição Tributária por MVA</option>
-                            <option value="2">Antecipação Parcial</option>
-                            <option value="7">Antecipação Total</option>
-                            <option value="3">Consumo</option>
-                            <option value="4">Consumo para Revenda</option>
-                            <option value="5">Imobilizado</option>
-                            <option value="6">Isento</option>
-
-                        </select>
+                        <label class="control-label">Tipo de Tributação</label>
+                        <select name="typeTaxation" class="form-control selectoption"  asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.TypeTaxation>()"></select>
                     </div>
                 </div>
                 <div class="row">
-                    @if (Model.Incentive == true && Model.AnnexId.Equals(null))
-                    {
-                        <div class="form-group col-lg-5 col-md-6 col-xs-12">
-                            <label class="control-label">Tipo</label>
-                            <select name="type" id="type" class="form-control selectoption" onchange="ativar_button()">
-                                <option value="1">Produto</option>
-                                <option value="7">Produto Incentivado</option>
-                                <option value="8">Produto Não Incentivado</option>
-                                <option value="3">Produto fora da pauta</option>
-                                <option value="2">Nota</option>
-                                <option value="4">Agrupado - Analítico</option>
-                                <option value="5">Agrupado - Sintético</option>
-                                <option value="6">Resumo Geral</option>
-                                <option value="9">GNRE de Fornecedor sem Inscrição Estadual</option>
-                                <option value="10">Notas com Icms ST de Empresas sem IE</option>
-                            </select>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="form-group col-lg-5 col-md-6 col-xs-12">
-                            <label class="control-label">Tipo</label>
-                            <select name="type" id="type" class="form-control selectoption">
-                                <option value="1">Produto</option>
-                                <option value="7">Produto Incentivado</option>
-                                <option value="8">Produto Não Incentivado</option>
-                                <option value="3">Produto fora da pauta</option>
-                                <option value="2">Nota</option>
-                                <option value="4">Agrupado - Analítico</option>
-                                <option value="5">Agrupado - Sintético</option>
-                                <option value="6">Resumo Geral</option>
-                                <option value="9">GNRE de Fornecedor sem Inscrição Estadual</option>
-                                <option value="10">Notas com Icms ST de Empresas sem IE</option>
-                            </select>
-                        </div>
-                    }
+                    
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label class="control-label">Tipo</label>
+                        <select name="type" id="type" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Type>()" onchange="ativar_button()"></select>
+                    </div>
 
-
-                    <div class="form-group col-lg-5 col-md-6 col-xs-12">
-                        <label class="control-label"></label>
-                        <input type="hidden" id="caixa_num_nota" name="nota" class="form-control" placeholder="Nota" />
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label class="control-label">Nota</label>
+                        <input type="text" id="caixa_num_nota" name="nota" class="form-control" placeholder="Nota" disabled />
                     </div>
                 </div>
-                @if (Model.Incentive == true && Model.AnnexId.Equals(null))
-                {
-                    <div class="row">
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                            <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                            <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled />
-                        </div>
-                    </div>
-                }
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <input type="submit" value="Gerar" class="btn btn-success pull-right"/>
@@ -116,34 +65,14 @@
 
 
 <script>
-    $("#type").on("change", function () {
-        if ($(this).val() == 2) {
-            console.log('entrou')
-            $('input[name=nota]').prop('type', 'text');
-        }
-        else {
-            $('input[name=nota]').prop('type', 'hidden');
-        }
-    });
-
-    var valor = document.getElementById('type').value;
-
-    $("#type option:selected").each(function () {
-        console.log($(this).attr('selected'));
-        if ($(this).val() == 2) {
-            $('input[name=nota]').prop('type', 'text');
-        }
-    });
 
     function ativar_button() {
         var tipo = document.getElementById("type").value;
-
-        if (tipo == "6") {
-            document.getElementById("file").disabled = false;
-
+        if (tipo == "5") {
+            document.getElementById("caixa_num_nota").disabled = false;
         }
         else {
-            document.getElementById("file").disabled = true;
+            document.getElementById("caixa_num_nota").disabled = true;
         }
     }
 

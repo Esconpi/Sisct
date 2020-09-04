@@ -15,6 +15,16 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Create(List<Client> clients, Log log = null)
+        {
+            foreach(var c in clients)
+            {
+                _context.Clients.Add(c);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
 
         public List<Client> FindByCompanyId(int companyId, Log log = null)
         {
@@ -66,6 +76,17 @@ namespace Escon.SisctNET.Repository.Implementation
             var result = _context.Clients.Where(_ => _.CnpjRaiz.Equals(raiz)).FirstOrDefault();
             AddLog(log);
             return result;
+        }
+
+        public void Update(List<Client> clients, Log log = null)
+        {
+            foreach (var c in clients)
+            {
+                _context.Clients.Update(c);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
         }
     }
 }

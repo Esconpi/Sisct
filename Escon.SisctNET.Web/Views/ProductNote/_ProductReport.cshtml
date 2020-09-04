@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
 
-@if (@ViewBag.TaxationType == 1 || @ViewBag.TaxationType == 7)
+@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
 {
     <thead>
         <tr>
@@ -16,7 +16,7 @@
             <th>B. Cálculo</th>
             <th>MVA(%)</th>
             <th>BC. ICMS</th>
-            @if (@ViewBag.TaxationType == 1)
+            @if (ViewBag.TypeTaxation == "ST")
             {
                 <th>BCR(%)</th>
                 <th>BCR</th>
@@ -55,7 +55,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
                 <td>@Html.DisplayFor(modelItem => item.Mva)</td>
                 <td>@Html.DisplayFor(modelItem => item.Valoragregado)</td>
-                @if (@ViewBag.TaxationType == 1)
+                @if (ViewBag.TypeTaxation == "ST")
                 {
                     <td>@Html.DisplayFor(modelItem => item.BCR)</td>
                     <td>@Html.DisplayFor(modelItem => item.ValorBCR)</td>
@@ -79,62 +79,63 @@
         }
     </tbody>
 }
-else if (@ViewBag.TaxationType >= 2 && @ViewBag.TaxationType <= 5)
+else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
+                ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
 {
-    <thead>
-        <tr style="font-size:9px;">
-            <th></th>
-            <th>Nota</th>
-            <th>Produto</th>
-            <th>UF</th>
-            <th>Dia/Mês</th>
-            <th>V. Nota</th>
-            <th>V. Produto</th>
-            <th>IPI</th>
-            <th>Frete Nº</th>
-            <th>V. Frete</th>
-            <th>BC. ICMS</th>
-            <th>Aliq Intra(%)</th>
-            <th>Aliq Inter(%)</th>
-            <th>Dif</th>
-            <th>ICMS ST NFe</th>
-            <th>ICMS Apurado</th>
-        </tr>
-    </thead>
-    <tbody style="font-size:9px;">
-        @foreach (var item in Model)
-        {
-            <tr>
-                @if (item.Note.Iest == "")
-                {
-                    <td><strong>S</strong></td>
-                }
-                else
-                {
-                    <td><strong>I</strong></td>
-                }
-                <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
-                <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
-                <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
-                <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                <td>@Convert.ToDecimal(item.Note.Vnf)</td>
-                <td>@Convert.ToDecimal(item.Vprod + item.Vseg + item.Voutro + item.Vfrete - item.Vdesc)</td>
-                <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
-                <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
-                <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
-                <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
-                <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
-                <td>@Html.DisplayFor(modelItem => item.Picms)</td>
-                <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
-                <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
-                <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
-
+        <thead>
+            <tr style="font-size:9px;">
+                <th></th>
+                <th>Nota</th>
+                <th>Produto</th>
+                <th>UF</th>
+                <th>Dia/Mês</th>
+                <th>V. Nota</th>
+                <th>V. Produto</th>
+                <th>IPI</th>
+                <th>Frete Nº</th>
+                <th>V. Frete</th>
+                <th>BC. ICMS</th>
+                <th>Aliq Intra(%)</th>
+                <th>Aliq Inter(%)</th>
+                <th>Dif</th>
+                <th>ICMS ST NFe</th>
+                <th>ICMS Apurado</th>
             </tr>
+        </thead>
+        <tbody style="font-size:9px;">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @if (item.Note.Iest == "")
+                    {
+                        <td><strong>S</strong></td>
+                    }
+                    else
+                    {
+                        <td><strong>I</strong></td>
+                    }
+                    <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
+                    <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                    <td>@Convert.ToDecimal(item.Note.Vnf)</td>
+                    <td>@Convert.ToDecimal(item.Vprod + item.Vseg + item.Voutro + item.Vfrete - item.Vdesc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Vipi)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Freterateado)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Vbasecalc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Picms)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IcmsST)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IcmsApurado)</td>
 
-        }
-    </tbody>
+                </tr>
+
+            }
+        </tbody>
 }
-else if (@ViewBag.TaxationType == 6)
+else if (ViewBag.TypeTaxation == "Isento")
 {
     <thead style="font-size:12px;">
         <tr>

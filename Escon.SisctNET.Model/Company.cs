@@ -170,7 +170,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaArt781Excedente { get; set; }
 
-        [Display(Name = "IRPJ Petróleo %")]
+        [Display(Name = "IRPJ Combustível %")]
         public decimal? IRPJ1 { get; set; }
 
         [Display(Name = "IRPJ Comércio %")]
@@ -208,6 +208,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Adicional IRPJ %")]
         public decimal? AdicionalIRPJ { get; set; }
 
+        public bool Sped { get; set; }
 
     }
 }

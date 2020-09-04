@@ -94,7 +94,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                int cont = 0;
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -114,6 +113,10 @@ namespace Escon.SisctNET.Web.Controllers
                     tipoCliente = 2;
                 }
 
+                List<Model.Client> addClientes = new List<Model.Client>();
+
+                var clientesAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
+
                 foreach (var det in dets)
                 {
                     
@@ -124,7 +127,8 @@ namespace Escon.SisctNET.Web.Controllers
                         string IE = det.ContainsKey("IE") ? det["IE"] : "";
                         if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
-                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+                            //var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+                            var existCnpj = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
 
                             if (existCnpj == null)
                             {
@@ -141,7 +145,19 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 var CNPJRaiz = CNPJ.Substring(0, 8);
-                                var client = new Model.Client
+
+                                Model.Client client = new Model.Client();
+                                client.Name = det["xNome"];
+                                client.CompanyId = id;
+                                client.Document = CNPJ;
+                                client.CnpjRaiz = CNPJRaiz;
+                                client.Ie = IE;
+                                client.TypeClientId = tipoCliente;
+                                client.Created = DateTime.Now;
+                                client.Updated = DateTime.Now;
+
+                                addClientes.Add(client);
+                                /*var client = new Model.Client
                                 {
                                     Name = det["xNome"],
                                     CompanyId = id,
@@ -153,15 +169,16 @@ namespace Escon.SisctNET.Web.Controllers
                                     Updated = DateTime.Now
 
                                 };
-                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
-                                cont++;
+                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));*/
                             }
                         }
                     }
                   
                 }
 
-                return RedirectToAction("Details",new {companyId = id,count = cont });
+                _service.Create(addClientes);
+
+                return RedirectToAction("Details",new {companyId = id, year = year, month = month });
             }
             catch(Exception ex)
             {
@@ -190,7 +207,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int companyId,int count)
+        public IActionResult Details(int companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -200,10 +217,9 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.Id = companyId;
-                var client = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
-                var result = client.Take(count).ToList();
-                ViewBag.Count = count;
-                return View(result);
+                var client = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).ToList();
+                ViewBag.Count = client.Count();
+                return View(client);
             }
             catch(Exception ex)
             {
@@ -260,7 +276,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Client(int id, int count)
+        public IActionResult Client(int id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -272,7 +288,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
                 ViewBag.Company = result.CompanyId;
-                ViewBag.Count = count;
+                ViewBag.Mes = month;
+                ViewBag.Ano = year;
                 return View(result);
             }
             catch (Exception ex)
@@ -282,7 +299,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Client(int id, int count, Model.Client entity)
+        public IActionResult Client(int id, string year, string month, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -300,7 +317,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Details", new { companyId = client.CompanyId, count = count });
+                return RedirectToAction("Details", new { companyId = client.CompanyId, year = year, month = month });
             }
             catch (Exception ex)
             {

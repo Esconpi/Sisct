@@ -52,6 +52,34 @@ namespace Escon.SisctNET.Model
 
         public decimal? Debito { get; set; }
 
+        public decimal? VendasNContribuinteFora { get; set; }
+
+        public decimal? VendasContribuinte1 { get; set; }
+
+        public decimal? VendasContribuinte2 { get; set; }
+
+        public decimal? ReceitaNormal1 { get; set; }
+
+        public decimal? ReceitaST1 { get; set; }
+
+        public decimal? ReceitaIsento1 { get; set; }
+
+        public decimal? ReceitaNormal2 { get; set; }
+
+        public decimal? ReceitaST2 { get; set; }
+
+        public decimal? ReceitaIsento2 { get; set; }
+
+        public decimal? ReceitaNormal3 { get; set; }
+
+        public decimal? ReceitaST3 { get; set; }
+
+        public decimal? ReceitaIsento3 { get; set; }
+
+        public decimal? VendasIncentivada { get; set; }
+
+        public decimal? VendasNIncentivada { get; set; }
+
         public decimal? VendasClientes { get; set; }
 
         public decimal? VendasInternas1 { get; set; }
@@ -112,7 +140,20 @@ namespace Escon.SisctNET.Model
 
         public decimal? CsllRetido { get; set; }
 
+        public decimal? CsllFonte { get; set; }
+
         public decimal? IrpjRetido { get; set; }
 
+        public decimal? IrpjFonteServico { get; set; }
+
+        public decimal? IrpjFonteFinanceira { get; set; }
+
+        public decimal? BonificacaoSped { get; set; }
+
+        public decimal? BonificacaoXMl { get; set; }
+
+        public decimal? ReceitaAF { get; set; }
+
+        public decimal? CapitalIM { get; set; }
     }
 }

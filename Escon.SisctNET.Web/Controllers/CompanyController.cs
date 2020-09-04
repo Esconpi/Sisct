@@ -511,25 +511,6 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult TaxationNcm(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-
-        }
-
-        [HttpGet]
         public IActionResult Relatory(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
@@ -664,6 +645,7 @@ namespace Escon.SisctNET.Web.Controllers
                     c.PercentualCofins = entity.PercentualCofins;
                     c.PercentualPis = entity.PercentualPis;
                     c.AdicionalIRPJ = entity.AdicionalIRPJ;
+                    c.Sped = entity.Sped;
                     c.Updated = DateTime.Now;
                     comps.Add(c);
                 }

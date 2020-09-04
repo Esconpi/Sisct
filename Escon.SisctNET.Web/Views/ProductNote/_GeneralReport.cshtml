@@ -4,23 +4,36 @@
 
 @if (ViewBag.Incetive == true && ViewBag.TypeIncetive == true)
 {
+
     @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
     @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))
 
 }
 else if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false)
 {
-    if (ViewBag.TypeCompany == true)
+    @if (ViewBag.Comp.AnnexId != 3)
     {
-        @await Html.PartialAsync("_GeneralProductIncentiveReport", new ViewDataDictionary(ViewData))
+        if (ViewBag.TypeCompany == true)
+        {
+            @await Html.PartialAsync("_GeneralProductIncentiveReport", new ViewDataDictionary(ViewData))
+        }
+        else
+        {
+            @await Html.PartialAsync("_GeneralIndustryIncentiveReport", new ViewDataDictionary(ViewData))
+        }
     }
-    else
+    else if (ViewBag.Comp.AnnexId == 3)
     {
-        @await Html.PartialAsync("_GeneralIndustryIncentiveReport", new ViewDataDictionary(ViewData))
+        if (ViewBag.Comp.SectionId.Equals(2))
+        {
+            @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
+            @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))
+        }
     }
 }
 else
 {
     @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))
+
 }
 
