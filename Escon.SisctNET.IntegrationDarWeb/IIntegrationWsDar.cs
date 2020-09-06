@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model.DarWebWs;
+﻿using ConsultaDocumentoArrecadacaoDarWeb;
+using Escon.SisctNET.Model.DarWebWs;
 using IntegrationDarService;
 using System.Threading.Tasks;
 
@@ -9,5 +10,7 @@ namespace Escon.SisctNET.IntegrationDarWeb
         Task<ResponseBarCodeDarService> GetBarCodeAsync(solicitarCodigoBarrasRequest request);
 
         Task<ResponseBarCodeDarService> GetBarCodePdfAsync(solicitarCodigoBarrasPDFRequest request);
+
+        Task<ResponseGetBilletPeriodReference> GetDocumentsByPeriodReferenceAsync(RequestGetBilletPeriodReference request);
     }
 }

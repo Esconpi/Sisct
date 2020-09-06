@@ -1,4 +1,6 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.IntegrationDarWeb;
+using Escon.SisctNET.Model.DarWebWs;
+using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Email;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,8 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IEmailResponsibleService _emailResponsibleService;
         private readonly IEmailService _serviceEmail;
         private readonly IEmailConfiguration _emailConfiguration;
+        private readonly IConfigurationService _configurationService;
+        private readonly IIntegrationWsDar _integrationWsDar;
 
         public BilletDarController(
             ICompanyService companyService,
@@ -27,7 +31,9 @@ namespace Escon.SisctNET.Web.Controllers
             IEmailResponsibleService emailResponsibleService,
             IFunctionalityService functionalityService,
             IEmailService serviceEmail,
+            IConfigurationService configurationService,
             IEmailConfiguration emailConfiguration,
+            IIntegrationWsDar integrationWsDar,
             IHttpContextAccessor httpContextAccessor) : base(functionalityService, "Group")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
@@ -38,6 +44,8 @@ namespace Escon.SisctNET.Web.Controllers
             _serviceEmail = serviceEmail;
             _emailConfiguration = emailConfiguration;
             _companyService = companyService;
+            _configurationService = configurationService;
+            _integrationWsDar = integrationWsDar;
         }
 
         [HttpGet]
@@ -157,6 +165,7 @@ namespace Escon.SisctNET.Web.Controllers
             await FillCompany(company);
 
             var result = await _darDocumentService.FindByPeriodReferenceAsync(Convert.ToInt32(pe), companyid);
+            var r = result.OrderByDescending(x => x.Value).ToString();
 
             ViewBag.Period = pe.Substring(4, 2) + "/" + pe.Substring(0, 4);
             ViewBag.PeriodSelected = pe;
@@ -204,6 +213,41 @@ namespace Escon.SisctNET.Web.Controllers
 
             return Ok(new { code = 200, message = "ok" });
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SyncPaidOut(string periodReference)
+        {
+            try
+            {
+                var accessToken = _configurationService.FindByName("TokenAccessDarWs", null);
+                if (accessToken == null) return BadRequest(new { code = 400, message = "O token de acesso não foi encontrado na base de dados" });
+
+                var organCode = _configurationService.FindByName("CodigoOrgaoDarWs", null);
+                if (organCode == null) return BadRequest(new { code = 400, message = "O código do orgão não foi encontrado na base de dados" });
+
+                var responseSefaz = await _integrationWsDar.GetDocumentsByPeriodReferenceAsync(new RequestGetBilletPeriodReference() { AccessToken = accessToken.Value, CodeOrgan = organCode.Value, ReferencePeriod = periodReference });
+
+                if (responseSefaz.TypeReturn.Equals("SUCESSO"))
+                {
+                    var controlNumbers = responseSefaz.Billets.Select(x => Convert.ToInt32(x.ControlNumber)).ToArray();
+                    if (controlNumbers.Length <= 0)
+                        return Ok(new { code = 201, message = "A consulta do sefaz não retorno registros" });
+
+                    var dars = await _darDocumentService.GetByControlNumberAsync(controlNumbers);
+                    
+                    foreach (var dar in dars)
+                        dar.PaidOut = dar.PaidOut;
+
+                    await _darDocumentService.UpdateRangeAsync(dars);
+                }
+
+                return Ok(new { code = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { code = 500, message = ex.Message });
+            }
         }
 
         private async Task FillDar()

@@ -49,6 +49,10 @@ namespace Escon.SisctNET.Service.Implementation
 
         public async Task<List<DarDocument>> GetByCompanyIdAsync(int id) => await _repository.GetByCompanyIdAsync(id);
 
+        public async Task<DarDocument> GetByControlNumberAsync(int controlNumber) => await _repository.GetByControlNumberAsync(controlNumber);
+
+        public async Task<List<DarDocument>> GetByControlNumberAsync(int[] controlNumber) => await _repository.GetByControlNumberAsync(controlNumber);
+
         public async Task<List<int>> GetPeriodsReferenceAsync() => await _repository.GetPeriodsReferenceAsync();
 
         public async Task<List<DarDocument>> ListFull() => await _repository.ListFull();
@@ -60,5 +64,7 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.Update(entity, log);
         }
+
+        public async Task UpdateRangeAsync(List<DarDocument> documents) => await _repository.UpdateRangeAsync(documents);
     }
 }

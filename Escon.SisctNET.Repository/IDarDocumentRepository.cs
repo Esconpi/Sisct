@@ -10,6 +10,10 @@ namespace Escon.SisctNET.Repository
 
         Task<List<DarDocument>> GetByCompanyIdAsync(int id);
 
+        Task<DarDocument> GetByControlNumberAsync(int controlNumber);
+
+        Task<List<DarDocument>> GetByControlNumberAsync(int[] controlNumber);
+
         Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId);
 
         Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled);
@@ -18,6 +22,8 @@ namespace Escon.SisctNET.Repository
 
         Task<List<DarDocument>> SearchAsync(bool? canceled, bool? paidout, int? period, int? darid, int? companyid);
 
-        Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyid);     
+        Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyid);
+
+        Task UpdateRangeAsync(List<DarDocument> documents);
     }
 }

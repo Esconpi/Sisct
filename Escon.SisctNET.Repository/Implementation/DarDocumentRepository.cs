@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<object> parameters = new List<object>();
             parameters.Add(periodReference);
 
-            var query = "select DISTINCT company.id,company.document, company.socialname, dardocument.periodreference, dar.code darcode, dar.description dardescription"
+            var query = "select DISTINCT company.id,company.document, company.socialname, dardocument.periodreference, dar.code darcode, dar.description dardescription,dardocument.value, dardocument.paidout"
                     + "  from company "
                     + "  left join dardocument on dardocument.companyid = company.id "
                     + "  left join dar on dar.id = dardocument.darid "
@@ -60,6 +60,10 @@ namespace Escon.SisctNET.Repository.Implementation
             .Include(x => x.Company)
             .Include(x => x.Dar)
             .Where(x => x.CompanyId.Equals(id)).ToListAsync();
+
+        public async Task<DarDocument> GetByControlNumberAsync(int controlNumber) => await _context.DarDocuments.FirstOrDefaultAsync(x => x.ControlNumber.Equals(controlNumber));
+
+        public async Task<List<DarDocument>> GetByControlNumberAsync(int[] controlNumber) => await _context.DarDocuments.Where(x => controlNumber.Contains(x.ControlNumber)).ToListAsync();
 
         public async Task<List<int>> GetPeriodsReferenceAsync() =>
             await _context.DarDocuments.GroupBy(x => x.PeriodReference).Select(x => x.Key).ToListAsync();
@@ -102,6 +106,12 @@ namespace Escon.SisctNET.Repository.Implementation
 
             var resultReturn = await result.ToListAsync();
             return resultReturn;
+        }
+
+        public async Task UpdateRangeAsync(List<DarDocument> documents)
+        {
+            _context.DarDocuments.UpdateRange(documents);
+            await _context.SaveChangesAsync();
         }
     }
 }

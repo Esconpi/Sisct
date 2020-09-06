@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model.DarWebWs;
+﻿using ConsultaDocumentoArrecadacaoDarWeb;
+using Escon.SisctNET.Model.DarWebWs;
 using IntegrationDarService;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
     public class IntegrationWsDar : IIntegrationWsDar
     {
         private readonly DocumentoArrecadacaoWSClient wsClient;
+        private readonly ConsultaDocumentoArrecadacaoWSClient wsClientRead;
         private readonly IConfiguration _configuration;
 
         public IntegrationWsDar(IConfiguration configuration)
@@ -15,8 +17,10 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
             _configuration = configuration;
 
             var urlBase = _configuration["Sefaz:UrlBase"];
+            var urlBaseRead = _configuration["Sefaz:UrlBaseRead"];
 
             wsClient = new DocumentoArrecadacaoWSClient(DocumentoArrecadacaoWSClient.EndpointConfiguration.DocumentoArrecadacaoWSPort, urlBase);
+            wsClientRead = new ConsultaDocumentoArrecadacaoWSClient(ConsultaDocumentoArrecadacaoWSClient.EndpointConfiguration.ConsultaDocumentoArrecadacaoWSPort, urlBaseRead);
         }
 
         public async Task<ResponseBarCodeDarService> GetBarCodeAsync(solicitarCodigoBarrasRequest request)
@@ -76,6 +80,36 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
             {
                 return new ResponseBarCodeDarService();
             }
+        }
+
+        public async Task<ResponseGetBilletPeriodReference> GetDocumentsByPeriodReferenceAsync(RequestGetBilletPeriodReference request)
+        {
+            try
+            {
+                var response = await wsClientRead.consultarDocumentosEmitidosPorPeriodoReferenciaAsync(request.ReferencePeriod, request.CodeOrgan, request.AccessToken);
+
+                var result = new ResponseGetBilletPeriodReference();
+                result.TypeReturn = response.@return.tipoRetorno;
+                result.MessageReturn = response.@return.mensagemRetorno1;
+
+                foreach (var bl in response.@return.boleto)
+                {
+                    result.Billets.Add(new ResponseGetBilletPeriodReferenceBillet()
+                    {
+                        BarCode = bl.codigoBarras,
+                        ControlNumber = bl.numeroControle,
+                        DocumentNumber = bl.numeroDocumento,
+                        PaidOut = bl.pago.Equals("false") ? false : true
+                    });
+                }
+
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseGetBilletPeriodReference() { TypeReturn = "ERRO", MessageReturn = ex.Message };
+            }
+
         }
     }
 }

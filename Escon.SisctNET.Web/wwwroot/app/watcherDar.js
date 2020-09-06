@@ -7,6 +7,39 @@
         $('#btnFiltrar').submit();
     })
 
+    $('#btnUpdatePaidOut').click(function () {
+
+        var period = $("#PeriodId option:selected").val();
+        $.ajax({
+            url: `/BilletDar/SyncPaidOut?periodReference=${period}`,
+            dataType: 'json',
+            type: 'get',
+            method: 'get',
+            contentType: 'application/json',
+            beforeSend: function () {
+                $(this).attr('disabled', 'disable');
+                $("#loader_syncpaidout").css('display', 'block');
+            },
+            complete: function () {
+                $(this).removeAttr('disabled');
+                $("#loader_syncpaidout").css('display', 'none');
+            },
+            success: function (data, textStatus, jQxhr) {
+
+                if (data.code === 200) {
+                    alert('Os pagamentos referentes ao período selecionado foram sincronizados');
+                    $('#btnFiltrar').submit();
+                } else if (data.code === 201) {
+                    alert(data.message);
+                }
+                
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert('Falha ao tentar sincronizar pagamentos');
+            }
+        });
+    });
+
     $(".btnGenerateDar").click(function () {
 
         var year = $('#periodYear').val();
