@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Repository.Implementation
             List<object> parameters = new List<object>();
             parameters.Add(periodReference);
 
-            var query = "select DISTINCT company.id,company.document, company.socialname, dardocument.periodreference, dar.code darcode, dar.description dardescription,dardocument.value, dardocument.paidout"
+            var query = "select DISTINCT company.id,company.document, company.socialname, dardocument.periodreference, dar.code darcode, dar.description dardescription,dardocument.value, dardocument.paidout, dardocument.duedate"
                     + "  from company "
                     + "  left join dardocument on dardocument.companyid = company.id "
                     + "  left join dar on dar.id = dardocument.darid "
@@ -113,5 +113,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.DarDocuments.UpdateRange(documents);
             await _context.SaveChangesAsync();
         }
+
     }
 }

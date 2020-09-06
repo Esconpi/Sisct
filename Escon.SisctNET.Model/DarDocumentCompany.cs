@@ -1,4 +1,6 @@
-﻿namespace Escon.SisctNET.Model
+﻿using System;
+
+namespace Escon.SisctNET.Model
 {
     public class DarDocumentCompany
     {
@@ -18,5 +20,7 @@
         public decimal? Value { get; set; }
 
         public bool? PaidOut { get; set; }
+
+        public DateTime? DueDate { get; set; }
     }
 }

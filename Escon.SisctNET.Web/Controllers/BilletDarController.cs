@@ -235,7 +235,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return Ok(new { code = 201, message = "A consulta do sefaz não retorno registros" });
 
                     var dars = await _darDocumentService.GetByControlNumberAsync(controlNumbers);
-                    
+
                     foreach (var dar in dars)
                         dar.PaidOut = dar.PaidOut;
 
@@ -323,5 +323,6 @@ namespace Escon.SisctNET.Web.Controllers
                     return "None";
             }
         }
+
     }
 }

@@ -1,5 +1,31 @@
 ﻿$(document).ready(function () {
 
+    $("#tblGenerated").DataTable();
+
+    $("#tblNotGenerated").DataTable();
+
+    $("#tblPaidOut").DataTable();
+
+    $("#tblNotPaidOut").DataTable();
+
+    $("#tblAfterDueDate").DataTable({
+        "searching": false,
+        "info": false,
+        "pageLength":3
+    });
+
+    $("#tblBeforeDueDate").DataTable({
+        "searching": false,
+        "pageLength": 3,
+        "info": false
+    });
+
+    $("#tblDueDate").DataTable({
+        "searching": false,
+        "info": false,
+        "pageLength": 3
+    });
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#btnReload').click(function () {
@@ -28,7 +54,7 @@
 
                 if (data.code === 200) {
                     alert('Os pagamentos referentes ao período selecionado foram sincronizados');
-                    $('#btnFiltrar').submit();
+                    $('#btnFiltrar').trigger('click');
                 } else if (data.code === 201) {
                     alert(data.message);
                 }
