@@ -1301,6 +1301,12 @@ namespace Escon.SisctNET.Web.Controllers
                             Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id)
                         );
 
+                    //Caso exista o DAR e ele esteja pago, não será mais possível editar
+                    if (darDc != null && darDc.PaidOut)
+                        continue;
+
+
+                    //Caso exista o DAR, ele será cancelado e um novo será criado 
                     if (darDc != null)
                     {
                         darDc.Canceled = true;

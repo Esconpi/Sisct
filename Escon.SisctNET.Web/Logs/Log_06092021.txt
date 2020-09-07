@@ -1,0 +1,7 @@
+The process cannot access the file 'D:\repo\git\esconpi\Sisct\Escon.SisctNET.Web\EmailService_06092020.log' because it is being used by another process.   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize)
+   at System.IO.StreamWriter..ctor(String path, Boolean append)
+   at System.IO.File.AppendAllLines(String path, IEnumerable`1 contents)
+   at Escon.SisctNET.Web.Email.EmailService.Send(EmailMessage emailMessage, String[] attachment) in D:\repo\git\esconpi\Sisct\Escon.SisctNET.Web\Email\EmailService.cs:line 76

@@ -190,14 +190,14 @@
                                             {
                                                 if (!item.PaidOut.Value)
                                                 {
-                                                    <a style="cursor:pointer;" id="btnProccess_@(item.Id)" class="btnGenerateDar" data-company="@(item.Id)" data-toggle='tooltip' data-placement='top' title='Gerar DAR para @(item.SocialName)' data-billet="@(item.Id)">
+                                                    <a style="cursor:pointer;" id="btnProccess_@(item.Id)" class="btnGenerateDar" data-company="@(item.Id)" data-companyname="@(item.SocialName)" data-toggle='tooltip' data-placement='top' title='Gerar DAR para @(item.SocialName)' data-billet="@(item.Id)">
                                                         <i class="fa fa-send"></i>
                                                     </a>
                                                 }
                                             }
                                             else
                                             {
-                                                <a style="cursor:pointer;" id="btnProccess_@(item.Id)" class="btnGenerateDar" data-company="@(item.Id)" data-toggle='tooltip' data-placement='top' title='Gerar DAR para @(item.SocialName)' data-billet="@(item.Id)">
+                                                <a style="cursor:pointer;" id="btnProccess_@(item.Id)" class="btnGenerateDar" data-company="@(item.Id)" data-companyname="@(item.SocialName)"  data-toggle='tooltip' data-placement='top' title='Gerar DAR para @(item.SocialName)' data-billet="@(item.Id)">
                                                     <i class="fa fa-send"></i>
                                                 </a>
                                             }
