@@ -22,8 +22,8 @@ namespace Escon.SisctNET.Web
             var host = new WebHostBuilder()
             .UseConfiguration(configuration)
             .UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"))
-            .UseUrls("http://localhost:6090/;https://localhost:6080/")
-            //.UseUrls(new string[] { "http://*", "https://*" })
+            //.UseUrls("http://localhost:6090/;https://localhost:6080/")
+            .UseUrls(new string[] { "http://*:6090", "https://*:6080" })
             .ConfigureLogging(b =>
             {
                 b.SetMinimumLevel(LogLevel.Information);
