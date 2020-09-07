@@ -209,6 +209,9 @@ namespace Escon.SisctNET.Web
             var cultureInfo = new CultureInfo("pt-BR");
             cultureInfo.NumberFormat.CurrencySymbol = "R$";
 
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseValidateSessionExtension();
 
