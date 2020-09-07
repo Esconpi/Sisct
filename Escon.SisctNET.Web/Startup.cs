@@ -20,6 +20,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Globalization;
+
 namespace Escon.SisctNET.Web
 {
     public class Startup
@@ -203,6 +205,9 @@ namespace Escon.SisctNET.Web
             app.UseSession();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            var cultureInfo = new CultureInfo("pt-BR");
+            cultureInfo.NumberFormat.CurrencySymbol = "R$";
 
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseValidateSessionExtension();
