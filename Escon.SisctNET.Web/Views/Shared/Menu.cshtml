@@ -1,6 +1,8 @@
 ﻿@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault().Active ||
     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault().Active ||
-    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active
+    )
 {
     <li class="treeview menu">
         <a href="#">
@@ -26,7 +28,10 @@
                 <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configurações</a></li>
             }
 
-
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Base</a></li>
+            }
         </ul>
     </li>
 }

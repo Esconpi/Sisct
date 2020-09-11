@@ -62,7 +62,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public IActionResult Create(Model.Configuration entity)
         {
@@ -125,7 +124,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-
 
         [HttpGet]
         public IActionResult Delete(int id)

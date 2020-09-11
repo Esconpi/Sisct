@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult RelatoryExit(int id, string year, string month, string type, int cfopid)
+        public IActionResult RelatoryExit(int id, string year, string month, string type, int cfopid, string opcao)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -100,6 +100,7 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 ViewBag.Type = type;
+                ViewBag.Opcao = opcao;
                 ViewBag.AnnexId = comp.AnnexId;
                 ViewBag.SectionId = comp.SectionId;
 
@@ -116,444 +117,654 @@ namespace Escon.SisctNET.Web.Controllers
                         valorContabilEntrada = 0, baseCalcIcmsEntrada = 0, valorIcmsEntrada = 0, valorFecopEntrada = 0;
                     int codeCfop = 0;
 
-                    notes = importXml.Nfe(directoryNfeExit);
-
-                    for (int i = notes.Count - 1; i >= 0; i--)
+                    if (opcao.Equals("saida"))
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        notes = importXml.Nfe(directoryNfeExit);
+
+                        for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            notes.RemoveAt(i);
-                            continue;
-                        }
-
-                        int pos = -1;
-                        string cpf = "escon";
-                        string cnpj = "escon";
-                        string indIEDest = "escon";
-
-                        if (notes[i][3].ContainsKey("CPF"))
-                        {
-                            cpf = notes[i][3]["CPF"];
-                        }
-
-                        if (notes[i][3].ContainsKey("CNPJ"))
-                        {
-                            cnpj = notes[i][3]["CNPJ"];
-                        }
-
-
-                        if (notes[i][3].ContainsKey("indIEDest"))
-                        {
-                            indIEDest = notes[i][3]["indIEDest"];
-                        }
-
-                        for (int j = 0; j < notes[i].Count(); j++)
-                        {
-                            if (notes[i][j].ContainsKey("CFOP"))
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document))
                             {
-                                pos = -1;
-                                codeCfop = Convert.ToInt32(notes[i][j]["CFOP"]);
-                                for (int k = 0; k < cfopsDesordenados.Count(); k++)
+                                notes.RemoveAt(i);
+                                continue;
+                            }
+
+                            int pos = -1;
+                            string cpf = "escon";
+                            string cnpj = "escon";
+                            string indIEDest = "escon";
+
+                            if (notes[i][3].ContainsKey("CPF"))
+                            {
+                                cpf = notes[i][3]["CPF"];
+                            }
+
+                            if (notes[i][3].ContainsKey("CNPJ"))
+                            {
+                                cnpj = notes[i][3]["CNPJ"];
+                            }
+
+
+                            if (notes[i][3].ContainsKey("indIEDest"))
+                            {
+                                indIEDest = notes[i][3]["indIEDest"];
+                            }
+
+                            for (int j = 0; j < notes[i].Count(); j++)
+                            {
+                                if (notes[i][j].ContainsKey("CFOP"))
                                 {
-                                    if (cfopsDesordenados[k][0].Equals(notes[i][j]["CFOP"]))
+                                    pos = -1;
+                                    codeCfop = Convert.ToInt32(notes[i][j]["CFOP"]);
+                                    for (int k = 0; k < cfopsDesordenados.Count(); k++)
                                     {
-                                        pos = k;
-                                        break;
+                                        if (cfopsDesordenados[k][0].Equals(notes[i][j]["CFOP"]))
+                                        {
+                                            pos = k;
+                                            break;
+                                        }
+                                    }
+
+                                    if (pos < 0)
+                                    {
+                                        var cfp = _cfopService.FindByCode(notes[i][j]["CFOP"]);
+                                        List<string> cfop = new List<string>();
+                                        cfop.Add(notes[i][j]["CFOP"]);
+                                        cfop.Add(cfp.Description);
+
+                                        // Geral
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        // Venda com CPF
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        // Venda sem CPF
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        // Venda com CNPJ com Inscrição Estadual
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        // Venda com CNPJ sem Inscrição Estadual
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        cfopsDesordenados.Add(cfop);
+                                        cfops.Add(Convert.ToInt32(notes[i][j]["CFOP"]));
+                                        pos = cfopsDesordenados.Count() - 1;
+                                    }
+
+                                }
+
+                                // Geral
+
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorContabilSaida += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                    }
+                                    else
+                                    {
+                                        valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vProd"]);
                                     }
                                 }
 
-                                if (pos < 0)
-                                {
-                                    var cfp = _cfopService.FindByCode(notes[i][j]["CFOP"]);
-                                    List<string> cfop = new List<string>();
-                                    cfop.Add(notes[i][j]["CFOP"]);
-                                    cfop.Add(cfp.Description);
-
-                                    // Geral
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    // Venda com CPF
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    // Venda sem CPF
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    // Venda com CNPJ com Inscrição Estadual
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    // Venda com CNPJ sem Inscrição Estadual
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    cfopsDesordenados.Add(cfop);
-                                    cfops.Add(Convert.ToInt32(notes[i][j]["CFOP"]));
-                                    pos = cfopsDesordenados.Count() - 1;
-                                }
-
-                            }
-
-                            // Geral
-
-                            if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-
-                                if (codeCfop >= 5000)
-                                {
-                                    valorContabilSaida += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
-                                else
-                                {
-                                    valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-
-                                if (codeCfop >= 5000)
-                                {
-                                    valorContabilSaida += Convert.ToDecimal(notes[i][j]["Frete"]);
-                                }
-                                else
-                                {
-                                    valorContabilEntrada += Convert.ToDecimal(notes[i][j]["Frete"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    valorContabilSaida -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                }
-                                else
-                                {
-                                    valorContabilEntrada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    valorContabilSaida += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                }
-                                else
-                                {
-                                    valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    valorContabilSaida += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                }
-                                else
-                                {
-                                    valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
-                            {
-                                cfopsDesordenados[pos][3] = (Convert.ToDecimal(cfopsDesordenados[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    baseCalcIcmsSaida += Convert.ToDecimal(notes[i][j]["vBC"]);
-                                }
-                                else
-                                {
-                                    baseCalcIcmsEntrada += Convert.ToDecimal(notes[i][j]["vBC"]);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                            {
-                                cfopsDesordenados[pos][4] = (Convert.ToDecimal(cfopsDesordenados[pos][4]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    //valorIcmsSaida += Convert.ToDecimal(notes[i][j]["vICMS"]);
-                                    valorIcmsSaida += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
-                                }
-                                else
-                                {
-                                    //valorIcmsEntrada += Convert.ToDecimal(notes[i][j]["vICMS"]);
-                                    valorIcmsEntrada += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                            {
-                                cfopsDesordenados[pos][5] = (Convert.ToDecimal(cfopsDesordenados[pos][5]) + ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                if (codeCfop >= 5000)
-                                {
-                                    //valorFecopSaida += Convert.ToDecimal(notes[i][j]["vFCP"]);
-                                    valorFecopSaida += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
-                                }
-                                else
-                                {
-                                    //valorFecopEntrada += Convert.ToDecimal(notes[i][j]["vFCP"]);
-                                    valorFecopEntrada += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
-                                }
-                            }
-
-                            if (cpf != "escon" && cpf != "")
-                            {
-                                // Com CPF
-
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                }
-
                                 if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorContabilSaida += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                    }
+                                    else
+                                    {
+                                        valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorContabilSaida -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                    }
+                                    else
+                                    {
+                                        valorContabilEntrada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorContabilSaida += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                    }
+                                    else
+                                    {
+                                        valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorContabilSaida += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                    }
+                                    else
+                                    {
+                                        valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
                                 {
-                                    cfopsDesordenados[pos][7] = (Convert.ToDecimal(cfopsDesordenados[pos][7]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    cfopsDesordenados[pos][3] = (Convert.ToDecimal(cfopsDesordenados[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        baseCalcIcmsSaida += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    }
+                                    else
+                                    {
+                                        baseCalcIcmsEntrada += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                                 {
-                                    cfopsDesordenados[pos][8] = (Convert.ToDecimal(cfopsDesordenados[pos][8]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
+                                    cfopsDesordenados[pos][4] = (Convert.ToDecimal(cfopsDesordenados[pos][4]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorIcmsSaida += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                        //valorIcmsSaida += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                    else
+                                    {
+                                        valorIcmsEntrada += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                        //valorIcmsEntrada += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
                                 }
 
                                 if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                                 {
-                                    cfopsDesordenados[pos][9] = (Convert.ToDecimal(cfopsDesordenados[pos][9]) + ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
+                                    cfopsDesordenados[pos][5] = (Convert.ToDecimal(cfopsDesordenados[pos][5]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorFecopSaida += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                        //valorFecopSaida += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                    else
+                                    {
+                                        valorFecopEntrada += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                        //valorFecopEntrada += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
                                 }
 
-                            }
-                            else if ((cpf == "escon" || cpf == "") && cnpj == "escon")
-                            {
-                                // Sem CPF
+                                if (cpf != "escon" && cpf != "")
+                                {
+                                    // Com CPF
 
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][6] = (Convert.ToDecimal(cfopsDesordenados[pos][6]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][7] = (Convert.ToDecimal(cfopsDesordenados[pos][7]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][8] = (Convert.ToDecimal(cfopsDesordenados[pos][8]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][9] = (Convert.ToDecimal(cfopsDesordenados[pos][9]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    }
+
+                                }
+                                else if ((cpf == "escon" || cpf == "") && cnpj == "escon")
                                 {
-                                    cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    // Sem CPF
+
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][11] = (Convert.ToDecimal(cfopsDesordenados[pos][11]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][12] = (Convert.ToDecimal(cfopsDesordenados[pos][12]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][13] = (Convert.ToDecimal(cfopsDesordenados[pos][13]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    }
+                                }
+                                else if (cnpj != "escon" && cnpj != "" && indIEDest == "1")
+                                {
+                                    // Com CNPJ e com IE
+
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][15] = (Convert.ToDecimal(cfopsDesordenados[pos][15]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][16] = (Convert.ToDecimal(cfopsDesordenados[pos][16]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][17] = (Convert.ToDecimal(cfopsDesordenados[pos][17]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    }
+                                }
+                                else if (cnpj != "escon" && cnpj != "" && indIEDest != "1")
+                                {
+                                    // Com CNPJ e sem IE
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][19] = (Convert.ToDecimal(cfopsDesordenados[pos][19]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][20] = (Convert.ToDecimal(cfopsDesordenados[pos][20]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    }
+
+                                    if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                    {
+                                        cfopsDesordenados[pos][21] = (Convert.ToDecimal(cfopsDesordenados[pos][21]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    }
                                 }
 
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][10] = (Convert.ToDecimal(cfopsDesordenados[pos][10]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][11] = (Convert.ToDecimal(cfopsDesordenados[pos][11]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][12] = (Convert.ToDecimal(cfopsDesordenados[pos][12]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][13] = (Convert.ToDecimal(cfopsDesordenados[pos][13]) + ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
-                            }
-                            else if (cnpj != "escon" && cnpj != "" && indIEDest == "1")
-                            {
-                                // Com CNPJ e com IE
-
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][14] = (Convert.ToDecimal(cfopsDesordenados[pos][14]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][15] = (Convert.ToDecimal(cfopsDesordenados[pos][15]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][16] = (Convert.ToDecimal(cfopsDesordenados[pos][16]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][17] = (Convert.ToDecimal(cfopsDesordenados[pos][17]) + ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
-                            }
-                            else if (cnpj != "escon" && cnpj != "" && indIEDest != "1")
-                            {
-                                // Com CNPJ e sem IE
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    cfopsDesordenados[pos][18] = (Convert.ToDecimal(cfopsDesordenados[pos][18]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][19] = (Convert.ToDecimal(cfopsDesordenados[pos][19]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][20] = (Convert.ToDecimal(cfopsDesordenados[pos][20]) + ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
-
-                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    cfopsDesordenados[pos][21] = (Convert.ToDecimal(cfopsDesordenados[pos][21]) + ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100)).ToString();
-                                }
                             }
 
                         }
 
+                        cfops.Sort();
+
+                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                        List<List<string>> cfopsOrdenados = new List<List<string>>();
+
+
+                        for (int i = 0; i < cfopsDesordenados.Count(); i++)
+                        {
+                            for (int k = 2; k < 22; k++)
+                            {
+                                cfopsDesordenados[i][k] = Convert.ToDouble(cfopsDesordenados[i][k].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            }
+                        }
+
+                        for (int i = 0; i < cfops.Count(); i++)
+                        {
+                            int pos = 0;
+                            for (int j = 0; i < cfopsDesordenados.Count(); j++)
+                            {
+                                if (cfops[i] == Convert.ToInt32(cfopsDesordenados[j][0]))
+                                {
+                                    pos = j;
+                                    break;
+                                }
+                            }
+
+                            List<string> cc = new List<string>();
+                            for (int k = 0; k < 22; k++)
+                            {
+                                cc.Add(cfopsDesordenados[pos][k]);
+                            }
+
+                            cfopsOrdenados.Add(cc);
+                        }
+
+                        ViewBag.Cfop = cfopsOrdenados;
+
+                        //Entrada
+                        ViewBag.ValorContabilEntrada = Convert.ToDouble(valorContabilEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseIcmsEntrada = Convert.ToDouble(baseCalcIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorIcmsEntrada = Convert.ToDouble(valorIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorFecopEntrada = Convert.ToDouble(valorFecopEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Saida
+                        ViewBag.ValorContabilSaida = Convert.ToDouble(valorContabilSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseIcmsSaida = Convert.ToDouble(baseCalcIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorIcmsSaida = Convert.ToDouble(valorIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorFecopSaida = Convert.ToDouble(valorFecopSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                        //Geral
+                        ViewBag.ValorContabil = Convert.ToDouble((valorContabilEntrada + valorContabilSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseIcms = Convert.ToDouble((baseCalcIcmsEntrada + baseCalcIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorIcms = Convert.ToDouble((valorIcmsEntrada + valorIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ValorFecop = Convert.ToDouble((valorFecopEntrada + valorFecopSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
                     }
-
-                    cfops.Sort();
-
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
-                    List<List<string>> cfopsOrdenados = new List<List<string>>();
-
-
-                    for (int i = 0; i < cfopsDesordenados.Count(); i++)
+                    else
                     {
-                        for (int k = 2; k < 22; k++)
-                        {
-                            cfopsDesordenados[i][k] = Convert.ToDouble(cfopsDesordenados[i][k].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        }
-                    }
+                        notes = importXml.Nfe(directoryNfeEntrada);
 
-                    for (int i = 0; i < cfops.Count(); i++)
-                    {
-                        int pos = 0;
-                        for (int j = 0; i < cfopsDesordenados.Count(); j++)
+                        for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            if (cfops[i] == Convert.ToInt32(cfopsDesordenados[j][0]))
+                            if (!notes[i][3]["CNPJ"].Equals(comp.Document))
                             {
-                                pos = j;
-                                break;
+                                notes.RemoveAt(i);
+                                continue;
+                            }
+
+                            int pos = -1;
+
+                            for (int j = 0; j < notes[i].Count(); j++)
+                            {
+                                if (notes[i][j].ContainsKey("CFOP"))
+                                {
+                                    pos = -1;
+                                    codeCfop = Convert.ToInt32(notes[i][j]["CFOP"]);
+                                    for (int k = 0; k < cfopsDesordenados.Count(); k++)
+                                    {
+                                        if (cfopsDesordenados[k][0].Equals(notes[i][j]["CFOP"]))
+                                        {
+                                            pos = k;
+                                            break;
+                                        }
+                                    }
+
+                                    if (pos < 0)
+                                    {
+                                        var cfp = _cfopService.FindByCode(notes[i][j]["CFOP"]);
+                                        List<string> cfop = new List<string>();
+                                        cfop.Add(notes[i][j]["CFOP"]);
+                                        cfop.Add(cfp.Description);
+
+                                        // Geral
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+                                        cfop.Add("0");
+
+                                        cfopsDesordenados.Add(cfop);
+                                        cfops.Add(Convert.ToInt32(notes[i][j]["CFOP"]));
+                                        pos = cfopsDesordenados.Count() - 1;
+                                    }
+
+                                }
+
+                                // Geral
+                                if (notes[i][j].ContainsKey("cProd"))
+                                {
+                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+
+                                        if (codeCfop >= 5000)
+                                        {
+                                            valorContabilSaida += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                        }
+                                        else
+                                        {
+                                            valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                        }
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+
+                                        if (codeCfop >= 5000)
+                                        {
+                                            valorContabilSaida += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                        }
+                                        else
+                                        {
+                                            valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                        }
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                        if (codeCfop >= 5000)
+                                        {
+                                            valorContabilSaida -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                        }
+                                        else
+                                        {
+                                            valorContabilEntrada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                        }
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                        if (codeCfop >= 5000)
+                                        {
+                                            valorContabilSaida += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                        }
+                                        else
+                                        {
+                                            valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                        }
+                                    }
+
+                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    {
+                                        cfopsDesordenados[pos][2] = (Convert.ToDecimal(cfopsDesordenados[pos][2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                        if (codeCfop >= 5000)
+                                        {
+                                            valorContabilSaida += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                        }
+                                        else
+                                        {
+                                            valorContabilEntrada += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                        }
+                                    }
+
+                                }
+
+                                if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    cfopsDesordenados[pos][3] = (Convert.ToDecimal(cfopsDesordenados[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        baseCalcIcmsSaida += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    }
+                                    else
+                                    {
+                                        baseCalcIcmsEntrada += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    }
+                                }
+
+                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    cfopsDesordenados[pos][4] = (Convert.ToDecimal(cfopsDesordenados[pos][4]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorIcmsSaida += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                        //valorIcmsSaida += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                    else
+                                    {
+                                        valorIcmsEntrada += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                        //valorIcmsEntrada += ((Convert.ToDecimal(notes[i][j]["pICMS"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                }
+
+                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    cfopsDesordenados[pos][5] = (Convert.ToDecimal(cfopsDesordenados[pos][5]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    if (codeCfop >= 5000)
+                                    {
+                                        valorFecopSaida += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                        //valorFecopSaida += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                    else
+                                    {
+                                        valorFecopEntrada += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                        //valorFecopEntrada += ((Convert.ToDecimal(notes[i][j]["pFCP"]) * Convert.ToDecimal(notes[i][j]["vBC"])) / 100);
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                        cfops.Sort();
+
+                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                        List<List<string>> cfopsOrdenados = new List<List<string>>();
+
+                        for (int i = 0; i < cfopsDesordenados.Count(); i++)
+                        {
+                            for (int k = 2; k < 6; k++)
+                            {
+                                cfopsDesordenados[i][k] = Convert.ToDouble(cfopsDesordenados[i][k].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                             }
                         }
 
-                        List<string> cc = new List<string>();
-                        for (int k = 0; k < 22; k++)
+                        for (int i = 0; i < cfops.Count(); i++)
                         {
-                            cc.Add(cfopsDesordenados[pos][k]);
+                            int pos = 0;
+                            for (int j = 0; i < cfopsDesordenados.Count(); j++)
+                            {
+                                if (cfops[i] == Convert.ToInt32(cfopsDesordenados[j][0]))
+                                {
+                                    pos = j;
+                                    break;
+                                }
+                            }
+
+                            List<string> cc = new List<string>();
+                            for (int k = 0; k < 6; k++)
+                            {
+                                cc.Add(cfopsDesordenados[pos][k]);
+                            }
+
+                            cfopsOrdenados.Add(cc);
                         }
 
-                        cfopsOrdenados.Add(cc);
+                        ViewBag.Cfop = cfopsOrdenados;
                     }
 
-                    ViewBag.Cfop = cfopsOrdenados;
-
-                    //Entrada
-                    ViewBag.ValorContabilEntrada = Convert.ToDouble(valorContabilEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseIcmsEntrada = Convert.ToDouble(baseCalcIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorIcmsEntrada = Convert.ToDouble(valorIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorFecopEntrada = Convert.ToDouble(valorFecopEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
-                    //Saida
-                    ViewBag.ValorContabilSaida = Convert.ToDouble(valorContabilSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseIcmsSaida = Convert.ToDouble(baseCalcIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorIcmsSaida = Convert.ToDouble(valorIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorFecopSaida = Convert.ToDouble(valorFecopSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
-                    //Geral
-                    ViewBag.ValorContabil = Convert.ToDouble((valorContabilEntrada + valorContabilSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseIcms = Convert.ToDouble((baseCalcIcmsEntrada + baseCalcIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorIcms = Convert.ToDouble((valorIcmsEntrada + valorIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorFecop = Convert.ToDouble((valorFecopEntrada + valorFecopSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
 
                 }
                 else if (type.Equals("venda"))
@@ -1510,18 +1721,37 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Code = cfop.Code;
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                    notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
+                    if (opcao.Equals("saida"))
+                    {
+                        notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
+                    }
+                    else
+                    {
+                        notes = importXml.NfeExit(directoryNfeEntrada, cfop.Code);
+                    }
+                    
 
                     List<List<string>> resumoNote = new List<List<string>>();
 
-
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5 )
+                        if (opcao.Equals("saida"))
                         {
-                            notes.RemoveAt(i);
-                            continue;
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
+                            {
+                                notes.RemoveAt(i);
+                                continue;
+                            }
                         }
+                        else
+                        {
+                            if (!notes[i][3]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
+                            {
+                                notes.RemoveAt(i);
+                                continue;
+                            }
+                        }
+                        
 
                         int pos = -1;
                         for (int e = 0; e < resumoNote.Count(); e++)

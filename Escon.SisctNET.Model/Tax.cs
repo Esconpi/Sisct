@@ -138,6 +138,10 @@ namespace Escon.SisctNET.Model
 
         public decimal? DevolucaoMonoSaida { get; set; }
 
+        public decimal? PisRetido { get; set; }
+
+        public decimal? CofinsRetido { get; set; }
+
         public decimal? CsllRetido { get; set; }
 
         public decimal? CsllFonte { get; set; }
@@ -148,12 +152,14 @@ namespace Escon.SisctNET.Model
 
         public decimal? IrpjFonteFinanceira { get; set; }
 
-        public decimal? BonificacaoSped { get; set; }
-
-        public decimal? BonificacaoXMl { get; set; }
+        public decimal? Bonificacao { get; set; }
 
         public decimal? ReceitaAF { get; set; }
 
         public decimal? CapitalIM { get; set; }
+
+        public decimal? OutrasReceitas { get; set; }
+
+        public decimal? ReducaoIcms { get; set; }
     }
 }

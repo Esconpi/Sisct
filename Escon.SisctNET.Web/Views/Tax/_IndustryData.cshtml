@@ -1,32 +1,32 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
 <tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    <th style="text-align:center;border:1px solid;" colspan="3">
         ICMS NORMAL
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="3">
         ICMS NÃO INCENTIVADO
-    </td>
+    </th>
 </tr>
 <tr>
-    <td style="text-align:center;border:1px solid;">
+    <th style="text-align:center;border:1px solid;">
         BASE DE CÁLCULO ICMS
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         ICMS (%)
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         ICMS (R$)
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         BASE DE CÁLCULO ICMS
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         ICMS (%)
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         ICMS (R$)
-    </td>
+    </th>
 </tr>
 @if (Model != null)
 {
@@ -58,14 +58,14 @@
 }
 <tr>
 
-    <td style="text-align:center;border:1px solid;" colspan="6">
+    <th style="text-align:center;border:1px solid;" colspan="6">
         TOTAIS
-    </td>
+    </th>
 </tr>
 <tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    <th style="text-align:center;border:1px solid;" colspan="3">
         VENDAS
-    </td>
+    </th>
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
@@ -74,9 +74,9 @@
     </td>
 </tr>
 <tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    <th style="text-align:center;border:1px solid;" colspan="3">
         VENDAS INCENTIVADAS
-    </td>
+    </th>
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
@@ -85,9 +85,9 @@
     </td>
 </tr>
 <tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    <th style="text-align:center;border:1px solid;" colspan="3">
         VENDAS NÃO INCENTIVADA
-    </td>
+    </th>
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
@@ -96,9 +96,9 @@
     </td>
 </tr>
 <tr>
-    <td style="text-align:center;border:1px solid;" colspan="3">
+    <th style="text-align:center;border:1px solid;" colspan="3">
         CRÉDITOS
-    </td>
+    </th>
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {

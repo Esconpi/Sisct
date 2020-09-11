@@ -139,6 +139,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxRepository, TaxRepository>();
             services.AddScoped<IGrupoRepository, GrupoRepository>();
             services.AddScoped<ITypeNcmRepository, TypeNcmRepository>();
+            services.AddScoped<IBaseRepository, BaseRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -181,6 +182,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxService, TaxService>();
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddScoped<ITypeNcmService, TypeNcmService>();
+            services.AddScoped<IBaseService, BaseService>();
 
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();

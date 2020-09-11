@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace Escon.SisctNET.Web
 {
@@ -101,6 +102,18 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<List<List<string>>>("ProductsSpedSisctNET");
         }
+
+        public static void SetValues(List<decimal> values)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<decimal>>("ValuesSisctNET", values);
+        }
+
+        public static List<decimal> GetValues()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<decimal>>("ValuesSisctNET");
+        }
+
+
     }
 
 }

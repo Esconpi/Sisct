@@ -301,7 +301,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Product(int id, string year, string month)
+        public IActionResult Product(int id)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -314,8 +314,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.CompanyId = prod.CompanyId;
                 ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Mes = month;
-                ViewBag.Ano = year;
+                ViewBag.Mes = prod.Month;
+                ViewBag.Ano = prod.Year;
                 return View(prod);
             }
             catch (Exception ex)

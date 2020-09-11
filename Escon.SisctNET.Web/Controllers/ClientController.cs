@@ -153,6 +153,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 client.CnpjRaiz = CNPJRaiz;
                                 client.Ie = IE;
                                 client.TypeClientId = tipoCliente;
+                                client.MesRef = month;
+                                client.AnoRef = year;
                                 client.Created = DateTime.Now;
                                 client.Updated = DateTime.Now;
 
@@ -276,7 +278,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Client(int id, string year, string month)
+        public IActionResult Client(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -288,8 +290,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
                 ViewBag.Company = result.CompanyId;
-                ViewBag.Mes = month;
-                ViewBag.Ano = year;
+                ViewBag.Mes = result.MesRef;
+                ViewBag.Ano = result.AnoRef;
                 return View(result);
             }
             catch (Exception ex)
@@ -299,7 +301,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Client(int id, string year, string month, Model.Client entity)
+        public IActionResult Client(int id, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -317,7 +319,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Details", new { companyId = client.CompanyId, year = year, month = month });
+                return RedirectToAction("Details", new { companyId = client.CompanyId, year = client.AnoRef, month = client.MesRef });
             }
             catch (Exception ex)
             {

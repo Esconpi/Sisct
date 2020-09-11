@@ -1,0 +1,118 @@
+﻿
+<table class="table" style="font-size:10px;page-break-before: always;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;font-size:11px;" width="5%">
+                @ViewBag.Year
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="5">
+                BASE DE CÁLCULO PARA O PIS E COFINS
+            </th>
+
+            <th style="text-align:center;border:1px solid;" colspan="4">
+                BASE DE CÁLCULO PARA A CSLL E IRPJ
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                MÊS
+            </th>
+            <th style="text-align:center;border:1px solid;" width="100px">
+                RECEITAS
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px">
+                <span style="font-size:11px;">(-)</span> <br /> RECEITA MONOFÁSICA
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px">
+                <span style="font-size:11px;">(-)</span> <br /> DEVOLUÇÃO NORMAL
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px">
+                <span style="font-size:11px;">(-)</span> <br /> REDUÇÂO ICMS
+            </th>
+            <th style="text-align:center;border:1px solid;" width="100px">
+                <span style="font-size:11px;">(=)</span> <br />  BC P/ PIS E COFINS
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                COMBUSTÍVEL
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                COMÉRCIO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                TRASNPORTE
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SERVIÇO 
+            </th>
+        </tr>
+        @foreach (var item in ViewBag.Impostos)
+        {
+            <tr style="font-size:10px;">
+                <td style="text-align:center;border:1px solid; text-transform:uppercase">
+                    @item[0]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[9]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[10]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[11]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[12]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[13]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[14]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[15]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[16]
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @item[17]
+                </td>
+            </tr>
+        }
+        <tr style="font-size:11px;">
+            <th style="text-align:center;border:1px solid;">
+                TOTAL
+            </th>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.Receitas
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.ReceitasMono
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.DevolucaoNormal
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.ReducaoIcms
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.BaseCalcPisCofins
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.BaseCalcCsllIrpj1
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.BaseCalcCsllIrpj2
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.BaseCalcCsllIrpj3
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @ViewBag.BaseCalcCsllIrpj4
+            </td>
+        </tr>
+    </tbody>
+</table>

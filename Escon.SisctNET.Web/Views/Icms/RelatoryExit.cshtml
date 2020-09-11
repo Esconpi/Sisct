@@ -41,7 +41,15 @@
 
                 @if (ViewBag.Type == "resumocfop")
                 {
-                    @await Html.PartialAsync("_CfopSummary", new ViewDataDictionary(ViewData))
+                    @if (ViewBag.Opcao == "saida")
+                    {
+                        @await Html.PartialAsync("_CfopSummaryExit", new ViewDataDictionary(ViewData))
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_CfopSummaryEntry", new ViewDataDictionary(ViewData))
+                    }
+
                 }
                 else if (ViewBag.Type == "venda")
                 {

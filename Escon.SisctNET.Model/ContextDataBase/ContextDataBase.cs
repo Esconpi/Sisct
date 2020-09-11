@@ -89,5 +89,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<TypeNcm> TypeNcms { get; set; }
 
+        public DbSet<Base> Bases { get; set; }
+
     }
 }

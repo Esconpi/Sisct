@@ -1,74 +1,68 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
 <tr style="font-size:8px;">
-    <td style="text-align:center;border:1px solid;" colspan="15">
+    <th style="text-align:center;border:1px solid;" colspan="13">
         VENDAS
-    </td>
-    <td style="text-align:center;border:1px solid;" rowspan="3">
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
         CRÈDITOS
-    </td>
-    <td style="text-align:center;border:1px solid;" rowspan="3">
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
         DÉBITOS
-    </td>
+    </th>
 </tr>
 
 <tr style="font-size:8px;">
-    <td style="text-align:center;border:1px solid;" colspan="5">
+    <th style="text-align:center;border:1px solid;" colspan="5">
         CONTRIBUINTES
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="5">
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="4">
         NÂO CONTRIBUINTES
-    </td>
-    <td style="text-align:center;border:1px solid;" colspan="5">
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="4">
         NÂO CONTRIBUINTES FORA DO ESTADO
-    </td>
+    </th>
 </tr>
 <tr style="font-size:8px;">
-    <td style="text-align:center;border:1px solid;">
+    <th style="text-align:center;border:1px solid;">
         AIQ. INTER. DO PRODUTO ATÉ 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         AIQ. INTER. DO PRODUTO SUPERIOR 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS NORMAL
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ST
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ISENTA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        AIQ. INTER. DO PRODUTO ATÉ 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        AIQ. INTER. DO PRODUTO SUPERIOR 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS INCENTIVADAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS NORMAL
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ST
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ISENTA
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        AIQ. INTER. DO PRODUTO ATÉ 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
-        AIQ. INTER. DO PRODUTO SUPERIOR 25%
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS INCENTIVADAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS NORMAL
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ST
-    </td>
-    <td style="text-align:center;border:1px solid;">
+    </th>
+    <th style="text-align:center;border:1px solid;">
         RECEITAS ISENTA
-    </td>
+    </th>
 </tr>
 <tr style="font-size:10px;">
     <td style="text-align:right;border:1px solid;padding-right:1%;">
@@ -107,7 +101,6 @@
             @Convert.ToDecimal(Model.VendasNContribuinte)
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
@@ -133,7 +126,6 @@
             @Convert.ToDecimal(Model.VendasNContribuinteFora)
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;"></td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {

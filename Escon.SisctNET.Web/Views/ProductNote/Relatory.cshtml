@@ -112,17 +112,17 @@
         }
 
         @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null && 
-            (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
+            (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP")
         {
             <div style="width:100%; padding:10px;">
-                @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoNI")
+                @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                 {
 
                      @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
                      @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
                     
                 }
-                else
+                else if(ViewBag.TypeTaxation == "ST")
                 {
                     @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
                 }

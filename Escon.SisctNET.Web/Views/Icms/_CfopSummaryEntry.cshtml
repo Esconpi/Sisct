@@ -1,0 +1,49 @@
+﻿<table style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;" width="100px">
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;" width="150px">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;" width="150px">
+                Base de Cálculo Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="120px">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;" width="120px">
+                Valor Fecop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        {
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.Cfop[i][0]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.Cfop[i][1]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][2]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][3]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][4]</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@ViewBag.Cfop[i][5]</b>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
