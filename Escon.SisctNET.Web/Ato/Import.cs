@@ -23,11 +23,11 @@ namespace Escon.SisctNET.Web.Ato
                     string[] linhas = line.Split(";");
                     foreach (var linha in linhas)
                     {
-                        /*if (!linha.Equals(""))
+                        if (!linha.Equals(""))
                         {
                             product.Add(linha);
-                        }*/
-                        product.Add(linha);
+                        }
+                        //product.Add(linha);
                     }
                     if (product.Count > 0)
                     {

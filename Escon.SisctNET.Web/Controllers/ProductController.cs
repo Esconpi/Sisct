@@ -15,17 +15,17 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class ProductController : ControllerBaseSisctNET
     {
-        private readonly IProduct1Service _service;
+        private readonly IProduct2Service _service;
         private readonly IGroupService _groupService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public ProductController(
-            IProduct1Service service,
+            IProduct2Service service,
             IGroupService groupService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
-            : base(functionalityService, "Product1")
+            : base(functionalityService, "Product2")
         {
             _service = service;
             _groupService = groupService;
@@ -92,7 +92,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Model.Product1 entity)
+        public IActionResult Create(Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
@@ -154,7 +154,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Product1 entity)
+        public IActionResult Edit(int id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
@@ -214,7 +214,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id, Model.Product1 entity)
+        public IActionResult Atualize(int id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
@@ -277,7 +277,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product1 entity)
+        public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
@@ -289,6 +289,13 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
                     return View(ViewData);
+                }
+
+                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Atos");
+
+                if (!Directory.Exists(filedir))
+                {
+                    Directory.CreateDirectory(filedir);
                 }
 
                 string nomeArquivo = "ato";
@@ -319,6 +326,9 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> products = new List<List<string>>();
                 products = import.Product(caminhoDestinoArquivoOriginal);
 
+                List<Model.Product2> addProduct = new List<Model.Product2>();
+                List<Model.Product2> updateProduct = new List<Model.Product2>();
+
                 for (int i = 0; i < products.Count(); i++)
                 {
                     var item = _service.FindByProduct(products[i][0], groupId);
@@ -327,29 +337,29 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         item.Updated = DateTime.Now;
                         item.DateEnd = Convert.ToDateTime(products[i][4]).AddDays(-1);
-                        _service.Update(item, GetLog(Model.OccorenceLog.Update));
+                        updateProduct.Add(item);
+                        //_service.Update(item, GetLog(Model.OccorenceLog.Update));
                     }
 
                     if (!products[i][0].Equals("") && !products[i][1].Equals("") && !products[i][3].Equals(""))
                     {
-                        var id = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
-                        var product = new Model.Product1
-                        {
-                            Id = id + 1,
-                            Code = products[i][0],
-                            Description = products[i][1],
-                            Unity = products[i][2],
-                            Price = Convert.ToDecimal(products[i][3]),
-                            DateStart = Convert.ToDateTime(products[i][4]),
-                            GroupId = groupId,
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-                        _service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
+                        Model.Product2 product = new Model.Product2();
+                        product.Code = products[i][0];
+                        product.Description = products[i][1];
+                        product.Unity = products[i][2];
+                        product.Price = Convert.ToDecimal(products[i][3]);
+                        product.DateStart = Convert.ToDateTime(products[i][4]);
+                        product.GroupId = groupId;
+                        product.Created = DateTime.Now;
+                        product.Updated = DateTime.Now;
+                        addProduct.Add(product);
+                        //_service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
                     }
-                    
 
                 }
+
+                _service.Create(addProduct);
+                _service.Update(updateProduct);
 
                 return RedirectToAction("Index");
 
@@ -371,11 +381,11 @@ namespace Escon.SisctNET.Web.Controllers
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
-                List<Product1> products = new List<Product1>();
+                List<Product2> products = new List<Product2>();
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Product1> productTemp = new List<Product1>();
+                List<Product2> productTemp = new List<Product2>();
                 productsAll.ToList().ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);

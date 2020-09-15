@@ -379,6 +379,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals("sped"))
                 {
+                    string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
+
+                    if (!Directory.Exists(filedir))
+                    {
+                        Directory.CreateDirectory(filedir);
+                    }
+
                     string caminho_WebRoot = _appEnvironment.WebRootPath;
                     string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Speds\\";
 
@@ -3050,12 +3057,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                                     {
-                                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i][1]["finNFe"] == "4")
                                         {
                                             exitNotes.RemoveAt(i);
                                             continue;
                                         }
-
 
                                         bool clenteCredenciado = false, ncm = false, cfop = false, suspenso = false;
 

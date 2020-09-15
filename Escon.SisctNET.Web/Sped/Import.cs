@@ -171,7 +171,9 @@ namespace Escon.SisctNET.Web.Sped
                         {
                             if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
                             {
-                                decimal valorProduto = 0, vProd = 0;
+                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0,
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", "."));
+                                
                                 int posCfop = -1, nItem = 1;
 
                                 for (int i = 0; i < cfops.Count(); i++)
@@ -191,77 +193,68 @@ namespace Escon.SisctNET.Web.Sped
                                     cfops.Add(cfop);
                                     posCfop = cfops.Count() - 1;
                                 }
-
+                                
                                 for (int i = posC100; i < posC100 + 1; i++)
                                 {
                                     for (int j = 0; j < notes[i].Count(); j++)
                                     {
 
-                                        if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+                                        if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                         {
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
-                                            vProd = Convert.ToDecimal(notes[i][j]["vProd"]);
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            vProd = 0;
+                                            vOutro = 0;
+                                            vSeg = 0;
+                                            vFrete = 0;
+                                            vDesc = 0;
+                                            vFCPST = 0;
+
+                                            if (notes[i][j].ContainsKey("vProd"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                                 vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vFrete"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                                vFrete = Convert.ToDecimal(notes[i][j]["vFrete"]);
+
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vDesc"))
                                             {
-                                                valorProduto -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                                vDesc = Convert.ToDecimal(notes[i][j]["vDesc"]);
                                             }
-                                        }
 
-
-                                        if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vOutro"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                                vOutro = Convert.ToDecimal(notes[i][j]["vOutro"]);
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vSeg"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                                vSeg = Convert.ToDecimal(notes[i][j]["vSeg"]);
                                             }
                                         }
 
                                         if (notes[i][j].ContainsKey("pIPI"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vIPI"]);
-                                            }
+                                            vProd += Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                            }
+                                            vProd += Convert.ToDecimal(notes[i][j]["vICMSST"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vFCPST"]);
-                                            }
+                                            vFCPST = Convert.ToDecimal(notes[i][j]["vFCPST"]);
+                                        }
+
+                                        if (Convert.ToInt32(linha[2]).Equals(nItem) && vItem.Equals(vProd))
+                                        {
+                                            valorProduto = vProd + vFCPST - vDesc + vOutro + vFrete + vSeg;
+                                            break;
                                         }
                                     }
 
@@ -660,7 +653,9 @@ namespace Escon.SisctNET.Web.Sped
                         {
                             if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
                             {
-                                decimal valorProduto = 0, vProd = 0;
+                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0,
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", "."));
+
                                 int posCfop = -1, nItem = 1;
 
                                 for (int i = 0; i < cfops.Count(); i++)
@@ -685,71 +680,63 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     for (int j = 0; j < notes[i].Count(); j++)
                                     {
-                                        if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
+
+                                        if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                         {
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
-                                            vProd = Convert.ToDecimal(notes[i][j]["vProd"]);
+                                            vProd = 0;
+                                            vOutro = 0;
+                                            vSeg = 0;
+                                            vFrete = 0;
+                                            vDesc = 0;
+                                            vFCPST = 0;
 
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vProd"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                                vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vFrete"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                                vFrete = Convert.ToDecimal(notes[i][j]["vFrete"]);
+
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vDesc"))
                                             {
-                                                valorProduto -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                                vDesc = Convert.ToDecimal(notes[i][j]["vDesc"]);
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vOutro"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                                vOutro = Convert.ToDecimal(notes[i][j]["vOutro"]);
                                             }
-                                        }
 
-                                        if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
-                                        {
-                                            if (Convert.ToInt32(linha[2]).Equals(Convert.ToInt32(notes[i][j]["nItem"])) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
+                                            if (notes[i][j].ContainsKey("vSeg"))
                                             {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                                vSeg = Convert.ToDecimal(notes[i][j]["vSeg"]);
                                             }
                                         }
 
                                         if (notes[i][j].ContainsKey("pIPI"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vIPI"]);
-                                            }
+                                            vProd += Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                            }
+                                            vProd += Convert.ToDecimal(notes[i][j]["vICMSST"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && Convert.ToDecimal(linha[7].Replace(",", ".")).Equals(vProd))
-                                            {
-                                                valorProduto += Convert.ToDecimal(notes[i][j]["vFCPST"]);
-                                            }
+                                            vFCPST = Convert.ToDecimal(notes[i][j]["vFCPST"]);
+                                        }
+
+                                        if (Convert.ToInt32(linha[2]).Equals(nItem) && vItem.Equals(vProd))
+                                        {
+                                            valorProduto = vProd + vFCPST - vDesc + vOutro + vFrete + vSeg;
+                                            break;
                                         }
                                     }
 

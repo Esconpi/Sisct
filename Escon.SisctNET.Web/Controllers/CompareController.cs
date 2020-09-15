@@ -87,6 +87,13 @@ namespace Escon.SisctNET.Web.Controllers
                             return View(ViewData);
                         }
 
+                        string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
+
+                        if (!Directory.Exists(filedir))
+                        {
+                            Directory.CreateDirectory(filedir);
+                        }
+
                         string nomeArquivo = company.Document + year + month;
 
                         if (arquivo.FileName.Contains(".txt"))
@@ -251,7 +258,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (linha[1].Equals(nota_xml))
                                     {
                                         string fornecedor = notaXml[2]["xNome"];
-                                        string totalXml = (Convert.ToDouble(notaXml[4]["vNF"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+                                        string totalXml = (Convert.ToDouble(notaXml[3]["vNF"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
                                         string totalSped = (Convert.ToDouble(linha[2].Equals("") ? "0" : linha[2].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
                                         string totalDif = (Convert.ToDouble((Math.Abs(Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped))).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
                                       

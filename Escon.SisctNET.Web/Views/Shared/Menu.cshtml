@@ -30,7 +30,7 @@
 
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
             {
-                <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Base</a></li>
+                <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Bases</a></li>
             }
         </ul>
     </li>

@@ -32,6 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxService _taxService;
         private readonly IGrupoService _grupoService;
         private readonly INotificationService _notificationService;
+        private readonly IProduct2Service _product2Service;
 
         public ProductNote(
             IProductNoteService service,
@@ -53,6 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxService taxService,
             IGrupoService grupoService,
             INotificationService notificationService,
+            IProduct2Service product2Service,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
@@ -76,6 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxService = taxService;
             _grupoService = grupoService;
             _notificationService = notificationService;
+            _product2Service = product2Service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -168,7 +171,16 @@ namespace Escon.SisctNET.Web.Controllers
                 list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
                 ViewBag.Product1Id = products1;
-               
+
+                List<Product2> list_product2 = _service.FindAllInDate2(result.Note.Dhemi);
+                foreach (var prod in list_product2)
+                {
+                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                }
+                list_product2.Insert(0, new Product2() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
+                ViewBag.Product2Id = products2;
+
 
                 ViewBag.TaxationTypeId = taxationtypes;
                 ViewBag.Uf = note.Uf;
@@ -211,6 +223,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var taxaType = Request.Form["taxaType"];
                 var productid = Request.Form["productid"];
                 var product1id = Request.Form["product1id"];
+                var product2id = Request.Form["product2id"];
                 var quantPauta = Request.Form["quantAlterada"];
                 var dateStart = Request.Form["dateStart"];
                 var dateNote = Request.Form["dataNote"];
@@ -228,6 +241,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
 
+                var product2 = _product2Service.FindById(Convert.ToInt32(product2id), GetLog(OccorenceLog.Read));
+
                 if (entity.Pautado == true) 
                 {
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -238,9 +253,13 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         precoPauta = Convert.ToDecimal(product.Price);
                     }
-                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020"))
+                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(dateNote) < Convert.ToDateTime("14/09/2020"))
                     {
                         precoPauta = Convert.ToDecimal(product1.Price);
+                    }
+                    else if(Convert.ToDateTime(dateNote) >= Convert.ToDateTime("14/09/2020"))
+                    {
+                        precoPauta = Convert.ToDecimal(product2.Price);
                     }
 
                     decimal baseCalc = 0;
@@ -342,6 +361,11 @@ namespace Escon.SisctNET.Web.Controllers
                         if (product1 != null)
                         {
                             prod.Product1Id = product1.Id;
+                        }
+
+                        if (product2 != null)
+                        {
+                            prod.Product2Id = product2.Id;
                         }
 
                     }
@@ -1463,7 +1487,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             decimal totalImpostoIncentivo = 0, impostoIcms = 0, impostoFecop = 0;
 
-                            if (comp.AnnexId.Equals(3) && type.Equals(Model.Type.ProdutoNI))
+                            if (comp.AnnexId.Equals(3))
                             {
                                 if (imp == null)
                                 {
@@ -3466,7 +3490,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-        
         
     }
 }

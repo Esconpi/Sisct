@@ -133,7 +133,7 @@
                         }
 
                     }
-                    else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020"))
+                    else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("14/09/2020"))
                     {
                         if (Model.Pautado == true)
                         {
@@ -147,6 +147,23 @@
                             <div class="form-group col-lg-8 col-md-6 col-xs-12">
                                 <label class="control-label">Produto</label>
                                 <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
+                            </div>
+                        }
+                    }
+                    else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("14/09/2020"))
+                    {
+                        if (Model.Pautado == true)
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label class="control-label">Produto</label>
+                                <select asp-items="@ViewBag.Product2Id" class="form-control selectoption" id="product2id" name="product2id"></select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                <label class="control-label">Produto</label>
+                                <select asp-items="@ViewBag.Product2Id" class="form-control selectoption" id="product2id" name="product2id" disabled="disabled"></select>
                             </div>
                         }
                     }
@@ -275,6 +292,13 @@
         }
     });
 
+    var product2 = @Model.Product2Id
+    $("#product2id").children('option').each(function () {
+        if ($(this).val() == product2) {
+            $(this).attr('selected', true);
+        }
+    });
+
     var taxacao = @Model.TaxationTypeId
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
@@ -298,7 +322,7 @@
             else {
                 document.getElementById('taxar').disabled = false;
             }
-            
+
         }
     });
 
@@ -351,10 +375,12 @@
         if ($(this).prop("checked")) {
             $("#productid").prop("disabled", false);
             $("#product1id").prop("disabled", false);
+            $("#product2id").prop("disabled", false);
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
             $("#product1id").prop("disabled", true);
+            $("#product2id").prop("disabled", true);
             $("#quant").prop("disabled", true);
         }
     });

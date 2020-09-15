@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("product1")]
-    public class Product1 : EntityBase
+    [Table("product2")]
+    public class Product2 : EntityBase
     {
         public ILazyLoader LazyLoader { get; set; }
 
@@ -45,6 +45,5 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref group);
             set => group = value;
         }
-
     }
 }

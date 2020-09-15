@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
 {
-    public class Product1Service : IProduct1Service
+    public class Product2Service : IProduct2Service
     {
-        private readonly IProduct1Repository _repository;
+        private readonly IProduct2Repository _repository;
 
-        public Product1Service(IProduct1Repository repository)
+        public Product2Service(IProduct2Repository repository)
         {
             _repository = repository;
         }
 
-        public void Create(List<Product1> products, Log log = null)
+        public void Create(List<Product2> products, Log log = null)
         {
-            _repository.Create(products,log);
+            _repository.Create(products, log);
         }
 
-        public Product1 Create(Product1 entity, Log log)
+        public Product2 Create(Product2 entity, Log log)
         {
             return _repository.Create(entity, log);
         }
@@ -28,22 +28,22 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
-        public List<Product1> FindAll(Log log)
+        public List<Product2> FindAll(Log log)
         {
             return _repository.FindAll(log);
         }
 
-        public List<Product1> FindAll(int page, int countrow, Log log)
+        public List<Product2> FindAll(int page, int countrow, Log log)
         {
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Product1 FindByDescription(string description, Log log = null)
+        public Product2 FindByDescription(string description, Log log = null)
         {
             return _repository.FindByDescription(description, log);
         }
 
-        public Product1 FindById(int id, Log log)
+        public Product2 FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
         }
@@ -53,14 +53,19 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByPrice(id, log);
         }
 
-        public Product1 FindByProduct(string code, int grupoId, Log log = null)
+        public Product2 FindByProduct(string code, int grupoId, Log log = null)
         {
             return _repository.FindByProduct(code, grupoId, log);
         }
 
-        public Product1 Update(Product1 entity, Log log)
+        public Product2 Update(Product2 entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<Product2> products, Log log = null)
+        {
+            _repository.Update(products, log);
         }
     }
 }

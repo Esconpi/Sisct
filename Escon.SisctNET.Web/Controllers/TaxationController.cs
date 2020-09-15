@@ -117,6 +117,7 @@ namespace Escon.SisctNET.Web.Controllers
                 taxationAll.ToList().ForEach(s =>
                 {
                     s.Ncm.Code = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Code);
+                    s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
                     s.TaxationType.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.TaxationType.Description);
                     s.Uf = s.Uf;
                     taxationTemp.Add(s);
@@ -137,15 +138,11 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
-                               cest = r.Cest,
-                               Description = r.TaxationType.Description,
-                               AliqInterna = r.AliqInterna,
-                               Mva = r.MVA,
-                               Bcr = r.BCR,
+                               Description = r.Ncm.Description,
+                               Cest = r.Cest,
+                               Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                            };
 
@@ -161,16 +158,11 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
-                               cest = r.Cest,
-                               Description = r.TaxationType.Description,
-                               AliqInterna = r.AliqInterna,
-                               Mva = r.MVA,
-                               Bcr = r.BCR,
+                               Description = r.Ncm.Description,
+                               Cest = r.Cest,
+                               Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-
 
                            };
                 return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = taxation.Skip(start).Take(lenght) });

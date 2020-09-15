@@ -140,6 +140,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IGrupoRepository, GrupoRepository>();
             services.AddScoped<ITypeNcmRepository, TypeNcmRepository>();
             services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddScoped<IProduct2Repository, Product2Repository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -183,7 +184,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddScoped<ITypeNcmService, TypeNcmService>();
             services.AddScoped<IBaseService, BaseService>();
-
+            services.AddScoped<IProduct2Service, Product2Service>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
         }

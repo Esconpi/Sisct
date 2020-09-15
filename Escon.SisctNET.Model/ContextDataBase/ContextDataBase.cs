@@ -91,5 +91,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Base> Bases { get; set; }
 
+        public DbSet<Product2> Product2s { get; set; }
     }
 }
