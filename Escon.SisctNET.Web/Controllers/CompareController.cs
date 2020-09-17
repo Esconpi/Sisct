@@ -1,5 +1,4 @@
 ﻿using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Compare;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +28,6 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Index(IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
@@ -372,9 +370,7 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (ordem.Equals("freteOutroMes"))
                     {
                         var confDBSisctNfe = new Model.Configuration();
-                        confDBSisctNfe = _configurationService.FindByName("NFe");
-                        var import = new Import();
-                        
+                        confDBSisctNfe = _configurationService.FindByName("NFe");                        
 
                         List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 

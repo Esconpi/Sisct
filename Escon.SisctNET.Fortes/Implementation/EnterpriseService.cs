@@ -193,6 +193,7 @@ namespace Escon.SisctNET.Fortes.Implementation
             }
             var digit1 = sumdigit1 % 11;
             var cnpj2 = cnpj;
+
             if (digit1 >= 2)
             {
                 cnpj2 += (11 - digit1);

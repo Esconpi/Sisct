@@ -2524,7 +2524,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {
-                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i][1]["finNFe"] == "4")
                         {
                             exitNotes.RemoveAt(i);
                             continue;

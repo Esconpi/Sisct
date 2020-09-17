@@ -43,6 +43,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDescription(description, log);
         }
 
+        public List<Product2> FindByGroup(int groupid, Log log = null)
+        {
+            return _repository.FindByGroup(groupid, log);
+        }
+
         public Product2 FindById(int id, Log log)
         {
             return _repository.FindById(id, log);

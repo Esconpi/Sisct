@@ -329,9 +329,13 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.Product2> addProduct = new List<Model.Product2>();
                 List<Model.Product2> updateProduct = new List<Model.Product2>();
 
+                var productsGroup = _service.FindByGroup(groupId);
+
                 for (int i = 0; i < products.Count(); i++)
                 {
-                    var item = _service.FindByProduct(products[i][0], groupId);
+                    //var item = _service.FindByProduct(products[i][0], groupId);
+
+                    var item = productsGroup.Where(_ => _.Code.Equals(products[i][0])).FirstOrDefault();
 
                     if (item != null)
                     {

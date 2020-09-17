@@ -161,5 +161,9 @@ namespace Escon.SisctNET.Model
         public decimal? OutrasReceitas { get; set; }
 
         public decimal? ReducaoIcms { get; set; }
+
+        public decimal? IrpjPago { get; set; }
+
+        public decimal? CsllPago { get; set; }
     }
 }

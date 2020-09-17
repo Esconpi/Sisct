@@ -154,34 +154,40 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
 
-                List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
-                foreach (var prod in list_product)
+                if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                 {
-                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
+                    foreach (var prod in list_product)
+                    {
+                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    }
+                    list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
+                    SelectList products = new SelectList(list_product, "Id", "Description", null);
+                    ViewBag.Productd = products;
                 }
-                list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
-                SelectList products = new SelectList(list_product, "Id", "Description", null);
-                ViewBag.ProductId = products;
-            
-                List<Product1> list_product1 = _service.FindAllInDate1(result.Note.Dhemi);
-                foreach (var prod in list_product1)
+                else if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >=  Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                 {
-                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    List<Product1> list_product1 = _service.FindAllInDate1(result.Note.Dhemi);
+                    foreach (var prod in list_product1)
+                    {
+                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    }
+                    list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
+                    SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
+                    ViewBag.ProductId = products1;
                 }
-                list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
-                SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
-                ViewBag.Product1Id = products1;
-
-                List<Product2> list_product2 = _service.FindAllInDate2(result.Note.Dhemi);
-                foreach (var prod in list_product2)
+                else if(Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                 {
-                    prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    List<Product2> list_product2 = _service.FindAllInDate2(result.Note.Dhemi);
+                    foreach (var prod in list_product2)
+                    {
+                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                    }
+                    list_product2.Insert(0, new Product2() { Description = "Nennhum item selecionado", Id = 0 });
+                    SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
+                    ViewBag.ProductId = products2;
                 }
-                list_product2.Insert(0, new Product2() { Description = "Nennhum item selecionado", Id = 0 });
-                SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
-                ViewBag.Product2Id = products2;
-
-
+                
                 ViewBag.TaxationTypeId = taxationtypes;
                 ViewBag.Uf = note.Uf;
                 ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
@@ -194,6 +200,16 @@ namespace Escon.SisctNET.Web.Controllers
                 if (result.ProductId == null)
                 {
                     result.ProductId = 0;
+                }
+
+                if (result.Product1Id == null)
+                {
+                    result.Product1Id = 0;
+                }
+
+                if (result.Product2Id == null)
+                {
+                    result.Product2Id = 0;
                 }
                 return View(result);
             }
@@ -237,14 +253,26 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
 
-                var product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
-
-                var product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
-
-                var product2 = _product2Service.FindById(Convert.ToInt32(product2id), GetLog(OccorenceLog.Read));
 
                 if (entity.Pautado == true) 
                 {
+                    Product product = new Product();
+                    Product1 product1 = new Product1();
+                    Product2 product2 = new Product2();
+
+                    if (Convert.ToDateTime(dateNote) < Convert.ToDateTime("10/02/2020"))
+                    {
+                        product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
+                    }
+                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(dateNote) < Convert.ToDateTime("14/09/2020"))
+                    {
+                        product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
+                    }
+                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("14/09/2020"))
+                    {
+                        product2 = _product2Service.FindById(Convert.ToInt32(product2id), GetLog(OccorenceLog.Read));
+                    }
+
                     var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                     decimal precoPauta = 0;
@@ -502,6 +530,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Vbasecalc = baseCalc;
                         prod.ProductId = null;
                         prod.Product1Id = null;
+                        prod.Product2Id = null;
                         prod.Pautado = false;
                         prod.DateStart = Convert.ToDateTime(dateStart);
 
@@ -620,6 +649,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             item.ProductId = null;
                             item.Product1Id = null;
+                            item.Product2Id = null;
                             item.Pautado = false;
                             item.DateStart = Convert.ToDateTime(dateStart);
 

@@ -7,7 +7,6 @@ namespace Escon.SisctNET.Web.Ato
 {
     public class Import
     {
-
         public List<List<string>> Product(string directoryAto)
         {
             List<List<string>> products = new List<List<string>>();

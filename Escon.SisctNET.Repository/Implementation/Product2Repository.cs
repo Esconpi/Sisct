@@ -34,6 +34,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public List<Product2> FindByGroup(int groupid, Log log = null)
+        {
+            var rst = _context.Product2s.Where(_ => _.GroupId.Equals(groupid) && _.DateEnd == null).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public decimal FindByPrice(int id, Log log = null)
         {
             decimal rst = Convert.ToDecimal(_context.Product2s.Where(_ => _.Id.Equals(id)).Select(_ => _.Price));

@@ -314,6 +314,71 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Pag(int companyid, string year, string month)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var comp = _companyService.FindById(companyid, null);
+                var importPeriodo = new Period.Bimestre();
+                var meses = importPeriodo.Months(month);
+                ViewBag.Id = comp.Id;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+                ViewBag.Meses = meses;
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Pag(int companyid, string year, string month, string mesRef, decimal irpjPago, decimal csllPago) 
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var imp = _service.FindByMonth(companyid, mesRef, year);
+
+                Model.Tax tax = new Model.Tax();
+
+                if (imp != null)
+                {
+                    imp.IrpjPago = irpjPago;
+                    imp.CsllPago = csllPago;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, null);
+                }
+                else
+                {
+                    tax.IrpjPago = irpjPago;
+                    tax.CsllPago = csllPago;
+                    tax.Created = DateTime.Now;
+                    tax.Updated = tax.Created;
+
+                    _service.Create(tax, null);
+                }
+
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
         public IActionResult Import(int companyid, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
