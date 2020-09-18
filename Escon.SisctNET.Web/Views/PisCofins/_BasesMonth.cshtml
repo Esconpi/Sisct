@@ -13,19 +13,19 @@
     <tbody>
         <tr>
 
-            <th style="text-align:center;border:1px solid;" width="100px">
+            <th style="text-align:center;border:1px solid;">
                 RECEITAS
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px">
+            <th style="text-align:center;border:1px solid;">
                 <span style="font-size:11px;">(-)</span> <br /> RECEITA MONOFÁSICA
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px">
+            <th style="text-align:center;border:1px solid;">
                 <span style="font-size:11px;">(-)</span> <br /> DEVOLUÇÃO NORMAL
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px">
+            <th style="text-align:center;border:1px solid;">
                 <span style="font-size:11px;">(-)</span> <br /> REDUÇÂO ICMS
             </th>
-            <th style="text-align:center;border:1px solid;" width="100px">
+            <th style="text-align:center;border:1px solid;">
                 <span style="font-size:11px;">(=)</span> <br />  BC P/ PIS E COFINS
             </th>
             <th style="text-align:center;border:1px solid;">
@@ -43,31 +43,31 @@
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcAntesMono
+                @string.Format("{0:C}", ViewBag.BaseCalcAntesMono)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcMono
+                @string.Format("{0:C}", ViewBag.BaseCalcMono)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.DevolucaoNormal
+                @string.Format("{0:C}", ViewBag.DevolucaoNormal)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.ReducaoIcms
+                @string.Format("{0:C}", ViewBag.ReducaoIcms)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcPisCofins
+                @string.Format("{0:C}", ViewBag.BaseCalcPisCofins)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcCsllIrpjPetroleo
+                @string.Format("{0:C}", ViewBag.BaseCalcCsllIrpjPetroleo)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcCsllIrpjComercio
+                @string.Format("{0:C}", ViewBag.BaseCalcCsllIrpjComercio)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcCsllIrpjTransporte
+                @string.Format("{0:C}", ViewBag.BaseCalcCsllIrpjTransporte)
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
-                @ViewBag.BaseCalcCsllIrpjServico
+                @string.Format("{0:C}", ViewBag.BaseCalcCsllIrpjServico)
             </td>
         </tr>
     </tbody>

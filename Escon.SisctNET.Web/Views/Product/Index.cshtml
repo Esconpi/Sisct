@@ -43,7 +43,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
-                        <th>
+                        <th width="10%">
                             @Html.DisplayNameFor(model => model.Price)
                         </th>
                         <th>
@@ -100,7 +100,12 @@
                 { "data": "groupName" },
                 { "data": "code" },
                 { "data": "description" },
-                { "data": "price" },
+                {
+                    "mData": "price",
+                    "mRender": function (data, type, row) {
+                        return ConvertToCurrencyReal(data);
+                    }
+                },
                 { "data": "unity" },
                 { "data": "inicio" },
                 {

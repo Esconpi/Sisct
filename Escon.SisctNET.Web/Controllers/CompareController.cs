@@ -380,6 +380,9 @@ namespace Escon.SisctNET.Web.Controllers
                         notes = importXml.NfeResume(directoryNfe);
 
                     }
+
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                     return View();
                 }
                

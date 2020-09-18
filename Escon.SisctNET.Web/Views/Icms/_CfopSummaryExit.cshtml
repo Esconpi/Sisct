@@ -33,80 +33,80 @@
                     @ViewBag.Cfop[i][1]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.Cfop[i][2]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.Cfop[i][3]</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.Cfop[i][4]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.Cfop[i][5]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td style="border:1px solid; padding-left:1%;"><b>Com CPF</b></td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][6]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][7]
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][8]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][9]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][9].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td style="border:1px solid; padding-left:1%;"><b>Sem CPF</b></td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][10]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][10].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][11]
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][11].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][12]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][12].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][13]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][13].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td style="border:1px solid; padding-left:1%;"><b>Com CNPJ com Inscrição Estadual</b></td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][14]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][14].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][15]
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][15].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][16]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][16].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][17]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][17].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td style="border:1px solid; padding-left:1%;"><b>Com CNPJ sem Inscrição Estadual</b></td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][18]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][18].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][19]
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][19].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][20]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][20].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    @ViewBag.Cfop[i][21]
+                    @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][21].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
             </tr>
         }

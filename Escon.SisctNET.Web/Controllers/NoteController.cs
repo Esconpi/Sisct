@@ -674,6 +674,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                 if (notas.Count > 0)
                 {
                     ViewBag.Id = id;

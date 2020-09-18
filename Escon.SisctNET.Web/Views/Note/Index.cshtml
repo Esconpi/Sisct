@@ -147,8 +147,8 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Xnome)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Vnf)
+                                <td style="text-align:right;">
+                                    @string.Format("{0:C}", item.Vnf)
                                 </td>
                                 <td style="text-align:center;">
                                     @Html.CheckBoxFor(modelItem => item.Status, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @id = item.Id, @disabled = true })
@@ -212,8 +212,8 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Xnome)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Vnf, new { @class = "money" })
+                                 <td style="text-align:right;">
+                                    @string.Format("{0:C}", item.Vnf)
                                 </td>
                                 <td style="text-align:center;">
                                     @Html.CheckBoxFor(modelItem => item.Status, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true", @id = item.Id, @disabled = true })

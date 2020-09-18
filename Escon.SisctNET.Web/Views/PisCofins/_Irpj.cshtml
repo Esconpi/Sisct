@@ -14,7 +14,7 @@
                         COMBUSTÍVEL @ViewBag.PercentualPetroleo %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.Irpj1
+                        @string.Format("{0:C}", ViewBag.Irpj1)
                     </td>
                 </tr>
                 <tr>
@@ -22,7 +22,7 @@
                         COMÉRCIO @ViewBag.PercentualComercio %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.Irpj2
+                        @string.Format("{0:C}", ViewBag.Irpj2)
                     </td>
                 </tr>
                 <tr>
@@ -30,7 +30,7 @@
                         TRASNPORTE @ViewBag.PercentualTransporte %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.Irpj3
+                        @string.Format("{0:C}", ViewBag.Irpj3)
                     </td>
                 </tr>
                 <tr>
@@ -38,7 +38,7 @@
                         SERVIÇO @ViewBag.PercentualServico %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.Irpj4
+                        @string.Format("{0:C}", ViewBag.Irpj4)
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +46,7 @@
                         <span style="font-size:11px;">(=)</span> SubTotal
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjTotal
+                        @string.Format("{0:C}", ViewBag.IrpjTotal)
                     </td>
                 </tr>
                 <tr>
@@ -54,7 +54,7 @@
                         <span style="font-size:11px;">(+)</span> Ganho de Capital na Venda de Imobilizado
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.CapitalIM
+                        @string.Format("{0:C}", ViewBag.CapitalIM)
                     </td>
                 </tr>
                 <tr>
@@ -62,7 +62,7 @@
                         <span style="font-size:11px;">(+)</span> Bonificações (Entradas)
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.Bonificacao
+                        @string.Format("{0:C}", ViewBag.Bonificacao)
                     </td>
                 </tr>
                 <tr>
@@ -70,7 +70,7 @@
                         <span style="font-size:11px;">(+)</span> Receita de Aplicação Financeira
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.ReceitaAF
+                        @string.Format("{0:C}", ViewBag.ReceitaAF)
                     </td>
                 </tr>
                 <tr>
@@ -78,7 +78,7 @@
                         <span style="font-size:11px;">(=)</span> Base de Cálculo IRPJ Normal
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.BaseCalcIrpjNormal
+                        @string.Format("{0:C}", ViewBag.BaseCalcIrpjNormal)
                     </td>
                 </tr>
                 <tr>
@@ -86,7 +86,7 @@
                         <span style="font-size:11px;">(=)</span> Base de Cálculo Adicional IRPJ
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.BaseCalcAdicionalIrpj
+                        @string.Format("{0:C}", ViewBag.BaseCalcAdicionalIrpj)
                     </td>
                 </tr>
                 <tr>
@@ -94,7 +94,7 @@
                         IRPJ Normal @ViewBag.PercentualIrpjNormal %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjNormal
+                        @string.Format("{0:C}", ViewBag.IrpjNormal)
                     </td>
                 </tr>
                 <tr>
@@ -102,7 +102,7 @@
                         Adicional IRPJ @ViewBag.PercentualAdicionalIrpj %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.AdicionalIrpj
+                        @string.Format("{0:C}", ViewBag.AdicionalIrpj)
                     </td>
                 </tr>
                 <tr>
@@ -110,7 +110,7 @@
                         <span style="font-size:11px;">(=)</span> Total IRPJ
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.TotalIrpj
+                        @string.Format("{0:C}", ViewBag.TotalIrpj)
                     </td>
                 </tr>
                 <tr>
@@ -118,7 +118,7 @@
                         <span style="font-size:11px;">(-)</span> IRPJ Retido
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjRetido
+                        @string.Format("{0:C}", ViewBag.IrpjRetido)
                     </td>
                 </tr>
                 <tr>
@@ -126,7 +126,7 @@
                         <span style="font-size:11px;">(-)</span> I.R. Fonte Serviços
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjFonteServico
+                        @string.Format("{0:C}", ViewBag.IrpjFonteServico)
                     </td>
                 </tr>
                 <tr>
@@ -134,7 +134,7 @@
                         <span style="font-size:11px;">(-)</span> I.R. Fonte Aplic. Financeiras
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjFonteAF
+                        @string.Format("{0:C}", ViewBag.IrpjFonteAF)
                     </td>
                 </tr>
                 <tr>
@@ -142,7 +142,7 @@
                         <span style="font-size:11px;">(=)</span> Total IRPJ à Pagar
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
-                        @ViewBag.IrpjAPagar
+                        @string.Format("{0:C}", ViewBag.IrpjAPagar)
                     </td>
                 </tr>
             </tbody>

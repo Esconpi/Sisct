@@ -216,31 +216,31 @@
                                     <td style="text-align:right" width="500px">ICMS Imobilizado</td>
                                 }
 
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalICMSSIE</td>
+                            <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.TotalICMSSIE)</td>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(+) ICMS Frete com IE R$</td>
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalFreteIE</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.TotalFreteIE)</td>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(-) GNRE Paga R$</td>
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalGNREPagaSIE</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.TotalGNREPagaSIE)</td>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(+) GNRE não Paga R$</td>
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.TotalGNREnPagaSIE</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.TotalGNREnPagaSIE)</td>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(-) ICMS ST NFe sem IE R$</td>
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.IcmsGeralSTSIE</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.IcmsGeralSTSIE)</td>
                             </tr>
                             <tr>
                                 <th style="text-align:right" width="500px">(=) VALOR A SER INFORMADO NA DIEF</th>
-                                <th style="text-align:right; padding-right:1%;" width="500px">@ViewBag.ValorDiefSIE</th>
+                                <th style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.ValorDiefSIE)</th>
                             </tr>
                             <tr>
                                 <td style="text-align:right" width="500px">(-) ICMS pago - Posto Fiscal R$</td>
-                                <td style="text-align:right; padding-right:1%;" width="500px">@ViewBag.IcmsApSIE</td>
+                                <td style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.IcmsApSIE)</td>
 
                             </tr>
                             <tr>
@@ -249,7 +249,7 @@
                             </tr>
                             <tr>
                                 <th style="text-align:right" width="500px">ICMS a Pagar R$</th>
-                                <th style="text-align:right; padding-right:1%;" width="500px">@ViewBag.IcmsPagarSIE</th>
+                                <th style="text-align:right; padding-right:1%;" width="500px">@string.Format("{0:C}", ViewBag.IcmsPagarSIE)</th>
                             </tr>
                             <tr>
                                 <th style="text-align:right" width="500px">Código DAR</th>

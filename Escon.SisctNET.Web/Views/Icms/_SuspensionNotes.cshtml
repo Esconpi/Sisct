@@ -36,17 +36,14 @@
                 <td>@ViewBag.Notes[i][1]</td>
                 <td>@ViewBag.Notes[i][2]</td>
                 <td>@ViewBag.Notes[i][3]</td>
-                <td style="text-align:right; padding-right:1%;">@ViewBag.Notes[i][4]</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Notes[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
             </tr>
         }
     </tbody>
     <tbody>
         <tr style="border:2px solid;">
-            <th>Total</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.Total</th>
+            <th colspan="4">Total</th>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:C}", ViewBag.Total)</th>
         </tr>
     </tbody>
 </table>

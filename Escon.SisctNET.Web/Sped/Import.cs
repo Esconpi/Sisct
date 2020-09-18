@@ -34,6 +34,8 @@ namespace Escon.SisctNET.Web.Sped
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             List<List<string>> cfops = new List<List<string>>();
 
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
             decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, icmsRetidoST = 0,
                 valorNotaNF = 0 , vBCNF = 0, vICMSNF = 0, vBCNota = 0, vICMSNota = 0;
             int posC100 = -1;
@@ -507,6 +509,8 @@ namespace Escon.SisctNET.Web.Sped
             List<List<string>> productsAlteration = new List<List<string>>();
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             List<List<string>> cfops = new List<List<string>>();
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
             decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, icmsRetidoST = 0,
                 valorNotaNF = 0, vBCNF = 0, vICMSNF = 0, vBCNota = 0, vICMSNota = 0;
@@ -994,6 +998,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public decimal SpedCredito(string directorySped, int companyId)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             decimal totalDeCredito = 0;
             decimal t = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
@@ -1088,6 +1093,8 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
             List<decimal> Devolucoes = new List<decimal>();
 
             var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
@@ -1172,6 +1179,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public decimal SpedBonificacao(string directorySped, List<string> cfopsBoni)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             decimal bonificacao = 0;
 
             StreamReader archiveSped = new StreamReader(directorySped);
@@ -1214,6 +1222,8 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedNfe(string directorySped)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
             List<List<string>> spedNf = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             string line;
@@ -1249,6 +1259,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedNfeSaida(string directorySped)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<List<string>> spedNf = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
 
@@ -1283,6 +1294,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedDif(string directorySped)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<List<string>> sped = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
 
@@ -1323,6 +1335,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<string> SpedCte(string directorySped)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<string> sped = new List<string>();
             StreamReader archiveSped = new StreamReader(directorySped);
 

@@ -180,6 +180,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Create(addClientes);
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                 return RedirectToAction("Details",new {companyId = id, year = year, month = month });
             }
             catch(Exception ex)

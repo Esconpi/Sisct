@@ -23,10 +23,10 @@
             <th style="text-align:center;border:1px solid;">
                 REDUÇÕES
             </th>
-            <th style="text-align:center;border:1px solid;" width="100px" rowspan="2">
+            <th style="text-align:center;border:1px solid;" rowspan="2">
                 RECEITA MONOFÁSICA
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+            <th style="text-align:center;border:1px solid;" rowspan="2">
                 DEVOLUÇÂO MONOFÁSICA
             </th>
 
@@ -75,85 +75,85 @@
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.Receita1)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Receita1))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.Receita2)
+                    @string.Format("{0:C}",Convert.ToDecimal(Model.Receita2))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.Receita3)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Receita3))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.Receita4)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Receita4))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Convert.ToDecimal(Model.Devolucao1Entrada) + Convert.ToDecimal(Model.Devolucao1Saida))
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao1Entrada) + Convert.ToDecimal(Model.Devolucao1Saida))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Convert.ToDecimal(Model.Devolucao2Entrada) + Convert.ToDecimal(Model.Devolucao2Saida))
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao2Entrada) + Convert.ToDecimal(Model.Devolucao2Saida))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Convert.ToDecimal(Model.Devolucao3Entrada) + Convert.ToDecimal(Model.Devolucao3Saida))
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao3Entrada) + Convert.ToDecimal(Model.Devolucao3Saida))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Convert.ToDecimal(Model.Devolucao4Entrada) + Convert.ToDecimal(Model.Devolucao4Saida))
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao4Entrada) + Convert.ToDecimal(Model.Devolucao4Saida))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.CapitalIM)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.CapitalIM))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.Bonificacao)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.Bonificacao))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.ReceitaAF)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.ReceitaAF))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.ReducaoIcms)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.ReducaoIcms))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Model.ReceitaMono)
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.ReceitaMono))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @Convert.ToDecimal(Convert.ToDecimal(Model.DevolucaoMonoEntrada) + Convert.ToDecimal(Model.DevolucaoMonoSaida))
+                    @string.Format("{0:C}", Convert.ToDecimal(Model.DevolucaoMonoEntrada) + Convert.ToDecimal(Model.DevolucaoMonoSaida))
                 }
             </td>
         </tr>

@@ -31,19 +31,19 @@
                         @ViewBag.Cfop[i][1]
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @ViewBag.Cfop[i][6]
+                        @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @ViewBag.Cfop[i][2]
+                        @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @ViewBag.Cfop[i][3]
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @ViewBag.Cfop[i][4]
+                        @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @ViewBag.Cfop[i][5]
+                        @string.Format("{0:C}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                 </tr>
 
@@ -56,19 +56,19 @@
                 <b>Total</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
-                <b>@ViewBag.TotalNota</b>
+                <b>@string.Format("{0:C}", ViewBag.TotalNota)</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
-                <b>@ViewBag.ValorContabil</b>
+                <b>@string.Format("{0:C}", ViewBag.ValorContabil)</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
-                <b>@ViewBag.BaseIcms</b>
+                <b>@string.Format("{0:N}", ViewBag.BaseIcms)</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
-                <b>@ViewBag.ValorIcms</b>
+                <b>@string.Format("{0:C}", ViewBag.ValorIcms)</b>
             </td>
             <td style="border:1px solid; text-align:right; padding-right:1%;">
-                <b>@ViewBag.ValorFecop</b>
+                <b>@string.Format("{0:C}", ViewBag.ValorFecop)</b>
             </td>
         </tr>
     </tbody>

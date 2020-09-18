@@ -1,5 +1,5 @@
 ﻿<diV class="pull-right">
-    <strong>Total Vendas: </strong> @ViewBag.TotalVendas
+    <strong>Total Vendas: </strong> @string.Format("{0:C}", ViewBag.TotalVendas)
 </diV>
 <table class="table">
     <thead>
@@ -8,10 +8,10 @@
                 Ncm
             </th>
             <th>Descrição</th>
-            <th>
+            <th width="15%">
                 Valor
             </th>
-            <th width="130px">
+            <th width="10%">
                 Percentual %
             </th>
         </tr>
@@ -22,8 +22,8 @@
             <tr>
                 <td>@ViewBag.ResumoNcm[i][0]</td>
                 <td>@ViewBag.ResumoNcm[i][1]</td>
-                <td style="text-align:right">@ViewBag.ResumoNcm[i][2]</td>
-                <td style="text-align:right">@ViewBag.ResumoNcm[i][3] %</td>
+                <td style="text-align:right">@string.Format("{0:C}", Convert.ToDecimal(ViewBag.ResumoNcm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ResumoNcm[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
             </tr>
         }
     </tbody>
@@ -31,8 +31,8 @@
         <tr>
             <th>Total</th>
             <th></th>
-            <th style="text-align:right">@ViewBag.TotalNcm</th>
-            <th style="text-align:right">@ViewBag.PercentualTotal %</th>
+            <th style="text-align:right">@string.Format("{0:C}", ViewBag.TotalNcm)</th>
+            <th style="text-align:right">@string.Format("{0:N}", ViewBag.PercentualTotal) %</th>
         </tr>
     </tfoot>
 </table>

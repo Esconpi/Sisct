@@ -3617,14 +3617,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         imp.SaidaInterna1 = InternasElencadas;
                                         imp.SaidaInterestadual1 = InterestadualElencadas;
                                         imp.SaidaPortInterna1 = InternasElencadasPortaria;
-                                        imp.saidaPortInterestadual1 = InterestadualElencadasPortaria;
+                                        imp.SaidaPortInterestadual1 = InterestadualElencadasPortaria;
 
                                         imp.VendasInternas2 = vendasInternasDeselencadas;
                                         imp.VendasInterestadual2 = vendasInterestadualDeselencadas;
                                         imp.SaidaInterna2 = InternasDeselencadas;
                                         imp.SaidaInterestadual2 = InterestadualDeselencadas;
                                         imp.SaidaPortInterna2 = InternasDeselencadasPortaria;
-                                        imp.saidaPortInterestadual2 = InterestadualDeselencadasPortaria;
+                                        imp.SaidaPortInterestadual2 = InterestadualDeselencadasPortaria;
                                         imp.Suspensao = suspensao;
                                     }
                                     else
@@ -3635,14 +3635,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         tax.SaidaInterna1 = InternasElencadas;
                                         tax.SaidaInterestadual1 = InterestadualElencadas;
                                         tax.SaidaPortInterna1 = InternasElencadasPortaria;
-                                        tax.saidaPortInterestadual1 = InterestadualElencadasPortaria;
+                                        tax.SaidaPortInterestadual1 = InterestadualElencadasPortaria;
 
                                         tax.VendasInternas2 = vendasInternasDeselencadas;
                                         tax.VendasInterestadual2 = vendasInterestadualDeselencadas;
                                         tax.SaidaInterna2 = InternasDeselencadas;
                                         tax.SaidaInterestadual2 = InterestadualDeselencadas;
                                         tax.SaidaPortInterna2 = InternasDeselencadasPortaria;
-                                        tax.saidaPortInterestadual2 = InterestadualDeselencadasPortaria;
+                                        tax.SaidaPortInterestadual2 = InterestadualDeselencadasPortaria;
                                         tax.Suspensao = suspensao;
                                     }
                                 }
@@ -4267,6 +4267,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     _grupoService.Create(addGrupos, null);
                 }
+
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return RedirectToAction("Index", new { id = companyid, year = year,  month = month});
             }

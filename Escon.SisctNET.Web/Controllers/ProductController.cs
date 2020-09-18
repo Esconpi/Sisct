@@ -419,7 +419,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Code,
                               Description = r.Description,
                               GroupName = r.Group.Item + " - " + r.Group.Description,
-                              Price = r.Price.ToString().Replace(".", ","),
+                              Price = r.Price,
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
@@ -439,7 +439,7 @@ namespace Escon.SisctNET.Web.Controllers
                                   Code = r.Code,
                                   Description = r.Description,
                                   GroupName = r.Group.Item + " - " + r.Group.Description,
-                                  Price = r.Price.ToString().Replace(".", ","),
+                                  Price = r.Price,
                                   Unity = r.Unity,
                                   Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                                   Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")

@@ -32,38 +32,18 @@
                     @ViewBag.CfopNIncentivo[i][1]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.CfopNIncentivo[i][2]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.CfopNIncentivo[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.CfopNIncentivo[i][3]</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopNIncentivo[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.CfopNIncentivo[i][4]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.CfopNIncentivo[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@ViewBag.CfopNIncentivo[i][5]</b>
+                    <b>@string.Format("{0:C}", Convert.ToDecimal(ViewBag.CfopNIncentivo[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
             </tr>
         }
-    </tbody>
-    <tbody>
-        <tr>
-            <th style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;">
-                Total
-            </th>
-            <th></th>
-            <th style="border:1px solid; text-align:right; padding-right:1%;">
-                @ViewBag.ValorContabil
-            </th>
-            <th style="border:1px solid; text-align:right; padding-right:1%;">
-                @ViewBag.ValorBc
-            </th>
-            <th style="border:1px solid; text-align:right; padding-right:1%;">
-                @ViewBag.ValorIcms
-            </th>
-            <th style="border:1px solid; text-align:right; padding-right:1%;">
-                @ViewBag.ValorFecop
-            </th>
-        </tr>
     </tbody>
 </table>

@@ -10,22 +10,22 @@
                 <table>
                     <tr>
                         <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Base de Calculo FUNEF/COTAC(R$)</th>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DifApuNormal</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DifApuNNormal</td>
-                        <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</th>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.DifApuNormal)</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.DifApuNNormal)</td>
+                        <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.BaseDeCalcFunef)</th>
                     </tr>
                     <tr>
                         <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Valor da FUNEF (R$)</th>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.PercentFunef</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.ValorFunef</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.BaseDeCalcFunef)</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.PercentFunef) %</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.ValorFunef)</td>
                     </tr>
 
                     <tr>
                         <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">Valor da COTAC (R$)</th>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.BaseDeCalcFunef</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.PercentCotac</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.ValorCotac</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.BaseDeCalcFunef)</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.PercentCotac) %</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:C}", ViewBag.ValorCotac)</td>
                     </tr>
                 </table>
             </td>
@@ -52,22 +52,22 @@
                     <tr>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">ICMS</td>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarIcms</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.DifApuNNormal</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:C}", ViewBag.DifApuNNormal)</td>
                     </tr>
                     <tr>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">FUNEF</td>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarFunef</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.ValorFunef</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:C}", ViewBag.ValorFunef)</td>
                     </tr>
                     <tr>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">COTAC</td>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarCotac</td>
-                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.ValorCotac</td>
+                        <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:C}", ViewBag.ValorCotac)</td>
                     </tr>
                     <tr>
                         <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">Total</th>
                         <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;"></td>
-                        <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.TotalDeImposto</th>
+                        <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:C}", ViewBag.TotalDeImposto)</th>
                     </tr>
                 </table>
             </td>

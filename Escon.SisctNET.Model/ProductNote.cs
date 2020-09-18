@@ -32,7 +32,6 @@ namespace Escon.SisctNET.Model
         public string Xprod { get; set; }
 
         [Display(Name = "Valor")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Vprod { get; set; }
 
         [Display(Name = "Quantidade")]

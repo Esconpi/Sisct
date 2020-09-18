@@ -53,7 +53,6 @@ namespace Escon.SisctNET.Model
         public DateTime Dhemi { get; set; }
 
         [Display(Name = "Total Nota")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Vnf { get; set; }
 
         [Display(Name = "Fornecedor")]

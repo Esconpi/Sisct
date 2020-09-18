@@ -59,13 +59,13 @@
                 <tbody style="font-size:12px;">
                     <tr>
                         <td>@ViewBag.Registro</td>
-                        <td>@ViewBag.TotalNotas</td>
-                        <td>@ViewBag.ValorProd</td>
-                        <td>@ViewBag.TotalFrete</td>
-                        <td>@ViewBag.TotalIpi</td>
-                        <td>@ViewBag.TotalBC</td>
-                        <td>@ViewBag.TotalICMSST</td>
-                        <td>@ViewBag.TotalICMS</td>
+                        <td>@string.Format("{0:C}", ViewBag.TotalNotas)</td>
+                        <td>@string.Format("{0:C}", ViewBag.ValorProd)</td>
+                        <td>@string.Format("{0:C}", ViewBag.TotalFrete)</td>
+                        <td>@string.Format("{0:C}", ViewBag.TotalIpi)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
+                        <td>@string.Format("{0:C}", ViewBag.TotalICMSST)</td>
+                        <td>@string.Format("{0:C}", ViewBag.TotalICMS)</td>
 
                     </tr>
                 </tbody>

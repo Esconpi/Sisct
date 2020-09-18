@@ -209,20 +209,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    ncms.Sort();
-
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+                    ncms.Sort();                    
 
                     List<List<string>> resumoNcmOrdenado = new List<List<string>>();
-
-
-                    for (int i = 0; i < resumoNcm.Count; i++)
-                    {
-                        resumoNcm[i][2] = (Convert.ToDouble(resumoNcm[i][2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                        resumoNcm[i][3] = (Convert.ToDouble(resumoNcm[i][3].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                        resumoNcm[i][4] = (Convert.ToDouble(resumoNcm[i][4].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-
-                    }
 
                     for (int i = 0; i < ncms.Count(); i++)
                     {
@@ -246,23 +235,23 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Ncm = resumoNcmOrdenado;
-                    ViewBag.ValorProduto = Convert.ToDouble(valorProduto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorPis = Convert.ToDouble(valorPis.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorCofins = Convert.ToDouble(valorCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.ValorProduto = valorProduto;
+                    ViewBag.ValorPis = valorPis;
+                    ViewBag.ValorCofins = valorCofins;
 
                 }
                 else if (type.Equals("imposto"))
                 {
-                    ViewBag.PercentualPetroleo = Convert.ToDecimal(comp.IRPJ1).ToString().Replace(".", ",");
-                    ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2).ToString().Replace(".", ",");
-                    ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3).ToString().Replace(".", ",");
-                    ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4).ToString().Replace(".", ",");
-                    ViewBag.PercentualCsll1 = Convert.ToDecimal(comp.CSLL1).ToString().Replace(".", ",");
-                    ViewBag.PercentualCsll2 = Convert.ToDecimal(comp.CSLL2).ToString().Replace(".", ",");
-                    ViewBag.PercentualCPRB = Convert.ToDecimal(comp.CPRB).ToString().Replace(".", ",");
-                    ViewBag.PercentualIrpjNormal = Convert.ToDecimal(comp.PercentualIRPJ).ToString().Replace(".", ",");
-                    ViewBag.PercentualCsllNormal = Convert.ToDecimal(comp.PercentualCSLL).ToString().Replace(".", ",");
-                    ViewBag.PercentualAdicionalIrpj = Convert.ToDecimal(comp.AdicionalIRPJ).ToString().Replace(".", ",");
+                    ViewBag.PercentualPetroleo = Convert.ToDecimal(comp.IRPJ1);
+                    ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2);
+                    ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3);
+                    ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4);
+                    ViewBag.PercentualCsll1 = Convert.ToDecimal(comp.CSLL1);
+                    ViewBag.PercentualCsll2 = Convert.ToDecimal(comp.CSLL2);
+                    ViewBag.PercentualCPRB = Convert.ToDecimal(comp.CPRB);
+                    ViewBag.PercentualIrpjNormal = Convert.ToDecimal(comp.PercentualIRPJ);
+                    ViewBag.PercentualCsllNormal = Convert.ToDecimal(comp.PercentualCSLL);
+                    ViewBag.PercentualAdicionalIrpj = Convert.ToDecimal(comp.AdicionalIRPJ);
 
                     var basePisCofins = _baseService.FindByName("PisCofins");
 
@@ -332,60 +321,58 @@ namespace Escon.SisctNET.Web.Controllers
                         //CPRB
                         decimal cprbAPagar = (baseCalcAntesMono * Convert.ToDecimal(comp.CPRB)) / 100;
 
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                         //Comércio
-                        ViewBag.FaturamentoComercio = Convert.ToDouble(receitaComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DevolucaoComercio = Convert.ToDouble(devolucaoComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FaturamentoComercio = receitaComercio;
+                        ViewBag.DevolucaoComercio = devolucaoComercio;
 
                         //Serviço
-                        ViewBag.FaturamentoServico = Convert.ToDouble(receitaServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DevolucaoServico = Convert.ToDouble(devolucaoServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FaturamentoServico = receitaServico;
+                        ViewBag.DevolucaoServico = devolucaoServico;
 
                         //Petróleo
-                        ViewBag.FaturamentoPetroleo = Convert.ToDouble(receitaPetroleo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DevolucaoPetroleo = Convert.ToDouble(devolucaoPetroleo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FaturamentoPetroleo = receitaPetroleo;
+                        ViewBag.DevolucaoPetroleo = devolucaoPetroleo;
 
                         //Transporte
-                        ViewBag.FaturamentoTransporte = Convert.ToDouble(receitaTransporte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DevolucaoTransporte = Convert.ToDouble(devolucaoTransporte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.FaturamentoTransporte = receitaTransporte;
+                        ViewBag.DevolucaoTransporte = devolucaoTransporte;
 
                         //Dados PIS e COFINS
-                        ViewBag.DevolucaoNormal = Convert.ToDouble(devolucaoNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcAntesMono = Convert.ToDouble(baseCalcAntesMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcMono = Convert.ToDouble(receitaMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CreditoDevMono = Convert.ToDouble(devolucaoMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcPisCofins = Convert.ToDouble(baseCalcPisCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReducaoIcms = Convert.ToDouble(reducaoIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.DevolucaoNormal = devolucaoNormal;
+                        ViewBag.BaseCalcAntesMono = baseCalcAntesMono;
+                        ViewBag.BaseCalcMono = receitaMono;
+                        ViewBag.DevolucaoMono = devolucaoMono;
+                        ViewBag.BaseCalcPisCofins = baseCalcPisCofins;
+                        ViewBag.ReducaoIcms = reducaoIcms;
 
                         //PIS
-                        ViewBag.PisApurado = Convert.ToDouble(pisApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.PisRetido = Convert.ToDouble(pisRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.PisAPagar = Convert.ToDouble(pisAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.PisApurado = pisApurado;
+                        ViewBag.PisRetido = pisRetido;
+                        ViewBag.PisAPagar = pisAPagar;
 
                         //COFINS
-                        ViewBag.CofinsApurado = Convert.ToDouble(cofinsApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CofinsRetido = Convert.ToDouble(cofinsRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CofinsAPagar = Convert.ToDouble(cofinsAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CofinsApurado = cofinsApurado;
+                        ViewBag.CofinsRetido = cofinsRetido;
+                        ViewBag.CofinsAPagar = cofinsAPagar;
 
                         // CSLL E IRPJ
-                        ViewBag.BaseCalcCsllIrpjPetroleo = Convert.ToDouble(baseCalcCsllIrpjPetroleo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpjComercio = Convert.ToDouble(baseCalcCsllIrpjComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpjTransporte = Convert.ToDouble(baseCalcCsllIrpjTransporte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpjServico = Convert.ToDouble(baseCalcCsllIrpjServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.BaseCalcCsllIrpjPetroleo = baseCalcCsllIrpjPetroleo;
+                        ViewBag.BaseCalcCsllIrpjComercio = baseCalcCsllIrpjComercio;
+                        ViewBag.BaseCalcCsllIrpjTransporte = baseCalcCsllIrpjTransporte;
+                        ViewBag.BaseCalcCsllIrpjServico = baseCalcCsllIrpjServico;
 
                         //CSLL
-                        ViewBag.CsllApurado = Convert.ToDouble(csllApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllRetido = Convert.ToDouble(csllRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllAPagar = Convert.ToDouble(csllAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CsllApurado = csllApurado;
+                        ViewBag.CsllRetido = csllRetido;
+                        ViewBag.CsllAPagar = csllAPagar;
 
                         //IRPJ
-                        ViewBag.IrpjApurado = Convert.ToDouble(irpjApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjRetido = Convert.ToDouble(irpjRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjAPagar = Convert.ToDouble(irpjAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.IrpjApurado = irpjApurado;
+                        ViewBag.IrpjRetido = irpjRetido;
+                        ViewBag.IrpjAPagar = irpjAPagar;
 
                         //CPRB
-                        ViewBag.CprbAPagar = Convert.ToDouble(cprbAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CprbAPagar = cprbAPagar;
 
                     }
                     else
@@ -520,42 +507,38 @@ namespace Escon.SisctNET.Web.Controllers
                             //CPRB
                             cprbAPagarTotal += cprbAPagar;
 
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                             List<string> imposto = new List<string>();
 
                             imposto.Add(imp.MesRef);
-                            imposto.Add(Convert.ToDecimal(imp.Receita1.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(imp.Receita2.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(imp.Receita3.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(imp.Receita4.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(receita.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(imp.ReceitaMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(devolucaoNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(reducaoIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(baseCalcPisCofins.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(baseCalcCsllIrpj1.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(baseCalcCsllIrpj2.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(baseCalcCsllIrpj3.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(baseCalcCsllIrpj4.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(pisApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(pisRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(pisAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(cofinsApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(cofinsRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(cofinsAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(csllApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(csllRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(irpjApurado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(irpjRetido.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            imposto.Add(Convert.ToDecimal(cprbAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            imposto.Add(imp.Receita1.ToString());
+                            imposto.Add(imp.Receita2.ToString());
+                            imposto.Add(imp.Receita3.ToString());
+                            imposto.Add(imp.Receita4.ToString());
+                            imposto.Add((Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida)).ToString());
+                            imposto.Add((Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida)).ToString());
+                            imposto.Add((Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida)).ToString());
+                            imposto.Add((Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida)).ToString());
+                            imposto.Add(receita.ToString());
+                            imposto.Add(imp.ReceitaMono.ToString());
+                            imposto.Add(devolucaoNormal.ToString());
+                            imposto.Add(reducaoIcms.ToString());
+                            imposto.Add(baseCalcPisCofins.ToString());
+                            imposto.Add(baseCalcCsllIrpj1.ToString());
+                            imposto.Add(baseCalcCsllIrpj2.ToString());
+                            imposto.Add(baseCalcCsllIrpj3.ToString());
+                            imposto.Add(baseCalcCsllIrpj4.ToString());
+                            imposto.Add(pisApurado.ToString());
+                            imposto.Add(pisRetido.ToString());
+                            imposto.Add(pisAPagar.ToString());
+                            imposto.Add(cofinsApurado.ToString());
+                            imposto.Add(cofinsRetido.ToString());
+                            imposto.Add(cofinsAPagar.ToString());
+                            imposto.Add(csllApurado.ToString());
+                            imposto.Add(csllRetido.ToString());
+                            imposto.Add(irpjApurado.ToString());
+                            imposto.Add(irpjRetido.ToString());
+                            imposto.Add(cprbAPagar.ToString());
                             impostos.Add(imposto);
-
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                         }
 
                         // IRPJ
@@ -579,69 +562,67 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal csllNormal = baseCalcCsll * Convert.ToDecimal(comp.PercentualCSLL) / 100;
                         decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal;
 
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                         ViewBag.Impostos = impostos;
-                        ViewBag.ReceitaPetroleo = Convert.ToDouble(receitaPetroleo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReceitaComercio = Convert.ToDouble(receitaComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReceitaTransporte = Convert.ToDouble(receitaTransporte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReceitaServico = Convert.ToDouble(receitaServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DeolucaoPetroleo = Convert.ToDouble(devolucaoPetroleo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DeolucaoComercio = Convert.ToDouble(devolucaoComercio.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DeolucaoTransporte = Convert.ToDouble(devolucaoTransporte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DeolucaoServico = Convert.ToDouble(devolucaoServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Receitas = Convert.ToDouble(receitas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReceitasMono = Convert.ToDouble(receitasMono.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.DevolucaoNormal = Convert.ToDouble(devolucoesNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcPisCofins = Convert.ToDouble(baseCalcPisCofinsTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpj1 = Convert.ToDouble(baseCalcCsllIrpjTotal1.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpj2 = Convert.ToDouble(baseCalcCsllIrpjTotal2.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpj3 = Convert.ToDouble(baseCalcCsllIrpjTotal3.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsllIrpj4 = Convert.ToDouble(baseCalcCsllIrpjTotal4.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.PisApurado = Convert.ToDouble(pisApuradoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.PisRetido = Convert.ToDouble(pisRetidoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.PisAPagar = Convert.ToDouble(pisAPagarTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CofinsApurado = Convert.ToDouble(cofinsApuradoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CofinsRetido = Convert.ToDouble(cofinsRetidoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CofinsAPagar = Convert.ToDouble(cofinsAPagarTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllApurado = Convert.ToDouble(csllApuradoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllRetido = Convert.ToDouble(csllRetidoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjApurado = Convert.ToDouble(irpjApuradoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjRetido = Convert.ToDouble(irpjRetidoTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CprbAPagar = Convert.ToDouble(cprbAPagarTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReducaoIcms = Convert.ToDouble(reducaoIcmsTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.ReceitaPetroleo = receitaPetroleo;
+                        ViewBag.ReceitaComercio = receitaComercio;
+                        ViewBag.ReceitaTransporte = receitaTransporte;
+                        ViewBag.ReceitaServico = receitaServico;
+                        ViewBag.DeolucaoPetroleo = devolucaoPetroleo;
+                        ViewBag.DeolucaoComercio = devolucaoComercio;
+                        ViewBag.DeolucaoTransporte = devolucaoTransporte;
+                        ViewBag.DeolucaoServico = devolucaoServico;
+                        ViewBag.Receitas = receitas;
+                        ViewBag.ReceitasMono = receitasMono;
+                        ViewBag.DevolucaoNormal = devolucoesNormal;
+                        ViewBag.BaseCalcPisCofins = baseCalcPisCofinsTotal;
+                        ViewBag.BaseCalcCsllIrpj1 = baseCalcCsllIrpjTotal1;
+                        ViewBag.BaseCalcCsllIrpj2 = baseCalcCsllIrpjTotal2;
+                        ViewBag.BaseCalcCsllIrpj3 = baseCalcCsllIrpjTotal3;
+                        ViewBag.BaseCalcCsllIrpj4 = baseCalcCsllIrpjTotal4;
+                        ViewBag.PisApurado = pisApuradoTotal;
+                        ViewBag.PisRetido = pisRetidoTotal;
+                        ViewBag.PisAPagar = pisAPagarTotal;
+                        ViewBag.CofinsApurado = cofinsApuradoTotal;
+                        ViewBag.CofinsRetido = cofinsRetidoTotal;
+                        ViewBag.CofinsAPagar = cofinsAPagarTotal;
+                        ViewBag.CsllApurado = csllApuradoTotal;
+                        ViewBag.CsllRetido = csllRetidoTotal;
+                        ViewBag.IrpjApurado = irpjApuradoTotal;
+                        ViewBag.IrpjRetido = irpjRetidoTotal;
+                        ViewBag.CprbAPagar = cprbAPagarTotal;
+                        ViewBag.ReducaoIcms = reducaoIcmsTotal;
 
 
                         // IRPJ e CSLL
-                        ViewBag.CapitalIM = Convert.ToDouble(capitalIM.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Bonificacao = Convert.ToDouble(bonificacao.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ReceitaAF = Convert.ToDouble(receitaAF.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.CapitalIM = capitalIM;
+                        ViewBag.Bonificacao = bonificacao;
+                        ViewBag.ReceitaAF = receitaAF;
 
                         // IRPJ
-                        ViewBag.Irpj1 = Convert.ToDouble(irpj1Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Irpj2 = Convert.ToDouble(irpj2Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Irpj3 = Convert.ToDouble(irpj3Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Irpj4 = Convert.ToDouble(irpj4Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjTotal = Convert.ToDouble(irpjSubTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcIrpjNormal = Convert.ToDouble(baseCalcIrpjNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcAdicionalIrpj = Convert.ToDouble(baseCalcAdcionalIrpj.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjNormal = Convert.ToDouble(irpjNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.AdicionalIrpj = Convert.ToDouble(adicionalIrpj.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalIrpj = Convert.ToDouble(totalIrpj.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjFonteServico = Convert.ToDouble(irpjFonteServico.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjFonteAF = Convert.ToDouble(irpjFonteAF.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.IrpjAPagar = Convert.ToDouble(irpjAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.Irpj1 = irpj1Total;
+                        ViewBag.Irpj2 = irpj2Total;
+                        ViewBag.Irpj3 = irpj3Total;
+                        ViewBag.Irpj4 = irpj4Total;
+                        ViewBag.IrpjTotal = irpjSubTotal;
+                        ViewBag.BaseCalcIrpjNormal = baseCalcIrpjNormal;
+                        ViewBag.BaseCalcAdicionalIrpj = baseCalcAdcionalIrpj;
+                        ViewBag.IrpjNormal = irpjNormal;
+                        ViewBag.AdicionalIrpj = adicionalIrpj;
+                        ViewBag.TotalIrpj = totalIrpj;
+                        ViewBag.IrpjFonteServico = irpjFonteServico;
+                        ViewBag.IrpjFonteAF = irpjFonteAF;
+                        ViewBag.IrpjAPagar = irpjAPagar;
 
                         // CSLL
-                        ViewBag.Csll1 = Convert.ToDouble(csll1Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Csll2 = Convert.ToDouble(csll2Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Csll3 = Convert.ToDouble(csll3Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.Csll4 = Convert.ToDouble(csll4Total.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllTotal = Convert.ToDouble(csllTotal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseCalcCsll = Convert.ToDouble(baseCalcCsll.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllNormal = Convert.ToDouble(csllNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllFonte = Convert.ToDouble(csllFonte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.CsllAPagar = Convert.ToDouble(csllAPagar.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.Csll1 = csll1Total;
+                        ViewBag.Csll2 = csll2Total;
+                        ViewBag.Csll3 = csll3Total;
+                        ViewBag.Csll4 = csll4Total;
+                        ViewBag.CsllTotal = csllTotal;
+                        ViewBag.BaseCalcCsll = baseCalcCsll;
+                        ViewBag.CsllNormal = csllNormal;
+                        ViewBag.CsllFonte = csllFonte;
+                        ViewBag.CsllAPagar = csllAPagar;
 
                         List<decimal> values = new List<decimal>();
 
@@ -654,6 +635,8 @@ namespace Escon.SisctNET.Web.Controllers
               
                 }
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+                
                 return View();
             }
             catch(Exception ex)

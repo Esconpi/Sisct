@@ -50,8 +50,8 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Value)
+                            <td style="text-align:right">
+                                @string.Format("{0:C}", item.Value)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Created)

@@ -24,13 +24,13 @@
                 Vendas
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalVenda
+                @string.Format("{0:C}", ViewBag.TotalVenda)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalDevo
+                @string.Format("{0:C}", ViewBag.TotalDevo)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.BaseCalc
+                @string.Format("{0:C}", ViewBag.BaseCalc)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
         </tr>
@@ -39,16 +39,16 @@
                 Vendas P/ Contribuintes
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.Contribuinte
+                @string.Format("{0:C}", ViewBag.Contribuinte)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalDevoContrib
+                @string.Format("{0:C}", ViewBag.TotalDevoContrib)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.BaseCalcContrib
+                @string.Format("{0:C}", ViewBag.BaseCalcContrib)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.PercentualVendaContribuinte %
+                @string.Format("{0:N}", ViewBag.PercentualVendaContribuinte) %
             </th>
         </tr>
         <tr>
@@ -56,16 +56,16 @@
                 Vendas P/ Não Contribuintes
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.NContribuinte
+                @string.Format("{0:C}", ViewBag.NContribuinte)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalDevoNContrib
+                @string.Format("{0:C}", ViewBag.TotalDevoNContrib)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.BaseCalcNContrib
+                @string.Format("{0:C}", ViewBag.BaseCalcNContrib)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.PercentualVendaNContribuinte %
+                @string.Format("{0:N}", ViewBag.PercentualVendaNContribuinte) %
             </th>
         </tr>
         <tr>
@@ -73,16 +73,16 @@
                 Vendas do Anexo II
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.VendaAnexo
+                @string.Format("{0:C}", ViewBag.VendaAnexo)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalDevoAnexo
+                @string.Format("{0:C}", ViewBag.TotalDevoAnexo)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.BaseCalcAnexo
+                @string.Format("{0:C}", ViewBag.BaseCalcAnexo)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.PercentualVendaAnexo %
+                @string.Format("{0:N}", ViewBag.PercentualVendaAnexo) %
             </th>
         </tr>
         <tr>
@@ -90,16 +90,16 @@
                 Vendas P/ mesmo grupo maior que @ViewBag.PercentualCNPJ %
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalVendaGrupo
+                @string.Format("{0:C}", ViewBag.TotalVendaGrupo)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalDevoGrupo
+                @string.Format("{0:C}", ViewBag.TotalDevoGrupo)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.TotalBaseCalcuGrupo
+                @string.Format("{0:C}", ViewBag.TotalBaseCalcuGrupo)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @ViewBag.PercentualVendaGrupo %
+                @string.Format("{0:N}", ViewBag.PercentualVendaGrupo) %
             </th>
         </tr>
     </tbody>
@@ -123,8 +123,8 @@
                 <tr>
                     <td>@item[0]</td>
                     <td>@item[1]</td>
-                    <td>@item[2]</td>
-                    <td>@item[3] %</td>
+                    <td>@string.Format("{0:C}", item[2])</td>
+                    <td>@string.Format("{0:N}", item[3]) %</td>
                     
                 </tr>
             }
@@ -170,39 +170,41 @@
                     <tbody>
                         <tr>
                             <th>ICMS Excedente Grupo</th>
-                            <td>@ViewBag.TotalBaseCalcuGrupo</td>
+                            <td>
+                                @string.Format("{0:C}", ViewBag.TotalBaseCalcuGrupo)
+                            </td>
                             <th style="font-size:17px">-</th>
-                            <td>@ViewBag.LimiteGrupo</td>
+                            <td>@string.Format("{0:C}", ViewBag.LimiteGrupo)</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.ExcedenteGrupo</td>
+                            <td>@string.Format("{0:C}", ViewBag.ExcedenteGrupo)</td>
                             <th>x</th>
-                            <td>@ViewBag.PercentualExcedenteGrupo</td>
+                            <td>@string.Format("{0:N}", ViewBag.PercentualExcedenteGrupo) %</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalExcedenteGrupo</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalExcedenteGrupo)</td>
                         </tr>
                         <tr>
                             <th>Transferência Interestadual</th>
-                            <td>@ViewBag.TotalTransferencia</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalTransferencia)</td>
                             <th style="font-size:17px">-</th>
-                            <td>@ViewBag.LimiteTransferencia</td>
+                            <td>@string.Format("{0:C}", ViewBag.LimiteTransferencia)</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.ExcedenteTransferencia</td>
+                            <td>@string.Format("{0:C}", ViewBag.ExcedenteTransferencia)</td>
                             <th>x</th>
-                            <td>@ViewBag.PercentaulTransferencia</td>
+                            <td>@string.Format("{0:N}", ViewBag.PercentaulTransferencia) %</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalExcedenteTransferencia</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalExcedenteTransferencia)</td>
                         </tr>
                         <tr>
                             <th>ICMS Excedente P/ Não Contribuinte</th>
-                            <td>@ViewBag.BaseCalcNContrib</td>
+                            <td>@string.Format("{0:C}", ViewBag.BaseCalcNContrib)</td>
                             <th style="font-size:17px">-</th>
-                            <td>@ViewBag.LimiteNContribuinte</td>
+                            <td>@string.Format("{0:C}", ViewBag.LimiteNContribuinte)</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.ExcedenteNContribuinte</td>
+                            <td>@string.Format("{0:C}", ViewBag.ExcedenteNContribuinte)</td>
                             <th>x</th>
-                            <td>@ViewBag.PercentualExcedenteNContribuinte</td>
+                            <td>@string.Format("{0:N}", ViewBag.PercentualExcedenteNContribuinte) %</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalExcedenteNContribuinte</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalExcedenteNContribuinte)</td>
                         </tr>
                     </tbody>
 
@@ -231,15 +233,15 @@
                     <tbody>
                         <tr>
                             <th>Venda Conforme Anexo</th>
-                            <td>@ViewBag.LimiteAnexo</td>
+                            <td> @string.Format("{0:C}", ViewBag.LimiteAnexo)</td>
                             <th style="font-size:17px">-</th>
-                            <td>@ViewBag.BaseCalcAnexo</td>
+                            <td>@string.Format("{0:C}", ViewBag.BaseCalcAnexo)</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.ExcedenteAnexo</td>
+                            <td>@string.Format("{0:C}", ViewBag.ExcedenteAnexo)</td>
                             <th>x</th>
-                            <td>@ViewBag.PercentualExcedenteAnexo</td>
+                            <td>@string.Format("{0:N}", ViewBag.PercentualExcedenteAnexo) %</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalExcedenteAnexo</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalExcedenteAnexo)</td>
                         </tr>
                     </tbody>
 
@@ -266,15 +268,15 @@
                     <tbody>
                         <tr>
                             <th>Suspensão</th>
-                            <td>@ViewBag.BaseCalcSuspensao</td>
+                            <td>@string.Format("{0:C}", ViewBag.BaseCalcSuspensao)</td>
                             <th></th>
                             <td></td>
                             <th></th>
                             <td></td>
                             <th>x</th>
-                            <td>@ViewBag.PercentaulSuspensao</td>
+                            <td>@string.Format("{0:N}", ViewBag.PercentaulSuspensao) %</td>
                             <th style="font-size:17px">=</th>
-                            <td>@ViewBag.TotalSuspensao</td>
+                            <td>@string.Format("{0:C}", ViewBag.TotalSuspensao)</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -286,7 +288,7 @@
                             <td></td>
                             <th>Total ICMS</th>
                             <td></td>
-                            <th>@ViewBag.TotalIcms</th>
+                            <th>@string.Format("{0:C}", ViewBag.TotalIcms)</th>
                         </tr>
                     </tbody>
                     <tfoot>

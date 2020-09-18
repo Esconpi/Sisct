@@ -27,7 +27,7 @@
                         <td>@ViewBag.Data</td>
                         <td>@ViewBag.Uf</td>
                         <td>@ViewBag.Fornecedor</td>
-                        <td>@ViewBag.Valor</td>
+                        <td>@string.Format("{0:C}", ViewBag.Valor)</td>
                     </tr>
                 </tbody>
             </table>
@@ -109,8 +109,8 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cfop)
                                     </td>
-                                    <td class="money">
-                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                    <td style="text-align:center">
+                                        @string.Format("{0:C}", item.Vprod)
                                     </td>
 
                                     @if (item.TaxationTypeId != null)
@@ -164,8 +164,8 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cfop)
                                     </td>
-                                    <td class="money">
-                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                     <td style="text-align:center">
+                                        @string.Format("{0:C}", item.Vprod)
                                     </td>
                                      @if (item.TaxationTypeId != null)
                                     {

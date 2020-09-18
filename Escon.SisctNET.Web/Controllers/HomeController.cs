@@ -169,6 +169,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 novoArquivo.Close();
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                 return RedirectToAction("Download", new { id = id, year = year, month = month});
             }
             catch (Exception ex)

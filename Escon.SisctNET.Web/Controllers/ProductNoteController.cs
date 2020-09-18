@@ -913,32 +913,32 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + 
                         products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() +
                         products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
-                    ViewBag.ValorProd = Convert.ToDouble(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.ValorProd = products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum();
                     //ViewBag.TotalBC = Convert.ToDouble(Math.Round(products.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalBC = Convert.ToDouble(Math.Round(baseCalculo, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalBC = baseCalculo;
 
-                    ViewBag.TotalNotas = Convert.ToDouble(total).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalNotas = total;
 
-                    ViewBag.TotalFecop = Convert.ToDouble(totalFecop).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalFrete = Convert.ToDouble(products.Select(_ => _.Freterateado).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalIpi = Convert.ToDouble(products.Select(_ => _.Vipi).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalFecop = totalFecop;
+                    ViewBag.TotalFrete = products.Select(_ => _.Freterateado).Sum();
+                    ViewBag.TotalIpi = products.Select(_ => _.Vipi).Sum();
 
-                    ViewBag.TotalBcICMS = Convert.ToDouble(Math.Round(Convert.ToDecimal(products.Select(_ => _.Valoragregado).Sum()), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalBCR = Convert.ToDouble(products.Select(_ => _.ValorBCR).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalAC = Convert.ToDouble(products.Select(_ => _.ValorAC).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalICMSNfe = Convert.ToDouble(products.Select(_ => _.Vicms).Sum()).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalICMSCte = Convert.ToDouble(Math.Round(products.Select(_ => _.IcmsCTe).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalBcICMS = products.Select(_ => _.Valoragregado).Sum();
+                    ViewBag.TotalBCR = Convert.ToDouble(products.Select(_ => _.ValorBCR).Sum());
+                    ViewBag.TotalAC = Convert.ToDouble(products.Select(_ => _.ValorAC).Sum());
+                    ViewBag.TotalICMSNfe = Convert.ToDouble(products.Select(_ => _.Vicms).Sum());
+                    ViewBag.TotalICMSCte = Math.Round(products.Select(_ => _.IcmsCTe).Sum(), 2);
 
                     decimal icmsGeralStIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
                     decimal icmsGeralStSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
-                    ViewBag.IcmsGeralSTIE = Convert.ToDouble(icmsGeralStIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.IcmsGeralSTSIE = Convert.ToDouble(icmsGeralStSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.IcmsGeralSTIE = icmsGeralStIE;
+                    ViewBag.IcmsGeralSTSIE = icmsGeralStSIE;
 
                     decimal? totalIcmsIE = 0, totalIcmsSIE = 0, valorDiefIE = 0;
                     decimal totalGeralIcmsST = Convert.ToDecimal(products.Select(_ => _.IcmsST).Sum());
-                    ViewBag.TotalICMSST = Convert.ToDouble(totalGeralIcmsST).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalICMSST = totalGeralIcmsST;
                     decimal totalGeralIcms = Convert.ToDecimal(products.Select(_ => _.TotalICMS).Sum());
-                    ViewBag.TotalICMSGeral = Convert.ToDouble(totalGeralIcms).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalICMSGeral = totalGeralIcms;
 
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
@@ -980,12 +980,12 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-                        ViewBag.TotalIcmsFreteIE = Convert.ToDouble(totalIcmsFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalFecop1FreteIE = Convert.ToDouble(totalFecop1FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalFecop2FreteIE = Convert.ToDouble(totalFecop2FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseFecop1FreteIE = Convert.ToDouble(base1FecopFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseFecop2FreteIE = Convert.ToDouble(base2FecopFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalFecopFreteIE = Convert.ToDouble(totalFecop1FreteIE + totalFecop2FreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalIcmsFreteIE = totalIcmsFreteIE;
+                        ViewBag.TotalFecop1FreteIE = totalFecop1FreteIE;
+                        ViewBag.TotalFecop2FreteIE = totalFecop2FreteIE;
+                        ViewBag.BaseFecop1FreteIE = base1FecopFreteIE;
+                        ViewBag.BaseFecop2FreteIE = base2FecopFreteIE;
+                        ViewBag.TotalFecopFreteIE = totalFecop1FreteIE + totalFecop2FreteIE;
 
                         decimal totalIcmsPautaSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Pautado.Equals(true) && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2);
                         decimal totalIcmsMvaSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Pautado.Equals(false) && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2);
@@ -1002,10 +1002,10 @@ namespace Escon.SisctNET.Web.Controllers
                             gnrePagaIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2);
                         }
 
-                        ViewBag.TotalGNREnPagaSIE = Convert.ToDouble(gnreNPagaSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalGNREPagaSIE = Convert.ToDouble(gnrePagaSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalGNREnPagaIE = Convert.ToDouble(gnreNPagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalGNREPagaIE = Convert.ToDouble(gnrePagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalGNREnPagaSIE = gnreNPagaSIE;
+                        ViewBag.TotalGNREPagaSIE = gnrePagaSIE;
+                        ViewBag.TotalGNREnPagaIE = gnreNPagaIE;
+                        ViewBag.TotalGNREPagaIE = gnrePagaIE;
 
                         decimal base1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                         base1SIE += Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -1017,14 +1017,14 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal valorbase1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2);
                         decimal valorbase1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2);
 
-                        ViewBag.base1SIE = Convert.ToDouble(Math.Round(base1SIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.base1IE = Convert.ToDouble(Math.Round(base1IE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.base1SIE = base1SIE;
+                        ViewBag.base1IE = base1IE;
 
-                        ViewBag.base1fecopIE = Convert.ToDouble(base1fecopIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.base1fecopSIE = Convert.ToDouble(base1fecopSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.base1fecopIE = base1fecopIE;
+                        ViewBag.base1fecopSIE = base1fecopSIE;
 
-                        ViewBag.valorbase1IE = Convert.ToDouble(Math.Round(valorbase1IE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.valorbase1SIE = Convert.ToDouble(Math.Round(valorbase1SIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.valorbase1IE = valorbase1IE;
+                        ViewBag.valorbase1SIE = valorbase1SIE;
 
                         decimal base2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.ValorBCR).Sum()), 2);
                         base2IE += Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.Valoragregado).Sum()), 2);
@@ -1037,12 +1037,12 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal valorbase2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2);
                         decimal valorbase2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2);
 
-                        ViewBag.base2IE = Convert.ToDouble(Math.Round(base2IE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.base2SIE = Convert.ToDouble(Math.Round(base2SIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.base2fecopIE = Convert.ToDouble(base2fecopIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.base2fecopSIE = Convert.ToDouble(base2fecopSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.valorbase2IE = Convert.ToDouble(Math.Round(valorbase2IE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.valorbase2SIE = Convert.ToDouble(Math.Round(valorbase2SIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.base2IE = base2IE;
+                        ViewBag.base2SIE = base2SIE;
+                        ViewBag.base2fecopIE = base2fecopIE;
+                        ViewBag.base2fecopSIE = base2fecopSIE;
+                        ViewBag.valorbase2IE = valorbase2IE;
+                        ViewBag.valorbase2SIE = valorbase2SIE;
 
                         var totalBaseFecopIE = base1fecopIE + base2fecopIE;
                         var totalBaseFecopSIE = base1fecopSIE + base2fecopSIE;
@@ -1529,10 +1529,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
                                     vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
                                     InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
-                                    InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual1),
+                                    InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
                                     InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
                                     InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
-                                    InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual2),
+                                    InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
                                     suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
                                     vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
 
@@ -1919,7 +1919,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
-                            ViewBag.TotalFreteIE = Convert.ToDouble(totalIcmsFreteIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalFreteIE = totalIcmsFreteIE;
                         
                             totalIcmsIE = products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsApurado).Sum();
                             totalIcmsSIE = products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsApurado).Sum();
@@ -1966,15 +1966,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 icmsApSIE = products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.Note.IcmsIm).Distinct().Sum();
                             }
 
-                            ViewBag.TotalGNREnPagaIE = Convert.ToDouble(gnreNPagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGNREPagaIE = Convert.ToDouble(gnrePagaIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGNREnPagaSIE = Convert.ToDouble(gnreNPagaSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGNREPagaSIE = Convert.ToDouble(gnrePagaSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalGNREnPagaIE = gnreNPagaIE;
+                            ViewBag.TotalGNREPagaIE = gnrePagaIE;
+                            ViewBag.TotalGNREnPagaSIE = gnreNPagaSIE;
+                            ViewBag.TotalGNREPagaSIE = gnrePagaSIE;
 
 
-                            ViewBag.TotalICMS = Convert.ToDouble(totalIcmsIE + totalIcmsSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalICMSIE = Convert.ToDouble(totalIcmsIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalICMSSIE = Convert.ToDouble(totalIcmsSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalICMS = totalIcmsIE + totalIcmsSIE;
+                            ViewBag.TotalICMSIE = totalIcmsIE;
+                            ViewBag.TotalICMSSIE = totalIcmsSIE;
 
                             /*decimal icmsTemp = 0;
                             if (gnrePaga < icmsSt)
@@ -1990,14 +1990,14 @@ namespace Escon.SisctNET.Web.Controllers
                             valorDiefIE = Convert.ToDecimal(totalIcmsIE - icmsStnoteIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
                             var valorDiefSIE = Convert.ToDecimal((totalIcmsSIE + totalIcmsFreteIE) - icmsStnoteSIE - gnrePagaSIE + gnreNPagaSIE);
 
-                            ViewBag.ValorDiefIE = Convert.ToDouble(valorDiefIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ValorDiefSIE = Convert.ToDouble(valorDiefSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.ValorDiefIE = valorDiefIE;
+                            ViewBag.ValorDiefSIE = valorDiefSIE;
 
-                            ViewBag.IcmsApIE = Convert.ToDouble(icmsApIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsApSIE = Convert.ToDouble(icmsApSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.IcmsApIE = icmsApIE;
+                            ViewBag.IcmsApSIE = icmsApSIE;
 
-                            ViewBag.IcmsPagarIE = Convert.ToDouble(valorDiefIE - icmsApIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsPagarSIE = Convert.ToDouble(valorDiefSIE - icmsApSIE).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.IcmsPagarIE = valorDiefIE - icmsApIE;
+                            ViewBag.IcmsPagarSIE = valorDiefSIE - icmsApSIE;
 
                          }
                     
@@ -2326,10 +2326,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
                                 vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
                                 InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
-                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual1),
+                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
                                 InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
                                 InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
-                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual2),
+                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
                                 suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
                                 vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
 
@@ -3388,59 +3388,60 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 List<string> forenecedor = new List<string>();
                                 forenecedor.Add(prod.NoteId.ToString());
-                                forenecedor.Add(prod.Note.Dhemi.ToString("dd-MM-yyyy"));
+                                forenecedor.Add(prod.Note.Dhemi.ToString("dd/MM/yyyy"));
                                 forenecedor.Add(prod.Note.Nnf);
                                 forenecedor.Add(prod.Note.Xnome);
-                                forenecedor.Add("0,00");
+                                forenecedor.Add("0.00");
                                 if (typeTaxation.Equals(1))
                                 {
-                                    forenecedor.Add(prod.Note.GnreSt.ToString());
-                                    forenecedor.Add(prod.Note.GnreNSt.ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreSt).ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreNSt).ToString());
                                     gnrePagaTotal += Convert.ToDecimal(prod.Note.GnreSt);
                                     gnreNPagaTotal += Convert.ToDecimal(prod.Note.GnreNSt);
                                 }
                                 else if (typeTaxation.Equals(2))
                                 {
-                                    forenecedor.Add(prod.Note.GnreAp.ToString());
-                                    forenecedor.Add(prod.Note.GnreNAp.ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreAp).ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreNAp).ToString());
                                     gnrePagaTotal += Convert.ToDecimal(prod.Note.GnreAp);
                                     gnreNPagaTotal += Convert.ToDecimal(prod.Note.GnreNAp);
                                 }
                                 else if (typeTaxation.Equals(3))
                                 {
-                                    forenecedor.Add(prod.Note.GnreCo.ToString());
-                                    forenecedor.Add(prod.Note.GnreNCo.ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreCo).ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreNCo).ToString());
                                     gnrePagaTotal += Convert.ToDecimal(prod.Note.GnreCo);
                                     gnreNPagaTotal += Convert.ToDecimal(prod.Note.GnreNCo);
                                 }
                                 else if (typeTaxation.Equals(5))
                                 {
-                                    forenecedor.Add(prod.Note.GnreIm.ToString());
-                                    forenecedor.Add(prod.Note.GnreNIm.ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreIm).ToString());
+                                    forenecedor.Add(Convert.ToDecimal(prod.Note.GnreNIm).ToString());
                                     gnrePagaTotal += Convert.ToDecimal(prod.Note.GnreIm);
                                     gnreNPagaTotal += Convert.ToDecimal(prod.Note.GnreNIm);
                                 }
                                 else
                                 {
-                                    forenecedor.Add("0,00");
-                                    forenecedor.Add("0,00");
+                                    forenecedor.Add("0.00");
+                                    forenecedor.Add("0.00");
                                     gnrePagaTotal += 0;
                                     gnreNPagaTotal += 0;
                                 }
-                                forenecedor.Add("0,00");
-                                forenecedor.Add((prod.Note.FecopGnre1 + prod.Note.FecopGnre2).ToString());
-                                gnrefecopPagaTotal += Convert.ToDecimal(prod.Note.FecopGnre1 + prod.Note.FecopGnre2);
+                                forenecedor.Add("0.00");
+                                forenecedor.Add((Convert.ToDecimal(prod.Note.FecopGnre1) + Convert.ToDecimal(prod.Note.FecopGnre2)).ToString());
+                                gnrefecopPagaTotal += Convert.ToDecimal(Convert.ToDecimal(prod.Note.FecopGnre1) + Convert.ToDecimal(prod.Note.FecopGnre2));
                                 fornecedores.Add(forenecedor);
                                 pos = fornecedores.Count() - 1;
                             }
 
-                            fornecedores[pos][4] = (Convert.ToDecimal(fornecedores[pos][4]) + prod.IcmsST).ToString();
-                            fornecedores[pos][7] = (Convert.ToDecimal(fornecedores[pos][7]) + prod.VfcpST + prod.VfcpSTRet).ToString();
+                            fornecedores[pos][4] = (Convert.ToDecimal(fornecedores[pos][4]) + Convert.ToDecimal(prod.IcmsST)).ToString();
+                            fornecedores[pos][7] = (Convert.ToDecimal(fornecedores[pos][7]) + Convert.ToDecimal(prod.VfcpST + prod.VfcpSTRet)).ToString();
                             icmsStTotal += Convert.ToDecimal(prod.IcmsST);
-                            fecopStTotal += (Convert.ToDecimal(prod.VfcpST + prod.VfcpSTRet));
+                            fecopStTotal += (Convert.ToDecimal(prod.VfcpST + Convert.ToDecimal(prod.VfcpSTRet)));
                         }
                        
                     }
+                    
                     List<List<string>> fornecedoresFinal = new List<List<string>>();
                     for (int i = 0; i < fornecedores.Count(); i++)
                     {
@@ -3450,11 +3451,11 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                     ViewBag.Fornecedores = fornecedoresFinal;
-                    ViewBag.IcmsStTotal = Convert.ToDouble(Math.Round(icmsStTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.FecopStTotal = Convert.ToDouble(Math.Round(fecopStTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.GnrePagaTotal = Convert.ToDouble(Math.Round(gnrePagaTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.GnreNPagaTotal = Convert.ToDouble(Math.Round(gnreNPagaTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.GnreFecopPagaTotal = Convert.ToDouble(Math.Round(gnrefecopPagaTotal, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.IcmsStTotal = icmsStTotal;
+                    ViewBag.FecopStTotal = fecopStTotal;
+                    ViewBag.GnrePagaTotal = gnrePagaTotal;
+                    ViewBag.GnreNPagaTotal = gnreNPagaTotal;
+                    ViewBag.GnreFecopPagaTotal = gnrefecopPagaTotal;
 
                 }
                 else if(type.Equals(Model.Type.IcmsST))
@@ -3482,16 +3483,16 @@ namespace Escon.SisctNET.Web.Controllers
                         nnote.Add(item.dhemi.ToString("dd/MM/yyy"));
                         nnote.Add(item.xNome);
                         nnote.Add(item.cnpj);
-                        nnote.Add(Convert.ToDouble(Math.Round(item.vNF, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
-                        nnote.Add(Convert.ToDouble(Math.Round(Convert.ToDecimal(item.IcmsST), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                        nnote.Add(item.vNF.ToString());
+                        nnote.Add(item.IcmsST.ToString());
                         nnotes.Add(nnote);
                     }
                     ViewBag.NNotes = nnotes;
 
                 }
 
-                ViewBag.IcmsStNoteS = Convert.ToDouble(Math.Round(icmsStnoteSIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                ViewBag.IcmsStNoteI = Convert.ToDouble(Math.Round(icmsStnoteIE, 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                ViewBag.IcmsStNoteS = icmsStnoteSIE;
+                ViewBag.IcmsStNoteI = icmsStnoteIE;
 
                 var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 

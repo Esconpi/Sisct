@@ -92,7 +92,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? SaidaInterestadual1 { get; set; }
 
-        public decimal? saidaPortInterestadual1 { get; set; }
+        public decimal? SaidaPortInterestadual1 { get; set; }
 
         public decimal? VendasInternas2 { get; set; }
 
@@ -104,7 +104,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? SaidaInterestadual2 { get; set; }
 
-        public decimal? saidaPortInterestadual2 { get; set; }
+        public decimal? SaidaPortInterestadual2 { get; set; }
 
 
         //PIS e COFINS

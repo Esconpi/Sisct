@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Globalization;
 
 namespace Escon.SisctNET.Web
 {
@@ -200,6 +201,12 @@ namespace Escon.SisctNET.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var cultureInfo = new CultureInfo("pt-BR");
+            cultureInfo.NumberFormat.CurrencySymbol = "R$";
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             app.UseSession();
             app.UseStaticFiles();

@@ -504,18 +504,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         cfops.Sort();
 
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                         List<List<string>> cfopsOrdenados = new List<List<string>>();
-
-
-                        for (int i = 0; i < cfopsDesordenados.Count(); i++)
-                        {
-                            for (int k = 2; k < 22; k++)
-                            {
-                                cfopsDesordenados[i][k] = Convert.ToDouble(cfopsDesordenados[i][k].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            }
-                        }
 
                         for (int i = 0; i < cfops.Count(); i++)
                         {
@@ -539,25 +528,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         ViewBag.Cfop = cfopsOrdenados;
-
-                        //Entrada
-                        ViewBag.ValorContabilEntrada = Convert.ToDouble(valorContabilEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseIcmsEntrada = Convert.ToDouble(baseCalcIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorIcmsEntrada = Convert.ToDouble(valorIcmsEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorFecopEntrada = Convert.ToDouble(valorFecopEntrada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
-                        //Saida
-                        ViewBag.ValorContabilSaida = Convert.ToDouble(valorContabilSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseIcmsSaida = Convert.ToDouble(baseCalcIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorIcmsSaida = Convert.ToDouble(valorIcmsSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorFecopSaida = Convert.ToDouble(valorFecopSaida.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
-                        //Geral
-                        ViewBag.ValorContabil = Convert.ToDouble((valorContabilEntrada + valorContabilSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.BaseIcms = Convert.ToDouble((baseCalcIcmsEntrada + baseCalcIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorIcms = Convert.ToDouble((valorIcmsEntrada + valorIcmsSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.ValorFecop = Convert.ToDouble((valorFecopEntrada + valorFecopSaida).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
                     }
                     else
                     {
@@ -729,17 +699,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         cfops.Sort();
 
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                         List<List<string>> cfopsOrdenados = new List<List<string>>();
-
-                        for (int i = 0; i < cfopsDesordenados.Count(); i++)
-                        {
-                            for (int k = 2; k < 6; k++)
-                            {
-                                cfopsDesordenados[i][k] = Convert.ToDouble(cfopsDesordenados[i][k].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            }
-                        }
 
                         for (int i = 0; i < cfops.Count(); i++)
                         {
@@ -765,7 +726,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.Cfop = cfopsOrdenados;
                     }
 
-
                 }
                 else if (type.Equals("venda"))
                 {
@@ -782,7 +742,6 @@ namespace Escon.SisctNET.Web.Controllers
                          totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoContribuinte = 0,
                         totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter);
 
-                   
 
                     decimal totalNcontribuinte = Convert.ToDecimal(imp.VendasNContribuinte), baseCalc = totalVendas - totalDevo, totalContribuinte = totalVendas - totalNcontribuinte,
                     baseCalcContribuinte = totalContribuinte - totalDevoContribuinte, totalDevoNContribuinte = totalDevo - totalDevoContribuinte,
@@ -813,14 +772,12 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach(var g in grupos)
                     {
                         List<string> grupoExcedente = new List<string>();
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                         grupoExcedente.Add(g.Cnpj);
                         grupoExcedente.Add(g.Nome);
-                        grupoExcedente.Add(Math.Round(Convert.ToDouble(g.BaseCalculo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "").ToString());
+                        grupoExcedente.Add(Math.Round(Convert.ToDecimal(g.BaseCalculo), 2).ToString());
                         grupoExcedente.Add(g.Percentual.ToString());
 
                         gruposExecentes.Add(grupoExcedente);
-                        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                     }
 
                     decimal baseCalcNcm = totalNcm - totalDevoAnexo;
@@ -855,66 +812,64 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal percentualVendaAnexo = (baseCalcNcm * 100) / baseCalc;
                     decimal percentualGrupo = (baseCalcGrupo * 100) / baseCalc;
 
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                     //Geral
-                    ViewBag.Contribuinte = Math.Round(Convert.ToDouble(totalContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.NContribuinte = Math.Round(Convert.ToDouble(totalNcontribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalVenda = Math.Round(Convert.ToDouble(totalVendas.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.VendaAnexo = Math.Round(Convert.ToDouble(totalNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalTransferencia = Math.Round(Convert.ToDouble(totalTranferenciaInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalDevo = Math.Round(Convert.ToDouble(totalDevo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseCalc = Math.Round(Convert.ToDouble(baseCalc.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalDevoAnexo = Math.Round(Convert.ToDouble(totalDevoAnexo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseCalcAnexo = Math.Round(Convert.ToDouble(baseCalcNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalDevoContrib = Math.Round(Convert.ToDouble(totalDevoContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseCalcContrib = Math.Round(Convert.ToDouble(baseCalcContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalDevoNContrib = Math.Round(Convert.ToDouble(totalDevoNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseCalcNContrib = Math.Round(Convert.ToDouble(baseCalcNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.Contribuinte = totalContribuinte;
+                    ViewBag.NContribuinte = totalNcontribuinte;
+                    ViewBag.TotalVenda = totalVendas;
+                    ViewBag.VendaAnexo = totalNcm;
+                    ViewBag.TotalTransferencia = totalTranferenciaInter;
+                    ViewBag.TotalDevo = totalDevo;
+                    ViewBag.BaseCalc = baseCalc;
+                    ViewBag.TotalDevoAnexo = totalDevoAnexo;
+                    ViewBag.BaseCalcAnexo = baseCalcNcm;
+                    ViewBag.TotalDevoContrib = totalDevoContribuinte;
+                    ViewBag.BaseCalcContrib = baseCalcContribuinte;
+                    ViewBag.TotalDevoNContrib = totalDevoNContribuinte;
+                    ViewBag.BaseCalcNContrib = baseCalcNContribuinte;
 
                     // Percentuais
-                    ViewBag.PercentualVendaContribuinte = Math.Round(Convert.ToDouble(percentualVendaContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualVendaNContribuinte = Math.Round(Convert.ToDouble(percentualVendaNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualVendaAnexo = Math.Round(Convert.ToDouble(percentualVendaAnexo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualVendaGrupo = Math.Round(Convert.ToDouble(percentualGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualVendaContribuinte = percentualVendaContribuinte;
+                    ViewBag.PercentualVendaNContribuinte = percentualVendaNContribuinte;
+                    ViewBag.PercentualVendaAnexo = percentualVendaAnexo;
+                    ViewBag.PercentualVendaGrupo = percentualGrupo;
 
                     //CNPJ
-                    ViewBag.PercentualCNPJ = comp.VendaMGrupo;
-                    ViewBag.TotalVendaGrupo = Math.Round(Convert.ToDouble(totalVendaGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalDevoGrupo = Math.Round(Convert.ToDouble(totalDevoGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalBaseCalcuGrupo = Math.Round(Convert.ToDouble(baseCalcGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteGrupo = Math.Round(Convert.ToDouble(totalExcedente.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalExcedenteGrupo = Math.Round(Convert.ToDouble(totalImpostoGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.LimiteGrupo = Math.Round(Convert.ToDouble(limiteGrupo.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualExcedenteGrupo = Convert.ToDecimal(comp.VendaMGrupoExcedente).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); 
+                    ViewBag.PercentualCNPJ = Convert.ToDecimal(comp.VendaMGrupo);
+                    ViewBag.TotalVendaGrupo = totalVendaGrupo;
+                    ViewBag.TotalDevoGrupo = totalDevoGrupo;
+                    ViewBag.TotalBaseCalcuGrupo = baseCalcGrupo;
+                    ViewBag.ExcedenteGrupo = totalExcedente;
+                    ViewBag.TotalExcedenteGrupo = totalImpostoGrupo;
+                    ViewBag.LimiteGrupo = limiteGrupo;
+                    ViewBag.PercentualExcedenteGrupo = Convert.ToDecimal(comp.VendaMGrupoExcedente); 
                     ViewBag.Grupo = gruposExecentes;
 
                     //Anexo II
-                    ViewBag.LimiteAnexo = Math.Round(Convert.ToDouble(limiteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteAnexo = Math.Round(Convert.ToDouble(excedenteNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualExcedenteAnexo = Convert.ToDecimal(comp.VendaAnexoExcedente).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalExcedenteAnexo = Math.Round(Convert.ToDouble(impostoNcm.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.LimiteAnexo = limiteNcm;
+                    ViewBag.ExcedenteAnexo = excedenteNcm;
+                    ViewBag.PercentualExcedenteAnexo = Convert.ToDecimal(comp.VendaAnexoExcedente);
+                    ViewBag.TotalExcedenteAnexo = impostoNcm;
 
                     //Não Contribuinte
-                    ViewBag.LimiteNContribuinte = Math.Round(Convert.ToDouble(limiteNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteNContribuinte = Math.Round(Convert.ToDouble(excedenteNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualExcedenteNContribuinte = Convert.ToDecimal(comp.VendaCpfExcedente).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalExcedenteNContribuinte = Math.Round(Convert.ToDouble(impostoNContribuinte.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.LimiteNContribuinte = limiteNContribuinte;
+                    ViewBag.ExcedenteNContribuinte = excedenteNContribuinte;
+                    ViewBag.PercentualExcedenteNContribuinte = Convert.ToDecimal(comp.VendaCpfExcedente);
+                    ViewBag.TotalExcedenteNContribuinte = impostoNContribuinte;
 
                     //Tranferência
-                    ViewBag.LimiteTransferencia = Math.Round(Convert.ToDouble(limiteTransferencia.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ExcedenteTransferencia = Math.Round(Convert.ToDouble(excedenteTranfInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentaulTransferencia = Convert.ToDecimal(comp.TransferenciaInterExcedente).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalExcedenteTransferencia = Math.Round(Convert.ToDouble(impostoTransfInter.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.LimiteTransferencia = limiteTransferencia;
+                    ViewBag.ExcedenteTransferencia = excedenteTranfInter;
+                    ViewBag.PercentaulTransferencia = Convert.ToDecimal(comp.TransferenciaInterExcedente);
+                    ViewBag.TotalExcedenteTransferencia = impostoTransfInter;
 
                     // Suspensão
-                    ViewBag.BaseCalcSuspensao = Math.Round(Convert.ToDouble(totalVendasSuspensao.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentaulSuspensao = Convert.ToDecimal(comp.Suspension).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalSuspensao = Math.Round(Convert.ToDouble(valorSuspensao.ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.BaseCalcSuspensao = totalVendasSuspensao;
+                    ViewBag.PercentaulSuspensao = Convert.ToDecimal(comp.Suspension);
+                    ViewBag.TotalSuspensao = valorSuspensao;
 
 
                     //Total Icms
-                    ViewBag.TotalIcms = Math.Round(Convert.ToDouble((impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao).ToString().Replace(".", ",")), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalIcms = impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao;
 
 
                     //Dar
@@ -1076,7 +1031,6 @@ namespace Escon.SisctNET.Web.Controllers
                             percentualTotal += Convert.ToDecimal(resumoAnexo[i, 3]);
                         }
                     }
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                     List<List<string>> ncm_list = new List<List<string>>();
 
@@ -1087,16 +1041,15 @@ namespace Escon.SisctNET.Web.Controllers
                             List<string> ncm = new List<string>();
                             ncm.Add(resumoAnexo[i, 0]);
                             ncm.Add(resumoAnexo[i, 1]);
-
-                            ncm.Add(Convert.ToDouble(resumoAnexo[i, 2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            ncm.Add(Convert.ToDouble(resumoAnexo[i, 3].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            ncm.Add(resumoAnexo[i, 2]);
+                            ncm.Add(resumoAnexo[i, 3]);
                             ncm_list.Add(ncm);
                         }
                     }
 
-                    ViewBag.TotalNcm = valorTotalNcm.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.PercentualTotal = percentualTotal.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalVendas = totalVendas.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ;
+                    ViewBag.TotalNcm = valorTotalNcm;
+                    ViewBag.PercentualTotal = percentualTotal;
+                    ViewBag.TotalVendas = totalVendas;
                     ViewBag.ResumoNcm = ncm_list;
 
                 }
@@ -1109,6 +1062,8 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> ncmsForaAnexo = new List<List<string>>();
                     bool status = false;
                     decimal totalVendas = 0;
+
+                    var ncmsAll = _ncmService.FindAll(null);
 
                     for (int i = notesVenda.Count - 1; i >= 0; i--)
                     {
@@ -1169,7 +1124,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     if (pos < 0)
                                     {
-                                        var nn = _ncmService.FindAll(null).Where(_ => _.Code.Equals(ncm)).FirstOrDefault();
+                                        var nn = ncmsAll.Where(_ => _.Code.Equals(ncm)).FirstOrDefault();
                                         ncmForaAnexo.Add(ncm);
                                         ncmForaAnexo.Add("0");
                                         ncmForaAnexo.Add("0");
@@ -1255,7 +1210,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                     List<List<string>> ncmsForaAnexoList = new List<List<string>>();
 
                     foreach (var ncm in ncmsForaAnexo)
@@ -1264,8 +1218,8 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             List<string> ncmFora = new List<string>();
                             ncmFora.Add(ncm[0]);
-                            ncmFora.Add(Convert.ToDouble(ncm[1].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                            ncmFora.Add(Convert.ToDouble(ncm[2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                            ncmFora.Add(ncm[1]);
+                            ncmFora.Add(ncm[2]);
                             ncmFora.Add(ncm[3]);
                             ncmsForaAnexoList.Add(ncmFora);
 
@@ -1273,9 +1227,9 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Ncm = ncmsForaAnexoList;
-                    ViewBag.PercentualTotal = percentualTotal.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalVendas = totalVendas.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.TotalNcm = valorTotalNcm.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.PercentualTotal = percentualTotal;
+                    ViewBag.TotalVendas = totalVendas;
+                    ViewBag.TotalNcm = valorTotalNcm;
                 }
                 else if (type.Equals("incentivo"))
                 {
@@ -1349,37 +1303,34 @@ namespace Escon.SisctNET.Web.Controllers
                             var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
 
 
-
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
                             //// Produtos Incentivados
 
                             //Contribuinte
-                            ViewBag.VendaContribuinteIncentivo = Convert.ToDouble(ContribuintesIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentualIcmsContrib = Convert.ToDouble(comp.Icms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ValorVendaContribIncentivo = Convert.ToDouble(icmsContribuinteIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ContribuinteIsento = Convert.ToDouble(ContribuinteIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ContribuinteIncentivoAliM25 = Convert.ToDouble(ContribuintesIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ValorVendaContribuinteAliM25 = Convert.ToDouble(icmsContribuinteIncentivoAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDouble(comp.IcmsAliqM25.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendaSTContribuinte = Convert.ToDouble(vendaCfopSTContribuintesNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaContribuinteIncentivo = ContribuintesIncentivo;
+                            ViewBag.PercentualIcmsContrib = Convert.ToDecimal(comp.Icms);
+                            ViewBag.ValorVendaContribIncentivo = icmsContribuinteIncentivo;
+                            ViewBag.ContribuinteIsento = ContribuinteIsento;
+                            ViewBag.ContribuinteIncentivoAliM25 = ContribuintesIncentivoAliqM25;
+                            ViewBag.ValorVendaContribuinteAliM25 = icmsContribuinteIncentivoAliqM25; 
+                            ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDecimal(comp.IcmsAliqM25);
+                            ViewBag.VendaSTContribuinte = vendaCfopSTContribuintesNIncentivo;
 
 
                             //Não Contribuinte
-                            ViewBag.VendaNContribIncentivo = Convert.ToDouble(naoContribuinteIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalVendaNContribuinte = Convert.ToDouble(totalVendasNContribuinte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentualIcmsNContribuinte = Convert.ToDouble(comp.IcmsNContribuinte.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ValorVendaNContribIncentivo = Convert.ToDouble(icmsNContribuinteIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.NaoContribuinteIsento = Convert.ToDouble(NaoContribuiteIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendaSTNContribuinte = Convert.ToDouble(vendaCfopSTNaoContribuinteNIncetivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaNContribIncentivo = naoContribuinteIncentivo;
+                            ViewBag.TotalVendaNContribuinte = totalVendasNContribuinte;
+                            ViewBag.PercentualIcmsNContribuinte = Convert.ToDecimal(comp.IcmsNContribuinte);
+                            ViewBag.ValorVendaNContribIncentivo = icmsNContribuinteIncentivo;
+                            ViewBag.NaoContribuinteIsento = NaoContribuiteIsento;
+                            ViewBag.VendaSTNContribuinte = vendaCfopSTNaoContribuinteNIncetivo;
 
                             //Não Contribuinte Fora do Estado
-                            ViewBag.VendaNForaEstadoContribuinteIncetivo = Convert.ToDouble(naoContriForaDoEstadoIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalVendaNContribuinteForaDoEstado = Convert.ToDouble(totalVendasNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDouble(comp.IcmsNContribuinteFora.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.ValorVendaNContribForaDoEstado = Convert.ToDouble(icmsNContribuinteForaDoEstado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.NaoContribuinteForaDoEstadoIsento = Convert.ToDouble(NaoContribuinteForaDoEstadoIsento.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.VendaSTForaEstadoNContribuinte = Convert.ToDouble(vendaCfopSTNaoContriForaDoEstadoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaNForaEstadoContribuinteIncetivo = naoContriForaDoEstadoIncentivo;
+                            ViewBag.TotalVendaNContribuinteForaDoEstado = totalVendasNContribuinteForaDoEstado; 
+                            ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDecimal(comp.IcmsNContribuinteFora);
+                            ViewBag.ValorVendaNContribForaDoEstado = icmsNContribuinteForaDoEstado;
+                            ViewBag.NaoContribuinteForaDoEstadoIsento = NaoContribuinteForaDoEstadoIsento; 
+                            ViewBag.VendaSTForaEstadoNContribuinte = vendaCfopSTNaoContriForaDoEstadoNIncentivo;
 
                             List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -1387,7 +1338,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 List<string> icmsFora = new List<string>();
                                 icmsFora.Add(g.Uf);
-                                icmsFora.Add(Convert.ToDouble(g.Icms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
+                                icmsFora.Add(g.Icms.ToString());
                                 icmsForaDoEstado.Add(icmsFora);
 
                             }
@@ -1397,56 +1348,55 @@ namespace Escon.SisctNET.Web.Controllers
                             //// Produtos não incentivados
 
                             //Contribuinte
-                            ViewBag.VendaContribuinteNIncentivo = Convert.ToDouble(ContribuintesNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaContribuinteNIncentivo = ContribuintesNIncentivo;
 
                             //Não Contribuinte
-                            ViewBag.VendaNContribuinteNIncentivo = Convert.ToDouble(naoContribuinteNIncetivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendaNContribuinteNIncentivo = naoContribuinteNIncetivo;
 
                             //Não Contribuinte Fora do Estado
-                            ViewBag.VendaNContribuinteNIncentivoForaDoEstado = Convert.ToDouble(naoContriForaDoEstadoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-
+                            ViewBag.VendaNContribuinteNIncentivoForaDoEstado = naoContriForaDoEstadoNIncentivo;
 
                             //// Crédito e Débito
                             //Crédito
-                            ViewBag.Credito = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.Credito = creditosIcms;
 
                             //Débito
-                            ViewBag.Debito = Convert.ToDouble(debitosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.Debito = debitosIcms;
 
                             //Diferença
-                            ViewBag.Diferenca = Convert.ToDouble(diferenca.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.Diferenca = diferenca;
 
 
                             ////Total Icms
-                            ViewBag.TotalIcms = Convert.ToDouble(totalIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalIcms = totalIcms;
 
 
                             //// FUNEF e COTAC
-                            ViewBag.BaseCalculo = Convert.ToDouble(baseCalculo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.BaseCalculo = baseCalculo;
 
                             //FUNEF
-                            ViewBag.PercentualFunef = Convert.ToDouble(percentualFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalFunef = Convert.ToDouble(totalFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.PercentualFunef = percentualFunef;
+                            ViewBag.TotalFunef = totalFunef;
 
                             //COTAC
-                            ViewBag.PercentualCotac = Convert.ToDouble(percentualCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalCotac = Convert.ToDouble(totalCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.PercentualCotac = percentualCotac;
+                            ViewBag.TotalCotac = totalCotac;
 
                             //Total Funef e Cotac
-                            ViewBag.TotalFunefCotac = Convert.ToDouble(totalFunefCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalFunefCotac = totalFunefCotac;
 
                             ////Total Imposto
-                            ViewBag.TotalImposto = Convert.ToDouble(totalImposto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalImposto = totalImposto;
 
                             ////Total Imposto Geral
-                            ViewBag.TotalImpostoGeral = Convert.ToDouble(totalImpostoGeral.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalImpostoGeral = totalImpostoGeral;
 
                             //// Total
-                            ViewBag.TotalVendaContibuinte = Convert.ToDouble((totalVendaContribuinte + ContribuinteIsento + ContribuintesIncentivoAliqM25).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGeralVendaNContibuinte = Convert.ToDouble((totalVendasNContribuinte + NaoContribuiteIsento).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGeralVendaNContibuinteForaDoEstado = Convert.ToDouble((totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGeralIcmsIncentivo = Convert.ToDouble(totalIcmsGeralIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalGeralVendasIncentivo = Convert.ToDouble(totalGeralVendasIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalVendaContibuinte = totalVendaContribuinte + ContribuinteIsento + ContribuintesIncentivoAliqM25;
+                            ViewBag.TotalGeralVendaNContibuinte = totalVendasNContribuinte + NaoContribuiteIsento;
+                            ViewBag.TotalGeralVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento;
+                            ViewBag.TotalGeralIcmsIncentivo = totalIcmsGeralIncentivo;
+                            ViewBag.TotalGeralVendasIncentivo = totalGeralVendasIncentivo;
                             ViewBag.Uf = comp.Uf;
 
                         }
@@ -1474,7 +1424,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             var totalImposto = difApuNNormal + valorFunef + valorCotac;
 
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                             List<List<string>> valoresIncentivo = new List<List<string>>();
                             List<List<string>> valoresNIncentivo = new List<List<string>>();
@@ -1482,58 +1431,61 @@ namespace Escon.SisctNET.Web.Controllers
                             foreach(var g in grupos)
                             {
                                 List<string> percentualIncentivo = new List<string>();
-                                percentualIncentivo.Add((Convert.ToDouble(g.BaseCalculo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString());
-                                percentualIncentivo.Add(g.Percentual.ToString().Replace(".", ","));
-                                percentualIncentivo.Add((Convert.ToDouble(g.Icms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString());
+                                percentualIncentivo.Add(g.BaseCalculo.ToString());
+                                percentualIncentivo.Add(g.Percentual.ToString());
+                                percentualIncentivo.Add(g.Icms.ToString());
                                 valoresIncentivo.Add(percentualIncentivo);
 
                                 List<string> percentualNIncentivo = new List<string>();
-                                percentualNIncentivo.Add((Convert.ToDouble(g.BaseCalculoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString());
-                                percentualNIncentivo.Add(g.PercentualNIncentivo.ToString().Replace(".", ","));
-                                percentualNIncentivo.Add((Convert.ToDouble(g.IcmsNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString());
+                                percentualNIncentivo.Add(g.BaseCalculoNIncentivo.ToString());
+                                percentualNIncentivo.Add(g.PercentualNIncentivo.ToString());
+                                percentualNIncentivo.Add(g.IcmsNIncentivo.ToString());
                                 valoresNIncentivo.Add(percentualNIncentivo);
                             }
                            
 
                             //Incentivado
                             ViewBag.ValoresIncentivo = valoresIncentivo;
-                            ViewBag.DebitoIncentivo = Convert.ToDouble(debitoIncetivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalVendasIncentivadas = Convert.ToDouble(vendasIncentivada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.DebitoIncentivo = debitoIncetivo; 
+                            ViewBag.TotalVendas = totalVendas;
+                            ViewBag.TotalVendasIncentivadas = vendasIncentivada;
 
 
                             //Não Incentivado
                             ViewBag.ValoresNIncentivo = valoresNIncentivo;
-                            ViewBag.PercentualCreditoNIncentivo = Convert.ToDouble(percentualCreditoNIncentivado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.CreditoNIncentivo = Convert.ToDouble(creditoNIncentivado.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.DebitoNIncentivo = Convert.ToDouble(debitoNIncentivo.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalVendasNIncentivadas = Convert.ToDouble(vendasNIncentivada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.PercentualCreditoNIncentivo = percentualCreditoNIncentivado;
+                            ViewBag.CreditoNIncentivo = creditoNIncentivado;
+                            ViewBag.DebitoNIncentivo = debitoNIncentivo;
+                            ViewBag.TotalVendas = totalVendas;
+                            ViewBag.TotalVendasNIncentivadas = vendasNIncentivada;
 
 
                             // Total
-                            ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.Credito = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.TotalVendas = Convert.ToDouble(totalVendas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalVendas = totalVendas;
+                            ViewBag.Credito = creditosIcms;
+                            ViewBag.TotalVendas = totalVendas;
 
 
                             //Apuração Normal
                             //Debito - ViewBag.DebitoIncentivo
-                            ViewBag.CreditoIncentivo = Convert.ToDouble(creditosIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.DifApuNormal = Convert.ToDouble(difApuNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.CreditoIncentivo = creditosIcms;
+                            ViewBag.DifApuNormal = difApuNormal;
 
                             //Apuração ñ Incentivada
                             //Debito - ViewBag.DebitoNIncetivo
                             //Credito - CreditoNIncentivo
-                            ViewBag.DifApuNNormal = Convert.ToDouble(difApuNNormal.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.DifApuNNormal = difApuNNormal;
 
                             // Funef e COTAC
                             // DifNormal - DifNIncentivada
-                            ViewBag.BaseDeCalcFunef = Convert.ToDouble(baseDeCalcFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentFunef = comp.Funef;
-                            ViewBag.ValorFunef = Convert.ToDouble(valorFunef.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.PercentCotac = comp.Cotac;
-                            ViewBag.ValorCotac = Convert.ToDouble(valorCotac.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.BaseDeCalcFunef = baseDeCalcFunef;
+                            ViewBag.PercentFunef = Convert.ToDecimal(comp.Funef);
+                            ViewBag.ValorFunef = valorFunef;
+                            ViewBag.PercentCotac = Convert.ToDecimal(comp.Cotac);
+                            ViewBag.ValorCotac = valorCotac;
 
                             // Total De Imposto
-                            ViewBag.TotalDeImposto = Convert.ToDouble(totalImposto.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.TotalDeImposto = totalImposto;
                         }
                     }
                     else if (comp.AnnexId.Equals(3))
@@ -1547,10 +1499,10 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
                                 vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
                                 InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
-                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1),InterestadualElencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual1),
+                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1),InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
                                 InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2), 
                                 InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
-                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.saidaPortInterestadual2),
+                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
                                 suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes), 
                                 vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
 
@@ -1635,75 +1587,75 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal totalSuspensao = (suspensao * Convert.ToDecimal(comp.Suspension)) / 100;
                             totalDarIcms += totalSuspensao;
 
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                             //  Elencadas
                             // Internas
-                            ViewBag.VendasInternasElencadas = Convert.ToDouble(vendasInternasElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InternasElencadas = Convert.ToDouble(InternasElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InternasElencadasPortaria = Convert.ToDouble(InternasElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsInternasElencadas = Convert.ToDouble(icmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.FecopInternasElencadas = Convert.ToDouble(fecopInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalInternasElencadas = Convert.ToDouble(totalInternasElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsPresumidoInternasElencadas = Convert.ToDouble(icmsPresumidoInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalIcmsInternasElencadas = Convert.ToDouble(totalIcmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendasInternasElencadas = vendasInternasElencadas;
+                            ViewBag.InternasElencadas = InternasElencadas;
+                            ViewBag.InternasElencadasPortaria = InternasElencadasPortaria;
+                            ViewBag.IcmsInternasElencadas = icmsInternaElencada;
+                            ViewBag.FecopInternasElencadas = fecopInternaElencada;
+                            ViewBag.TotalInternasElencadas = totalInternasElencada;
+                            ViewBag.IcmsPresumidoInternasElencadas = icmsPresumidoInternaElencada;
+                            ViewBag.TotalIcmsInternasElencadas = totalIcmsInternaElencada;
 
                             // Interestadual
-                            ViewBag.VendasInterestadualElencadas = Convert.ToDouble(vendasInterestadualElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InterestadualElencadas = Convert.ToDouble(InterestadualElencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InterestadualElencadasPortaria = Convert.ToDouble(InterestadualElencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsInterestadualElencadas = Convert.ToDouble(icmsInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.FecopInterestadualElencadas = Convert.ToDouble(fecopInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalInterestadualElencadas = Convert.ToDouble(totalInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsPresumidoInterestadualElencadas = Convert.ToDouble(icmsPresumidoInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalIcmsInterestadualElencadas = Convert.ToDouble(totalIcmsInterestadualElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendasInterestadualElencadas = vendasInterestadualElencadas;
+                            ViewBag.InterestadualElencadas = InterestadualElencadas;
+                            ViewBag.InterestadualElencadasPortaria = InterestadualElencadasPortaria;
+                            ViewBag.IcmsInterestadualElencadas = icmsInterestadualElencada;
+                            ViewBag.FecopInterestadualElencadas = fecopInterestadualElencada;
+                            ViewBag.TotalInterestadualElencadas = totalInterestadualElencada;
+                            ViewBag.IcmsPresumidoInterestadualElencadas = icmsPresumidoInterestadualElencada;
+                            ViewBag.TotalIcmsInterestadualElencadas = totalIcmsInterestadualElencada;
 
                             //  Deselencadas
                             //  Internas
-                            ViewBag.VendasInternasDeselencadas = Convert.ToDouble(vendasInternasDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InternasDeselencadas = Convert.ToDouble(InternasDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InternasDeselencadasPortaria = Convert.ToDouble(InternasDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""); ViewBag.IcmsInternasElencadas = Convert.ToDouble(icmsInternaElencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsInternasDeselencadas = Convert.ToDouble(icmsInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.FecopInternasDeselencadas = Convert.ToDouble(fecopInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalInternasDeselencadas = Convert.ToDouble(totalInternasDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsPresumidoInternasDeselencadas = Convert.ToDouble(icmsPresumidoInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalIcmsInternasDeselencadas = Convert.ToDouble(totalIcmsInternaDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendasInternasDeselencadas = vendasInternasDeselencadas;
+                            ViewBag.InternasDeselencadas = InternasDeselencadas;
+                            ViewBag.InternasDeselencadasPortaria = InternasDeselencadasPortaria; 
+                            ViewBag.IcmsInternasElencadas = icmsInternaElencada;
+                            ViewBag.IcmsInternasDeselencadas = icmsInternaDeselencada;
+                            ViewBag.FecopInternasDeselencadas = fecopInternaDeselencada;
+                            ViewBag.TotalInternasDeselencadas = totalInternasDeselencada;
+                            ViewBag.IcmsPresumidoInternasDeselencadas = icmsPresumidoInternaDeselencada;
+                            ViewBag.TotalIcmsInternasDeselencadas = totalIcmsInternaDeselencada;
 
 
                             // Interestadual
-                            ViewBag.VendasInterestadualDeselencadas = Convert.ToDouble(vendasInterestadualDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InterestadualDeselencadas = Convert.ToDouble(InterestadualDeselencadas.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.InterestadualDeselencadasPortaria = Convert.ToDouble(InterestadualDeselencadasPortaria.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsInterestadualDeselencadas = Convert.ToDouble(icmsInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.FecopInterestadualDeselencadas = Convert.ToDouble(fecopInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalInterestadualDeselencadas = Convert.ToDouble(totalInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.IcmsPresumidoInterestadualDeselencadas = Convert.ToDouble(icmsPresumidoInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalIcmsInterestadualDeselencadas = Convert.ToDouble(totalIcmsInterestadualDeselencada.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.VendasInterestadualDeselencadas = vendasInterestadualDeselencadas;
+                            ViewBag.InterestadualDeselencadas = InterestadualDeselencadas;
+                            ViewBag.InterestadualDeselencadasPortaria = InterestadualDeselencadasPortaria;
+                            ViewBag.IcmsInterestadualDeselencadas = icmsInterestadualDeselencada;
+                            ViewBag.FecopInterestadualDeselencadas = fecopInterestadualDeselencada;
+                            ViewBag.TotalInterestadualDeselencadas = totalInterestadualDeselencada;
+                            ViewBag.IcmsPresumidoInterestadualDeselencadas = icmsPresumidoInterestadualDeselencada;
+                            ViewBag.TotalIcmsInterestadualDeselencadas = totalIcmsInterestadualDeselencada;
 
 
                             //  Percentual
                             ViewBag.PercentualVendas = percentualVendas;
 
                             //  Suspensão
-                            ViewBag.PercentualSuspensao = comp.Suspension;
-                            ViewBag.Suspensao = Convert.ToDouble(suspensao.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                            ViewBag.TotalSuspensao = Convert.ToDouble(totalSuspensao.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                            ViewBag.PercentualSuspensao = Convert.ToDecimal(comp.Suspension);
+                            ViewBag.Suspensao = suspensao;
+                            ViewBag.TotalSuspensao = totalSuspensao;
                         }
 
-                        ViewBag.AliqInterna = comp.AliqInterna;
-                        ViewBag.Fecop = comp.Fecop;
+                        ViewBag.AliqInterna = Convert.ToDecimal(comp.AliqInterna);
+                        ViewBag.Fecop = Convert.ToDecimal(comp.Fecop);
 
                         //  Elencadas
-                        ViewBag.IncIInterna = comp.IncIInterna;
-                        ViewBag.IncIInterestadual = comp.IncIInterestadual;
+                        ViewBag.IncIInterna = Convert.ToDecimal(comp.IncIInterna);
+                        ViewBag.IncIInterestadual = Convert.ToDecimal(comp.IncIInterestadual);
 
                         //  Deselencadas
-                        ViewBag.IncIIInterna = comp.IncIIInterna;
-                        ViewBag.IncIIInterestadual = comp.IncIIInterestadual;
+                        ViewBag.IncIIInterna = Convert.ToDecimal(comp.IncIIInterna);
+                        ViewBag.IncIIInterestadual = Convert.ToDecimal(comp.IncIIInterestadual);
 
                         // Geral
-                        ViewBag.TotalDarFecop = Convert.ToDouble(totalDarFecop.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        ViewBag.TotalDarIcms = Convert.ToDouble(totalDarIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        ViewBag.TotalDarFecop = totalDarFecop;
+                        ViewBag.TotalDarIcms = totalDarIcms;
 
                     }
 
@@ -1836,22 +1788,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                     for (int i = 0; i < resumoNote.Count(); i++)
                     {
-                        resumoNote[i][2] = Convert.ToDouble(resumoNote[i][2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        resumoNote[i][3] = Convert.ToDouble(resumoNote[i][3].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        resumoNote[i][4] = Convert.ToDouble(resumoNote[i][4].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        resumoNote[i][5] = Convert.ToDouble(resumoNote[i][5].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        resumoNote[i][6] = Convert.ToDouble(resumoNote[i][6].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        resumoNote[i][2] = resumoNote[i][2];
+                        resumoNote[i][3] = resumoNote[i][3];
+                        resumoNote[i][4] = resumoNote[i][4];
+                        resumoNote[i][5] = resumoNote[i][5];
+                        resumoNote[i][6] = resumoNote[i][6];
                     }
 
                     ViewBag.Cfop = resumoNote;
-                    ViewBag.TotalNota = Convert.ToDouble(totalNota.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorContabil = Convert.ToDouble(valorContabil.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.BaseIcms = Convert.ToDouble(baseIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorIcms = Convert.ToDouble(valorIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorFecop = Convert.ToDouble(valorFecop.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.TotalNota = totalNota;
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseIcms = baseIcms;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
                 }
                 else if (type.Equals("suspensao"))
                 {
@@ -1866,8 +1817,6 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal valorTotal = 0;
 
                     var cfops = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(2) || _.CfopTypeId.Equals(5) || _.CfopTypeId.Equals(4))).Select(_ => _.Cfop.Code).ToList();
-
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                     List<List<string>> periodos = new List<List<string>>();
 
@@ -1904,8 +1853,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         List<string> periodo = new List<string>();
                                         periodo.Add(suspension.Id.ToString());
-                                        periodo.Add(Convert.ToDateTime(suspension.DateStart).ToString());
-                                        periodo.Add(Convert.ToDateTime(suspension.DateEnd).ToString());
+                                        periodo.Add(Convert.ToDateTime(suspension.DateStart).ToString("dd/MM/yyyy"));
+                                        periodo.Add(Convert.ToDateTime(suspension.DateEnd).ToString("dd/MM/yyyy"));
                                         periodos.Add(periodo);
                                     }
                                     suspenso = true;
@@ -1920,7 +1869,7 @@ namespace Escon.SisctNET.Web.Controllers
                             note.Add(entryNotes[i][1]["natOp"]);
                             note.Add(entryNotes[i][1]["mod"]);
                             note.Add(entryNotes[i][1]["nNF"]);
-                            note.Add(Convert.ToDateTime(entryNotes[i][1]["dhEmi"]).ToString());
+                            note.Add(Convert.ToDateTime(entryNotes[i][1]["dhEmi"]).ToString("dd/MM/yyyy"));
                         }
 
 
@@ -1938,8 +1887,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (suspenso == true && cfop == true)
                                 {
-                                    note.Add(Convert.ToDecimal(entryNotes[i][k]["vNF"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", ""));
-                                    valorTotal += Convert.ToDecimal(entryNotes[i][k]["vNF"].Replace(".", ","));
+                                    note.Add(entryNotes[i][k]["vNF"]);
+                                    valorTotal += Convert.ToDecimal(entryNotes[i][k]["vNF"]);
                                     notes.Add(note);
                                 }
                             }
@@ -1950,7 +1899,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Notes = notes;
                     ViewBag.Periodos = periodos;
-                    ViewBag.Total = Math.Round(Convert.ToDouble(valorTotal), 2).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                    ViewBag.Total = valorTotal;
 
                 }
                 else if (type.Equals("anexoAutoPecas"))
@@ -2855,23 +2804,10 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
-                    for (int i = 0; i < cfopsForaAnexo.Count(); i++)
-                    {
-                        cfopsForaAnexo[i][2] = Convert.ToDouble(cfopsForaAnexo[i][2].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        cfopsForaAnexo[i][3] = Convert.ToDouble(cfopsForaAnexo[i][3].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        cfopsForaAnexo[i][4] = Convert.ToDouble(cfopsForaAnexo[i][4].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                        cfopsForaAnexo[i][5] = Convert.ToDouble(cfopsForaAnexo[i][5].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    }
-
                     ViewBag.CfopNIncentivo = cfopsForaAnexo;
-                    ViewBag.ValorContabil = Convert.ToDouble(valorContabil.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorBc = Convert.ToDouble(valorBC.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorIcms = Convert.ToDouble(valorIcms.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
-                    ViewBag.ValorFecop = Convert.ToDouble(valorFecop.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                 }
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                 return View();
             }
             catch (Exception ex)

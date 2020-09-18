@@ -50,67 +50,67 @@
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.Vendas)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.Vendas))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.Vendas - Model.VendasNContribuinte)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.Vendas) - Convert.ToDecimal(Model.VendasNContribuinte))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.VendasNContribuinte)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.VendasNContribuinte))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.VendasNcm)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.VendasNcm))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @ViewBag.VendasGrupo
+            @string.Format("{0:C}", ViewBag.VendasGrupo)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.Devolucao)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.Devolucao - Model.DevolucaoNContribuinte)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.Devolucao) - Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.DevolucaoNContribuinte)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.DevolucaoNcm)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.DevolucaoNcm))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @ViewBag.DevolucoesGrupo
+            @string.Format("{0:C}", ViewBag.DevolucoesGrupo)
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @Convert.ToDecimal(Model.Suspensao)
+            @string.Format("{0:C}", Convert.ToDecimal(Model.Suspensao))
         }
     </td>
 </tr>
