@@ -236,8 +236,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var dars = await _darDocumentService.GetByControlNumberAsync(controlNumbers);
 
-                    foreach (var dar in dars)
-                        dar.PaidOut = dar.PaidOut;
+                    foreach (var dar in responseSefaz.Billets)
+                    {
+                        var darRef = dars.FirstOrDefault(x => x.ControlNumber == Convert.ToInt32(dar.ControlNumber));
+                        if (darRef != null)
+                           darRef.PaidOut = dar.PaidOut;
+                    }
 
                     await _darDocumentService.UpdateRangeAsync(dars);
                 }
