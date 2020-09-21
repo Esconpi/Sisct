@@ -30,14 +30,14 @@
         <tr>
             <th>Icms ST</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsFreteSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsSTIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarSTIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoSTIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsFreteSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnrePagaSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnreNPagaSTIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsSTIE)</td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarSTIE)</th>
             <td></td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -60,26 +60,26 @@
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
             <td></td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopCalculadaSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopFreteSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREPagaFecopSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREnPagaFecopSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopNfeSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopDiefSTIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsFecopSTIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.TotalFinalFecopCalculadaSTIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopCalculadaSTIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopFreteSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GNREPagaFecopSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GNREnPagaFecopSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopNfeSTIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopDiefSTIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsFecopSTIE) </td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFinalFecopCalculadaSTIE)</th>
         </tr>
         <tr>
             <th>Antecipação Parcial</th>
             <td>@ViewBag.DarAp</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefAPIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarAPIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoAPIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFreteAPIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnrePagaAPIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnreNPagaAPIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoAPIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefAPIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPIE) </td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarAPIE)</th>
             <th></th>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -93,14 +93,14 @@
         <tr>
             <th>Consumo</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefCOIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsCOIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarCOIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFreteCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnrePagaCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnreNPagaCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefCOIE)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsCOIE) </td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarCOIE)</th>
             <th></th>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -114,14 +114,14 @@
         <tr>
             <th>Consumo p/ Revenda</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoCORIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteCORIE</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoCORIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFreteCORIE) </td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoCORIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefCORIE</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoCORIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefCORIE) </td>
             <td style="text-align:center"> ---- </td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarCORIE</th>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarCORIE) </th>
             <th></th>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -135,14 +135,14 @@
         <tr>
             <th>Imobilizado</th>
             <td>@ViewBag.DarIm</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFreteIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnrePagaIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GnreNPagaIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefIMIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsIMIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarIMIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFreteIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnrePagaIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GnreNPagaIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefIMIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsIMIE) </td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarIMIE) </th>
             <th></th>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -156,14 +156,14 @@
         <tr>
             <th>Icms AT</th>
             <td>@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotatlApuradoATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsFreteATIE</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotatlApuradoATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsFreteATIE) </td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalIcmsPagoATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalDiefATIE</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalIcmsPagoATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDiefATIE)</td>
             <td style="text-align:center"> ---- </td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.IcmsAPagarATIE</th>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsAPagarATIE) </th>
             <td></td>
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
@@ -186,15 +186,14 @@
             <td style="text-align:center"> ---- </td>
             <td style="text-align:center"> ---- </td>
             <td></td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopCalculadaATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopFreteATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREPagaFecopATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.GNREnPagaFecopATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopNfeATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.TotalFecopDiefATIE</td>
-            <td style="text-align:right; padding-right:1%;">@ViewBag.IcmsFecopATIE</td>
-            <th style="text-align:right; padding-right:1%;">@ViewBag.TotalFinalFecopCalculadaATIE</th>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopCalculadaATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopFreteATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GNREPagaFecopATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.GNREnPagaFecopATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopNfeATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFecopDiefATIE) </td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.IcmsFecopATIE) </td>
+            <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalFinalFecopCalculadaATIE) </th>
         </tr>
-
     </tbody>
 </table>

@@ -23,11 +23,11 @@
         <tbody>
             <tr>
                 <th>Suspensão</th>
-                <td style="text-align:center">@string.Format("{0:C}", ViewBag.Suspensao)</td>
+                <td style="text-align:center">@string.Format("{0:N}", ViewBag.Suspensao)</td>
                 <th>x</th>
                 <td style="text-align:center">@string.Format("{0:N}", ViewBag.PercentualSuspensao) %</td>
                 <th style="font-size:17px">=</th>
-                <th style="text-align:center">@string.Format("{0:C}", ViewBag.TotalSuspensao)</th>
+                <th style="text-align:center">@string.Format("{0:N}", ViewBag.TotalSuspensao)</th>
             </tr>
             <tr>
                 <th></th>
@@ -57,7 +57,7 @@
         <tbody>
             <tr style="border:1px solid">
                 <td style="text-align: center;border: 1px solid">
-                    @string.Format("{0:C}", ViewBag.TotalDarIcms)
+                    @string.Format("{0:N}", ViewBag.TotalDarIcms)
                 </td>
                 <td style="text-align: center;border: 1px solid ">
                     @ViewBag.DarIcms
@@ -65,7 +65,7 @@
             </tr>
             <tr style="border:1px solid">
                 <td style="text-align: center;border: 1px solid">
-                    @string.Format("{0:C}", ViewBag.TotalDarFecop)
+                    @string.Format("{0:N}", ViewBag.TotalDarFecop)
                 </td>
                 <td style="text-align: center;border: 1px solid ">
                     @ViewBag.DarFecop

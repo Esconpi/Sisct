@@ -1,5 +1,5 @@
 ﻿<div style="width:100%; padding-top:10px; page-break-before: always;">
-    <table class="table" style="font-size:14px; border:2px solid;">
+    <table class="table" style="font-size:14px;border:2px">
         <tr style="border:1px solid">
             <th style="text-align:center; border:1px solid">CÁLCULO PARA O RATEIO DOS CRÉDITOS</th>
         </tr>
@@ -10,37 +10,37 @@
                         <td style="text-align:center; font-weight: normal;" width="700px">
                             Total das Vendas
                         </td>
-                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@ViewBag.TotalVendas</td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendas)</td>
                     </tr>
                     <tr>
                         <td style="text-align:center; font-weight: normal;" width="700px">
                             Vendas Incentivada
                         </td>
-                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@ViewBag.TotalVendasIncentivadas</td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendasIncentivadas)</td>
                     </tr>
                     <tr>
                         <td style="text-align:center; font-weight: normal;" width="700px">
                             Vendas não Incentivada
                         </td>
-                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@ViewBag.TotalVendasNIncentivadas</td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendasNIncentivadas)</td>
                     </tr>
                     <tr>
                         <td style="text-align:center" width="700px">
                             Percentual para utilização do crédito
                         </td>
-                        <td style="text-align:right; padding-right: 10px;" width="700px">@ViewBag.PercentualCreditoNIncentivo</td>
+                        <td style="text-align:right; padding-right: 10px;" width="700px">@string.Format("{0:N}", ViewBag.PercentualCreditoNIncentivo)</td>
                     </tr>
                     <tr>
                         <td style="text-align:center; font-weight: normal;" width="700px">
                             Crédito ICMS das entradas
                         </td>
-                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@ViewBag.Credito</td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.Credito)</td>
                     </tr>
                     <tr>
                         <th style="text-align:center" width="700px">
                             Valor do crédito a ser utilizado nas compras
                         </th>
-                        <th style="text-align:right; padding-right: 10px;" width="700px">@ViewBag.CreditoNIncentivo</th>
+                        <th style="text-align:right; padding-right: 10px;" width="700px">@string.Format("{0:N}", ViewBag.CreditoNIncentivo)</th>
                     </tr>
                 </table>
             </th>
@@ -49,7 +49,7 @@
 </div>
 
 <div style="width:100%; padding-top:10px;">
-    <table class="table" style="font-size:14px; border:2px solid;">
+    <table class="table" style="font-size:14px;border:2px solid;">
         <thead style="font-size:14px;">
             <tr>
                 <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">APURAÇÃO ICMS NORMAL</th>
@@ -63,18 +63,18 @@
                     <table>
                         <tr>
                             <td class="col-lg-6 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DebitoIncentivo</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.DebitoIncentivo)</td>
 
                         </tr>
 
                         <tr>
                             <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.CreditoIncentivo</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.CreditoIncentivo)</td>
                         </tr>
 
                         <tr>
                             <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
-                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.DifApuNormal</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.DifApuNormal)</th>
                         </tr>
                     </table>
                 </td>
@@ -83,24 +83,25 @@
                     <table>
                         <tr>
                             <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.DebitoNIncentivo</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.DebitoNIncentivo)</td>
 
                         </tr>
 
                         <tr>
                             <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@ViewBag.CreditoNIncentivo</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.CreditoNIncentivo)</td>
                         </tr>
 
                         <tr>
                             <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
-                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@ViewBag.DifApuNNormal</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.DifApuNNormal)</th>
                         </tr>
                     </table>
                 </td>
             </tr>
         </tbody>
     </table>
+
     <table class="table" style="font-size:12px; border:2px solid;">
         <thead style="font-size:12px;">
             <tr>
@@ -148,24 +149,24 @@
                     <table>
                         <tr style="border:1px solid;">
                             <th width="400px" style="text-align:center; border:1px solid;">Imposto</th>
-                            <th width="400px" style="text-align:center; border:1px solid;">Código DAR</th>
+                            <th width="400px" style="text-align:center; border:1px solid;">Código Tributo</th>
                             <th width="400px" style="text-align:center; border:1px solid;">Valor (R$)</th>
 
                         </tr>
                         <tr>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">ICMS</td>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarIcms</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.DifApuNNormal</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:N}", ViewBag.DifApuNNormal)</td>
                         </tr>
                         <tr>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">FUNEF</td>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarFunef</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.ValorFunef</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:N}", ViewBag.ValorFunef)</td>
                         </tr>
                         <tr>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">COTAC</td>
                             <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:center;">@ViewBag.DarCotac</td>
-                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@ViewBag.ValorCotac</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right; padding-right:10px;">@string.Format("{0:N}", ViewBag.ValorCotac)</td>
                         </tr>
                     </table>
                 </td>

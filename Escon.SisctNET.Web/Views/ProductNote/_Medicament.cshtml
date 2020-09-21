@@ -34,31 +34,31 @@
     <tbody>
         <tr>
             <th>
-                @ViewBag.ImpostoGeral
+                @string.Format("{0:N}", ViewBag.ImpostoGeral)
             </th>
             <th style="font-size:15px;">
                 -
             </th>
             <th>
-                @ViewBag.ImpostoIcms
+                @string.Format("{0:N}", ViewBag.ImpostoIcms)
             </th>
             <th>
                 =
             </th>
             <th>
-                @ViewBag.BaseFunef
+                @string.Format("{0:N}", ViewBag.BaseFunef)
             </th>
             <th>
                 x
             </th>
             <th style="text-align:center">
-                @ViewBag.Funef
+                @string.Format("{0:N}", ViewBag.Funef) 
             </th>
             <th>
                 =
             </th>
             <th style="text-align:center">
-                @ViewBag.TaxaFunef
+                @string.Format("{0:N}", ViewBag.TaxaFunef)
             </th>
         </tr>
     </tbody>

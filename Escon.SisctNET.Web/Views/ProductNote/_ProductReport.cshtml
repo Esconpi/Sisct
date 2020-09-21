@@ -8,26 +8,26 @@
             <th>Nota</th>
             <th>Produto</th>
             <th>Dia/Mês</th>
-            <th>V. Nota</th>
-            <th>V. Produto</th>
+            <th>V. <br /> Nota</th>
+            <th>V. <br /> Produto</th>
             <th>IPI</th>
             <th>Frete Nº</th>
-            <th>V. Frete</th>
-            <th>B. Cálculo</th>
+            <th>V. <br /> Frete</th>
+            <th>B. <br /> Cálculo</th>
             <th>MVA(%)</th>
-            <th>BC. ICMS</th>
+            <th>BC. <br /> ICMS</th>
             @if (ViewBag.TypeTaxation == "ST")
             {
                 <th>BCR(%)</th>
                 <th>BCR</th>
             }
             <th>Aliq Int(%)</th>
-            <th>V. Imp. AC</th>
+            <th>V. <br /> Imp. AC</th>
             <th>Nfe</th>
             <th>CTe</th>
-            <th>ICMS ST NFe</th>
-            <th>Total ICMS</th>
-            <th>Total Fecop</th>
+            <th>ICMS  <br />ST NFe</th>
+            <th>Total <br /> ICMS</th>
+            <th>Total <br /> Fecop</th>
             <th></th>
         </tr>
     </thead>
@@ -37,15 +37,15 @@
             <tr>
                 @if (item.Note.Iest == "")
                 {
-                    <td style="font-size:11px"><strong>S</strong></td>
+                    <td style="font-size:10px"><strong>S</strong></td>
                 }
                 else
                 {
-                    <td style="font-size:11px"><strong>I</strong></td>
+                    <td style="font-size:10px"><strong>I</strong></td>
                 }
 
-                <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
-                <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Xprod)</td>
+                <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Nnf)</td>
+                <td style="font-size:5px;">@Html.DisplayFor(modelItem => item.Xprod)</td>
                 <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>

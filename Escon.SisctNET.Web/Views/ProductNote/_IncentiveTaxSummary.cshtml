@@ -18,12 +18,12 @@
                     <th>
                         Base de Cálculo Regime
                     </th>
-                    <td style="text-align:right;padding-right:1%">@ViewBag.Base</td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <th style="text-align:right;padding-right:1%">@ViewBag.Base</th>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </th>
                 </tr>
             }
             <tr>
@@ -31,11 +31,11 @@
                     Imposto Normal
                 </th>
                 <td style="text-align:center"> ---- </td>
-                <td style="text-align:right;padding-right:1%">@ViewBag.IcmsNormal</td>
-                <td style="text-align:right;padding-right:1%">@ViewBag.IcmsIncentivo</td>
-                <td style="text-align:right;padding-right:1%">@ViewBag.FecopNormal</td>
-                <td style="text-align:right;padding-right:1%">@ViewBag.FecopIncentivo</td>
-                <th style="text-align:right;padding-right:1%">@ViewBag.ImpostoGeral</th>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal) </td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo)</td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
+                <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral)</th>
             </tr>
         </tbody>
     </table>
@@ -72,22 +72,22 @@
         <tbody>
             <tr>
                 <th style="text-align:center">ICMS</th>
-                <td style="text-align:right"> @ViewBag.ImpostoIcms</td>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
                 <td style="text-align:center">@ViewBag.DarIcms</td>
             </tr>
             <tr>
                 <th style="text-align:center">Fecop</th>
-                <td style="text-align:right">@ViewBag.ImpostoFecop</td>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
                 <td style="text-align:center">@ViewBag.DarFecop</td>
             </tr>
             <tr>
                 <th style="text-align:center">Funef</th>
-                <td style="text-align:right">@ViewBag.TaxaFunef</td>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef) </td>
                 <td style="text-align:center">@ViewBag.DarFunef</td>
             </tr>
             <tr style="border: 2px solid;">
                 <th style="text-align:center">Total</th>
-                <td style="text-align:right"><strong>@ViewBag.TotalImpostoIncentivo</strong></td>
+                <td style="text-align:right"><strong>@string.Format("{0:N}", ViewBag.TotalImpostoIncentivo)</strong></td>
                 <td></td>
             </tr>
         </tbody>

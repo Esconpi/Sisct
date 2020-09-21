@@ -25,9 +25,9 @@
             <tr>
                 <td style="padding-left:1%">@ViewBag.Ncm[i][0]</td>
                 <td style="padding-left:1%">@ViewBag.Ncm[i][1]</td>
-                <td style="padding-right:1%; text-align:right;">@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Ncm[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
-                <td style="padding-right:1%; text-align:right;">@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Ncm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
-                <td style="padding-right:1%; text-align:right;">@string.Format("{0:C}", Convert.ToDecimal(ViewBag.Ncm[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="padding-right:1%; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="padding-right:1%; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="padding-right:1%; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
             </tr>
         }
     </tbody>
@@ -35,9 +35,9 @@
         <tr>
             <th style="text-align:center;">Total</th>
             <td style="padding-left:1%"></td>
-            <th style="padding-right:1%; text-align:right;">@string.Format("{0:C}", ViewBag.ValorProduto)</th>
-            <th style="padding-right:1%; text-align:right;">@string.Format("{0:C}", ViewBag.ValorPis)</th>
-            <th style="padding-right:1%; text-align:right;">@string.Format("{0:C}", ViewBag.ValorCofins)</th>
+            <th style="padding-right:1%; text-align:right;">@string.Format("{0:N}", ViewBag.ValorProduto)</th>
+            <th style="padding-right:1%; text-align:right;">@string.Format("{0:N}", ViewBag.ValorPis)</th>
+            <th style="padding-right:1%; text-align:right;">@string.Format("{0:N}", ViewBag.ValorCofins)</th>
         </tr>
     </tfoot>
 </table>

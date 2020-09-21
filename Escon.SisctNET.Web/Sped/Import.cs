@@ -29,6 +29,8 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<string> SpedAll(string directorySped, string directoryNfe)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); 
+
             List<string> sped = new List<string>();
             List<List<string>> productsAlteration = new List<List<string>>();
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
@@ -505,6 +507,8 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<string> SpedEntry(string directorySped, string directoryNfe)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); 
+
             List<string> sped = new List<string>();
             List<List<string>> productsAlteration = new List<List<string>>();
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();

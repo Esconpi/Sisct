@@ -41,7 +41,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Saidas</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InternasElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -51,7 +51,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Saidas</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InterestadualElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -65,7 +65,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Vendas</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.VendasInternasElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.VendasInternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -75,7 +75,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Vendas</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.VendasInterestadualElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px"> @string.Format("{0:N}", ViewBag.VendasInterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -89,7 +89,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Saídas (Port. GSF 355/2009)</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InternasElencadasPortaria</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InternasElencadasPortaria)</td>
                         </tr>
                     </table>
                 </td>
@@ -99,7 +99,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Saídas (Port. GSF 355/2009)</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InterestadualElencadasPortaria</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InterestadualElencadasPortaria)</td>
                         </tr>
                     </table>
                 </td>
@@ -113,7 +113,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Base de Cálculo</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InternasElencadasPortaria</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InternasElencadasPortaria)</td>
                         </tr>
                     </table>
                 </td>
@@ -123,7 +123,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Base de Cálculo</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.InterestadualElencadasPortaria</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.InterestadualElencadasPortaria)</td>
                         </tr>
                     </table>
                 </td>
@@ -136,8 +136,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">Aliquota Interna ICMS</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.AliqInterna</td>
-                            <td style="text-align: right; padding-right:1%;" width="200px">@ViewBag.IcmsInternasElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.AliqInterna)</td>
+                            <td style="text-align: right; padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.IcmsInternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -146,8 +146,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">Aliquota Interna ICMS</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.AliqInterna</td>
-                            <td style="text-align: right; padding-right:1%;" padding-right:1%;" width="200px">@ViewBag.IcmsInterestadualElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.AliqInterna)</td>
+                            <td style="text-align: right; padding-right:1%;" padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.IcmsInterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -160,8 +160,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">FECOP</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.Fecop</td>
-                            <td style="text-align: right; padding-right:1%;" width="200px">@ViewBag.FecopInternasElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.Fecop)</td>
+                            <td style="text-align: right; padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.FecopInternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -170,8 +170,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">FECOP</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.Fecop</td>
-                            <td style="text-align: right; padding-right:1%;" width="200px">@ViewBag.FecopInterestadualElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.Fecop)</td>
+                            <td style="text-align: right; padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.FecopInterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -185,7 +185,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Total</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.TotalInternasElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.TotalInternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -195,7 +195,7 @@
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="308px">Total</td>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <td style="text-align: right; padding-right:1%;" width="300px">@ViewBag.TotalInterestadualElencadas</td>
+                            <td style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.TotalInterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -208,8 +208,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">(-) Crédito Presumido</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.IncIInterna</td>
-                            <td style="text-align: right; padding-right:1%;" width="200px">@ViewBag.IcmsPresumidoInternasElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.IncIInterna)</td>
+                            <td style="text-align: right; padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.IcmsPresumidoInternasElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -218,8 +218,8 @@
                     <table style="border:1px solid;">
                         <tr>
                             <td style="text-align: left; padding-left:1%;" width="408px">(-) Crédito Presumido</td>
-                            <td style="text-align: center;" width="100px">@ViewBag.IncIInterestadual</td>
-                            <td style="text-align: right; padding-right:1%;" width="200px">@ViewBag.IcmsPresumidoInterestadualElencadas</td>
+                            <td style="text-align: center;" width="100px">@string.Format("{0:N}", ViewBag.IncIInterestadual)</td>
+                            <td style="text-align: right; padding-right:1%;" width="200px">@string.Format("{0:N}", ViewBag.IcmsPresumidoInterestadualElencadas)</td>
                         </tr>
                     </table>
                 </td>
@@ -233,7 +233,7 @@
                         <tr>
                             <th style="text-align: left; padding-left:1%;" width="308px">Valor do ICMS</th>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <th style="text-align: right; padding-right:1%;" width="300px">@ViewBag.TotalIcmsInternasElencadas</th>
+                            <th style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.TotalIcmsInternasElencadas)</th>
                         </tr>
                     </table>
                 </td>
@@ -243,7 +243,7 @@
                         <tr>
                             <th style="text-align: left; padding-left:1%;" width="308px">Valor do ICMS</th>
                             <td style="text-align: center;" width="100px">&nbsp;</td>
-                            <th style="text-align: right; padding-right:1%;" width="300px">@ViewBag.TotalIcmsInterestadualElencadas</th>
+                            <th style="text-align: right; padding-right:1%;" width="300px">@string.Format("{0:N}", ViewBag.TotalIcmsInterestadualElencadas)</th>
                         </tr>
                     </table>
                 </td>

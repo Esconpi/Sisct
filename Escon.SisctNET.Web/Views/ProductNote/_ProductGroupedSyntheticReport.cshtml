@@ -68,15 +68,16 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
             <th>V. Frete</th>
             <th>IPI</th>
             <th>BC ICMS</th>
-            <th>ICMS Apurado</th>
             <th>ICMS ST NFe</th>
+            <th>ICMS Apurado</th>
+
         </tr>
     </thead>
 
     @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
     {
         <tbody>
-            <tr>
+            <tr style="font-size:11px;">
                 <td>@ViewBag.NotasTaxation[i][0]</td>
                 <td>@ViewBag.NotasTaxation[i][1]</td>
                 <td>@ViewBag.NotasTaxation[i][2]</td>
@@ -86,8 +87,9 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                 <td>@ViewBag.NotasTaxation[i][7]</td>
                 <td>@ViewBag.NotasTaxation[i][5]</td>
                 <td>@ViewBag.NotasTaxation[i][8]</td>
-                <td>@ViewBag.NotasTaxation[i][18]</td>
                 <td>@ViewBag.NotasTaxation[i][14]</td>
+                <td>@ViewBag.NotasTaxation[i][18]</td>
+
             </tr>
         </tbody>
     }

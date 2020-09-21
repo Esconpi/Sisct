@@ -135,7 +135,9 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Create(tributacoes, null); 
+                _service.Create(tributacoes, null);
+
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return RedirectToAction("Index", new { id = id, year = year, month = month});
             }

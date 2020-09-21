@@ -69,7 +69,7 @@
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
-            @string.Format("{0:C}", Convert.ToDecimal(Model.VendasIncentivada) + Convert.ToDecimal(Model.VendasNIncentivada))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasIncentivada) + Convert.ToDecimal(Model.VendasNIncentivada))
         }
     </td>
 </tr>
@@ -80,7 +80,7 @@
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
-            @string.Format("{0:C}", Convert.ToDecimal(Model.VendasIncentivada))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasIncentivada))
         }
     </td>
 </tr>
@@ -91,7 +91,7 @@
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
-            @string.Format("{0:C}", Convert.ToDecimal(Model.VendasNIncentivada))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNIncentivada))
         }
     </td>
 </tr>
@@ -102,7 +102,7 @@
     <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
         @if (Model != null)
         {
-            @string.Format("{0:C}", Convert.ToDecimal(Model.CreditoEntrada) + Convert.ToDecimal(Model.CreditoSaida))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.CreditoEntrada) + Convert.ToDecimal(Model.CreditoSaida))
         }
     </td>
 </tr>

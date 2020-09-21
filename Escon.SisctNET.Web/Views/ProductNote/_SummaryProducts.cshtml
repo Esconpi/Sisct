@@ -25,19 +25,19 @@
                 <tbody style="font-size:11px">
                     <tr>
                         <td>@ViewBag.Registro</td>
-                        <td>@ViewBag.TotalNotas</td>
-                        <td>@ViewBag.ValorProd</td>
-                        <td>@ViewBag.TotalFrete</td>
-                        <td>@ViewBag.TotalIpi</td>
-                        <td>@ViewBag.TotalBC</td>
-                        <td>@ViewBag.TotalBcICMS</td>
-                        <td>@ViewBag.TotalBCR</td>
-                        <td>@ViewBag.TotalAC</td>
-                        <td>@ViewBag.TotalICMSNfe</td>
-                        <td>@ViewBag.TotalICMSCte</td>
-                        <td>@ViewBag.TotalICMSST</td>
-                        <td>@ViewBag.TotalICMSGeral</td>
-                        <td>@ViewBag.TotalFecop</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
+                        <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalIpi)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalBcICMS)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalBCR)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalAC)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMSNfe)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMSCte)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMSST)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMSGeral)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalFecop)</td>
                     </tr>
                 </tbody>
             }
@@ -59,13 +59,13 @@
                 <tbody style="font-size:12px;">
                     <tr>
                         <td>@ViewBag.Registro</td>
-                        <td>@string.Format("{0:C}", ViewBag.TotalNotas)</td>
-                        <td>@string.Format("{0:C}", ViewBag.ValorProd)</td>
-                        <td>@string.Format("{0:C}", ViewBag.TotalFrete)</td>
-                        <td>@string.Format("{0:C}", ViewBag.TotalIpi)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
+                        <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalIpi)</td>
                         <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
-                        <td>@string.Format("{0:C}", ViewBag.TotalICMSST)</td>
-                        <td>@string.Format("{0:C}", ViewBag.TotalICMS)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMSST)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalICMS)</td>
 
                     </tr>
                 </tbody>

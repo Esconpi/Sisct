@@ -23,11 +23,11 @@
         <tbody>
             <tr>
                 <th>Suspensão</th>
-                <td style="text-align:center">@ViewBag.Suspensao</td>
+                <td style="text-align:center">@string.Format("{0:N}", ViewBag.Suspensao) </td>
                 <th>x</th>
-                <td style="text-align:center">@ViewBag.PercentualSuspensao</td>
+                <td style="text-align:center">@string.Format("{0:N}", ViewBag.PercentualSuspensao) </td>
                 <th style="font-size:17px">=</th>
-                <th style="text-align:center">@ViewBag.TotalSuspensao</th>
+                <th style="text-align:center">@string.Format("{0:N}", ViewBag.TotalSuspensao)</th>
             </tr>
             <tr>
                 <th></th>
