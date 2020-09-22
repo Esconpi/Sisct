@@ -136,7 +136,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProductIncentivoRepository, ProductIncentivoRepository>();
             services.AddScoped<IProduct1Repository, Product1Repository>();
             services.AddScoped<ITypeClientRepository, TypeClientRepository>();
-<<<<<<< HEAD
             services.AddScoped<ISuspensionRepository, SuspensionRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
             services.AddScoped<IChapterRepository, ChapterRepository>();
@@ -147,9 +146,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITypeNcmRepository, TypeNcmRepository>();
             services.AddScoped<IBaseRepository, BaseRepository>();
             services.AddScoped<IProduct2Repository, Product2Repository>();
-=======
             services.AddScoped<IEmailResponsibleRepository, EmailResponsibleRepository>();
->>>>>>> origin/integracao/darweb
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -185,7 +182,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProductIncentivoService, ProductIncentivoService>();
             services.AddScoped<IProduct1Service, Product1Service>();
             services.AddScoped<ITypeClientService, TypeClientService>();
-<<<<<<< HEAD
             services.AddScoped<ISuspensionService, SuspensionService>();
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<IChapterService, ChapterService>();
@@ -196,9 +192,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITypeNcmService, TypeNcmService>();
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IProduct2Service, Product2Service>();
-=======
             services.AddScoped<IEmailResponsibleService, EmailResponsibleService>();
->>>>>>> origin/integracao/darweb
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
@@ -237,12 +231,6 @@ namespace Escon.SisctNET.Web
             app.UseSession();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            var cultureInfo = new CultureInfo("pt-BR");
-            cultureInfo.NumberFormat.CurrencySymbol = "R$";
-
-            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseValidateSessionExtension();

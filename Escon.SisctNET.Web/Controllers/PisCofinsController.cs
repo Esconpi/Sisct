@@ -253,7 +253,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualCsllNormal = Convert.ToDecimal(comp.PercentualCSLL);
                     ViewBag.PercentualAdicionalIrpj = Convert.ToDecimal(comp.AdicionalIRPJ);
 
-                    var basePisCofins = _baseService.FindByName("PisCofins");
+                    var basePisCofins = _baseService.FindByName("Irpj");
 
                     if (trimestre == "Nenhum")
                     {

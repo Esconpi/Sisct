@@ -3,6 +3,7 @@ using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Email;
 using Escon.SisctNET.Web.Taxation;
+using Escon.SisctNET.Web.ViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -834,7 +835,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Incetive = comp.Incentive;
                 ViewBag.TypeIncetive = comp.TipoApuracao;
                 ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Anexo = comp.AnnexId;
+                ViewBag.Anexo = comp.AnnexId; 
                 ViewBag.Comp = comp;
                 ViewBag.CompanyId = company.Id;
 
@@ -899,7 +900,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vfrete).Sum() + 
                                 products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vseg).Sum() +
                                 products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Voutro).Sum() -
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum()); 
+                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum() +
+                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal Vipi = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal frete = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum());
                             decimal bcTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vbasecalc).Sum());
@@ -1465,7 +1467,9 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 total = productsNormal.Select(_ => _.Note.Vnf).Distinct().Sum();
                                 registros = productsNormal.Count();
-                                vProds = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() + productsNormal.Select(_ => _.Vseg).Sum() - productsNormal.Select(_ => _.Vdesc).Sum() + productsNormal.Select(_ => _.Vfrete).Sum());
+                                vProds = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() 
+                                    + productsNormal.Select(_ => _.Vseg).Sum() - productsNormal.Select(_ => _.Vdesc).Sum() + productsNormal.Select(_ => _.Vfrete).Sum()
+                                    + productsNormal.Select(_ => _.Vipi).Sum());
                                 freterateado = Convert.ToDecimal(productsNormal.Select(_ => _.Freterateado).Sum());
 
                                 totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() +
@@ -1491,7 +1495,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 total = productsP.Select(_ => _.Note.Vnf).Distinct().Sum();
                                 registros = productsP.Count();
 
-                                vProds = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() + productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum());
+                                vProds = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() + productsP.Select(_ => _.Vseg).Sum() 
+                                    - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() + productsNormal.Select(_ => _.Vipi).Sum());
                                 freterateado = Convert.ToDecimal(productsP.Select(_ => _.Freterateado).Sum());
                                 totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() +
                                                 productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() +

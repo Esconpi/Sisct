@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Companies
                 .Where(_ => _.Active.Equals(true))
                 .Include(e => e.EmaiResponsibles)
+                .OrderBy(_ => _.Document)
                 .ToList();
 
             AddLog(log);
