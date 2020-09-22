@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("countingType")]
+    [Table("countingtype")]
     public class CountingType : EntityBase
     {
         [Display(Name = "Nome")]

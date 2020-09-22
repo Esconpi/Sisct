@@ -41,7 +41,6 @@
                                 <th>Dia/Mês</th>
                                 <th>V. Nota</th>
                                 <th>V. Produto</th>
-                                <th>IPI</th>
                                 <th>Frete Nº</th>
                                 <th>V. Frete</th>
                                 <th>BC. ICMS</th>
@@ -71,8 +70,8 @@
                                         <td>@item.Note.Uf</td>
                                         <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vipi))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro)
+                                           + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                                         <td>@item.Note.Nct</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>
@@ -134,7 +133,6 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                 <th>Dia/Mês</th>
                                 <th>V. <br /> Nota</th>
                                 <th>V. <br /> Produto</th>
-                                <th>IPI</th>
                                 <th>Frete Nº</th>
                                 <th>V. <br /> Frete</th>
                                 <th>B. <br /> Cálculo</th>
@@ -175,8 +173,8 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         <td>@item.Xprod</td>
                                         <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vipi))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) 
+                                           - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                                         <td>@item.Note.Nct</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>

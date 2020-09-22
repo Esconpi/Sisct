@@ -1,23 +1,21 @@
-﻿<div style="width:100%; overflow:hidden; padding:10px;">
-
-    @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || 
-        ViewBag.Type == "AgrupadoS" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI")
+﻿
+@if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || 
+    ViewBag.Type == "AgrupadoS" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI")
+{
+    @if (ViewBag.Type != "ProdutoI")
     {
-        @if (ViewBag.Type != "ProdutoI")
-        {
 
-            @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
+        @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
 
-            @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
-
-        }
-        else if (ViewBag.Incetive == true && ViewBag.Anexo == 3)
-        {
-            @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
-
-            @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
-        }
+        @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
 
     }
+    else if (ViewBag.Incetive == true && ViewBag.Anexo == 3)
+    {
+        @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
 
-</div>
+        @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
+    }
+
+}
+

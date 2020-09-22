@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Escon.SisctNET.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository
 {
@@ -13,6 +15,8 @@ namespace Escon.SisctNET.Repository
         Model.Company FindByDocument(string document, Model.Log log = null);
 
         List<Model.Company> FindByCompanies(Model.Log log = null);
+
+        Task<List<Company>> ListAllActiveAsync(Log log);
 
     }
 }

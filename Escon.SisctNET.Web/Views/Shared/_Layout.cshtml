@@ -41,6 +41,8 @@
     <script src="~/js/chart.js/dist/Chart.js"></script>
     <script src="~/js/loader.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
+
 </head>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
 
@@ -183,18 +185,18 @@
                 'placeholder': ''
             });
 
-             $(".number").inputmask('decimal', {
-                 'alias': 'numeric',
-                 'digits': 0,
-                 'groupSeparator': '',
-                 'radixPoint': ""
+            $(".number").inputmask('decimal', {
+                'alias': 'numeric',
+                'digits': 0,
+                'groupSeparator': '',
+                'radixPoint': ""
             });
 
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR'
             });
-            
+
             $('#tblIndex').DataTable({
                 "oLanguage": {
                     "sProcessing": "Aguarde enquanto os dados são carregados ...",
