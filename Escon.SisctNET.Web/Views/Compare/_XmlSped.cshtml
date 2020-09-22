@@ -33,7 +33,7 @@
 
                 <td>@ViewBag.Notas[i][2]["xNome"]</td>
 
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Notas[i][3]["vNF"]))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Notas[i][3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
 
                 <td>@ViewBag.Notas[i][0]["chave"]</td>
             </tr>

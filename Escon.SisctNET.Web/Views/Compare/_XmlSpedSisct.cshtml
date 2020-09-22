@@ -14,9 +14,9 @@
             <tr>
                 <td>@valor[0]</td>
                 <td>@valor[1]</td>
-                <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[2]))</td>
-                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(valor[3])) </td>
-                <td style="background-color:lightgray;text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[4]))</td>
+                <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(valor[3].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) </td>
+                <td style="background-color:lightgray;text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
             </tr>
         }
     </tbody>
