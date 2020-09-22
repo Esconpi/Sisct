@@ -3,6 +3,7 @@ using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -53,9 +54,15 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Model.Company> FindByCompanies(Log log = null)
         {
-            var rst = _context.Companies.Where(_ => _.Active.Equals(true)).ToList();
+            var rst = _context.Companies
+                .Where(_ => _.Active.Equals(true))
+                .Include(e => e.EmaiResponsibles)
+                .ToList();
+
             AddLog(log);
             return rst;
         }
+
+        public async Task<List<Company>> ListAllActiveAsync(Log log) => await _context.Companies.Where(x => x.Active).ToListAsync();
     }
 }

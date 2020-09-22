@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service
 {
-    public interface IDarService : IServiceBase<Model.Dar>
+    public interface IDarService : IServiceBase<Dar>
     {
+        Task<List<Dar>> FindAllAsync(Log log);
     }
 }

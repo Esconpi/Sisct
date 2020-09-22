@@ -1,10 +1,12 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -14,19 +16,22 @@ namespace Escon.SisctNET.Web.Controllers
     {
 
         private readonly ICompanyService _service;
+        private readonly IEmailResponsibleService _emailResponsibleService;
         private readonly IConfigurationService _configurationService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public HomeController(
             ICompanyService service,
+            IEmailResponsibleService emailResponsibleService,
             IConfigurationService configurationService,
             IHostingEnvironment env,
-            Service.IFunctionalityService functionalityService, 
+            Service.IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Home")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
+            _emailResponsibleService = emailResponsibleService;
             _configurationService = configurationService;
             _appEnvironment = env;
         }
@@ -57,7 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-            
+
         }
 
         [HttpGet]
@@ -119,7 +124,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string nomeArquivo = comp.Document + year + month;
 
-              
+
                 nomeArquivo += ".txt";
 
 
@@ -161,7 +166,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 StreamWriter novoArquivo = new StreamWriter(caminhoDestinoArquivoOriginalDownload);
 
-                foreach(var s in sped)
+                foreach (var s in sped)
                 {
                     novoArquivo.WriteLine(s);
                 }
@@ -171,6 +176,7 @@ namespace Escon.SisctNET.Web.Controllers
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return RedirectToAction("Download", new { id = id, year = year, month = month});
+
             }
             catch (Exception ex)
             {
@@ -192,7 +198,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Month = month;
                 return View(comp);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
@@ -203,7 +209,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             var comp = _service.FindById(id, null);
 
-            var nomeArquivo = comp.Document + year + month + ".txt"; 
+            var nomeArquivo = comp.Document + year + month + ".txt";
 
             string caminho_WebRoot = _appEnvironment.WebRootPath;
             string caminhoDestinoArquivoDownload = caminho_WebRoot + "/Downloads/Speds/";
@@ -215,5 +221,43 @@ namespace Escon.SisctNET.Web.Controllers
             return File(fileBytes, contentType, fileName);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetResponsibleByCompanyId(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
+            var draw = Request.Query["draw"].ToString();
+
+            var result = await _emailResponsibleService.GetByCompanyAsync(id);
+            return Ok(new { draw = Convert.ToInt32(draw), recordsTotal = result.Count(), recordsFiltered = result.Count(), data = result });
+        }
+
+        [HttpPost]
+        public IActionResult PostResponsibleByCompanyId([FromBody] EmailResponsible responsible)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+            responsible.Created = DateTime.Now;
+            responsible.Updated = DateTime.Now;
+            _emailResponsibleService.Create(responsible, GetLog(OccorenceLog.Create));
+            return Ok(new { code="200", message="ok" });
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteResponsibleByCompanyId(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
+            _emailResponsibleService.Delete(id, GetLog(OccorenceLog.Delete));
+            return Ok(new { code = "200", message = "ok" });
+        }
     }
 }

@@ -15,7 +15,11 @@
   <ItemGroup>
     <PackageReference Include="AdminLTE" Version="2.4.0" />
     <PackageReference Include="bootstrap" Version="4.3.1" />
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+=======
+    <PackageReference Include="MailKit" Version="2.1.3" />
+>>>>>>> origin/integracao/darweb
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
@@ -38,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Escon.SisctNET.Fortes\Escon.SisctNET.Fortes.csproj" />
+    <ProjectReference Include="..\Escon.SisctNET.IntegrationDarWeb\Escon.SisctNET.IntegrationDarWeb.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Model\Escon.SisctNET.Model.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Repository\Escon.SisctNET.Repository.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Service\Escon.SisctNET.Service.csproj" />
@@ -45,6 +50,7 @@
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\Billets\" />
     <Folder Include="wwwroot\Uploads\Atos\" />
     <Folder Include="wwwroot\Uploads\Speds\" />
   </ItemGroup>

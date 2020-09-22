@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -72,5 +73,7 @@ namespace Escon.SisctNET.Service.Implementation
         {
             _repository.Update(companies, log);
         }
+
+        public async Task<List<Company>> ListAllActiveAsync(Log log) => await _repository.ListAllActiveAsync(log);
     }
 }

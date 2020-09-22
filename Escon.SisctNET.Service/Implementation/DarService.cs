@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -34,6 +35,9 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindAll(page, countrow, log);
         }
+
+        public async Task<List<Dar>> FindAllAsync(Log log) => await _repository.FindAllAsync(log);
+
 
         public Dar FindById(int id, Log log)
         {

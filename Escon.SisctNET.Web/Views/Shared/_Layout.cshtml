@@ -41,6 +41,8 @@
     <script src="~/js/chart.js/dist/Chart.js"></script>
     <script src="~/js/loader.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
+
 </head>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
 
@@ -121,7 +123,171 @@
 
                     <li class="header">MENU PRINCIPAL</li>
 
+<<<<<<< HEAD
                     @await Html.PartialAsync("Menu", new ViewDataDictionary(ViewData))
+=======
+                    @if (SessionManager.GetProfileInSession().Equals(1) || SessionManager.GetUserInSession().Equals(5) || SessionManager.GetConfigurationInSession().Equals(12))
+                    {
+                        <li class="treeview menu">
+                            <a href="#">
+                                <i class="fa fa-file-text-o"></i> <span>Cadastros</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:none;">
+
+                                @if (SessionManager.GetProfileInSession().Equals(1))
+                                {
+                                    <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-circle-o"></i>Perfil</a></li>
+                                }
+
+                                @if (SessionManager.GetUserInSession().Equals(5))
+                                {
+                                    <li><a href="@Url.Action("Index","User")"><i class="fa fa-circle-o"></i>Usuários</a></li>
+                                }
+
+                                @if (SessionManager.GetConfigurationInSession().Equals(12))
+                                {
+                                    <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configurações</a></li>
+                                }
+
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (SessionManager.GetCfopInSession().Equals(13) || SessionManager.GetCestInSession().Equals(10) || SessionManager.GetNcmInSession().Equals(7) || SessionManager.GetAttachmentInSession().Equals(8) ||
+                     SessionManager.GetGroupInSession().Equals(9) || SessionManager.GetProductInSession().Equals(3) || SessionManager.GetStateInSession().Equals(14) ||
+                     SessionManager.GetDarInSession().Equals(19))
+                    {
+                        <li class="treeview menu">
+                            <a href="#">
+                                <i class="fa fa-table"></i> <span>Tabelas</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:none;">
+
+                                @if (SessionManager.GetCfopInSession().Equals(13))
+                                {
+                                    <li><a href="@Url.Action("Index","Cfop")"><i class="fa fa-circle-o"></i>CFOP</a></li>
+                                }
+
+                                @if (SessionManager.GetCestInSession().Equals(10))
+                                {
+                                    <li><a href="@Url.Action("Index","Cest")"><i class="fa fa-circle-o"></i>CEST</a></li>
+                                }
+
+                                @if (SessionManager.GetCstInSession().Equals(23))
+                                {
+                                    <li><a href="@Url.Action("Index","Cst")"><i class="fa fa-circle-o"></i>CST</a></li>
+                                }
+                                @if (SessionManager.GetNcmInSession().Equals(7))
+                                {
+                                    <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
+                                    <li><a href="@Url.Action("IndexAll","TaxationNcm")"><i class="fa fa-circle-o"></i>NCM Monofásico</a></li>
+                                }
+
+                                @if (SessionManager.GetAttachmentInSession().Equals(8))
+                                {
+                                    <li><a href="@Url.Action("Index","Attachment")"><i class="fa fa-circle-o"></i>Sefaz Anexos</a></li>
+                                }
+
+                                @if (SessionManager.GetGroupInSession().Equals(9))
+                                {
+                                    <li><a href="@Url.Action("Index","Group")"><i class="fa fa-circle-o"></i>Sefaz Grupos</a></li>
+                                }
+
+                                @if (SessionManager.GetProductInSession().Equals(3))
+                                {
+                                    <li><a href="@Url.Action("Index","Product1")"><i class="fa fa-circle-o"></i>Sefaz Produtos</a></li>
+                                }
+
+                                @if (SessionManager.GetStateInSession().Equals(14))
+                                {
+                                    <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Aliquotas Estados</a></li>
+                                }
+
+                                @if (SessionManager.GetDarInSession().Equals(19))
+                                {
+                                    <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dars</a></li>
+                                }
+
+                            </ul>
+                        </li>
+
+                    }
+
+                    @if (SessionManager.GetAnnexInSession().Equals(20) || SessionManager.GetNcmConvenioInSession().Equals(21))
+                    {
+                        <li class="treeview menu">
+                            <a href="#">
+                                <i class="fa fa-bookmark"></i> <span>Icms</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:none;">
+                                @if (SessionManager.GetAnnexInSession().Equals(20))
+                                {
+                                    <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
+                                }
+
+                                @if (SessionManager.GetNcmConvenioInSession().Equals(21))
+                                {
+                                    <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
+                                }
+
+                            </ul>
+                        </li>
+                    }
+
+
+                    @if (SessionManager.GetCompanyInSession().Equals(11) || SessionManager.GetHomeExitInSession().Equals(22) || SessionManager.GetHomeInSession().Equals(6))
+                    {
+                        <li class="treeview menu-open">
+                            <a href="#">
+                                <i class="fa fa-calendar-check-o"></i> <span>Sisct</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display:block;">
+                                @if (SessionManager.GetCompanyInSession().Equals(11))
+                                {
+                                    <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresas</a></li>
+                                }
+
+                                @if (SessionManager.GetHomeInSession().Equals(6))
+                                {
+                                    <li><a href="@Url.Action("Index","Home")"><i class="fa fa-circle-o"></i>Entrada</a></li>
+                                }
+
+                                @if (SessionManager.GetHomeExitInSession().Equals(22))
+                                {
+                                    <li><a href="@Url.Action("Index","HomeExit")"><i class="fa fa-circle-o"></i>Saída</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    <li class="treeview menu">
+                        <a href="#">
+                            <i class="fa fa-barcode"></i> <span>Boletos DAR</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display:none;">
+
+                            <li><a href="@Url.Action("Index","BilletDar")"><i class="fa fa-circle-o"></i>Consultar</a></li>
+                            <li><a href="@Url.Action("Watcher","BilletDar")"><i class="fa fa-circle-o"></i>Acompanhamento</a></li>
+                        </ul>
+                    </li>
+
+>>>>>>> origin/integracao/darweb
                 </ul>
             </section>
         </aside>
@@ -183,17 +349,18 @@
                 'placeholder': ''
             });
 
-             $(".number").inputmask('decimal', {
-                 'alias': 'numeric',
-                 'digits': 0,
-                 'groupSeparator': '',
-                 'radixPoint': ""
+            $(".number").inputmask('decimal', {
+                'alias': 'numeric',
+                'digits': 0,
+                'groupSeparator': '',
+                'radixPoint': ""
             });
 
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR'
             });
+<<<<<<< HEAD
             
             $('#tblIndex').DataTable({
                 "oLanguage": {
@@ -212,6 +379,10 @@
                     }
                 }
             });
+=======
+
+            $('#tblIndex').DataTable();
+>>>>>>> origin/integracao/darweb
 
             $('#tblIndex2').DataTable({
                 "scrollY": "400px",

@@ -19,6 +19,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         }
 
+        public DbQuery<DarDocumentCompany> DarDocumentCompanies { get; set; }
+
         public DbSet<Log> Logs { get; set; }
 
         public DbSet<Functionality> Functionalities { get; set; }
@@ -30,6 +32,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<Configuration> Configurations { get; set; }
 
         public DbSet<Occurrence> Occurrences { get; set; }
+
+        public DbSet<CountingType> CountingTypes { get; set; }
 
         public DbSet<Person> Persons { get; set; }
 
@@ -60,6 +64,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<CompanyCfop> CompanyCfops { get; set; }
 
         public DbSet<Dar> Dars { get; set; }
+
+        public DbSet<DarDocument> DarDocuments { get; set; }
 
         public DbSet<Annex> Annices { get; set; }
 
@@ -92,5 +98,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<Base> Bases { get; set; }
 
         public DbSet<Product2> Product2s { get; set; }
+
+        public DbSet<EmailResponsible> EmailResponsible { get; set; }
+
     }
 }
