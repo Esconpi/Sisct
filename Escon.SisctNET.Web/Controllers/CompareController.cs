@@ -186,7 +186,6 @@ namespace Escon.SisctNET.Web.Controllers
                         else if (ordem.Equals("difereValor"))
                         {
                             List<List<string>> registros = new List<List<string>>();
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                             foreach (var linha in SpedDif)
                             {
                                 List<string> Valores = new List<string>();
@@ -196,21 +195,21 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (linha[1].Equals(nota_xml))
                                     {
                                         string fornecedor = notaXml[2]["xNome"];
-                                        string totalXml = (Convert.ToDouble(notaXml[4]["vNF"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string totalSped = (Convert.ToDouble(linha[2].Equals("") ? "0" : linha[2].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string totalDif = (Convert.ToDouble((Math.Abs(Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped))).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();                                       
-                                        string descXml = (Convert.ToDouble(notaXml[4]["vDesc"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string descSped = (Convert.ToDouble(linha[3].Equals("") ? "0" : linha[3].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string descDif = (Math.Abs(Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped))).ToString();
-                                        string outDespXml = (Convert.ToDouble(notaXml[4]["vOutro"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string outDespSped = (Convert.ToDouble(linha[6].Equals("") ? "0" : linha[6].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string outDespDif = (Math.Abs(Convert.ToDecimal(outDespXml) - Convert.ToDecimal(outDespSped))).ToString();
-                                        string segXml = (Convert.ToDouble(notaXml[4]["vSeg"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string segSped = (Convert.ToDouble(linha[5].Equals("") ? "0" : linha[5].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string segDif = (Math.Abs(Convert.ToDecimal(segXml) - Convert.ToDecimal(segSped))).ToString();
-                                        string freteXml = (Convert.ToDouble(notaXml[4]["vFrete"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string freteSped = (Convert.ToDouble(linha[4].Equals("") ? "0" : linha[4].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string freteDif = (Math.Abs(Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped))).ToString();
+                                        string totalXml = notaXml[4]["vNF"];
+                                        string totalSped = linha[2].Equals("") ? "0" : linha[2];
+                                        string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();                                       
+                                        string descXml = notaXml[4]["vDesc"];
+                                        string descSped = linha[3].Equals("") ? "0" : linha[3];
+                                        string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
+                                        string outDespXml = notaXml[4]["vOutro"];
+                                        string outDespSped = linha[6].Equals("") ? "0" : linha[6];
+                                        string outDespDif = (Convert.ToDecimal(outDespXml) - Convert.ToDecimal(outDespSped)).ToString();
+                                        string segXml = notaXml[4]["vSeg"];
+                                        string segSped = linha[5].Equals("") ? "0" : linha[5];
+                                        string segDif = (Convert.ToDecimal(segXml) - Convert.ToDecimal(segSped)).ToString();
+                                        string freteXml = notaXml[4]["vFrete"];
+                                        string freteSped = linha[4].Equals("") ? "0" : linha[4];
+                                        string freteDif = (Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped)).ToString();
 
                                         if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
                                             !Convert.ToDecimal(outDespDif).Equals(0) || !Convert.ToDecimal(segDif).Equals(0) || 
@@ -246,7 +245,6 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             List<List<string>> registros = new List<List<string>>();
                             decimal valorTotaGeralXml = 0, valorTotalGeralSped = 0;
-                            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
                             foreach (var linha in SpedDif)
                             {
                                 List<string> Valores = new List<string>();
@@ -256,9 +254,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (linha[1].Equals(nota_xml))
                                     {
                                         string fornecedor = notaXml[2]["xNome"];
-                                        string totalXml = (Convert.ToDouble(notaXml[3]["vNF"].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string totalSped = (Convert.ToDouble(linha[2].Equals("") ? "0" : linha[2].Replace(",", ".").Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                                        string totalDif = (Convert.ToDouble((Math.Abs(Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped))).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+                                        string totalXml = notaXml[3]["vNF"];
+                                        string totalSped = linha[2].Equals("") ? "0" : linha[2];
+                                        string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
                                       
                                         Valores.Add(linha[0]);
                                         Valores.Add(fornecedor);

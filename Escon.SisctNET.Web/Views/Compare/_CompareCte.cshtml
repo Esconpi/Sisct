@@ -99,7 +99,7 @@
                     @ViewBag.Ctes[i][3]["xNome"]
                 </td>
                 <td>
-                    @ViewBag.Ctes[i][4]["vTPrest"]
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ctes[i][4]["vTPrest"]))
                 </td>
                 <td>
                     @ViewBag.Ctes[i][0]["chave"]

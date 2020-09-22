@@ -14,19 +14,18 @@
             <tr>
                 <td>@valor[0]</td>
                 <td>@valor[1]</td>
-                <td style="text-align:right;">@valor[2]</td>
-                <td style="text-align:right">@valor[3]</td>
-                <td style="background-color:lightgray;text-align:right;">@valor[4]</td>
+                <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[2]))</td>
+                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(valor[3])) </td>
+                <td style="background-color:lightgray;text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(valor[4]))</td>
             </tr>
         }
     </tbody>
     <tbody>
         <tr>
-            <td><strong>Total</strong></td>
-            <td></td>
-            <td style="text-align:right;"><strong>@ViewBag.TotalXml</strong></td>
-            <td style="text-align:right;"><strong>@ViewBag.TotalSped</strong></td>
-            <td style="background-color:lightgray; text-align:right;"><strong>@ViewBag.TotalDif </strong></td>
+            <td colspan="2"><strong>Total</strong></td>
+            <td style="text-align:right;"><strong>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalXml))</strong></td>
+            <td style="text-align:right;"><strong>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalSped))</strong></td>
+            <td style="background-color:lightgray; text-align:right;"><strong>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalDif)) </strong></td>
         </tr>
     </tbody>
 </table>
