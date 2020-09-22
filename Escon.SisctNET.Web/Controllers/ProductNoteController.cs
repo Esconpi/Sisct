@@ -3543,7 +3543,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> GenerateBillet([FromBody] RequestBarCode requestBarCode)
         {

@@ -43,9 +43,9 @@
 
     <div class="box-body">
 
-        @if (ViewBag.Type == "Geral" || ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST")
-        {
-            <div style="width:100%;padding:10px; padding-top:-10px;">
+        <div style="width:100%;padding:2px;">
+            @if (ViewBag.Type == "Geral" || ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST")
+            {
                 @if (ViewBag.Type == "Geral")
                 {
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
@@ -58,14 +58,12 @@
                 {
                     @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
                 }
-            </div>
-        }
+            }
 
-        @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" ||
-           ViewBag.Type == "ProdutoFP" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" && (ViewBag.Type != "Geral" &&
-           ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
-        {
-            <div style="width:100%; padding:10px; padding-left:1% ; padding-right:1%;">
+            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" ||
+                ViewBag.Type == "ProdutoFP" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" && (ViewBag.Type != "Geral" &&
+                ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
+            {
                 <table class="table" style="font-size:8px; border: 2px solid;">
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
                     {
@@ -85,30 +83,28 @@
                     }
 
                 </table>
-            </div>
-        }
+            }
 
 
-        @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-           ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-           ViewBag.Type != "IcmsST"))
-        {
-            @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
+            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
+                ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
+                ViewBag.Type != "IcmsST"))
+            {
+                @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
 
-        }
+            }
 
-        @if ((ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-           ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-           ViewBag.Type != "IcmsST")) && ViewBag.TypeTaxation != "Isento")
-        {
-            @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
+            @if ((ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
+                ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
+                ViewBag.Type != "IcmsST")) && ViewBag.TypeTaxation != "Isento")
+            {
+                @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
 
-        }
+            }
 
-        @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
-           (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP")
-        {
-            <div style="width:100%; padding:10px;">
+            @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
+                (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP")
+            {
                 @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                 {
 
@@ -120,10 +116,9 @@
                 {
                     @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
                 }
-            </div>
 
-
-        }
+            }
+        </div>            
 
     </div>
 
