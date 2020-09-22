@@ -195,20 +195,20 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (linha[1].Equals(nota_xml))
                                     {
                                         string fornecedor = notaXml[2]["xNome"];
-                                        string totalXml = notaXml[4]["vNF"];
-                                        string totalSped = linha[2].Equals("") ? "0" : linha[2];
+                                        string totalXml = notaXml[3]["vNF"];
+                                        string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();                                       
-                                        string descXml = notaXml[4]["vDesc"];
-                                        string descSped = linha[3].Equals("") ? "0" : linha[3];
+                                        string descXml = notaXml[3]["vDesc"];
+                                        string descSped = linha[3].Equals("") ? "0" : linha[3].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
-                                        string outDespXml = notaXml[4]["vOutro"];
-                                        string outDespSped = linha[6].Equals("") ? "0" : linha[6];
+                                        string outDespXml = notaXml[3]["vOutro"];
+                                        string outDespSped = linha[6].Equals("") ? "0" : linha[6].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string outDespDif = (Convert.ToDecimal(outDespXml) - Convert.ToDecimal(outDespSped)).ToString();
-                                        string segXml = notaXml[4]["vSeg"];
-                                        string segSped = linha[5].Equals("") ? "0" : linha[5];
+                                        string segXml = notaXml[3]["vSeg"];
+                                        string segSped = linha[5].Equals("") ? "0" : linha[5].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string segDif = (Convert.ToDecimal(segXml) - Convert.ToDecimal(segSped)).ToString();
-                                        string freteXml = notaXml[4]["vFrete"];
-                                        string freteSped = linha[4].Equals("") ? "0" : linha[4];
+                                        string freteXml = notaXml[3]["vFrete"];
+                                        string freteSped = linha[4].Equals("") ? "0" : linha[4].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string freteDif = (Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped)).ToString();
 
                                         if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
@@ -255,9 +255,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         string fornecedor = notaXml[2]["xNome"];
                                         string totalXml = notaXml[3]["vNF"];
-                                        string totalSped = linha[2].Equals("") ? "0" : linha[2];
+                                        string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                         string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
-                                      
+
                                         Valores.Add(linha[0]);
                                         Valores.Add(fornecedor);
                                         Valores.Add(totalXml);
@@ -271,9 +271,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
                             ViewBag.Valores = registros;
-                            ViewBag.TotalXml = (Convert.ToDouble(valorTotaGeralXml.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                            ViewBag.TotalSped = (Convert.ToDouble(valorTotalGeralSped.ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
-                            ViewBag.TotalDif = (Convert.ToDouble((valorTotaGeralXml - valorTotalGeralSped).ToString().Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "")).ToString();
+                            ViewBag.TotalXml = valorTotaGeralXml;
+                            ViewBag.TotalSped = valorTotalGeralSped;
+                            ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
 
                             ViewBag.ordem = "4";
                         }
