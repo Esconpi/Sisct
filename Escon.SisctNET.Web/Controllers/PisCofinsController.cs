@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
