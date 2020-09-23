@@ -126,10 +126,10 @@
             <th style="text-align:center;border:1px solid;" colspan="3">
                 COFINS
             </th>
-            <th style="text-align:center;border:1px solid;" colspan="2">
+            <th style="text-align:center;border:1px solid;" colspan="3">
                 CSLL
             </th>
-            <th style="text-align:center;border:1px solid;" colspan="2">
+            <th style="text-align:center;border:1px solid;" colspan="3">
                 IRPJ
             </th>
             <th style="text-align:center;border:1px solid;">
@@ -167,10 +167,16 @@
                 RETIDO
             </td>
             <td style="text-align:center;border:1px solid;">
+                PAGO
+            </td>
+            <td style="text-align:center;border:1px solid;">
                 APURADO
             </td>
             <td style="text-align:center;border:1px solid;">
                 RETIDO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                PAGO
             </td>
             <th style="text-align:center;border:1px solid;">
                 @ViewBag.PercentualCPRB %
@@ -215,6 +221,12 @@
                 <td style="text-align:right;border:1px solid;padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(item[28]))
                 </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(item[29]))
+                </td>
+                <td style="text-align:right;border:1px solid;padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(item[30]))
+                </td>
             </tr>
         }
     <tr style="font-size:10px;">
@@ -246,10 +258,16 @@
             @string.Format("{0:N}", ViewBag.CsllRetido)
         </td>
         <td style="text-align:right;border:1px solid;padding-right:1%;">
+            @string.Format("{0:N}", ViewBag.CsllPago)
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;">
             @string.Format("{0:N}", ViewBag.IrpjApurado)
         </td>
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @string.Format("{0:N}", ViewBag.IrpjRetido)
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;">
+            @string.Format("{0:N}", ViewBag.IrpjPago)
         </td>
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @string.Format("{0:N}", ViewBag.CprbAPagar)

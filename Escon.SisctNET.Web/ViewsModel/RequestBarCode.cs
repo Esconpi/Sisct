@@ -17,7 +17,7 @@
         /// <summary>
         /// Tipo de tributação
         /// </summary>
-        public int TypeTaxation { get; set; }
+        public string TypeTaxation { get; set; }
 
         /// <summary>
         /// Documentos que devem ser gerados

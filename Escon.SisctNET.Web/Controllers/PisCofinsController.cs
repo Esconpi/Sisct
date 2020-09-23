@@ -61,7 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);
-                var importPeriod = new Period.Trimestre();
+                var import = new Period.Trimestre();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -376,11 +376,13 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        var meses = importPeriod.Months(trimestre);
-                        List<List<string>> impostos = new List<List<string>>();
+                        var mesesTrimestre = import.Months(trimestre);
 
-                        decimal irpj1Total = 0, irpj2Total = 0, irpj3Total = 0, irpj4Total = 0, irpjFonteServico = 0, irpjFonteAF = 0,
-                          csll1Total = 0, csll2Total = 0, csll3Total = 0, csll4Total = 0, csllFonte = 0,
+                        List<List<string>> impostosTrimestre = new List<List<string>>();
+                        List<List<string>> impostosBimestre = new List<List<string>>();
+
+                        decimal irpj1Total = 0, irpj2Total = 0, irpj3Total = 0, irpj4Total = 0, irpjFonteServico = 0, irpjFonteAF = 0, irpjPagoTotal = 0,
+                          csll1Total = 0, csll2Total = 0, csll3Total = 0, csll4Total = 0, csllFonte = 0, csllPagoTotal = 0,
                           capitalIM = 0, bonificacao = 0, receitaAF = 0;
 
                         decimal receitaPetroleo = 0, receitaComercio = 0, receitaTransporte = 0, receitaServico = 0,
@@ -391,7 +393,7 @@ namespace Escon.SisctNET.Web.Controllers
                             csllApuradoTotal = 0, csllRetidoTotal = 0, irpjApuradoTotal = 0, irpjRetidoTotal = 0,
                             cprbAPagarTotal = 0, reducaoIcmsTotal = 0;
 
-                        foreach (var m in meses)
+                        foreach (var m in mesesTrimestre)
                         {
                             var imp = _taxService.FindByMonth(id, m, year);
 
@@ -437,6 +439,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal csll4 = (baseCalcCsllIrpj4 * percentualCsll2 / 100);
                             decimal csllApurado = ((csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
                             decimal csllRetido = Convert.ToDecimal(imp.CsllRetido);
+                            decimal csllPago = Convert.ToDecimal(imp.CsllPago);
 
                             //IRPJ
                             decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1);
@@ -449,6 +452,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal irp4 = (baseCalcCsllIrpj4 * percentualIrpj4 / 100);
                             decimal irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100;
                             decimal irpjRetido = Convert.ToDecimal(imp.IrpjRetido);
+                            decimal irpjPago = Convert.ToDecimal(imp.IrpjPago);
 
                             //CPRB
                             decimal cprbAPagar = (baseCalcPisCofins * Convert.ToDecimal(comp.CPRB)) / 100;
@@ -492,6 +496,7 @@ namespace Escon.SisctNET.Web.Controllers
                             csll3Total += csll3;
                             csll4Total += csll4;
                             csllFonte += Convert.ToDecimal(imp.CsllFonte);
+                            csllPagoTotal += csllPago;
 
                             //IRPJ
                             irpjApuradoTotal += irpjApurado;
@@ -502,6 +507,7 @@ namespace Escon.SisctNET.Web.Controllers
                             irpj4Total += irp4;
                             irpjFonteServico += Convert.ToDecimal(imp.IrpjFonteServico);
                             irpjFonteAF += Convert.ToDecimal(imp.IrpjFonteFinanceira);
+                            irpjPagoTotal += irpjPago;
 
                             //CPRB
                             cprbAPagarTotal += cprbAPagar;
@@ -534,11 +540,14 @@ namespace Escon.SisctNET.Web.Controllers
                             imposto.Add(cofinsAPagar.ToString());
                             imposto.Add(csllApurado.ToString());
                             imposto.Add(csllRetido.ToString());
+                            imposto.Add(csllPago.ToString());
                             imposto.Add(irpjApurado.ToString());
                             imposto.Add(irpjRetido.ToString());
+                            imposto.Add(irpjPago.ToString());
                             imposto.Add(cprbAPagar.ToString());
-                            impostos.Add(imposto);
+                            impostosTrimestre.Add(imposto);
                         }
+
 
                         // IRPJ
                         decimal irpjSubTotal = irpj1Total + irpj2Total + irpj3Total + irpj4Total;
@@ -553,15 +562,15 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 100;
                         decimal totalIrpj = irpjNormal + adicionalIrpj;
-                        decimal irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal;
+                        decimal irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal - irpjPagoTotal;
 
                         // CSLL
                         decimal csllTotal = csll1Total + csll2Total + csll3Total + csll4Total;
                         decimal baseCalcCsll = csllTotal + capitalIM + bonificacao + receitaAF;
                         decimal csllNormal = baseCalcCsll * Convert.ToDecimal(comp.PercentualCSLL) / 100;
-                        decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal;
+                        decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal - csllPagoTotal;
 
-                        ViewBag.Impostos = impostos;
+                        ViewBag.Impostos = impostosTrimestre;
                         ViewBag.ReceitaPetroleo = receitaPetroleo;
                         ViewBag.ReceitaComercio = receitaComercio;
                         ViewBag.ReceitaTransporte = receitaTransporte;
@@ -611,6 +620,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.IrpjFonteServico = irpjFonteServico;
                         ViewBag.IrpjFonteAF = irpjFonteAF;
                         ViewBag.IrpjAPagar = irpjAPagar;
+                        ViewBag.IrpjPago = irpjPagoTotal;
 
                         // CSLL
                         ViewBag.Csll1 = csll1Total;
@@ -622,6 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.CsllNormal = csllNormal;
                         ViewBag.CsllFonte = csllFonte;
                         ViewBag.CsllAPagar = csllAPagar;
+                        ViewBag.CsllPago = csllPagoTotal;
 
                         List<decimal> values = new List<decimal>();
 

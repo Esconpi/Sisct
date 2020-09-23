@@ -10,7 +10,6 @@ namespace Escon.SisctNET.Model
 
         public string SocialName { get; set; }
 
-
         public int? PeriodReference { get; set; }
 
         public string DarCode { get; set; }

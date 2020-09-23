@@ -3663,7 +3663,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         foreach (var cc in caminhos)
                         {
-                            var devolucoes = importSped.SpedDevolucao(cc, cfopsDevolucao, ncmsCompany);
+                            var devolucoes = importSped.SpedDevolucao(cc, cfopsDevolucao, directoryNfeEntry,comp.Document, ncmsCompany);
                             devolucaoPetroleo += devolucoes[0];
                             devolucaoComercio += devolucoes[1];
                             devolucaoTransporte += devolucoes[2];
