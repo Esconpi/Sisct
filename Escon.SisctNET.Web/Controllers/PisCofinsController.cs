@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
 
+                if (comp.CountingTypeId == null)
+                {
+                    throw new Exception("Escolha o Tipo da Empresa");
+                }
+
                 ViewBag.Year = year;
                 ViewBag.Month = month;
                 ViewBag.SocialName = comp.SocialName;
@@ -69,10 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Type = type;
                 ViewBag.Trimestre = trimestre;
 
-                if (comp.CountingTypeId == null)
-                {
-                    throw new Exception("Escolha o Tipo da Empresa");
-                }
 
                 if (type.Equals("resumoncm"))
                 {
@@ -269,7 +270,7 @@ namespace Escon.SisctNET.Web.Controllers
                             devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida),
                             devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida),
                             devolucaoServico = Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida),
-                            devolucaoMono = Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida),
+                            devolucaoMono = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida),
                             reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
 
@@ -412,7 +413,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal devolucao3 = (Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida));
                             decimal devolucao4 = (Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida));
                             decimal devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4;
-                            decimal devolucaoNormal = devolucoes - (Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida));
+                            decimal devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida);
                             decimal reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
                             // PIS E COFINS

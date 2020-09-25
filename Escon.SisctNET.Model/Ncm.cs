@@ -15,9 +15,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Ncm")]
         public string Code { get; set; }
 
-        [Display(Name = "Ativo")]
-        public bool Active { get; set; }
-
         [Display(Name = "Descrição")]
         public string Description { get; set; }
 

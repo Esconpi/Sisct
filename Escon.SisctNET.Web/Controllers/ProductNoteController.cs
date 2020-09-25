@@ -247,6 +247,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return Unauthorized();
             }
+
             try
             {
                 var rst = _service.FindById(id, GetLog(OccorenceLog.Read));

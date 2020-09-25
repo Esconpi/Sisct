@@ -1000,14 +1000,12 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public decimal SpedCredito(string directorySped, int companyId)
+        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             decimal totalDeCredito = 0;
             decimal t = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
-            var cfopsCompra = _companyCfopService.FindByCfopActive(companyId, "entrada", "compra").Select(_ => _.Cfop.Code).ToList();
-            var cfopsDevo = _companyCfopService.FindByCfopActive(companyId, "entrada", "devolução de venda").Select(_ => _.Cfop.Code).ToList();
             string line, tipo = "";
             try
             {
@@ -1095,7 +1093,7 @@ namespace Escon.SisctNET.Web.Sped
             return totalDeCredito;
         }
 
-        public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, string directoryNfe, string document, List<Model.TaxationNcm> taxationNcms)
+        public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
@@ -1107,90 +1105,87 @@ namespace Escon.SisctNET.Web.Sped
             var codeProd3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
             var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
 
+            var ncm1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
+            var ncm2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+            var ncm3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
+            var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
+
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
             List<string> codeProdMono = new List<string>();
+            List<string> ncmMono = new List<string>();
 
-            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoMono = 0;
-            var importXml = new Xml.Import(_companyCfopService);
-
-            notes = importXml.Nfe(directoryNfe);
+            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
             StreamReader archiveSped = new StreamReader(directorySped);
 
-            string line, tipo = "", chave = "";
-            int posC100 = -1;
+            string line;
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
 
-                    if (linha[1].Equals("C100"))
+                    if (linha[1].Equals("0200"))
                     {
-                        tipo = linha[2];
-                        chave = linha[9];
-                    }
-
-                    if (linha[1].Equals("C100") && tipo == "0")
-                    {
-                        DateTime dataNota = Convert.ToDateTime(linha[10].Substring(0, 2) + "/" + linha[10].Substring(2, 2) + "/" + linha[10].Substring(4, 2));
-                        ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
-                        codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-
-                        posC100 = -1;
-
-                        for (int i = notes.Count - 1; i >= 0; i--)
+                        StreamReader archiveSpedTemp = new StreamReader(directorySped);
+                        string lineTemp, tipo = "";
+                        try
                         {
-                            if (notes[i][1]["finNFe"] != "4" || !notes[i][3]["CNPJ"].Equals(document))
+                            while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
                             {
-                                notes.RemoveAt(i);
-                                continue;
-                            }
+                                string[] linhaTemp = lineTemp.Split('|');
 
-                            if (chave.Equals(notes[i][0]["chave"]))
-                            {
-                                posC100 = i;
-                                break;
+                                if (linhaTemp[1].Equals("C100"))
+                                {
+                                    tipo = linhaTemp[2];
+                                }
+
+                                if (linhaTemp[1].Equals("C100") && tipo == "0")
+                                {
+                                    DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(4, 4));
+                                    ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
+                                    codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                                    ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                                }
+
+                                if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
+                                {
+                                    if (cfopsDevo.Contains(linhaTemp[11]) && !linhaTemp[7].Equals(""))
+                                    {
+                                        if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
+                                        {
+                                            devolucaoPetroleo += Convert.ToDecimal(linha[7]);
+                                        }
+                                        else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
+                                        {
+                                            devolucaoComercio += Convert.ToDecimal(linha[7]);
+                                        }
+                                        else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
+                                        {
+                                            devolucaoTransporte += Convert.ToDecimal(linha[7]);
+                                        }
+                                        else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
+                                        {
+                                            devolucaoServico += Convert.ToDecimal(linha[7]);
+                                        }
+
+                                        if (!codeProdMono.Contains(linha[3]) && !ncmMono.Contains(linha[8]))
+                                        {
+                                            devolucaoNormal += Convert.ToDecimal(linha[7]);
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-
-                    if(linha[1].Equals("C170") && tipo == "0")
-                    {
-                        if(posC100 >= 0)
+                        catch (Exception ex)
                         {
-
+                            Console.Out.WriteLine(ex.Message);
+                        }
+                        finally
+                        {
+                            archiveSpedTemp.Close();
                         }
                     }
-                    
-                    if (tipo == "0")
-                    {
-                        if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && !linha[7].Equals(""))
-                        {
-                            if (codeProd1.Contains(linha[3]))
-                            {
-                                devolucaoPetroleo += Convert.ToDecimal(linha[7]);
-                            }
-                            else if (codeProd2.Contains(linha[3]))
-                            {
-                                devolucaoComercio += Convert.ToDecimal(linha[7]);
-                            }
-                            else if (codeProd3.Contains(linha[3]))
-                            {
-                                devolucaoTransporte += Convert.ToDecimal(linha[7]);
-                            }
-                            else if (codeProd4.Contains(linha[3]))
-                            {
-                                devolucaoServico += Convert.ToDecimal(linha[7]);
-                            }
-
-                            if (codeProdMono.Contains(linha[3]))
-                            {
-                                devolucaoMono += Convert.ToDecimal(linha[7]);
-                            }
-                        }
-                    }
-
                 }
 
             }
@@ -1207,7 +1202,7 @@ namespace Escon.SisctNET.Web.Sped
             Devolucoes.Add(devolucaoComercio);
             Devolucoes.Add(devolucaoTransporte);
             Devolucoes.Add(devolucaoServico);
-            Devolucoes.Add(devolucaoMono);
+            Devolucoes.Add(devolucaoNormal);
 
             return Devolucoes;
         }

@@ -355,38 +355,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Details(int id )
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = result.Id;
-                ViewBag.Type = SessionManager.GetTipoInSession();
-                if(result.Incentive == false)
-                {
-                    if (SessionManager.GetTipoInSession() == 0)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "HomeExit");
-                    }
-                    
-                }
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
         [HttpGet]
         public IActionResult Delete(int id)
         {

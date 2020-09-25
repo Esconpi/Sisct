@@ -6,7 +6,5 @@ namespace Escon.SisctNET.Model
     public class CfopType : EntityBase
     {
         public string Name { get; set; }
-
-        public bool active { get; set; }
     }
 }

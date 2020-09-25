@@ -126,7 +126,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Devolucao4Entrada { get; set; }
         
-        public decimal? DevolucaoMonoEntrada { get; set; }
+        public decimal? DevolucaoNormalEntrada { get; set; }
 
         public decimal? Devolucao1Saida { get; set; }
 
@@ -136,7 +136,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Devolucao4Saida { get; set; }
 
-        public decimal? DevolucaoMonoSaida { get; set; }
+        public decimal? DevolucaoNormalSaida { get; set; }
 
         public decimal? PisRetido { get; set; }
 

@@ -106,6 +106,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _taxService.FindByMonth(id, month, year);
 
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+
                 if (type.Equals("resumocfop"))
                 {
 
@@ -881,6 +883,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("anexo"))
                 {
+                    
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
@@ -890,7 +893,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        notesVenda = importXml.NfeExit(directoryNfeExit, id, type, "venda");
+                        notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
                     }
 
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
@@ -1056,7 +1059,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("foraAnexo"))
                 {
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-                    notesVenda = importXml.NfeExit(directoryNfeExit, id, type, "venda");
+                    notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
                     List<List<string>> ncmsForaAnexo = new List<List<string>>();
@@ -1959,7 +1962,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> vendaInterna = new List<List<string>>();
                     List<List<string>> devoClienteInterna = new List<List<string>>();
 
-                    var cfopsVenda = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(2) || _.CfopTypeId.Equals(4) || _.CfopTypeId.Equals(5))).Select(_ => _.Cfop.Code);
+                    cfopsVenda = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(2) || _.CfopTypeId.Equals(4) || _.CfopTypeId.Equals(5))).Select(_ => _.Cfop.Code).ToList();
                     var cfopsDevo = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.Active.Equals(true) && (_.CfopTypeId.Equals(3) || _.CfopTypeId.Equals(7))).Select(_ => _.Cfop.Code); ;
 
                     // Vendas
