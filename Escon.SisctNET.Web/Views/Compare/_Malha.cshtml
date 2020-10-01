@@ -1,0 +1,29 @@
+﻿<table class="table table-striped table-bordered" style="width:100%;font-size:11px;">
+    <thead>
+        <tr>
+            <th>
+                NFe
+            </th>
+            <th>
+                Data Emissão
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Chave
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in ViewBag.NotasExcel)
+        {
+            <tr>
+                <td>@note[0]</td>
+                <td>@note[1]</td>
+                <td>@note[2]</td>
+                <td>@note[5]</td>
+            </tr>
+        }
+    </tbody>
+</table>

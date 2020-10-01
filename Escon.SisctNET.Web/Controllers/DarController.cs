@@ -32,19 +32,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
-
-            }catch(Exception ex)
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }

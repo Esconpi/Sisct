@@ -71,13 +71,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public Taxation FindByCode2(string code2, Log log = null)
-        {
-            var rst = _context.Taxations.Where(_ => _.Code2.Equals(code2)).FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
         public List<Taxation> FindByCompany(int companyId, Log log = null)
         {
             var rst = _context.Taxations.Where(_ => _.CompanyId.Equals(companyId));

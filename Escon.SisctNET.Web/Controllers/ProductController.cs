@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Ato;
+using Escon.SisctNET.Web.Planilha;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace Escon.SisctNET.Web.Controllers
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
-            : base(functionalityService, "Product2")
+            : base(functionalityService, "Product")
         {
             _service = service;
             _groupService = groupService;
@@ -43,17 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-
-                    return View(null);
-                }
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -298,12 +288,10 @@ namespace Escon.SisctNET.Web.Controllers
                     Directory.CreateDirectory(filedir);
                 }
 
-                string nomeArquivo = "ato";
+                string nomeArquivo = "Ato";
 
-                if (arquivo.FileName.Contains(".csv"))
-                    nomeArquivo += ".csv";
-                else
-                    nomeArquivo += ".tmp";
+                if (arquivo.FileName.Contains(".xls") || arquivo.FileName.Contains(".xlsx"))
+                    nomeArquivo += ".xls";
 
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
                 string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Atos\\";

@@ -1248,9 +1248,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (comp.TypeCompany.Equals(true))
                         {
 
-                            decimal creditosIcms = Convert.ToDecimal(imp.CreditoEntrada) + Convert.ToDecimal(imp.CreditoSaida),
-                                    debitosIcms = Convert.ToDecimal(imp.Debito);
-
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito),debitosIcms = Convert.ToDecimal(imp.Debito);
 
                             decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
                                 vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
@@ -1406,7 +1404,7 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
                  
-                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.CreditoEntrada) + Convert.ToDecimal(imp.CreditoSaida);
+                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito);
 
                             decimal vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada), vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada), 
                                 debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)), debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo));

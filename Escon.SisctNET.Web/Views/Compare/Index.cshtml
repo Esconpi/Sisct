@@ -22,36 +22,36 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-            @if (ViewBag.opcao == "1")
+            @if (ViewBag.Opcao == "NFe")
             {
-                @if (ViewBag.ordem == "1")
+                @if (ViewBag.Ordem == "Xml")
                 {
                     @await Html.PartialAsync("_XmlSped", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.ordem == "2")
+                else if (ViewBag.Ordem == "Sped")
                 {
                     @await Html.PartialAsync("_SpedXml", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.ordem == "3")
+                else if (ViewBag.Ordem == "DifereValor")
                 {
                     @await Html.PartialAsync("_TotalDifference", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.ordem == "4")
+                else if (ViewBag.Ordem == "SisCT")
                 {
                     @await Html.PartialAsync("_XmlSpedSisct", new ViewDataDictionary(ViewData))
                 }
                 <div style="float:left;">
                     <h6>
                         <strong>
-                            @if (ViewBag.ordem == "2")
+                            @if (ViewBag.Ordem == "Sped")
                             {
                                 @ViewBag.notas_sped.Count
                             }
-                            else if (ViewBag.ordem == "1")
+                            else if (ViewBag.Ordem == "Xml")
                             {
                                 @ViewBag.Notas.Count
                             }
-                            else if (ViewBag.ordem == "3" || ViewBag.ordem == "4")
+                            else if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "SisCT")
                             {
                                 @ViewBag.Valores.Count
                             }
@@ -60,14 +60,25 @@
                     </h6>
                 </div>
             }
-            else if (ViewBag.opcao == "2")
+            else if (ViewBag.Opcao == "CTe")
             {
                 @await Html.PartialAsync("_CompareCte", new ViewDataDictionary(ViewData))
                 <div style="float:left;">
                     <h6><strong>@ViewBag.Ctes.Count registro(s)</strong></h6>
                 </div>
             }
+            else if (ViewBag.Opcao == "Planilha")
+            {
+                if (ViewBag.Ordem == "Malha")
+                {
+                    @await Html.PartialAsync("_Malha", new ViewDataDictionary(ViewData))
 
+                    <div style="float:left;">
+                        <h6><strong>@ViewBag.NotasExcelCount registro(s)</strong></h6>
+                    </div>
+                }
+
+            }
         </div>
     </div>
     <div class="box-footer"></div>

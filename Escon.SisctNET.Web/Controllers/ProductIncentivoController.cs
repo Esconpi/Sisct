@@ -38,24 +38,15 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Id = comp.Id;
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
+                ViewBag.Status = comp.Status;
+                ViewBag.TypeCompany = comp.TypeCompany;
+                SessionManager.SetCompanyIdInSession(id);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var comp = _companyService.FindById(id, null);
-                    ViewBag.Id = comp.Id;
-                    ViewBag.SocialName = comp.SocialName;
-                    ViewBag.Document = comp.Document;
-                    ViewBag.Status = comp.Status;
-                    ViewBag.TypeCompany = comp.TypeCompany;
-                    SessionManager.SetCompanyIdInSession(id);
-
-                    return View(null);
-                }
+                return View(null);
 
             }
             catch (Exception ex)

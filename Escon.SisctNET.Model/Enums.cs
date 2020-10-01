@@ -49,4 +49,28 @@ namespace Escon.SisctNET.Model
         [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 9,
         [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 10
     }
+
+    public enum Opcao
+    {
+        [Display(Name = "NFe")] NFe = 1,
+        [Display(Name = "CTe")] CTe = 2,
+        [Display(Name = "Planilha")] Planilha = 3
+    }
+
+    public enum Ordem
+    {
+        [Display(Name = "XML x SPED")] Xml = 1,
+        [Display(Name = "SPED x XML")] Sped = 2,
+        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 3,
+        [Display(Name = "XML x SPED SisCT")] SisCT = 4,
+        [Display(Name = "Excel x SPED")] Malha = 5
+    }
+
+    public enum Archive
+    {
+        [Display(Name = "Xml NFe")] XmlNFe = 1,
+        [Display(Name = "Xml CTe")] XmlCTe = 2,
+        [Display(Name = "Sped NFe")] SpedNFe = 3,
+        [Display(Name = "Sped CTe")] SpedCTe = 4
+    }
 }

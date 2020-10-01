@@ -45,18 +45,9 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByCompanies();
-                    SessionManager.SetTipoInSession(0);
-                    return View(null);
-                }
+                var result = _service.FindByCompanies();
+                SessionManager.SetTipoInSession(0);
+                return View(null);
             }
             catch (Exception ex)
             {

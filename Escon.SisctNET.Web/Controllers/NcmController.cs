@@ -36,18 +36,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var rst = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-
-                    return View(null);
-                }
+                return View(null);
             }
             catch (Exception ex)
             {

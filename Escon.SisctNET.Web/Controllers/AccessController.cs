@@ -35,20 +35,11 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindByProfileId(profileId);
+                var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Name = profile.Name;
+                return View(result);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByProfileId(profileId);
-                    var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Name = profile.Name;
-                    return View(result);
-                }
-                
             }
             catch (Exception ex)
             {

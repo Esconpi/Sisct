@@ -39,6 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
+        [HttpGet]
         public IActionResult Import(int companyid)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
@@ -58,7 +59,8 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Sicronize(int id, string year, string month)
+        [HttpPost]
+        public IActionResult Import(int companyid, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
             {
@@ -66,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
                 var ncmsMonofasicoAll = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
                 var ncmsAll = _ncmService.FindAll(null);                
@@ -77,8 +79,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                
-
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
@@ -101,14 +101,14 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         TaxationNcm tributacao = new TaxationNcm();
 
-                        tributacao.CompanyId = id;
+                        tributacao.CompanyId = companyid;
                         tributacao.NcmId = ncmTemp.Id;
                         tributacao.CodeProduct = ncms[i][0];
                         tributacao.Year = year;
                         tributacao.Month = month;
                         tributacao.Created = DateTime.Now;
                         tributacao.Updated = DateTime.Now;
-                        tributacao.Type = "Nenhum";
+                        tributacao.Type = "Normal";
                         tributacao.TypeNcmId = 2;
 
                         tributacoes.Add(tributacao);
@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                return RedirectToAction("Index", new { id = id, year = year, month = month});
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month});
             }
             catch(Exception ex)
             {
@@ -388,8 +388,87 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+
+
                 var rst = _service.FindById(id, null);
-                rst.Updated = DateTime.Now;
+
+                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+
+                if (Request.Form["opcao"].ToString() == "1")
+                {
+                    rst.Updated = DateTime.Now;
+
+                    if (entity.CstEntradaId.Equals(0))
+                    {
+                        rst.CstEntradaId = null;
+                    }
+                    else
+                    {
+                        rst.CstEntradaId = entity.CstEntradaId;
+                    }
+
+                    if (entity.CstSaidaId.Equals(0))
+                    {
+                        rst.CstSaidaId = null;
+                    }
+                    else
+                    {
+                        rst.CstSaidaId = entity.CstSaidaId;
+                    }
+
+                    rst.TypeNcmId = entity.TypeNcmId;
+                    rst.Status = true;
+                    rst.NatReceita = entity.NatReceita;
+                    rst.Pis = entity.Pis;
+                    rst.Cofins = entity.Cofins;
+                    rst.DateStart = entity.DateStart;
+                    rst.Type = Request.Form["type"].ToString();
+
+                    tributacoes.Add(rst);
+                    //_service.Update(rst, GetLog(Model.OccorenceLog.Update));
+
+                }
+                else if (Request.Form["opcao"].ToString() == "2")
+                {
+                    var ncms = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
+
+                    foreach (var n in ncms)
+                    {
+                        n.Updated = DateTime.Now;
+
+                        if (entity.CstEntradaId.Equals(0))
+                        {
+                            n.CstEntradaId = null;
+                        }
+                        else
+                        {
+                            n.CstEntradaId = entity.CstEntradaId;
+                        }
+
+                        if (entity.CstSaidaId.Equals(0))
+                        {
+                            n.CstSaidaId = null;
+                        }
+                        else
+                        {
+                            n.CstSaidaId = entity.CstSaidaId;
+                        }
+
+                        n.Status = true;
+                        n.NatReceita = entity.NatReceita;
+                        n.Pis = entity.Pis;
+                        n.Cofins = entity.Cofins;
+                        n.DateStart = entity.DateStart;
+                        n.Type = Request.Form["type"].ToString();
+
+                        tributacoes.Add(n);
+                        //_service.Update(n, null);
+                    }
+                }
+
+                _service.Update(tributacoes, null);
+
+                /*rst.Updated = DateTime.Now;
                 var type = Request.Form["type"].ToString();
 
                 if (entity.CstEntradaId.Equals(0))
@@ -416,7 +495,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Cofins = entity.Cofins;
                 rst.DateStart = entity.DateStart;
                 rst.Type = Request.Form["type"].ToString();
-                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+                _service.Update(rst, GetLog(Model.OccorenceLog.Update));*/
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId});
             }
             catch (Exception ex)
@@ -512,6 +591,42 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult DetailsAll (int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var rst = _service.FindById(id, null);
+                return PartialView(rst);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Details(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var rst = _service.FindById(id, null);
+                return PartialView(rst);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+        
         public IActionResult GetAll(int draw, int start)
         {
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
@@ -550,8 +665,6 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
                               Type = r.Type,
-                              TipoNcm = r.TypeNcm.Name,
-                              Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                           };
@@ -571,10 +684,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
                               Type = r.Type,
-                              TipoNcm = r.TypeNcm.Name,
-                              Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
             }
@@ -620,10 +730,7 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
-                              Type = r.Type,
-                              TipoNcm = r.TypeNcm.Name,
-                              inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                              Type = r.Type
                           };
 
                 return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
@@ -640,10 +747,7 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
-                              Type = r.Type,
-                              TipoNcm = r.TypeNcm.Name,
-                              inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                              Type = r.Type
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
             }

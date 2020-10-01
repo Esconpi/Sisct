@@ -1211,7 +1211,7 @@ namespace Escon.SisctNET.Web.Sped
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
-            List<List<string>> spedNf = new List<List<string>>();
+            List<List<string>> spedNfe = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             string line;
             try
@@ -1219,7 +1219,8 @@ namespace Escon.SisctNET.Web.Sped
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    if (linha[1] == "C100" && (linha[2] == "1" || linha[2] == "0"))
+                    //if (linha[1] == "C100" && (linha[2] == "1" || linha[2] == "0"))
+                    if (linha[1] == "C100")
                     {
                         List<string> sped = new List<string>();
                         sped.Add(linha[9]);
@@ -1228,7 +1229,7 @@ namespace Escon.SisctNET.Web.Sped
                         sped.Add(linha[12]);
                         sped.Add(linha[3]);
                         sped.Add(linha[2]);
-                        spedNf.Add(sped);
+                        spedNfe.Add(sped);
                     }
                 }
 
@@ -1241,7 +1242,7 @@ namespace Escon.SisctNET.Web.Sped
             {
                 archiveSped.Close();
             }
-            return spedNf;
+            return spedNfe;
         }
 
         public List<List<string>> SpedNfeSaida(string directorySped)
@@ -1349,6 +1350,77 @@ namespace Escon.SisctNET.Web.Sped
             }
             return sped;
         }
-    
+
+        public List<List<string>> SpedNfe(string directorySped, string tipo)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+            List<List<string>> spedNfe = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+            string line;
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2].Equals(tipo))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
+
+        public List<List<string>> SpedCte(string directorySped, string tipo)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+            List<List<string>> spedNfe = new List<List<string>>();
+            StreamReader archiveSped = new StreamReader(directorySped);
+            string line;
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "D100" && linha[2].Equals(tipo))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[10]);
+                        sped.Add(linha[11]);
+                        sped.Add(linha[15]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
     }
 }

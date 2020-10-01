@@ -112,31 +112,22 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read)).OrderBy(_ => _.Status).ToList();
+                var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
+                ViewBag.Id = rst.CompanyId;
+                ViewBag.Year = rst.AnoRef;
+                ViewBag.Month = rst.MesRef;
+                ViewBag.Note = rst.Nnf;
+                ViewBag.Fornecedor = rst.Xnome;
+                ViewBag.Valor = rst.Vnf;
+                ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
+                ViewBag.Uf = rst.Uf;
+                ViewBag.View = rst.View;
+                ViewBag.NoteId = rst.Id;
+                ViewBag.Incentivo = rst.Company.Incentive;
+                ViewBag.Anexo = rst.Company.AnnexId;
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByNotes(noteId, GetLog(OccorenceLog.Read)).OrderBy(_ => _.Status).ToList();
-                    var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
-                    ViewBag.Id = rst.CompanyId;
-                    ViewBag.Year = rst.AnoRef;
-                    ViewBag.Month = rst.MesRef;
-                    ViewBag.Note = rst.Nnf;
-                    ViewBag.Fornecedor = rst.Xnome;
-                    ViewBag.Valor = rst.Vnf;
-                    ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
-                    ViewBag.Uf = rst.Uf;
-                    ViewBag.View = rst.View;
-                    ViewBag.NoteId = rst.Id;
-                    ViewBag.Incentivo = rst.Company.Incentive;
-                    ViewBag.Anexo = rst.Company.AnnexId;
-
-                    return View(result);
-                }
+                return View(result);
 
             }
             catch (Exception ex)
@@ -268,7 +259,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 decimal valorAgreg = 0, dif = 0;
                 decimal valor_fecop = 0;
-                string code2 = "";
 
                 var notes = _noteService.FindByUf(note.Company.Id,note.AnoRef,note.MesRef,note.Uf);
 
@@ -721,7 +711,6 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         CompanyId = note.CompanyId,
                         Code = code,
-                        Code2 = code2,
                         Cest = rst.Cest,
                         AliqInterna = Convert.ToDecimal(AliqInt),
                         Diferencial = dif,
@@ -945,8 +934,10 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + 
                         products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() +
                         products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
-                    ViewBag.ValorProd = products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum();
-                    //ViewBag.TotalBC = Convert.ToDouble(Math.Round(products.Select(_ => _.Vbasecalc).Sum(), 2)).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+
+                    ViewBag.ValorProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum() 
+                        - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() + products.Select(_ => _.Vipi).Sum());
+
                     ViewBag.TotalBC = baseCalculo;
 
                     ViewBag.TotalNotas = total;
@@ -2707,9 +2698,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (comp.TypeCompany.Equals(true))
                         {
-                            decimal creditosIcms = Convert.ToDecimal(imp.CreditoEntrada) + Convert.ToDecimal(imp.CreditoSaida),
-                                   debitosIcms = Convert.ToDecimal(imp.Debito);
-
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito),debitosIcms = Convert.ToDecimal(imp.Debito);
 
                             decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
                                 vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
@@ -2873,7 +2862,7 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
 
-                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.CreditoEntrada) + Convert.ToDecimal(imp.CreditoSaida);
+                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito);
 
                             decimal vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada), vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada),
                                 debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)), debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo));

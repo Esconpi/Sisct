@@ -79,40 +79,31 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                ViewBag.Id = id;
+                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Document = company.Document;
+                ViewBag.Name = company.SocialName;
 
-                if (login == null)
+                var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                List<CfopType> cfopsTypes = new List<CfopType>();
+                cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
+
+                foreach (var item in cfopType)
                 {
-                    return RedirectToAction("Index", "Authentication");
+                    cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
                 }
-                else
-                {
-                    ViewBag.Id = id;
-                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Document = company.Document;
-                    ViewBag.Name = company.SocialName;
 
-                    var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+                SelectList cfopTypes = new SelectList(cfopsTypes, "Id", "Name", null);
+                ViewBag.ListTypes = cfopTypes;
 
-                    List<CfopType> cfopsTypes = new List<CfopType>();
-                    cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
+                ViewBag.CompanyName = company.SocialName;
+                ViewBag.Document = company.Document;
+                ViewBag.CompanyId = company.Id;
+                var result = _service.FindByCompany(id);
+                SessionManager.SetCompanyIdInSession(id);
+                return View(null);
 
-                    foreach (var item in cfopType)
-                    {
-                        cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
-                    }
-
-                    SelectList cfopTypes = new SelectList(cfopsTypes, "Id", "Name", null);
-                    ViewBag.ListTypes = cfopTypes;
-
-                    ViewBag.CompanyName = company.SocialName;
-                    ViewBag.Document = company.Document;
-                    ViewBag.CompanyId = company.Id;
-                    var result = _service.FindByCompany(id);
-                    SessionManager.SetCompanyIdInSession(id);
-                    return View(null);
-                }
-               
             }
             catch (Exception ex)
             {

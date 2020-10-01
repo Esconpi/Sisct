@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -23,6 +24,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICountingTypeService _countingTypeService;
         private readonly ICfopService _cfopService;
         private readonly ISectionService _sectionService;
+        private readonly IEmailResponsibleService _emailResponsibleService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -36,6 +38,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICountingTypeService countingTypeService,
             ICfopService cfopService,
             ISectionService sectionService,
+            IEmailResponsibleService emailResponsibleService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -52,6 +55,7 @@ namespace Escon.SisctNET.Web.Controllers
             _countingTypeService = countingTypeService;
             _cfopService = cfopService;
             _sectionService = sectionService;
+            _emailResponsibleService = emailResponsibleService;
         }
 
         [HttpGet]
@@ -122,30 +126,20 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                
-                var login = SessionManager.GetLoginInSession();
-                if (login == null)
+                var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<CountingType> countingTypes = new List<CountingType>();
+                countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
+
+                foreach (var item in countingType)
                 {
-                    
-                    return RedirectToAction("Index", "Authentication");
+                    countingTypes.Add(new CountingType() { Id = item.Id, Name = item.Name });
                 }
-                else
-                {
-                    var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
-                    List<CountingType> countingTypes = new List<CountingType>();
-                    countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
 
-                    foreach (var item in countingType)
-                    {
-                        countingTypes.Add(new CountingType() { Id = item.Id, Name = item.Name });
-                    }
+                SelectList countingsTypes = new SelectList(countingTypes, "Id", "Name", null);
+                ViewBag.ListTypes = countingsTypes;
 
-                    SelectList countingsTypes = new SelectList(countingTypes, "Id", "Name", null);
-                    ViewBag.ListTypes = countingsTypes;
-
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(null);
-                }
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -628,6 +622,25 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Sequence(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                ViewBag.Ident = SessionManager.GetTipoInSession();
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {
@@ -655,6 +668,45 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetResponsibleByCompanyId(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
+            var draw = Request.Query["draw"].ToString();
+
+            var result = await _emailResponsibleService.GetByCompanyAsync(id);
+            return Ok(new { draw = Convert.ToInt32(draw), recordsTotal = result.Count(), recordsFiltered = result.Count(), data = result });
+        }
+
+        [HttpPost]
+        public IActionResult PostResponsibleByCompanyId([FromBody] EmailResponsible responsible)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+            responsible.Created = DateTime.Now;
+            responsible.Updated = DateTime.Now;
+            _emailResponsibleService.Create(responsible, GetLog(OccorenceLog.Create));
+            return Ok(new { code = "200", message = "ok" });
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteResponsibleByCompanyId(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
+            _emailResponsibleService.Delete(id, GetLog(OccorenceLog.Delete));
+            return Ok(new { code = "200", message = "ok" });
         }
 
         public IActionResult GetAllActive(int draw, int start)
