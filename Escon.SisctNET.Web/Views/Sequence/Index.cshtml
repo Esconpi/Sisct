@@ -23,7 +23,22 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
+            @if (ViewBag.Archive == "XmlNFe")
+            {
 
+            }
+            else if (ViewBag.Archive == "XmlCTe")
+            {
+
+            }
+            else if (ViewBag.Archive == "SpedNFe")
+            {
+                @await Html.PartialAsync("_SpedNFe", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Archive == "SpedCTe")
+            {
+
+            }
         </div>
     </div>
     <div class="box-footer"></div>

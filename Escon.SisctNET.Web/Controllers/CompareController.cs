@@ -119,7 +119,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (ident.Equals("0"))
                         {
-                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                            //sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
                         else if (ident.Equals("1"))
                         {
@@ -167,7 +168,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                             string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
-                            if (nota_encontrada.Equals(false) && !cnpj_chave.Equals(company.Document))
+                            if (nota_encontrada.Equals(false))
                             {
                                 notas_sped.Add(note);
                             }
@@ -343,7 +344,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string nomeArquivoExcel = company.Document + year + month;
 
                     if (arquivoExcel.FileName.Contains(".xls") || arquivoExcel.FileName.Contains(".xlsx"))
-                        nomeArquivoExcel += ".xls";
+                        nomeArquivoExcel += ".xlsx";
 
                     string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Planilha\\";
                     string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
@@ -363,7 +364,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
                         var notesPlanilha = imporrExcel.Notes(caminhoDestinoArquivoOriginalExcel);
-                        var notesSped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                        var notesSped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
 
                         foreach (var nPlanilha in notesPlanilha)
                         {
@@ -379,7 +380,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             string cnpj_chave = nPlanilha[5].Length >= 14 ? nPlanilha[5].Substring(6, 14) : "";
-                            if (nota_encontrada.Equals(false) && cnpj_chave.Equals(company.Document))
+                            if (nota_encontrada.Equals(false) && nPlanilha[5].Length.Equals(44))
                             {
                                 notasExcel.Add(nPlanilha);
                             }
