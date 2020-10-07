@@ -335,16 +335,16 @@ namespace Escon.SisctNET.Web.Sped
 
                                 }
 
-                                if (valorProduto == 0)
-                                {
-                                    valorProduto = Convert.ToDecimal(linha[7].Replace(",", "."));
-                                }
+                                string pICMSTemp = "";
 
                                 if (notes[posC100][1]["finNFe"].Equals("2"))
                                 {
                                     valorProduto = 0;
                                     vBC = Math.Round(vBC, 2);
-                                    pICMS = Math.Round(pICMS, 2);
+                                    if (pICMS > 0)
+                                    {
+                                        pICMSTemp = Math.Round(pICMS, 2).ToString().Replace(".", ",");
+                                    }
                                     vICMS = Math.Round(vICMS, 2);
                                 }
                                 else
@@ -358,14 +358,7 @@ namespace Escon.SisctNET.Web.Sped
                                         vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
                                     }
 
-                                    if (linha[14] == "")
-                                    {
-                                        pICMS = Math.Round(Convert.ToDecimal(0), 2);
-                                    }
-                                    else
-                                    {
-                                        pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
-                                    }
+                                    pICMSTemp = linha[14];
 
                                     if (linha[15] == "")
                                     {
@@ -380,13 +373,13 @@ namespace Escon.SisctNET.Web.Sped
                                 valorProduto = Math.Round(valorProduto, 2);
                                 cfops[posCfop][1] = (Math.Round(Convert.ToDecimal(cfops[posCfop][1]) + valorProduto, 2)).ToString();
                                 cfops[posCfop][4] = (Math.Round(Convert.ToDecimal(cfops[posCfop][4]) + vBC, 2)).ToString();
-                                cfops[posCfop][5] = (Math.Round(pICMS, 2)).ToString();
+                                cfops[posCfop][5] = pICMSTemp;
                                 cfops[posCfop][6] = (Math.Round(Convert.ToDecimal(cfops[posCfop][6]) + vICMS, 2)).ToString();
 
                                 textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + valorProduto.ToString().Replace(".", ",") + "|" + "" + "|"
-                                    + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + vBC.ToString().Replace(".", ",") + "|" + pICMS.ToString().Replace(".", ",") + "|"
-                                    + vICMS.ToString().Replace(".", ",") + "|" + "" + "|" + "" + "|" + "" + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|" 
-                                    + linha[25] + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|" 
+                                    + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + vBC.ToString().Replace(".", ",") + "|" + pICMSTemp + "|"
+                                    + vICMS.ToString().Replace(".", ",") + "|" + "" + "|" + "" + "|" + "" + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|"
+                                    + linha[25] + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|"
                                     + linha[34] + "|" + linha[35] + "|" + linha[36] + "|" + linha[37] + "|" + linha[38] + "|";
 
                                 sped.Add(textoC170);
@@ -448,7 +441,7 @@ namespace Escon.SisctNET.Web.Sped
                                     {
                                         if(notes[posC100][1]["finNFe"].Equals("2"))
                                         {
-                                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + cfops[i][5].Replace(".", ",") + "|" + cfops[i][1].Replace(".", ",") + "|"
+                                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + cfops[i][5] + "|" + cfops[i][1].Replace(".", ",") + "|"
                                              + cfops[i][4].Replace(".", ",") + "|" + cfops[i][6].Replace(".", ",") + "|" + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
                                         }
                                         else
@@ -846,11 +839,16 @@ namespace Escon.SisctNET.Web.Sped
                                     valorProduto = Convert.ToDecimal(linha[7].Replace(",", "."));
                                 }
 
+                                string pICMSTemp = "";
+
                                 if (notes[posC100][1]["finNFe"].Equals("2"))
                                 {
                                     valorProduto = 0;
                                     vBC = Math.Round(vBC, 2);
-                                    pICMS = Math.Round(pICMS, 2);
+                                    if(pICMS > 0)
+                                    {
+                                        pICMSTemp = Math.Round(pICMS, 2).ToString().Replace(".", ",");
+                                    }
                                     vICMS = Math.Round(vICMS, 2);
                                 }
                                 else
@@ -864,14 +862,7 @@ namespace Escon.SisctNET.Web.Sped
                                         vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
                                     }
 
-                                    if (linha[14] == "")
-                                    {
-                                        pICMS = Math.Round(Convert.ToDecimal(0), 2);
-                                    }
-                                    else
-                                    {
-                                        pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
-                                    }
+                                    pICMSTemp = linha[14];
 
                                     if (linha[15] == "")
                                     {
@@ -886,11 +877,11 @@ namespace Escon.SisctNET.Web.Sped
                                 valorProduto = Math.Round(valorProduto, 2);
                                 cfops[posCfop][1] = (Math.Round(Convert.ToDecimal(cfops[posCfop][1]) + valorProduto, 2)).ToString();
                                 cfops[posCfop][4] = (Math.Round(Convert.ToDecimal(cfops[posCfop][4]) + vBC, 2)).ToString();
-                                cfops[posCfop][5] = (Math.Round(pICMS, 2)).ToString();
+                                cfops[posCfop][5] = pICMSTemp;
                                 cfops[posCfop][6] = (Math.Round(Convert.ToDecimal(cfops[posCfop][6]) + vICMS, 2)).ToString();
 
                                 textoC170 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + linha[5] + "|" + linha[6] + "|" + valorProduto.ToString().Replace(".", ",") + "|" + "" + "|"
-                                    + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + vBC.ToString().Replace(".", ",") + "|" + pICMS.ToString().Replace(".", ",") + "|"
+                                    + linha[9] + "|" + linha[10] + "|" + linha[11] + "|" + linha[12] + "|" + vBC.ToString().Replace(".", ",") + "|" + pICMSTemp + "|"
                                     + vICMS.ToString().Replace(".", ",") + "|" + "" + "|" + "" + "|" + "" + "|" + linha[19] + "|" + linha[20] + "|" + linha[21] + "|" + linha[22] + "|" + "" + "|" + "" + "|"
                                     + linha[25] + "|" + linha[26] + "|" + linha[27] + "|" + linha[28] + "|" + linha[29] + "|" + linha[30] + "|" + linha[31] + "|" + linha[32] + "|" + linha[33] + "|"
                                     + linha[34] + "|" + linha[35] + "|" + linha[36] + "|" + linha[37] + "|" + linha[38] + "|";
@@ -954,7 +945,7 @@ namespace Escon.SisctNET.Web.Sped
                                     {
                                         if (notes[posC100][1]["finNFe"].Equals("2"))
                                         {
-                                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + cfops[i][5].Replace(".", ",") + "|" + cfops[i][1].Replace(".", ",") + "|"
+                                            textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + cfops[i][5] + "|" + cfops[i][1].Replace(".", ",") + "|"
                                              + cfops[i][4].Replace(".", ",") + "|" + cfops[i][6].Replace(".", ",") + "|" + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
                                         }
                                         else

@@ -2872,9 +2872,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                            if ((notes[i][j].ContainsKey("pICMS") || notes[i][j].ContainsKey("pICMSST")) && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                             {
-                                if(codeProd.Contains(cProd) && cestProd.Contains(cest))
+                                if (codeProd.Contains(cProd) && cestProd.Contains(cest))
                                 {
                                     if (codeProdST.Contains(cProd) && cestST.Contains(cest))
                                     {
@@ -2938,7 +2938,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             if (!notes[i][2]["UF"].Equals(notes[i][3]["UF"]))
                                             {
-                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0 && Convert.ToDecimal(produto[10]) <= 0)
                                                 {
                                                     produto.Add("C");
                                                 }
@@ -2949,13 +2949,13 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             else
                                             {
-                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0 && Convert.ToDecimal(produto[10]) > 0)
                                                 {
-                                                    produto.Add("C");
+                                                    produto.Add("E");
                                                 }
                                                 else
                                                 {
-                                                    produto.Add("E");
+                                                    produto.Add("C");
                                                 }
                                             }
                                         }
@@ -2965,7 +2965,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             if (!notes[i][2]["UF"].Equals(notes[i][3]["UF"]))
                                             {
-                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0 && Convert.ToDecimal(produto[10]) <= 0)
                                                 {
                                                     produto.Add("C");
                                                 }
@@ -2976,14 +2976,23 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             else
                                             {
-                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                if (notes[i][j].ContainsKey("vBCST"))
                                                 {
-                                                    produto.Add("E");
+                                                    if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0 && Convert.ToDecimal(notes[i][j]["vBC"]) <= 0)
+                                                    {
+                                                        produto.Add("E");
+                                                    }
+                                                    else
+                                                    {
+                                                        produto.Add("C");
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    produto.Add("C");
+                                                    produto.Add("E");
                                                 }
+
+                                                
                                             }
                                         }
 
