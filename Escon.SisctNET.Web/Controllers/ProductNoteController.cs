@@ -269,9 +269,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (entity.Pautado == true) 
                 {
-                    Product product = new Product();
-                    Product1 product1 = new Product1();
-                    Product2 product2 = new Product2();
+                    Product product = null;
+                    Product1 product1 = null;
+                    Product2 product2 = null;
 
                     if (Convert.ToDateTime(dateNote) < Convert.ToDateTime("10/02/2020"))
                     {
@@ -422,6 +422,14 @@ namespace Escon.SisctNET.Web.Controllers
                     if (product1 != null)
                     {
                         if (product1.Group.Active.Equals(true))
+                        {
+                            prod.Incentivo = true;
+                        }
+                    }
+
+                    if (product2 != null)
+                    {
+                        if (product2.Group.Active.Equals(true))
                         {
                             prod.Incentivo = true;
                         }

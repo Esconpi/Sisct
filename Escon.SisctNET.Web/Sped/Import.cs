@@ -349,9 +349,32 @@ namespace Escon.SisctNET.Web.Sped
                                 }
                                 else
                                 {
-                                    vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
-                                    pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
-                                    vICMS = Math.Round(Convert.ToDecimal(linha[15].Replace(",", ".")), 2);
+                                    if (linha[13] == "")
+                                    {
+                                        vBC = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else
+                                    {
+                                        vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
+                                    }
+
+                                    if (linha[14] == "")
+                                    {
+                                        pICMS = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else
+                                    {
+                                        pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
+                                    }
+
+                                    if (linha[15] == "")
+                                    {
+                                        vICMS = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else
+                                    {
+                                        vICMS = Math.Round(Convert.ToDecimal(linha[15].Replace(",", ".")), 2);
+                                    }
                                 }
 
                                 valorProduto = Math.Round(valorProduto, 2);
@@ -832,9 +855,32 @@ namespace Escon.SisctNET.Web.Sped
                                 }
                                 else
                                 {
-                                    vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
-                                    pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
-                                    vICMS = Math.Round(Convert.ToDecimal(linha[15].Replace(",", ".")), 2);
+                                    if (linha[13] == "")
+                                    {
+                                        vBC = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else
+                                    {
+                                        vBC = Math.Round(Convert.ToDecimal(linha[13].Replace(",", ".")), 2);
+                                    }
+
+                                    if (linha[14] == "")
+                                    {
+                                        pICMS = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else
+                                    {
+                                        pICMS = Math.Round(Convert.ToDecimal(linha[14].Replace(",", ".")), 2);
+                                    }
+
+                                    if (linha[15] == "")
+                                    {
+                                        vICMS = Math.Round(Convert.ToDecimal(0), 2);
+                                    }
+                                    else 
+                                    {
+                                        vICMS = Math.Round(Convert.ToDecimal(linha[15].Replace(",", ".")), 2);
+                                    }                                   
                                 }
 
                                 valorProduto = Math.Round(valorProduto, 2);

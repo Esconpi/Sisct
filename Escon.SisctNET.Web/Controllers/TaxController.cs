@@ -172,6 +172,71 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Despesa(int companyid, string year, string month)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var comp = _companyService.FindById(companyid, null);
+                ViewBag.Id = comp.Id;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Despesa(int companyid, string year, string month, Model.Tax entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var imp = _service.FindByMonth(companyid, month, year);
+
+                if (imp != null)
+                {
+                    imp.Energia = entity.Energia;
+                    imp.AluguelPredio = entity.AluguelPredio;
+                    imp.AluguelME = entity.AluguelME;
+                    imp.DespesasF = entity.DespesasF;
+                    imp.DespesasME = entity.DespesasME;
+                    imp.DespesasA = entity.DespesasA;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, null);
+                }
+                else
+                {
+                    entity.CompanyId = companyid;
+                    entity.MesRef = month;
+                    entity.AnoRef = year;
+                    entity.Created = DateTime.Now;
+                    entity.Updated = entity.Created;
+
+                    _service.Create(entity, null);
+                }
+
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
         public IActionResult Retention(int companyid, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
@@ -1207,25 +1272,25 @@ namespace Escon.SisctNET.Web.Controllers
                                 bool existe = false;
                                 int posClienteRaiz = contContribuintesRaiz - 1;
 
-                                if (entryNotes[i][3].ContainsKey("CNPJ") && entryNotes[i][3].ContainsKey("IE") && entryNotes[i][3].ContainsKey("indIEDest") && entryNotes[i][1]["mod"].Equals("55"))
+                                if (entryNotes[i][2].ContainsKey("CNPJ") && entryNotes[i][3].ContainsKey("IE") && entryNotes[i][2].ContainsKey("indIEDest") && entryNotes[i][1]["mod"].Equals("55"))
                                 {
 
-                                    if (contribuintes.Contains(entryNotes[i][3]["CNPJ"]))
+                                    if (contribuintes.Contains(entryNotes[i][2]["CNPJ"]))
                                     {
                                         existe = true;
                                     }
 
-                                    string CNPJ = entryNotes[i][3].ContainsKey("CNPJ") ? entryNotes[i][3]["CNPJ"] : "escon";
-                                    string indIEDest = entryNotes[i][3].ContainsKey("indIEDest") ? entryNotes[i][3]["indIEDest"] : "escon";
-                                    string IE = entryNotes[i][3].ContainsKey("IE") ? entryNotes[i][3]["IE"] : "escon";
+                                    string CNPJ = entryNotes[i][2].ContainsKey("CNPJ") ? entryNotes[i][2]["CNPJ"] : "escon";
+                                    string indIEDest = entryNotes[i][2].ContainsKey("indIEDest") ? entryNotes[i][2]["indIEDest"] : "escon";
+                                    string IE = entryNotes[i][2].ContainsKey("IE") ? entryNotes[i][2]["IE"] : "escon";
 
-                                    if (contribuintesRaiz.Contains(entryNotes[i][3]["CNPJ"].Substring(0, 8)))
+                                    if (contribuintesRaiz.Contains(entryNotes[i][2]["CNPJ"].Substring(0, 8)))
                                     {
-                                        posClienteRaiz = contribuintesRaiz.IndexOf(entryNotes[i][3]["CNPJ"].Substring(0, 8));
+                                        posClienteRaiz = contribuintesRaiz.IndexOf(entryNotes[i][2]["CNPJ"].Substring(0, 8));
                                     }
                                 }
 
-                                bool status = false, cfop = false;
+                                bool status = false;
 
                                 for (int j = 0; j < entryNotes[i].Count(); j++)
                                 {
@@ -1246,17 +1311,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
-                                    if (entryNotes[i][j].ContainsKey("CFOP"))
-                                    {
-                                        cfop = false;
-                                        if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]))
-                                        {
-                                            cfop = true;
-                                        }
-
-                                    }
-
-                                    if (status == true && cfop == true)
+                                    if (status == true)
                                     {
                                         if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
                                         {
@@ -1329,7 +1384,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                         }
                                     }
-                                    else if (status == false && cfop == true)
+                                    else if (status == false)
                                     {
                                         if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
                                         {

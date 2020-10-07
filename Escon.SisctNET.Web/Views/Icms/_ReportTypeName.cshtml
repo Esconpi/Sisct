@@ -26,7 +26,7 @@ else if (ViewBag.Type == "suspensao")
 {
     <div>
         <strong>Suspensão: </strong> <br />
-        @foreach(var p in ViewBag.Periodos)
+        @foreach (var p in ViewBag.Periodos)
         {
             <p>@p[1] à @p[2]</p>
         }
@@ -38,9 +38,13 @@ else if (ViewBag.Type == "anexoAutoPecas")
 }
 else if (ViewBag.Type == "anexoMedicamento")
 {
-     <strong> ANEXO CLIX</strong>
+    <strong> ANEXO CLIX</strong>
 }
 else if (ViewBag.Type == "vendaforaincentivo")
 {
     <strong>Fora do Incentivo</strong>
+}
+else if (ViewBag.Type == "produtoST")
+{
+    <strong>Produtos ST com Base de Cálculo</strong>
 }

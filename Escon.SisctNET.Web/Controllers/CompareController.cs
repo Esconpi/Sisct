@@ -119,8 +119,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (ident.Equals("0"))
                         {
-                            //sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
-                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                            //sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
                         else if (ident.Equals("1"))
                         {
@@ -154,6 +154,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else if (ordem.Equals(Model.Ordem.Sped))
                     {
+                        sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+
                         foreach (var note in sped)
                         {
                             bool nota_encontrada = false;

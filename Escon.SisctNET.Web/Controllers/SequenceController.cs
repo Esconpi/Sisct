@@ -40,38 +40,57 @@ namespace Escon.SisctNET.Web.Controllers
                 var month = Request.Form["month"];
                 var ident = Request.Form["ident"];
 
-                var company = _companyService.FindById(Convert.ToInt32(id), null);
+                var comp = _companyService.FindById(Convert.ToInt32(id), null);
 
                 ViewBag.Archive = archive.ToString();
-                ViewBag.Document = company.Document;
-                ViewBag.SocialName = company.SocialName;
+                ViewBag.Document = comp.Document;
+                ViewBag.SocialName = comp.SocialName;
                 ViewBag.Ano = year;
                 ViewBag.Mes = month;
 
                 var importXml = new Xml.Import();
                 var importSped = new Sped.Import();
                 var confDBSisctNfe = new Model.Configuration();
+                var onfDBSisctCte = new Model.Configuration();
 
                 if (ident.Equals("0"))
                 {
                     confDBSisctNfe = _configurationService.FindByName("NFe");
+                    onfDBSisctCte = _configurationService.FindByName("CTe");
                 }
                 else if (ident.Equals("1"))
                 {
                     confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+                    onfDBSisctCte = _configurationService.FindByName("CTe Saida");
                 }
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-                List<int> notes55 = new List<int>();
-                List<int> notes65 = new List<int>();
-                List<List<int>> notes55Fora = new List<List<int>>();
-                List<List<int>> notes65Fora = new List<List<int>>();
+                List<int> nfe55 = new List<int>();
+                List<int> nfe65 = new List<int>();
 
                 if (archive.Equals(Model.Archive.XmlNFe))
                 {
                     notes = importXml.Nfe(directoryNfe);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (notes[i][1]["mod"].Equals("55"))
+                        {
+                            nfe55.Add(Convert.ToInt32(notes[i][1]["nNF"]));
+                        }
+                        else
+                        {
+                            nfe65.Add(Convert.ToInt32(notes[i][1]["nNF"]));
+                        }
+                    }
                 }
                 else if (archive.Equals(Model.Archive.XmlCTe))
                 {
@@ -92,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
                         Directory.CreateDirectory(filedirSped);
                     }
 
-                    string nomeArquivoSped = company.Document + year + month;
+                    string nomeArquivoSped = comp.Document + year + month;
 
                     if (arquivo.FileName.Contains(".txt"))
                         nomeArquivoSped += ".txt";
@@ -120,51 +139,14 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (note[1].Equals("55"))
                         {
-                            notes55.Add(Convert.ToInt32(note[2]));
+                            nfe55.Add(Convert.ToInt32(note[2]));
                         }
                         else
                         {
-                            notes65.Add(Convert.ToInt32(note[2]));
+                            nfe65.Add(Convert.ToInt32(note[2]));
                         }
                         
                     }
-
-                    notes55.Sort();
-                    notes65.Sort();
-
-                    for (int i = 1; i < notes55.Count() - 1; i++)
-                    {
-                        if ((notes55[i] - (notes55[i - 1] + 1)) > 1)
-                        {
-                            List<int> notesIntervalo = new List<int>();
-                            notesIntervalo.Add(notes55[i - 1]);
-                            notesIntervalo.Add(notes55[i]);
-                            notesIntervalo.Add(notes55[i] - notes55[i - 1]);
-                            notes55Fora.Add(notesIntervalo);
-                        }
-                    }
-
-                    for (int i = 1; i < notes65.Count() - 1; i++)
-                    {
-                        if ((notes65[i] - (notes65[i - 1] + 1)) > 1)
-                        {
-                            List<int> noteIntervalo = new List<int>();
-                            noteIntervalo.Add(notes65[i - 1]);
-                            noteIntervalo.Add(notes65[i]);
-                            noteIntervalo.Add(notes65[i] - notes65[i - 1]);
-                            notes65Fora.Add(noteIntervalo);
-                        }
-                    }
-
-
-                    ViewBag.Notas55 = notes55Fora;
-                    ViewBag.Notas65 = notes65Fora;
-
-                    /*var p55 = notes55[0];
-                    var u55 = notes55[notes55.Count() - 1];
-
-                    var p65 = notes65[0];
-                    var u65 = notes65[notes65.Count() - 1];*/
 
                 }
                 else if (archive.Equals(Model.Archive.SpedCTe)){
@@ -182,7 +164,7 @@ namespace Escon.SisctNET.Web.Controllers
                         Directory.CreateDirectory(filedirSped);
                     }
 
-                    string nomeArquivoSped = company.Document + year + month;
+                    string nomeArquivoSped = comp.Document + year + month;
 
                     if (arquivo.FileName.Contains(".txt"))
                         nomeArquivoSped += ".txt";
@@ -206,6 +188,41 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped, ident);
                 }
+
+
+                nfe55.Sort();
+                nfe65.Sort();
+
+                List<List<int>> nfe55Fora = new List<List<int>>();
+                List<List<int>> nfe65Fora = new List<List<int>>();
+
+                for (int i = 1; i < nfe55.Count(); i++)
+                {
+                    if ((nfe55[i] - (nfe55[i - 1])) > 1)
+                    {
+                        List<int> notesIntervalo = new List<int>();
+                        notesIntervalo.Add(nfe55[i - 1]);
+                        notesIntervalo.Add(nfe55[i]);
+                        notesIntervalo.Add((nfe55[i] - nfe55[i - 1]) - 1);
+                        nfe55Fora.Add(notesIntervalo);
+                    }
+                }
+
+                for (int i = 1; i < nfe65.Count(); i++)
+                {
+                    if ((nfe65[i] - (nfe65[i - 1])) > 1)
+                    {
+                        List<int> noteIntervalo = new List<int>();
+                        noteIntervalo.Add(nfe65[i - 1]);
+                        noteIntervalo.Add(nfe65[i]);
+                        noteIntervalo.Add((nfe65[i] - nfe65[i - 1]) -1);
+                        nfe65Fora.Add(noteIntervalo);
+                    }
+                }
+
+
+                ViewBag.Notas55 = nfe55Fora;
+                ViewBag.Notas65 = nfe65Fora;
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 

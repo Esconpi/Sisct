@@ -23,21 +23,13 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-            @if (ViewBag.Archive == "XmlNFe")
+            @if (ViewBag.Archive == "SpedNFe" || ViewBag.Archive == "XmlNFe")
             {
-
+                @await Html.PartialAsync("_NFe", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Archive == "XmlCTe")
+            else if (ViewBag.Archive == "SpedCTe" || ViewBag.Archive == "XmlCTe")
             {
-
-            }
-            else if (ViewBag.Archive == "SpedNFe")
-            {
-                @await Html.PartialAsync("_SpedNFe", new ViewDataDictionary(ViewData))
-            }
-            else if (ViewBag.Archive == "SpedCTe")
-            {
-
+                @await Html.PartialAsync("_CTe", new ViewDataDictionary(ViewData))
             }
         </div>
     </div>

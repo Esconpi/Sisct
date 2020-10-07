@@ -10,7 +10,7 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> products = new List<List<string>>();
 
-            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=YES;IMEX=1;MAXSCANROWS=0';");
+            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
             string commandoSql = "Select * from [Plan1$]";
             OleDbCommand comando = new OleDbCommand(commandoSql, connect);
 
@@ -92,12 +92,13 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> notes = new List<List<string>>();
 
-            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=YES;IMEX=1;MAXSCANROWS=0';");
+            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
             string commandoSql = "Select * from [Plan1$]";
             OleDbCommand comando = new OleDbCommand(commandoSql, connect);
 
             try
             {
+
                 connect.Open();
                 OleDbDataReader rd = comando.ExecuteReader();
 

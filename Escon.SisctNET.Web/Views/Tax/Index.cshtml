@@ -11,14 +11,18 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Receita" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
-            <a asp-action="Import" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-cloud-download pull-right"> Importar</a>
+            <a asp-action="Receita" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Receitas</a>
+            <a asp-action="Import" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
             <br />
             <br />
 
             @if (ViewBag.Comp.CountingTypeId == 2)
             {
                 <a asp-action="Reduction" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
+            }
+            else if (ViewBag.Comp.CountingTypeId == 1)
+            {
+                <a asp-action="Despesa" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
             }
             <a asp-action="Retention" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
@@ -46,7 +50,7 @@
         <div style="width:100%; padding:10px;">
             <nr></nr>
 
-            <!-- EMPRESAS INCENTIVADAS-->
+            <!-- IMPOSTO ICMS DE EMPRESAS INCENTIVADAS -->
             @if (ViewBag.Comp.Incentive == true)
             {
                 <div style="text-align:center">
@@ -97,6 +101,8 @@
                 <hr />
             }
 
+
+            <!-- IMPOSTO PIS/COFINS -->
             <div style="text-align:center">
                 <strong>PIS/COFINS</strong>
             </div>

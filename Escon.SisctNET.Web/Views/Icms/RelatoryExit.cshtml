@@ -114,7 +114,10 @@
                 {
                     @await Html.PartialAsync("_Non-IncentiveSales", new ViewDataDictionary(ViewData))
                 }
-
+                else if (ViewBag.Type == "produtoST")
+                {
+                    @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
+                }
             </div>
         </div>
     </div>

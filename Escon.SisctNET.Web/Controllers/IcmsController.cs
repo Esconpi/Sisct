@@ -2807,8 +2807,203 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.CfopNIncentivo = cfopsForaAnexo;
                 }
+                else if (type.Equals("produtoST"))
+                {
+                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
+                    notes = importXml.Nfe(directoryNfeExit);
+
+                    var codeProd = _productIncentivoService.FindByAllProducts(id).Select(_ => _.Code).ToList();
+                    var codeProdST = _productIncentivoService.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
+
+                    var cestProd = _productIncentivoService.FindByAllProducts(id).Select(_ => _.Cest).ToList();
+                    var cestST = _productIncentivoService.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
+
+                    List<List<string>> produtos = new List<List<string>>();
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0") || notes[i][1]["finNFe"] == "4")
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        decimal valorProduto = 0;
+                        string cProd = null, cest = null, xProd = "";
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+                            if (notes[i][j].ContainsKey("cProd"))
+                            {
+                                cProd = notes[i][j]["cProd"];
+                                xProd = notes[i][j]["xProd"];
+                                valorProduto = 0;
+                                cest = "";
+
+                                if (notes[i][j].ContainsKey("CEST"))
+                                {
+                                    cest = notes[i][j]["CEST"];
+                                }
+
+                                if (notes[i][j].ContainsKey("vProd"))
+                                {
+                                    valorProduto += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete"))
+                                {
+                                    valorProduto += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc"))
+                                {
+                                    valorProduto -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro"))
+                                {
+                                    valorProduto += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg"))
+                                {
+                                    valorProduto += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+                            }
+
+                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                            {
+                                if(codeProd.Contains(cProd) && cestProd.Contains(cest))
+                                {
+                                    if (codeProdST.Contains(cProd) && cestST.Contains(cest))
+                                    {
+                                        List<string> produto = new List<string>();
+                                        produto.Add(notes[i][1]["nNF"]);
+                                        produto.Add(notes[i][1]["dhEmi"]);
+                                        produto.Add(notes[i][3]["UF"]);
+
+                                        if (notes[i][3].ContainsKey("CNPJ"))
+                                        {
+                                            produto.Add("CNPJ");
+                                        }
+                                        else
+                                        {
+                                            produto.Add("CPF");
+                                        }
+
+                                        produto.Add(cProd);
+                                        produto.Add(xProd);
+                                        produto.Add(cest);
+                                        produto.Add(notes[i][j]["vBC"]);
+                                        produto.Add(notes[i][j]["vICMS"]);
+
+                                        if (notes[i][j].ContainsKey("pFCP"))
+                                        {
+                                            produto.Add(notes[i][j]["vFCP"]);
+                                        }
+                                        else
+                                        {
+                                            produto.Add("0");
+                                        }
+
+                                        if (notes[i][j].ContainsKey("vBCST"))
+                                        {
+                                            produto.Add(notes[i][j]["vBCST"]);
+                                        }
+                                        else
+                                        {
+                                            produto.Add("0");
+                                        }
+
+                                        if (notes[i][j].ContainsKey("vICMSST"))
+                                        {
+                                            produto.Add(notes[i][j]["vICMSST"]);
+                                        }
+                                        else
+                                        {
+                                            produto.Add("0");
+                                        }
+
+                                        if (notes[i][j].ContainsKey("vFCPST"))
+                                        {
+                                            produto.Add(notes[i][j]["vFCPST"]);
+                                        }
+                                        else
+                                        {
+                                            produto.Add("0");
+                                        }
+
+                                        if (produto[3].Equals("CNPJ"))
+                                        {
+                                            if (!notes[i][2]["UF"].Equals(notes[i][3]["UF"]))
+                                            {
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                {
+                                                    produto.Add("C");
+                                                }
+                                                else
+                                                {
+                                                    produto.Add("E");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                {
+                                                    produto.Add("C");
+                                                }
+                                                else
+                                                {
+                                                    produto.Add("E");
+                                                }
+                                            }
+                                        }
+
+                                        if (produto[3].Equals("CPF"))
+                                        {
+
+                                            if (!notes[i][2]["UF"].Equals(notes[i][3]["UF"]))
+                                            {
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                {
+                                                    produto.Add("C");
+                                                }
+                                                else
+                                                {
+                                                    produto.Add("E");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Convert.ToDecimal(notes[i][j]["vBC"]) > 0)
+                                                {
+                                                    produto.Add("E");
+                                                }
+                                                else
+                                                {
+                                                    produto.Add("C");
+                                                }
+                                            }
+                                        }
+
+                                        produtos.Add(produto);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Há Produtos não Tributado");
+                                }
+                            }
+                        }
+
+                    }
+
+                    ViewBag.Produtos = produtos;
+                }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                 return View();
             }
             catch (Exception ex)
