@@ -40,7 +40,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult RelatoryExit(int id, string year, string month,string trimestre, string type)
+        public IActionResult Relatory(int id, string year, string month,string trimestre, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -86,7 +86,6 @@ namespace Escon.SisctNET.Web.Controllers
                     List<string> ncmMono = new List<string>();
                     List<string> ncmNormal = new List<string>();
                     List<List<string>> resumoNcm = new List<List<string>>();
-                    List<int> ncms = new List<int>();
 
                     var ncmsAll = _ncmService.FindAll(null);
 
@@ -143,7 +142,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncmTemp.Add("0");
                                         ncmTemp.Add("0");
                                         resumoNcm.Add(ncmTemp);
-                                        ncms.Add(Convert.ToInt32(nn.Code));
                                         pos = resumoNcm.Count() - 1;
                                     }
 
@@ -209,32 +207,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    ncms.Sort();                    
 
-                    List<List<string>> resumoNcmOrdenado = new List<List<string>>();
-
-                    for (int i = 0; i < ncms.Count(); i++)
-                    {
-                        int pos = 0;
-                        for (int j = 0; i < resumoNcm.Count(); j++)
-                        {
-                            if (ncms[i] == Convert.ToInt32(resumoNcm[j][0]))
-                            {
-                                pos = j;
-                                break;
-                            }
-                        }
-
-                        List<string> cc = new List<string>();
-                        cc.Add(resumoNcm[pos][0]);
-                        cc.Add(resumoNcm[pos][1]);
-                        cc.Add(resumoNcm[pos][2]);
-                        cc.Add(resumoNcm[pos][3]);
-                        cc.Add(resumoNcm[pos][4]);
-                        resumoNcmOrdenado.Add(cc);
-                    }
-
-                    ViewBag.Ncm = resumoNcmOrdenado;
+                    ViewBag.Ncm = resumoNcm.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                     ViewBag.ValorProduto = valorProduto;
                     ViewBag.ValorPis = valorPis;
                     ViewBag.ValorCofins = valorCofins;

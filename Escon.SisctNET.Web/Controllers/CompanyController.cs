@@ -454,112 +454,6 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Taxation(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-            
-        }
-
-        [HttpGet]
-        public IActionResult Relatory(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Incentive = result.Incentive;
-                ViewBag.TypeIncentive = result.TipoApuracao;
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-            
-        }
-       
-        [HttpGet]
-        public IActionResult RelatoryExit(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                List<Cfop> list_cfop = _cfopService.FindAll(null);
-                foreach (var cfop in list_cfop)
-                {
-                    cfop.Description = cfop.Code +" - " + cfop.Description;
-                }
-                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
-                SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
-                ViewBag.CfopId = cfops;
-                ViewBag.TypeCompany = result.TypeCompany;
-                return View(result);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        public IActionResult Ncm(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _taxationService.FindByCompany(id);
-                var company = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Company = company.FantasyName;
-                ViewBag.Document = company.Document;
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
-        public IActionResult TaxationProduct(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return PartialView(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-
-        }
-
-        [HttpGet]
         public IActionResult Tax(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
@@ -621,26 +515,7 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-
-        [HttpGet]
-        public IActionResult Sequence(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-            try
-            {
-                ViewBag.Ident = SessionManager.GetTipoInSession();
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
+       
         [HttpPost]
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {

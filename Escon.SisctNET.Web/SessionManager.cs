@@ -1,7 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 
 namespace Escon.SisctNET.Web
 {

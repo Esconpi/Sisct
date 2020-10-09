@@ -1,18 +1,18 @@
 ﻿<diV class="pull-right">
     <strong>Total Vendas: </strong> @string.Format("{0:N}", ViewBag.TotalVendas)
 </diV>
-<table class="table">
+<table class="table" style="border:1px solid">
     <thead>
         <tr>
-            <th>
+            <th  style="border:1px solid; text-align:center;">
                 Ncm
             </th>
-            <th>Descrição</th>
-            <th width="15%">
+            <th  style="border:1px solid; text-align:center;">Descrição</th>
+            <th  style="border:1px solid; text-align:center;">
                 Valor
             </th>
-            <th width="10%">
-                Percentual %
+            <th  style="border:1px solid">
+                Percentual (%)
             </th>
         </tr>
     </thead>
@@ -20,19 +20,18 @@
         @for (int i = 0; i < ViewBag.Ncm.Count; i++)
         {
             <tr>
-                <td>@ViewBag.Ncm[i][0]</td>
-                <td>@ViewBag.Ncm[i][3]</td>
-                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][1].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
-                <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
+                <td style="border:1px solid">@ViewBag.Ncm[i][0]</td>
+                <td style="border:1px solid">@ViewBag.Ncm[i][3]</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][1].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ncm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            <th>Total</th>
-            <th></th>
-            <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalNcm)</td>
-            <td style="text-align:right">@string.Format("{0:N}", ViewBag.PercentualTotal) %</td>
+            <th style="border:1px solid; text-align:center;" colspan="2">Total</th>
+            <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.TotalNcm)</td>
+            <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.PercentualTotal) %</td>
         </tr>
     </tfoot>
 </table>

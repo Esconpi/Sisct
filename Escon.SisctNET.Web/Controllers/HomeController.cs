@@ -213,6 +213,46 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Taxation(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult Relatory(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Incentive = result.Incentive;
+                ViewBag.TypeIncentive = result.TipoApuracao;
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetResponsibleByCompanyId(int id)
         {
             if (SessionManager.GetLoginInSession().Equals(null))

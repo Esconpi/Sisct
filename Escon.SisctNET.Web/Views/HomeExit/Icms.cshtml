@@ -1,6 +1,7 @@
-﻿@model Escon.SisctNET.Model.Company
+﻿
+@model Escon.SisctNET.Model.Company
 @{
-    ViewData["Title"] = "RelatoryExit";
+    ViewData["Title"] = "Icms";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="box box-primary">
@@ -11,7 +12,7 @@
     </div>
     <div class="box-body">
         <div class="col-lg-12">
-            <form asp-controller="Icms" asp-action="RelatoryExit" method="post" enctype="multipart/form-data">
+            <form asp-controller="Icms" asp-action="Relatory" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
                 <div class="row">

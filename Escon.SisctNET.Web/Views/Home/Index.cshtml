@@ -179,7 +179,7 @@
                 $("input[type='checkbox']").bootstrapToggle();
 
                 $('.showTaxation').click(function () {
-                    $.get('Company/Taxation/' + $(this).attr('id'), function (html) {
+                    $.get('Home/Taxation/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');
@@ -302,10 +302,9 @@
                     "mRender": function (data, type, row) {
 
                         return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
-                            "<a href='/Company/Sequence/" + data + "' class = 'glyphicon glyphicon-check pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Sequência Notas' /> " +
                             "<a href='/Home/Sped/" + data + "' class = 'fa fa-eraser pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Corrigir Sped' /> " +
                             "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Produto' id='" + row.id + "' /> " +
-                            "<a href='/Company/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " 
+                            "<a href='/Home/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " 
                             
 
                     }

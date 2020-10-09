@@ -52,7 +52,7 @@
                         <th width="150px">
                             @Html.DisplayNameFor(model => model.CountingTypeId)
                         </th>
-                        <th width="100px"></th>
+                        <th width="110px"></th>
                     </tr>
                 </thead>
                
@@ -442,10 +442,10 @@
 
                             return "<a href='/Company/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Empresa' /> " +
                                 "<a href='#" + data + "' class = 'showFormResponsible fa fa-envelope pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Responsáveis pelos boletos' id='" + row.id + "' data-company='" + row.socialName + "' /> " +
-                                "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncms Trbutados' /> " +
-                                "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfops' /> " +
-                                "<a href='/Company/EditNew/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais ICMS' /> " +
-                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais PIS/COFINS' /> " +
+                                "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Trbutado' /> " +
+                                "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfop' /> " +
+                                "<a href='/Company/EditNew/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais ICMS' /> " +
+                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais PIS/COFINS' /> " +
                                 "<a href='/Suspension/Index/" + data + "' class = 'fa fa-calendar-minus-o pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Suspensões' /> " +
                                 "<a href='/Notification/Index/" + data + "' class = 'fa fa-exclamation-triangle pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Notificaçõas' /> "
                         }
@@ -453,9 +453,9 @@
                             
                             return "<a href='/Company/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Empresa' /> " +
                                 "<a href='#" + data + "' class = 'showFormResponsible fa fa-envelope pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Responsáveis pelos boletos' id='" + row.id + "' data-company='" + row.socialName + "' /> " +
-                                "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncms Trbutados' /> " +
-                                "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfops' /> " +
-                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais PIS/COFINS' /> " 
+                                "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Trbutado' /> " +
+                                "<a href='/CompanyCfop/Index/" + data + "' class = 'glyphicon glyphicon-folder-open pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cfop' /> " +
+                                "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais PIS/COFINS' /> " 
                         }
 
                     }

@@ -38,7 +38,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var year = Request.Form["year"];
                 var id = Request.Form["id"];
                 var month = Request.Form["month"];
-                var ident = Request.Form["ident"];
 
                 var comp = _companyService.FindById(Convert.ToInt32(id), null);
 
@@ -52,17 +51,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var importSped = new Sped.Import();
                 var confDBSisctNfe = new Model.Configuration();
                 var onfDBSisctCte = new Model.Configuration();
-
-                if (ident.Equals("0"))
-                {
-                    confDBSisctNfe = _configurationService.FindByName("NFe");
-                    onfDBSisctCte = _configurationService.FindByName("CTe");
-                }
-                else if (ident.Equals("1"))
-                {
-                    confDBSisctNfe = _configurationService.FindByName("NFe Saida");
-                    onfDBSisctCte = _configurationService.FindByName("CTe Saida");
-                }
+                
+                confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+                onfDBSisctCte = _configurationService.FindByName("CTe Saida");
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
@@ -133,7 +124,7 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
 
-                    var sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                    var sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, "1");
 
                     foreach (var note in sped)
                     {
@@ -186,9 +177,8 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
 
-                    var sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped, ident);
+                    var sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped, "1");
                 }
-
 
                 nfe55.Sort();
                 nfe65.Sort();
