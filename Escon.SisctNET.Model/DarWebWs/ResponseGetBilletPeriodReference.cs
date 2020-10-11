@@ -27,4 +27,21 @@ namespace Escon.SisctNET.Model.DarWebWs
 
         public bool PaidOut { get; set; }
     }
+
+    public class ResponseGetDarIcms
+    {
+        public string MensagemRetorno { get; set; }
+
+        public string TipoRetorno { get; set; }
+
+        public string BoletoBytes { get; set; }
+
+        public string CodigoBarras { get; set; }
+
+        public string LinhaDigitavel { get; set; }
+
+        public string NumeroControle { get; set; }
+
+        public string NumeroDocumento { get; set; }
+    }
 }
