@@ -42,7 +42,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Produto Incentivado")] ProdutoI = 2,
         [Display(Name = "Produto Não Incentivado")] ProdutoNI = 3,
         [Display(Name = "Produto Fora da Pauta")] ProdutoFP = 4,
-        [Display(Name = "Produto Fora do Incentivo")] ProdutoFI = 5,
+        [Display(Name = "Produto Fora do Incentivo (Exceto ST)")] ProdutoFI = 5,
         [Display(Name = "Nota")] Nota = 6,
         [Display(Name = "Agrupado - Analítico")] AgrupadoA = 7,
         [Display(Name = "Agrupado - Sintético")] AgrupadoS = 8,
