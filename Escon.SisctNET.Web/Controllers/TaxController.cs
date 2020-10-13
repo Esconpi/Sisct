@@ -542,6 +542,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code);
                 var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code);
                 var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code);
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code);
 
                 if (imposto.Equals("icms"))
                 {
@@ -2225,7 +2226,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (exitNotes[i][k].ContainsKey("CFOP"))
                                                 {
                                                     cfop = false;
-                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) ||  cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2236,115 +2237,20 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
                                                     {
-                                                        if (cestIncentivado.Contains(cest))
-                                                        {
-                                                            status = 1;
-                                                            var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
-                                                            percent = percentualIncentivado;
-                                                            if (percentualIncentivado < 100)
-                                                            {
-                                                                var percentualNIncentivado = 100 - percentualIncentivado;
-
-                                                                if (exitNotes[i][k].ContainsKey("vProd"))
-                                                                {
-                                                                    vendasIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vProd"]) * percentualIncentivado) / 100);
-                                                                    vendasNIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vProd"]) * percentualNIncentivado) / 100);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vFrete"))
-                                                                {
-                                                                    vendasIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vFrete"]) * percentualIncentivado) / 100);
-                                                                    vendasNIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vFrete"]) * percentualNIncentivado) / 100);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vDesc"))
-                                                                {
-                                                                    vendasIncentivada -= ((Convert.ToDecimal(exitNotes[i][k]["vDesc"]) * percentualIncentivado) / 100);
-                                                                    vendasNIncentivada -= ((Convert.ToDecimal(exitNotes[i][k]["vDesc"]) * percentualNIncentivado) / 100);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vOutro"))
-                                                                {
-                                                                    vendasIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vOutro"]) * percentualIncentivado) / 100);
-                                                                    vendasNIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vOutro"]) * percentualNIncentivado) / 100);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vSeg"))
-                                                                {
-                                                                    vendasIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vSeg"]) * percentualIncentivado) / 100);
-                                                                    vendasNIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vSeg"]) * percentualNIncentivado) / 100);
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                if (exitNotes[i][k].ContainsKey("vProd"))
-                                                                {
-                                                                    vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vFrete"))
-                                                                {
-                                                                    vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vDesc"))
-                                                                {
-                                                                    vendasIncentivada -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vOutro"))
-                                                                {
-                                                                    vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
-                                                                }
-
-                                                                if (exitNotes[i][k].ContainsKey("vSeg"))
-                                                                {
-                                                                    vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
-                                                                }
-                                                            }
-                                                        }
-
+                                                        status = 1;
+                                                        var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
+                                                        percent = percentualIncentivado;
+                                                       
                                                     }
                                                     else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
                                                     {
-                                                        if (cestST.Contains(cest))
-                                                        {
-                                                            if (exitNotes[i][k].ContainsKey("vProd"))
-                                                            {
-                                                                vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                                            }
-
-                                                            if (exitNotes[i][k].ContainsKey("vFrete"))
-                                                            {
-                                                                vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
-                                                            }
-
-                                                            if (exitNotes[i][k].ContainsKey("vDesc"))
-                                                            {
-                                                                vendasNIncentivada -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                                            }
-
-                                                            if (exitNotes[i][k].ContainsKey("vOutro"))
-                                                            {
-                                                                vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
-                                                            }
-
-                                                            if (exitNotes[i][k].ContainsKey("vSeg"))
-                                                            {
-                                                                vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
-                                                            }
-
-                                                            status = 2;
-                                                            percent = 0;
-                                                        }
+                                                        status = 2;
+                                                        percent = 0;
                                                     }
                                                     else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
                                                     {
-                                                        if (cestIsento.Contains(cest))
-                                                        {
-                                                            status = 3;
-                                                            percent = 0;
-                                                        }
+                                                        status = 3;
+                                                        percent = 0;
                                                     }
                                                     else
                                                     {
@@ -2439,7 +2345,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         }
 
                                                         debitoIncetivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
-
+                                                        vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vBC"]);
                                                     }
                                                 }
                                                 else if (status == 2)
@@ -2466,8 +2372,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                         percentuaisNIncentivado[pos][0] = (Convert.ToDecimal(percentuaisNIncentivado[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
                                                         percentuaisNIncentivado[pos][2] = (Convert.ToDecimal(percentuaisNIncentivado[pos][2]) + Convert.ToDecimal(exitNotes[i][k]["vICMS"])).ToString();
                                                     }
-                                                    debitoNIncentivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
 
+                                                    debitoNIncentivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
+                                                    vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vBC"]);
                                                 }
                                             }
 
@@ -2590,332 +2497,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         }
                                     }
-
-                                    // Devolução de Compra
-                                    for (int i = exitNotes.Count - 1; i >= 0; i--)
-                                    {
-                                        if (exitNotes[i][1]["finNFe"] != "4" || exitNotes[i][1]["tpNF"] == "0")
-                                        {
-                                            exitNotes.RemoveAt(i);
-                                            continue;
-                                        }
-
-                                        string CNPJ = exitNotes[i][2].ContainsKey("CNPJ") ? exitNotes[i][2]["CNPJ"] : "";
-
-                                        if (exitNotes[i][1].ContainsKey("dhEmi"))
-                                        {
-                                            //productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
-                                            productincentivo = _productIncentivoService.FindByDate(prodsIncentivo, comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
-
-                                            codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
-                                            codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
-                                            codeProdIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
-
-                                            cestIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Cest).ToList();
-                                            cestST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
-                                            cestIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
-                                        }
-
-                                        int status = 3;
-                                        decimal percent = 0;
-
-                                        bool cfop = false;
-
-                                        for (int k = 0; k < exitNotes[i].Count(); k++)
-                                        {
-                                            if (exitNotes[i][k].ContainsKey("cProd"))
-                                            {
-                                                status = 3;
-                                                percent = 0;
-                                                string cest = "";
-                                                if (exitNotes[i][k].ContainsKey("CEST"))
-                                                {
-                                                    cest = exitNotes[i][k]["CEST"];
-                    
-                                                }
-
-                                                if (exitNotes[i][k].ContainsKey("CFOP"))
-                                                {
-                                                    cfop = false;
-                                                    if (cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
-                                                    {
-                                                        cfop = true;
-                                                    }
-
-                                                }
-
-                                                if (cfop == true)
-                                                {
-                                                    if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]))
-                                                    {
-                                                        if (cestIncentivado.Contains(cest))
-                                                        {
-                                                            status = 1;
-                                                            var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
-                                                            percent = percentualIncentivado;
-                                                        }
-                                                    }
-                                                    else if (codeProdST.Contains(exitNotes[i][k]["cProd"]))
-                                                    {
-                                                        if (cestST.Contains(cest))
-                                                        {
-                                                            status = 2;
-                                                            percent = 0;
-                                                        }
-                                                    }
-                                                    else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]))
-                                                    {
-                                                        if (cestIsento.Contains(cest))
-                                                        {
-                                                            status = 3;
-                                                            percent = 0;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        throw new Exception("Há Produtos não Tributado");
-                                                    }
-                                                }
-
-                                            }
-
-                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && CNPJ.Equals(comp.Document))
-                                            {
-                                                if (status == 1)
-                                                {
-                                                    if (percent < 100)
-                                                    {
-                                                        var percentNIncentivado = 100 - percent;
-
-                                                        int pos = -1;
-                                                        for (int j = 0; j < percentuaisIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisIncentivado[j][1].Equals(exitNotes[i][k]["pICMS"]))
-                                                            {
-                                                                pos = j;
-                                                            }
-                                                        }
-
-                                                        if (pos < 0)
-                                                        {
-                                                            List<string> percIncentivado = new List<string>();
-                                                            percIncentivado.Add(((Convert.ToDecimal(exitNotes[i][k]["vBC"]) * percent) / 100).ToString());
-                                                            percIncentivado.Add(exitNotes[i][k]["pICMS"]);
-                                                            percIncentivado.Add(((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percent) / 100).ToString());
-                                                            percentuaisIncentivado.Add(percIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisIncentivado[pos][0] = (Convert.ToDecimal(percentuaisIncentivado[pos][0]) + ((Convert.ToDecimal(exitNotes[i][k]["vBC"]) * percent) / 100)).ToString();
-                                                            percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percent) / 100)).ToString();
-                                                        }
-
-                                                        debitoIncetivo += (((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) / 100) * percent) / 100);
-
-                                                        int indice = -1;
-                                                        for (int j = 0; j < percentuaisNIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisNIncentivado[j][1].Equals(exitNotes[i][k]["pICMS"]))
-                                                            {
-                                                                indice = j;
-                                                            }
-                                                        }
-
-                                                        if (indice < 0)
-                                                        {
-                                                            List<string> percNIncentivado = new List<string>();
-                                                            percNIncentivado.Add(((Convert.ToDecimal(exitNotes[i][k]["vBC"]) * percentNIncentivado) / 100).ToString());
-                                                            percNIncentivado.Add(exitNotes[i][k]["pICMS"]);
-                                                            percNIncentivado.Add(((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percentNIncentivado) / 100).ToString());
-                                                            percentuaisNIncentivado.Add(percNIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisNIncentivado[pos][0] = (Convert.ToDecimal(percentuaisNIncentivado[pos][0]) + ((Convert.ToDecimal(exitNotes[i][k]["vBC"]) * percentNIncentivado) / 100)).ToString();
-                                                            percentuaisNIncentivado[pos][2] = (Convert.ToDecimal(percentuaisNIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percentNIncentivado) / 100)).ToString();
-                                                        }
-                                                        debitoNIncentivo += ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percentNIncentivado) / 100);
-
-                                                    }
-                                                    else
-                                                    {
-                                                        int pos = -1;
-                                                        for (int j = 0; j < percentuaisIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisIncentivado[j][1].Equals(exitNotes[i][k]["pICMS"]))
-                                                            {
-                                                                pos = j;
-                                                            }
-                                                        }
-
-                                                        if (pos < 0)
-                                                        {
-                                                            List<string> percIncentivado = new List<string>();
-                                                            percIncentivado.Add(exitNotes[i][k]["vBC"]);
-                                                            percIncentivado.Add(exitNotes[i][k]["pICMS"]);
-                                                            percIncentivado.Add(exitNotes[i][k]["vICMS"]);
-                                                            percentuaisIncentivado.Add(percIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisIncentivado[pos][0] = (Convert.ToDecimal(percentuaisIncentivado[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
-                                                            percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + (Convert.ToDecimal(exitNotes[i][k]["vICMS"]))).ToString();
-                                                        }
-
-                                                        debitoIncetivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
-
-                                                        pos = -1;
-                                                    }
-                                                }
-                                                else if (status == 2)
-                                                {
-                                                    int pos = -1;
-                                                    for (int j = 0; j < percentuaisNIncentivado.Count(); j++)
-                                                    {
-                                                        if (percentuaisNIncentivado[j][1].Equals(exitNotes[i][k]["pICMS"]))
-                                                        {
-                                                            pos = j;
-                                                        }
-                                                    }
-
-                                                    if (pos < 0)
-                                                    {
-                                                        List<string> percNIncentivado = new List<string>();
-                                                        percNIncentivado.Add(exitNotes[i][k]["vBC"]);
-                                                        percNIncentivado.Add(exitNotes[i][k]["pICMS"]);
-                                                        percNIncentivado.Add(exitNotes[i][k]["vICMS"]);
-                                                        percentuaisNIncentivado.Add(percNIncentivado);
-                                                    }
-                                                    else
-                                                    {
-                                                        percentuaisNIncentivado[pos][0] = (Convert.ToDecimal(percentuaisNIncentivado[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
-                                                        percentuaisNIncentivado[pos][2] = (Convert.ToDecimal(percentuaisNIncentivado[pos][2]) + Convert.ToDecimal(exitNotes[i][k]["vICMS"])).ToString();
-                                                    }
-                                                    debitoNIncentivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
-
-                                                }
-                                            }
-
-                                            if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true && CNPJ.Equals(comp.Document))
-                                            {
-                                                if (status == 1)
-                                                {
-                                                    if (percent < 100)
-                                                    {
-                                                        var percentNIncentivado = 100 - percent;
-
-                                                        int pos = -1;
-                                                        for (int j = 0; j < percentuaisIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisIncentivado[j][1].Equals(exitNotes[i][k]["pFCP"]))
-                                                            {
-                                                                pos = j;
-                                                            }
-                                                        }
-
-                                                        if (pos < 0)
-                                                        {
-                                                            List<string> percIncentivado = new List<string>();
-                                                            percIncentivado.Add((((Convert.ToDecimal(exitNotes[i][k]["vBC"])) * percent) / 100).ToString());
-                                                            percIncentivado.Add(exitNotes[i][k]["pFCP"]);
-                                                            percIncentivado.Add((((Convert.ToDecimal(exitNotes[i][k]["vFCP"])) * percent) / 100).ToString());
-                                                            percentuaisIncentivado.Add(percIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisIncentivado[pos][0] = (Convert.ToDecimal(percentuaisIncentivado[pos][0]) + ((Convert.ToDecimal(exitNotes[i][k]["vBC"]) * percent) / 100)).ToString();
-                                                            percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percent) / 100)).ToString();
-                                                        }
-
-                                                        debitoIncetivo += ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percent) / 100);
-
-                                                        int indice = -1;
-                                                        for (int j = 0; j < percentuaisNIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisNIncentivado[j][1].Equals(exitNotes[i][k]["pFCP"]))
-                                                            {
-                                                                indice = j;
-                                                            }
-                                                        }
-
-                                                        if (indice < 0)
-                                                        {
-                                                            List<string> percNIncentivado = new List<string>();
-                                                            percNIncentivado.Add((((Convert.ToDecimal(exitNotes[i][k]["vBC"])) * percentNIncentivado) / 100).ToString());
-                                                            percNIncentivado.Add(exitNotes[i][k]["pFCP"]);
-                                                            percNIncentivado.Add(((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percentNIncentivado) / 100).ToString());
-                                                            percentuaisNIncentivado.Add(percNIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisNIncentivado[pos][0] = (Convert.ToDecimal(percentuaisNIncentivado[pos][0]) + (((Convert.ToDecimal(exitNotes[i][k]["vBC"])) * percentNIncentivado) / 100)).ToString();
-                                                            percentuaisNIncentivado[pos][2] = (Convert.ToDecimal(percentuaisNIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percentNIncentivado) / 100)).ToString();
-                                                        }
-
-                                                        debitoNIncentivo += ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percentNIncentivado) / 100);
-
-                                                    }
-                                                    else
-                                                    {
-                                                        int pos = -1;
-                                                        for (int j = 0; j < percentuaisIncentivado.Count(); j++)
-                                                        {
-                                                            if (percentuaisIncentivado[j][1].Equals(exitNotes[i][k]["pFCP"]))
-                                                            {
-                                                                pos = j;
-                                                            }
-                                                        }
-
-                                                        if (pos < 0)
-                                                        {
-                                                            List<string> percIncentivado = new List<string>();
-                                                            percIncentivado.Add(exitNotes[i][k]["vBC"]);
-                                                            percIncentivado.Add(exitNotes[i][k]["pFCP"]);
-                                                            percIncentivado.Add(exitNotes[i][k]["vFCP"]);
-                                                            percentuaisIncentivado.Add(percIncentivado);
-                                                        }
-                                                        else
-                                                        {
-                                                            percentuaisIncentivado[pos][0] = (Convert.ToDecimal(percentuaisIncentivado[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
-                                                            percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + Convert.ToDecimal(exitNotes[i][k]["vFCP"])).ToString();
-                                                        }
-
-                                                        debitoIncetivo += Convert.ToDecimal(exitNotes[i][k]["vFCP"]);
-                                                    }
-                                                }
-                                                else if (status == 2)
-                                                {
-                                                    int pos = -1;
-                                                    for (int j = 0; j < percentuaisNIncentivado.Count(); j++)
-                                                    {
-                                                        if (percentuaisNIncentivado[j][1].Equals(exitNotes[i][k]["pFCP"]))
-                                                        {
-                                                            pos = j;
-                                                        }
-                                                    }
-
-                                                    if (pos < 0)
-                                                    {
-                                                        List<string> percNIncentivado = new List<string>();
-                                                        percNIncentivado.Add(exitNotes[i][k]["vBC"]);
-                                                        percNIncentivado.Add(exitNotes[i][k]["pFCP"]);
-                                                        percNIncentivado.Add(exitNotes[i][k]["vFCP"]);
-
-                                                        percentuaisNIncentivado.Add(percNIncentivado);
-                                                    }
-                                                    else
-                                                    {
-                                                        percentuaisNIncentivado[pos][0] = (Convert.ToDecimal(percentuaisNIncentivado[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
-                                                        percentuaisNIncentivado[pos][2] = (Convert.ToDecimal(percentuaisNIncentivado[pos][2]) + Convert.ToDecimal(exitNotes[i][k]["vFCP"])).ToString();
-                                                    }
-
-                                                    debitoNIncentivo += (Convert.ToDecimal(exitNotes[i][k]["vFCP"]));
-                                                }
-                                            }
-
-                                        }
-                                    }
-
 
                                     List<List<string>> valoresIncentivo = new List<List<string>>();
 

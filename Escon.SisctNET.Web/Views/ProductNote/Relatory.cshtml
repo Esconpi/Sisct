@@ -44,7 +44,7 @@
     <div class="box-body">
 
         <div style="width:100%;padding:2px;">
-            @if (ViewBag.Type == "Geral" || ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST")
+            @if (ViewBag.Type == "Geral" || ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type != "ProdutoFI")
             {
                 @if (ViewBag.Type == "Geral")
                 {
@@ -58,11 +58,15 @@
                 {
                     @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type != "ProdutoFI")
+                {
+                    
+                }
             }
 
             @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" ||
-                ViewBag.Type == "ProdutoFP" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" && (ViewBag.Type != "Geral" &&
-                ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
+            ViewBag.Type == "ProdutoFP" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" && (ViewBag.Type != "Geral" &&
+            ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
             {
                 <table class="table" style="font-size:8px; border: 2px solid;">
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
@@ -87,23 +91,23 @@
 
 
             @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-                ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-                ViewBag.Type != "IcmsST"))
+            ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
+            ViewBag.Type != "IcmsST"))
             {
                 @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
 
             }
 
             @if ((ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-                ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-                ViewBag.Type != "IcmsST")) && ViewBag.TypeTaxation != "Isento")
+            ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
+            ViewBag.Type != "IcmsST")) && ViewBag.TypeTaxation != "Isento")
             {
                 @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
 
             }
 
             @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
-                (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP")
+            (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
             {
                 @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                 {
@@ -118,41 +122,51 @@
                 }
 
             }
-        </div>            
+        </div>
 
     </div>
 
-    <div class="box-footer no-print">
-        <div class="barcode" style="font-size:15px;">
-            10540558000113
-        </div>
-        <div class="pull-left">
-            <i class="fa fa-warning"></i>
-            <span id="responseMessageGenerateBillet" style="font-style:italic;color:red;">Ao clicar no botão ao lado o documento DAR será gerado e o boleto enviado para o cliente.</span>
+    @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+    {
+        <div class="box-footer no-print">
+            <div class="barcode" style="font-size:15px;">
+                10540558000113
+            </div>
+            <div class="pull-left">
+                <i class="fa fa-warning"></i>
+                <span id="responseMessageGenerateBillet" style="font-style:italic;color:red;">Ao clicar no botão ao lado o documento DAR será gerado e o boleto enviado para o cliente.</span>
+            </div>
+
+            @await Html.PartialAsync("_ButtonGenerateBillet", new ViewDataDictionary(ViewData))
+
         </div>
 
-        @await Html.PartialAsync("_ButtonGenerateBillet", new ViewDataDictionary(ViewData))
+    }
 
-    </div>
 
 </div>
-<br />
-<br />
-<div class="box box-warning no-print" style="margin:-10px;">
-    <div class="box-header">
-        <div class="box-title">
-            <i class="fa fa-list"></i>
-            DAR Gerados
-        </div>
-    </div>
-    <div class="box-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="responseBarCodeGenerateBillet" style="padding:15px;">
 
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+{
+    <br />
+    <br />
+    <div class="box box-warning no-print" style="margin:-10px;">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa fa-list"></i>
+                DAR Gerados
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="responseBarCodeGenerateBillet" style="padding:15px;">
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-   
+}
+
+

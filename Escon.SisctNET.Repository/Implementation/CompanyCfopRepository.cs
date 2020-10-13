@@ -27,9 +27,16 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<CompanyCfop> FindByCfopBonificacao(string company, Log log = null)
+        public List<CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(8)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(4)).ToList();
             AddLog(log);
             return result;
         }

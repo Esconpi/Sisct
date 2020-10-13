@@ -3509,6 +3509,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.NNotes = nnotes;
 
                 }
+                else if (type.Equals(Model.Type.ProdutoFI))
+                {
+                    products = products.Where(_ => !_.TaxationTypeId.Equals(5) && !_.TaxationTypeId.Equals(6) && !_.TaxationTypeId.Equals(7)).ToList();
+                }
 
                 ViewBag.IcmsStNoteS = icmsStnoteSIE;
                 ViewBag.IcmsStNoteI = icmsStnoteIE;

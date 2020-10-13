@@ -23,6 +23,8 @@ namespace Escon.SisctNET.Repository
 
         List<Model.CompanyCfop> FindByCfopTransferencia(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopBonificacao(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null);
     }
 }

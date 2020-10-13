@@ -38,9 +38,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<CompanyCfop> FindByCfopBonificacao(string company, Log log = null)
+        public List<CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null)
         {
-            return _repository.FindByCfopBonificacao(company, log);
+            return _repository.FindByCfopBonificacaoCompra(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null)
+        {
+            return _repository.FindByCfopBonificacaoVenda(company, log);
         }
 
         public List<CompanyCfop> FindByCfopCompra(string company, Log log = null)

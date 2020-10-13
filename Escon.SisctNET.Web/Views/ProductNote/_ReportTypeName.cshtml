@@ -2,7 +2,7 @@
 
 @if (ViewBag.Type == "ProdutoFP")
 {
-    <strong>Produtos sem preço de referência &nbsp;</strong>
+    <strong>Produtos Sem Preço de Referência &nbsp;</strong>
 }
 @if (ViewBag.Type == "AgrupadoA")
 {
@@ -21,7 +21,9 @@
     <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
 }
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP")
+
+
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
@@ -53,6 +55,10 @@
     }
 }
 
+@if (ViewBag.Type == "ProdutoFI")
+{   
+    <strong>Produtos Fora do Incentivo</strong>
+}
 
 @if (ViewBag.Type == "ProdutoI")
 {
