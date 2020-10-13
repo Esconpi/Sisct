@@ -3562,19 +3562,29 @@ namespace Escon.SisctNET.Web.Controllers
                 return Ok(new { code = 200, response = messageResponse });
 
             }
-            
+
             var accessToken = _configurationService.FindByName("TokenAccessDarWs", null);
             if (accessToken == null) return BadRequest(new { code = 400, message = "O token de acesso não foi encontrado na base de dados" });
 
             var organCode = _configurationService.FindByName("CodigoOrgaoDarWs", null);
             if (organCode == null) return BadRequest(new { code = 400, message = "O código do orgão não foi encontrado na base de dados" });
 
-            var dueDate = _configurationService.FindByName("DiasVencimentoBoletoDarWs", null);
+            //O vencimento do boleto deve ser até dia 15 de todo mês, caso seja feriado ou final de semana, voltar para o dia útil anterior
+            var dueDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15);
+            if (dueDate.DayOfWeek == DayOfWeek.Sunday)
+                dueDate = dueDate.AddDays(-2);
+            else if (dueDate.DayOfWeek == DayOfWeek.Saturday)
+                dueDate = dueDate.AddDays(-1);
+
+            if (requestBarCode.Vencimento.HasValue)
+                dueDate = requestBarCode.Vencimento.Value;
+
             if (organCode == null) return BadRequest(new { code = 400, message = "A date de vencimento para o boleto não foi encontrado na base de dados" });
 
             var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => x.RecipeCode);
             var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 
+            var ie = _companyService.FindByDocument(requestBarCode.CpfCnpjIE);
             foreach (var item in recipeCode)
             {
                 try
@@ -3599,20 +3609,22 @@ namespace Escon.SisctNET.Web.Controllers
                         .Sum(x => Convert.ToDecimal(x.Value))
                         .ToString();
 
-                    //Chama web services para criar o Dar
-                    var response = await _integrationWsDar.GetBarCodePdfAsync(new IntegrationDarService.solicitarCodigoBarrasPDFRequest()
+                    var response = await _integrationWsDar.RequestDarIcmsAsync(new IntegrationDarService.solicitarDarIcmsRequest()
                     {
                         codigoOrgao = organCode.Value,
                         codigoReceita = item.Key,
-                        cpfCnpjIE = requestBarCode.CpfCnpjIE,
-                        dataVencimento = DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy"),
+                        dataPagamento = dueDate.ToString("dd/MM/yyyy"),
+                        dataVencimento = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"),
+                        inscricao = ie.Ie,
                         numeroDocumento = requestBarCode.PeriodoReferencia,
                         periodoReferencia = requestBarCode.PeriodoReferencia,
+                        substitoTributo = "0",
+                        taxaEmissao = "0",
                         tokenAcesso = accessToken.Value,
                         valorTotal = valueTotal
                     });
 
-                    if (response.MessageType.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.Message });
+                    if (response.TipoRetorno.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.MensagemRetorno });
 
                     var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot/Billets");
                     if (!System.IO.Directory.Exists(dirOutput))
@@ -3621,7 +3633,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
                     var fileOutput = System.IO.Path.Combine(dirOutput, fileName);
 
-                    System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.Base64));
+                    System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.BoletoBytes));
 
                     //Cancelar caso já existe o documento na base de dados
                     var darDc = await _darDocumentService
@@ -3646,19 +3658,19 @@ namespace Escon.SisctNET.Web.Controllers
                     //Gera novo Dar
                     var darDoc = _darDocumentService.Create(new DarDocument()
                     {
-                        BarCode = response.BarCode,
-                        ControlNumber = int.Parse(response.ControlNumber),
-                        Message = response.Message,
+                        BarCode = response.CodigoBarras,
+                        ControlNumber = int.Parse(response.NumeroControle),
+                        Message = response.MensagemRetorno,
                         Created = DateTime.Now,
-                        DigitableLine = response.DigitableLine,
-                        DocumentNumber = long.Parse($"{response.DocumentNumber}{item.Key}"),
-                        MessageType = response.MessageType,
+                        DigitableLine = response.LinhaDigitavel,
+                        DocumentNumber = long.Parse($"{response.NumeroDocumento}{item.Key}"),
+                        MessageType = response.TipoRetorno,
                         Updated = DateTime.Now,
                         CompanyId = SessionManager.GetCompanyIdInSession(),
                         DarId = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id,
                         PaidOut = false,
                         PeriodReference = Convert.ToInt32(requestBarCode.PeriodoReferencia),
-                        DueDate = DateTime.Now.AddDays(int.Parse(dueDate.Value)),
+                        DueDate = dueDate,
                         BilletPath = fileName,
                         Canceled = false,
                         Value = Convert.ToDecimal(valueTotal) 
@@ -3667,7 +3679,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //Enviar Email
                     var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description}";
                     var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description} 
-                                  referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {DateTime.Now.AddDays(int.Parse(dueDate.Value)).ToString("dd/MM/yyyy")}";
+                                  referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {dueDate.ToString("dd/MM/yyyy")}";
 
                     var emailFrom = _emailConfiguration.SmtpUsername;
 
@@ -3686,7 +3698,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var recipe = dar.FirstOrDefault(x => x.Code.Equals(item.Key));
                     var recipedesc = recipe.Description;
 
-                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc, barcode = response.BarCode, line = response.DigitableLine, download = fileName });
+                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc, barcode = response.CodigoBarras, line = response.LinhaDigitavel, download = fileName });
                 }
                 catch (Exception ex)
                 {
@@ -3695,7 +3707,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
 
             return Ok(new { code = 200, response = messageResponse });
-
         }
 
         [HttpGet]
