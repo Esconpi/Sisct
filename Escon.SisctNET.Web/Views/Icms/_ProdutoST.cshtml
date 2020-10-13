@@ -1,0 +1,86 @@
+﻿<table class="table" style="font-size:10px; border:1px solid">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                Nº NFe
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Data Emissão
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                UF
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Venda P/
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Código Produto
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Produto
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Cest
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Base de Cálculo
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Fecop
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Base de Cálculo ST
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Icms ST
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Fecop ST
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in ViewBag.Produtos)
+        {
+            @if (produto[13] == "C")
+            {
+                <tr style="border-left:5px solid; border-color:green;">
+                    <td style="border:1px solid;">@produto[0]</td>
+                    <td style="border:1px solid;">@Convert.ToDateTime(produto[1]).ToString("dd/MM/yyyy")</td>
+                    <td style="border:1px solid;">@produto[2]</td>
+                    <td style="border:1px solid;">@produto[3]</td>
+                    <td style="border:1px solid;">@produto[4]</td>
+                    <td style="border:1px solid;">@produto[5]</td>
+                    <td style="border:1px solid;">@produto[6]</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[9].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[10].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[11].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[12].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                </tr>
+            }
+            else
+            {
+                <tr style="border-left:5px solid; border-color:red;">
+                    <td style="border:1px solid;">@produto[0]</td>
+                    <td style="border:1px solid;">@Convert.ToDateTime(produto[1]).ToString("dd/MM/yyyy")</td>
+                    <td style="border:1px solid;">@produto[2]</td>
+                    <td style="border:1px solid;">@produto[3]</td>
+                    <td style="border:1px solid;">@produto[4]</td>
+                    <td style="border:1px solid;">@produto[5]</td>
+                    <td style="border:1px solid;">@produto[6]</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[9].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[10].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[11].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid; text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(@produto[12].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

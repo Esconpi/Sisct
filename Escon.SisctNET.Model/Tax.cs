@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Ano")]
         public string AnoRef { get; set; }
 
-        //ICMS
+        //  ICMS
         public decimal? Vendas { get; set; }
 
         public decimal? VendasNcm { get; set; }
@@ -46,9 +46,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Suspensao { get; set; }
 
-        public decimal? CreditoEntrada { get; set; }
-
-        public decimal? CreditoSaida { get; set; }
+        public decimal? Credito { get; set; }
 
         public decimal? Debito { get; set; }
 
@@ -107,7 +105,12 @@ namespace Escon.SisctNET.Model
         public decimal? SaidaPortInterestadual2 { get; set; }
 
 
-        //PIS e COFINS
+        //  PIS e COFINS
+        public decimal? PisRetido { get; set; }
+
+        public decimal? CofinsRetido { get; set; }
+
+        // Lucro Presumido
         public decimal? Receita1 { get; set; }
 
         public decimal? Receita2 { get; set; }
@@ -126,7 +129,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Devolucao4Entrada { get; set; }
         
-        public decimal? DevolucaoMonoEntrada { get; set; }
+        public decimal? DevolucaoNormalEntrada { get; set; }
 
         public decimal? Devolucao1Saida { get; set; }
 
@@ -136,11 +139,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Devolucao4Saida { get; set; }
 
-        public decimal? DevolucaoMonoSaida { get; set; }
-
-        public decimal? PisRetido { get; set; }
-
-        public decimal? CofinsRetido { get; set; }
+        public decimal? DevolucaoNormalSaida { get; set; }
 
         public decimal? CsllRetido { get; set; }
 
@@ -165,5 +164,45 @@ namespace Escon.SisctNET.Model
         public decimal? IrpjPago { get; set; }
 
         public decimal? CsllPago { get; set; }
+
+        // Lucro Real
+        public decimal? Compra { get; set; }
+
+        public decimal? CompraTI { get; set; }
+
+        public decimal? DevolucaoCompra { get; set; }
+
+        public decimal? Energia { get; set; }
+
+        public decimal? AluguelPredio { get; set; }
+
+        public decimal? AluguelME { get; set; }
+
+        public decimal? DespesasF { get; set; }
+
+        public decimal? DespesasME { get; set; }
+
+        public decimal? DespesasA { get; set; }
+
+        public decimal? SaldoCredorPis { get; set; }
+
+        public decimal? SaldoCredorCofins { get; set; }
+
+        public decimal? Venda { get; set; }
+
+        public decimal? VendaTI { get; set; }
+
+        public decimal? DevolucaoVenda { get; set; }
+
+        public decimal? PrestacaoServico { get; set; }
+
+        public decimal? ReceitaFinanceira { get; set; }
+
+        public decimal? Capital { get; set; }
+
+        public decimal? ReceitaAluguel { get; set; }
+
+        public decimal? Juros { get; set; }
+
     }
 }

@@ -1,0 +1,159 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<table class="table" style="font-size:9px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="9">
+                DADOS
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="9">
+                ENTRADA
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;" rowspan="2">COMPRAS DE MERCADORIAS</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">COMPRAS DE TRATORES E IMPLEMENTOS</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">DEVOLUÇÕES</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">ENERGIA ELÉTRICA</th>
+            <th style="text-align:center;border:1px solid;" colspan="2">ALUGUEL</th>
+            <th style="text-align:center;border:1px solid;" colspan="3">DESPESAS</th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;">PRÉDIOS</th>
+            <th style="text-align:center;border:1px solid;">MAQUINAS E EQUIPAMENTOS</th>
+            <th style="text-align:center;border:1px solid;">FINANCEIRAS/EMP. E FINANCIAMENTOS</th>
+            <th style="text-align:center;border:1px solid;">DEPRECIAÇÃO DE MAQ. E EQUIPAMENTOS</th>
+            <th style="text-align:center;border:1px solid;">DESPESAS/DEPRECIAÇÃO/AMORTIZAÇÃO</th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Compra))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.CompraTI))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoCompra))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Energia))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.AluguelPredio))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.AluguelME))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DespesasF))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DespesasME))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DespesasA))
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="9">
+                SAIDA
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;" rowspan="2">VENDAS DE MERCADORIAS</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">VENDAS DE TRATORES E IMPLEMENTOS</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">DEVOLUÇÕES</th>
+            <th style="text-align:center;border:1px solid;" rowspan="2">PRESTAÇÃO DE SERVIÇOS</th>
+            <th style="text-align:center;border:1px solid;" colspan="5">OUTRAS RECEITAS</th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;">RECEITAS FINANCEIRAS</th>
+            <th style="text-align:center;border:1px solid;">GANHO DE CAPITAL</th>
+            <th style="text-align:center;border:1px solid;">RECEITAS DE ALUGUEL</th>
+            <th style="text-align:center;border:1px solid;" colspan="2">JUROS S/ CAPITAL PRÓPRIO</th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Venda))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaTI))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoVenda))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.PrestacaoServico))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaFinanceira))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Capital))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaAluguel))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Juros))
+                }
+            </td>
+        </tr>
+
+    </tbody>
+</table>

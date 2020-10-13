@@ -1,0 +1,88 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<table class="table" style="font-size:11px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="15">
+                RETENÇÕES
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+                PIS RETIDO
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px" rowspan="2">
+                COFINS RETIDO
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px" colspan="2">
+                CSLL
+            </th>
+            <th style="text-align:center;border:1px solid;" width="80px" colspan="3">
+                IRPJ
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                RETIDO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                FONTE
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                RETIDO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                FONTE SERVIÇOS
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                FONTE APLIC. FINANÇEIRAS
+            </th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.PisRetido))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.CofinsRetido))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.CsllRetido))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.CsllFonte))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjRetido))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjFonteServico))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjFonteFinanceira))
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

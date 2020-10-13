@@ -1,0 +1,57 @@
+﻿<table class="table" style="border: 2px solid;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="3">NOTAS MODELO 55</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                ÚLTIMA NOTA DE UMA SEQUÊNCIA
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                PRIMEIRA NOTA DE OUTRA SEQUÊNCIA
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                QUANTIDADE
+            </th>
+        </tr>
+        @foreach (var note in ViewBag.Notas55)
+        {
+            <tr>
+                <td style="text-align:center;border:1px solid;">@note[0]</td>
+                <td style="text-align:center;border:1px solid;">@note[1]</td>
+                <td style="text-align:center;border:1px solid;">@note[2]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table" style="border: 2px solid;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="3">NOTAS MODELO 65</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                ÚLTIMA NOTA DE UMA SEQUÊNCIA
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                PRIMEIRA NOTA DE OUTRA SEQUÊNCIA
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                QUANTIDADE
+            </th>
+        </tr>
+        @foreach (var note in ViewBag.Notas65)
+        {
+            <tr>
+                <td style="text-align:center;border:1px solid;">@note[0]</td>
+                <td style="text-align:center;border:1px solid;">@note[1]</td>
+                <td style="text-align:center;border:1px solid;">@note[2]</td>
+            </tr>
+        }
+    </tbody>
+</table>

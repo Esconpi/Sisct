@@ -49,30 +49,25 @@
                         </div>
 
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                            <label class="control-label">Opção</label>
-                            <select name="opcao" class="form-control selectoption">
-                                <option value="0">Selecione</option>
-                                <option value="1">NFe</option>
-                                <option value="2">CTe</option>
-                            </select>
+                            <label class="control-label" >Opção</label>
+                            <select name="opcao" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Opcao>()" id="opcao" onchange="ativar_button()"></select>
                         </div>
 
                         <div class="form-group col-lg-5 col-md-5 col-xs-12">
                             <label class="control-label">Tipo</label>
-                            <select name="ordem" id="ordem" class="form-control selectoption">
-                                <option value="xml">XML x SPED</option>
-                                <option value="sped">SPED x XML</option>
-                                <option value="difereValor">DIFERENÇA DE TOTAIS</option>
-                                <option value="sisct">XML x SPED SisCT</option>
-                            </select>
+                            <select name="ordem" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Ordem>()"></select>
                         </div>
                     </div>
 
                   
-                    <div class="row">
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                            <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                            <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" required />
+                    <div class="row"> 
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
+                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <label class="control-label"><strong>Selecione o arquivo Excel</strong></label>
+                            <input type="file" class="form-control" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel" required disabled/>
                         </div>
                     </div>
                     
@@ -88,16 +83,16 @@
 
     </div>
 <script>
-    $("#ordem").on("change", function () {
-        console.log($(this).val());
-        if ($(this).val() == "freteOutroMes") {
-            $('#arquivo').attr('required', false);
+    function ativar_button() {
+        var opcao = document.getElementById("opcao").value;
+
+        if (opcao == "1" || opcao == "2") {
+            document.getElementById("arquivoExcel").disabled = true;
         }
         else {
-            $('#arquivo').attr('required', true);
+            document.getElementById("arquivoExcel").disabled = false;
         }
-    });
-
+    }
 </script>
 
 

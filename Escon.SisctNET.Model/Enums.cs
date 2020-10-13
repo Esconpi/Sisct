@@ -42,11 +42,36 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Produto Incentivado")] ProdutoI = 2,
         [Display(Name = "Produto Não Incentivado")] ProdutoNI = 3,
         [Display(Name = "Produto Fora da Pauta")] ProdutoFP = 4,
-        [Display(Name = "Nota")] Nota = 5,
-        [Display(Name = "Agrupado - Analítico")] AgrupadoA = 6,
-        [Display(Name = "Agrupado - Sintético")] AgrupadoS = 7,
-        [Display(Name = "Resumo Geral")] Geral = 8,
-        [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 9,
-        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 10
+        [Display(Name = "Produto Fora do Incentivo")] ProdutoFI = 5,
+        [Display(Name = "Nota")] Nota = 6,
+        [Display(Name = "Agrupado - Analítico")] AgrupadoA = 7,
+        [Display(Name = "Agrupado - Sintético")] AgrupadoS = 8,
+        [Display(Name = "Resumo Geral")] Geral = 9,
+        [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 10,
+        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 11
+    }
+
+    public enum Opcao
+    {
+        [Display(Name = "NFe")] NFe = 1,
+        [Display(Name = "CTe")] CTe = 2,
+        [Display(Name = "Planilha")] Planilha = 3
+    }
+
+    public enum Ordem
+    {
+        [Display(Name = "XML x SPED")] Xml = 1,
+        [Display(Name = "SPED x XML")] Sped = 2,
+        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 3,
+        [Display(Name = "XML x SPED SisCT")] SisCT = 4,
+        [Display(Name = "Excel x SPED")] Malha = 5
+    }
+
+    public enum Archive
+    {
+        [Display(Name = "NFe Xml")] XmlNFe = 1,
+        [Display(Name = "CTe Xml")] XmlCTe = 2,
+        [Display(Name = "NFe Sped")] SpedNFe = 3,
+        [Display(Name = "CTe Sped")] SpedCTe = 4
     }
 }

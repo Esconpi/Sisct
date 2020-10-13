@@ -4,26 +4,26 @@ namespace Escon.SisctNET.Web.Period
 {
     public class Bimestre
     {
-        public List<string> Months(string mesTrimestre)
+        public List<string> Months(string mes)
         {
             List<string> meses = new List<string>();
 
-            if (mesTrimestre.Equals("Março"))
+            if (mes.Equals("Março"))
             {
                 meses.Add("Janeiro");
                 meses.Add("Fevereiro");
             }
-            else if (mesTrimestre.Equals("Junho"))
+            else if (mes.Equals("Junho"))
             {
                 meses.Add("Abril");
                 meses.Add("Maio");
             }
-            else if (mesTrimestre.Equals("Setembro"))
+            else if (mes.Equals("Setembro"))
             {
                 meses.Add("Julho");
                 meses.Add("Agosto");
             }
-            else if (mesTrimestre.Equals("Dezembro"))
+            else if (mes.Equals("Dezembro"))
             {
                 meses.Add("Outubro");
                 meses.Add("Novembro");

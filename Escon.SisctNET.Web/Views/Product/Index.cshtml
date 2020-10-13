@@ -22,7 +22,7 @@
                 Novo Produto
             </a>
             <a asp-action="Import" class="btn btn-primary">
-                <i class="fa fa-file-excel-o"></i>
+                <i class="fa fa-cloud-upload"></i>
                 Importar Produtos
             </a>
         </div>
@@ -103,7 +103,7 @@
                 {
                     "mData": "price",
                     "mRender": function (data, type, row) {
-                        return ConvertToCurrencyReal(data);
+                        return data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.')
                     }
                 },
                 { "data": "unity" },

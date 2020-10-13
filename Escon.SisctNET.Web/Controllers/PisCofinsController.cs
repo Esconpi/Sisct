@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
@@ -41,7 +40,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult RelatoryExit(int id, string year, string month,string trimestre, string type)
+        public IActionResult Relatory(int id, string year, string month,string trimestre, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -51,6 +50,11 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
+
+                if (comp.CountingTypeId == null)
+                {
+                    throw new Exception("Escolha o Tipo da Empresa");
+                }
 
                 ViewBag.Year = year;
                 ViewBag.Month = month;
@@ -62,7 +66,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);
-                var importPeriod = new Period.Trimestre();
+                var import = new Period.Trimestre();
 
                 string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -70,10 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Type = type;
                 ViewBag.Trimestre = trimestre;
 
-                if (comp.CountingTypeId == null)
-                {
-                    throw new Exception("Escolha o Tipo da Empresa");
-                }
 
                 if (type.Equals("resumoncm"))
                 {
@@ -86,7 +86,6 @@ namespace Escon.SisctNET.Web.Controllers
                     List<string> ncmMono = new List<string>();
                     List<string> ncmNormal = new List<string>();
                     List<List<string>> resumoNcm = new List<List<string>>();
-                    List<int> ncms = new List<int>();
 
                     var ncmsAll = _ncmService.FindAll(null);
 
@@ -143,7 +142,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         ncmTemp.Add("0");
                                         ncmTemp.Add("0");
                                         resumoNcm.Add(ncmTemp);
-                                        ncms.Add(Convert.ToInt32(nn.Code));
                                         pos = resumoNcm.Count() - 1;
                                     }
 
@@ -209,32 +207,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    ncms.Sort();                    
 
-                    List<List<string>> resumoNcmOrdenado = new List<List<string>>();
-
-                    for (int i = 0; i < ncms.Count(); i++)
-                    {
-                        int pos = 0;
-                        for (int j = 0; i < resumoNcm.Count(); j++)
-                        {
-                            if (ncms[i] == Convert.ToInt32(resumoNcm[j][0]))
-                            {
-                                pos = j;
-                                break;
-                            }
-                        }
-
-                        List<string> cc = new List<string>();
-                        cc.Add(resumoNcm[pos][0]);
-                        cc.Add(resumoNcm[pos][1]);
-                        cc.Add(resumoNcm[pos][2]);
-                        cc.Add(resumoNcm[pos][3]);
-                        cc.Add(resumoNcm[pos][4]);
-                        resumoNcmOrdenado.Add(cc);
-                    }
-
-                    ViewBag.Ncm = resumoNcmOrdenado;
+                    ViewBag.Ncm = resumoNcm.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                     ViewBag.ValorProduto = valorProduto;
                     ViewBag.ValorPis = valorPis;
                     ViewBag.ValorCofins = valorCofins;
@@ -270,7 +244,7 @@ namespace Escon.SisctNET.Web.Controllers
                             devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida),
                             devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida),
                             devolucaoServico = Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida),
-                            devolucaoMono = Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida),
+                            devolucaoMono = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida),
                             reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
 
@@ -377,11 +351,13 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        var meses = importPeriod.Months(trimestre);
-                        List<List<string>> impostos = new List<List<string>>();
+                        var mesesTrimestre = import.Months(trimestre);
 
-                        decimal irpj1Total = 0, irpj2Total = 0, irpj3Total = 0, irpj4Total = 0, irpjFonteServico = 0, irpjFonteAF = 0,
-                          csll1Total = 0, csll2Total = 0, csll3Total = 0, csll4Total = 0, csllFonte = 0,
+                        List<List<string>> impostosTrimestre = new List<List<string>>();
+                        List<List<string>> impostosBimestre = new List<List<string>>();
+
+                        decimal irpj1Total = 0, irpj2Total = 0, irpj3Total = 0, irpj4Total = 0, irpjFonteServico = 0, irpjFonteAF = 0, irpjPagoTotal = 0,
+                          csll1Total = 0, csll2Total = 0, csll3Total = 0, csll4Total = 0, csllFonte = 0, csllPagoTotal = 0,
                           capitalIM = 0, bonificacao = 0, receitaAF = 0;
 
                         decimal receitaPetroleo = 0, receitaComercio = 0, receitaTransporte = 0, receitaServico = 0,
@@ -392,7 +368,7 @@ namespace Escon.SisctNET.Web.Controllers
                             csllApuradoTotal = 0, csllRetidoTotal = 0, irpjApuradoTotal = 0, irpjRetidoTotal = 0,
                             cprbAPagarTotal = 0, reducaoIcmsTotal = 0;
 
-                        foreach (var m in meses)
+                        foreach (var m in mesesTrimestre)
                         {
                             var imp = _taxService.FindByMonth(id, m, year);
 
@@ -411,7 +387,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal devolucao3 = (Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida));
                             decimal devolucao4 = (Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida));
                             decimal devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4;
-                            decimal devolucaoNormal = devolucoes - (Convert.ToDecimal(imp.DevolucaoMonoEntrada) + Convert.ToDecimal(imp.DevolucaoMonoSaida));
+                            decimal devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida);
                             decimal reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
                             // PIS E COFINS
@@ -438,6 +414,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal csll4 = (baseCalcCsllIrpj4 * percentualCsll2 / 100);
                             decimal csllApurado = ((csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
                             decimal csllRetido = Convert.ToDecimal(imp.CsllRetido);
+                            decimal csllPago = Convert.ToDecimal(imp.CsllPago);
 
                             //IRPJ
                             decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1);
@@ -450,6 +427,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal irp4 = (baseCalcCsllIrpj4 * percentualIrpj4 / 100);
                             decimal irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100;
                             decimal irpjRetido = Convert.ToDecimal(imp.IrpjRetido);
+                            decimal irpjPago = Convert.ToDecimal(imp.IrpjPago);
 
                             //CPRB
                             decimal cprbAPagar = (baseCalcPisCofins * Convert.ToDecimal(comp.CPRB)) / 100;
@@ -493,6 +471,7 @@ namespace Escon.SisctNET.Web.Controllers
                             csll3Total += csll3;
                             csll4Total += csll4;
                             csllFonte += Convert.ToDecimal(imp.CsllFonte);
+                            csllPagoTotal += csllPago;
 
                             //IRPJ
                             irpjApuradoTotal += irpjApurado;
@@ -503,6 +482,7 @@ namespace Escon.SisctNET.Web.Controllers
                             irpj4Total += irp4;
                             irpjFonteServico += Convert.ToDecimal(imp.IrpjFonteServico);
                             irpjFonteAF += Convert.ToDecimal(imp.IrpjFonteFinanceira);
+                            irpjPagoTotal += irpjPago;
 
                             //CPRB
                             cprbAPagarTotal += cprbAPagar;
@@ -535,11 +515,14 @@ namespace Escon.SisctNET.Web.Controllers
                             imposto.Add(cofinsAPagar.ToString());
                             imposto.Add(csllApurado.ToString());
                             imposto.Add(csllRetido.ToString());
+                            imposto.Add(csllPago.ToString());
                             imposto.Add(irpjApurado.ToString());
                             imposto.Add(irpjRetido.ToString());
+                            imposto.Add(irpjPago.ToString());
                             imposto.Add(cprbAPagar.ToString());
-                            impostos.Add(imposto);
+                            impostosTrimestre.Add(imposto);
                         }
+
 
                         // IRPJ
                         decimal irpjSubTotal = irpj1Total + irpj2Total + irpj3Total + irpj4Total;
@@ -554,15 +537,15 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 100;
                         decimal totalIrpj = irpjNormal + adicionalIrpj;
-                        decimal irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal;
+                        decimal irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal - irpjPagoTotal;
 
                         // CSLL
                         decimal csllTotal = csll1Total + csll2Total + csll3Total + csll4Total;
                         decimal baseCalcCsll = csllTotal + capitalIM + bonificacao + receitaAF;
                         decimal csllNormal = baseCalcCsll * Convert.ToDecimal(comp.PercentualCSLL) / 100;
-                        decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal;
+                        decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal - csllPagoTotal;
 
-                        ViewBag.Impostos = impostos;
+                        ViewBag.Impostos = impostosTrimestre;
                         ViewBag.ReceitaPetroleo = receitaPetroleo;
                         ViewBag.ReceitaComercio = receitaComercio;
                         ViewBag.ReceitaTransporte = receitaTransporte;
@@ -612,6 +595,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.IrpjFonteServico = irpjFonteServico;
                         ViewBag.IrpjFonteAF = irpjFonteAF;
                         ViewBag.IrpjAPagar = irpjAPagar;
+                        ViewBag.IrpjPago = irpjPagoTotal;
 
                         // CSLL
                         ViewBag.Csll1 = csll1Total;
@@ -623,6 +607,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.CsllNormal = csllNormal;
                         ViewBag.CsllFonte = csllFonte;
                         ViewBag.CsllAPagar = csllAPagar;
+                        ViewBag.CsllPago = csllPagoTotal;
 
                         List<decimal> values = new List<decimal>();
 

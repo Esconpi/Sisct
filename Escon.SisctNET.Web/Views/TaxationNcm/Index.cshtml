@@ -9,11 +9,7 @@
     <div class="box-header">
         <a asp-controller="TaxationNcm" asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
-        <div class="btn-group pull-right">
-            @Html.ActionLink(" Importar", "Sicronize", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
-                                   new { onclick = "return confirm('Os arquivos estão na pasta ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
-        </div>
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Name - @ViewBag.Document</strong>
         </div>
@@ -40,13 +36,8 @@
                             @Html.DisplayNameFor(model => model.Ncm.Description)
                         </th>
                         <th>
-                            Tipo Receita
-                        </th>
-                        <th>
                             Tipo Tributação
                         </th>
-                        <th>@Html.DisplayNameFor(model => model.DateStart)</th>
-                        <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -55,6 +46,25 @@
         </div>
     </div>
     <div class="box-footer"></div>
+</div>
+
+<div class="modal modal_default fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><strong>Detalhe da Tributação</strong></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -66,6 +76,14 @@
                     $('.showProduct').off();
                     $('[data-toggle="tooltip"]').tooltip();
                     $("input[type='checkbox']").bootstrapToggle();
+                    $('.showDetails').click(function () {
+                        $.get('/TaxationNcm/Details/' + $(this).attr('id'), function (html) {
+                            $('#formShow .modal-body').empty();
+                            $('#formShow .modal-body').append($(html));
+                            $('#formShow').modal('show');
+                        });
+
+                    });
                 },
                 "processing": true,
                 "ordering": false,
@@ -92,7 +110,6 @@
                     { "data": "codeProd" },
                     { "data": "code" },
                     { "data": "description" },
-                    { "data": "tipoNcm" },
                     {
                         "mData": "type",
                         "mRender": function (data, type, row) {
@@ -108,31 +125,10 @@
                         }
                     },
                     {
-                        "mData": "inicio",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
-                            }
-                            else {
-                                return data
-                            }
-                        }
-                    },
-                    {
-                        "mData": "fim",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
-                            }
-                            else {
-                                return data
-                            }
-                        }
-                    },
-                    {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
+                            return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> "+
+                                    "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
                         }
                     }
                 ]

@@ -38,24 +38,44 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<CompanyCfop> FindByCfopActive(int companyId, string type, string typeCfop, Log log = null)
+        public List<CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null)
         {
-            return _repository.FindByCfopActive(companyId, type, typeCfop);
+            return _repository.FindByCfopBonificacaoCompra(company, log);
         }
 
-        public List<CompanyCfop> FindByCfopBonificacao(string company, Log log = null)
+        public List<CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null)
         {
-            return _repository.FindByCfopBonificacao(company, log);
+            return _repository.FindByCfopBonificacaoVenda(company, log);
         }
 
-        public List<CompanyCfop> FindByCfopDevolucao(string company, Log log = null)
+        public List<CompanyCfop> FindByCfopCompra(string company, Log log = null)
         {
-            return _repository.FindByCfopDevolucao(company, log);
+            return _repository.FindByCfopCompra(company, log);
         }
 
-        public List<CompanyCfop> FindByCfopVendas(string company, Log log = null)
+        public List<CompanyCfop> FindByCfopDevoCompra(string company, Log log = null)
         {
-            return _repository.FindByCfopVendas(company, log);
+            return _repository.FindByCfopDevoCompra(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopDevoVenda(string company, Log log = null)
+        {
+            return _repository.FindByCfopDevoVenda(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopTransferencia(string company, Log log = null)
+        {
+            return _repository.FindByCfopTransferencia(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopVenda(string company, Log log = null)
+        {
+            return _repository.FindByCfopVenda(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopVendaST(string company, Log log = null)
+        {
+            return _repository.FindByCfopVendaST(company, log);
         }
 
         public List<CompanyCfop> FindByCompany(int companyId, Log log = null)

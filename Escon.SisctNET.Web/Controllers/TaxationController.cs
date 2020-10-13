@@ -35,22 +35,13 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindByCompany(id);
+                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Company = company.SocialName;
+                ViewBag.Document = company.Document;
+                SessionManager.SetCompanyIdInSession(id);
+                return View(null);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByCompany(id);
-                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Company = company.SocialName;
-                    ViewBag.Document = company.Document;
-                    SessionManager.SetCompanyIdInSession(id);
-                    return View(null);
-                }
-               
             }
             catch(Exception ex)
             {

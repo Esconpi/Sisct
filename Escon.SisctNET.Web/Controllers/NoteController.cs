@@ -56,27 +56,17 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Id = comp.Id;
+                ViewBag.Year = year;
+                ViewBag.Month = month;
+                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Document = comp.Document;
+                ViewBag.Status = comp.Status;
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Id = comp.Id;
-                    ViewBag.Year = year;
-                    ViewBag.Month = month;
-                    ViewBag.SocialName = comp.SocialName;
-                    ViewBag.Document = comp.Document;
-                    ViewBag.Status = comp.Status;
-
-                    var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
-                    ViewBag.Count = result.Count();
-                    return View(result);
-                }
-
+                var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
+                ViewBag.Count = result.Count();
+                return View(result);
             }
             catch (Exception ex)
             {
