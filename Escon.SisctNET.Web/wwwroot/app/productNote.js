@@ -3,8 +3,25 @@ function GenerateBillet() {
 
     try {
 
+        var dueDate;
+
         var isSend = confirm('O boleto do DAR será enviado para o cliente. Deseja continuar:');
         if (!isSend) return;
+
+        if (new Date().getDate() > 15) {
+            var promptResponse = prompt('Informe a data de vencimento do boleto');
+
+            if (!isDDMMYYYY(promptResponse)) {
+                alert('Data com o formato inválido.');
+                return;
+            }
+
+            if (!ValidateDate(promptResponse)) {
+                return;
+            }
+
+            dueDate = promptResponse;
+        }
 
         $('#responseBarCodeGenerateBillet').empty();
 
@@ -23,7 +40,8 @@ function GenerateBillet() {
             CpfCnpjIE: $('#CpfCnpjIE').val(),
             ValorTotal: $('#ValorTotal').val(),
             PeriodoReferencia: $('#PeriodoReferencia').val(),
-            RecipeCodeValues: recipeCode
+            RecipeCodeValues: recipeCode,
+            Vencimento: dueDate === null ? null : ConvertDateToJson(dueDate)
         }
 
         $.ajax({
@@ -116,6 +134,46 @@ $(document).ready(function () {
     });
 
     setTimeout(LoadBillets(), 2000);
-   
 
 });
+
+function isDDMMYYYY(str) {
+    var date_regex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+    return date_regex.test(str);
+}
+
+function ConvertDateToJson(dtString) {
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    if (dtString !== null) {
+        var partDate = dtString.split('/');
+        dd = partDate[0];
+        mm = partDate[1];
+        yyyy = partDate[2];
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}
+
+function ValidateDate(strDate) {
+
+    var dd = parseInt(strDate.split('/')[0]);
+    var mm = parseInt(strDate.split('/')[1]);
+    var yy = parseInt(strDate.split('/')[2]);
+
+    var currentDate = new Date();
+    var settedDate = new Date(yy, (mm - 1), dd);
+    var dueDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 15);
+
+    if (settedDate < dueDate) {
+        alert('A data de vencimento não pode ser inferior ao dia 15 do mês corrente');
+        return false;
+    }
+
+    return true;
+}

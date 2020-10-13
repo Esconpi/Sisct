@@ -1,4 +1,6 @@
-﻿namespace Escon.SisctNET.Web.ViewsModel
+﻿using System;
+
+namespace Escon.SisctNET.Web.ViewsModel
 {
     public class RequestBarCode
     {
@@ -18,6 +20,11 @@
         /// Tipo de tributação
         /// </summary>
         public string TypeTaxation { get; set; }
+
+        /// <summary>
+        /// Vencimento do boleto quando a data for maior que dia 15
+        /// </summary>
+        public DateTime? Vencimento { get; set; }
 
         /// <summary>
         /// Documentos que devem ser gerados
