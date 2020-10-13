@@ -1037,11 +1037,9 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra)
+        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             decimal totalDeCredito = 0;
-            decimal t = 0;
             StreamReader archiveSped = new StreamReader(directorySped);
             string line, tipo = "";
             try
@@ -1051,10 +1049,6 @@ namespace Escon.SisctNET.Web.Sped
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    /*if (linha[1].Equals("C170") && cfopsDevo.Contains(linha[11]) && linha[10].Equals("000") && !linha[15].Equals(""))
-                    {
-                            totalDeCredito += Convert.ToDecimal(linha[15]);
-                    }*/
 
                     if (linha[1].Equals("C100"))
                     {
@@ -1062,33 +1056,14 @@ namespace Escon.SisctNET.Web.Sped
                         cfop = false;
                     }
 
-                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3])) && !linha[7].Equals(""))
+                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) || cfopsBonifi.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
-                        t += Convert.ToDecimal(linha[6]);
                         cfop = true;
-                        /*if (cfopsDevo.Contains(linha[3]))
-                        {
-                            if (!linha[4].Equals(""))
-                            {
-                                if (Convert.ToDecimal(linha[4]).Equals(17))
-                                {
-                                    totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
-                                }
-                            }
-                        }*/
-
-                        /*if (!linha[4].Equals(""))
-                        {
-                            if (Convert.ToDecimal(linha[4]).Equals(17))
-                            {
-                                totalDeCredito += ((1 * Convert.ToDecimal(linha[6])) / 100);
-                            }
-                        }*/
 
                     }
 
-                    if (linha[1].Equals("C191") && cfop == true)
+                    if (linha[1].Equals("C191") && cfop == true && tipo == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[2]);
                     }
@@ -1112,6 +1087,7 @@ namespace Escon.SisctNET.Web.Sped
                         {
                             totalDeCredito += Convert.ToDecimal(linha[7]);
                         }
+
                     }
                     
 
