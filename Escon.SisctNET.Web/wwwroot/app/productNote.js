@@ -3,7 +3,7 @@ function GenerateBillet() {
 
     try {
 
-        var dueDate;
+        var dueDate = null;
 
         var isSend = confirm('O boleto do DAR será enviado para o cliente. Deseja continuar:');
         if (!isSend) return;
