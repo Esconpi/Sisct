@@ -14,6 +14,8 @@
                             <tr>
                                 <th>Número da Nota</th>
                                 <th>Fornecedor</th>
+                                <th>UF</th>
+                                <th>Dia/Mês</th>
                                 <th>Valor da Nota</th>
                             </tr>
                         </thead>
@@ -21,6 +23,8 @@
                             <tr style="font-weight:normal;">
                                 <td>@note.Nnf</td>
                                 <td>@note.Xnome</td>
+                                <td>@note.Uf</td>
+                                <td>@Convert.ToDateTime(note.Dhemi).ToString("dd/MM")</td>
                                 <td>@string.Format("{0:N}", Convert.ToDecimal(note.Vnf))</td>
                             </tr>
                         </tbody>
@@ -35,11 +39,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nota</th>
                                 <th>Produto</th>
-                                <th>UF</th>
-                                <th>Dia/Mês</th>
-                                <th>V. Nota</th>
                                 <th>V. Produto</th>
                                 <th>Frete Nº</th>
                                 <th>V. Frete</th>
@@ -65,11 +65,7 @@
                                         {
                                             <td><strong>I</strong></td>
                                         }
-                                        <td>@item.Nnf</td>
                                         <td>@item.Xprod</td>
-                                        <td>@item.Note.Uf</td>
-                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro)
                                            + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                                         <td>@item.Note.Nct</td>
@@ -105,6 +101,8 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                             <tr>
                                 <th>Número da Nota</th>
                                 <th>Fornecedor</th>
+                                <th>UF</th>
+                                <th>Dia/Mês</th>
                                 <th>Valor da Nota</th>
                             </tr>
                         </thead>
@@ -112,6 +110,8 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                             <tr style="font-weight:normal;">
                                 <td>@note.Nnf</td>
                                 <td>@note.Xnome</td>
+                                <td>@note.Uf</td>
+                                <td>@Convert.ToDateTime(note.Dhemi).ToString("dd/MM")</td>
                                 <td>@string.Format("{0:N}", Convert.ToDecimal(note.Vnf))</td>
                             </tr>
                         </tbody>
@@ -128,10 +128,7 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nota</th>
                                 <th>Produto</th>
-                                <th>Dia/Mês</th>
-                                <th>V. <br /> Nota</th>
                                 <th>V. <br /> Produto</th>
                                 <th>Frete Nº</th>
                                 <th>V. <br /> Frete</th>
@@ -145,9 +142,9 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                 }
                                 <th>Aliq Int(%)</th>
                                 <th>V. <br /> Imp. AC</th>
-                                <th>Nfe</th>
-                                <th>CTe</th>
+                                <th>ICMS</th>
                                 <th>ICMS  <br />ST NFe</th>
+                                <th>Fecop  <br />ST NFe</th>
                                 <th>Total <br /> ICMS</th>
                                 <th>Total <br /> Fecop</th>
                                 <th></th>
@@ -169,10 +166,7 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                             <td style="font-size:10px"><strong>I</strong></td>
                                         }
 
-                                        <td>@item.Nnf</td>
                                         <td>@item.Xprod</td>
-                                        <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) 
                                            - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                                         <td>@item.Note.Nct</td>
@@ -187,9 +181,9 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         }
                                         <td>@item.Aliqinterna</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
                                         @if (item.Pautado == true)

@@ -1108,8 +1108,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             List<decimal> Devolucoes = new List<decimal>();
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -1222,8 +1220,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedNfe(string directorySped)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             List<List<string>> spedNfe = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             string line;
@@ -1260,7 +1256,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedNfeSaida(string directorySped)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<List<string>> spedNf = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
 
@@ -1295,7 +1290,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedDif(string directorySped)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<List<string>> sped = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
 
@@ -1336,7 +1330,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<string> SpedCte(string directorySped)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             List<string> sped = new List<string>();
             StreamReader archiveSped = new StreamReader(directorySped);
 
@@ -1366,8 +1359,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedNfe(string directorySped, string tipo)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             List<List<string>> spedNfe = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             string line;
@@ -1403,8 +1394,6 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<List<string>> SpedCte(string directorySped, string tipo)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             List<List<string>> spedNfe = new List<List<string>>();
             StreamReader archiveSped = new StreamReader(directorySped);
             string line;

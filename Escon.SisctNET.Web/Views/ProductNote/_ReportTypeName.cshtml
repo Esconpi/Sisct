@@ -1,9 +1,6 @@
 ﻿<br />
 
-@if (ViewBag.Type == "ProdutoFP")
-{
-    <strong>Produtos Sem Preço de Referência &nbsp;</strong>
-}
+
 @if (ViewBag.Type == "AgrupadoA")
 {
     <strong>Agrupado - Analítico &nbsp;</strong>
@@ -20,7 +17,6 @@
 {
     <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
 }
-
 
 
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
@@ -55,19 +51,28 @@
     }
 }
 
-@if (ViewBag.Type == "ProdutoFI")
-{   
-    <strong>Produtos Fora do Incentivo</strong>
-}
 
 @if (ViewBag.Type == "ProdutoI")
 {
     <strong>&nbsp;Produto Incentivado</strong>
 }
+
 @if (ViewBag.Type == "ProdutoNI")
 {
     <strong>&nbsp;Produto Não Incentivado</strong>
 }
+
+
+@if (ViewBag.Type == "ProdutoFP")
+{
+    <strong>Produtos Sem Preço de Referência</strong>
+}
+
+@if (ViewBag.Type == "ProdutoFI")
+{
+    <strong>Produtos Fora do Incentivo (Exceto ST)</strong>
+}
+
 @if (ViewBag.Type == "GNRE")
 {
     <strong>GNRE de Fornecedor sem Inscrição Estadual</strong>

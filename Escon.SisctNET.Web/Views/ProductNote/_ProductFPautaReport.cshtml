@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
 
 <thead>
-    <tr>
-        <th>Cod Produto</th>
+    <tr style="font-size:12px;">
+        <th>Cod. Produto</th>
         <th>Produto</th>
         <th>Ncm</th>
         <th>Fornecedor</th>
@@ -10,9 +10,9 @@
     </tr>
 </thead>
 <tbody>
-    @foreach (var item in ViewBag.product)
+    @foreach (var item in Model)
     {
-        <tr>
+        <tr style="font-size:10px;">
             <td>@item.Cprod</td>
             <td>@item.Xprod</td>
             <td>@item.Ncm</td>
