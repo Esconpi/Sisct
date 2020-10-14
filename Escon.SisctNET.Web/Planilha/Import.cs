@@ -26,7 +26,6 @@ namespace Escon.SisctNET.Web.Planilha
                     product.Add(rd[1].ToString());
                     product.Add(rd[2].ToString());
                     product.Add(rd[3].ToString());
-                    product.Add(rd[4].ToString());
                     products.Add(product);
                 }
 

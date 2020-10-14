@@ -202,6 +202,16 @@ namespace Escon.SisctNET.Web.Sped
 
                     }
 
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("1"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
                     if (linha[1].Equals("C170") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
                     {
                         string textoC170 = "";
@@ -426,6 +436,26 @@ namespace Escon.SisctNET.Web.Sped
                         }
                     }
 
+                    if (linha[1].Equals("C170") && tipoOperacao.Equals("0") && emissao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("C170") && tipoOperacao.Equals("1"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
                     if (linha[1].Equals("C190") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
                     {
                         string textoC190 = "";
@@ -485,7 +515,18 @@ namespace Escon.SisctNET.Web.Sped
                         sped.Add(textoC190);
                     }
 
-                    if (!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190"))
+                    if (linha[1].Equals("C190") && tipoOperacao.Equals("1"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190") &&
+                        !linha[1].Equals("D100") && !linha[1].Equals("D190"))
                     {
                         linha = line.TrimEnd('|').Split('|');
                         string texto = "";
@@ -496,7 +537,17 @@ namespace Escon.SisctNET.Web.Sped
                         sped.Add(texto);
                     }
 
-                    if (tipoOperacao.Equals("1"))
+                    if (linha[1].Equals("D100"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("D190"))
                     {
                         string texto = "";
                         foreach (var l in linha)
@@ -990,7 +1041,8 @@ namespace Escon.SisctNET.Web.Sped
 
                     }
 
-                    if (!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190") && !linha[1].Equals("D100") && !linha[1].Equals("D190"))
+                    if (!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190") && 
+                        !linha[1].Equals("D100") && !linha[1].Equals("D190"))
                     {
                         linha = line.TrimEnd('|').Split('|');
                         string texto = "";
