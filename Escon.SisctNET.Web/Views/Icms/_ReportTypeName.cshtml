@@ -28,7 +28,7 @@ else if (ViewBag.Type == "suspensao")
         <strong>Suspensão: </strong> <br />
         @foreach (var p in ViewBag.Periodos)
         {
-            <p>@p[1] à @p[2]</p>
+            <p>@Convert.ToDateTime(p[1]).ToString("dd/MM/yyyy hh:mm:ss") à @Convert.ToDateTime(p[2]).ToString("dd/MM/yyyy hh:mm:ss")</p>
         }
     </div>
 }

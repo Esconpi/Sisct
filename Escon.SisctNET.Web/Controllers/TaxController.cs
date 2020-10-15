@@ -685,18 +685,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-                            // Vendas 
+                            // Notas Suspensãp
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
+
                                 if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
                                 {
                                     exitNotes.RemoveAt(i);
                                     continue;
                                 }
-
-                                int posClienteRaiz = contContribuintesRaiz - 1, posCliente = -1;
-
-                                bool status = false, suspenso = false, cfop = false;
+                                bool suspenso = false, cfop = false;
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
@@ -710,6 +708,36 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
+                                for (int k = 0; k < exitNotes[i].Count(); k++)
+                                {
+                                    if (exitNotes[i][k].ContainsKey("CFOP"))
+                                    {
+                                        if (cfopsTransf.Contains(exitNotes[i][k]["CFOP"]) || cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) ||
+                                            cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                        {
+                                            cfop = true;
+                                        }
+                                    }
+
+                                    if (exitNotes[i][k].ContainsKey("vNF"))
+                                    {
+                                        if (suspenso == true && cfop == true)
+                                        {
+                                            totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                            // Vendas 
+                            for (int i = exitNotes.Count - 1; i >= 0; i--)
+                            {
+                                int posClienteRaiz = contContribuintesRaiz - 1, posCliente = -1;
+
+                                bool status = false, cfop = false;
+                               
                                 if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("IE") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][1]["mod"].Equals("55"))
                                 {
                                     string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "escon";
@@ -761,7 +789,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][k].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                        if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) ||
+                                            cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -784,11 +813,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vProd"])).ToString();
                                             }
-
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd"))
@@ -803,10 +827,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (posCliente >= 0)
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vFrete"])).ToString();
-                                            }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
                                             }
                                         }
 
@@ -823,10 +843,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][k]["vDesc"])).ToString();
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd"))
@@ -841,10 +857,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (posCliente >= 0)
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vOutro"])).ToString();
-                                            }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
                                             }
                                         }
 
@@ -861,10 +873,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vSeg"])).ToString();
 
-                                            }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
                                             }
                                         }
                                     }
@@ -883,10 +891,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vProd"])).ToString();
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd"))
@@ -900,10 +904,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (posCliente >= 0)
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vFrete"])).ToString();
-                                            }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
                                             }
                                         }
 
@@ -919,10 +919,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][k]["vDesc"])).ToString();
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd"))
@@ -937,10 +933,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vOutro"])).ToString();
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
-                                            }
+
                                         }
 
                                         if (exitNotes[i][k].ContainsKey("vSeg") && exitNotes[i][k].ContainsKey("cProd"))
@@ -956,10 +949,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                 resumoCnpjs[posClienteRaiz, 1] = (Convert.ToDecimal(resumoCnpjs[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][k]["vSeg"])).ToString();
 
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
-                                            }
                                         }
                                     }
 
@@ -970,20 +959,6 @@ namespace Escon.SisctNET.Web.Controllers
                             // Transferência Saida
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
-                                bool suspenso = false;
-
-                                if (exitNotes[i][1].ContainsKey("dhEmi"))
-                                {
-                                    foreach (var suspension in suspensions)
-                                    {
-                                        if (Convert.ToDateTime(exitNotes[i][1]["dhEmi"]) >= Convert.ToDateTime(suspension.DateStart) && Convert.ToDateTime(exitNotes[i][1]["dhEmi"]) < Convert.ToDateTime(suspension.DateEnd))
-                                        {
-                                            suspenso = true;
-                                            break;
-                                        }
-                                    }
-                                }
-
                                 int posClienteRaiz = contContribuintesRaiz - 1;
 
                                 if (exitNotes[i][3].ContainsKey("CNPJ"))
@@ -1016,11 +991,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                            }
-
+                                         
                                             if (exitNotes[i][1]["idDest"].Equals("2"))
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
@@ -1034,10 +1005,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
 
-                                            }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                             }
 
                                             if (exitNotes[i][1]["idDest"].Equals("2"))
@@ -1054,10 +1021,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
 
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                            }
 
                                             if (exitNotes[i][1]["idDest"].Equals("2"))
                                             {
@@ -1073,10 +1036,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
 
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                            }
+                                           
                                             if (exitNotes[i][1]["idDest"].Equals("2"))
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
@@ -1091,10 +1051,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
 
                                             }
-                                            if (suspenso == true)
-                                            {
-                                                totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                            }
+                                           
                                             if (exitNotes[i][1]["idDest"].Equals("2"))
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);

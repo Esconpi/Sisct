@@ -312,7 +312,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var import = new Import();
 
                 List<List<string>> products = new List<List<string>>();
-                products = import.Product(caminhoDestinoArquivoOriginal);
+                products = import.Products(caminhoDestinoArquivoOriginal);
 
                 List<Model.Product2> addProduct = new List<Model.Product2>();
                 List<Model.Product2> updateProduct = new List<Model.Product2>();

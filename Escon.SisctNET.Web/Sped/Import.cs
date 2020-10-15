@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Escon.SisctNET.Web.Sped
 {
@@ -36,8 +37,6 @@ namespace Escon.SisctNET.Web.Sped
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             List<List<string>> cfops = new List<List<string>>();
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, icmsRetidoST = 0,
                 valorNotaNF = 0 , vBCNF = 0, vICMSNF = 0, vBCNota = 0, vICMSNota = 0;
             int posC100 = -1;
@@ -48,7 +47,7 @@ namespace Escon.SisctNET.Web.Sped
 
             notes = importXml.Nfe(directoryNfe);
 
-            StreamReader archiveSped = new StreamReader(directorySped);
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             try
             {
@@ -64,7 +63,7 @@ namespace Escon.SisctNET.Web.Sped
                         numero = linha[8];
                     }
 
-                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0"))
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
                     {
                         string textoC100 = "";
                         valorNota = 0;
@@ -200,6 +199,16 @@ namespace Escon.SisctNET.Web.Sped
                             sped.Add(textoC100);
                         }
 
+                    }
+
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0") && emissao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
                     }
 
                     if (linha[1].Equals("C100") && tipoOperacao.Equals("1"))
@@ -581,8 +590,6 @@ namespace Escon.SisctNET.Web.Sped
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             List<List<string>> cfops = new List<List<string>>();
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
             decimal valorNota = 0, ipiNota = 0, descontoNota = 0, outrasDespesasNota = 0, freteNota = 0, seguroNota = 0, icmsRetidoST = 0,
                 valorNotaNF = 0, vBCNF = 0, vICMSNF = 0, vBCNota = 0, vICMSNota = 0;
             int posC100 = -1;
@@ -593,7 +600,7 @@ namespace Escon.SisctNET.Web.Sped
 
             notes = importXml.Nfe(directoryNfe);
 
-            StreamReader archiveSped = new StreamReader(directorySped);
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             try
             {
@@ -614,7 +621,7 @@ namespace Escon.SisctNET.Web.Sped
                         tipoOperacao = linha[2];
                     }
 
-                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0"))
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
                     {
                         string textoC100 = "";
                         valorNota = 0;
@@ -750,6 +757,16 @@ namespace Escon.SisctNET.Web.Sped
                             sped.Add(textoC100);
                         }
 
+                    }
+
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0") && emissao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
                     }
 
                     if (linha[1].Equals("C170") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
@@ -981,6 +998,16 @@ namespace Escon.SisctNET.Web.Sped
                         }
                     }
 
+                    if (linha[1].Equals("C170") && tipoOperacao.Equals("0") && emissao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
                     if (linha[1].Equals("C190") && tipoOperacao.Equals("0") && !emissao.Equals("0"))
                     {
                         string textoC190 = "";
@@ -1092,8 +1119,11 @@ namespace Escon.SisctNET.Web.Sped
         public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi)
         {
             decimal totalDeCredito = 0;
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
             string line, tipo = "";
+
             try
             {
 
@@ -1179,9 +1209,10 @@ namespace Escon.SisctNET.Web.Sped
 
             decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
-            StreamReader archiveSped = new StreamReader(directorySped);
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1273,8 +1304,11 @@ namespace Escon.SisctNET.Web.Sped
         public List<List<string>> SpedNfe(string directorySped)
         {
             List<List<string>> spedNfe = new List<List<string>>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1309,9 +1343,11 @@ namespace Escon.SisctNET.Web.Sped
         public List<List<string>> SpedNfeSaida(string directorySped)
         {
             List<List<string>> spedNf = new List<List<string>>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1343,7 +1379,8 @@ namespace Escon.SisctNET.Web.Sped
         public List<List<string>> SpedDif(string directorySped)
         {
             List<List<string>> sped = new List<List<string>>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             string line;
 
@@ -1383,9 +1420,11 @@ namespace Escon.SisctNET.Web.Sped
         public List<string> SpedCte(string directorySped)
         {
             List<string> sped = new List<string>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1412,8 +1451,11 @@ namespace Escon.SisctNET.Web.Sped
         public List<List<string>> SpedNfe(string directorySped, string tipo)
         {
             List<List<string>> spedNfe = new List<List<string>>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
@@ -1447,8 +1489,11 @@ namespace Escon.SisctNET.Web.Sped
         public List<List<string>> SpedCte(string directorySped, string tipo)
         {
             List<List<string>> spedNfe = new List<List<string>>();
-            StreamReader archiveSped = new StreamReader(directorySped);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
             string line;
+
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)

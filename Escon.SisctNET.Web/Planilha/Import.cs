@@ -6,7 +6,7 @@ namespace Escon.SisctNET.Web.Planilha
 {
     public class Import
     {
-        public List<List<string>> Product(string directoryPlanilha)
+        public List<List<string>> Products(string directoryPlanilha)
         {
             List<List<string>> products = new List<List<string>>();
 

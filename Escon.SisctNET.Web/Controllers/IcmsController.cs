@@ -1657,6 +1657,7 @@ namespace Escon.SisctNET.Web.Controllers
                             note.Add("0");
                             note.Add("0");
                             note.Add("0");
+                            note.Add(notes[i][1]["dhEmi"]);
                             resumoNote.Add(note);
                             pos = resumoNote.Count() - 1;
                         }
@@ -1731,13 +1732,12 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("suspensao"))
                 {
-                    List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
-                    List<List<Dictionary<string, string>>> notesTranferencia = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                     List<List<string>> notes = new List<List<string>>();
 
                     var suspensions = _suspensionService.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
 
-                    entryNotes = importXml.Nfe(directoryNfeExit);
+                    exitNotes = importXml.Nfe(directoryNfeExit);
 
                     decimal valorTotal = 0;
 
@@ -1745,22 +1745,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> periodos = new List<List<string>>();
 
-                    for (int i = entryNotes.Count - 1; i >= 0; i--)
+                    for (int i = exitNotes.Count - 1; i >= 0; i--)
                     {
 
-                        if (!entryNotes[i][2]["CNPJ"].Equals(comp.Document))
+                        if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
                         {
-                            entryNotes.RemoveAt(i);
+                            exitNotes.RemoveAt(i);
                             continue;
                         }
                         List<string> note = new List<string>();
                         bool suspenso = false, cfop = false;
 
-                        if (entryNotes[i][1].ContainsKey("dhEmi"))
+                        if (exitNotes[i][1].ContainsKey("dhEmi"))
                         {
                             foreach (var suspension in suspensions)
                             {
-                                if (Convert.ToDateTime(entryNotes[i][1]["dhEmi"]) >= Convert.ToDateTime(suspension.DateStart) && Convert.ToDateTime(entryNotes[i][1]["dhEmi"]) < Convert.ToDateTime(suspension.DateEnd))
+                                if (Convert.ToDateTime(exitNotes[i][1]["dhEmi"]) >= Convert.ToDateTime(suspension.DateStart) && Convert.ToDateTime(exitNotes[i][1]["dhEmi"]) < Convert.ToDateTime(suspension.DateEnd))
                                 {
 
                                     bool existe = false;
@@ -1778,8 +1778,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         List<string> periodo = new List<string>();
                                         periodo.Add(suspension.Id.ToString());
-                                        periodo.Add(Convert.ToDateTime(suspension.DateStart).ToString("dd/MM/yyyy"));
-                                        periodo.Add(Convert.ToDateTime(suspension.DateEnd).ToString("dd/MM/yyyy"));
+                                        periodo.Add(Convert.ToDateTime(suspension.DateStart).ToString("dd/MM/yyyy hh:mm:ss"));
+                                        periodo.Add(Convert.ToDateTime(suspension.DateEnd).ToString("dd/MM/yyyy hh:mm:ss"));
                                         periodos.Add(periodo);
                                     }
                                     suspenso = true;
@@ -1791,29 +1791,29 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (suspenso == true)
                         {
-                            note.Add(entryNotes[i][1]["natOp"]);
-                            note.Add(entryNotes[i][1]["mod"]);
-                            note.Add(entryNotes[i][1]["nNF"]);
-                            note.Add(Convert.ToDateTime(entryNotes[i][1]["dhEmi"]).ToString("dd/MM/yyyy"));
+                            note.Add(exitNotes[i][1]["natOp"]);
+                            note.Add(exitNotes[i][1]["mod"]);
+                            note.Add(exitNotes[i][1]["nNF"]);
+                            note.Add(exitNotes[i][1]["dhEmi"]);
                         }
 
 
-                        for (int k = 0; k < entryNotes[i].Count(); k++)
+                        for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
-                            if (entryNotes[i][k].ContainsKey("CFOP"))
+                            if (exitNotes[i][k].ContainsKey("CFOP"))
                             {
-                                if (cfops.Contains(entryNotes[i][k]["CFOP"]))
+                                if (cfops.Contains(exitNotes[i][k]["CFOP"]))
                                 {
                                     cfop = true;
                                 }
                             }
 
-                            if (entryNotes[i][k].ContainsKey("vNF"))
+                            if (exitNotes[i][k].ContainsKey("vNF"))
                             {
                                 if (suspenso == true && cfop == true)
                                 {
-                                    note.Add(entryNotes[i][k]["vNF"]);
-                                    valorTotal += Convert.ToDecimal(entryNotes[i][k]["vNF"]);
+                                    note.Add(exitNotes[i][k]["vNF"]);
+                                    valorTotal += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
                                     notes.Add(note);
                                 }
                             }
@@ -1823,7 +1823,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Notes = notes.OrderBy(_ => Convert.ToInt32(_[2])).ToList();
-                    ViewBag.Periodos = periodos;
+                    ViewBag.Periodos = periodos.OrderBy(_ => Convert.ToDateTime(_[1])).ToList();
                     ViewBag.Total = valorTotal;
 
                 }
