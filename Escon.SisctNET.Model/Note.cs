@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Chave")]
         public string Chave { get; set; }
 
-        [Display(Name = "Nota")]
+        [Display(Name = "Nº Nota")]
         public string Nnf { get; set; }
 
         [Display(Name = "Mes")]

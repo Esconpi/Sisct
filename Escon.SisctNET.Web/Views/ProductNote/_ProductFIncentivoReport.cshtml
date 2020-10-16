@@ -13,7 +13,7 @@
     @foreach (var item in Model)
     {
         <tr style="font-size:10px;">
-            <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+            <td>@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
             <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
             <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) 
                    + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>

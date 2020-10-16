@@ -808,9 +808,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var notes = _noteService.FindByNotes(id, year, month);
-                var products = _service.FindByProductsType(notes, typeTaxation).OrderBy(_ => _.Note.Iest).ToList();
-                var notasTaxation = products.Select(_ => _.Note).Distinct().ToList();
-                var notas = products.Select(_ => _.Nnf).Distinct();
+                var products = _service.FindByProductsType(notes, typeTaxation).OrderBy(_ => _.Note.Iest).ThenBy(_ => Convert.ToInt32(_.Note.Nnf)).ToList();
+                var notasTaxation = products.Select(_ => _.Note).Distinct().ToList().OrderBy(_ => _.Iest).ThenBy(_ => Convert.ToInt32(_.Nnf)).ToList();
+                var notas = products.Select(_ => Convert.ToInt32(_.NoteId)).Distinct();
                 var total = _service.FindByTotal(notas.ToList());
                 var notesS = notes.Where(_ => _.Iest == "");
                 var notesI = notes.Where(_ => _.Iest != "");
@@ -934,6 +934,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notesAgrup.Add(icmsApurado.ToString());
                             notesAgrup.Add(notasTaxation[i].Uf);
                             notesAgrup.Add(fecopST.ToString());
+                            notesAgrup.Add(notasTaxation[i].Iest);
 
                             notasAgrup.Add(notesAgrup);
 
@@ -1315,7 +1316,15 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.IcmsPagarIE = Math.Round(diefStIE - icmsStnotaIE,2);
                             ViewBag.IcmsPagarSIE = Math.Round(diefStSIE - icmsStnotaSIE,2);
 
-                            totalDarSTCO += Math.Round(diefStSIE - icmsStnotaSIE, 2);
+                            if(diefStSIE - icmsStnotaSIE > 0)
+                            {
+                                totalDarSTCO += Math.Round(diefStSIE - icmsStnotaSIE, 2);
+                            }
+                            
+                            if ((diefStIE - icmsStnotaIE) > 0)
+                            {
+                                totalDarSTCO += Math.Round(diefStIE - icmsStnotaIE, 2);
+                            }
 
                             base1SIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                             base1SIE += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -1459,6 +1468,11 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
 
                             totalDarFecop += Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
+
+                            if((totalfecop1IE + totalfecop2IE) > 0)
+                            {
+                                totalDarFecop += Math.Round(totalfecop1IE + totalfecop2IE, 2);
+                            }
 
                             //Produto incentivados
                             var productsP = productsAll.Where(_ => _.Incentivo.Equals(true)).ToList();
@@ -1927,9 +1941,9 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                                 //Total Icms
-                                ViewBag.TotalIcms = impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao;
+                                ViewBag.TotalIcms = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo,2);
 
-                                totalDarIcms += (impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao);
+                                totalDarIcms += Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao,2);
                             }
                         }
 
@@ -2046,8 +2060,12 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals(Model.Type.Geral))
                 {
-                    decimal totalDarSTCO = 0, totalDarFecop = 0, totalDarAp = 0, totalDarIm = 0, totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
+                    decimal totalApuradoST = 0, totalApuradoCO = 0, totalApuradoFecop = 0, totalApuradoAP = 0,
+                        totalRecolhidoST = 0, totalRecolhidoAP = 0, totalRecolhidoCO = 0, totalRecolhidoFecop = 0,
+                        totalDarST = 0, totalDarFecop = 0, totalDarAp = 0, totalDarIm = 0, totalDarCO = 0,
+                        totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
                     products = _service.FindByProducts(notes);
+
                     // Substituição Tributária
 
                     decimal totalIcmsFreteSTIE = 0, totalFecop1FreteSTIE = 0, totalFecop2FreteSTIE = 0;
@@ -2123,8 +2141,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsSTIE = icmsStnotaIE;
                     ViewBag.IcmsSTSIE = icmsStnotaSIE;
 
-                    decimal IcmsAPagarSTSIE = Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE);
-                    decimal IcmsAPagarSTIE = Convert.ToDecimal(totalDiefSTIE - icmsStnotaIE);
+                    decimal IcmsAPagarSTSIE = Math.Round(Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE),2);
+                    decimal IcmsAPagarSTIE = Math.Round(Convert.ToDecimal(totalDiefSTIE - icmsStnotaIE),2);
                     ViewBag.IcmsAPagarSTSIE = IcmsAPagarSTSIE;
                     ViewBag.IcmsAPagarSTIE = IcmsAPagarSTIE;
 
@@ -2353,7 +2371,7 @@ namespace Escon.SisctNET.Web.Controllers
                             impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
                             impostoFecop = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Fecop) / 100));
 
-                            totalDarFecop += impostoFecop;
+                            
 
                         }
                         else if(comp.AnnexId.Equals(3))
@@ -2379,10 +2397,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
                                 decimal totalIcmsInternaElencada = totalInternasElencada - icmsPresumidoInternaElencada;
 
-                                totalDarFecop += fecopInternaElencada;
-
-                                impostoIcms += totalIcmsInternaElencada;
-                                impostoFecop += fecopInternaElencada;
+                                totalDarFecop += Math.Round(fecopInternaElencada,2);
+                                impostoIcms += Math.Round(totalIcmsInternaElencada,2);
+                                impostoFecop += Math.Round(fecopInternaElencada,2);
 
                                 // Interestadual
                                 decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
@@ -2544,6 +2561,9 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.ImpostoFecop = impostoFecop;
                         ViewBag.ImpostoIcms = impostoIcms;
 
+                        totalDarFecop += Math.Round(impostoFecop, 2);
+                        totalApuradoFecop += Math.Round(impostoFecop, 2);
+
                         decimal? basefunef = impostoGeral - impostoIcms;
                         ViewBag.BaseFunef = Convert.ToDecimal(basefunef);
                         ViewBag.Funef = comp.Funef;
@@ -2556,8 +2576,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         ViewBag.TaxaFunef = taxaFunef;                       
 
-                        totalDarIcms += impostoIcms;
-                        totalDarFunef += taxaFunef;
+                        totalDarIcms +=  Math.Round(impostoIcms,2);
+                        totalDarFunef += Math.Round(taxaFunef,2);
 
                         if (!comp.AnnexId.Equals(3))
                         {
@@ -2698,9 +2718,9 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             //Total Icms
-                            ViewBag.TotalIcms = impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao;
+                            ViewBag.TotalIcms = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo,2);
 
-                            totalDarIcms += (impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao);
+                            totalDarIcms += Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao , 2);
                         }
                                                 
                     }
@@ -2755,23 +2775,23 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal percentualFunef = Convert.ToDecimal(comp.Funef == null ? 0 : comp.Funef);
                             var totalFunef = Math.Round((baseCalculo * percentualFunef) / 100, 2);
 
-                            totalDarFunef += totalFunef;
+                            totalDarFunef += Math.Round(totalFunef,2);
 
                             //COTAC
                             decimal percentualCotac = Convert.ToDecimal(comp.Cotac == null ? 0 : comp.Cotac);
                             var totalCotac = Math.Round((baseCalculo * percentualCotac) / 100, 2);
 
-                            totalDarCotac += totalCotac;
+                            totalDarCotac += Math.Round(totalCotac,2);
 
                             //Total Funef e Cotac
                             var totalFunefCotac = totalFunef + totalCotac;
 
                             ////Total Imposto
-                            var totalImposto = icmsContribuinteIncentivo + icmsNContribuinteIncentivo + totalFunef + totalCotac;
+                            var totalImposto = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + totalFunef + totalCotac,2);
 
 
                             ////Total Imposto Geral
-                            var totalImpostoGeral = totalImposto + icmsNContribuinteForaDoEstado;
+                            var totalImpostoGeral = Math.Round(totalImposto + icmsNContribuinteForaDoEstado,2);
 
                             //// Cálculos dos Totais
                             var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo + vendaCfopSTContribuintesNIncentivo, 2);
@@ -2901,11 +2921,10 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal valorFunef = baseDeCalcFunef * Convert.ToDecimal(comp.Funef) / 100;
                             decimal valorCotac = baseDeCalcFunef * Convert.ToDecimal(comp.Cotac) / 100;
 
-                            totalDarFunef += valorFunef;
-                            totalDarCotac += valorCotac;
+                            totalDarFunef += Math.Round(valorFunef,2);
+                            totalDarCotac += Math.Round(valorCotac,2);
 
-                            var totalImposto = difApuNNormal + valorFunef + valorCotac;
-
+                            var totalImposto = Math.Round(difApuNNormal + valorFunef + valorCotac,2);
 
                             List<List<string>> valoresIncentivo = new List<List<string>>();
                             List<List<string>> valoresNIncentivo = new List<List<string>>();
@@ -2972,9 +2991,49 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    totalDarSTCO += Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE);
-                    totalDarFecop += Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE));
+                    if (Convert.ToDecimal(totalDiefSTSIE) > 0)
+                    {
+                        totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefSTSIE), 2);
+                    }
 
+                    if(Convert.ToDecimal(totalDiefSTIE) > 0)
+                    {
+                        totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefSTIE), 2);
+                    }
+
+                    totalRecolhidoST += Math.Round(Convert.ToDecimal(icmsStnotaSIE + icmsStnotaIE), 2);
+
+                    if (Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE) > 0)
+                    {
+                        totalDarST += Math.Round(Convert.ToDecimal(totalDiefSTSIE - icmsStnotaSIE), 2);
+                    }
+
+                    if (Convert.ToDecimal(totalDiefSTIE - icmsStnotaIE) > 0)
+                    {
+                        totalDarST += Math.Round(Convert.ToDecimal(totalDiefSTIE - icmsStnotaIE), 2);
+                    }
+
+                    if(totalfecopDiefSTSIE > 0)
+                    {
+                        totalApuradoFecop += Math.Round(totalfecopDiefSTSIE, 2);
+                    }
+
+                    if(totalfecopDiefSTIE > 0)
+                    {
+                        totalApuradoFecop += Math.Round(totalfecopDiefSTIE, 2);
+                    }
+
+                    totalRecolhidoFecop += Math.Round(Convert.ToDecimal(icmsFecop1STSIE + icmsFecop2STSIE + icmsFecop1STIE + icmsFecop2STIE));
+
+                    if (Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)) > 0)
+                    {
+                        totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)), 2);
+                    }
+
+                    if (Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) > 0)
+                    {
+                        totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)), 2);
+                    }
 
                     // Antecipação Parcial
                     decimal totalFreteAPIE = 0;
@@ -3011,7 +3070,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? totalApuradoAPIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalApuradoAPSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2);
                     decimal? totalDiefAPSIE = Convert.ToDecimal((totalApuradoAPSIE + totalFreteAPIE) - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE);
-                    decimal? totalDiefAPIE = Convert.ToDecimal(totalApuradoAPIE - icmsStAPIE + gnreNPagaAPIE - gnrePagaAPIE - totalFreteAPIE);
+                    decimal? totalDiefAPIE = Convert.ToDecimal(totalApuradoAPIE + gnreNPagaAPIE - icmsStAPIE - gnrePagaAPIE - totalFreteAPIE);
                     int? qtdAPSIE = products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count();
                     int? qtdAPIE = products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count();
 
@@ -3040,8 +3099,27 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarAPSIE = IcmsAPagarAPSIE;
                     ViewBag.IcmsAPagarAPIE = IcmsAPagarAPIE;
 
-                    totalDarAp += IcmsAPagarAPSIE;
+                    if (Convert.ToDecimal(totalDiefAPSIE) > 0)
+                    {
+                        totalApuradoAP += Math.Round(Convert.ToDecimal(totalDiefAPSIE), 2);
+                    }
 
+                    if (Convert.ToDecimal(totalDiefAPIE) > 0)
+                    {
+                        totalApuradoAP += Math.Round(Convert.ToDecimal(totalDiefAPIE), 2);
+                    }
+
+                    totalRecolhidoAP += Math.Round(icmsAPnotaSIE + icmsAPnotaIE, 2);
+
+                    if (IcmsAPagarAPSIE > 0)
+                    {
+                        totalDarAp += Math.Round(IcmsAPagarAPSIE, 2);
+                    }
+
+                    if (IcmsAPagarAPIE > 0)
+                    {
+                        totalDarAp += Math.Round(IcmsAPagarAPIE, 2);
+                    }
 
                     // Consumo
                     decimal totalFreteCOIE = 0;
@@ -3107,7 +3185,27 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarCOSIE = IcmsAPagarCOSIE;
                     ViewBag.IcmsAPagarCOIE = IcmsAPagarCOIE;
 
-                    totalDarSTCO += IcmsAPagarCOSIE;
+                    if (totalDiefCOSIE > 0)
+                    {
+                        totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCOSIE),2);
+                    }
+
+                    if(totalDiefCOIE > 0)
+                    {
+                        totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCOIE), 2);
+                    }
+
+                    totalRecolhidoCO += Math.Round(icmsCOnotaSIE + icmsCOnotaIE,2);
+
+                    if (IcmsAPagarCOSIE > 0)
+                    {
+                        totalDarCO += Math.Round(IcmsAPagarCOSIE, 2);
+                    }
+
+                    if (IcmsAPagarCOIE > 0)
+                    {
+                        totalDarCO += Math.Round(IcmsAPagarCOIE, 2);
+                    }
 
 
                     // Consumo para Revenda
@@ -3159,9 +3257,26 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarCORSIE = IcmsAPagarCORSIE;
                     ViewBag.IcmsAPagarCORIE = IcmsAPagarCORIE;
 
-                    totalDarSTCO += IcmsAPagarCORSIE;
+                    if (totalDiefCORSIE > 0)
+                    {
+                        totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCORSIE), 2);
+                    }
 
+                    if (totalDiefCORIE > 0)
+                    {
+                        totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCORIE), 2);
+                    }
 
+                    if (IcmsAPagarCORSIE > 0)
+                    {
+                        totalDarCO += Math.Round(IcmsAPagarCORSIE, 2);
+                    }
+
+                    if (IcmsAPagarCORIE > 0)
+                    {
+                        totalDarCO += Math.Round(IcmsAPagarCORIE, 2);
+                    }
+                    
                     // Imobilizado
                     decimal totalFreteIMIE = 0;
 
@@ -3226,7 +3341,15 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarIMSIE = IcmsAPagarIMSIE;
                     ViewBag.IcmsAPagarIMIE = IcmsAPagarIMIE;
 
-                    totalDarIm += IcmsAPagarIMSIE;
+                    if (IcmsAPagarIMSIE > 0)
+                    {
+                        totalDarIm += Math.Round(IcmsAPagarIMSIE,2);
+                    }
+
+                    if (IcmsAPagarIMIE > 0)
+                    {
+                        totalDarIm += Math.Round(IcmsAPagarIMIE, 2);
+                    }
 
 
                     // Antecipação Total
@@ -3288,8 +3411,8 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal? icmsStATSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.IcmsST).Sum()), 2);
                     decimal? totalApuradoATIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2);
                     decimal? totalApuradoATSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2);
-                    decimal? totalDiefATSIE = (totalApuradoATSIE + totalFreteATIE) - icmsStATSIE;
-                    decimal? totalDiefATIE = totalApuradoATIE - icmsStATIE;
+                    decimal? totalDiefATSIE = (totalApuradoATSIE + totalFreteATIE);
+                    decimal? totalDiefATIE = totalApuradoATIE;
                     int? qtdATSIE = products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Count();
                     int? qtdATIE = products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Count();
 
@@ -3303,8 +3426,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalDiefATSIE = totalDiefATSIE;
                     ViewBag.TotalDiefATIE = totalDiefATIE;
 
-                    decimal IcmsAPagarATSIE = Convert.ToDecimal(totalDiefATSIE);
-                    decimal IcmsAPagarATIE = Convert.ToDecimal(totalDiefATIE);
+                    decimal IcmsAPagarATSIE = Convert.ToDecimal(totalDiefATSIE - icmsStATSIE);
+                    decimal IcmsAPagarATIE = Convert.ToDecimal(totalDiefATIE - icmsStATIE) ;
                     ViewBag.IcmsAPagarATSIE = IcmsAPagarATSIE;
                     ViewBag.IcmsAPagarATIE = IcmsAPagarATIE;
 
@@ -3372,8 +3495,49 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFinalFecopCalculadaATIE = Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE));
                     ViewBag.TotalFinalFecopCalculadaATSIE = Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE));
 
-                    totalDarSTCO += IcmsAPagarATSIE;
-                    totalDarFecop += Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE));
+                    if (totalDiefATSIE > 0)
+                    {
+                        totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefATSIE), 2);
+                    }
+
+                    if (totalDiefATIE > 0)
+                    {
+                        totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefATIE), 2);
+                    }
+
+                    totalRecolhidoST += Math.Round(Convert.ToDecimal(icmsStATSIE + icmsStATIE), 2);
+
+                    if (IcmsAPagarATSIE > 0)
+                    {
+                        totalDarST += Math.Round(IcmsAPagarATSIE,2);
+                    }
+
+                    if(IcmsAPagarATIE > 0)
+                    {
+                        totalDarST += Math.Round(IcmsAPagarATIE,2);
+                    }
+
+                    if (totalfecopDiefATSIE > 0)
+                    {
+                        totalApuradoFecop += Math.Round(totalfecopDiefATSIE,2);
+                    }
+
+                    if (totalfecopDiefATIE > 0)
+                    {
+                        totalApuradoFecop += Math.Round(totalfecopDiefATIE, 2);
+                    }
+
+                    totalRecolhidoFecop += Math.Round(Convert.ToDecimal(icmsFecop1ATSIE + icmsFecop2ATSIE + icmsFecop1ATIE + icmsFecop2ATIE), 2);
+
+                    if (Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE)) > 0)
+                    {
+                        totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE)),2);
+                    }
+
+                    if (Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE)) > 0)
+                    {
+                        totalDarFecop += Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE));
+                    }
 
                     // Isento
                     int? qtdIsentoIE = products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(7)).Count();
@@ -3382,14 +3546,29 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.QtdIsentoSIE = qtdIsentoSIE;
 
 
-                    // Somatório Geral
-                    ViewBag.TotalDarSTCO = totalDarSTCO;
+                    //  Somatório Geral
+
+                    // ICMS APURADO
+                    ViewBag.TotalAPuradoST = totalApuradoST;
+                    ViewBag.TotalAPuradoFecop = totalApuradoFecop;
+                    ViewBag.TotalAPuradoAP = totalApuradoAP;
+                    ViewBag.TotalAPuradoCO = totalApuradoCO;
+
+                    // ICMS RECOLHIDO
+                    ViewBag.TotalRecolhidoST = totalRecolhidoST;
+                    ViewBag.TotalRecolhidoFecop = totalRecolhidoFecop;
+                    ViewBag.TotalRecolhidoAP = totalRecolhidoAP;
+                    ViewBag.TotalRecolhidoCO = totalRecolhidoCO;
+
+                    // ICMS A RECOLHER
+                    ViewBag.TotalDarST = totalDarST;
                     ViewBag.TotalDarFecop = totalDarFecop;
                     ViewBag.TotalDarIm = totalDarIm;
                     ViewBag.TotalDarAp = totalDarAp;
                     ViewBag.TotalDarFunef = totalDarFunef;
                     ViewBag.TotalDarIcms = totalDarIcms;
                     ViewBag.TotalDarCotac = totalDarCotac;
+                    ViewBag.TotalDarCO = totalDarCO;
 
                 }
                 else if (type.Equals(Model.Type.GNRE))

@@ -57,27 +57,36 @@
 else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
     ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
 {
-    <thead>
-        <tr style="border:1px solid;">
-            <th>Nota</th>
-            <th>Fornecedor</th>
-            <th>UF</th>
-            <th>Dia/Mês</th>
-            <th>V. Nota</th>
-            <th>V. Produtos</th>
-            <th>Frete Nº</th>
-            <th>V. Frete</th>
-            <th>BC ICMS</th>
-            <th>ICMS ST NFe</th>
-            <th>ICMS Apurado</th>
+<thead>
+    <tr style="border:1px solid;">
+        <th></th>
+        <th>Nota</th>
+        <th>Fornecedor</th>
+        <th>UF</th>
+        <th>Dia/Mês</th>
+        <th>V. Nota</th>
+        <th>V. Produtos</th>
+        <th>Frete Nº</th>
+        <th>V. Frete</th>
+        <th>BC ICMS</th>
+        <th>ICMS ST NFe</th>
+        <th>ICMS Apurado</th>
 
-        </tr>
-    </thead>
+    </tr>
+</thead>
 
     @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
     {
         <tbody style="border:1px solid;">
             <tr style="font-size:11px; border:1px solid;">
+                @if (ViewBag.NotasTaxation[i][21] == "")
+                {
+                    <td><strong>S</strong></td>
+                }
+                else
+                {
+                    <td><strong>I</strong></td>
+                }
                 <td>@ViewBag.NotasTaxation[i][0]</td>
                 <td>@ViewBag.NotasTaxation[i][1]</td>
                 <td>@ViewBag.NotasTaxation[i][19]</td>

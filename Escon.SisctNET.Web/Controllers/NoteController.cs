@@ -382,7 +382,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     try
                                     {
-                                        prod.Nnf = notes[i][1]["nNF"];
                                         prod.Cprod = det["cProd"];
                                         prod.Ncm = NCM;
                                         prod.Cest = CEST;
@@ -526,7 +525,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     try
                                     {
-                                        prod.Nnf = notes[i][1]["nNF"];
                                         prod.Cprod = det["cProd"];
                                         prod.Ncm = NCM;
                                         prod.Cest = CEST;

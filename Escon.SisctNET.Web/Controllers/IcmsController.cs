@@ -834,14 +834,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
                     List<List<Dictionary<string, string>>> notesVenda = new List<List<Dictionary<string, string>>>();
-                    if (comp.AnnexId.Equals(3))
-                    {
-                        notesVenda = importXml.Nfe(directoryNfeExit);
-                    }
-                    else
-                    {
-                        notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
-                    }
+
+                    notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
 
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
@@ -865,6 +859,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
                         {
                             notesVenda.RemoveAt(i);
+                            continue;
                         }
 
                         int pos = 0;
@@ -934,6 +929,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
                                     resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notesVenda[i][j]["vSeg"])).ToString();
                                 }
+
+                                if (notesVenda[i][j].ContainsKey("vICMSST"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vICMSST"]);
+                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notesVenda[i][j]["vICMSST"])).ToString();
+                                }
                             }
                             else
                             {
@@ -961,9 +962,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
                                 }
-                            }
-                        }
 
+                                if (notesVenda[i][j].ContainsKey("vICMSST"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vICMSST"]);
+                                }
+                            }
+                        
+                        }
                     }
 
 
@@ -1012,6 +1018,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (!notesVenda[i][2]["CNPJ"].Equals(comp.Document) || notesVenda[i].Count <= 5)
                         {
                             notesVenda.RemoveAt(i);
+                            continue;
                         }
 
                         string ncm = "", ncmTemp = "";
@@ -1049,6 +1056,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     ncm = notesVenda[i][j]["NCM"];
                                 }
                             }
+
 
                             if (status == false)
                             {
@@ -1105,6 +1113,12 @@ namespace Escon.SisctNET.Web.Controllers
                                         totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
                                     }
 
+                                    if (notesVenda[i][j].ContainsKey("vICMSST"))
+                                    {
+                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notesVenda[i][j]["vICMSST"])).ToString();
+                                        totalVendas += Convert.ToDecimal(notesVenda[i][j]["vICMSST"]);
+                                    }
+
                                 }
 
                             }
@@ -1133,6 +1147,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (notesVenda[i][j].ContainsKey("vSeg") && notesVenda[i][j].ContainsKey("cProd"))
                                 {
                                     totalVendas += Convert.ToDecimal(notesVenda[i][j]["vSeg"]);
+                                }
+
+                                if (notesVenda[i][j].ContainsKey("vICMSST"))
+                                {
+                                    totalVendas += Convert.ToDecimal(notesVenda[i][j]["vICMSST"]);
                                 }
                             }
 

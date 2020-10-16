@@ -12,6 +12,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Número da Nota</th>
                                 <th>Fornecedor</th>
                                 <th>UF</th>
@@ -21,6 +22,14 @@
                         </thead>
                         <tbody>
                             <tr style="font-weight:normal;">
+                                @if (note.Iest == "")
+                                {
+                                    <td><strong>S</strong></td>
+                                }
+                                else
+                                {
+                                    <td><strong>I</strong></td>
+                                }
                                 <td>@note.Nnf</td>
                                 <td>@note.Xnome</td>
                                 <td>@note.Uf</td>
@@ -38,7 +47,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Produto</th>
                                 <th>V. Produto</th>
                                 <th>Frete Nº</th>
@@ -57,14 +65,6 @@
                                 @if (note.Id.Equals(item.NoteId))
                                 {
                                     <tr>
-                                        @if (item.Note.Iest == "")
-                                        {
-                                            <td><strong>S</strong></td>
-                                        }
-                                        else
-                                        {
-                                            <td><strong>I</strong></td>
-                                        }
                                         <td>@item.Xprod</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro)
                                            + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
@@ -99,6 +99,7 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                     <table class="table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Número da Nota</th>
                                 <th>Fornecedor</th>
                                 <th>UF</th>
@@ -108,6 +109,14 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                         </thead>
                         <tbody>
                             <tr style="font-weight:normal;">
+                                @if (note.Iest == "")
+                                {
+                                    <td style="font-size:10px"><strong>S</strong></td>
+                                }
+                                else
+                                {
+                                    <td style="font-size:10px"><strong>I</strong></td>
+                                }
                                 <td>@note.Nnf</td>
                                 <td>@note.Xnome</td>
                                 <td>@note.Uf</td>
@@ -127,7 +136,6 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                     <table class="table">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Produto</th>
                                 <th>V. <br /> Produto</th>
                                 <th>Frete Nº</th>
@@ -156,16 +164,6 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                 @if (note.Id.Equals(item.NoteId))
                                 {
                                     <tr>
-
-                                        @if (item.Note.Iest == "")
-                                        {
-                                            <td style="font-size:10px"><strong>S</strong></td>
-                                        }
-                                        else
-                                        {
-                                            <td style="font-size:10px"><strong>I</strong></td>
-                                        }
-
                                         <td>@item.Xprod</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) 
                                            - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
