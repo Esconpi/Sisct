@@ -101,5 +101,14 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<EmailResponsible> EmailResponsible { get; set; }
 
+        public DbSet<TaxAnexo> TaxAnexos { get; set; }
+
+        public DbSet<CompraAnexo> CompraAnexos { get; set; }
+
+        public DbSet<DevoCliente> DevoClientes { get; set; }
+
+        public DbSet<DevoFornecedor> DevoFornecedors { get; set; }
+
+        public DbSet<VendaAnexo> VendaAnexos { get; set; }
     }
 }

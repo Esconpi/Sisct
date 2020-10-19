@@ -147,6 +147,11 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IBaseRepository, BaseRepository>();
             services.AddScoped<IProduct2Repository, Product2Repository>();
             services.AddScoped<IEmailResponsibleRepository, EmailResponsibleRepository>();
+            services.AddScoped<ITaxAnexoRepository, TaxAnexoRepository>();
+            services.AddScoped<ICompraAnexoRepository, CompraAnexoRepository>();
+            services.AddScoped<IDevoClienteRepository, DevoClienteRepository>();
+            services.AddScoped<IDevoFornecedorRepository, DevoFornecedorRepository>();
+            services.AddScoped<IVendaAnexoRepository, VendaAnexoRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -193,6 +198,11 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IBaseService, BaseService>();
             services.AddScoped<IProduct2Service, Product2Service>();
             services.AddScoped<IEmailResponsibleService, EmailResponsibleService>();
+            services.AddScoped<ITaxAnexoService, TaxAnexoService>();
+            services.AddScoped<ICompraAnexoService, CompraAnexoService>();
+            services.AddScoped<IDevoClienteService, DevoClienteService>();
+            services.AddScoped<IDevoFornecedorService, DevoFornecedorService>();
+            services.AddScoped<IVendaAnexoService, VendaAnexoService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();

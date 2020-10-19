@@ -2060,8 +2060,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals(Model.Type.Geral))
                 {
-                    decimal totalApuradoST = 0, totalApuradoCO = 0, totalApuradoFecop = 0, totalApuradoAP = 0,
-                        totalRecolhidoST = 0, totalRecolhidoAP = 0, totalRecolhidoCO = 0, totalRecolhidoFecop = 0,
+                    decimal totalApuradoST = 0, totalApuradoCO = 0, totalApuradoFecop = 0, totalApuradoAP = 0, totalApuradoIM = 0,
+                        totalRecolhidoST = 0, totalRecolhidoAP = 0, totalRecolhidoCO = 0, totalRecolhidoFecop = 0, totalRecolhidoIM = 0,
                         totalDarST = 0, totalDarFecop = 0, totalDarAp = 0, totalDarIm = 0, totalDarCO = 0,
                         totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
                     products = _service.FindByProducts(notes);
@@ -2371,8 +2371,6 @@ namespace Escon.SisctNET.Web.Controllers
                             impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
                             impostoFecop = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Fecop) / 100));
 
-                            
-
                         }
                         else if(comp.AnnexId.Equals(3))
                         {
@@ -2546,6 +2544,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                         }
 
+                        totalDarFecop += Math.Round(impostoFecop, 2);
+                        totalApuradoFecop += Math.Round(impostoFecop, 2);
+
+                        totalApuradoFecop += Math.Round(impostoFecop, 2);
+
                         decimal icmsGeralNormal = IcmsAPagarSTSIE + IcmsAPagarSTIE;
                         decimal icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum());
                         decimal fecopGeralNomal = Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) + Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE));
@@ -2561,8 +2564,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.ImpostoFecop = impostoFecop;
                         ViewBag.ImpostoIcms = impostoIcms;
 
-                        totalDarFecop += Math.Round(impostoFecop, 2);
-                        totalApuradoFecop += Math.Round(impostoFecop, 2);
+                        
 
                         decimal? basefunef = impostoGeral - impostoIcms;
                         ViewBag.BaseFunef = Convert.ToDecimal(basefunef);
@@ -3341,6 +3343,18 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarIMSIE = IcmsAPagarIMSIE;
                     ViewBag.IcmsAPagarIMIE = IcmsAPagarIMIE;
 
+                    if (Convert.ToDecimal(totalDiefIMSIE) > 0)
+                    {
+                        totalApuradoIM += Math.Round(Convert.ToDecimal(totalDiefIMSIE), 2);
+                    }
+
+                    if (Convert.ToDecimal(totaDiefIMIE) > 0)
+                    {
+                        totalApuradoIM += Math.Round(Convert.ToDecimal(totaDiefIMIE), 2);
+                    }
+
+                    totalRecolhidoIM += Math.Round(icmsIMnotaSIE + icmsIMnotaIE,2);
+
                     if (IcmsAPagarIMSIE > 0)
                     {
                         totalDarIm += Math.Round(IcmsAPagarIMSIE,2);
@@ -3351,7 +3365,7 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarIm += Math.Round(IcmsAPagarIMIE, 2);
                     }
 
-
+                   
                     // Antecipação Total
                     decimal totalFreteATIE = 0;
 
@@ -3553,12 +3567,14 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalAPuradoFecop = totalApuradoFecop;
                     ViewBag.TotalAPuradoAP = totalApuradoAP;
                     ViewBag.TotalAPuradoCO = totalApuradoCO;
+                    ViewBag.TotalAPuradoIM = totalApuradoIM;
 
                     // ICMS RECOLHIDO
                     ViewBag.TotalRecolhidoST = totalRecolhidoST;
                     ViewBag.TotalRecolhidoFecop = totalRecolhidoFecop;
                     ViewBag.TotalRecolhidoAP = totalRecolhidoAP;
                     ViewBag.TotalRecolhidoCO = totalRecolhidoCO;
+                    ViewBag.TotalRecolhidoIM = totalRecolhidoIM;
 
                     // ICMS A RECOLHER
                     ViewBag.TotalDarST = totalDarST;

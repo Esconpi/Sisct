@@ -80,6 +80,15 @@
                     });
 
                 });
+
+                $('.showSincronize').click(function () {
+                    $.get('HomeExit/Sincronize/' + $(this).attr('id'), function (html) {
+                        $('#formShow .modal-body').empty();
+                        $('#formShow .modal-body').append($(html));
+                        $('#formShow').modal('show');
+                    });
+
+                });
             },
             "processing": true,
             "ordering": false,
@@ -139,6 +148,7 @@
                             "<a href='/ProductIncentivo/Index/" + data + "' class = 'glyphicon glyphicon-tags pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Produto' /> " +
                             "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-user pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cliente' /> " +
                             "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
+                            "<a href='#" + data + "' class = 'showSincronize fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px; color:#BAAD52;' data-toggle='tooltip' data-placement='top' title='Importar Dados Anexo' id='" + row.id + "' /> " +
                             "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
                             "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
 

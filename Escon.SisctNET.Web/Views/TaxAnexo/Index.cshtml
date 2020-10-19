@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong> Dados Anexo</strong></h3>
+        <div class="btn-group pull-right">
+            <a asp-action="Import" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+        </div>
+
+        <div style="width:100%; text-align:center;padding-top:10px;">
+            <strong>@ViewBag.Company  - @ViewBag.Document</strong>
+        </div>
+
+        <br />
+
+        <div style="width:100%; text-align:left; padding-left:1%;">
+            <strong>@ViewBag.Month/@ViewBag.Year</strong>
+        </div>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:10px;">
+
+        </div>
+    </div>
+</div>
