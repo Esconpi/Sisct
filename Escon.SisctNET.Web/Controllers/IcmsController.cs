@@ -28,6 +28,11 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly INcmService _ncmService;
         private readonly ITaxService _taxService;
         private readonly IGrupoService _grupoService;
+        private readonly ITaxAnexoService _taxAnexoService;
+        private readonly ICompraAnexoService _compraAnexoService;
+        private readonly IDevoClienteService _devoClienteService;
+        private readonly IDevoFornecedorService _devoFornecedorService;
+        private readonly IVendaAnexoService _vendaAnexoService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -47,6 +52,11 @@ namespace Escon.SisctNET.Web.Controllers
             INcmService ncmService,
             ITaxService taxService,
             IGrupoService grupoService,
+            ITaxAnexoService taxAnexoService,
+            ICompraAnexoService compraAnexoService,
+            IDevoClienteService devoClienteService,
+            IDevoFornecedorService devoFornecedorService,
+            IVendaAnexoService vendaAnexoService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "NoteExit")
         {
@@ -66,6 +76,11 @@ namespace Escon.SisctNET.Web.Controllers
             _ncmService = ncmService;
             _taxService = taxService;
             _grupoService = grupoService;
+            _taxAnexoService = taxAnexoService;
+            _compraAnexoService = compraAnexoService;
+            _devoClienteService = devoClienteService;
+            _devoFornecedorService = devoFornecedorService;
+            _vendaAnexoService = vendaAnexoService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -104,6 +119,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.SectionId = comp.SectionId;
 
                 var imp = _taxService.FindByMonth(id, month, year);
+                var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
 
                 var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
@@ -1848,6 +1864,11 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("anexoAutoPecas"))
                 {
+                    if (impAnexo == null)
+                    {
+                        throw new Exception("Os dados para calcular Anexo não foram importados");
+                    }
+
                     List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 

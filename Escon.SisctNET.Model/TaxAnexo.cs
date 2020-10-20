@@ -66,11 +66,11 @@ namespace Escon.SisctNET.Model
 
         public decimal? IcmsVenda12 { get; set; }
 
-        public decimal? BaseDevoClienta4 { get; set; }
+        public decimal? BaseDevoCliente4 { get; set; }
 
         public decimal? IcmsDevoCliente4 { get; set; }
 
-        public decimal? BaseDevoClienta12 { get; set; }
+        public decimal? BaseDevoCliente12 { get; set; }
 
         public decimal? IcmsDevoCliente12 { get; set; }
     }

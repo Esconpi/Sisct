@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public void Create(List<CompraAnexo> compraAnexos, Log log = null)
+        {
+            _repository.Create(compraAnexos, log);
+        }
+
         public void Delete(int id, Log log)
         {
             _repository.Delete(id, log);
@@ -38,9 +43,19 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<CompraAnexo> FindByComprasTax(int taxAnexo, Log log = null)
+        {
+            return _repository.FindByComprasTax(taxAnexo, log);
+        }
+
         public CompraAnexo Update(CompraAnexo entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<CompraAnexo> compraAnexos, Log log = null)
+        {
+            _repository.Update(compraAnexos, log);
         }
     }
 }

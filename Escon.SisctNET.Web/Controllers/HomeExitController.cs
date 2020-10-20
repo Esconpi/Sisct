@@ -112,7 +112,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 List<Cfop> list_cfop = _cfopService.FindAll(null);
                 foreach (var cfop in list_cfop)
                 {
@@ -121,8 +121,8 @@ namespace Escon.SisctNET.Web.Controllers
                 list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
                 ViewBag.CfopId = cfops;
-                ViewBag.TypeCompany = result.TypeCompany;
-                return View(result);
+                ViewBag.TypeCompany = comp.TypeCompany;
+                return View(comp);
             }
             catch (Exception ex)
             {

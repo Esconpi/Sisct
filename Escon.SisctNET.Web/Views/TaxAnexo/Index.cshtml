@@ -1,4 +1,5 @@
-﻿
+﻿@model Escon.SisctNET.Model.TaxAnexo
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -27,6 +28,12 @@
     <div class="box-body">
         <div style="width:100%; padding:10px;">
 
+            @if (Convert.ToInt32(ViewBag.Comp.AnnexId) == 1)
+            {
+                @await Html.PartialAsync("_AutoPartsAttachmentEntry", Model, new ViewDataDictionary(ViewData))
+
+                @await Html.PartialAsync("_AutoPartsAttachmentExit", Model, new ViewDataDictionary(ViewData))
+            }
         </div>
     </div>
 </div>

@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public void Create(List<DevoFornecedor> devoFornecedors, Log log = null)
+        {
+            _repository.Create(devoFornecedors, log);
+        }
+
         public void Delete(int id, Log log)
         {
             _repository.Delete(id, log);
@@ -33,6 +38,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<DevoFornecedor> FindByDevoTax(int taxAnexo, Log log = null)
+        {
+            return _repository.FindByDevoTax(taxAnexo, log);
+        }
+
         public DevoFornecedor FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
@@ -41,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public DevoFornecedor Update(DevoFornecedor entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<DevoFornecedor> devoFornecedors, Log log = null)
+        {
+            _repository.Update(devoFornecedors, log);
         }
     }
 }
