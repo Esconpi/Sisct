@@ -56,7 +56,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(function () {
-          
+
                 $('#tblCompanyCfop').DataTable({
                     searchDelay: 300,
                     "fnDrawCallback": function (oSettings) {
@@ -88,22 +88,45 @@
                             }
                         });
 
-                        $("#tblCompanyCfop").on("change", "select", function () {
+
+                        $(".selectoption").select2({
+                            placeholder: 'Selecione um tipo de Cfop',
+                            allowClear: true,
+                            ajax: {
+                                delay: 500,
+                                quietMillis: 10,
+                                cache: false,
+                                dataType: 'json',
+                                type: 'GET',
+                                async: true,
+                                url: '/CfopType/GetAll'
+                            }
+                        });
+
+                        $("#tblCompanyCfop tbody").on("change", ".selectoptiontype", function () {
+                            var companyCfopId = $(this).attr("companyCfopId");
+                            var username = "";
+                            username =  $(this).children("option:selected").text();
+                            var cfopTypeId = $(this).val();
+
+                            $('#loader_' + companyCfopId).css('display', 'block');
                             $.ajax({
                                 url: '@(Url.Action("UpdateCfopType", "CompanyCfop"))',
                                 dataType: 'json',
                                 type: 'post',
                                 contentType: 'application/json',
-                                data: JSON.stringify({ "CompanyCfopId": $(this).attr("CfopTypeId"), "CfopTypeId": $(this).val() }),
+                                async: true,
+                                data: JSON.stringify({ "CompanyCfopId": companyCfopId, "cfopTypeId": cfopTypeId }),
                                 processData: false,
                                 success: function (data, textStatus, jQxhr) {
+
                                 },
                                 error: function (jqXhr, textStatus, errorThrown) {
-                                    alert(errorThrown);
+
                                 }
                             });
                         });
- 
+
                     },
                     "processing": true,
                     "ordering": false,
@@ -151,39 +174,10 @@
                             }
                         },
                         {
-                            "mData": "cfopTypeId",
+                            "mData": "cfopType",
                             "mRender": function (data, type, row) {
-                                if (data == 1) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1' selected>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 2) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2' selected>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 3) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3' selected>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 4) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4' selected>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 5) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5' selected>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 6) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6' selected>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 7) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7' selected>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
-                                else if (data == 8) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='8' selected>Bonificação de Compra</option><option value='3'>Devolução de Compra</option><option value='8'</select>";
-                                }
-                                else if (data == 9) {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9' selected>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option><option value='8'</select>";
-                                }
-                                else
-                                {
-                                     return "<select cfopTypeId='" + row.id + "' name='cfopType' class='form-control selectoption' style='width:100%;'><option value='0' selected>Nenhum</option><option value='1'>Venda</option><option value='5'>Venda ST</option><option value='4'>Bonificação de Venda</option><option value='7'>Devolução de Venda</option><option value='2'>Transferência</option><option value='6'>Compra</option><option value='9'>Compra ST</option><option value='8'>Bonificação de Compra</option><option value='3'>Devolução de Compra</option></select>";
-                                }
+                                return "<select companyCfopId='" + row.id + "' name='cfopTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'></select><span id='span_" + row.id + "' style='font-size:12px;margin-top:-10px;'>" + row.cfopType + "</span>";
+
                             }
                         },
                     ]

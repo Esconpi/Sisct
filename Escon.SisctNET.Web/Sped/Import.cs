@@ -1116,7 +1116,9 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi)
+        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra,
+                                    List<string> cfopsBonifi, List<string> cfopsCompraST, List<string> cfopsTransf,
+                                    List<string> cfopsTransfST)
         {
             decimal totalDeCredito = 0;
 
@@ -1138,7 +1140,9 @@ namespace Escon.SisctNET.Web.Sped
                         cfop = false;
                     }
 
-                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) || cfopsBonifi.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
+                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) || 
+                        cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
+                        || cfopsTransfST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
                         cfop = true;
@@ -1221,7 +1225,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        StreamReader archiveSpedTemp = new StreamReader(directorySped);
+                        StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
                         string lineTemp, tipo = "";
                         try
                         {
@@ -1520,6 +1524,268 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
             return spedNfe;
+        }
+
+        public List<List<List<string>>> SpedInterna(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
+                                                    List<string> cfopsTransf, List<string> cfopsDevo, List<string> ncms)
+        {
+            List<List<List<string>>> spedInterna = new List<List<List<string>>>();
+
+            List<List<string>> spedCompra = new List<List<string>>();
+            List<List<string>> spedDevo = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        bool ncm = false;
+
+                        for (int j = 0; j < ncms.Count(); j++)
+                        {
+                            int tamanho = ncms[j].Length;
+
+                            if (ncms[j].Equals(linha[8].Substring(0, tamanho)))
+                            {
+                                ncm = true;
+                                break;
+                            }
+                        }
+
+                        if (ncm == false)
+                        {
+                            StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+                            string lineTemp, tipo = "";
+
+                            try
+                            {
+                                while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
+                                {
+                                    string[] linhaTemp = lineTemp.Split('|');
+
+                                    if (linhaTemp[1].Equals("C100"))
+                                    {
+                                        tipo = linhaTemp[2];
+                                    }
+
+                                    if (linhaTemp[1].Equals("C170") && tipo == "0" && !linhaTemp[13].Equals("") && !linhaTemp[14].Equals("") && !linhaTemp[15].Equals("") &&
+                                        (cfopsCompra.Contains(linhaTemp[11]) || cfopsBonifi.Contains(linhaTemp[11]) || cfopsTransf.Contains(linhaTemp[11]) ||
+                                        cfopsDevo.Contains(linhaTemp[11])))
+                                    {
+                                        if (linha[2].Equals(linhaTemp[3]))
+                                        {
+                                            int inicio = Convert.ToInt32(linhaTemp[11].Substring(0, 1));
+
+                                            if (inicio == 1)
+                                            {
+                                                if (cfopsCompra.Contains(linhaTemp[11]) || cfopsBonifi.Contains(linhaTemp[11]) || cfopsTransf.Contains(linhaTemp[11]))
+                                                {
+                                                    int pos = -1;
+
+                                                    for (int k = 0; k < spedCompra.Count(); k++)
+                                                    {
+                                                        if (spedCompra[k][1].Equals(linhaTemp[14]))
+                                                        {
+                                                            pos = k;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if (pos < 0)
+                                                    {
+                                                        List<string> sped = new List<string>();
+                                                        sped.Add(linhaTemp[13]);
+                                                        sped.Add(linhaTemp[14]);
+                                                        sped.Add(linhaTemp[15]);
+                                                        spedCompra.Add(sped);
+                                                    }
+                                                    else
+                                                    {
+                                                        spedCompra[pos][0] = (Convert.ToDecimal(spedCompra[pos][0]) + Convert.ToDecimal(linhaTemp[13])).ToString();
+                                                        spedCompra[pos][2] = (Convert.ToDecimal(spedCompra[pos][2]) + Convert.ToDecimal(linhaTemp[15])).ToString();
+                                                    }
+                                                }
+
+                                                if (cfopsDevo.Contains(linhaTemp[11]))
+                                                {
+                                                    int pos = -1;
+
+                                                    for (int k = 0; k < spedDevo.Count(); k++)
+                                                    {
+                                                        if (spedDevo[k][1].Equals(linhaTemp[14]))
+                                                        {
+                                                            pos = k;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if (pos < 0)
+                                                    {
+                                                        List<string> sped = new List<string>();
+                                                        sped.Add(linhaTemp[13]);
+                                                        sped.Add(linhaTemp[14]);
+                                                        sped.Add(linhaTemp[15]);
+                                                        spedDevo.Add(sped);
+                                                    }
+                                                    else
+                                                    {
+                                                        spedDevo[pos][0] = (Convert.ToDecimal(spedDevo[pos][0]) + Convert.ToDecimal(linhaTemp[13])).ToString();
+                                                        spedDevo[pos][2] = (Convert.ToDecimal(spedDevo[pos][2]) + Convert.ToDecimal(linhaTemp[15])).ToString();
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.Out.WriteLine(ex.Message);
+                            }
+                            finally
+                            {
+                                archiveSpedTemp.Close();
+                            }
+                        }
+
+                       
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            spedInterna.Add(spedCompra);
+            spedInterna.Add(spedDevo);
+
+            return spedInterna;
+        }
+
+        public List<List<string>> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<string> ncms)
+        {
+            List<List<string>> spedDevo = new List<List<string>>();
+
+            List<string> devo4 = new List<string>();
+            devo4.Add("0");
+            devo4.Add("0");
+            spedDevo.Add(devo4);
+            List<string> devo12 = new List<string>();
+            devo12.Add("0");
+            devo12.Add("0");
+            spedDevo.Add(devo12);
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        bool ncm = false;
+
+                        for (int j = 0; j < ncms.Count(); j++)
+                        {
+                            int tamanho = ncms[j].Length;
+
+                            if (ncms[j].Equals(linha[8].Substring(0, tamanho)))
+                            {
+                                ncm = true;
+                                break;
+                            }
+                        }
+
+                        if (ncm == false)
+                        {
+                            StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+                            string lineTemp, tipo = "";
+
+                            try
+                            {
+                                while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
+                                {
+                                    string[] linhaTemp = lineTemp.Split('|');
+
+                                    if (linhaTemp[1].Equals("C100"))
+                                    {
+                                        tipo = linhaTemp[2];
+                                    }
+
+                                    if (linhaTemp[1].Equals("C170") && tipo == "0" && !linhaTemp[13].Equals("") && !linhaTemp[14].Equals("") && !linhaTemp[15].Equals("") &&
+                                        cfopsDevo.Contains(linhaTemp[11]))
+                                    {
+                                        if (linha[2].Equals(linhaTemp[3]))
+                                        {
+                                            int inicio = Convert.ToInt32(linhaTemp[11].Substring(0, 1));
+
+                                            if (inicio != 1)
+                                            {
+
+                                                if (Convert.ToDecimal(linhaTemp[14]).Equals(4))
+                                                {
+                                                    spedDevo[0][0] = (Convert.ToDecimal(spedDevo[0][0]) + Convert.ToDecimal(linhaTemp[13])).ToString();
+                                                    spedDevo[0][1] = (Convert.ToDecimal(spedDevo[0][1]) + Convert.ToDecimal(linhaTemp[15])).ToString();
+                                                }
+
+                                                if (Convert.ToDecimal(linhaTemp[14]).Equals(12))
+                                                {
+                                                    spedDevo[1][0] = (Convert.ToDecimal(spedDevo[1][0]) + Convert.ToDecimal(linhaTemp[13])).ToString();
+                                                    spedDevo[1][1] = (Convert.ToDecimal(spedDevo[1][1]) + Convert.ToDecimal(linhaTemp[15])).ToString();
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.Out.WriteLine(ex.Message);
+                            }
+                            finally
+                            {
+                                archiveSpedTemp.Close();
+                            }
+                        }
+
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return spedDevo;
         }
     }
 }

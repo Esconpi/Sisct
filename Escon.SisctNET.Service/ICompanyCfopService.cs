@@ -21,10 +21,18 @@ namespace Escon.SisctNET.Service
 
         List<Model.CompanyCfop> FindByCfopCompra(string company, Log log = null);
 
+        List<Model.CompanyCfop> FindByCfopCompraST(string company, Log log = null);
+
         List<Model.CompanyCfop> FindByCfopTransferencia(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopTransferenciaST(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopOutraSaida(string company, Log log = null);
     }
 }

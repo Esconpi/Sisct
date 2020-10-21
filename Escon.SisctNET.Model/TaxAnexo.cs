@@ -38,9 +38,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? BaseCompra12 { get; set; }
 
-        public decimal? IcmsCompra12 { get; set; }
-
-        public decimal? BaseVenda4 { get; set; }
+        public decimal? IcmsCompra12 { get; set; }        
 
         public decimal? BaseDevoFornecedor4 { get; set; }
 
@@ -56,6 +54,8 @@ namespace Escon.SisctNET.Model
 
 
         //  SAÍDAS
+        public decimal? BaseVenda4 { get; set; }
+
         public decimal? IcmsVenda4 { get; set; }
 
         public decimal? BaseVenda7 { get; set; }

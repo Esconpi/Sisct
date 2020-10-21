@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Editing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +22,8 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IDevoClienteService _devoClienteService;
         private readonly IDevoFornecedorService _devoFornecedorService;
         private readonly IVendaAnexoService _vendaAnexoService;
+        private readonly INoteService _noteService;
+        private readonly IProductNoteService _productNoteService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public TaxAnexoController(
@@ -33,10 +36,12 @@ namespace Escon.SisctNET.Web.Controllers
             IDevoClienteService devoClienteService,
             IDevoFornecedorService devoFornecedorService,
             IVendaAnexoService vendaAnexoService,
+            INoteService noteService,
+            IProductNoteService productNoteService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
              IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "Taxation")
+            : base(functionalityService, "Tax")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
@@ -48,12 +53,14 @@ namespace Escon.SisctNET.Web.Controllers
             _devoClienteService = devoClienteService;
             _devoFornecedorService = devoFornecedorService;
             _vendaAnexoService = vendaAnexoService;
+            _noteService = noteService;
+            _productNoteService = productNoteService;
             _appEnvironment = env;
         }
 
         public IActionResult Index(int id, string year, string month)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -77,17 +84,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (result != null)
                 {
-                    vendas = _vendaAnexoService.FindByVendasTax(result.Id);
-                    devoFornecedors = _devoFornecedorService.FindByDevoTax(result.Id);
-                    compras = _compraAnexoService.FindByComprasTax(result.Id);
-                    devoClientes = _devoClienteService.FindByDevoTax(result.Id);
+                    vendas = _vendaAnexoService.FindByVendasTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
+                    devoFornecedors = _devoFornecedorService.FindByDevoTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
+                    compras = _compraAnexoService.FindByComprasTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
+                    devoClientes = _devoClienteService.FindByDevoTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
                 }
-               
+
 
                 ViewBag.VendasInternas = vendas;
-                ViewBag.DevoClienteInternas = devoClientes;
-                ViewBag.ComprasInternas = compras;
                 ViewBag.DevoFornecedorInternas = devoFornecedors;
+                ViewBag.ComprasInternas = compras;
+                ViewBag.DevoClienteInternas = devoClientes;
 
                 return View(result);
 
@@ -102,7 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int companyid, string year, string month)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -125,7 +132,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(int companyid, string year, string month, string type, IFormFile arquivo)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -146,8 +153,16 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                 List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 
-                var cfopsVenda = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(companyid) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(2) || _.CfopTypeId.Equals(4) || _.CfopTypeId.Equals(5))).Select(_ => _.Cfop.Code).ToList();
-                var cfopsDevo = _companyCfopService.FindAll(null).Where(_ => _.CompanyId.Equals(companyid) && _.Active.Equals(true) && (_.CfopTypeId.Equals(3) || _.CfopTypeId.Equals(7))).Select(_ => _.Cfop.Code).ToList();
+                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
                 var ncms = _ncmConvenioService.FindByAnnex(Convert.ToInt32(comp.AnnexId));
 
@@ -197,6 +212,118 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(stream);
 
                     stream.Close();
+
+                    if (comp.AnnexId.Equals(1))
+                    {
+                        var notes = _noteService.FindByNotes(companyid, year, month);
+                        var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => !_.TaxationType.Type.Equals("ST") && !_.TaxationTypeId.Equals(2)).ToList();
+
+                        decimal baseCalcCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4)).Sum(_ => _.Vbasecalc),
+                                baseCalcCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vbasecalc), 
+                                baseCalcCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vbasecalc),
+                                icmsCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4)).Sum(_ => _.Vicms),
+                                icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vicms),
+                                icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vicms);
+
+                        var entradasInterna = importSped.SpedInterna(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncms);
+                        var devolucoesInterestadual = importSped.SpedDevolucao(caminhoDestinoArquivoOriginal, cfopsDevoVenda, ncms);
+
+                        if (imp != null)
+                        {
+                            imp.BaseCompra4 = baseCalcCompraInterestadual4;
+                            imp.BaseCompra7 = baseCalcCompraInterestadual7;
+                            imp.BaseCompra12 = baseCalcCompraInterestadual12;
+                            imp.IcmsCompra4 = icmsCompraInterestadual4;
+                            imp.IcmsCompra7 = icmsCompraInterestadual7;
+                            imp.IcmsCompra12 = icmsCompraInterestadual12;
+
+                            imp.BaseDevoCliente4 = Convert.ToDecimal(devolucoesInterestadual[0][0]);
+                            imp.BaseDevoCliente12 = Convert.ToDecimal(devolucoesInterestadual[1][0]);
+                            imp.IcmsDevoCliente4 = Convert.ToDecimal(devolucoesInterestadual[0][1]);
+                            imp.IcmsDevoCliente12 = Convert.ToDecimal(devolucoesInterestadual[1][1]);
+
+                            _service.Update(imp, null);
+
+                            var compras = _compraAnexoService.FindByComprasTax(imp.Id);
+                            var devoClientes = _devoClienteService.FindByDevoTax(imp.Id);
+
+                            List<Model.CompraAnexo> compraAnexosAdd = new List<Model.CompraAnexo>();
+                            List<Model.CompraAnexo> compraAnexosUpdate = new List<Model.CompraAnexo>();
+
+                            foreach(var entrada in entradasInterna[0])
+                            {
+                                var cc = compras.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(entrada[1]))).FirstOrDefault();
+
+                                if(cc == null)
+                                {
+                                    Model.CompraAnexo compra = new Model.CompraAnexo();
+                                    compra.TaxAnexoId = imp.Id;
+                                    compra.Base = Convert.ToDecimal(entrada[0]);
+                                    compra.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    compra.Icms = Convert.ToDecimal(entrada[2]);
+                                    compra.Created = DateTime.Now;
+                                    compra.Updated = compra.Created;
+                                    compraAnexosAdd.Add(compra);
+                                }
+                                else
+                                {
+                                    cc.Base = Convert.ToDecimal(entrada[0]);
+                                    cc.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    cc.Icms = Convert.ToDecimal(entrada[2]);
+                                    cc.Updated = DateTime.Now;
+                                    compraAnexosUpdate.Add(cc);
+                                }
+                            }
+
+                            _compraAnexoService.Create(compraAnexosAdd);
+                            _compraAnexoService.Update(compraAnexosUpdate);
+
+                            List<Model.DevoCliente> devoClientesAdd = new List<Model.DevoCliente>();
+                            List<Model.DevoCliente> devoClientesUpdate = new List<Model.DevoCliente>();
+
+                            foreach(var entrada in entradasInterna[1])
+                            {
+                                var dd = devoClientes.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(entrada[1]))).FirstOrDefault();
+
+                                if(dd == null)
+                                {
+                                    Model.DevoCliente devoCliente = new Model.DevoCliente();
+                                    devoCliente.TaxAnexoId = imp.Id;
+                                    devoCliente.Base = Convert.ToDecimal(entrada[0]);
+                                    devoCliente.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    devoCliente.Icms = Convert.ToDecimal(entrada[2]);
+                                    devoCliente.Created = DateTime.Now;
+                                    devoCliente.Updated = devoCliente.Created;
+                                    devoClientesAdd.Add(devoCliente);
+                                }
+                                else
+                                {
+                                    dd.Base = Convert.ToDecimal(entrada[0]);
+                                    dd.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    dd.Icms = Convert.ToDecimal(entrada[2]);
+                                    dd.Updated = DateTime.Now;
+                                    devoClientesUpdate.Add(dd);
+                                }
+                            }
+
+                            _devoClienteService.Create(devoClientesAdd);
+                            _devoClienteService.Update(devoClientesUpdate);
+                        }
+                        else
+                        {
+                            taxAnexo.BaseCompra4 = baseCalcCompraInterestadual4;
+                            taxAnexo.BaseCompra7 = baseCalcCompraInterestadual7;
+                            taxAnexo.BaseCompra12 = baseCalcCompraInterestadual12;
+                            taxAnexo.IcmsCompra4 = icmsCompraInterestadual4;
+                            taxAnexo.IcmsCompra7 = icmsCompraInterestadual7;
+                            taxAnexo.IcmsCompra12 = icmsCompraInterestadual12;
+
+                            _service.Create(taxAnexo, null);
+
+                            imp = _service.FindByMonth(companyid, month, year);
+                        }
+
+                    }
                 }
                 else
                 {
@@ -221,10 +348,20 @@ namespace Escon.SisctNET.Web.Controllers
                                 continue;
                             }
 
-                            bool ncm = false;
+                            bool ncm = false, cfop = false;
 
                             for (int k = 0; k < exitNotes[i].Count(); k++)
                             {
+                                if (exitNotes[i][k].ContainsKey("CFOP"))
+                                {
+                                    cfop = false;
+
+                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][k]["CFOP"]))
+                                    {
+                                        cfop = true;
+                                    }
+                                }
+
                                 if (exitNotes[i][k].ContainsKey("NCM"))
                                 {
                                     ncm = false;
@@ -241,7 +378,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false)
+                                if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") &&
+                                    exitNotes[i][k].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false && cfop == true)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -251,6 +389,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (vendaInterna[j][1].Equals(exitNotes[i][k]["pICMS"]))
                                             {
                                                 pos = j;
+                                                break;
                                             }
                                         }
 
@@ -289,7 +428,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false)
+                                if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && 
+                                    exitNotes[i][k].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false && cfop == true)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -299,6 +439,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (vendaInterna[j][1].Equals((Math.Round(Convert.ToDecimal(exitNotes[i][k]["pICMS"]) + Convert.ToDecimal(exitNotes[i][k]["pFCP"]), 2)).ToString()))
                                             {
                                                 pos = j;
+                                                break;
                                             }
                                         }
 
@@ -347,8 +488,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 exitNotes.RemoveAt(i);
                                 continue;
                             }
-
-                            string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "";
 
                             for (int k = 0; k < exitNotes[i].Count(); k++)
                             {
@@ -481,11 +620,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = 0; i < vendaInterna.Count(); i++)
                             {
-                                Model.VendaAnexo vendaAnexo = new Model.VendaAnexo();
+                                
                                 var venda = vendas.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(vendaInterna[i][1]))).FirstOrDefault();
 
                                 if (venda == null)
                                 {
+                                    Model.VendaAnexo vendaAnexo = new Model.VendaAnexo();
                                     vendaAnexo.TaxAnexoId = imp.Id;
                                     vendaAnexo.Base = Convert.ToDecimal(vendaInterna[i][0]);
                                     vendaAnexo.Aliquota = Convert.ToDecimal(vendaInterna[i][1]);
@@ -509,11 +649,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = 0; i < devoFornecedorInterna.Count(); i++)
                             {
-                                Model.DevoFornecedor devoFornecedor = new Model.DevoFornecedor();
                                 var devoForne = devoFornecedors.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(devoFornecedorInterna[i][1]))).FirstOrDefault();
 
                                 if (devoForne == null)
                                 {
+                                    Model.DevoFornecedor devoFornecedor = new Model.DevoFornecedor();
                                     devoFornecedor.TaxAnexoId = imp.Id;
                                     devoFornecedor.Base = Convert.ToDecimal(devoFornecedorInterna[i][0]);
                                     devoFornecedor.Aliquota = Convert.ToDecimal(devoFornecedorInterna[i][1]);

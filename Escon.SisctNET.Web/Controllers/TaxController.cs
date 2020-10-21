@@ -539,9 +539,11 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
@@ -553,7 +555,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         foreach (var cc in caminhos)
                         {
-                            credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra);
+                            credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST);
                         }
 
                         if (imp != null)
@@ -632,7 +634,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (entryNotes[i][j].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsTransf.Contains(entryNotes[i][j]["CFOP"]))
+                                        if (cfopsTransf.Contains(entryNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(entryNotes[i][j]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -694,7 +696,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     exitNotes.RemoveAt(i);
                                     continue;
                                 }
-                                bool suspenso = false, cfop = false;
+                                bool suspenso = false;
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
@@ -710,23 +712,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int k = 0; k < exitNotes[i].Count(); k++)
                                 {
-                                    if (exitNotes[i][k].ContainsKey("CFOP"))
+                                    if (exitNotes[i][k].ContainsKey("vNF") && exitNotes[i][1]["finNFe"] != "4" && suspenso == true)
                                     {
-                                        if (cfopsTransf.Contains(exitNotes[i][k]["CFOP"]) || cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) ||
-                                            cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]))
-                                        {
-                                            cfop = true;
-                                        }
+                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
                                     }
-
-                                    if (exitNotes[i][k].ContainsKey("vNF"))
-                                    {
-                                        if (suspenso == true && cfop == true)
-                                        {
-                                            totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
-                                        }
-                                    }
-
                                 }
 
                             }
@@ -975,7 +964,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][j].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsTransf.Contains(exitNotes[i][j]["CFOP"]))
+                                        if (cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -2184,7 +2173,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (exitNotes[i][k].ContainsKey("CFOP"))
                                                 {
                                                     cfop = false;
-                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) ||  cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
+                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) ||
+                                                        cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2658,7 +2648,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             if (exitNotes[i][j].ContainsKey("CFOP"))
                                             {
-                                                if (cfopVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                                cfop = false;
+                                                if (cfopVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                    cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
                                                 {
                                                     cfop = true;
                                                 }
@@ -2690,11 +2682,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2704,11 +2691,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         {
                                                             InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
 
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            }
+                                                            
                                                         }
+                                                    }
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                     }
                                                 }
 
@@ -2735,10 +2723,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2747,11 +2731,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                     }
                                                 }
 
@@ -2778,10 +2763,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2790,11 +2771,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualElencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                     }
                                                 }
 
@@ -2821,10 +2803,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2833,11 +2811,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                     }
                                                 }
 
@@ -2864,10 +2843,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2876,11 +2851,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualElencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                     }
                                                 }
                                             }
@@ -2908,10 +2884,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -2920,11 +2892,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                     }
                                                 }
 
@@ -2949,23 +2922,16 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                        if (ncm == true)
-                                                        {
-                                                            InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                                            }
-                                                        }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                     }
                                                 }
 
@@ -2990,10 +2956,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -3002,11 +2964,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualDeselencadasPortaria -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                     }
                                                 }
 
@@ -3031,10 +2994,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -3043,11 +3002,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                     }
                                                 }
 
@@ -3072,10 +3032,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InternasDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            }
                                                         }
                                                     }
                                                     else
@@ -3084,11 +3040,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                         if (ncm == true)
                                                         {
                                                             InterestadualDeselencadasPortaria += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            if (suspenso == true)
-                                                            {
-                                                                suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                            }
                                                         }
+                                                    }
+
+                                                    if (suspenso == true)
+                                                    {
+                                                        suspensao += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                     }
                                                 }
                                             }
@@ -3243,12 +3200,15 @@ namespace Escon.SisctNET.Web.Controllers
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
 
-
                                         if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
                                         {
                                             if (exitNotes[i][j].ContainsKey("CFOP"))
                                             {
-                                                if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                                cfop = false;
+
+                                                if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                    cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                    cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
                                                 {
                                                     cfop = true;
                                                 }
