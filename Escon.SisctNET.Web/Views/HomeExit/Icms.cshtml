@@ -42,13 +42,13 @@
                         <label class="control-label">Tipo</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="0">Selecione o tipo</option>
-                            <option value="resumocfop">Resumo CFOP</option>
-                            <option value="resumoporcfop">Resumo por CFOP</option>
+                            <option value="resumoCfop">Resumo CFOP</option>
+                            <option value="resumoPorCfop">Resumo por CFOP</option>
                             @if (Model.Incentive == true)
                             {
                                 @if (Model.AnnexId != null)
                                 {
-                                    <option value="vendaforaincentivo">Resumo por CFOP Fora do Incentivo</option>
+                                    <option value="foraIncentivo">Resumo CFOP Fora do Incentivo</option>
                                 }
                                 <option value="produtoST">Produtos ST com Base de Cálculo</option>
                             }
@@ -126,12 +126,12 @@
             document.getElementById("ativa").disabled = false;
             document.getElementById("cfopid").disabled = true;
             document.getElementById("opcao").disabled = true;
-        } else if (tipo == "resumocfop") {
+        } else if (tipo == "resumoCfop") {
             document.getElementById("opcao").disabled = false;
             document.getElementById("cfopid").disabled = true;
             document.getElementById("ativa").disabled = false;
         }
-        else if (tipo == "resumoporcfop") {
+        else if (tipo == "resumoPorCfop") {
             document.getElementById("cfopid").disabled = false;
             if (cfop == "0") {
                 document.getElementById("ativa").disabled = true;

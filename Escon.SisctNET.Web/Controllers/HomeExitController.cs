@@ -59,6 +59,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                List<Cfop> list_cfop = _cfopService.FindAll(null);
+                foreach (var cfop in list_cfop)
+                {
+                    cfop.Description = cfop.Code + " - " + cfop.Description;
+                }
+                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
+                ViewBag.CfopId = cfops;
                 return View(result);
             }
             catch(Exception ex)

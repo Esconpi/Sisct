@@ -1,8 +1,25 @@
-﻿@if (ViewBag.Type == "resumoncm")
+﻿@if (ViewBag.Type == "resumoCfop")
+{
+    <strong>Resumo CFOP</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopMono")
+{
+    <strong>Resumo CFOP - NCM Monofásico</strong>
+}
+
+@if (ViewBag.Type == "resumoNcmMono")
 {
     <strong>Resumo NCM Monofásico</strong>
 }
-else if (ViewBag.Type == "imposto")
+
+@if (ViewBag.Type == "imposto")
 {
     <strong>Imposto Federal</strong>
 }
+
+@if (ViewBag.Type == "resumoPorCfop")
+{
+    <strong>Resumo por CFOP - @ViewBag.Code</strong>
+}
+

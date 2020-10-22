@@ -1,0 +1,72 @@
+﻿<table class="table" style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                N° Nota
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Data e Hora
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Total Nota
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor COFINS
+            </th>
+        </tr>
+    </thead>
+    <tbody style="border:1px solid;">
+        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        {
+            @if (Convert.ToDecimal(ViewBag.Cfop[i][2]) > 0)
+            {
+                <tr style="border:1px solid;">
+                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                        @ViewBag.Cfop[i][1]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                        @Convert.ToDateTime(ViewBag.Cfop[i][7]).ToString("dd/MM/yyyy hh:mm:ss")
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                    </td>
+                </tr>
+
+            }
+        }
+    </tbody>
+    <tbody style="border:1px solid;">
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;" colspan="2">
+                <b>Total</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@string.Format("{0:N}", ViewBag.TotalNota)</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@string.Format("{0:N}", ViewBag.ValorContabil)</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@string.Format("{0:N}", ViewBag.ValorPIS)</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@string.Format("{0:N}", ViewBag.ValorCofins)</b>
+            </td>
+        </tr>
+    </tbody>
+</table>

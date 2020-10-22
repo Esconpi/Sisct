@@ -463,7 +463,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (comp.CountingTypeId == null)
                 {
-                    throw new Exception("Escolha o Tipo da Empresa");
+                    ViewBag.Erro = 1;
+                    return View();
                 }
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -752,7 +753,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (existe == false)
                                     {
-                                        throw new Exception("Há Clientes não Importados");
+                                        ViewBag.Erro = 2;
+                                        return View();
                                     }
                                 }
 
@@ -1624,7 +1626,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             if (existe == false)
                                             {
-                                                throw new Exception("Há Clientes não Importados");
+                                                ViewBag.Erro = 2;
+                                                return View();
                                             }
                                         }
 
@@ -1781,7 +1784,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                                 else
                                                 {
-                                                    throw new Exception("Há Produtos não Tributado");
+                                                    ViewBag.Erro = 3;
+                                                    return View();
                                                 }
                                                 cest = null;
                                                 cProd = null;
@@ -1820,7 +1824,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             if (existe == false)
                                             {
-                                                throw new Exception("Há Clientes não Importados");
+                                                ViewBag.Erro = 2;
+                                                return View();
                                             }
                                         }
 
@@ -2202,7 +2207,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
                                                     else
                                                     {
-                                                        throw new Exception("Há Produtos não Tributado");
+                                                        ViewBag.Erro = 3;
+                                                        return View();
                                                     }
                                                 }
 
@@ -2635,7 +2641,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             if (existe == false)
                                             {
-                                                throw new Exception("Há Clientes não Importados");
+                                                ViewBag.Erro = 2;
+                                                return View();
                                             }
                                         }
 
@@ -3262,7 +3269,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         receitaServico += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                     }
 
-
                                                     if (codeProdMono.Contains(exitNotes[i][j]["cProd"]) && ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         receitaMono += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
@@ -3346,7 +3352,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             else
                                             {
-                                                throw new Exception("Há Ncm não Tributado");
+                                                ViewBag.Erro = 4;
+                                                return View();
                                             }
                                         }
 
@@ -3506,7 +3513,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             else
                                             {
-                                                throw new Exception("Há Ncm não Tributado");
+                                                ViewBag.Erro = 4;
+                                                return View();
                                             }
 
                                         }

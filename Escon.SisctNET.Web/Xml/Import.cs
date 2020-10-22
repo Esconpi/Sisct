@@ -854,7 +854,6 @@ namespace Escon.SisctNET.Web.Xml
 
                                             }
 
-
                                             for (int e = 0; e < ncms.Count(); e++)
                                             {
                                                 if (ncms[e][0].Equals(code) && ncms[e][1].Equals(ncm))

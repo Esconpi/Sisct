@@ -42,7 +42,12 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IEmailService _serviceEmail;
         private readonly IEmailConfiguration _emailConfiguration;
         private readonly IEmailResponsibleService _emailResponsibleService;
-
+        private readonly ITaxAnexoService _taxAnexoService;
+        private readonly ICompraAnexoService _compraAnexoService;
+        private readonly IDevoClienteService _devoClienteService;
+        private readonly IDevoFornecedorService _devoFornecedorService;
+        private readonly IVendaAnexoService _vendaAnexoService;
+        private readonly ICreditBalanceService _creditBalanceService;
 
         public ProductNote(
             IProductNoteService service,
@@ -68,12 +73,19 @@ namespace Escon.SisctNET.Web.Controllers
             IFunctionalityService functionalityService,
             IIntegrationWsDar integrationWsDar,
             IConfigurationService configurationService,
-            IHttpContextAccessor httpContextAccessor,
             IEmailService serviceEmail,
             IEmailConfiguration emailConfiguration,
-            IEmailResponsibleService emailResponsibleService)
+            IEmailResponsibleService emailResponsibleService,
+            ITaxAnexoService taxAnexoService,
+            ICompraAnexoService compraAnexoService,
+            IDevoClienteService devoClienteService,
+            IDevoFornecedorService devoFornecedorService,
+            IVendaAnexoService vendaAnexoService,
+            ICreditBalanceService creditBalanceService,
+            IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
         {
+            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
             _noteService = noteService;
             _ncmService = ncmService;
@@ -99,8 +111,12 @@ namespace Escon.SisctNET.Web.Controllers
             _serviceEmail = serviceEmail;
             _emailConfiguration = emailConfiguration;
             _emailResponsibleService = emailResponsibleService;
-
-            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
+            _taxAnexoService = taxAnexoService;
+            _compraAnexoService = compraAnexoService;
+            _devoClienteService = devoClienteService;
+            _devoFornecedorService = devoFornecedorService;
+            _vendaAnexoService = vendaAnexoService;
+            _creditBalanceService = creditBalanceService;
         }
 
         public IActionResult Index(int noteId)
@@ -149,10 +165,16 @@ namespace Escon.SisctNET.Web.Controllers
                 var note = _noteService.FindByNote(result.Note.Chave);
                 var ncm = _ncmService.FindByCode(result.Ncm);
 
+                ViewBag.Uf = note.Uf;
+                ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
+                ViewBag.Note = note.Nnf;
+                ViewBag.NoteId = note.Id;
+
                 if (ncm == null)
                 {
-                    string message = "O Ncm " + result.Ncm + " não estar cadastrado";
-                    throw new Exception(message);
+                    ViewBag.Erro = 1;
+                    ViewBag.Ncm = result.Ncm;
+                    return View(null);
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;
@@ -164,7 +186,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
-                //List<Product> list_product = _productService.FindAll(GetLog(OccorenceLog.Read));
+                ViewBag.TaxationTypeId = taxationtypes;
 
                 if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                 {
@@ -199,12 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
                     ViewBag.ProductId = products2;
                 }
-                
-                ViewBag.TaxationTypeId = taxationtypes;
-                ViewBag.Uf = note.Uf;
-                ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
-                ViewBag.Note = note.Nnf;
-                ViewBag.NoteId = note.Id;
+
                 if (result.TaxationTypeId == null)
                 {
                     result.TaxationTypeId = 0;
@@ -849,6 +866,9 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 var imp = _taxService.FindByMonth(id, month, year);
+                var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
+
+                var importMes = new Period.Month();
 
                 if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.AgrupadoA) ||
                     type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
@@ -1576,7 +1596,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (imp == null)
                                 {
-                                    throw new Exception("Os dados para calcular ICMS não foram importados");
+                                    ViewBag.Erro = 1;
+                                    return View(null);
                                 }
 
                                 if (comp.SectionId.Equals(2))
@@ -1804,7 +1825,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (imp == null)
                                 {
-                                    throw new Exception("Os dados para calcular ICMS não foram importados");
+                                    ViewBag.Erro = 1;
+                                    return View(null);
                                 }
 
                                 var grupos = _grupoService.FindByGrupos(imp.Id);
@@ -2357,7 +2379,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (imp == null)
                         {
-                            throw new Exception("Os dados para calcular ICMS não foram importados");
+                            ViewBag.Erro = 1;
+                            return View(null);
                         }
 
                         if (!comp.AnnexId.Equals(3))
@@ -2547,8 +2570,6 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarFecop += Math.Round(impostoFecop, 2);
                         totalApuradoFecop += Math.Round(impostoFecop, 2);
 
-                        totalApuradoFecop += Math.Round(impostoFecop, 2);
-
                         decimal icmsGeralNormal = IcmsAPagarSTSIE + IcmsAPagarSTIE;
                         decimal icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum());
                         decimal fecopGeralNomal = Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) + Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE));
@@ -2730,7 +2751,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (imp == null)
                         {
-                            throw new Exception("Os dados para calcular ICMS não foram importados");
+                            ViewBag.Erro = 1;
+                            return View(null);
                         }
 
                         var grupos = _grupoService.FindByGrupos(imp.Id);
@@ -3553,11 +3575,80 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarFecop += Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE));
                     }
 
-                    // Isento
-                    int? qtdIsentoIE = products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(7)).Count();
-                    int? qtdIsentoSIE = products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(7)).Count();
-                    ViewBag.QtdIsentoIE = qtdIsentoIE;
-                    ViewBag.QtdIsentoSIE = qtdIsentoSIE;
+                    //  Anexo
+                    if (comp.Incentive.Equals(true) && Convert.ToInt32(comp.AnnexId) == 1)
+                    {
+                        if(impAnexo == null)
+                        {
+                            ViewBag.Erro = 2;
+                            return View(null);
+                        }
+
+                        var mesAtual = importMes.NumberMonth(month);
+                        var mesAnterior = importMes.NameMonth(mesAtual);
+                        decimal saldoCredorAnterior = 0;
+
+                        string ano = year;
+
+                        if (mesAtual.Equals(1))
+                        {
+                            ano = (Convert.ToInt32(year) - 1).ToString();
+                        }
+
+                        var creditLast = _creditBalanceService.FindByLastMonth(id, mesAnterior, ano);
+
+                        if (creditLast != null)
+                        {
+                            saldoCredorAnterior = Convert.ToDecimal(creditLast.Saldo);
+                        }
+
+                        var vendas = _vendaAnexoService.FindByVendasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+                        var devoFornecedors = _devoFornecedorService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+                        var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+                        var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+
+
+                        decimal baseCalcFecop = Convert.ToDecimal(vendas.Where(_ => Convert.ToDecimal(_.Aliquota).Equals(18)).Sum(_ => _.Base));
+                        decimal valorFecop = baseCalcFecop * 1 / 100;
+
+                        //  Total
+                        // A
+                        decimal icmsTotalA = Convert.ToDecimal(compras.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsCompra4) +
+                                            Convert.ToDecimal(impAnexo.IcmsCompra7) + Convert.ToDecimal(impAnexo.IcmsCompra12);
+                        icmsTotalA -= (Convert.ToDecimal(devoFornecedors.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsDevoFornecedor4) +
+                                        Convert.ToDecimal(impAnexo.IcmsDevoFornecedor7) + Convert.ToDecimal(impAnexo.IcmsDevoFornecedor12));
+                        ViewBag.IcmsTotalA = icmsTotalA;
+
+                        // D
+                        decimal icmsTotalD = Convert.ToDecimal(vendas.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsVenda4) +
+                                             Convert.ToDecimal(impAnexo.IcmsVenda7) + Convert.ToDecimal(impAnexo.IcmsVenda12);
+                        icmsTotalD -= (Convert.ToDecimal(devoClientes.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsDevoCliente4) +
+                                        Convert.ToDecimal(impAnexo.IcmsDevoCliente12));
+                        ViewBag.IcmsTotalD = icmsTotalD;
+
+                        decimal icmsAPAPagar = 0;
+
+                        if (IcmsAPagarAPSIE > 0)
+                        {
+                            icmsAPAPagar += IcmsAPagarAPSIE;
+
+                        }
+
+                        if (IcmsAPagarAPIE > 0)
+                        {
+                            icmsAPAPagar += IcmsAPagarAPIE;
+                        }
+
+                        // Saldo Devedor
+                        decimal saldoDevedor = icmsTotalD - icmsTotalA - icmsAPAPagar - saldoCredorAnterior;
+
+                        if(saldoDevedor > 0)
+                        {
+                            totalApuradoFecop += Math.Round(valorFecop, 2);
+                            totalDarFecop += Math.Round(valorFecop, 2);
+                            totalDarIcms += Math.Round(saldoDevedor - valorFecop, 2);
+                        }
+                    }
 
 
                     //  Somatório Geral

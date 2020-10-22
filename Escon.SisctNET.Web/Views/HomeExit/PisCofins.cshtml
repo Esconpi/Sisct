@@ -42,7 +42,10 @@
                         <label class="control-label">Tipo</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="0" selected>Selecione o tipo</option>
-                            <option value="resumoncm">Resumo Ncm Monofásico</option>
+                            <option value="resumoCfop">Resumo CFOP</option>
+                            <option value="resumoPorCfop">Resumo por CFOP</option>
+                            <option value="resumoCfopMono">Resumo CFOP - NCM Monofásico</option>
+                            <option value="resumoNcmMono">Resumo NCM Monofásico</option>
                             <option value="imposto">Imposto Federal</option>
                         </select>
                     </div>
@@ -60,6 +63,13 @@
 
                 </div>
 
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label">CFOP</label>
+                        <select asp-items="@ViewBag.CfopId" class="form-control selectoption" id="cfopid" name="cfopid" disabled="disabled" onchange="ativar_button()"></select>
+                    </div>
+                </div>
+
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                     <input type="submit" value="Gerar" class="btn btn-success pull-right" id="ativa" disabled="disabled" />
                 </div>
@@ -72,17 +82,30 @@
 
     function ativar_button() {
         var tipo = document.getElementById("status").value;
+        var cfop = document.getElementById("cfopid").value;
         if (tipo == "0") {
             document.getElementById("ativa").disabled = true;
             document.getElementById("trimestre").disabled = true;
+            document.getElementById("cfopid").disabled = true;
         }
-        else if (tipo == "resumoncm") {
-            document.getElementById("ativa").disabled = false;
-            document.getElementById("trimestre").disabled = true;
+        else if (tipo == "resumoPorCfop") {
+            document.getElementById("cfopid").disabled = false;
+            if (cfop == "0") {
+                document.getElementById("ativa").disabled = true;
+            }
+            else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
         else if (tipo == "imposto") {
             document.getElementById("ativa").disabled = false;
+            document.getElementById("cfopid").disabled = true;
             document.getElementById("trimestre").disabled = false;
+        }
+        else{
+            document.getElementById("ativa").disabled = false;
+            document.getElementById("cfopid").disabled = true;
+            document.getElementById("trimestre").disabled = true;
         }
     }
 </script>
