@@ -1,0 +1,96 @@
+﻿<table class="table" style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                Cod. Produto
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                NCM
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                CST PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                CST COFINS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prod in ViewBag.Produtos)
+        {
+            if (@prod[4] != @prod[5])
+            {
+                <tr style="border:1px solid; border-left:5px solid; border-color:red;">
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[0]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[1]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[2]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[3]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[4]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[5]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(prod[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr style="border:1px solid; border-left:5px solid; border-color:green;">
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[0]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[1]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[2]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[3]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[4]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @prod[5]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(prod[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+
+    <tbody style="border:1px solid;">
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;" colspan="6">
+                <b>Total</b>
+            </td>
+            <td style="border:1px solid; text-align:right; padding-right:1%;">
+                <b>@string.Format("{0:N}", ViewBag.Total)</b>
+            </td>
+        </tr>
+    </tbody>
+</table>

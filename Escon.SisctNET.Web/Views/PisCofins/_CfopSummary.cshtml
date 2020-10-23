@@ -11,7 +11,13 @@
                 Valor Contábil
             </th>
             <th style="border:1px solid; text-align:center;">
+                Base PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
                 Valor PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Base COFINS
             </th>
             <th style="border:1px solid; text-align:center;">
                 Valor COFINS
@@ -33,7 +39,13 @@
                     <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][22].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
@@ -47,7 +59,13 @@
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][14].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][15].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][16].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][25].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][17].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
@@ -60,7 +78,13 @@
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][18].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][19].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][20].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][26].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][21].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
@@ -74,7 +98,13 @@
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][23].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][9].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
@@ -87,7 +117,13 @@
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][10].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][11].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][12].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][24].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][13].Replace(',', '*').Replace('.', ',').Replace('*', '.')))

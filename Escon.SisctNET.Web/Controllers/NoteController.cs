@@ -57,12 +57,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Status = comp.Status;
+
+                ViewBag.Comp = comp;
+
+                SessionManager.SetCompanyIdInSession(id);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
 
                 var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
                 ViewBag.Count = result.Count();
@@ -75,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Import(int id, string year, string month)
+        public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -83,16 +83,16 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var importXml = new Xml.Import();
 
-                ViewBag.Id = id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
+                ViewBag.Comp = comp; 
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -655,7 +655,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Audita(int id, string year, string month)
+        public IActionResult Audita()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -663,6 +663,11 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var notes = _service.FindByNotes(id, year, month);
                 var products = _itemService.FindByProducts(notes);
 
@@ -671,10 +676,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
 
                 ViewBag.Registro = products.Count();
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
+                ViewBag.Comp = comp;
                 return View(products);
 
             }
@@ -685,7 +687,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Delete(int id, string year, string month)
+        public IActionResult Delete()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -693,6 +695,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var notes = _service.FindByNotes(id, year, month);
 
                 var products = _itemService.FindByProducts(notes);
@@ -723,7 +729,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult DeleteNote(int id,int company, string year, string month)
+        public IActionResult DeleteNote(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -732,6 +738,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int company = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var products = _itemService.FindByNotes(id);
                 List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
                 foreach (var product in products)

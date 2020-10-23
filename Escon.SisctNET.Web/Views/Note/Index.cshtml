@@ -12,21 +12,20 @@
         <h3 class="box-title"><strong> Notas</strong></h3>
         <div class="btn-group pull-right">
 
-            @Html.ActionLink(" Auditar", "Audita", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month }, new { @class = "btn btn-primary fa  fa-spinner pull-left" })
+            @Html.ActionLink(" Auditar", "Audita", new { }, new { @class = "btn btn-primary fa  fa-spinner pull-left" })
 
 
-            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
-                                   new { onclick = "return confirm('Os arquivos NFes e CTes estão na pasta ?');", @class = "btn btn-primary fa  fa-cloud-upload pull-left" })
+            @Html.ActionLink(" Importar", "Import", new { }, new { onclick = "return confirm('Os arquivos NFes e CTes estão na pasta ?');", @class = "btn btn-primary fa  fa-cloud-upload pull-left" })
 
 
-            @Html.ActionLink(" Excluir", "Delete", new { id = @ViewBag.Id, year = @ViewBag.Year, month = @ViewBag.Month },
+            @Html.ActionLink(" Excluir", "Delete", new { },
                                 new { onclick = "return confirm('Deseja exluir esses registros ?');", @class = "btn btn-primary fa fa-trash pull-left" })
 
 
         </div>
 
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
 
         <div class="btn-group pull-left" style="padding:20px;">
@@ -62,7 +61,7 @@
 
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
-                        <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
+                        <strong>Periodo: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession() </strong>
                     </div>
                 </div>
             </div>
@@ -98,7 +97,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        @if (ViewBag.Status == true && item.IdDest == 1)
+                        @if (ViewBag.Comp.Status == true && item.IdDest == 1)
                         {
                             <tr style="color:blueviolet;">
                                 <td>

@@ -74,13 +74,11 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3).ToString().Replace(".", ",");
                 ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4).ToString().Replace(".", ",");
 
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
                 ViewBag.Comp = comp;
 
+                SessionManager.SetCompanyIdInSession(id);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
             
                 var result = _service.FindByMonth(id, month, year);
 
@@ -109,7 +107,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Receita(int companyid, string year, string month)
+        public IActionResult Receita()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -118,10 +116,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -131,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Receita(int companyid, string year, string month, Model.Tax entity)
+        public IActionResult Receita(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -140,6 +135,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var imp = _service.FindByMonth(companyid, month, year);
 
                 if (imp != null)
@@ -172,7 +171,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Despesa(int companyid, string year, string month)
+        public IActionResult Despesa()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -181,10 +180,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -194,7 +190,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Despesa(int companyid, string year, string month, Model.Tax entity)
+        public IActionResult Despesa(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -203,6 +199,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var imp = _service.FindByMonth(companyid, month, year);
 
                 if (imp != null)
@@ -237,7 +237,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Retention(int companyid, string year, string month)
+        public IActionResult Retention()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -246,10 +246,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -259,7 +256,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Retention(int companyid, string year, string month, Model.Tax entity)
+        public IActionResult Retention(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -268,6 +265,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var imp = _service.FindByMonth(companyid, month, year);
 
                 if (imp != null)
@@ -303,7 +304,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Reduction(int companyid, string year, string month)
+        public IActionResult Reduction()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -312,10 +313,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -325,7 +323,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Reduction(int companyid, string year, string month, Model.Tax entity)
+        public IActionResult Reduction(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -334,6 +332,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+
+                string month = SessionManager.GetMonthInSession();
                 var imp = _service.FindByMonth(companyid, month, year);
 
                 if (imp != null)
@@ -364,7 +366,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Pag(int companyid, string year, string month)
+        public IActionResult Pag()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -373,12 +375,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 var importPeriodo = new Period.Bimestre();
-                var meses = importPeriodo.Months(month);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var meses = importPeriodo.Months(SessionManager.GetMonthInSession());
                 ViewBag.Meses = meses;
                 return View(comp);
             }
@@ -389,7 +388,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Pag(int companyid, string year, string month, string mesRef, Model.Tax entity) 
+        public IActionResult Pag(string mesRef, Model.Tax entity) 
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -398,6 +397,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var imp = _service.FindByMonth(companyid, mesRef, year);
 
                 if (imp != null)
@@ -427,8 +430,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Import(int companyid, string year, string month)
+        public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -437,10 +439,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -450,7 +449,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(int companyid, string year, string month, string imposto,string type, List<IFormFile> arquivo)
+        public async Task<IActionResult> Import(string imposto,string type, List<IFormFile> arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -459,12 +458,16 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var comp = _companyService.FindById(companyid, null);
 
                 if (comp.CountingTypeId == null)
                 {
                     ViewBag.Erro = 1;
-                    return View();
+                    return View(comp);
                 }
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -754,7 +757,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (existe == false)
                                     {
                                         ViewBag.Erro = 2;
-                                        return View();
+                                        return View(comp);
                                     }
                                 }
 
@@ -1627,7 +1630,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (existe == false)
                                             {
                                                 ViewBag.Erro = 2;
-                                                return View();
+                                                return View(comp);
                                             }
                                         }
 
@@ -1785,7 +1788,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 else
                                                 {
                                                     ViewBag.Erro = 3;
-                                                    return View();
+                                                    return View(comp);
                                                 }
                                                 cest = null;
                                                 cProd = null;
@@ -1825,7 +1828,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (existe == false)
                                             {
                                                 ViewBag.Erro = 2;
-                                                return View();
+                                                return View(comp);
                                             }
                                         }
 
@@ -2208,7 +2211,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     else
                                                     {
                                                         ViewBag.Erro = 3;
-                                                        return View();
+                                                        return View(comp);
                                                     }
                                                 }
 
@@ -2642,7 +2645,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (existe == false)
                                             {
                                                 ViewBag.Erro = 2;
-                                                return View();
+                                                return View(comp);
                                             }
                                         }
 
@@ -3353,7 +3356,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             else
                                             {
                                                 ViewBag.Erro = 4;
-                                                return View();
+                                                return View(comp);
                                             }
                                         }
 
@@ -3514,7 +3517,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             else
                                             {
                                                 ViewBag.Erro = 4;
-                                                return View();
+                                                return View(comp);
                                             }
 
                                         }

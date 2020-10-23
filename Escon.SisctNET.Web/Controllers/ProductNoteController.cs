@@ -173,8 +173,7 @@ namespace Escon.SisctNET.Web.Controllers
                 if (ncm == null)
                 {
                     ViewBag.Erro = 1;
-                    ViewBag.Ncm = result.Ncm;
-                    return View(null);
+                    return View(result);
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;

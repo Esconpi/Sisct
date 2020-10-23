@@ -10,13 +10,13 @@
     <div class="box-header">
         @if (ViewBag.Erro != 1)
         {
-            <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <a asp-controller="Note" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
 
             <h3 class="box-title"><strong>Notas Importadas em Outro Mês</strong></h3>
         }
 
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
     </div>
     <div class="box-body">

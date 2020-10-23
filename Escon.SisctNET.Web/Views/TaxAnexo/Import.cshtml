@@ -7,16 +7,13 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="TaxAnexo" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="TaxAnexo" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"> <strong>Importar Dados Anexo:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
     </div>
     <div class="box-body">
         <div class="col-lg-12">
             <form asp-controller="TaxAnexo" asp-action="Import" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" name="companyid" value="@Html.DisplayFor(model => model.Id)" />
-                <input type="hidden" name="year" value="@ViewBag.Year" />
-                <input type="hidden" name="month" value="@ViewBag.Month" />
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Tipo do Arquivo</label>

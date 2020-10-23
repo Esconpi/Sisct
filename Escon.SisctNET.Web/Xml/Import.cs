@@ -1048,7 +1048,15 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
                                                 reader.Name == "pIPI" || reader.Name == "vIPI")
                                                 {
-                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        ipi.Add("CSTI", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        ipi.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                   
                                                 }
                                                 reader.Read();
                                             }
@@ -1066,7 +1074,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
                                                 {
-                                                    pis.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        pis.Add("CSTP", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        pis.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1084,7 +1099,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
                                                 {
-                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        cofins.Add("CSTC", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        cofins.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1370,7 +1392,14 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
                                                 reader.Name == "pIPI" || reader.Name == "vIPI")
                                                 {
-                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        ipi.Add("CSTI", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        ipi.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1384,7 +1413,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
                                                 {
-                                                    pis.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        pis.Add("CSTP", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        pis.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1398,7 +1434,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
                                                 {
-                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        cofins.Add("CSTC", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        cofins.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1602,7 +1645,14 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "cEnq" || reader.Name == "CST" || reader.Name == "vBC" ||
                                                 reader.Name == "pIPI" || reader.Name == "vIPI")
                                                 {
-                                                    ipi.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        ipi.Add("CSTI", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        ipi.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1620,7 +1670,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "PISAliq" && reader.Name != "PISQtde" && reader.Name != "PISNT" && reader.Name != "PISOutr")
                                                 {
-                                                    pis.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        pis.Add("CSTP", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        pis.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }
@@ -1638,7 +1695,14 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 if (reader.Name != "COFINSAliq" && reader.Name != "COFINSQtde" && reader.Name != "COFINSNT" && reader.Name != "COFINSOutr")
                                                 {
-                                                    cofins.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name == "CST")
+                                                    {
+                                                        cofins.Add("CSTC", reader.ReadString());
+                                                    }
+                                                    else
+                                                    {
+                                                        cofins.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }

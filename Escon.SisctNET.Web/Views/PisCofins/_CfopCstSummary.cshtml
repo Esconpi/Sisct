@@ -11,10 +11,16 @@
                 Valor Contábil
             </th>
             <th style="border:1px solid; text-align:center;">
+                CST PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
                 Base PIS
             </th>
             <th style="border:1px solid; text-align:center;">
                 Valor PIS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                CST COFINS
             </th>
             <th style="border:1px solid; text-align:center;">
                 Base COFINS
@@ -25,29 +31,35 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        @foreach (var cfop in ViewBag.Cfop)
         {
             <tr style="border:1px solid;">
                 <td style="border:1px solid; padding-left:1%;">
-                    @ViewBag.Cfop[i][0]
+                    @cfop[0]
                 </td>
                 <td style="border:1px solid; padding-left:1%;">
-                    @ViewBag.Cfop[i][1]
+                    @cfop[1]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @cfop[2]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @cfop[3]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
 
             </tr>

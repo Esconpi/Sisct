@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Editing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,11 +68,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Comp = company;
-                ViewBag.Id = company.Id;
-                ViewBag.Company = company.SocialName;
-                ViewBag.Document = company.Document;
-                ViewBag.Month = month;
-                ViewBag.Year = year;
+
+                SessionManager.SetCompanyIdInSession(id);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
 
                 var result = _service.FindByMonth(id,month,year);
 
@@ -107,7 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Import(int companyid, string year, string month)
+        public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -116,10 +114,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = company.Id;
-                ViewBag.Month = month;
-                ViewBag.Year = year;
+                var company = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
                 return View(company);
 
             }
@@ -130,7 +125,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(int companyid, string year, string month, string type, IFormFile arquivo)
+        public async Task<IActionResult> Import(string type, IFormFile arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
             {
@@ -139,6 +134,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));

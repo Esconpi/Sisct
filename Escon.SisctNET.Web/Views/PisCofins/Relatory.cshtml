@@ -52,12 +52,19 @@
                 {
                     <p style="text-align:center;color:red;"><strong>Há Ncm não Tributado</strong></p>
                 }
+                else if (ViewBag.Erro == 3)
+                {
+                    <p style="text-align:center;color:red;"><strong>Os dados para calcular PIS/COFINS não foram importados</strong></p>
+                }
                 else
                 {
                     @if (ViewBag.Type == "resumoCfop")
                     {
-
                         @await Html.PartialAsync("_CfopSummary", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoCfopCst")
+                    {
+                        @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoCfopMono")
                     {
@@ -66,6 +73,10 @@
                     else if (ViewBag.Type == "resumoPorCfop")
                     {
                         @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoProdCfopNcmCstMono")
+                    {
+                        @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoNcmMono")
                     {
