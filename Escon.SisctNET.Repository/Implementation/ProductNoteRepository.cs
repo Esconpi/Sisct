@@ -112,12 +112,12 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public decimal FindByTotal(List<string> notes, Log log = null)
+        public decimal FindByTotal(List<int> notes, Log log = null)
         {
             decimal total = 0;
             foreach (var item in notes)
             {
-                var notas = _context.Notes.Where(_ => _.Nnf.Equals(item)).FirstOrDefault();
+                var notas = _context.Notes.Where(_ => _.Id.Equals(item)).FirstOrDefault();
                 total += notas.Vnf;
             }
             AddLog(log);
@@ -132,7 +132,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 foreach (var note in notes)
                 {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
                 }
             }
             else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
@@ -140,7 +140,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                     foreach (var note in notes)
                     {
-                        icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
+                        icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
                     }
             }
             return icmsTotalSt;

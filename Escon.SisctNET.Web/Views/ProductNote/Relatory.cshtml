@@ -44,89 +44,97 @@
     <div class="box-body">
 
         <div style="width:100%;padding:2px;">
-            @if (ViewBag.Type == "Geral" || ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type != "ProdutoFI")
+
+            @if (ViewBag.Erro == 1)
+            {
+                <p style="text-align:center;color:red;"><strong>Os dados para calcular ICMS não foram importados</strong></p>
+            }
+            else if (ViewBag.Erro == 2)
+            {
+                <p style="text-align:center;color:red;"><strong>Os dados para calcular Anexo não foram importados</strong></p>
+            }
+            else
             {
                 @if (ViewBag.Type == "Geral")
                 {
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "GNRE")
+                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" || ViewBag.Type == "ProdutoFP")
                 {
-                    @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
+                    <table class="table" style="font-size:8px; border: 2px solid;">
+                        @if (ViewBag.Type == "GNRE")
+                        {
+                            @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "IcmsST")
+                        {
+                            @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoFI")
+                        {
+                            @await Html.PartialAsync("_ProductFIncentivoReport", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoFP")
+                        {
+                            @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
+                        }
+                    </table>
                 }
-                else if (ViewBag.Type == "IcmsST")
+                else
                 {
-                    @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type != "ProdutoFI")
-                {
-                    
-                }
-            }
-
-            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" ||
-            ViewBag.Type == "ProdutoFP" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" && (ViewBag.Type != "Geral" &&
-            ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST"))
-            {
-                <table class="table" style="font-size:8px; border: 2px solid;">
-                    @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
+                    @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota"
+                    || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
-                        @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
+                        <table class="table" style="font-size:8px; border: 2px solid;">
+
+                            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
+                            {
+                                @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "AgrupadoA")
+                            {
+                                @await Html.PartialAsync("_ProductGroupedAnalyticalReport", Model, new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "AgrupadoS")
+                            {
+                                @await Html.PartialAsync("_ProductGroupedSyntheticReport", Model, new ViewDataDictionary(ViewData))
+                            }
+
+                        </table>
+
+                        @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
+
+                        if (ViewBag.TypeTaxation != "Isento")
+                        {
+                            @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
+                        }
                     }
-                    else if (ViewBag.Type == "ProdutoFP")
+
+                    @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
+                     ViewBag.Type != "ProdutoFP")
                     {
-                        @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
+                        @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
+                        {
+
+                            @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
+                            @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
+
+                        }
+                        else if (ViewBag.TypeTaxation == "ST")
+                        {
+                            @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
+                        }
+
                     }
-                    else if (ViewBag.Type == "AgrupadoA")
-                    {
-                        @await Html.PartialAsync("_ProductGroupedAnalyticalReport", Model, new ViewDataDictionary(ViewData))
-                    }
-                    else if (ViewBag.Type == "AgrupadoS")
-                    {
-                        @await Html.PartialAsync("_ProductGroupedSyntheticReport", Model, new ViewDataDictionary(ViewData))
-                    }
-
-                </table>
-            }
-
-
-            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-            ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-            ViewBag.Type != "IcmsST"))
-            {
-                @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
-
-            }
-
-            @if ((ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
-            ViewBag.Type == "ProdutoNI" || ViewBag.Type == "ProdutoI" && (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" &&
-            ViewBag.Type != "IcmsST")) && ViewBag.TypeTaxation != "Isento")
-            {
-                @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
-
-            }
-
-            @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
-            (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST") && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
-            {
-                @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
-                {
-
-                    @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
-                    @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
-
                 }
-                else if (ViewBag.TypeTaxation == "ST")
-                {
-                    @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
-                }
-
             }
+
+
         </div>
 
     </div>
 
-    @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+    @if (ViewBag.Erro != 1 && ViewBag.Erro != 2 && ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
     {
         <div class="box-footer no-print">
             <div class="barcode" style="font-size:15px;">
@@ -143,10 +151,9 @@
 
     }
 
-
 </div>
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+@if (ViewBag.Erro != 1 && ViewBag.Erro != 2 && ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
 {
     <br />
     <br />

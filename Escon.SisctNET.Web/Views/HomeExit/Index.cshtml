@@ -34,7 +34,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
-                        <th style="width:80px;"></th>
+                        <th style="width:90px;"></th>
                     </tr>
                 </thead>
                 
@@ -74,6 +74,15 @@
                 $("input[type='checkbox']").bootstrapToggle();
                 $('.showImport').click(function () {
                     $.get('HomeExit/Import/' + $(this).attr('id'), function (html) {
+                        $('#formShow .modal-body').empty();
+                        $('#formShow .modal-body').append($(html));
+                        $('#formShow').modal('show');
+                    });
+
+                });
+
+                $('.showSincronize').click(function () {
+                    $.get('HomeExit/Sincronize/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');
@@ -132,15 +141,34 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-
-                        return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
-                            "<a href='/HomeExit/Sequence/" + data + "' class = 'glyphicon glyphicon-check pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Sequência Nota' /> " +
-                            "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Pis/Cofins Tributado' /> " +
-                            "<a href='/ProductIncentivo/Index/" + data + "' class = 'glyphicon glyphicon-tags pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Produto' /> " +
-                            "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-user pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cliente' /> " +
-                            "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
-                            "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
-                            "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+                        if (row.incentivo == false) {
+                            return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
+                                "<a href='/HomeExit/Sequence/" + data + "' class = 'glyphicon glyphicon-check pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Sequência Nota' /> " +
+                                "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Pis/Cofins Tributado' /> " +
+                                "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
+                                "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+                        }
+                        else if (row.anexo != null && row.incentivo == true) {
+                            return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
+                                "<a href='/HomeExit/Sequence/" + data + "' class = 'glyphicon glyphicon-check pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Sequência Nota' /> " +
+                                "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Pis/Cofins Tributado' /> " +
+                                "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-user pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cliente' /> " +
+                                "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
+                                "<a href='#" + data + "' class = 'showSincronize fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px; color:#191932;' data-toggle='tooltip' data-placement='top' title='Importar Dados Anexo' id='" + row.id + "' /> " +
+                                "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
+                                "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+                        }
+                        else {
+                            return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
+                                "<a href='/HomeExit/Sequence/" + data + "' class = 'glyphicon glyphicon-check pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Sequência Nota' /> " +
+                                "<a href='/TaxationNcm/IndexAll/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Ncm Pis/Cofins Tributado' /> " +
+                                "<a href='/ProductIncentivo/Index/" + data + "' class = 'glyphicon glyphicon-tags pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Produto' /> " +
+                                "<a href='/Client/Index/" + data + "' class = 'glyphicon glyphicon-user pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Cliente' /> " +
+                                "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
+                                "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
+                                "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+                        }
+                        
 
                     }
                 }

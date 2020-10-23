@@ -9,12 +9,12 @@
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="850px">CRÉDITO PELAS ENTRADAS</th>
                     <th style="text-align:center;border:1px solid;" width="200px">(a)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.IcmsTotalA</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.IcmsTotalA))</th>
                 </tr>
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">CRÉDITO DA ANTECIPAÇÃO PARCIAL PAGA</th>
                     <th style="text-align:center;border:1px solid;" width="170px">(b)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.APPagar</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.APPagar))</th>
                 </tr>
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">CRÉDITO DA ANTECIPAÇÃO SEM ENCERRAMENTO DE FASE (IRREGULARIDADE , ART. 248, INC. I)</th>
@@ -24,22 +24,24 @@
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">DÉBITO PELAS SAÍDAS</th>
                     <th style="text-align:center;border:1px solid;" width="150px">(d)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.IcmsTotalB</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.IcmsTotalD))</th>
                 </tr>
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">SALDO CREDOR DO PERÍDO ANTERIOR</th>
                     <th style="text-align:center;border:1px solid;" width="150px">(e)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.SaldoCredorAnterior</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.SaldoCredorAnterior))</th>
                 </tr>
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">SALDOO DEVEDOR - (Valor a ser transferido para a DIEF - Ficha: "Apuração do Imposto" - quadro "DÉBITO DO IMPOSTO" - Campo: "Outros Débitos")</th>
                     <th style="text-align:center;border:1px solid;" width="150px">(f) = (d - a - b - c - e)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.SaldoDevedor</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.SaldoDevedor))</th>
                 </tr>
                 <tr>
                     <th style="border:1px solid;padding-left:1%;" width="900px">SALDO CREDOR - (Não é transferido para a DIEF - Será aproveitado no periodo seguinte)</th>
                     <th style="text-align:center;border:1px solid;" width="150px">(g) = (a + b + c + e - d)</th>
-                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">@ViewBag.SaldoCredor</th>
+                    <th style="text-align:right;border:1px solid;padding-right:1%;" width="150px">
+                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.SaldoCredor))
+                    </th>
                 </tr>
             </thead>
         </table>

@@ -39,7 +39,7 @@
         <div class="box-body">
             <div style="width:100%; padding:10px;">
 
-                @if (ViewBag.Type == "resumocfop")
+                @if (ViewBag.Type == "resumoCfop")
                 {
                     @if (ViewBag.Opcao == "saida")
                     {
@@ -51,11 +51,6 @@
                     }
 
                 }
-                else if (ViewBag.Type == "venda")
-                {
-                    @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
-
-                }
                 else if (ViewBag.Type == "anexo")
                 {
                     @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
@@ -64,31 +59,7 @@
                 {
                     @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "incentivo")
-                {
-                    if (ViewBag.AnnexId != 3)
-                    {
-                        if (ViewBag.TypeCompany == true)
-                        {
-                            @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
-                        }
-                        else
-                        {
-                            @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
-                        }
-                    }
-                    else if (ViewBag.AnnexId == 3)
-                    {
-                        if (ViewBag.SectionId == 2)
-                        {
-
-                            @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
-                        }
-
-                    }
-
-                }
-                else if (ViewBag.Type == "resumoporcfop")
+                else if (ViewBag.Type == "resumoPorCfop")
                 {
                     @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                 }
@@ -96,27 +67,85 @@
                 {
                     @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "anexoAutoPecas")
-                {
-                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
 
-                    @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "anexoMedicamento")
-                {
-                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
-
-                    @await Html.PartialAsync("_MedicineAttachmentPart1", new ViewDataDictionary(ViewData))
-
-                    @await Html.PartialAsync("_MedicineAttachmentPart2", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "vendaforaincentivo")
+                else if (ViewBag.Type == "foraIncentivo")
                 {
                     @await Html.PartialAsync("_Non-IncentiveSales", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "produtoST")
                 {
                     @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "anexoAutoPecas")
+                {
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>Os dados para calcular Anexo não foram importados</strong></p>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                        @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
+                    }
+
+                }
+                else if (ViewBag.Type == "anexoMedicamento")
+                {
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>"Há Cliente não Importado</strong></p>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                        @await Html.PartialAsync("_MedicineAttachmentPart1", new ViewDataDictionary(ViewData))
+
+                        @await Html.PartialAsync("_MedicineAttachmentPart2", new ViewDataDictionary(ViewData))
+                    }
+
+                }
+                else if (ViewBag.Type == "venda")
+                {
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>Os dados para calcular ICMS não foram importados</strong></p>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
+                    }
+                }
+                else if (ViewBag.Type == "incentivo")
+                {
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>Os dados para calcular ICMS não foram importados</strong></p>
+                    }
+                    else
+                    {
+                        if (ViewBag.AnnexId != 3)
+                        {
+                            if (ViewBag.TypeCompany == true)
+                            {
+                                @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
+                            }
+                            else
+                            {
+                                @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
+                            }
+                        }
+                        else if (ViewBag.AnnexId == 3)
+                        {
+                            if (ViewBag.SectionId == 2)
+                            {
+
+                                @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
+                            }
+
+                        }
+                    }
                 }
             </div>
         </div>

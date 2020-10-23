@@ -53,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
                         cc.CompanyId = companyId;
                         cc.CfopId = cfop.Id;
                         cc.Active = false;
-                        cc.CfopTypeId = null;
+                        cc.CfopTypeId = 11;
                         cc.Created = DateTime.Now;
                         cc.Updated = DateTime.Now;
                         addCompanyCfop.Add(cc);
@@ -144,6 +144,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                
+                
                 var entity = _service.FindById(updateCfopType.CompanyCfopId, GetLog(Model.OccorenceLog.Read));
 
                 if (updateCfopType.CfopTypeId.Equals(0))
@@ -170,7 +172,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var cfopsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession());
+            var cfopsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => Convert.ToInt32(_.Cfop.Code)).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -202,7 +204,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
+                               CfopType = r.CfopType.Name
 
                            };
 
@@ -220,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
+                               CfopType = r.CfopType.Name
 
                            };
                 return Ok(new { draw = draw, recordsTotal = cfopsAll.Count(), recordsFiltered = cfopsAll.Count(), data = cfop.Skip(start).Take(lenght) });

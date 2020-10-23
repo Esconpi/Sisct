@@ -627,7 +627,8 @@ namespace Escon.SisctNET.Web.Controllers
                                FantasyName = r.FantasyName,
                                Document = r.Document,
                                Status = r.Status,
-                               Incentivo = r.Incentive
+                               Incentivo = r.Incentive,
+                               Anexo = r.AnnexId
                            };
 
                 return Ok(new { draw = draw, recordsTotal = company.Count(), recordsFiltered = company.Count(), data = empresa.Skip(start).Take(lenght) });
@@ -646,7 +647,8 @@ namespace Escon.SisctNET.Web.Controllers
                                FantasyName = r.FantasyName,
                                Document = r.Document,
                                Status = r.Status,
-                               Incentivo = r.Incentive
+                               Incentivo = r.Incentive,
+                               Anexo = r.AnnexId
                            };
                 return Ok(new { draw = draw, recordsTotal = companies.Count(), recordsFiltered = companies.Count(), data = empresa.Skip(start).Take(lenght) });
             }

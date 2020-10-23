@@ -25,30 +25,30 @@
                 <td style="padding-left:1%;padding-right:1%; border:1px solid;" width="200px">Operações Internas</td>
                 <td style="border:1px solid;">
                     <table>
-                        @for (int i = 0; i < ViewBag.VendasInternas.Count; i++)
+                        @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.VendasInternas[i][0]</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Base)</td>
                             </tr>
                         }
                     </table>
                 </td>
                 <td style="border:1px solid;">
                     <table>
-                        @for (int i = 0; i < ViewBag.VendasInternas.Count; i++)
+                        @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:center; padding-right:10px" width="900px">@ViewBag.VendasInternas[i][1] %</td>
+                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Aliquota) %</td>
                             </tr>
                         }
                     </table>
                 </td>
                 <td style="border:1px solid;">
                     <table>
-                        @for (int i = 0; i < ViewBag.VendasInternas.Count; i++)
+                        @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.VendasInternas[i][2]</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Icms)</td>
                             </tr>
                         }
                     </table>
@@ -60,39 +60,39 @@
                 <td style="border:1px solid;">
                     <table>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.BaseCalcVendaInterestadual4</td>
+                            <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.BaseVenda4))</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcVendaInterestadual7</td>
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.BaseVenda7))</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcVendaInterestadual12</td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="border:1px solid;">
-                    <table>
-                        <tr style="border:1px solid;">
-                            <td style="text-align:center" width="900px">4 %</td>
-                        </tr>
-                        <tr style="border:1px solid;">
-                            <td style="text-align:center">7 %</td>
-                        </tr>
-                        <tr style="border:1px solid;">
-                            <td style="text-align:center">12 %</td>
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.BaseVenda12))</td>
                         </tr>
                     </table>
                 </td>
                 <td style="border:1px solid;">
                     <table>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.IcmsVendaInterestadual4</td>
+                            <td style="text-align:center" width="900px">4,00 %</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsVendaInterestadual7</td>
+                            <td style="text-align:center">7,00 %</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsVendaInterestadual12</td>
+                            <td style="text-align:center">12,00 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.IcmsVenda4))</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.IcmsVenda7))</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.IcmsVenda12))</td>
                         </tr>
                     </table>
                 </td>
@@ -105,30 +105,31 @@
                 <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Internas</td>
                 <td style="border:1px solid;">
                     <table>
-                        @for (int i = 0; i < ViewBag.DevoClienteInternas.Count; i++)
+                        @foreach (var devo in ViewBag.DevoClienteInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.DevoClienteInternas[i][0]</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Base)</td>
+                            </tr>
+                        }
+
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var devo in ViewBag.DevoClienteInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Aliquota) %</td>
                             </tr>
                         }
                     </table>
                 </td>
                 <td style="border:1px solid;">
                     <table>
-                        @for (int i = 0; i < ViewBag.DevoClienteInternas.Count; i++)
+                        @foreach (var devo in ViewBag.DevoClienteInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:center; padding-right:10px" width="900px">@ViewBag.DevoClienteInternas[i][1] %</td>
-                            </tr>
-                        }
-                    </table>
-                </td>
-                <td style="border:1px solid;">
-                    <table>
-                        @for (int i = 0; i < ViewBag.DevoClienteInternas.Count; i++)
-                        {
-                            <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.DevoClienteInternas[i][2]</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Icms)</td>
                             </tr>
                         }
                     </table>
@@ -140,39 +141,39 @@
                 <td style="border:1px solid;">
                     <table>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.BaseCalcDevoCliInterestadual4</td>
+                            <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.BaseDevoCliente4))</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.BaseCalcDevoCliInterestadual12</td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="border:1px solid;">
-                    <table>
-                        <tr style="border:1px solid;">
-                            <td style="text-align:center" width="900px">4 %</td>
-                        </tr>
-                        <tr style="border:1px solid;">
-                            <td style="text-align:center">12 %</td>
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.BaseDevoCliente12))</td>
                         </tr>
                     </table>
                 </td>
                 <td style="border:1px solid;">
                     <table>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px" width="900px">@ViewBag.IcmsDevoCliInterestadual4</td>
+                            <td style="text-align:center" width="900px">4,00 %</td>
                         </tr>
                         <tr style="border:1px solid;">
-                            <td style="text-align:right; padding-right:10px">@ViewBag.IcmsDevoCliInterestadual12</td>
+                            <td style="text-align:center">12,00 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.IcmsDevoCliente4))</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TaxAnexo.IcmsDevoCliente12))</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <th style="text-align:right; padding-right:1%; border:1px solid;" colspan="3">TOTAL (b)</th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;" colspan="3">TOTAL (d)</th>
                 <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
                 <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
-                <th style="text-align:right; padding-right:1%; border:1px solid;">@ViewBag.IcmsTotalB</th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.IcmsTotalD))</th>
             </tr>
         </tbody>
     </table>

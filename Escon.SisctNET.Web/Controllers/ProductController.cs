@@ -267,7 +267,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(int groupId,IFormFile arquivo, Model.Product2 entity)
+        public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
@@ -312,7 +312,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var import = new Import();
 
                 List<List<string>> products = new List<List<string>>();
-                products = import.Product(caminhoDestinoArquivoOriginal);
+                products = import.Products(caminhoDestinoArquivoOriginal);
 
                 List<Model.Product2> addProduct = new List<Model.Product2>();
                 List<Model.Product2> updateProduct = new List<Model.Product2>();
@@ -328,7 +328,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (item != null)
                     {
                         item.Updated = DateTime.Now;
-                        item.DateEnd = Convert.ToDateTime(products[i][4]).AddDays(-1);
+                        item.DateEnd = inicioATo.AddDays(-1);
                         updateProduct.Add(item);
                         //_service.Update(item, GetLog(Model.OccorenceLog.Update));
                     }
@@ -340,7 +340,7 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Description = products[i][1];
                         product.Unity = products[i][2];
                         product.Price = Convert.ToDecimal(products[i][3]);
-                        product.DateStart = Convert.ToDateTime(products[i][4]);
+                        product.DateStart = inicioATo;
                         product.GroupId = groupId;
                         product.Created = DateTime.Now;
                         product.Updated = DateTime.Now;

@@ -27,7 +27,7 @@
                             @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
-                            @if (ViewBag.Trimestre == "Nenhum")
+                            @if (ViewBag.Type != "imposto" || ViewBag.Trimestre == "Nenhum")
                             {
                                 <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
                             }
@@ -43,25 +43,60 @@
         </div>
         <div class="box-body">
             <div style="width:100%; padding:10px;padding-top:5px;">
-                @if (ViewBag.Type == "resumoncm")
-                {
-                    @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "imposto")
-                {
-                    @if (ViewBag.Trimestre == "Nenhum")
-                    {
-                        @await Html.PartialAsync("_TaxMonth", new ViewDataDictionary(ViewData))
-                    }
-                    else
-                    {
-                        @await Html.PartialAsync("_TaxTrimestre", new ViewDataDictionary(ViewData))
-                        @await Html.PartialAsync("_Irpj", new ViewDataDictionary(ViewData))
-                        @await Html.PartialAsync("_Csll", new ViewDataDictionary(ViewData))
-                    }
 
-
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center;color:red;"><strong>Escolha o Tipo para a Empresa</strong></p>
                 }
+                else if (ViewBag.Erro == 2)
+                {
+                    <p style="text-align:center;color:red;"><strong>Há Ncm não Tributado</strong></p>
+                }
+                else if (ViewBag.Erro == 3)
+                {
+                    <p style="text-align:center;color:red;"><strong>Os dados para calcular PIS/COFINS não foram importados</strong></p>
+                }
+                else
+                {
+                    @if (ViewBag.Type == "resumoCfop")
+                    {
+                        @await Html.PartialAsync("_CfopSummary", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoCfopCst")
+                    {
+                        @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoCfopMono")
+                    {
+                        @await Html.PartialAsync("_CfopSummaryMono", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoPorCfop")
+                    {
+                        @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoProdCfopNcmCstMono")
+                    {
+                        @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoNcmMono")
+                    {
+                        @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "imposto")
+                    {
+                        @if (ViewBag.Trimestre == "Nenhum")
+                        {
+                            @await Html.PartialAsync("_TaxMonth", new ViewDataDictionary(ViewData))
+                        }
+                        else
+                        {
+                            @await Html.PartialAsync("_TaxTrimestre", new ViewDataDictionary(ViewData))
+                            @await Html.PartialAsync("_Irpj", new ViewDataDictionary(ViewData))
+                            @await Html.PartialAsync("_Csll", new ViewDataDictionary(ViewData))
+                        }
+                    }
+                }
+
             </div>
         </div>
     </div>

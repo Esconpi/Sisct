@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCnpjCprod(notes, cnpj, cprod, ncm, cest, log);
         }
 
-        public decimal FindByTotal(List<string> notes, Log log = null)
+        public decimal FindByTotal(List<int> notes, Log log = null)
         {
             return _repository.FindByTotal(notes, log);
         }

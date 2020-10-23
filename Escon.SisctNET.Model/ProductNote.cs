@@ -10,9 +10,6 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Número da Nota")]
-        public string Nnf { get; set; }
-
         [Display(Name = "Código do Produto")]
         public string Cprod { get; set; }
 

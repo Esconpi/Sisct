@@ -43,7 +43,14 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<CompanyCfop> FindByCfopCompra(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && (_.CfopTypeId.Equals(6) || _.CfopTypeId.Equals(9))).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(6)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<CompanyCfop> FindByCfopCompraST(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(9)).ToList();
             AddLog(log);
             return result;
         }
@@ -62,6 +69,20 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(12)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<CompanyCfop> FindByCfopOutraSaida(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(13)).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<CompanyCfop> FindByCfopTransferencia(string company, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(2)).ToList();
@@ -69,9 +90,16 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<CompanyCfop> FindByCfopTransferenciaST(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(10)).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<CompanyCfop> FindByCfopVenda(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && (_.CfopTypeId.Equals(1) || _.CfopTypeId.Equals(5))).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(1)).ToList();
             AddLog(log);
             return result;
         }

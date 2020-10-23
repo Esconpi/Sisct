@@ -59,6 +59,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                List<Cfop> list_cfop = _cfopService.FindAll(null);
+                foreach (var cfop in list_cfop)
+                {
+                    cfop.Description = cfop.Code + " - " + cfop.Description;
+                }
+                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
+                ViewBag.CfopId = cfops;
                 return View(result);
             }
             catch(Exception ex)
@@ -85,6 +93,24 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+        public IActionResult Sincronize(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+
+        }
+
         [HttpGet]
         public IActionResult Icms(int id)
         {
@@ -94,7 +120,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 List<Cfop> list_cfop = _cfopService.FindAll(null);
                 foreach (var cfop in list_cfop)
                 {
@@ -103,8 +129,8 @@ namespace Escon.SisctNET.Web.Controllers
                 list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
                 ViewBag.CfopId = cfops;
-                ViewBag.TypeCompany = result.TypeCompany;
-                return View(result);
+                ViewBag.TypeCompany = comp.TypeCompany;
+                return View(comp);
             }
             catch (Exception ex)
             {

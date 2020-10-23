@@ -1,0 +1,237 @@
+﻿
+    <table style="border:2px solid; font-size:12px;">
+        <thead>
+            <tr>
+                <th style="text-align:center;border:1px solid;" width="1200px" colspan="2">
+                    OPERAÇÕES DE ENTRADAS
+                </th>
+                <th style="text-align:center;border:1px solid;" width="150px">
+                    BASE DE CÁLCULO
+                </th>
+                <th style="text-align:center;border:1px solid;" width="100px">
+                    ALÍQUOTA
+                </th>
+                <th style="text-align:center;border:1px solid;" width="150px">
+                    VALOR DO ICMS
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" rowspan="2">
+                    Aquisições de mercadorias tributadas normalmente e não alcançadas pelo Regime
+                </td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" width="200px">Operações Internas</td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var compra in ViewBag.ComprasInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", compra.Base)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var compra in ViewBag.ComprasInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", compra.Aliquota) %</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var compra in ViewBag.ComprasInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", compra.Icms)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Interestaduais</td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseCompra4))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseCompra7))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseCompra12))
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center" width="900px">4,00 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">7,00 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">12,00 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsCompra4))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsCompra7))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsCompra12))
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;" rowspan="2">
+                    Devolução a Fornecedores
+                </td>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Internas</td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var devo in ViewBag.DevoFornecedorInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Base)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var devo in ViewBag.DevoFornecedorInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Aliquota) %</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        @foreach (var devo in ViewBag.DevoFornecedorInternas)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", devo.Icms)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;padding-right:1%; border:1px solid;">Operações Interestaduais</td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseDevoFornecedor4))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseDevoFornecedor7))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.BaseDevoFornecedor12))
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center" width="900px">4,00 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">7,00 %</td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:center">12,00 %</td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border:1px solid;">
+                    <table>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px" width="900px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsDevoFornecedor4))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsDevoFornecedor7))
+                                }
+                            </td>
+                        </tr>
+                        <tr style="border:1px solid;">
+                            <td style="text-align:right; padding-right:10px">
+                                @if (Model != null)
+                                {
+                                    @string.Format("{0:N}", Convert.ToDecimal(Model.IcmsDevoFornecedor12))
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>

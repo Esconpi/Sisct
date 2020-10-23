@@ -6,45 +6,67 @@
 <table class="table" style="font-size: 12px; border:2px solid;">
     <thead>
         <tr>
-            <th style="width:120px; text-align:center">Código DAR</th>
-            <th style="width:100px; text-align:center">Total do Imposto</th>
+            <th style="width:120px; text-align:center">CÓDIGO DAR</th>
+            <th style="width:100px; text-align:center">ICMS APURADO</th>
+            <th style="width:100px; text-align:center">ICMS RECOLHIDO</th>
+            <th style="width:100px; text-align:center">ICMS A RECOLHER</th>
         </tr>
     </thead>
     <tbody>
         @if (ViewBag.Incetive == true)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td style="text-align:left">@ViewBag.DarIcms (Icms - Apuração Normal)</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarIcms)</td>
-             </tr>
+                <td style="text-align:right; padding-right:1%;">0,00 </td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarIcms)</td>
+            </tr>
         }
         <tr>
-            <td style="text-align:center">@ViewBag.DarSTCO</td>
-            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarSTCO) </td>
+            <td style="text-align:left">@ViewBag.DarSTCO (Icms - Imposto,Juros e Multas (Substituição))</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoST)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoST)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarST) </td>
         </tr>
         <tr>
-            <td style="text-align:center">@ViewBag.DarAp</td>
+            <td style="text-align:left">@ViewBag.DarSTCO (Icms - Imposto,Juros e Multas (Consumo))</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoCO)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoCO)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarCO) </td>
+        </tr>
+        <tr>
+            <td style="text-align:left">@ViewBag.DarAp (Icms - Antecipação Parcial)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoAP)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoAP)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarAp) </td>
         </tr>
         <tr>
-            <td style="text-align:center">@ViewBag.DarIm</td>
+            <td style="text-align:left">@ViewBag.DarIm (Icms - Diferencial de Alíquota - Ativo Imobilizado)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoIM)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoIM)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarIm) </td>
         </tr>
         <tr>
-            <td style="text-align:center">@ViewBag.DarFecop</td>
+            <td style="text-align:left">@ViewBag.DarFecop (Icms  - Adicional Fecop)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoFecop)</td>
+            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoFecop)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFecop) </td>
         </tr>
         @if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false && ViewBag.Comp.AnnexId != 3)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarCotac</td>
+                <td style="text-align:left">@ViewBag.DarCotac (Taxa - Administração Cotac)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarCotac) </td>
+                <td style="text-align:right; padding-right:1%;">0,00</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarCotac) </td>
             </tr>
         }
         @if (ViewBag.Incetive == true)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td style="text-align:left">@ViewBag.DarFunef (Taxa Funef)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFunef)</td>
+                <td style="text-align:right; padding-right:1%;">0,00</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFunef)</td>
             </tr>
         }

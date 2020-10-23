@@ -11,38 +11,38 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Receita" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Receitas</a>
-            <a asp-action="Import" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+            <a asp-action="Receita" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Receitas</a>
+            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
             <br />
             <br />
 
             @if (ViewBag.Comp.CountingTypeId == 2)
             {
-                <a asp-action="Reduction" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
+                <a asp-action="Reduction" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
             }
             else if (ViewBag.Comp.CountingTypeId == 1)
             {
-                <a asp-action="Despesa" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
+                <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
             }
-            <a asp-action="Retention" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
+            <a asp-action="Retention"  size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
             @if ((ViewBag.Month == "Março" || ViewBag.Month == "Junho" || ViewBag.Month == "Setembro" || ViewBag.Month == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
             {
                 <br />
                 <br />
-                <a asp-action="Pag" asp-route-companyid="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
+                <a asp-action="Pag"  size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
             }
 
         </div>
 
         <div style="width:100%; text-align:center;padding-top:10px;">
-            <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
 
         <br />
 
         <div style="width:100%; text-align:left; padding-left:1%;">
-            <strong>@ViewBag.Month/@ViewBag.Year</strong>
+            <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
         </div>
 
     </div>

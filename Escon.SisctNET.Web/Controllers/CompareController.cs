@@ -96,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
                     List<List<string>> sped = new List<List<string>>();
-                    List<List<string>> SpedDif = new List<List<string>>();
+                    //List<List<string>> SpedDif = new List<List<string>>();
 
                     if (ident.Equals("0"))
                     {
@@ -113,7 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
                         
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCT))
                     {
-                        SpedDif = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
+                        sped = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
                     }
                     else
                     {
@@ -154,8 +154,11 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else if (ordem.Equals(Model.Ordem.Sped))
                     {
-                        sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
-
+                        if (ident.Equals("0"))
+                        {
+                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                        }
+                       
                         foreach (var note in sped)
                         {
                             bool nota_encontrada = false;
@@ -188,7 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (ordem.Equals(Model.Ordem.DifereValor))
                     {
                         List<List<string>> registros = new List<List<string>>();
-                        foreach (var linha in SpedDif)
+                        foreach (var linha in sped)
                         {
                             List<string> Valores = new List<string>();
                             foreach (var notaXml in notes)
@@ -246,7 +249,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         List<List<string>> registros = new List<List<string>>();
                         decimal valorTotaGeralXml = 0, valorTotalGeralSped = 0;
-                        foreach (var linha in SpedDif)
+                        foreach (var linha in sped)
                         {
                             List<string> Valores = new List<string>();
                             foreach (var notaXml in notes)

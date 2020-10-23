@@ -21,7 +21,7 @@
                 Nº NFe
             </th>
             <th style="border:1px solid; text-align:center;">
-                Data
+                Data e Hora
             </th>
             <th style="border:1px solid; text-align:center;">
                 Valor
@@ -35,7 +35,7 @@
                 <td>@ViewBag.Notes[i][0]</td>
                 <td>@ViewBag.Notes[i][1]</td>
                 <td>@ViewBag.Notes[i][2]</td>
-                <td>@ViewBag.Notes[i][3]</td>
+                <td>@Convert.ToDateTime(ViewBag.Notes[i][3]).ToString("dd/MM/yyyy hh:mm:ss")</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Notes[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
             </tr>
         }

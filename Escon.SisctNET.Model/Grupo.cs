@@ -9,7 +9,6 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Imposto")]
         [ForeignKey("Tax")]
         public int TaxId { get; set; }

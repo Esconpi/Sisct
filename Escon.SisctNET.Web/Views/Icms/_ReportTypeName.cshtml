@@ -1,4 +1,4 @@
-﻿@if (ViewBag.Type == "resumocfop")
+﻿@if (ViewBag.Type == "resumoCfop")
 {
     <strong>Resumo CFOP</strong>
 }
@@ -8,17 +8,17 @@ else if (ViewBag.Type == "venda")
 }
 else if (ViewBag.Type == "anexo")
 {
-    <strong>@ViewBag.Anexo</strong>
+    <strong>Venda @ViewBag.Anexo</strong>
 }
 else if (ViewBag.Type == "foraAnexo")
 {
-    <strong>Ncm Fora Anexo</strong>
+    <strong>Venda Fora Anexo</strong>
 }
 else if (ViewBag.Type == "incentivo")
 {
     <strong>Apuração Icms</strong>
 }
-else if (ViewBag.Type == "resumoporcfop")
+else if (ViewBag.Type == "resumoPorCfop")
 {
     <strong>Resumo por CFOP - @ViewBag.Code</strong>
 }
@@ -28,7 +28,7 @@ else if (ViewBag.Type == "suspensao")
         <strong>Suspensão: </strong> <br />
         @foreach (var p in ViewBag.Periodos)
         {
-            <p>@p[1] à @p[2]</p>
+            <p>@Convert.ToDateTime(p[1]).ToString("dd/MM/yyyy hh:mm:ss") à @Convert.ToDateTime(p[2]).ToString("dd/MM/yyyy hh:mm:ss")</p>
         }
     </div>
 }
@@ -40,9 +40,9 @@ else if (ViewBag.Type == "anexoMedicamento")
 {
     <strong> ANEXO CLIX</strong>
 }
-else if (ViewBag.Type == "vendaforaincentivo")
+else if (ViewBag.Type == "foraIncentivo")
 {
-    <strong>CFOP Fora do Incentivo</strong>
+    <strong>Resumo CFOP Fora do Incentivo</strong>
 }
 else if (ViewBag.Type == "produtoST")
 {

@@ -13,7 +13,6 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-
         public Base Create(Base entity, Log log)
         {
             return _repository.Create(entity, log);

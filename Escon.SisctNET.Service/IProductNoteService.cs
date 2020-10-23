@@ -22,7 +22,7 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByCnpjCprod(List<Model.Note> notes, string cnpj, string cprod, string ncm, string cest, Model.Log log = null);
 
-        decimal FindByTotal(List<string> notes, Model.Log log = null);
+        decimal FindByTotal(List<int> notes, Model.Log log = null);
 
         decimal FindBySubscription(List<Model.Note> notes, Model.TypeTaxation taxationType, Model.Log log = null);
 

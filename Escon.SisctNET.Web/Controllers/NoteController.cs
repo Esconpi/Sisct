@@ -57,12 +57,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = comp.Id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Status = comp.Status;
+
+                ViewBag.Comp = comp;
+
+                SessionManager.SetCompanyIdInSession(id);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
 
                 var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
                 ViewBag.Count = result.Count();
@@ -75,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Import(int id, string year, string month)
+        public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -83,10 +83,16 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
                 var importXml = new Xml.Import();
+
+                ViewBag.Comp = comp; 
 
                 string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
@@ -167,8 +173,9 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         catch
                         {
-                            string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                            throw new Exception(message);   
+                            ViewBag.Erro = 1;
+                            ViewBag.Chave = notes[i][0]["chave"];
+                            return View(null);
                         }
 
                        
@@ -382,7 +389,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     try
                                     {
-                                        prod.Nnf = notes[i][1]["nNF"];
                                         prod.Cprod = det["cProd"];
                                         prod.Ncm = NCM;
                                         prod.Cest = CEST;
@@ -418,51 +424,13 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Status = false;
                                         prod.Orig = Convert.ToInt32(det["orig"]);
                                         prod.Incentivo = incentivo;
-                                        /*var item = new Model.ProductNote
-                                        {
-                                            Nnf = notes[i][1]["nNF"],
-                                            Cprod = det["cProd"],
-                                            Ncm = NCM,
-                                            Cest = CEST,
-                                            Cfop = CFOP,
-                                            Xprod = det["xProd"],
-                                            Vprod = Convert.ToDecimal(det["vProd"]),
-                                            Qcom = Convert.ToDecimal(det["qCom"]),
-                                            Ucom = det["uCom"],
-                                            Vuncom = vUnCom,
-                                            Vicms = vICMS,
-                                            Picms = pICMS,
-                                            Vipi = vIPI,
-                                            Vpis = vPIS,
-                                            Vcofins = vCOFINS,
-                                            Vbasecalc = baseDeCalc,
-                                            Vfrete = vFrete,
-                                            Vseg = vSeg,
-                                            Voutro = vOutro,
-                                            Vdesc = vDesc,
-                                            Created = DateTime.Now,
-                                            Updated = DateTime.Now,
-                                            IcmsST = vICMSST,
-                                            VbcFcpSt = vBCFCPST,
-                                            VbcFcpStRet = vBCFCPSTRet,
-                                            pFCPST = pFCPST,
-                                            pFCPSTRET = pFCPSTRet,
-                                            VfcpST = vFCPST,
-                                            VfcpSTRet = vFCPSTRet,
-                                            IcmsCTe = frete_icms,
-                                            Freterateado = frete_prod,
-                                            NoteId = noteId,
-                                            Nitem = det["nItem"],
-                                            Status = false,
-                                            Orig = Convert.ToInt32(det["orig"]),
-                                            Incentivo = incentivo
-                                        };
-                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));*/
+                                       
                                     }
                                     catch
                                     {
-                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                        throw new Exception(message);
+                                        ViewBag.Erro = 1;
+                                        ViewBag.Chave = notes[i][0]["chave"];
+                                        return View(null);
                                     }
 
                                     det.Clear();
@@ -526,7 +494,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     try
                                     {
-                                        prod.Nnf = notes[i][1]["nNF"];
                                         prod.Cprod = det["cProd"];
                                         prod.Ncm = NCM;
                                         prod.Cest = CEST;
@@ -578,66 +545,12 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                         prod.Produto = "Normal";
 
-                                        /*var item = new Model.ProductNote
-                                        {
-                                            Nnf = notes[i][1]["nNF"],
-                                            Cprod = det["cProd"],
-                                            Ncm = NCM,
-                                            Cest = CEST,
-                                            Cfop = CFOP,
-                                            Xprod = det["xProd"],
-                                            Vprod = Convert.ToDecimal(det["vProd"]),
-                                            Qcom = Convert.ToDecimal(det["qCom"]),
-                                            Ucom = det["uCom"],
-                                            Vuncom = vUnCom,
-                                            Vicms = vICMS,
-                                            Picms = pICMS,
-                                            Vipi = vIPI,
-                                            Vpis = vPIS,
-                                            Vcofins = vCOFINS,
-                                            Vbasecalc = baseCalc,
-                                            Vfrete = vFrete,
-                                            Vseg = vSeg,
-                                            Voutro = vOutro,
-                                            Vdesc = vDesc,
-                                            Created = DateTime.Now,
-                                            Updated = DateTime.Now,
-                                            IcmsST = vICMSST,
-                                            VbcFcpSt = vBCFCPST,
-                                            VbcFcpStRet = vBCFCPSTRet,
-                                            pFCPST = pFCPST,
-                                            pFCPSTRET = pFCPSTRet,
-                                            VfcpST = vFCPST,
-                                            VfcpSTRet = vFCPSTRet,
-                                            IcmsCTe = frete_icms,
-                                            Freterateado = frete_prod,
-                                            Aliqinterna = taxed.AliqInterna,
-                                            Mva = taxed.MVA,
-                                            BCR = taxed.BCR,
-                                            Fecop = taxed.Fecop,
-                                            Valoragregado = valorAgreg,
-                                            ValorBCR = valorbcr,
-                                            ValorAC = valorAgre_AliqInt,
-                                            TotalICMS = cms,
-                                            TotalFecop = valor_fecop,
-                                            Diferencial = dif,
-                                            IcmsApurado = icmsApu,
-                                            Status = true,
-                                            Pautado = false,
-                                            TaxationTypeId = taxed.TaxationTypeId,
-                                            NoteId = noteId,
-                                            Nitem = det["nItem"],
-                                            Orig = Convert.ToInt32(det["orig"]),
-                                            Incentivo = incentivo,
-                                            DateStart = Convert.ToDateTime(taxed.DateStart)
-                                        };
-
-                                        _itemService.Create(entity: item, GetLog(Model.OccorenceLog.Create));*/
                                     }
                                     catch
                                     {
-                                        string message = "A nota " + notes[i][0]["chave"] + " estar com erro de codificação no xml";
-                                        throw new Exception(message);
+                                        ViewBag.Erro = 1;
+                                        ViewBag.Chave = notes[i][0]["chave"];
+                                        return View(null);
                                     }
 
 
@@ -668,11 +581,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (notas.Count > 0)
                 {
-                    ViewBag.Id = id;
-                    ViewBag.Year = year;
-                    ViewBag.Month = month;
-                    ViewBag.SocialName = comp.SocialName;
-                    ViewBag.Document = comp.Document;
                     return View(notas);
                 }
                 else
@@ -747,7 +655,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Audita(int id, string year, string month)
+        public IActionResult Audita()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -755,6 +663,11 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var notes = _service.FindByNotes(id, year, month);
                 var products = _itemService.FindByProducts(notes);
 
@@ -763,10 +676,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
 
                 ViewBag.Registro = products.Count();
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
+                ViewBag.Comp = comp;
                 return View(products);
 
             }
@@ -777,7 +687,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Delete(int id, string year, string month)
+        public IActionResult Delete()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -785,6 +695,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
+                int id = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var notes = _service.FindByNotes(id, year, month);
 
                 var products = _itemService.FindByProducts(notes);
@@ -815,7 +729,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult DeleteNote(int id,int company, string year, string month)
+        public IActionResult DeleteNote(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
             {
@@ -824,6 +738,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                int company = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
                 var products = _itemService.FindByNotes(id);
                 List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
                 foreach (var product in products)
