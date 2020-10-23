@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Planilha;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -309,7 +308,7 @@ namespace Escon.SisctNET.Web.Controllers
                 await arquivo.CopyToAsync(stream);
                 stream.Close();
 
-                var import = new Import();
+                var import = new Planilha.Import();
 
                 List<List<string>> products = new List<List<string>>();
                 products = import.Products(caminhoDestinoArquivoOriginal);

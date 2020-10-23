@@ -101,16 +101,22 @@ namespace Escon.SisctNET.Web.Planilha
                 connect.Open();
                 OleDbDataReader rd = comando.ExecuteReader();
 
+                int cont = 0;
+
                 while (rd.Read())
                 {
-                    List<string> note = new List<string>();
-                    note.Add(rd[0].ToString());
-                    note.Add(rd[1].ToString());
-                    note.Add(rd[2].ToString());
-                    note.Add(rd[3].ToString());
-                    note.Add(rd[4].ToString());
-                    note.Add(rd[5].ToString());
-                    notes.Add(note);
+                    if(cont > 10)
+                    {
+                        List<string> note = new List<string>();
+                        note.Add(rd[0].ToString());
+                        note.Add(rd[1].ToString());
+                        note.Add(rd[2].ToString());
+                        note.Add(rd[3].ToString());
+                        note.Add(rd[4].ToString());
+                        note.Add(rd[5].ToString());
+                        notes.Add(note);
+                    }
+                    cont += 1;
                 }
 
             }
@@ -124,6 +130,46 @@ namespace Escon.SisctNET.Web.Planilha
             }
             return notes;
         }
-    
+
+        public List<List<string>> Ncms(string directoryPlanilha)
+        {
+            List<List<string>> ncms = new List<List<string>>();
+
+            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
+            string commandoSql = "Select * from [Sheet1$]";
+            OleDbCommand comando = new OleDbCommand(commandoSql, connect);
+
+            try
+            {
+
+                connect.Open();
+                OleDbDataReader rd = comando.ExecuteReader();
+                int cont = 0;
+                while (rd.Read())
+                {
+                    if(cont > 5 && !rd[4].ToString().Equals("") && !rd[8].ToString().Equals(""))
+                    {
+                        List<string> ncm = new List<string>();
+                        ncm.Add(rd[1].ToString().Replace(".",""));
+                        ncm.Add(rd[4].ToString());
+                        ncm.Add(rd[8].ToString());
+                        ncms.Add(ncm);
+                    }
+                    
+                    cont += 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connect.Close();
+            }
+            return ncms;
+        }
+
     }
 }
