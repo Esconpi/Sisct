@@ -103,8 +103,8 @@ namespace Escon.SisctNET.Web.Controllers
                             select new
                             {
                                 Id = r.Id.ToString(),
-                                Inicio = r.DateStart,
-                                Fim = r.DateEnd,
+                                Inicio = r.DateStart.ToString("dd/MM/yyyy hh:mm:ss"),
+                                Fim = r.DateEnd.ToString("dd/MM/yyyy hh:mm:ss"),
                                 Percentual = r.Percentual
 
                             };
