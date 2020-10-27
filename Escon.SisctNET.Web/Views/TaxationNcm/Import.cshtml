@@ -6,7 +6,7 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="TaxationNcm" asp-action="IndexAll" asp-route-id="@ViewBag.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="TaxationNcm" asp-action="IndexAll" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"> <strong>Importar Ncm:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
 
     </div>

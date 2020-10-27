@@ -33,36 +33,73 @@
     <tbody>
         @foreach (var cfop in ViewBag.Cfop)
         {
-            <tr style="border:1px solid;">
-                <td style="border:1px solid; padding-left:1%;">
-                    @cfop[0]
-                </td>
-                <td style="border:1px solid; padding-left:1%;">
-                    @cfop[1]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
-                <td style="border:1px solid; padding-left:1%;">
-                    @cfop[2]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
-                <td style="border:1px solid; padding-left:1%;">
-                    @cfop[3]
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
+            if (cfop[2] != cfop[3])
+            {
+                <tr style="border:1px solid; border-left:5px solid; border-color:red;">
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[0]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[1]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[2]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[3]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
 
-            </tr>
+                </tr>
+            }
+            else
+            {
+                <tr style="border:1px solid;border-left:5px solid; border-color:green;">
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[0]
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[1]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[2]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; padding-left:1%;">
+                        @cfop[3]
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+                    <td style="border:1px solid; text-align:right; padding-right:1%;">
+                        <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                    </td>
+
+                </tr>
+            }
+
         }
     </tbody>
 </table>

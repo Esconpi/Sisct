@@ -710,7 +710,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-
                     decimal percentualTotal = 0;
                     decimal valorTotalNcm = 0;
 
@@ -1089,6 +1088,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         List<string> note = new List<string>();
                         bool suspenso = false;
+                        decimal vProd = 0;
 
                         if (exitNotes[i][1].ContainsKey("dhEmi"))
                         {
@@ -1134,10 +1134,40 @@ namespace Escon.SisctNET.Web.Controllers
 
                         for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
+
+                            if (exitNotes[i][k].ContainsKey("vProd") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+
+                                 vProd += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vDesc") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vSeg") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                            }
+
                             if (exitNotes[i][k].ContainsKey("vNF") && suspenso == true)
                             {
-                                note.Add(exitNotes[i][k]["vNF"]);
-                                valorTotal += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
+                                note.Add(vProd.ToString());
+                                valorTotal += vProd;
                                 notes.Add(note);
                             }
 
@@ -1544,7 +1574,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (baseCalcGrupo > limiteGrupo)
                     {
                         totalExcedente = baseCalcGrupo - limiteGrupo;
-                        totalImpostoGrupo = (totalExcedente * Convert.ToDecimal(comp.VendaMGrupoExcedente)) / 100;
+                        totalImpostoGrupo = Math.Round((totalExcedente * Convert.ToDecimal(comp.VendaMGrupoExcedente)) / 100,2);
                     }
 
                     foreach (var g in grupos)
@@ -1564,25 +1594,25 @@ namespace Escon.SisctNET.Web.Controllers
                     if (baseCalcNcm < limiteNcm)
                     {
                         excedenteNcm = limiteNcm - baseCalcNcm;
-                        impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;
+                        impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100,2);
                     }
 
                     //Não Contribuinte
                     if (baseCalcNContribuinte > limiteNContribuinte && limiteNContribuinte > 0)
                     {
                         excedenteNContribuinte = baseCalcNContribuinte - limiteNContribuinte;
-                        impostoNContribuinte = (excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100;
+                        impostoNContribuinte = Math.Round((excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100,2);
                     }
 
                     // Transferência inter
                     if (limiteTransferencia < totalTranferenciaInter)
                     {
                         excedenteTranfInter = totalTranferenciaInter - limiteTransferencia;
-                        impostoTransfInter = (excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
+                        impostoTransfInter = Math.Round((excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100,2);
                     }
 
                     // Suspensão
-                    decimal valorSuspensao = (totalVendasSuspensao * Convert.ToDecimal(comp.Suspension)) / 100;
+                    decimal valorSuspensao = Math.Round((totalVendasSuspensao * Convert.ToDecimal(comp.Suspension)) / 100,2);
 
                     // Percentuais
                     decimal percentualVendaContribuinte = (baseCalcContribuinte * 100) / baseCalc;

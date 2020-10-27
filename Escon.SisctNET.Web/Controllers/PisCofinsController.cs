@@ -909,7 +909,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    ViewBag.Produtos = produtos.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                    ViewBag.Produtos = produtos.OrderBy(_ => Convert.ToInt32(_[2])).ToList();
                     ViewBag.Total = vTotal;
                 }
                 else if (type.Equals("resumoNcmMono"))

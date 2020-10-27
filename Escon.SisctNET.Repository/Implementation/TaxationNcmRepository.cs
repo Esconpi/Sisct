@@ -85,6 +85,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public List<TaxationNcm> FindByCompany(int company, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.CompanyId.Equals(company)).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();

@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
                 if (comp.CountingTypeId == null)
                 {
                     ViewBag.Erro = 1;
-                    return View();
+                    return View(comp);
                 }
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -92,14 +92,13 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> ncms = new List<List<string>>();
                 ncms = importXml.FindByNcms(directoryNfe);
 
-                TaxationNcm ncmMonofasicoTemp = new TaxationNcm();
-
-                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+                List<TaxationNcm> monoAdd = new List<TaxationNcm>();
+                List<TaxationNcm> monoUpdate = new List<TaxationNcm>();
 
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                    ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
-                    
+                    var ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
                     if (ncmMonofasicoTemp == null && ncmTemp != null) 
@@ -109,6 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.CompanyId = companyid;
                         tributacao.NcmId = ncmTemp.Id;
                         tributacao.CodeProduct = ncms[i][0];
+                        tributacao.Product = ncms[i][2];
                         tributacao.Year = year;
                         tributacao.Month = month;
                         tributacao.Created = DateTime.Now;
@@ -116,7 +116,7 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.Type = "Normal";
                         tributacao.TypeNcmId = 2;
 
-                        tributacoes.Add(tributacao);
+                        monoAdd.Add(tributacao);
 
                     }
 
@@ -124,11 +124,22 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         ViewBag.Erro = 2;
                         ViewBag.Ncm = ncms[i][1];
-                        return View();
+                        return View(comp);
+                    }
+
+                    if (ncmMonofasicoTemp != null)
+                    {
+                        ncmMonofasicoTemp.CodeProduct = ncms[i][0];
+                        ncmMonofasicoTemp.NcmId = ncmTemp.Id;
+                        ncmMonofasicoTemp.Product = ncms[i][2];
+                        ncmMonofasicoTemp.Updated = DateTime.Now;
+
+                        monoUpdate.Add(ncmMonofasicoTemp);
                     }
                 }
 
-                _service.Create(tributacoes, null);
+                _service.Create(monoAdd, null);
+                _service.Update(monoUpdate, null);
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -676,23 +687,36 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     bool achou = false;
 
-                    foreach(var nF in ncmsFortes)
+                    int contS = nS.CodeProduct.Count();
+                    
+                    foreach (var nF in ncmsFortes)
                     {
-                        int contS = nS.CodeProduct.Count();
                         int contF = nF[1].Count();
-
+                        string nSTEmp = "", nFTemp = "";
                         int dif = 0;
 
                         if (contS > contF)
                         {
                             dif = contS - contF;
+                            for(int i = 0; i < dif; i++)
+                            {
+                                nFTemp += "0";
+                            }
+                            nFTemp += nF[1];
+                            nSTEmp = nS.CodeProduct;
                         }
                         else
                         {
-                            dif = contS - contF;
+                            dif = contF - contS;
+                            for (int i = 0; i < dif; i++)
+                            {
+                                nSTEmp += "0";
+                            }
+                            nSTEmp += nS.CodeProduct;
+                            nFTemp = nF[1];
                         }
 
-                        if (nS.CodeProduct.Equals(nF[1].Substring(dif)) && nS.Ncm.Code.Equals(nF[2]))
+                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[2]))
                         {
                             achou = true;
                             break;
@@ -707,7 +731,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Comp = comp;
 
-                return View(ncmdivergentes);
+                return View(ncmdivergentes.OrderBy(_ => Convert.ToInt32(_.Ncm.Code)).ToList());
             }
             catch (Exception ex)
             {
@@ -738,8 +762,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.Ncm.Code).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession())).ToList();
-
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -804,7 +827,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession()) && _.Year.Equals(SessionManager.GetYearInSession()) && _.Month.Equals(SessionManager.GetMonthInSession())).ToList().OrderBy(_ => _.Status).ToList();
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Year.Equals(SessionManager.GetYearInSession()) && _.Month.Equals(SessionManager.GetMonthInSession())).ToList().OrderBy(_ => _.Status).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

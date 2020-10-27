@@ -94,5 +94,6 @@ namespace Escon.SisctNET.Model
             set => typeNcm = value;
         }
 
+        public string Product { get; set; }
     }
 }
