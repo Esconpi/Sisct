@@ -78,7 +78,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
 
-
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

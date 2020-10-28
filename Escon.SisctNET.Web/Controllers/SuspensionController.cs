@@ -73,11 +73,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
-
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
-                entity.Percentual = Convert.ToDecimal(company.Suspension);
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
                 _service.Create(entity, null);
 
@@ -103,9 +100,8 @@ namespace Escon.SisctNET.Web.Controllers
                             select new
                             {
                                 Id = r.Id.ToString(),
-                                Inicio = r.DateStart,
-                                Fim = r.DateEnd,
-                                Percentual = r.Percentual
+                                Inicio = r.DateStart.ToString("dd/MM/yyyy hh:mm:ss"),
+                                Fim = r.DateEnd.ToString("dd/MM/yyyy hh:mm:ss")
 
                             };
             return Ok(new { draw = draw, recordsTotal = suspensionsAll.Count(), recordsFiltered = suspensionsAll.Count(), data = suspension.Skip(start).Take(lenght) });

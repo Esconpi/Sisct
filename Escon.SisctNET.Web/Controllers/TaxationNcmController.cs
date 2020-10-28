@@ -1,12 +1,15 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -18,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICstService _cstService;
         private readonly ITaxationNcmService _service;
         private readonly ITypeNcmService _typeNcmService;
+        private readonly IHostingEnvironment _appEnvironment;
 
         public TaxationNcmController(
             INcmService ncmService,
@@ -26,6 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICstService cstService,
             ITaxationNcmService service,
             ITypeNcmService typeNcmService,
+            IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "TaxationNcm")
@@ -36,11 +41,12 @@ namespace Escon.SisctNET.Web.Controllers
             _cstService = cstService;
             _service = service;
             _typeNcmService = typeNcmService;
+            _appEnvironment = env;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
         [HttpGet]
-        public IActionResult Import(int companyid)
+        public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
             {
@@ -49,8 +55,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.CompanyId = companyid;
-                var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
                 return View(comp);
             }
             catch (Exception ex)
@@ -70,12 +75,13 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
-                var ncmsMonofasicoAll = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
+                var ncmsMonofasicoAll = _service.FindByCompany(comp.Document);
                 var ncmsAll = _ncmService.FindAll(null);                
 
                 if (comp.CountingTypeId == null)
                 {
-                    throw new Exception("Escolha o Tipo da Empresa");
+                    ViewBag.Erro = 1;
+                    return View(comp);
                 }
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -86,15 +92,13 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> ncms = new List<List<string>>();
                 ncms = importXml.FindByNcms(directoryNfe);
 
-                TaxationNcm ncmMonofasicoTemp = new TaxationNcm();
-
-                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+                List<TaxationNcm> monoAdd = new List<TaxationNcm>();
+                List<TaxationNcm> monoUpdate = new List<TaxationNcm>();
 
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                   
-                    ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
-                    
+                    var ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
                     if (ncmMonofasicoTemp == null && ncmTemp != null) 
@@ -104,6 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.CompanyId = companyid;
                         tributacao.NcmId = ncmTemp.Id;
                         tributacao.CodeProduct = ncms[i][0];
+                        tributacao.Product = ncms[i][2];
                         tributacao.Year = year;
                         tributacao.Month = month;
                         tributacao.Created = DateTime.Now;
@@ -111,31 +116,30 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.Type = "Normal";
                         tributacao.TypeNcmId = 2;
 
-                        tributacoes.Add(tributacao);
+                        monoAdd.Add(tributacao);
 
-                        /*var taxationNcm = new Model.TaxationNcm
-                        {
-                            CompanyId = id,
-                            NcmId = ncmTemp.Id,
-                            CodeProduct = ncms[i][0],
-                            Year = year,
-                            Month = month,
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now,
-                            Type = "Nenhum"
-                        };
-
-                        _service.Create(entity:taxationNcm, GetLog(Model.OccorenceLog.Create));*/
                     }
 
                     if (ncmTemp == null)
                     {
-                        string message = "O NCM " + ncms[i][1] + " não estar cadastrado";
-                        throw new Exception(message);
+                        ViewBag.Erro = 2;
+                        ViewBag.Ncm = ncms[i][1];
+                        return View(comp);
+                    }
+
+                    if (ncmMonofasicoTemp != null)
+                    {
+                        ncmMonofasicoTemp.CodeProduct = ncms[i][0];
+                        ncmMonofasicoTemp.NcmId = ncmTemp.Id;
+                        ncmMonofasicoTemp.Product = ncms[i][2];
+                        ncmMonofasicoTemp.Updated = DateTime.Now;
+
+                        monoUpdate.Add(ncmMonofasicoTemp);
                     }
                 }
 
-                _service.Create(tributacoes, null);
+                _service.Create(monoAdd, null);
+                _service.Update(monoUpdate, null);
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -171,7 +175,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-        }
+        }       
 
         public IActionResult IndexAll(int id)
         {
@@ -609,6 +613,132 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult Compare()
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> Relatory(IFormFile arquivo)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+
+                if (arquivo == null || arquivo.Length == 0)
+                {
+                    ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
+                    return View(ViewData);
+                }
+
+                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Atos");
+
+                if (!Directory.Exists(filedir))
+                {
+                    Directory.CreateDirectory(filedir);
+                }
+
+                string nomeArquivo = "Ato";
+
+                if (arquivo.FileName.Contains(".xls") || arquivo.FileName.Contains(".xlsx"))
+                    nomeArquivo += ".xls";
+
+                string caminho_WebRoot = _appEnvironment.WebRootPath;
+                string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Atos\\";
+                string caminhoDestinoArquivoOriginal = caminhoDestinoArquivo + nomeArquivo;
+
+                string[] paths_upload_ato = Directory.GetFiles(caminhoDestinoArquivo);
+
+                if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
+                {
+                    System.IO.File.Delete(caminhoDestinoArquivoOriginal);
+
+                }
+
+                var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
+                await arquivo.CopyToAsync(stream);
+                stream.Close();
+
+                var import = new Planilha.Import();
+
+                var ncmsSisct = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico")).ToList();
+                var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
+
+                List<Model.TaxationNcm> ncmdivergentes = new List<TaxationNcm>();
+
+                foreach(var nS in ncmsSisct)
+                {
+                    bool achou = false;
+
+                    int contS = nS.CodeProduct.Count();
+                    
+                    foreach (var nF in ncmsFortes)
+                    {
+                        int contF = nF[1].Count();
+                        string nSTEmp = "", nFTemp = "";
+                        int dif = 0;
+
+                        if (contS > contF)
+                        {
+                            dif = contS - contF;
+                            for(int i = 0; i < dif; i++)
+                            {
+                                nFTemp += "0";
+                            }
+                            nFTemp += nF[1];
+                            nSTEmp = nS.CodeProduct;
+                        }
+                        else
+                        {
+                            dif = contF - contS;
+                            for (int i = 0; i < dif; i++)
+                            {
+                                nSTEmp += "0";
+                            }
+                            nSTEmp += nS.CodeProduct;
+                            nFTemp = nF[1];
+                        }
+
+                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[2]))
+                        {
+                            achou = true;
+                            break;
+                        }
+                    }
+
+                    if(achou == false)
+                    {
+                        ncmdivergentes.Add(nS);
+                    }
+                }
+
+                ViewBag.Comp = comp;
+
+                return View(ncmdivergentes.OrderBy(_ => Convert.ToInt32(_.Ncm.Code)).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult Details(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
@@ -632,8 +762,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.Ncm.Code).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession())).ToList();
-
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -698,7 +827,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession()) && _.Year.Equals(SessionManager.GetYearInSession()) && _.Month.Equals(SessionManager.GetMonthInSession())).ToList().OrderBy(_ => _.Status).ToList();
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Year.Equals(SessionManager.GetYearInSession()) && _.Month.Equals(SessionManager.GetMonthInSession())).ToList().OrderBy(_ => _.Status).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

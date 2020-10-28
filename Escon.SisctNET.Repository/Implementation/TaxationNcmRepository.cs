@@ -78,6 +78,20 @@ namespace Escon.SisctNET.Repository.Implementation
             return ncmsAll;
         }
 
+        public List<TaxationNcm> FindByCompany(string company, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8))).ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<TaxationNcm> FindByCompany(int company, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.CompanyId.Equals(company)).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();

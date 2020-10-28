@@ -837,7 +837,7 @@ namespace Escon.SisctNET.Web.Xml
 
                                             List<string> prod = new List<string>();
                                             reader.Read();
-                                            string ncm = "", code = "";
+                                            string ncm = "", code = "", produto = "";
                                             bool status = false;
                                             while (reader.Name.ToString() != "prod")
                                             {
@@ -848,6 +848,11 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "NCM")
                                                 {
                                                     ncm = reader.ReadString();
+                                                }
+
+                                                if(reader.Name == "xProd")
+                                                {
+                                                    produto = reader.ReadString();
                                                 }
 
                                                 reader.Read();
@@ -867,6 +872,7 @@ namespace Escon.SisctNET.Web.Xml
                                             {
                                                 prod.Add(code);
                                                 prod.Add(ncm);
+                                                prod.Add(produto);
                                                 ncms.Add(prod);
                                             }
                                             break;

@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Escon.SisctNET.Model
 {
@@ -28,8 +26,5 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Reativação")]
         public DateTime DateEnd { get; set; }
-
-        [Display(Name = "Percentual %")]
-        public decimal Percentual { get; set; }
     }
 }

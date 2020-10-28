@@ -710,7 +710,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-
                     decimal percentualTotal = 0;
                     decimal valorTotalNcm = 0;
 
@@ -1089,6 +1088,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         List<string> note = new List<string>();
                         bool suspenso = false;
+                        decimal vProd = 0;
 
                         if (exitNotes[i][1].ContainsKey("dhEmi"))
                         {
@@ -1134,10 +1134,40 @@ namespace Escon.SisctNET.Web.Controllers
 
                         for (int k = 0; k < exitNotes[i].Count(); k++)
                         {
+
+                            if (exitNotes[i][k].ContainsKey("vProd") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+
+                                 vProd += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vDesc") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+
+                            }
+
+                            if (exitNotes[i][k].ContainsKey("vSeg") && exitNotes[i][k].ContainsKey("cProd"))
+                            {
+                                vProd += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                            }
+
                             if (exitNotes[i][k].ContainsKey("vNF") && suspenso == true)
                             {
-                                note.Add(exitNotes[i][k]["vNF"]);
-                                valorTotal += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
+                                note.Add(vProd.ToString());
+                                valorTotal += vProd;
                                 notes.Add(note);
                             }
 
@@ -1544,7 +1574,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (baseCalcGrupo > limiteGrupo)
                     {
                         totalExcedente = baseCalcGrupo - limiteGrupo;
-                        totalImpostoGrupo = (totalExcedente * Convert.ToDecimal(comp.VendaMGrupoExcedente)) / 100;
+                        totalImpostoGrupo = Math.Round((totalExcedente * Convert.ToDecimal(comp.VendaMGrupoExcedente)) / 100,2);
                     }
 
                     foreach (var g in grupos)
@@ -1564,25 +1594,25 @@ namespace Escon.SisctNET.Web.Controllers
                     if (baseCalcNcm < limiteNcm)
                     {
                         excedenteNcm = limiteNcm - baseCalcNcm;
-                        impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;
+                        impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100,2);
                     }
 
                     //Não Contribuinte
                     if (baseCalcNContribuinte > limiteNContribuinte && limiteNContribuinte > 0)
                     {
                         excedenteNContribuinte = baseCalcNContribuinte - limiteNContribuinte;
-                        impostoNContribuinte = (excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100;
+                        impostoNContribuinte = Math.Round((excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100,2);
                     }
 
                     // Transferência inter
                     if (limiteTransferencia < totalTranferenciaInter)
                     {
                         excedenteTranfInter = totalTranferenciaInter - limiteTransferencia;
-                        impostoTransfInter = (excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100;
+                        impostoTransfInter = Math.Round((excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100,2);
                     }
 
                     // Suspensão
-                    decimal valorSuspensao = (totalVendasSuspensao * Convert.ToDecimal(comp.Suspension)) / 100;
+                    decimal valorSuspensao = Math.Round((totalVendasSuspensao * Convert.ToDecimal(comp.Suspension)) / 100,2);
 
                     // Percentuais
                     decimal percentualVendaContribuinte = (baseCalcContribuinte * 100) / baseCalc;
@@ -1935,20 +1965,20 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Elencadas
                             // Internas
                             decimal icmsInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInternaElencada = Math.Round((InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInternasElencada = icmsInternaElencada;
                             decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
-                            decimal totalIcmsInternaElencada = totalInternasElencada - icmsPresumidoInternaElencada;
+                            decimal totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada,2);
 
                             totalDarFecop += fecopInternaElencada;
                             totalDarIcms += totalIcmsInternaElencada;
 
                             // Interestadual
                             decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInterestadualElencada =Math.Round((InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInterestadualElencada = icmsInterestadualElencada;
                             decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
-                            decimal totalIcmsInterestadualElencada = totalInterestadualElencada - icmsPresumidoInterestadualElencada;
+                            decimal totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada,2);
 
                             totalDarFecop += fecopInterestadualElencada;
                             totalDarIcms += totalIcmsInterestadualElencada;
@@ -1956,20 +1986,20 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Deselencadas
                             //  Internas
                             decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInternasDeselencada = icmsInternaDeselencada;
                             decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
-                            decimal totalIcmsInternaDeselencada = totalInternasDeselencada - icmsPresumidoInternaDeselencada;
+                            decimal totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada,2);
 
                             totalDarFecop += fecopInternaDeselencada;
                             totalDarIcms += totalIcmsInternaDeselencada;
 
                             // Interestadual
                             decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInterestadualDeselencada = icmsInterestadualDeselencada;
                             decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
-                            decimal totalIcmsInterestadualDeselencada = totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada;
+                            decimal totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada,2);
 
                             totalDarFecop += fecopInterestadualDeselencada;
                             totalDarIcms += totalIcmsInterestadualDeselencada;
@@ -2009,7 +2039,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             //  Suspensão
-                            decimal totalSuspensao = (suspensao * Convert.ToDecimal(comp.Suspension)) / 100;
+                            decimal totalSuspensao = Math.Round((suspensao * Convert.ToDecimal(comp.Suspension)) / 100,2);
                             totalDarIcms += totalSuspensao;
 
 

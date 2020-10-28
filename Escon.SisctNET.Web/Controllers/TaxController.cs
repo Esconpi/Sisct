@@ -700,7 +700,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     exitNotes.RemoveAt(i);
                                     continue;
                                 }
-                                bool suspenso = false;
+                                bool suspenso = false,cfop = false; 
 
                                 if (exitNotes[i][1].ContainsKey("dhEmi"))
                                 {
@@ -716,10 +716,47 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int k = 0; k < exitNotes[i].Count(); k++)
                                 {
-                                    if (exitNotes[i][k].ContainsKey("vNF") && exitNotes[i][1]["finNFe"] != "4" && suspenso == true)
+                                    if (exitNotes[i][k].ContainsKey("CFOP"))
                                     {
-                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vNF"]);
+                                        cfop = false;
+                                        if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) ||
+                                            cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][k]["CFOP"]) ||
+                                            cfopsTransfST.Contains(exitNotes[i][k]["CFOP"]))
+                                        {
+                                            cfop = true;
+                                        }
+
                                     }
+
+                                    if (exitNotes[i][k].ContainsKey("vProd") && exitNotes[i][k].ContainsKey("cProd") && suspenso == true && cfop == true)
+                                    {
+                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                                    }
+
+                                    if (exitNotes[i][k].ContainsKey("vFrete") && exitNotes[i][k].ContainsKey("cProd") && suspenso == true && cfop == true)
+                                    {
+
+                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+
+                                    }
+
+                                    if (exitNotes[i][k].ContainsKey("vDesc") && exitNotes[i][k].ContainsKey("cProd") && suspenso == true && cfop == true)
+                                    {
+                                        totalVendasSuspensao -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+
+                                    }
+
+                                    if (exitNotes[i][k].ContainsKey("vOutro") && exitNotes[i][k].ContainsKey("cProd") && suspenso == true && cfop == true)
+                                    {
+                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+
+                                    }
+
+                                    if (exitNotes[i][k].ContainsKey("vSeg") && exitNotes[i][k].ContainsKey("cProd") && suspenso == true && cfop == true)
+                                    {
+                                        totalVendasSuspensao += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+                                    }
+
                                 }
 
                             }
