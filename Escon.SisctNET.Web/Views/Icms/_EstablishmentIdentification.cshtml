@@ -1,0 +1,49 @@
+﻿@await Html.PartialAsync("_Header", new ViewDataDictionary(ViewData))
+
+<div style="width:100%; padding-top:10px;">
+    <div style="border:2px solid;padding-left:1%;"><strong>1. IDENTIFICAÇÃO DO ESTABELECIMENTO</strong></div>
+    <table style="border:2px solid; font-size:12px;">
+        <thead>
+            <tr>
+                <td style="padding-left:1%;border:1px solid;" width="1000px" colspan="3">
+                    <strong>NOME EMPRESARIAL</strong> <br />
+                    @ViewBag.Company.SocialName
+                </td>
+                <td style="padding-left:1%;border:1px solid;" width="200px">
+                    <strong>INSCRIÇÃO ESTADUAL</strong> <br />
+                    @ViewBag.Company.Ie
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;border:1px solid;" colspan="3">
+                    <strong>ENDEREÇO</strong> <br />
+                    @ViewBag.Company.Logradouro
+                </td>
+                <td style="padding-left:1%;border:1px solid;">
+                    <strong>CNPJ</strong> <br />
+                    @ViewBag.Company.Document
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left:1%;border:1px solid;" width="700px">
+                    <strong>BAIRRO OU DISTRITO</strong> <br />
+                    @ViewBag.Company.District
+                </td>
+                <td style="padding-left:1%;border:1px solid;" width="500px">
+                    <strong>MUNICÍPIO</strong> <br />
+                    @ViewBag.Company.City
+                </td>
+                <td style="padding-left:1%;border:1px solid;" width="100px">
+                    <strong>CEP</strong> <br />
+                    @ViewBag.Company.Cep
+                </td>
+                <td style="padding-left:1%;border:1px solid;">
+                    <strong>FONE</strong> <br />
+                    @ViewBag.Company.Phone
+                </td>
+            </tr>
+
+
+        </thead>
+    </table>
+</div>

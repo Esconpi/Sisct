@@ -1,0 +1,79 @@
+﻿<br />
+
+
+@if (ViewBag.Type == "AgrupadoA")
+{
+    <strong>Agrupado - Analítico &nbsp;</strong>
+}
+@if (ViewBag.Type == "AgrupadoS")
+{
+    <strong>Agrupado - Sintético &nbsp;</strong>
+}
+@if (ViewBag.Type == "Geral")
+{
+    <strong>Resumo Geral</strong>
+}
+@if (ViewBag.Type == "IcmsST")
+{
+    <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
+}
+
+
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+{
+    @if (ViewBag.TypeTaxation == "ST")
+    {
+        <strong>Substituição Tributária por MVA</strong>
+    }
+    else if (ViewBag.TypeTaxation == "AP")
+    {
+        <strong>Antecipação Parcial</strong>
+    }
+    else if (ViewBag.TypeTaxation == "CO")
+    {
+        <strong>Consumo</strong>
+    }
+    else if (ViewBag.TypeTaxation == "COR")
+    {
+        <strong>Consumo p/ Revenda</strong>
+    }
+    else if (ViewBag.TypeTaxation == "IM")
+    {
+        <strong>Imobilizado</strong>
+    }
+    else if (ViewBag.TypeTaxation == "Isento")
+    {
+        <strong>Isento</strong>
+    }
+    else if (ViewBag.TypeTaxation == "AT")
+    {
+        <strong>Antecipação Total</strong>
+    }
+}
+
+
+@if (ViewBag.Type == "ProdutoI")
+{
+    <strong>&nbsp;Produto Incentivado</strong>
+}
+
+@if (ViewBag.Type == "ProdutoNI")
+{
+    <strong>&nbsp;Produto Não Incentivado</strong>
+}
+
+
+@if (ViewBag.Type == "ProdutoFP")
+{
+    <strong>Produtos Sem Preço de Referência</strong>
+}
+
+@if (ViewBag.Type == "ProdutoFI")
+{
+    <strong>Produtos Fora do Incentivo (Exceto ST)</strong>
+}
+
+@if (ViewBag.Type == "GNRE")
+{
+    <strong>GNRE de Fornecedor sem Inscrição Estadual</strong>
+}

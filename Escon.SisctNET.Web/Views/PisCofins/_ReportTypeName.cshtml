@@ -1,0 +1,35 @@
+﻿@if (ViewBag.Type == "resumoCfop")
+{
+    <strong>Resumo CFOP</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopCst")
+{
+    <strong>Resumo CFOP/CST</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopMono")
+{
+    <strong>Resumo CFOP - NCM Monofásico</strong>
+}
+
+@if (ViewBag.Type == "resumoNcmMono")
+{
+    <strong>Resumo NCM Monofásico</strong>
+}
+
+@if (ViewBag.Type == "imposto")
+{
+    <strong>Imposto Federal</strong>
+}
+
+@if (ViewBag.Type == "resumoPorCfop")
+{
+    <strong>Resumo por CFOP - @ViewBag.Code</strong>
+}
+
+@if (ViewBag.Type == "resumoProdCfopNcmCstMono")
+{
+    <strong>Resumo Produto/NCM/CFOP/CST Monofásico</strong>
+}
+

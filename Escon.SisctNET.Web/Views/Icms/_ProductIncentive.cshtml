@@ -1,0 +1,238 @@
+﻿<div style="width:100%; padding-top:0px;">
+    <table style="font-size:12px;" border="1">
+        <thead style="font-size:14px;">
+            <tr>
+                <th style="text-align:center" width="320px">Histórico</th>
+                <th style="text-align:center" width="150px">Aliq. Inter. do Produto até 25%</th>
+                <th style="text-align:center" width="180px">Aliq. Inter. do Produto superior 25%</th>
+                <th style="text-align:center" width="120px">Receitas de Produtos ST - Normal</th>
+                <th style="text-align:center" width="120px">Receitas de Produtos ST - ST</th>
+                <th style="text-align:center" width="140px">Receitas de Produtos Isento</th>
+                <th style="text-align:center" width="170px">Total (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size:11px;">Venda p/ Contribuintes (R$)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaContribuinteIncentivo)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ContribuinteIncentivoAliM25)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaContribuinteNIncentivo)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaSTContribuinte)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ContribuinteIsento)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalVendaContibuinte)</td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.PercentualIcmsContrib) %</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.PercentualIcmsAiqM25Contrib) %</td>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="font-size:11px;">Total (R$)</th>
+                <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ValorVendaContribIncentivo)</th>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ValorVendaContribuinteAliM25)</td>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th style="text-align:right">&nbsp;</th>
+                <td style="text-align:right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right"></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Venda p/ Não Contribuintes (R$)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNContribIncentivo)</td>
+                <td></td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNContribuinteNIncentivo)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaSTNContribuinte)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.NaoContribuinteIsento)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalVendaNContribuinte)</td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.PercentualIcmsNContribuinte) %</td>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="font-size:11px;">Total (R$)</th>
+                <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ValorVendaNContribIncentivo)</th>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <th style="text-align:right">&nbsp;</th>
+                <td style="text-align:right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th style="font-size:11px;">Total das Vendas (R$)</th>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalGeralVendasIncentivo)</th>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <th style="text-align:right">&nbsp;</th>
+                <td style="text-align:right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado (R$)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNForaEstadoContribuinteIncetivo)</td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNContribuinteNIncentivoForaDoEstado)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaSTForaEstadoNContribuinte)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.NaoContribuinteForaDoEstadoIsento)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalGeralVendaNContibuinteForaDoEstado)</td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNContribuinteNIncentivoForaDoEstado)</td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Base de Cálculo (R$)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalVendaNContribuinteForaDoEstado)</td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+            </tr>
+            <tr>
+                <td style="font-size:11px;">Percentual do Incentivo Fiscal (%)</td>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.PercentualIcmsNaoContribForaDoEstado) %</td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="font-size:11px;">Total (R$)</th>
+                <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ValorVendaNContribForaDoEstado)</th>
+                <td></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <th style="text-align:right">&nbsp;</th>
+                <td style="text-align:right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="text-align:right"></td>
+                <td style="text-align:right"></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th style="font-size:11px;">Total Geral do Icms</th>
+                <th style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalGeralIcmsIncentivo)</th>
+                <td></td>
+                <td></td>
+                <td style="text-align:right"></td>
+                <th style="text-align:right"></th>
+                <td style="text-align:right"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="width:100%; padding-top:10px; page-break-before: always;">
+    <table class="table" border="1" style="font-size:12px;">
+        <thead>
+            <tr>
+                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid;">APURAÇÃO DO ICMS NORMAL</th>
+                <th class="col-lg-1 col-md-1 col-sm-1"></th>
+                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">DADOS PARA CÁLCULO DA FUNEF e COTAC</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:14px;">
+            <tr>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.Debito)</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.Credito)</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.Diferenca)</th>
+                        </tr>
+
+                    </table>
+
+                </td>
+                <td></td>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @string.Format("{0:N}", ViewBag.PercentualIcmsContrib) % (R$)</td>
+
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.ValorVendaContribIncentivo)</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @string.Format("{0:N}", ViewBag.PercentualIcmsAiqM25Contrib) % (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.ValorVendaContribuinteAliM25)</td>
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Valor do ICMS @string.Format("{0:N}", ViewBag.PercentualIcmsNContribuinte) % (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.ValorVendaNContribIncentivo)</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Total (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.TotalIcms)</th>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@await Html.PartialAsync("_ProductTaxSummary", new ViewDataDictionary(ViewData))

@@ -1,0 +1,156 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="6">
+        OPERAÇÕES INCENTIVADAS - ESTABELECIMENTOS REFERIDOS NO ART. 781
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="6">
+        OPERAÇÕES PESSOAS JURÍRIDAS DISTINTAS DASELENCADAS NO ART. 781
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
+        VENDAS A CLIENTES CREDENCIADOS
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
+        SUSPENSÂO
+    </th>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        INTERNAS
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        INTERESTADUAIS
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        INTERNAS
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        INTERESTADUAIS
+    </th>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS PORTARIA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        VENDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS PORTARIA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        VENDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS PORTARIA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        VENDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        SAÍDAS PORTARIA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        VENDAS
+    </th>
+</tr>
+
+<tr style="font-size:11px;">
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaInterna1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaPortInterna1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasInternas1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaInterestadual1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaPortInterestadual1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasInterestadual1))
+        }
+    </td>
+
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaInterna2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaPortInterna2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasInternas2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaInterestadual2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.SaidaPortInterestadual2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasInterestadual2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasClientes))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Suspensao))
+        }
+    </td>
+</tr>

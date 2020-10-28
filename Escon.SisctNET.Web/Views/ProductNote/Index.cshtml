@@ -27,7 +27,7 @@
                         <td>@ViewBag.Data</td>
                         <td>@ViewBag.Uf</td>
                         <td>@ViewBag.Fornecedor</td>
-                        <td>@ViewBag.Valor</td>
+                        <td>@string.Format("{0:C}", ViewBag.Valor)</td>
                     </tr>
                 </tbody>
             </table>
@@ -40,6 +40,7 @@
                 <div style="color:black;">
                     Produtos Nacionais
                 </div>
+
             </div>
 
             <div class="btn-group pull-right">
@@ -74,7 +75,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Cfop)
                             </th>
-                            <th>
+                            <th width="100px">
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
                             <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
@@ -108,9 +109,10 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cfop)
                                     </td>
-                                    <td class="money">
-                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                    <td style="text-align:center">
+                                        @string.Format("{0:C}", item.Vprod)
                                     </td>
+
                                     @if (item.TaxationTypeId != null)
                                     {
                                          <td>@item.TaxationType.Description</td>
@@ -119,6 +121,7 @@
                                     {
                                         <td></td>
                                     }
+
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>
@@ -127,11 +130,15 @@
                                     {
                                         <td></td>
                                     }
+
                                     <td>
-                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                                        {
+                                             @Html.ActionLink(" ", "Delete", new { id = item.Id},
+                                                new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                        }
                                     </td>
-
-
                                 </tr>
                             }
                             else
@@ -157,8 +164,8 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cfop)
                                     </td>
-                                    <td class="money">
-                                        @Html.DisplayFor(modelItem => item.Vprod)
+                                     <td style="text-align:center">
+                                        @string.Format("{0:C}", item.Vprod)
                                     </td>
                                      @if (item.TaxationTypeId != null)
                                     {
@@ -176,13 +183,17 @@
                                     {
                                         <td></td>
                                     }
-                                    <td>
-                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
-                                    </td>
 
+                                    <td>
+                                        @Html.ActionLink(" ", "Product", new { id = item.Id }, new { @class = "fa fa-calculator pull-left", @style = "margin-left:10px; margin-bottom:10px;", @data_toggle = "tooltip", @data_placement = "top", @title = "Tributar Produto" })
+                                        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+                                        {
+                                             @Html.ActionLink(" ", "Delete", new { id = item.Id},
+                                                new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
+                                        }
+                                    </td>
                                 </tr>
                             }
-
 
                         }
                     </tbody>

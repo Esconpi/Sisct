@@ -1,0 +1,78 @@
+﻿
+<div style="width:100%; padding-top:10px;">
+    <div class="pull-right" style="padding-right:1%;"><strong>Vendas P/ Estabelecimentos Referidos no ART. 781 :</strong> @ViewBag.PercentualVendas %</div>
+</div>
+<br />
+
+@await Html.PartialAsync("_IncentiveDrugsSectionIListed", new ViewDataDictionary(ViewData))
+
+@await Html.PartialAsync("_IncentiveDrugsSectionIUnlisted", new ViewDataDictionary(ViewData))
+
+<div style="width:100%; padding-top:10px;">
+    <table style="border:2px solid">
+        <thead>
+            <tr style="border:1px solid">
+                <th width="200px"></th>
+                <th style="text-align:center" width="500px">Saídas (Port. GSF 355/2009)</th>
+                <th width="50px"></th>
+                <th style="text-align:center" width="200px">Adicional</th>
+                <th width="50px"></th>
+                <th style="text-align:center" width="200px">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Suspensão</th>
+                <td style="text-align:center">@string.Format("{0:N}", ViewBag.Suspensao)</td>
+                <th>x</th>
+                <td style="text-align:center">@string.Format("{0:N}", ViewBag.PercentualSuspensao) %</td>
+                <th style="font-size:17px">=</th>
+                <th style="text-align:center">@string.Format("{0:N}", ViewBag.TotalSuspensao)</th>
+            </tr>
+            <tr>
+                <th></th>
+                <td style="text-align:center"></td>
+                <th></th>
+                <th style="text-align:center">Código DAR</th>
+                <th style="font-size:17px"></th>
+                <th style="text-align:center">@ViewBag.DarIcms</th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div style="width:100%; padding-top:10px;">
+    <div style="width:100%; padding-top:10px; border:2px solid">
+        <div style="text-align:center"><strong>IMPOSTO</strong></div>
+    </div>
+    <table style="border:2px solid">
+        <thead>
+            <tr style="border:1px solid">
+                <th style="text-align:center;border:1px solid" width="800px">Valor</th>
+                <th style="text-align: center;border: 1px solid" width="400px">Código DAR</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr style="border:1px solid">
+                <td style="text-align: center;border: 1px solid">
+                    @string.Format("{0:N}", ViewBag.TotalDarIcms)
+                </td>
+                <td style="text-align: center;border: 1px solid ">
+                    @ViewBag.DarIcms
+                </td>
+            </tr>
+            <tr style="border:1px solid">
+                <td style="text-align: center;border: 1px solid">
+                    @string.Format("{0:N}", ViewBag.TotalDarFecop)
+                </td>
+                <td style="text-align: center;border: 1px solid ">
+                    @ViewBag.DarFecop
+                </td>
+            </tr>
+
+        </tbody>
+     </table>
+</div>
+

@@ -44,11 +44,31 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public Taxation FindByCode2(string code2, Log log = null)
+        public Taxation FindByCode(List<Taxation> taxations, string code, string cest, DateTime data, Log log = null)
         {
-            var rst = _context.Taxations.Where(_ => _.Code2.Equals(code2)).FirstOrDefault();
+            string dataFomart = data.ToString("yyyy-MM-dd");
+            Taxation result = null;
+            var taxationsAll = taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest));
+
+            foreach (var t in taxationsAll)
+            {
+                var dataInicial = DateTime.Compare(t.DateStart, data);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
+
+                if (dataInicial <= 0 && t.DateEnd == null)
+                {
+                    result = t;
+                    break;
+                }
+                else if (dataInicial <= 0 && dataFinal > 0)
+                {
+                    result = t;
+                    break;
+                }
+
+            }
             AddLog(log);
-            return rst;
+            return result;
         }
 
         public List<Taxation> FindByCompany(int companyId, Log log = null)

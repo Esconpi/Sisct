@@ -1,0 +1,233 @@
+﻿<div style="width:100%; padding-top:10px;">
+    <table style="font-size:14px;" border="1">
+        <thead style="font-size:14px;">
+            <tr>
+                <th style="text-align:center" width="50%">Histórico</th>
+                <th style="text-align:center">Valor (R$)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td style="text-align:center">Total das Vendas</td>
+                <td style="text-align:right; padding-right:10px;">@string.Format("{0:N}", ViewBag.TotalVendas)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Vendas Incentivada</td>
+                <td style="text-align:right; padding-right:10px">@string.Format("{0:N}", ViewBag.TotalVendasIncentivadas)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Vendas não Incentivada</td>
+                <td style="text-align:right; padding-right:10px;">@string.Format("{0:N}", ViewBag.TotalVendasNIncentivadas)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>
+                    <table border="1">
+                        <tr>
+                            <th style="text-align:center" width="1100px">Cálculo ICMS Normal</th>
+                        </tr>
+                        <tr>
+
+                            <th>
+                                <table border="1">
+                                    <tr>
+                                        <th style="text-align:center" width="500px">Base de Cálculo ICMS</th>
+                                        <th style="text-align:center" width="200px">ICMS %</th>
+                                        <th style="text-align:center" width="400px">ICMS (R$)</th>
+                                    </tr>
+
+                                </table>
+                            </th>
+                        </tr>
+                        @for (int i = 0; i < ViewBag.ValoresIncentivo.Count; i++)
+                        {
+                            <tr>
+
+                                <th>
+                                    <table>
+                                        <tr>
+                                            <td style="text-align:right; padding-right: 30px; font-weight: normal;" width="500px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresIncentivo[i][0]))</td>
+                                            <td style="text-align:center; font-weight: normal" width="200px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresIncentivo[i][1]))</td>
+                                            <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="400px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresIncentivo[i][2]))</td>
+                                        </tr>
+
+                                    </table>
+                                </th>
+                            </tr>
+                        }
+
+                        <tr>
+                            <th>
+                                <table>
+                                    <tr>
+                                        <th style="text-align:center" width="500px">Valor débito ICMS (R$)</th>
+                                        <th style="text-align:center" width="200px">&nbsp;</th>
+                                        <td style="text-align:right; padding-right: 10px;" width="400px">@string.Format("{0:N}", ViewBag.DebitoIncentivo)</td>
+                                    </tr>
+
+                                </table>
+                            </th>
+                        </tr>
+
+                    </table>
+                </th>
+                <th>
+                    <table border="1">
+                        <tr>
+                            <th style="text-align:center" width="1100px">Cálculo ICMS não Incentivado</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <table border="1">
+                                    <tr>
+                                        <th style="text-align:center" width="500px">Base de Cálculo ICMS</th>
+                                        <th style="text-align:center" width="200px">ICMS %</th>
+                                        <th style="text-align:center" width="400px">ICMS (R$)</th>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                        @for (int i = 0; i < ViewBag.ValoresNIncentivo.Count; i++)
+                        {
+                            <tr>
+
+                                <th>
+                                    <table>
+                                        <tr>
+                                            <td style="text-align:right; padding-right: 30px; font-weight: normal;" width="500px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresNIncentivo[i][0]))</td>
+                                            <td style="text-align:center; font-weight: normal" width="200px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresNIncentivo[i][1]))</td>
+                                            <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="400px">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ValoresNIncentivo[i][2]))</td>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        }
+                        <tr>
+                            <th>
+                                <table>
+                                    <tr>
+                                        <th style="text-align:center" width="500px">&nbsp;</th>
+                                        <td style="text-align:center" width="200px">&nbsp;</td>
+                                        <td style="text-align:right; padding-right: 10px;" width="400px">@string.Format("{0:N}", ViewBag.DebitoNIncentivo)</td>
+                                    </tr>
+                                </table>
+                            </th>
+                        </tr>
+                    </table>
+                </th>
+
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div style="width:100%; padding-top:10px; page-break-before: always;">
+    <table class="table" style="font-size:14px;" border="1">
+        <tr style="border:1px solid">
+            <th style="text-align:center; border:1px solid">CÁLCULO PARA O RATEIO DOS CRÉDITOS</th>
+        </tr>
+        <tr>
+            <th>
+                <table>
+                    <tr>
+                        <td style="text-align:center; font-weight: normal;" width="700px">
+                            Total das Vendas
+                        </td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendas)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-weight: normal;" width="700px">
+                            Vendas Incentivada
+                        </td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendasIncentivadas)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-weight: normal;" width="700px">
+                            Vendas não Incentivada
+                        </td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.TotalVendasNIncentivadas)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center" width="700px">
+                            Percentual para utilização do crédito
+                        </td>
+                        <td style="text-align:right; padding-right: 10px;" width="700px">@string.Format("{0:N}", ViewBag.PercentualCreditoNIncentivo)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; font-weight: normal;" width="700px">
+                            Crédito ICMS das entradas
+                        </td>
+                        <td style="text-align:right; padding-right: 10px; font-weight: normal;" width="700px">@string.Format("{0:N}", ViewBag.Credito)</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center" width="700px">
+                            Valor do crédito a ser utilizado nas compras
+                        </th>
+                        <th style="text-align:right; padding-right: 10px;" width="700px">@string.Format("{0:N}", ViewBag.CreditoNIncentivo)</th>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div style="width:100%; padding-top:10px;">
+    <table class="table" style="font-size:14px;">
+        <thead style="font-size:14px;">
+            <tr>
+                <th class="col-lg-5 col-md-5 col-sm-5" style="text-align:center; border:1px solid;">APURAÇÃO ICMS NORMAL</th>
+                <th class="col-lg-1 col-md-1 col-sm-1" style="border:none"></th>
+                <th class="col-lg-6 col-md-6 col-sm-6" style="text-align:center; border:1px solid;">APURAÇÃO ICMS NORMAL NÃO INCENTIVADO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+                        <tr>
+                            <td class="col-lg-6 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.DebitoIncentivo)</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.CreditoIncentivo)</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.DifApuNormal)</th>
+                        </tr>
+                    </table>
+                </td>
+                <td></td>
+                <td class="col-lg-6 col-sm-6">
+                    <table>
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Débito do Imposto pelas Saídas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.DebitoNIncentivo)</td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right;">Crédito do Imposto pelas Entradas (R$)</td>
+                            <td class="col-lg-3 col-sm-3 col-md-3" style="text-align:right;">@string.Format("{0:N}", ViewBag.CreditoNIncentivo)</td>
+                        </tr>
+
+                        <tr>
+                            <th class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">Diferença (R$)</th>
+                            <th class="col-lg-3 col-sm-3 col-md-3" style="text-align:right">@string.Format("{0:N}", ViewBag.DifApuNNormal)</th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_IndustryTaxSummary", new ViewDataDictionary(ViewData))
+</div>

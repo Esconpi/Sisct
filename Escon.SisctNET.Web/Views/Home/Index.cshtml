@@ -5,45 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="box box-primary">
-        <div class="box-header">
-            <h3 class="box-title"><strong>Entrada</strong></h3>
-        </div>
-        <div class="box-body">
-            <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
-
-                <table class="table table-striped table-bordered" id="tblCompany" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Code)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.SocialName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FantasyName)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Document)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Incentive)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-                            <th style="width:80px;"></th>
-                        </tr>
-                    </thead>
-                    
-                </table>
-
-            </div>
-        </div>
-        <div class="box-footer"></div>
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title"><strong>Entrada</strong></h3>
     </div>
+    <div class="box-body">
+        <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
+
+            <table class="table table-striped table-bordered" id="tblCompany" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SocialName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FantasyName)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Document)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Incentive)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th style="width:90px;"></th>
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>
+    </div>
+    <div class="box-footer"></div>
+</div>
 <div class="modal modal-primary fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -61,9 +61,115 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade in" id="formResponsible" tabindex="-1" role="dialog" aria-labelledby="formResponsibleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="modal-title">
+                    <h4>
+                    <i class="fa fa-user-circle"></i>
+                    Responsáveis pelos Boletos</h4>
+                    <span style="margin-top:-50px; color:#b5b5b5; padding:10px 0 0 0" id="spanNameCompany"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div style="width:100%">
+                    <div class="loader" style="display:none; margin:auto" id="loaderResponsible"></div>
+                </div>
+                <div class="loader pull-left" style="width:20px; display:none;" id="loaderResponsible"></div>
+                <div class="form-group col-lg-10 col-md-10 col-xs-12">
+                    <label class="control-label">Email Destinatário</label>
+                    <input class="form-control" id="textEmail" placeholder="Email destinatário" />
+                </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <label class="control-label">&nbsp;</label>
+                    <button class="btn btn-success form-control" id="btnAddResponsible">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <input type="hidden" id="hdnCompanyReponsible" />
+                </div>
+
+
+                <hr />
+                <table id="tblResponsibles" class="table table-striped table-bordered" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Destinatário</th>
+                            <th style="width:20px"></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
+    var tableResponsible = null;
+
+    function validateEmail(email) {
+
+        var re = /^(([^<>()\[\]\\.,;:\s@@"]+(\.[^<>()\[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     $(document).ready(function () {
+        
+
+        $('#btnAddResponsible').click(function () {
+
+            if (!validateEmail($('#textEmail').val())) {
+                $('#textEmail').closest('div').addClass('has-error');
+                return;
+            }
+
+            $('#textEmail').closest('div').removeClass('has-error');
+
+            var data = {
+                "Email": $('#textEmail').val(),
+                "CompanyId": $('#hdnCompanyReponsible').val()
+            };
+
+            $.ajax({
+                url: "/Home/PostResponsibleByCompanyId",
+                type: "POST",
+                method:"POST",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                processData: false,
+                beforeSend: function () {
+                    $('#loaderResponsible').css('display', 'block');
+                    $('#btnAddResponsible').attr('disabled', 'disabled');
+                },
+                complete: function () {
+                    $('#loaderResponsible').css('display', 'none');
+                    $('#btnAddResponsible').removeAttr('disabled');
+                },
+                success: function () {
+                    $('#textEmail').val('');
+                    $('#textEmail').focus();
+
+                    tableResponsible.ajax.reload(null, false);
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                }
+            });
+        });
+
         $('#tblCompany').DataTable({
             searchDelay: 300,
             "fnDrawCallback": function (oSettings) {
@@ -71,18 +177,96 @@
                 $('.showProduct').off();
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
+
                 $('.showTaxation').click(function () {
-                    $.get('Company/Taxation/' + $(this).attr('id'), function (html) {
+                    $.get('Home/Taxation/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');
                     });
 
                 });
+
+                $('.showFormResponsible').click(function () {
+                    var idCompany = $(this).attr('id');
+                    $('#hdnCompanyReponsible').val(idCompany);
+                    $('#textEmail').val('');
+                    $('#spanNameCompany').text($(this).data('company'));
+
+                    if (tableResponsible)
+                        tableResponsible.destroy();
+
+                    tableResponsible = $('#tblResponsibles').DataTable({
+                        "paging": false,
+                        "searching": false,
+                        "info": false,
+                        "processing": true,
+                        "ordering": false,
+                        "serverSide": true,
+                        "ajax": "/Home/GetResponsibleByCompanyId/" + idCompany,
+                        "fnDrawCallback": function (oSettings) {
+                            $('[data-toggle="tooltip"]').tooltip();
+                            $('.removeEmailResponsible').off();
+                          
+                            $('.removeEmailResponsible').click(function () {
+                               
+                                var idResponsible = $(this).attr('id');
+                                $.ajax({
+                                    url: "/Home/DeleteResponsibleByCompanyId/" + idResponsible,
+                                    type: 'DELETE',
+                                    method: 'DELETE',
+                                    contentType: 'application/json',
+                                    dataType: 'json',
+                                    beforeSend: function () {
+                                        $('#loaderResponsible').css('display', 'block');
+                                    },
+                                    complete: function () {
+                                        $('#loaderResponsible').css('display', 'none');
+                                    },
+                                    error: function (jqXhr, textStatus, errorThrown) {
+                                    },
+                                    success: function (data) {
+                                        tableResponsible.ajax.reload(null, false);
+                                    }
+                                });
+                            })
+
+                        },
+                        "columnDefs": [
+                            { "width": "20px", "targets": 1 }
+                        ],
+                        "columns": [
+                            { "data": "email" },
+                            {
+                                "mData": "id",
+                                "mRender": function (data, type, row) {
+                                    return "<a href='#" + data + "' class = 'removeEmailResponsible fa fa-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Remover responsável' id='" + row.id + "' /> "
+                                }
+                            }
+                        ]
+                    });
+
+                    $('#formResponsible').modal('show');
+                })
             },
             "processing": true,
             "ordering": false,
             "serverSide": true,
+            "oLanguage": {
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                "sZeroRecords": "Nenhum registro disponível",
+                "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                "sInfoFiltered": "",
+                "sSearch": "Buscar",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
             "ajax": "/Company/GetAllActive",
             "initComplete": function (settings, json) {
             },
@@ -116,22 +300,13 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        if (row.incentivo == true) {
-                            return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
-                                "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Produto' id='" + row.id + "' /> " +
-                                "<a href='/Company/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " +
-                                "<a href='/Home/Sped/" + data + "' class = 'fa fa-eraser pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Corrigir Sped' /> " +
-                                "<a href='/Company/Details/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Incentivo' /> "
 
-                        }
-                        else {
-                             return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> "+
-                               "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Produto' id='" + row.id + "' /> "+
-                               "<a href='/Company/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " +
-                               "<a href='/Home/Sped/" + data + "' class = 'fa fa-eraser pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Corrigir Sped' /> "
+                        return "<a href='/Company/Compare/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Compara' /> " +
+                            "<a href='/Home/Sped/" + data + "' class = 'fa fa-eraser pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Corrigir Sped' /> " +
+                            "<a href='#" + data + "' class = 'showTaxation fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Produto' id='" + row.id + "' /> " +
+                            "<a href='/Home/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " 
+                            
 
-                        }
-                       
                     }
                 }
             ]

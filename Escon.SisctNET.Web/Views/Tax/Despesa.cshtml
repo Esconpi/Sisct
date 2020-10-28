@@ -1,0 +1,53 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Despesa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="Tax" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>        <h3 class="box-title"> <strong>Adicionar Outras Despesas:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="Tax" asp-action="Despesa" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Energia Elétrica</label>
+                        <input class="form-control money" name="Energia">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Aluguel Prédio</label>
+                        <input class="form-control money" name="AluguelPredio">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Aluguel Máquinas e Equipamentos</label>
+                        <input class="form-control money" name="AluguelME">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Financeiras/Emp. e Financiamentos</label>
+                        <input class="form-control money" name="DespesasF">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Depreciação de Maq. e Equipamentos</label>
+                        <input class="form-control money" name="DespesasME">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Despesas/Depreciação/Amortização</label>
+                        <input class="form-control money" name="DespesasA">
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,200 @@
+﻿<div style="width:100%; page-break-before: always; padding-top:10px;">
+    <div class="pull-left" style="width:51%;">
+        <table class=" table" style="font-size:10px;">
+            <thead>
+                <tr>
+                    <th style="text-align:center;border:1px solid;font-size:11px;" colspan="2">
+                        APURAÇÃO IRPJ
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th style="text-align:center;border:1px solid;text-align:right;">
+                        COMBUSTÍVEL @ViewBag.PercentualPetroleo %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.Irpj1)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid;text-align:right;">
+                        COMÉRCIO @ViewBag.PercentualComercio %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.Irpj2)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid;text-align:right;">
+                        TRASNPORTE @ViewBag.PercentualTransporte %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.Irpj3)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right;">
+                        SERVIÇO @ViewBag.PercentualServico %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.Irpj4)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(=)</span> SubTotal
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjTotal)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(+)</span> Ganho de Capital na Venda de Imobilizado
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.CapitalIM)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(+)</span> Bonificações (Entradas)
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.Bonificacao)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(+)</span> Receita de Aplicação Financeira
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.ReceitaAF)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(=)</span> Base de Cálculo IRPJ Normal
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.BaseCalcIrpjNormal)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(=)</span> Base de Cálculo Adicional IRPJ
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.BaseCalcAdicionalIrpj)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        IRPJ Normal @ViewBag.PercentualIrpjNormal %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjNormal)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        Adicional IRPJ @ViewBag.PercentualAdicionalIrpj %
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.AdicionalIrpj)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(=)</span> Total IRPJ
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.TotalIrpj)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(-)</span> IRPJ Pago
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjPago)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(-)</span> IRPJ Retido
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjRetido)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(-)</span> I.R. Fonte Serviços
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjFonteServico)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(-)</span> I.R. Fonte Aplic. Financeiras
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjFonteAF)
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
+                        <span style="font-size:11px;">(=)</span> Total IRPJ à Pagar
+                    </th>
+                    <td style="text-align:right;border:1px solid; padding-right:1%;">
+                        @string.Format("{0:N}", ViewBag.IrpjAPagar)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pull-right" style="width:49%">
+        <div class="chart">
+            <div id="irpj_values" style="width: 400px; height: auto;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ['corechart'], 'language': 'pt-br' });
+    google.charts.setOnLoadCallback(drawChart);
+    var baseIrpj = @SessionManager.GetValues()[0].ToString().Replace(",",".");
+    var irpjAPagar = @SessionManager.GetValues()[1].ToString().Replace(",",".");
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ["Element", "Valor", { role: "style" }],
+            ["Base de Cálculo", baseIrpj, "deepSkyBlue"],
+            ["IRPJ à Pagar", irpjAPagar, "paleGreen"]
+        ]);
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+            {
+                calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation"
+            },
+            2]);
+
+        var options = {
+            title: "Gráfico IRPJ",
+            width: 600,
+            height: 400,
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("irpj_values"));
+        chart.draw(view, options);
+    }
+</script>

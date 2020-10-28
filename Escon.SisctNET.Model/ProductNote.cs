@@ -10,9 +10,6 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Número da Nota")]
-        public string Nnf { get; set; }
-
         [Display(Name = "Código do Produto")]
         public string Cprod { get; set; }
 
@@ -32,7 +29,6 @@ namespace Escon.SisctNET.Model
         public string Xprod { get; set; }
 
         [Display(Name = "Valor")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Vprod { get; set; }
 
         [Display(Name = "Quantidade")]
@@ -179,6 +175,17 @@ namespace Escon.SisctNET.Model
             set => product1 = value;
         }
 
+        [Display(Name = "Produto2")]
+        [ForeignKey("Product2")]
+        public int? Product2Id { get; set; }
+
+        private Product2 product2;
+        public Product2 Product2
+        {
+            get => LazyLoader.Load(this, ref product2);
+            set => product2 = value;
+        }
+
         [Display(Name = "Nota")]
         [ForeignKey("Note")]
         public int? NoteId { get; set; }
@@ -196,5 +203,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Origem")]
         public int ? Orig { get; set; }
 
+        [Display(Name = "Validade Inicial")]
+        public DateTime ? DateStart { get; set; }
+
+        public string Produto { get; set; }
     }
 }

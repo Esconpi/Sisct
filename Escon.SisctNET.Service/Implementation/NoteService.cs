@@ -23,6 +23,11 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
+        public void Delete(List<Note> notes, Log log = null)
+        {
+            _repository.Delete(notes, log);
+        }
+
         public List<Note> FindAll(Log log)
         {
             return _repository.FindAll(log);
@@ -62,6 +67,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Note Update(Note entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<Note> notes, Log log = null)
+        {
+            _repository.Update(notes, log);
         }
     }
 }

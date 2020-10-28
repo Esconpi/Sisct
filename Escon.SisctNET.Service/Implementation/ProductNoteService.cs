@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByProducts(notes, log);
         }
 
-        public List<ProductNote> FindByProductsType(List<Note> notes, int taxationType, Log log = null)
+        public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             return _repository.FindByProductsType(notes, taxationType, log);
         }
@@ -69,14 +69,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCnpjCprod(notes, cnpj, cprod, ncm, cest, log);
         }
 
-        public decimal FindByTotal(List<string> notes, Log log = null)
+        public decimal FindByTotal(List<int> notes, Log log = null)
         {
             return _repository.FindByTotal(notes, log);
         }
 
-        public decimal FindBySubscription(List<Note> notes, int taxaid, Log log = null)
+        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
-            return _repository.FindBySubscription(notes, taxaid, log);
+            return _repository.FindBySubscription(notes, taxationType, log);
         }
 
         public List<ProductNote> FindByTaxation(int noteId, Log log = null)
@@ -122,6 +122,26 @@ namespace Escon.SisctNET.Service.Implementation
         public List<Product1> FindAllInDate1(DateTime dateProd, Log log = null)
         {
             return _repository.FindAllInDate1(dateProd, log);
+        }
+
+        public void Create(List<ProductNote> products, Log log = null)
+        {
+            _repository.Create(products, log);
+        }
+
+        public void Delete(List<ProductNote> products, Log log = null)
+        {
+            _repository.Delete(products, log);
+        }
+
+        public void Update(List<ProductNote> products, Log log = null)
+        {
+            _repository.Update(products, log);
+        }
+
+        public List<Product2> FindAllInDate2(DateTime dateProd, Log log = null)
+        {
+            return _repository.FindAllInDate2(dateProd, log);
         }
     }
 }

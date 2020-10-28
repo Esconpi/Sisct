@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,26 +25,17 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
-
-            }catch(Exception ex)
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch(Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
@@ -55,7 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -73,7 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Dar entity)
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -97,7 +86,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -116,7 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Dar entity)
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -138,7 +127,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetDarInSession().Equals(19))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

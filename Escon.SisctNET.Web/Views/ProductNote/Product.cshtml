@@ -12,184 +12,259 @@
         <h3 class="box-title"><strong>Tributação</strong></h3>
     </div>
     <div class="box-body">
-        <div class="col-lg-12">
-            <form asp-action="Product" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input asp-for="Cprod" class="form-control" type="hidden" />
-                <input asp-for="Cest" class="form-control" type="hidden" />
-                <input asp-for="Cfop" class="form-control" type="hidden" />
-                <input asp-for="Qcom" class="form-control" type="hidden" />
-                <input asp-for="Vuncom" class="form-control" type="hidden" />
-                <input asp-for="Vprod" class="form-control" type="hidden" />
-                <input asp-for="Vicms" class="form-control" type="hidden" />
-                <input asp-for="Vipi" class="form-control" type="hidden" />
-                <input asp-for="Picms" class="form-control" type="hidden" />
-                <input class="form-control" name="dataNote" value="@ViewBag.DataNote" type="hidden" />
+        @if (ViewBag.Erro == 1)
+        {
+            <p style="text-align:center;color:red;"><strong>O NCM @Model.Ncm não foi cadastrado</strong></p>
+        }
+        else
+        {
+            <div class="col-lg-12">
+                <form asp-action="Product" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Cprod" class="form-control" type="hidden" />
+                    <input asp-for="Cest" class="form-control" type="hidden" />
+                    <input asp-for="Cfop" class="form-control" type="hidden" />
+                    <input asp-for="Qcom" class="form-control" type="hidden" />
+                    <input asp-for="Vuncom" class="form-control" type="hidden" />
+                    <input asp-for="Vprod" class="form-control" type="hidden" />
+                    <input asp-for="Vicms" class="form-control" type="hidden" />
+                    <input asp-for="Vipi" class="form-control" type="hidden" />
+                    <input asp-for="Picms" class="form-control" type="hidden" />
+                    <input class="form-control" name="dataNote" value="@ViewBag.DataNote" type="hidden" />
 
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Nnf" class="control-label"></label>
-                    <input asp-for="Nnf" class="form-control" readonly />
-                    <span asp-validation-for="Nnf" class="text-danger"></span>
-                </div>
-
-                <div class="form-group col-lg-10 col-md-6 col-xs-12">
-                    <label asp-for="Xprod" class="control-label"></label>
-                    <input asp-for="Xprod" class="form-control" readonly />
-                    <span asp-validation-for="Xprod" class="text-danger"></span>
-                </div>
-
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Ncm" class="control-label"></label>
-                    <input asp-for="Ncm" class="form-control" readonly />
-                    <span asp-validation-for="Ncm" class="text-danger"></span>
-
-                </div>
-
-                <div class="form-group col-lg-10 col-md-6 col-xs-12">
-                    <label class="control-label">Descrição</label>
-                    <input type="text" class="form-control" value="@ViewBag.DescriptionNCM" readonly />
-                </div>
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <div>
-                        <div style="color:red">1 - Normal</div>
-                        <div style="color:red">2 - Substituição Tributária</div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Note.Nnf" class="control-label"></label>
+                        <input asp-for="Note.Nnf" class="form-control" readonly />
+                        <span asp-validation-for="Note.Nnf" class="text-danger"></span>
                     </div>
-                    <label asp-for="TaxationTypeId" class="control-label"></label>
-                    <select asp-items="@ViewBag.TaxationTypeId" class="form-control selectoption" name="taxaType" id="taxaType" onchange="activeButton()"></select>
-                </div>
 
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="Picms" class="control-label"></label>
-                    <input type="text" asp-for="Picms" class="form-control" disabled />
-                    <span asp-validation-for="Picms" class="text-danger"></span>
-                    <label class="control-label">UF</label>
-                    <input type="text" class="form-control" value="@ViewBag.Uf" name="Uf" readonly />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    @if (Model.Aliqinterna != null)
-                    {
-                        <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input type="text" name="AliqInt" class="form-control money" value="@Model.Aliqinterna" required />
-                    }
-                    else
-                    {
-                        <label asp-for="Aliqinterna" class="control-label"></label>
-                        <input type="text" name="AliqInt" class="form-control money" value="18" required />
-                    }
-
-                </div>
-
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Validade Inicial</label>
-                    <input type="date" class="form-control" name="dateStart" value="2019-11-01" />
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Emissão</label>
-                    <input type="text" class="form-control" value="@ViewBag.Dhemi" readonly />
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group col-lg-2 col-md-3 col-xs-12" id="checkbox">
-                        <label asp-for="Pautado" class="control-label"></label>
-                        @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
+                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                        <label asp-for="Xprod" class="control-label"></label>
+                        <input asp-for="Xprod" class="form-control" readonly />
+                        <span asp-validation-for="Xprod" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-2 col-md-3 col-xs-12">
-                        <label class="control-label">Quantidade da Pauta</label>
-                        <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
+
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Ncm" class="control-label"></label>
+                        <input asp-for="Ncm" class="form-control" readonly />
+                        <span asp-validation-for="Ncm" class="text-danger"></span>
+
                     </div>
-                    @if (Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("10/02/2020"))
-                    {
-                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                            <label asp-for="ProductId" class="control-label"></label>
-                            <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
+
+                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                        <label class="control-label">Descrição</label>
+                        <input type="text" class="form-control" value="@ViewBag.DescriptionNCM" readonly />
+                    </div>
+
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div>
+                            <div style="color:red">1 - Normal</div>
+                            <div style="color:red">2 - Substituição Tributária</div>
                         </div>
-                    }
-                    else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020"))
-                    {
-                        <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                        <label asp-for="TaxationTypeId" class="control-label"></label>
+                        <select asp-items="@ViewBag.TaxationTypeId" class="form-control selectoption" name="taxaType" id="taxaType" onchange="activeButton()"></select>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Picms" class="control-label"></label>
+                        <input type="text" asp-for="Picms" class="form-control" disabled />
+                        <span asp-validation-for="Picms" class="text-danger"></span>
+                        <label class="control-label">UF</label>
+                        <input type="text" class="form-control" value="@ViewBag.Uf" name="Uf" readonly />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        @if (Model.Aliqinterna != null)
+                        {
+                            <label asp-for="Aliqinterna" class="control-label"></label>
+                            <input type="text" name="AliqInt" class="form-control money" value="@Model.Aliqinterna" required />
+                        }
+                        else
+                        {
+                            <label asp-for="Aliqinterna" class="control-label"></label>
+                            <input type="text" name="AliqInt" class="form-control money" value="18" required />
+                        }
+
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        @if (Model.DateStart == null)
+                        {
+                            <input type="date" class="form-control" name="dateStart" value="2019-11-01" />
+                        }
+                        else
+                        {
+                            <input type="date" asp-for="DateStart" class="form-control" name="dateStart" />
+                        }
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Emissão</label>
+                        <input type="text" class="form-control" value="@ViewBag.Dhemi" readonly />
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-2 col-md-3 col-xs-12" id="checkbox">
+                            <label asp-for="Pautado" class="control-label"></label>
+                            @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
+                        </div>
+                        @if (Model.Pautado == true)
+                        {
+                            <div class="form-group col-lg-2 col-md-3 col-xs-12">
+                                <label class="control-label">Quantidade da Pauta</label>
+                                <input type="text" class="form-control" id="quant" name="quantAlterada" value="@Model.Qpauta" style="font-size:12px;" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-lg-2 col-md-3 col-xs-12">
+                                <label class="control-label">Quantidade da Pauta</label>
+                                <input type="text" class="form-control" id="quant" name="quantAlterada" style="font-size:12px;" disabled="disabled" />
+                            </div>
+                        }
+
+                        @if (Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("10/02/2020"))
+                        {
+                            @if (Model.Pautado == true)
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label asp-for="ProductId" class="control-label"></label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid"></select>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label asp-for="ProductId" class="control-label"></label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="productid" name="productid" disabled="disabled"></select>
+                                </div>
+                            }
+
+                        }
+                        else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("14/09/2020"))
+                        {
+                            if (Model.Pautado == true)
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="product1id" name="product1id"></select>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
+                                </div>
+                            }
+                        }
+                        else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("14/09/2020"))
+                        {
+                            if (Model.Pautado == true)
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="product2id" name="product2id"></select>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                                    <label class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" id="product2id" name="product2id" disabled="disabled"></select>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                            <label asp-for="Cfop" class="control-label"></label>
+                            <input asp-for="Cfop" class="form-control" readonly />
+                            <span asp-validation-for="Cfop" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                            <label asp-for="Ucom" class="control-label"></label>
+                            <input asp-for="Ucom" class="form-control" style="font-size:12px;" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Qcom" class="control-label"></label>
+                            <input asp-for="Qcom" class="form-control" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Vuncom" class="control-label"></label>
+                            <input asp-for="Vuncom" class="form-control" type="text" value="@string.Format("{0:C}",Convert.ToDecimal(Model.Vuncom))" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Vprod" class="control-label"></label>
+                            <input asp-for="Vprod" class="form-control" type="text" value="@string.Format("{0:C}",Convert.ToDecimal(Model.Vprod))" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Vicms" class="control-label"></label>
+                            <input asp-for="Vicms" class="form-control " value="@string.Format("{0:C}",Convert.ToDecimal(Model.Vicms))" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="Vipi" class="control-label"></label>
+                            <input asp-for="Vipi" class="form-control" value="@string.Format("{0:C}",Convert.ToDecimal(Model.Vipi))" disabled />
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label asp-for="IcmsST" class="control-label"></label>
+                            <input asp-for="IcmsST" class="form-control" value="@string.Format("{0:C}",Convert.ToDecimal(Model.IcmsST))" disabled />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">MVA</label>
+                            <input type="text" name="mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Aliquota FECOP</label>
+                            <input type="text" name="fecop" class="form-control money" value="@Model.Fecop" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">BCR(%)</label>
+                            <input type="text" name="bcr" class="form-control money" value="@Model.BCR" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Produto</label>
-                            <select asp-items="@ViewBag.Product1Id" class="form-control selectoption" id="product1id" name="product1id" disabled="disabled"></select>
+                            <select class="form-control selectoption" name="produto">
+                                @if (Model.Produto == null)
+                                {
+                                    <option value="1" selected>Normal</option>
+                                    <option value="2">Especial</option>
+                                }
+                                else
+                                {
+                                    @if (Model.Produto.Equals("Especial"))
+                                    {
+                                        <option value="1">Normal</option>
+                                        <option value="2" selected>Especial</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1" selected>Normal</option>
+                                        <option value="2">Especial</option>
+                                    }
+                                }
+
+                            </select>
                         </div>
-                    }
-
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
-                        <label asp-for="Cfop" class="control-label"></label>
-                        <input asp-for="Cfop" class="form-control" readonly />
-                        <span asp-validation-for="Cfop" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
-                        <label asp-for="Ucom" class="control-label"></label>
-                        <input asp-for="Ucom" class="form-control" style="font-size:12px;" readonly />
-                        <span asp-validation-for="Ucom" class="text-danger"></span>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Tributar" onclick="Enviar()" disabled="disabled" id="taxar" class="btn btn-success pull-right" />
                     </div>
+                </form>
+            </div>
 
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Qcom" class="control-label"></label>
-                        <input asp-for="Qcom" class="form-control" disabled />
-                        <span asp-validation-for="Qcom" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Vuncom" class="control-label"></label>
-                        <input asp-for="Vuncom" class="form-control money" type="text" disabled />
-                        <span asp-validation-for="Vuncom" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Vprod" class="control-label"></label>
-                        <input asp-for="Vprod" class="form-control money" type="text" disabled />
-                        <span asp-validation-for="Vprod" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Vicms" class="control-label"></label>
-                        <input asp-for="Vicms" class="form-control money" disabled />
-                        <span asp-validation-for="Vicms" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Vipi" class="control-label"></label>
-                        <input asp-for="Vipi" class="form-control money" disabled />
-                        <span asp-validation-for="Vipi" class="text-danger"></span>
-                    </div>
-
-
-                </div>
-
-                <div class="col-lg-12">
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="IcmsST" class="control-label"></label>
-                        <input asp-for="IcmsST" class="form-control money" disabled />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">MVA</label>
-                        <input type="text" name="mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">Aliquota FECOP</label>
-                        <input type="text" name="fecop" class="form-control money" value="@Model.Fecop" disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">BCR(%)</label>
-                        <input type="text" name="bcr" class="form-control money" value="@Model.BCR" disabled="disabled" />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label class="control-label">Produto</label>
-                        <select class="form-control selectoption" name="produto">
-                            <option value="1" selected>Normal</option>
-                            <option value="2">Especial</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Tributar" onclick="Enviar()" disabled="disabled" id="taxar" class="btn btn-success pull-right" />
-                </div>
-            </form>
-        </div>
+        }
     </div>
 </div>
 
@@ -204,10 +279,11 @@
         }
     }
 
-    var product = @Model.ProductId;
+    var product = @Model.ProductId
     $("#productid").children('option').each(function () {
         if ($(this).val() == product) {
             $(this).attr('selected', true);
+
         }
     });
 
@@ -218,7 +294,14 @@
         }
     });
 
-    var taxacao = @Model.TaxationTypeId;
+    var product2 = @Model.Product2Id
+    $("#product2id").children('option').each(function () {
+        if ($(this).val() == product2) {
+            $(this).attr('selected', true);
+        }
+    });
+
+    var taxacao = @Model.TaxationTypeId
     $("#taxaType").children('option').each(function () {
         if ($(this).val() == taxacao) {
             $(this).attr('selected', true);
@@ -235,6 +318,13 @@
                 $("input[name=fecop]").prop("disabled", true);
                 $("input[name=bcr]").prop("disabled", true);
             }
+            if (taxacao == 0) {
+                document.getElementById('taxar').disabled = true;
+            }
+            else {
+                document.getElementById('taxar').disabled = false;
+            }
+
         }
     });
 
@@ -262,7 +352,7 @@
             $("input[name=bcr]").prop("disabled", true);
             $("input[name=bcr]").prop("value", "");
         }
-       
+
     });
 
     $("input[name=AliqInt]").focusout(function () {
@@ -287,14 +377,13 @@
         if ($(this).prop("checked")) {
             $("#productid").prop("disabled", false);
             $("#product1id").prop("disabled", false);
+            $("#product2id").prop("disabled", false);
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
-            $("#produc1tid").prop("disabled", true);
+            $("#product1id").prop("disabled", true);
+            $("#product2id").prop("disabled", true);
             $("#quant").prop("disabled", true);
         }
     });
-
-
-
 </script>

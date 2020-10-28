@@ -1,0 +1,116 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="5">
+        VENDAS
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="5">
+        DEVOLUÇÕES
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="2">
+        SUSPENSÂO
+    </th>
+</tr>
+
+<tr>
+    <th style="text-align:center;border:1px solid;">
+        TOTAL
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        CONTRIBUINTE
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        P/ NÃO CONTRIBUINTE
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        DO ANEXO
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        P/ GRUPO MAIOR QUE @ViewBag.Comp.VendaMGrupo %
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        TOTAL
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        CONTRIBUINTE
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        P/ NÃO CONTRIBUINTE
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        DO ANEXO
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        P/ GRUPO MAIOR QUE @ViewBag.Comp.VendaMGrupo %
+    </th>
+
+</tr>
+
+<tr style="font-size:11px;">
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Vendas))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Vendas) - Convert.ToDecimal(Model.VendasNContribuinte))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinte))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNcm))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", ViewBag.VendasGrupo)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Devolucao))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Devolucao) - Convert.ToDecimal(Model.DevolucaoNContribuinte))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNContribuinte))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNcm))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", ViewBag.DevolucoesGrupo)
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Suspensao))
+        }
+    </td>
+</tr>

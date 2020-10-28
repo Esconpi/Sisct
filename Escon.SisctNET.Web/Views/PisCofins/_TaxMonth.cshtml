@@ -1,0 +1,181 @@
+﻿<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="8">
+                FATURAMENTO
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="4">
+                RECEITA BRUTA
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="4">
+                DEVOLUÇÃO
+            </th>
+        </tr>
+
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                COMBUSTÍVEL @ViewBag.PercentualPetroleo %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                COMÉRCIO @ViewBag.PercentualComercio %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                TRASNPORTE @ViewBag.PercentualTransporte %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SERVIÇO @ViewBag.PercentualServico %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                COMBUSTÍVEL @ViewBag.PercentualPetroleo %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                COMÉRCIO @ViewBag.PercentualComercio %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                TRASNPORTE @ViewBag.PercentualTransporte %
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SERVIÇO @ViewBag.PercentualServico %
+            </th>
+        </tr>
+
+        <tr style="font-size:11px;">
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.FaturamentoPetroleo)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.FaturamentoComercio)
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                @string.Format("{0:N}", ViewBag.FaturamentoTransporte)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.FaturamentoServico)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.DevolucaoPetroleo)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.DevolucaoComercio)
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                @string.Format("{0:N}", ViewBag.DevolucaoTransporte)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.DevolucaoServico)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@await Html.PartialAsync("_BasesMonth", new ViewDataDictionary(ViewData))
+
+<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                PIS
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                COFINS
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                CSLL
+            </th>
+            <th style="text-align:center;border:1px solid;" colspan="3">
+                IRPJ
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                CPRB
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <td style="text-align:center;border:1px solid;">
+                APURADO
+            </td>
+            <td style="text-align:center;border:1px solid;">
+                RETIDO
+            </td>
+            <th style="text-align:center;border:1px solid;">
+                A PAGAR
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                @ViewBag.PercentualCPRB %
+            </th>
+        </tr>
+        <tr style="font-size:11px;">
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.PisApurado)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.PisRetido)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.PisAPagar)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CofinsApurado)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CofinsRetido)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CofinsAPagar)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CsllApurado)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CsllRetido)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CsllAPagar)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.IrpjApurado)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.IrpjRetido)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.IrpjAPagar)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", ViewBag.CprbAPagar)
+            </td>
+        </tr>
+    </tbody>
+</table>

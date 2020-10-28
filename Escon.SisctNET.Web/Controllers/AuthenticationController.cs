@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -65,125 +64,10 @@ namespace Escon.SisctNET.Web.Controllers
                     SessionManager.SetUserIdInSession(auth.Id);
                     SessionManager.SetPersonInSession(person);
 
-                    var accesses = _accessService.FindByActive(person.ProfileId);
-                    foreach (var access in accesses)
-                    {
-                        if (access.FunctionalityId.Equals(1))
-                        {
-                            SessionManager.SetProfileInSession(access.FunctionalityId);
-                        }
+                    var accesses = _accessService.FindByProfileId(person.ProfileId);
 
-                        if (access.FunctionalityId.Equals(2))
-                        {
-                            SessionManager.SetNoteInSession(access.FunctionalityId);
-                        }
+                    SessionManager.SetAccessesInSession(accesses);
 
-                        if (access.FunctionalityId.Equals(3))
-                        {
-                            SessionManager.SetProductInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(4))
-                        {
-                            SessionManager.SetAccessInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(5))
-                        {
-                            SessionManager.SetUserInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(6))
-                        {
-                            SessionManager.SetHomeInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(7))
-                        {
-                            SessionManager.SetNcmInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(8))
-                        {
-                            SessionManager.SetAttachmentInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(9))
-                        {
-                            SessionManager.SetGroupInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(10))
-                        {
-                            SessionManager.SetCestInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(11))
-                        {
-                            SessionManager.SetCompanyInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(12))
-                        {
-                            SessionManager.SetConfigurationInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(13))
-                        {
-                            SessionManager.SetCfopInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(14))
-                        {
-                            SessionManager.SetStateInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(16))
-                        {
-                            SessionManager.SetProductNoteInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(17))
-                        {
-                            SessionManager.SetCompanyCfopInSession(access.FunctionalityId);
-                        }
-                        if (access.FunctionalityId.Equals(18))
-                        {
-                            SessionManager.SetTaxationInSession(access.FunctionalityId);
-                        }
-                        if (access.FunctionalityId.Equals(19))
-                        {
-                            SessionManager.SetDarInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(20))
-                        {
-                            SessionManager.SetAnnexInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(21))
-                        {
-                            SessionManager.SetNcmConvenioInSession(access.FunctionalityId);
-                        }
-
-                        if (access.FunctionalityId.Equals(22))
-                        {
-                            SessionManager.SetHomeExitInSession(access.FunctionalityId);
-                        }
-                        if (access.FunctionalityId.Equals(23))
-                        {
-                            SessionManager.SetCstInSession(access.FunctionalityId);
-                        }
-                        if (access.FunctionalityId.Equals(25))
-                        {
-                            SessionManager.SetClientInSession(access.FunctionalityId);
-                        }
-                        if (access.FunctionalityId.Equals(26))
-                        {
-                            SessionManager.SetTaxationNcmInSession(access.FunctionalityId);
-                        }
-
-                    }
                     SessionManager._httpContextAccessor.HttpContext.Request.Headers.Add("Authorization", "bearer " + auth.AccessToken);
                     SessionManager._httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", "bearer " + auth.AccessToken);
                   
@@ -210,34 +94,10 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                //SessionManager.SetLogoutInSession();
+                SessionManager.SetAccessesInSession(null);
                 SessionManager.SetLoginInSession(null);
                 SessionManager.SetUserIdInSession(0);
                 SessionManager.SetPersonInSession(null);
-                SessionManager.SetProfileInSession(0);
-                SessionManager.SetNoteInSession(0);
-                SessionManager.SetProductInSession(0);
-                SessionManager.SetAccessInSession(0);
-                SessionManager.SetUserInSession(0);
-                SessionManager.SetHomeInSession(0);
-                SessionManager.SetNcmInSession(0);
-                SessionManager.SetAttachmentInSession(0);
-                SessionManager.SetGroupInSession(0);
-                SessionManager.SetCestInSession(0);
-                SessionManager.SetCompanyInSession(0);
-                SessionManager.SetConfigurationInSession(0);
-                SessionManager.SetCfopInSession(0);              
-                SessionManager.SetStateInSession(0);
-                SessionManager.SetTaxationInSession(0);
-                SessionManager.SetProductNoteInSession(0);
-                SessionManager.SetCompanyCfopInSession(0);
-                SessionManager.SetDarInSession(0);
-                SessionManager.SetAnnexInSession(0);
-                SessionManager.SetNcmConvenioInSession(0);
-                SessionManager.SetHomeExitInSession(0);
-                SessionManager.SetCstInSession(0);
-                SessionManager.SetClientInSession(0);
-                SessionManager.SetTaxationNcmInSession(0);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

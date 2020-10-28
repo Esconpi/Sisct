@@ -1,0 +1,187 @@
+﻿@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active
+    )
+{
+    <li class="treeview menu">
+        <a href="#">
+            <i class="fa fa-file-text-o"></i> <span>Cadastros</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display:none;">
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Profile")"><i class="fa fa-circle-o"></i>Perfil</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","User")"><i class="fa fa-circle-o"></i>Usuário</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configuração</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Base</a></li>
+            }
+        </ul>
+    </li>
+}
+
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active)
+{
+    <li class="treeview menu">
+        <a href="#">
+            <i class="fa fa-table"></i> <span>Tabelas</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display:none;">
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Cfop")"><i class="fa fa-circle-o"></i>CFOP</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Cest")"><i class="fa fa-circle-o"></i>CEST</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Cst")"><i class="fa fa-circle-o"></i>CST</a></li>
+            }
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Attachment")"><i class="fa fa-circle-o"></i>Sefaz Anexo</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Group")"><i class="fa fa-circle-o"></i>Sefaz Grupo</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Product")"><i class="fa fa-circle-o"></i>Sefaz Produto</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Aliquota Estado</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
+            }
+
+        </ul>
+    </li>
+
+}
+
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Section")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault().Active)
+{
+    <li class="treeview menu">
+        <a href="#">
+            <i class="fa fa-bookmark"></i> <span>Incentivo</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display:none;">
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Chapter")"><i class="fa fa-circle-o"></i>Capítulo</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Section")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Section")"><i class="fa fa-circle-o"></i>Seção</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
+            }
+
+        </ul>
+    </li>
+}
+
+
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("HomeExit")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Home")).FirstOrDefault().Active)
+{
+    <li class="treeview menu-open">
+        <a href="#">
+            <i class="fa fa-calendar-check-o"></i> <span>SisCT</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display:block;">
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresa</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Home")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Home")"><i class="fa fa-circle-o"></i>Entrada</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("HomeExit")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","HomeExit")"><i class="fa fa-circle-o"></i>Saída</a></li>
+            }
+        </ul>
+    </li>
+}
+
+<li class="treeview menu">
+    <a href="#">
+        <i class="fa fa-barcode"></i> <span>Boletos DAR</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu" style="display:none;">
+
+        <li><a href="@Url.Action("Index","BilletDar")"><i class="fa fa-circle-o"></i>Consultar</a></li>
+        <li><a href="@Url.Action("Watcher","BilletDar")"><i class="fa fa-circle-o"></i>Acompanhamento</a></li>
+    </ul>
+</li>

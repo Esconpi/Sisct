@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -21,24 +22,15 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetStateInSession().Equals(14))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
+
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
-
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
             }
             catch (Exception ex)
             {
@@ -49,10 +41,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetStateInSession().Equals(14))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
+
             try
             {
                 return View();
@@ -66,10 +59,11 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.State entity)
         {
-            if (!SessionManager.GetStateInSession().Equals(14))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
+
             try
             {
                 var aliq = _service.FindAll(GetLog(Model.OccorenceLog.Create));
@@ -96,7 +90,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetStateInSession().Equals(14))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

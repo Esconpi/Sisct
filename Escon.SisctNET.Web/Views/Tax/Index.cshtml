@@ -1,0 +1,131 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
+        <div class="btn-group pull-right">
+            <a asp-action="Receita" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Receitas</a>
+            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+            <br />
+            <br />
+
+            @if (ViewBag.Comp.CountingTypeId == 2)
+            {
+                <a asp-action="Reduction" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
+            }
+            else if (ViewBag.Comp.CountingTypeId == 1)
+            {
+                <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
+            }
+            <a asp-action="Retention"  size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
+
+            @if ((ViewBag.Month == "Março" || ViewBag.Month == "Junho" || ViewBag.Month == "Setembro" || ViewBag.Month == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
+            {
+                <br />
+                <br />
+                <a asp-action="Pag"  size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
+            }
+
+        </div>
+
+        <div style="width:100%; text-align:center;padding-top:10px;">
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+        </div>
+
+        <br />
+
+        <div style="width:100%; text-align:left; padding-left:1%;">
+            <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
+        </div>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:10px;">
+            <nr></nr>
+
+            <!-- IMPOSTO ICMS DE EMPRESAS INCENTIVADAS -->
+            @if (ViewBag.Comp.Incentive == true)
+            {
+                <div style="text-align:center">
+                    <strong>ICMS</strong>
+                </div>
+                <table class="table" style="font-size:9px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;border:1px solid;" colspan="18">
+                                DADOS
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (ViewBag.Comp.TipoApuracao.Equals(true))
+                        {
+                            <!-- EMPRESAS INCENTIVO ENTRADA -->
+                            @await Html.PartialAsync("_InputData", Model, new ViewDataDictionary(ViewData))
+                        }
+                        else
+                        {
+                            <!-- EMPRESAS INCENTIVO SAÍDA -->
+                            @if (ViewBag.Comp.AnnexId != 3)
+                            {
+                                @if (ViewBag.Comp.TypeCompany.Equals(true))
+                                {
+                                    @await Html.PartialAsync("_ProductData", Model, new ViewDataDictionary(ViewData))
+                                }
+                                else
+                                {
+                                    @await Html.PartialAsync("_IndustryData", Model, new ViewDataDictionary(ViewData))
+                                }
+                            }
+                            else if (ViewBag.Comp.AnnexId.Equals(3))
+                            {
+                                @if (ViewBag.Comp.SectionId.Equals(2))
+                                {
+                                    @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
+                                }
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+                <hr />
+            }
+
+
+            <!-- IMPOSTO PIS/COFINS -->
+            <div style="text-align:center">
+                <strong>PIS/COFINS</strong>
+            </div>
+
+            @if (ViewBag.Comp.CountingTypeId == 1)
+            {
+                <!-- EMPRESAS LUCRO REAL -->
+
+                @await Html.PartialAsync("_ReceitaDataReal", Model, new ViewDataDictionary(ViewData))
+                @await Html.PartialAsync("_RetentionDataReal", Model, new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Comp.CountingTypeId == 2)
+            {
+                <!-- EMPRESAS LUCRO PRESUMIDO -->
+
+                @await Html.PartialAsync("_ReceitaDataPresumido", Model, new ViewDataDictionary(ViewData))
+                @await Html.PartialAsync("_RetentionDataPresumido", Model, new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Comp.CountingTypeId == 3)
+            {
+                <!-- EMPRESAS SIMPLES -->
+            }
+
+        </div>
+    </div>
+</div>

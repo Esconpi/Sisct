@@ -7,15 +7,17 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="TaxationNcm" asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
-        <div class="btn-group pull-right">
-            @Html.ActionLink(" Importar", "Import", new { id = @ViewBag.CompanyId, year = @ViewBag.Year, month = @ViewBag.Month },
-                                   new { onclick = "return confirm('Os arquivos estão na pasta ?');", @class = "btn btn-primary fa fa-cloud-download pull-left" })
 
-        </div>
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Name - @ViewBag.Document</strong>
+        </div>
+
+        <br />
+
+        <div style="width:100%; text-align:right; padding-right:1%;">
+            <strong>@ViewBag.Month/@ViewBag.Year</strong>
         </div>
     </div>
     <div class="box-body">
@@ -33,7 +35,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Ncm.Description)
                         </th>
-                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th>
+                            Tipo Tributação
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -42,6 +46,25 @@
         </div>
     </div>
     <div class="box-footer"></div>
+</div>
+
+<div class="modal modal_default fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><strong>Detalhe da Tributação</strong></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -53,10 +76,33 @@
                     $('.showProduct').off();
                     $('[data-toggle="tooltip"]').tooltip();
                     $("input[type='checkbox']").bootstrapToggle();
+                    $('.showDetails').click(function () {
+                        $.get('/TaxationNcm/Details/' + $(this).attr('id'), function (html) {
+                            $('#formShow .modal-body').empty();
+                            $('#formShow .modal-body').append($(html));
+                            $('#formShow').modal('show');
+                        });
+
+                    });
                 },
                 "processing": true,
                 "ordering": false,
                 "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
                 "ajax": "/TaxationNcm/GetAllCompany",
                 "initComplete": function (settings, json) {
                 },
@@ -65,25 +111,24 @@
                     { "data": "code" },
                     { "data": "description" },
                     {
-                        "mData": "status",
+                        "mData": "type",
                         "mRender": function (data, type, row) {
-                            if (data == true) {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger', data-onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                            if (data == "Nenhum") {
+                                return "<div style='color:red'>Nenhum</div>"
                             }
-                            else {
-                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger', data-onstyle = 'success' , disabled = 'true' id='" + row.id + "' />";
+                            else if (data == "Monofásico") {
+                                return "<div style='color:green'>Monofásico</div>"
+                            }
+                            else if (data == "Normal") {
+                                return "<div style='color:blue'>Normal</div>"
                             }
                         }
                     },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            if (row.status == true) {
-                                return ""
-                            }
-                            else {
-                                return "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
-                            }
+                            return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> "+
+                                    "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
                         }
                     }
                 ]

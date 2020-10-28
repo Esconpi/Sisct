@@ -33,5 +33,32 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public State FindByUf(List<State> states, DateTime data, string uf, Log log = null)
+        {
+            string dataFomart = data.ToString("yyyy-MM-dd");
+            State result = null;
+            var statesAll = states.Where(_ => _.UfOrigem.Equals(uf));
+
+            foreach (var t in statesAll)
+            {
+                var dataInicial = DateTime.Compare(t.DateStart, data);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
+
+                if (dataInicial <= 0 && t.DateEnd == null)
+                {
+                    result = t;
+                    break;
+                }
+                else if (dataInicial <= 0 && dataFinal > 0)
+                {
+                    result = t;
+                    break;
+                }
+
+            }
+            AddLog(log);
+            return result;
+        }
     }
 }

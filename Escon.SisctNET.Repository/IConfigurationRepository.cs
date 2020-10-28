@@ -3,6 +3,5 @@
     public interface IConfigurationRepository : IRepository<Model.Configuration>
     {
         Model.Configuration FindByName(string name, Model.Log log = null);
-
     }
 }

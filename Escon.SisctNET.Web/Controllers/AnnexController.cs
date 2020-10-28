@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,24 +23,15 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
 
             }
             catch(Exception ex)
@@ -51,7 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -69,7 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Annex entity)
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -91,7 +83,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -110,7 +102,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Annex entity)
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -132,7 +124,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetAnnexInSession().Equals(20))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

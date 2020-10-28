@@ -1,8 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service.Implementation
 {

@@ -15,6 +15,17 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Delete(List<Note> notes, Log log = null)
+        {
+            foreach (var n in notes)
+            {
+                _context.Notes.Remove(n);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public Note FindByCompany(string company, Log log = null)
         {
             var rst = _context.Notes.Where(_ => _.Company.Equals(company)).FirstOrDefault();
@@ -40,6 +51,17 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Notes.Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month) && _.Uf.Equals(uf));
             AddLog(log);
             return rst.ToList();
+        }
+
+        public void Update(List<Note> notes, Log log = null)
+        {
+            foreach (var n in notes)
+            {
+                _context.Notes.Update(n);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
         }
     }
 }

@@ -39,26 +39,26 @@ namespace Escon.SisctNET.Model
         public string Code { get; set; }
 
         [Display(Name = "ICMS %")]
-        public decimal ? Icms { get; set; }
+        public decimal? Icms { get; set; }
 
         [Display(Name = "Funef %")]
-        public decimal ? Funef { get; set; }
+        public decimal? Funef { get; set; }
 
         [Display(Name = "Cotac %")]
-        public decimal ? Cotac { get; set; }
+        public decimal? Cotac { get; set; }
 
         [Display(Name = "Suspensão %")]
-        public decimal ? Suspension { get; set; }
+        public decimal? Suspension { get; set; }
 
-        public decimal ? VendaCpf { get; set; }
+        public decimal? VendaCpf { get; set; }
 
         public decimal? VendaCpfExcedente { get; set; }
 
-        public decimal ? VendaContribuinte { get; set; }
+        public decimal? VendaContribuinte { get; set; }
 
         public decimal? VendaContribuinteExcedente { get; set; }
 
-        public decimal ? Transferencia { get; set; }
+        public decimal? Transferencia { get; set; }
 
         public decimal? TransferenciaExcedente { get; set; }
 
@@ -77,12 +77,12 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaAnexoExcedente { get; set; }
 
-        [Display(Name = "Fecop")]
-        public decimal ? Fecop { get; set; }
+        [Display(Name = "Fecop %")]
+        public decimal? Fecop { get; set; }
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
-        public int ? AnnexId { get; set; }
+        public int? AnnexId { get; set; }
 
         private Annex annex;
         public Annex Annex
@@ -93,7 +93,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("CountingType")]
-        public int ? CountingTypeId { get; set; }
+        public int? CountingTypeId { get; set; }
 
         private CountingType countingType;
         public CountingType CountingType
@@ -102,22 +102,115 @@ namespace Escon.SisctNET.Model
             set => countingType = value;
         }
 
-        [Display(Name = "Icms p/ Não Contribuinte")]
+        [Display(Name = "Icms p/ Não Contribuinte %")]
         public decimal? IcmsNContribuinte { get; set; }
 
-        [Display(Name = "Icms p/ Não Contribuinte Fora do Estado")]
+        [Display(Name = "Icms p/ Não Contribuinte Fora do Estado %")]
         public decimal? IcmsNContribuinteFora { get; set; }
 
         [Display(Name = "Tipo")]
         public bool TypeCompany { get; set; }
 
-        [Display(Name = "Icms Aliq. SUperior a 25")]
-        public decimal ? IcmsAliqM25 { get; set; }
+        [Display(Name = "Icms Aliq. SUperior a 25 %")]
+        public decimal? IcmsAliqM25 { get; set; }
 
         [Display(Name = "UF")]
         public string Uf { get; set; }
 
         [Display(Name = "Inscrição Estadual")]
         public string Ie { get; set; }
+
+        [Display(Name = "Logradouro")]
+        public string Logradouro { get; set; }
+
+        [Display(Name = "Número")]
+        public string Number { get; set; }
+
+        [Display(Name = "Complemento")]
+        public string Complement { get; set; }
+
+        [Display(Name = "Bairro")]
+        public string District { get; set; }
+
+        [Display(Name = "Cep")]
+        public string Cep { get; set; }
+
+        [Display(Name = "Cidade")]
+        public string City { get; set; }
+
+        [Display(Name = "Telefone")]
+        public string Phone { get; set; }
+
+        [Display(Name = "Seção")]
+        [ForeignKey("Section")]
+        public int? SectionId { get; set; }
+
+        private Section section;
+        public Section Section
+        {
+            get => LazyLoader.Load(this, ref section);
+            set => section = value;
+        }
+
+        [Display(Name = "Aliq. Interna %")]
+        public decimal ? AliqInterna { get; set; }
+
+        [Display(Name = "Inc. I Interna %")]
+        public decimal ? IncIInterna { get; set; }
+
+        [Display(Name = "Inc. I Interestadual %")]
+        public decimal? IncIInterestadual { get; set; }
+
+        [Display(Name = "Inc. II Interna %")]
+        public decimal? IncIIInterna { get; set; }
+
+        [Display(Name = "Inc. II Interestadual %")]
+        public decimal? IncIIInterestadual { get; set; }
+
+        public decimal? VendaArt781 { get; set; }
+
+        public decimal? VendaArt781Excedente { get; set; }
+
+        [Display(Name = "IRPJ Combustível %")]
+        public decimal? IRPJ1 { get; set; }
+
+        [Display(Name = "IRPJ Comércio %")]
+        public decimal? IRPJ2 { get; set; }
+
+        [Display(Name = "IRPJ Transporte %")]
+        public decimal? IRPJ3 { get; set; }
+
+        [Display(Name = "IRPJ Serviço %")]
+        public decimal? IRPJ4 { get; set; }
+
+        [Display(Name = "CSLL Comércio %")]
+        public decimal? CSLL1 { get; set; }
+
+        [Display(Name = "CSLL Serviço %")]
+        public decimal? CSLL2 { get; set; }
+
+        [Display(Name = "CPRB %")]
+        public decimal? CPRB { get; set; }
+
+        public bool StatusCPRB { get; set; }
+
+        [Display(Name = "PIS %")]
+        public decimal? PercentualPis { get; set; }
+
+        [Display(Name = "COFINS %")]
+        public decimal? PercentualCofins { get; set; }
+
+        [Display(Name = "IRPJ Normal %")]
+        public decimal? PercentualIRPJ { get; set; }
+
+        [Display(Name = "CSLL Normal %")]
+        public decimal? PercentualCSLL { get; set; }
+
+        [Display(Name = "Adicional IRPJ %")]
+        public decimal? AdicionalIRPJ { get; set; }
+
+        public bool Sped { get; set; }
+
+        public virtual IList<EmailResponsible> EmaiResponsibles { get; set; }
     }
 }

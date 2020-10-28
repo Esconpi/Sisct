@@ -1,0 +1,108 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        ICMS NORMAL
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        ICMS NÃO INCENTIVADO
+    </th>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;">
+        BASE DE CÁLCULO ICMS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        ICMS (%)
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        ICMS (R$)
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        BASE DE CÁLCULO ICMS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        ICMS (%)
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        ICMS (R$)
+    </th>
+</tr>
+@if (Model != null)
+{
+    @foreach (var g in ViewBag.Grupos)
+    {
+        <tr style="font-size:11px;"> 
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", g.BaseCalculo)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @Convert.ToDecimal(g.Percentual)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", g.Icms)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", g.BaseCalculoNIncentivo)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @Convert.ToDecimal(g.PercentualNIncentivo)
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @string.Format("{0:N}", g.IcmsNIncentivo)
+            </td>
+        </tr>
+
+       
+    }
+}
+<tr>
+
+    <th style="text-align:center;border:1px solid;" colspan="6">
+        TOTAIS
+    </th>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        VENDAS
+    </th>
+    <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasIncentivada) + Convert.ToDecimal(Model.VendasNIncentivada))
+        }
+    </td>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        VENDAS INCENTIVADAS
+    </th>
+    <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasIncentivada))
+        }
+    </td>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        VENDAS NÃO INCENTIVADA
+    </th>
+    <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNIncentivada))
+        }
+    </td>
+</tr>
+<tr>
+    <th style="text-align:center;border:1px solid;" colspan="3">
+        CRÉDITOS
+    </th>
+    <td style="text-align:right;border:1px solid;padding-right:1%; font-size:11px;" colspan="3">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Credito))
+        }
+    </td>
+</tr>

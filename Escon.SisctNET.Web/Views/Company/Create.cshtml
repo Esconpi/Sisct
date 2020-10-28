@@ -17,7 +17,6 @@
                 <div class="col-md-12">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input asp-for="Id" class="form-control" type="hidden" />
                         <div class="row">
                             <div class="form-group col-lg-4 col-md-6 col-xs-12">
                                 @Html.LabelFor(model => model.Active, "Ativo", htmlAttributes: new { @class = "control-label col-md-12" })
@@ -47,7 +46,7 @@
                         <div class="row">
                             <div class="form-group col-lg-12 col-md-12 col-xs-12">
                                 <label asp-for="SocialName" class="control-label"></label>
-                                <input asp-for="SocialName" class="form-control" />
+                                <input asp-for="SocialName" class="form-control textformartmask" />
                                 <span asp-validation-for="SocialName" class="text-danger"></span>
                             </div>
                           
@@ -57,19 +56,19 @@
                         <div class="row">
                             <div class="form-group col-lg-12 col-md-12 col-xs-12">
                                 <label asp-for="FantasyName" class="control-label"></label>
-                                <input asp-for="FantasyName" class="form-control" />
+                                <input asp-for="FantasyName" class="form-control textformartmask" />
                                 <span asp-validation-for="FantasyName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <div class="form-group col-lg-2 col-md-6 col-xs-12">
                                 <label asp-for="Code" class="control-label"></label>
                                 <input asp-for="Code" class="form-control" />
                                 <span asp-validation-for="Code" class="text-danger"></span>
                             </div>
 
-                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                                 <label asp-for="Document" class="control-label"></label>
                                 <input asp-for="Document" class="form-control" />
                                 <span asp-validation-for="Document" class="text-danger"></span>
@@ -80,12 +79,54 @@
                                 <span asp-validation-for="Ie" class="text-danger"></span>
                             </div>
                             <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <input asp-for="Phone" class="form-control phoneformatmask" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                                <label asp-for="Cep" class="control-label"></label>
+                                <input asp-for="Cep" class="form-control textformartmask" />
+                                <span asp-validation-for="Cep" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                                <label asp-for="Logradouro" class="control-label"></label>
+                                <input asp-for="Logradouro" class="form-control textformartmask" />
+                                <span asp-validation-for="Logradouro" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                                <label asp-for="Number" class="control-label"></label>
+                                <input asp-for="Number" class="form-control textformartmask" />
+                                <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label asp-for="Complement" class="control-label"></label>
+                                <input asp-for="Complement" class="form-control textformartmask" />
+                                <span asp-validation-for="Complement" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label asp-for="District" class="control-label"></label>
+                                <input asp-for="District" class="form-control textformartmask" />
+                                <span asp-validation-for="District" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-lg-10 col-md-5 col-xs-12">
+                                <label asp-for="City" class="control-label"></label>
+                                <input asp-for="City" class="form-control textformartmask" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-5 col-xs-12">
                                 <label asp-for="Uf" class="control-label"></label>
                                 <input asp-for="Uf" class="form-control textformartmask" />
                                 <span asp-validation-for="Uf" class="text-danger"></span>
                             </div>
                         </div>
-
                         <div class="form-group col-lg-12 col-md-12 col-xs-12">
                             <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                         </div>

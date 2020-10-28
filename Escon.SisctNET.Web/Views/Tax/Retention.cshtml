@@ -1,0 +1,84 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Retention";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="Tax" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>        <h3 class="box-title"> <strong>Adicionar Retenções:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="Tax" asp-action="Retention" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @if (Model.CountingTypeId.Equals(1))
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">PIS Retido</label>
+                            <input class="form-control money" name="PisRetido">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Saldo Credor PIS</label>
+                            <input class="form-control money" name="SaldoCredorPis">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">COFINS Retido</label>
+                            <input class="form-control money" name="CofinsRetido">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Saldo Credor COFINS</label>
+                            <input class="form-control money" name="SaldoCredorCofins">
+                        </div>
+                    </div>
+                }
+                else if (Model.CountingTypeId.Equals(2))
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">PIS Retido</label>
+                            <input class="form-control money" name="PisRetido">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">COFINS Retido</label>
+                            <input class="form-control money" name="CofinsRetido">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">CSLL Retido</label>
+                            <input class="form-control money" name="CsllRetido">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">CSLL Fonte</label>
+                            <input class="form-control money" name="CsllFonte">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">IRPJ Retido</label>
+                            <input class="form-control money" name="IrpjRetido">
+                        </div>
+
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">IRPJ Fonte Serviços</label>
+                            <input class="form-control money" name="IrpjFonteServico">
+                        </div>
+
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">IRPJ Fonte Aplicações Financeiras</label>
+                            <input class="form-control money" name="IrpjFonteFinanceira">
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

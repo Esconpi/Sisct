@@ -7,7 +7,7 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title"><strong>Cst Cadastrados</strong></h3>
+        <h3 class="box-title"><strong>Cst</strong></h3>
         <div class="btn-group pull-right">
 
             <a asp-action="Create" class="btn btn-primary">
@@ -45,7 +45,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.CheckBoxFor(modelItem => item.Ident, new { @data_off = "Entrada", @data_on = "Saida", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "primary", @data_onstyle = "success", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
+                                @Html.CheckBoxFor(modelItem => item.Ident, new { @data_off = "Entrada", @data_on = "Saida", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "success", @data_onstyle = "danger", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
                             </td>
                             <td>
                                 @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })

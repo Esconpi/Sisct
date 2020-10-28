@@ -18,6 +18,11 @@
 
 
                 <div class="row">
+                    <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                        <label asp-for="AnnexId" class="control-label"></label>
+                        <select asp-items="@ViewBag.AnnexId" name="AnnexId" class="form-control selectoption" id="annex"></select>
+                        <span asp-validation-for="AnnexId" class="text-danger"></span>
+                    </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Cest" class="control-label"></label>
                         <input asp-for="Cest" class="form-control" />
@@ -28,12 +33,6 @@
                         <input asp-for="Ncm" class="form-control" />
                         <span asp-validation-for="Ncm" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-8 col-md-6 col-xs-12">
-                        <label asp-for="AnnexId" class="control-label"></label>
-                        <select asp-items="@ViewBag.AnnexId" name="AnnexId" class="form-control selectoption" id="annex"></select>
-                        <span asp-validation-for="AnnexId" class="text-danger"></span>
-                    </div>
-                 
                 </div>
 
                 <div class="row">

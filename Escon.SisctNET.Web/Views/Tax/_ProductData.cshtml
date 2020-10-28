@@ -1,0 +1,160 @@
+﻿@model Escon.SisctNET.Model.Tax
+
+<tr style="font-size:8px;">
+    <th style="text-align:center;border:1px solid;" colspan="13">
+        VENDAS
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
+        CRÈDITOS
+    </th>
+    <th style="text-align:center;border:1px solid;" rowspan="3">
+        DÉBITOS
+    </th>
+</tr>
+
+<tr style="font-size:8px;">
+    <th style="text-align:center;border:1px solid;" colspan="5">
+        CONTRIBUINTES
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="4">
+        NÂO CONTRIBUINTES
+    </th>
+    <th style="text-align:center;border:1px solid;" colspan="4">
+        NÂO CONTRIBUINTES FORA DO ESTADO
+    </th>
+</tr>
+<tr style="font-size:8px;">
+    <th style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO ATÉ 25%
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        AIQ. INTER. DO PRODUTO SUPERIOR 25%
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS INCENTIVADAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS INCENTIVADAS
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS NORMAL
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ST
+    </th>
+    <th style="text-align:center;border:1px solid;">
+        RECEITAS ISENTA
+    </th>
+</tr>
+<tr style="font-size:10px;">
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasContribuinte1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasContribuinte2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaNormal1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaST1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaIsento1))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinte))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaNormal2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaST2))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaIsento2))
+        }
+    </td>
+
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinteFora))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaNormal3))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaST3))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.ReceitaIsento3))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Credito))
+        }
+    </td>
+    <td style="text-align:right;border:1px solid;padding-right:1%;">
+        @if (Model != null)
+        {
+            @string.Format("{0:N}", Convert.ToDecimal(Model.Debito))
+        }
+    </td>
+
+</tr>

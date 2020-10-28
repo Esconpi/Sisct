@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace Escon.SisctNET.Service
 {
     public interface IAccessService : IServiceBase<Model.Access>

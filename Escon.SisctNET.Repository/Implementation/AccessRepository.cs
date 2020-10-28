@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Access> FindByProfileId(int profileId, Log log = null)
         {
-            var result = _context.Accesses.Where(_ => _.ProfileId.Equals(profileId)).ToList();
+            var result = _context.Accesses
+                .Where(_ => _.ProfileId.Equals(profileId))
+                .Include(p => p.Profile)
+                .Include(f => f.Functionality)
+                .ToList();
             AddLog(log);
             return result;
         }

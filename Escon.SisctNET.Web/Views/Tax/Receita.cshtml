@@ -1,0 +1,68 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Receita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="Tax" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>        <h3 class="box-title"> <strong>Adicionar Outras Receitas:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="Tax" asp-action="Receita" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @if (Model.CountingTypeId.Equals(1))
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Receitas Financeiras</label>
+                            <input class="form-control money" name="ReceitaFinanceira">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Ganho de Capital</label>
+                            <input class="form-control money" name="Capital">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Receitas de Aluguel</label>
+                            <input class="form-control money" name="ReceitaAluguel">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                            <label class="control-label">Juros s/Capital Próprio</label>
+                            <input class="form-control money" name="Juros">
+                        </div>
+                    </div>
+                }
+                else if (Model.CountingTypeId.Equals(2))
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Bonificações</label>
+                            <input class="form-control money" name="Bonificacao">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Ganho de Capital na Venda de Imobilizado</label>
+                            <input class="form-control money" name="CapitalIM">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Receita de Aplicação Financeira</label>
+                            <input class="form-control money" name="ReceitaAF">
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Outras</label>
+                            <input class="form-control money" name="OutrasReceitas">
+                        </div>
+                    </div>
+                }
+
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

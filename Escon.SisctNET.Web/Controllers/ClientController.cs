@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,7 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -70,7 +69,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -89,13 +88,12 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id,string year,string month)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
             try
             {
-                int cont = 0;
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
@@ -103,48 +101,88 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
                 string directoryNfeEntrada = confDBSisctNfEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                var import = new Import();
+                var importXml = new Xml.Import();
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = import.Client(directoryNfeSaida);                
+                dets = importXml.Client(directoryNfeSaida);
+
+                int tipoCliente = 1;
+
+                if(Convert.ToInt32(comp.AnnexId).Equals(3)){
+                    tipoCliente = 2;
+                }
+
+                List<Model.Client> addClientes = new List<Model.Client>();
+
+                var clientesAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
 
                 foreach (var det in dets)
                 {
                     
-                    if (det.ContainsKey("CNPJ") && det.ContainsKey("indIEDest") && det.ContainsKey("IE"))
+                    if (det.ContainsKey("CNPJ"))
                     {
                         string CNPJ = det["CNPJ"];
-                        string indIEDest = det["indIEDest"];
-                        string IE = det["IE"];
-                        if (indIEDest == "1" && (!IE.Equals("escon") || !IE.Equals("")) && (!CNPJ.Equals("escon") || !CNPJ.Equals("")))
+                        string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "";
+                        string IE = det.ContainsKey("IE") ? det["IE"] : "";
+                        if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
-                            var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+                            //var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
+                            var existCnpj = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
 
                             if (existCnpj == null)
                             {
+                                tipoCliente = 1;
+
+                                if (Convert.ToInt32(comp.AnnexId).Equals(3))
+                                {
+                                    tipoCliente = 2;
+                                }
+
+                                if (IE.Equals(""))
+                                {
+                                    tipoCliente = 2;
+                                }
+
                                 var CNPJRaiz = CNPJ.Substring(0, 8);
-                                var client = new Model.Client
+
+                                Model.Client client = new Model.Client();
+                                client.Name = det["xNome"];
+                                client.CompanyId = id;
+                                client.Document = CNPJ;
+                                client.CnpjRaiz = CNPJRaiz;
+                                client.Ie = IE;
+                                client.TypeClientId = tipoCliente;
+                                client.MesRef = month;
+                                client.AnoRef = year;
+                                client.Created = DateTime.Now;
+                                client.Updated = DateTime.Now;
+
+                                addClientes.Add(client);
+                                /*var client = new Model.Client
                                 {
                                     Name = det["xNome"],
                                     CompanyId = id,
                                     Document = CNPJ,
                                     CnpjRaiz = CNPJRaiz,
                                     Ie = IE,
-                                    TypeClientId = 1,
+                                    TypeClientId = tipoCliente,
                                     Created = DateTime.Now,
                                     Updated = DateTime.Now
 
                                 };
-                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));
-                                cont++;
+                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));*/
                             }
                         }
                     }
                   
                 }
 
-                return RedirectToAction("Details",new {companyId = id,count = cont });
+                _service.Create(addClientes);
+
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
+                return RedirectToAction("Details",new {companyId = id, year = year, month = month });
             }
             catch(Exception ex)
             {
@@ -155,7 +193,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Filter(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -173,9 +211,9 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int companyId,int count)
+        public IActionResult Details(int companyId, string year, string month)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -183,10 +221,9 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.Id = companyId;
-                var client = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyId)).Reverse();
-                var result = client.Take(count).ToList();
-                ViewBag.Count = count;
-                return View(result);
+                var client = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).ToList();
+                ViewBag.Count = client.Count();
+                return View(client);
             }
             catch(Exception ex)
             {
@@ -197,7 +234,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -218,7 +255,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Client entity)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -232,6 +269,7 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
+                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = client.CompanyId});
             }
@@ -242,9 +280,9 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Client(int id, int count)
+        public IActionResult Client(int id)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -254,7 +292,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
                 ViewBag.Company = result.CompanyId;
-                ViewBag.Count = count;
+                ViewBag.Mes = result.MesRef;
+                ViewBag.Ano = result.AnoRef;
                 return View(result);
             }
             catch (Exception ex)
@@ -264,9 +303,9 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Client(int id, int count, Model.Client entity)
+        public IActionResult Client(int id, Model.Client entity)
         {
-            if (!SessionManager.GetClientInSession().Equals(25))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -280,14 +319,16 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
+                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Details", new { companyId = client.CompanyId, count = count });
+                return RedirectToAction("Details", new { companyId = client.CompanyId, year = client.AnoRef, month = client.MesRef });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+        
         public IActionResult Contribuinte(int id)
         {
             try
@@ -306,7 +347,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());

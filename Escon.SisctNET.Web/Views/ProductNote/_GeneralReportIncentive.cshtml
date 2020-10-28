@@ -1,0 +1,105 @@
+﻿<div style="width: 100%; font-size:12px; page-break-before: always;">
+    <table class="table" style="border: 2px solid;">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Total da Base de Cálculo Incentivo</th>
+                <th>Total Icms Não Incentivado</th>
+                <th>Total Icms Incentivado</th>
+                <th>Total Fecop Não Incentivada</th>
+                <th>Total Fecop Incentivada</th>
+                <th style="text-align:center" width="120px">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.Anexo != 3)
+            {
+                <tr>
+                    <th>
+                        Base de Cálculo Regime
+                    </th>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base)</td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base)</th>
+                </tr>
+            }
+
+            <tr>
+                <th>
+                    Imposto Normal
+                </th>
+                <td style="text-align:center"> ---- </td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal)</td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo) </td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
+                <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral) </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+    @if (ViewBag.Anexo == 3)
+    {
+        @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
+        
+        <div style="width: 100%; font-size:12px; padding-top:10px;">
+            @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
+        </div>
+        
+    }
+    else
+    {
+        @await Html.PartialAsync("_AutoParts", new ViewDataDictionary(ViewData))
+        @await Html.PartialAsync("_GeneralReportEntryIncentiveSurplus", new ViewDataDictionary(ViewData))
+    }
+
+<div style="width:100%;">
+    <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
+        <strong>Imposto Incentivo</strong>
+    </div>
+    <table class="table" style="border: 2px solid;">
+        <thead>
+            <tr style="border: 2px solid;">
+                <th width="500px"></th>
+                <th style="text-align:center">Valor do Imposto</th>
+                <th style="text-align:center">Código DAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="text-align:center">ICMS Incentivo</th>
+                <td style="text-align:right"> @string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
+            </tr>
+            @if (ViewBag.Anexo != 3)
+            {
+                <tr>
+                    <th style="text-align:center">ICMS Excedente</th>
+                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalIcms)</td>
+                    <td style="text-align:center">@ViewBag.DarIcms</td>
+                </tr>
+            }
+            <tr>
+                <th style="text-align:center">Adicional Suspensão</th>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
+                <td style="text-align:center">@ViewBag.DarIcms</td>
+            </tr>
+            <tr>
+                <th style="text-align:center">Fecop Incentivo</th>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
+                <td style="text-align:center">@ViewBag.DarFecop</td>
+            </tr>
+            <tr>
+                <th style="text-align:center">Funef</th>
+                <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef)</td>
+                <td style="text-align:center">@ViewBag.DarFunef</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

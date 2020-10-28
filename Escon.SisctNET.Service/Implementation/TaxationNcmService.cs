@@ -19,6 +19,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public void Create(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _repository.Create(taxationNcms, log);
+        }
+
         public void Delete(int id, Log log)
         {
             _repository.Delete(id, log);
@@ -39,6 +44,21 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAllInDate(dateProd, log);
         }
 
+        public List<TaxationNcm> FindAllInDate(List<TaxationNcm> ncms, DateTime dateProd, Log log = null)
+        {
+            return _repository.FindAllInDate(ncms, dateProd, log);
+        }
+
+        public List<TaxationNcm> FindByCompany(string company, Log log = null)
+        {
+            return _repository.FindByCompany(company, log);
+        }
+
+        public List<TaxationNcm> FindByCompany(int company, Log log = null)
+        {
+            return _repository.FindByCompany(company, log);
+        }
+
         public TaxationNcm FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
@@ -52,6 +72,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationNcm Update(TaxationNcm entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _repository.Update(taxationNcms, log);
         }
     }
 }

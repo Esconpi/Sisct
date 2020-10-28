@@ -12,8 +12,6 @@ namespace Escon.SisctNET.Model
 
         public string Code { get; set; }
 
-        public string Code2 { get; set; }
-
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
@@ -31,7 +29,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Aliquota FECOP")]
         public decimal? Fecop { get; set; }
-
 
         [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]

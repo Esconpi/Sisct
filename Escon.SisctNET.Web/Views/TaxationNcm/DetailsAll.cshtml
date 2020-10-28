@@ -1,0 +1,86 @@
+﻿@model Escon.SisctNET.Model.TaxationNcm
+
+
+<div style="width:100%; padding:20px;">
+    <dl class="dl-horizontal">
+        <dt>
+            Produto
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodeProduct)
+        </dd>
+        <dt>
+            Ncm
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ncm.Code)
+        </dd>
+        <dt>
+            Descrição
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ncm.Description)
+        </dd>
+        <dt>
+            Tipo Receita
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TypeNcm.Name)
+        </dd>
+        <dt>
+            Tipo Tributação
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt>
+            Cst Entrada
+        </dt>
+        <dd>
+            @if (Model.CstEntradaId != null)
+            {
+                @Html.DisplayFor(model => model.CstEntrada.Code)
+            }
+        </dd>
+        <dt>
+            Cst Saída
+        </dt>
+        <dd>
+            @if (Model.CstEntradaId != null)
+            {
+                @Html.DisplayFor(model => model.CstSaida.Code)
+            }
+        </dd>
+        <dt>
+            Natureza Receita
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NatReceita)
+        </dd>
+        <dt>
+            Pis
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pis)
+        </dd>
+        <dt>
+            Cofins
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cofins)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateStart)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateEnd)
+        </dd>
+
+    </dl>
+</div>

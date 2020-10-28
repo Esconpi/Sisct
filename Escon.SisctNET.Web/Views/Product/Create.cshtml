@@ -1,4 +1,4 @@
-﻿@model Escon.SisctNET.Model.Product
+﻿@model Escon.SisctNET.Model.Product2
 
 @{
     ViewData["Title"] = "Create";
@@ -9,63 +9,63 @@
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
-            <strong>Novo Produto</strong> 
+            <strong>Novo Produto</strong>
         </h3>
 
     </div>
     <hr />
     <div class="box-body">
-            <div class="col-md-12">
-                <form asp-action="Create" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="row">
-                        <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                            <label asp-for="GroupId" class="control-label"></label>
-                            <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="status" onchange="ativar_button()"></select>
-                            <span asp-validation-for="GroupId" class="text-danger"></span>
-                        </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                        <label asp-for="GroupId" class="control-label"></label>
+                        <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="status" onchange="ativar_button()"></select>
+                        <span asp-validation-for="GroupId" class="text-danger"></span>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label asp-for="Code" class="control-label"></label>
-                            <input asp-for="Code" class="form-control number" type="text"/>
-                            <span asp-validation-for="Code" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-lg-9 col-md-6 col-xs-12">
-                            <label asp-for="Description" class="control-label"></label>
-                            <input asp-for="Description" class="form-control" />
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
-                  
-                    <div class="row">
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label asp-for="Unity" class="control-label"></label>
-                            <input asp-for="Unity" class="form-control" />
-                            <span asp-validation-for="Unity" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label asp-for="Price" class="control-label"></label>
-                            <input type="text" name="price" class="form-control money" />
-                        </div>
-
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label asp-for="DateStart" class="control-label"></label>
-                            <input asp-for="DateStart" class="form-control" />
-                            <span asp-validation-for="DateStart" class="text-danger"></span>
-                        </div>
-                    </div>
-                 
-
-                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <input type="submit" value="Cadastrar" class="btn btn-success pull-right" id="ativa" disabled = "disabled" />
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label asp-for="Code" class="control-label"></label>
+                        <input asp-for="Code" class="form-control number" type="text" />
+                        <span asp-validation-for="Code" class="text-danger"></span>
                     </div>
 
-                </form>
-            </div>
+                    <div class="form-group col-lg-9 col-md-6 col-xs-12">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label asp-for="Unity" class="control-label"></label>
+                        <input asp-for="Unity" class="form-control" />
+                        <span asp-validation-for="Unity" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input type="text" name="price" class="form-control money" />
+                    </div>
+
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" />
+                        <span asp-validation-for="DateStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" id="ativa" disabled="disabled" />
+                </div>
+
+            </form>
+        </div>
     </div>
     <div class="box-footer">
 

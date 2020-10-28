@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service
 {
@@ -14,5 +14,10 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductIncentivo> FindByDate(int company, DateTime date, Model.Log log = null);
 
+        List<Model.ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, int company, DateTime date, Model.Log log = null);
+
+        void Create(List<Model.ProductIncentivo> productIncentivos, Model.Log log = null);
+
+        void Update(List<Model.ProductIncentivo> productIncentivos, Model.Log log = null);
     }
 }

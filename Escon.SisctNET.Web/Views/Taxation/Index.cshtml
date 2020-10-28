@@ -10,7 +10,7 @@
 
         <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
 
-        <h3 class="box-title"><strong>Ncms Tributados</strong></h3>
+        <h3 class="box-title"><strong>Ncm Tributado</strong></h3>
 
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Company-@ViewBag.Document</strong>
@@ -26,14 +26,14 @@
                             @Html.DisplayNameFor(model => model.NcmId)
                         </th>
                         <th>
+                            Descrição
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Cest)
                         </th>
                         <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
-                        <th>@Html.DisplayNameFor(model => model.AliqInterna)</th>
                         <th>@Html.DisplayNameFor(model => model.Picms)</th>
                         <th>@Html.DisplayNameFor(model => model.Uf)</th>
-                        <th>@Html.DisplayNameFor(model => model.DateStart)</th>
-                        <th>@Html.DisplayNameFor(model => model.DateEnd)</th>
                         <th></th>
 
                     </tr>
@@ -86,29 +86,31 @@
                 "processing": true,
                 "ordering": false,
                 "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
                 "ajax": "/Taxation/GetAll",
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
                     { "data": "code" },
-                    { "data": "cest" },
                     { "data": "description" },
-                    { "data": "aliqInterna" },
+                    { "data": "cest" },
+                    { "data": "taxation" },
                     { "data": "picms" },
                     { "data": "uf" },
-                    { "data": "inicio" },
-                    {
-                        
-                        "mData": "fim",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
-                            }
-                            else {
-                                return data
-                            }
-                        }
-                    },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
@@ -144,6 +146,21 @@ else
                 "processing": true,
                 "ordering": false,
                 "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
                 "ajax": "/Taxation/GetAll",
                 "initComplete": function (settings, json) {
                 },

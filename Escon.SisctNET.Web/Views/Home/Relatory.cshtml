@@ -1,0 +1,80 @@
+﻿@model Escon.SisctNET.Model.Company
+@{
+    ViewData["Title"] = "Relatory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"> <strong>Relatório:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="ProductNote" asp-action="Relatory" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Ano</label>
+                        <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label class="control-label">Mês</label>
+                        <select name="month" class="form-control selectoption">
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-7 col-md-7 col-xs-12">
+                        <label class="control-label">Tipo de Tributação</label>
+                        <select name="typeTaxation" class="form-control selectoption"  asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.TypeTaxation>()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label class="control-label">Tipo</label>
+                        <select name="type" id="type" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Type>()" onchange="ativar_button()"></select>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label class="control-label">Nota</label>
+                        <input type="text" id="caixa_num_nota" name="nota" class="form-control" placeholder="Nota" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function ativar_button() {
+        var tipo = document.getElementById("type").value;
+        if (tipo == "6") {
+            document.getElementById("caixa_num_nota").disabled = false;
+        }
+        else {
+            document.getElementById("caixa_num_nota").disabled = true;
+        }
+    }
+
+</script>
+

@@ -62,47 +62,47 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public List<ProductNote> FindByProductsType(List<Note> notes, int taxationType, Log log = null)
+        public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                if (taxationType == 0)
+                if (taxationType.Equals(Model.TypeTaxation.Nenhum))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
                     products.AddRange(rst);
                 }
-                if (taxationType == 1)
+                if (taxationType.Equals(Model.TypeTaxation.ST))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 2)
+                else if (taxationType.Equals(Model.TypeTaxation.AP))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 3)
+                else if (taxationType.Equals(Model.TypeTaxation.CO))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(2)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 4)
+                else if (taxationType.Equals(Model.TypeTaxation.COR))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(4)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 5)
+                else if (taxationType.Equals(Model.TypeTaxation.IM))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(3)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 6)
+                else if (taxationType.Equals(Model.TypeTaxation.Isento))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(7)));
                     products.AddRange(rst);
                 }
-                else if (taxationType == 7)
+                else if (taxationType.Equals(Model.TypeTaxation.AT))
                 {
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)));
                     products.AddRange(rst);
@@ -112,35 +112,36 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public decimal FindByTotal(List<string> notes, Log log = null)
+        public decimal FindByTotal(List<int> notes, Log log = null)
         {
             decimal total = 0;
             foreach (var item in notes)
             {
-                var notas = _context.Notes.Where(_ => _.Nnf.Equals(item)).FirstOrDefault();
+                var notas = _context.Notes.Where(_ => _.Id.Equals(item)).FirstOrDefault();
                 total += notas.Vnf;
             }
             AddLog(log);
             return total;
         }
 
-        public decimal FindBySubscription(List<Note> notes, int taxaid, Log log = null)
+        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             decimal icmsTotalSt = 0;
 
-            if (taxaid == 1)
+            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.AT))
             {
                 foreach (var note in notes)
                 {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
                 }
             }
-            else if (taxaid == 2)
+            else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
+                    taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
             {
-                foreach (var note in notes)
-                {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.Nnf.Equals(note.Nnf) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
-                }
+                    foreach (var note in notes)
+                    {
+                        icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1) || _.TaxationTypeId.Equals(2) || _.TaxationTypeId.Equals(3) || _.TaxationTypeId.Equals(4))).Select(_ => _.IcmsST).Sum());
+                    }
             }
             return icmsTotalSt;
         }
@@ -197,7 +198,16 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var n in ncms)
             {
                 int contaChar = n.Length;
-                string substring = ncm.Substring(0, contaChar);
+                string substring = "";
+                if (contaChar < 8)
+                {
+                    substring = ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = ncm;
+                }
+               
                 if (n.Equals(substring) && !contaChar.Equals(0))
                 {
                     NcmIncentivo = true;
@@ -262,6 +272,65 @@ namespace Escon.SisctNET.Repository.Implementation
             List<Product1> products = new List<Product1>();
 
             var productPauta = _context.Product1s;
+
+            foreach (var prod in productPauta)
+            {
+                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
+
+                if (dataInicial <= 0 && prod.DateEnd == null)
+                {
+                    products.Add(prod);
+                    continue;
+                }
+                else if (dataInicial <= 0 && dataFinal > 0)
+                {
+                    products.Add(prod);
+                    continue;
+                }
+            }
+
+            return products;
+        }
+
+        public void Create(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Add(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
+        public void Delete(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Remove(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
+        public void Update(List<ProductNote> products, Log log = null)
+        {
+            foreach (var p in products)
+            {
+                _context.ProductNotes.Update(p);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
+        public List<Product2> FindAllInDate2(DateTime dateProd, Log log = null)
+        {
+            List<Product2> products = new List<Product2>();
+
+            var productPauta = _context.Product2s;
 
             foreach (var prod in productPauta)
             {

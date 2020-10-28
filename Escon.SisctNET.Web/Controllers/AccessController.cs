@@ -1,8 +1,8 @@
 ﻿using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -27,27 +27,18 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int profileId)
         {
 
-            if (!SessionManager.GetAccessInSession().Equals(4))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindByProfileId(profileId);
+                var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Name = profile.Name;
+                return View(result);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByProfileId(profileId);
-                    var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Name = profile.Name;
-                    return View(result);
-                }
-                
             }
             catch (Exception ex)
             {
@@ -59,7 +50,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetAccessInSession().Equals(4))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

@@ -1,12 +1,20 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.Product>
+﻿@model IEnumerable<Escon.SisctNET.Model.Product2>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    div.dataTables_wrapper div.dataTables_filter input {
+        margin-left: 1px;
+        padding-right: 5px;
+        display: inline-block;
+        width: 250px;
+    }
+</style>
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title"><strong>Produtos Cadastrados</strong></h3>
+        <h3 class="box-title"><strong>Sefaz Produto</strong></h3>
         <div class="btn-group pull-right">
 
             <a asp-action="Create" class="btn btn-primary">
@@ -14,7 +22,7 @@
                 Novo Produto
             </a>
             <a asp-action="Import" class="btn btn-primary">
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-cloud-upload"></i>
                 Importar Produtos
             </a>
         </div>
@@ -35,7 +43,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
-                        <th>
+                        <th width="10%">
                             @Html.DisplayNameFor(model => model.Price)
                         </th>
                         <th>
@@ -70,6 +78,21 @@
             "processing": true,
             "ordering": false,
             "serverSide": true,
+            "oLanguage": {
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                "sZeroRecords": "Nenhum registro disponível",
+                "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                "sInfoFiltered": "",
+                "sSearch": "Buscar",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
             "ajax": "/Product/GetAll",
             "initComplete": function (settings, json) {
             },
@@ -77,14 +100,35 @@
                 { "data": "groupName" },
                 { "data": "code" },
                 { "data": "description" },
-                { "data": "price" },
+                {
+                    "mData": "price",
+                    "mRender": function (data, type, row) {
+                        return data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.')
+                    }
+                },
                 { "data": "unity" },
                 { "data": "inicio" },
-                { "data": "fim" },
+                {
+                    "mData": "fim",
+                    "mRender": function (data, type, row) {
+                        if (data == "01/01/0001") {
+                            return ""
+                        }
+                        else {
+                            return data
+                        }
+                    }
+                },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        return "<a href='/Product/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> "
+                        if (row.fim == "01/01/0001") {
+                            return "<a href='/Product/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                "<a href='/Product/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                        }
+                        else {
+                            return ""
+                        }
                     }
                 }
             ]

@@ -49,6 +49,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByUf(uf);
         }
 
+        public State FindByUf(List<State> states, DateTime data, string uf, Log log = null)
+        {
+            return _repository.FindByUf(states, data, uf, log);
+        }
+
         public State Update(State entity, Log log)
         {
             return _repository.Update(entity, log);

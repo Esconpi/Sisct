@@ -28,29 +28,20 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                var result = _service.FindByCompany(id);
+                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Company = company.SocialName;
+                ViewBag.Document = company.Document;
+                SessionManager.SetCompanyIdInSession(id);
+                return View(null);
 
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindByCompany(id);
-                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Company = company.SocialName;
-                    ViewBag.Document = company.Document;
-                    SessionManager.SetCompanyIdInSession(id);
-                    return View(null);
-                }
-               
             }
             catch(Exception ex)
             {
@@ -62,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -82,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            if (!SessionManager.GetTaxationInSession().Equals(18))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -104,7 +95,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()); ;
+            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code);
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -117,6 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                 taxationAll.ToList().ForEach(s =>
                 {
                     s.Ncm.Code = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Code);
+                    s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
                     s.TaxationType.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.TaxationType.Description);
                     s.Uf = s.Uf;
                     taxationTemp.Add(s);
@@ -137,15 +129,11 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
-                               cest = r.Cest,
-                               Description = r.TaxationType.Description,
-                               AliqInterna = r.AliqInterna,
-                               Mva = r.MVA,
-                               Bcr = r.BCR,
+                               Description = r.Ncm.Description,
+                               Cest = r.Cest,
+                               Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                            };
 
@@ -161,16 +149,11 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Ncm.Code,
-                               cest = r.Cest,
-                               Description = r.TaxationType.Description,
-                               AliqInterna = r.AliqInterna,
-                               Mva = r.MVA,
-                               Bcr = r.BCR,
+                               Description = r.Ncm.Description,
+                               Cest = r.Cest,
+                               Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-
 
                            };
                 return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = taxation.Skip(start).Take(lenght) });

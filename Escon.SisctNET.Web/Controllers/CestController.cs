@@ -13,9 +13,9 @@ namespace Escon.SisctNET.Web.Controllers
         ICestService _service;
         public CestController(
             ICestService service,
-                IFunctionalityService functionalityService,
-                IHttpContextAccessor httpContextAccessor) 
-                : base(functionalityService, "Cest")
+            IFunctionalityService functionalityService,
+            IHttpContextAccessor httpContextAccessor) 
+            : base(functionalityService, "Cest")
         {
             _service = service;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
@@ -24,25 +24,15 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(null);
-                }
-                
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -54,7 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -73,7 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Cest entity)
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -95,7 +85,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -114,7 +104,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Cest entity)
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -136,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetCestInSession().Equals(10))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

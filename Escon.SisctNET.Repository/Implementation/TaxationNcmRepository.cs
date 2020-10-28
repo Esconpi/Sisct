@@ -17,6 +17,17 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Create(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            foreach (var t in taxationNcms)
+            {
+                _context.TaxationNcms.Add(t);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public List<TaxationNcm> FindAllInDate(DateTime dateProd, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();
@@ -43,6 +54,44 @@ namespace Escon.SisctNET.Repository.Implementation
             return ncms;
         }
 
+        public List<TaxationNcm> FindAllInDate(List<TaxationNcm> ncms, DateTime dateProd, Log log = null)
+        {
+            List<TaxationNcm> ncmsAll = new List<TaxationNcm>();
+
+            foreach (var ncm in ncms)
+            {
+                var dataInicial = DateTime.Compare(Convert.ToDateTime(ncm.DateStart), dateProd);
+                var dataFinal = DateTime.Compare(Convert.ToDateTime(ncm.DateEnd), dateProd);
+
+                if ((dataInicial <= 0 || ncm.DateStart == null) && ncm.DateEnd == null)
+                {
+                    ncmsAll.Add(ncm);
+                    continue;
+                }
+                else if ((dataInicial <= 0 || ncm.DateStart == null) && dataFinal > 0)
+                {
+                    ncmsAll.Add(ncm);
+                    continue;
+                }
+            }
+
+            return ncmsAll;
+        }
+
+        public List<TaxationNcm> FindByCompany(string company, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8))).ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<TaxationNcm> FindByCompany(int company, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.CompanyId.Equals(company)).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();
@@ -56,6 +105,17 @@ namespace Escon.SisctNET.Repository.Implementation
                 ncms = _context.TaxationNcms.Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && _.Type.Equals("Monofásico")).ToList();
             }
             return ncms;
+        }
+
+        public void Update(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            foreach (var t in taxationNcms)
+            {
+                _context.TaxationNcms.Update(t);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
         }
     }
 }

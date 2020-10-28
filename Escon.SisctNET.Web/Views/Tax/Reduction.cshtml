@@ -1,0 +1,30 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Reduction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="Tax" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>        <h3 class="box-title"> <strong>Adicionar Reduções:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="Tax" asp-action="Reduction" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                        <label class="control-label">Reduções Icms</label>
+                        <input class="form-control money" name="ReducaoIcms">
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

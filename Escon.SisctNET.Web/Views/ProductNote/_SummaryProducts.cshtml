@@ -1,0 +1,78 @@
+﻿<table class="table" style="font-size:8px; border:2px solid;">
+    @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST")
+    {
+        @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+        {
+            <thead style="font-size:10px">
+                <tr>
+                    <th>Registros</th>
+                    <th>Total</th>
+                    <th>V. Produtos</th>
+                    <th>V. Frete CTe</th>
+                    <th>B. Cálculo</th>
+                    <th>BC. ICMS</th>
+                    <th>BCR</th>
+                    <th>V. do Imp. AC</th>
+                    <th>ICMS</th>
+                    <th>ICMS ST NFe</th>
+                    <th>FECOP ST NFe</th>
+                    <th>Total ICMS</th>
+                    <th>Total FECOP</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:11px">
+                <tr>
+                    <td>@ViewBag.Registro</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
+                    <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalBcICMS)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalBCR)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalAC)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalICMSNfeCte)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalICMSST)</td>
+                    <td>@string.Format("{0:N}", ViewBag.FecopST)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalICMSGeral)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalFecop)</td>
+                </tr>
+            </tbody>
+        }
+        @if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
+            ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
+        {
+            <thead style="font-size:12px;">
+                <tr>
+                    <th>Registros</th>
+                    <th>Total</th>
+                    <th>V. Produtos</th>
+                    <th>V. Frete CTe</th>
+                    <th>B. Cálculo</th>
+                    <th>ICMS ST NFe</th>
+                    <th>Total ICMS Apurado</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;">
+                <tr>
+                    <td>@ViewBag.Registro</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
+                    <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalICMSST)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalICMS)</td>
+
+                </tr>
+            </tbody>
+        }
+        @if (ViewBag.TypeTaxation == "Isento")
+        {
+            <thead style="font-size:12px;">
+                <tr>
+                    <th>Quantidade de Registros</th>
+                    <td>@ViewBag.Registro</td>
+                </tr>
+            </thead>
+        }
+    }
+</table>

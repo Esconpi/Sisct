@@ -1,0 +1,205 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+
+@if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
+    ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
+{
+
+    @foreach (var note in ViewBag.NotasTaxation)
+    {
+        <thead>
+            <tr>
+                <th>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Número da Nota</th>
+                                <th>Fornecedor</th>
+                                <th>UF</th>
+                                <th>Dia/Mês</th>
+                                <th>Valor da Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-weight:normal;">
+                                @if (note.Iest == "")
+                                {
+                                    <td><strong>S</strong></td>
+                                }
+                                else
+                                {
+                                    <td><strong>I</strong></td>
+                                }
+                                <td>@note.Nnf</td>
+                                <td>@note.Xnome</td>
+                                <td>@note.Uf</td>
+                                <td>@Convert.ToDateTime(note.Dhemi).ToString("dd/MM")</td>
+                                <td>@string.Format("{0:N}", Convert.ToDecimal(note.Vnf))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>V. Produto</th>
+                                <th>Frete Nº</th>
+                                <th>V. Frete</th>
+                                <th>BC. ICMS</th>
+                                <th>Aliq Intra(%)</th>
+                                <th>Aliq Inter(%)</th>
+                                <th>Dif</th>
+                                <th>ICMS ST NFe</th>
+                                <th>ICMS Apurado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                @if (note.Id.Equals(item.NoteId))
+                                {
+                                    <tr>
+                                        <td>@item.Xprod</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro)
+                                           + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>
+                                        <td>@item.Aliqinterna</td>
+                                        <td>@item.Picms</td>
+                                        <td>@item.Diferencial</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+
+    }
+
+}
+else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+{
+    @foreach (var note in ViewBag.NotasTaxation)
+    {
+        <thead>
+            <tr>
+                <th>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Número da Nota</th>
+                                <th>Fornecedor</th>
+                                <th>UF</th>
+                                <th>Dia/Mês</th>
+                                <th>Valor da Nota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-weight:normal;">
+                                @if (note.Iest == "")
+                                {
+                                    <td style="font-size:10px"><strong>S</strong></td>
+                                }
+                                else
+                                {
+                                    <td style="font-size:10px"><strong>I</strong></td>
+                                }
+                                <td>@note.Nnf</td>
+                                <td>@note.Xnome</td>
+                                <td>@note.Uf</td>
+                                <td>@Convert.ToDateTime(note.Dhemi).ToString("dd/MM")</td>
+                                <td>@string.Format("{0:N}", Convert.ToDecimal(note.Vnf))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>V. <br /> Produto</th>
+                                <th>Frete Nº</th>
+                                <th>V. <br /> Frete</th>
+                                <th>B. <br /> Cálculo</th>
+                                <th>MVA(%)</th>
+                                <th>BC. <br /> ICMS</th>
+                                @if (ViewBag.TypeTaxation == "ST")
+                                {
+                                    <th>BCR(%)</th>
+                                    <th>BCR</th>
+                                }
+                                <th>Aliq Int(%)</th>
+                                <th>V. <br /> Imp. AC</th>
+                                <th>ICMS</th>
+                                <th>ICMS  <br />ST NFe</th>
+                                <th>Fecop  <br />ST NFe</th>
+                                <th>Total <br /> ICMS</th>
+                                <th>Total <br /> Fecop</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                @if (note.Id.Equals(item.NoteId))
+                                {
+                                    <tr>
+                                        <td>@item.Xprod</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) 
+                                           - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>
+                                        <td>@item.Mva</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
+                                        @if (ViewBag.TypeTaxation == "ST")
+                                        {
+                                            <td>@item.BCR</td>
+                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                                        }
+                                        <td>@item.Aliqinterna</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
+                                        @if (item.Pautado == true)
+                                        {
+                                            <td>P</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    }
+}

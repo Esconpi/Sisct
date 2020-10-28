@@ -34,8 +34,13 @@
                             <label class="control-label">Produto</label>
                             <input asp-for="CodeProduct" class="form-control" readonly />
                         </div>
-                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
-                            <label class="control-label">Tipo</label>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label class="control-label">Tipo Receita</label>
+                            <select asp-items="@ViewBag.ListaTipoNcm" class="form-control selectoption" name="TypeNcmId" id="TypeNcmId"></select>
+                            <span asp-validation-for="CstEntradaId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label class="control-label">Tipo de Tributação</label>
                             @if (Model.Type.Equals("Monofásico"))
                             {
                                 <select class="form-control selectoption" name="type">
@@ -59,7 +64,7 @@
                             }
 
                         </div>
-                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
                             <label class="control-label">Opção</label>
                             <select class="form-control selectoption" name="opcao">
                                 <option value="1" selected>Por Produto</option>
@@ -111,7 +116,16 @@
 
         </div>
     </div>
+
     <script type="text/javascript">
+
+        var tipo = @Model.TypeNcmId;
+        $("#TypeNcmId").children('option').each(function () {
+            if ($(this).val() == tipo) {
+                $(this).attr('selected', true);
+            }
+        });
+
         var cstEnt = @Model.CstEntradaId;
         $("#cstEntrada").children('option').each(function () {
             if ($(this).val() == cstEnt) {
@@ -125,6 +139,4 @@
                 $(this).attr('selected', true);
             }
         });
-
-
     </script>

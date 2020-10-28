@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Chave")]
         public string Chave { get; set; }
 
-        [Display(Name = "Nota")]
+        [Display(Name = "Nº Nota")]
         public string Nnf { get; set; }
 
         [Display(Name = "Mes")]
@@ -53,7 +53,6 @@ namespace Escon.SisctNET.Model
         public DateTime Dhemi { get; set; }
 
         [Display(Name = "Total Nota")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Vnf { get; set; }
 
         [Display(Name = "Fornecedor")]

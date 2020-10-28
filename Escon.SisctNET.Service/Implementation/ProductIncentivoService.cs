@@ -21,6 +21,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public void Create(List<ProductIncentivo> productIncentivos, Log log = null)
+        {
+            _repository.Create(productIncentivos, log);
+        }
+
         public void Delete(int id, Log log)
         {
             _repository.Delete(id, log);
@@ -46,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDate(company, date, log);
         }
 
+        public List<ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, int company, DateTime date, Log log = null)
+        {
+            return _repository.FindByDate(productIncentivos, company, date, log);
+        }
+
         public ProductIncentivo FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
@@ -64,6 +74,11 @@ namespace Escon.SisctNET.Service.Implementation
         public ProductIncentivo Update(ProductIncentivo entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public void Update(List<ProductIncentivo> productIncentivos, Log log = null)
+        {
+            _repository.Update(productIncentivos, log);
         }
     }
 }

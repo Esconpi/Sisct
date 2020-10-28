@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+
+@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+{
+    <thead style="font-size:8px;">
+        <tr>
+            <th></th>
+            <th>Nota</th>
+            <th>Dia/Mês</th>
+            <th>V. <br /> Nota</th>
+            <th>Produto</th>
+            <th>V. <br /> Produto</th>
+            <th>Frete Nº</th>
+            <th>V. <br /> Frete</th>
+            <th>B. <br /> Cálculo</th>
+            <th>MVA(%)</th>
+            <th>BC. <br /> ICMS</th>
+            @if (ViewBag.TypeTaxation == "ST")
+            {
+                <th>BCR(%)</th>
+                <th>BCR</th>
+            }
+            <th>Aliq Int(%)</th>
+            <th>V. <br /> Imp. AC</th>
+            <th>ICMS</th>
+            <th>ICMS  <br />ST NFe</th>
+            <th>Fecop  <br />ST NFe</th>
+            <th>Total <br /> ICMS</th>
+            <th>Total <br /> Fecop</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody style="font-size:8px;">
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.Note.Iest == "")
+                {
+                    <td style="font-size:10px"><strong>S</strong></td>
+                }
+                else
+                {
+                    <td style="font-size:10px"><strong>I</strong></td>
+                }
+
+                <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
+                <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
+                <td style="font-size:5px;">@Html.DisplayFor(modelItem => item.Xprod)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) 
+                   + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
+                <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>
+                <td>@Html.DisplayFor(modelItem => item.Mva)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
+                @if (ViewBag.TypeTaxation == "ST")
+                {
+                    <td>@Html.DisplayFor(modelItem => item.BCR)</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                }
+                <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe) + Convert.ToDecimal(item.Vicms))</td>                
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
+                @if (item.Pautado == true)
+                {
+                    <td>P</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            </tr>
+        }
+    </tbody>
+}
+else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
+                ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
+{
+        <thead>
+            <tr style="font-size:9px;">
+                <th></th>
+                <th>Nota</th>
+                <th>UF</th>
+                <th>Dia/Mês</th>
+                <th>V. Nota</th>
+                <th>Produto</th>
+                <th>V. Produto</th>
+                <th>Frete Nº</th>
+                <th>V. Frete</th>
+                <th>BC. ICMS</th>
+                <th>Aliq Intra(%)</th>
+                <th>Aliq Inter(%)</th>
+                <th>Dif</th>
+                <th>ICMS ST NFe</th>
+                <th>ICMS Apurado</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:9px;">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @if (item.Note.Iest == "")
+                    {
+                        <td><strong>S</strong></td>
+                    }
+                    else
+                    {
+                        <td><strong>I</strong></td>
+                    }
+                    <td>@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
+                    <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
+                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro)
+                       + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))</td>
+                    <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Picms)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))</td>
+                </tr>
+
+            }
+        </tbody>
+}
+else if (ViewBag.TypeTaxation == "Isento")
+{
+    <thead style="font-size:12px;">
+        <tr>
+            <th>Nota</th>
+            <th>Produtos</th>
+            <th>NCM</th>
+            <th>Valor dos produtos</th>
+        </tr>
+    </thead>
+    <tbody style="font-size:12px;">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
+                <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
+            </tr>
+        }
+
+    </tbody>
+}

@@ -34,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int companyId)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -42,23 +42,25 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var cfops = _cfopService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                List<CompanyCfop> addCompanyCfop = new List<CompanyCfop>();
                 foreach (var cfop in cfops)
                 {
-                    var companycfop = _service.FindByCompanyCfop(companyId, cfop.Id);
-                    if (companycfop == null)
+                    var companyCfop = _service.FindByCompanyCfop(companyId, cfop.Id);
+                    if (companyCfop == null)
                     {
-                        var companyCfop = new Model.CompanyCfop
-                        {
-                            CompanyId = companyId,
-                            CfopId = cfop.Id,
-                            Active = false,
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };
-
-                        var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
+                        CompanyCfop cc = new CompanyCfop();
+                        cc.CompanyId = companyId;
+                        cc.CfopId = cfop.Id;
+                        cc.Active = false;
+                        cc.CfopTypeId = 11;
+                        cc.Created = DateTime.Now;
+                        cc.Updated = DateTime.Now;
+                        addCompanyCfop.Add(cc);
+                        //var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
                     }
                 }
+                _service.Create(addCompanyCfop, GetLog(OccorenceLog.Create));
                 return RedirectToAction("Index", new { id = companyId});
             }
             catch (Exception ex)
@@ -70,47 +72,38 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
+                ViewBag.Id = id;
+                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Document = company.Document;
+                ViewBag.Name = company.SocialName;
 
-                if (login == null)
+                var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                List<CfopType> cfopsTypes = new List<CfopType>();
+                cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
+
+                foreach (var item in cfopType)
                 {
-                    return RedirectToAction("Index", "Authentication");
+                    cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
                 }
-                else
-                {
-                    ViewBag.Id = id;
-                    var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                    ViewBag.Document = company.Document;
-                    ViewBag.Name = company.SocialName;
 
-                    var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+                SelectList cfopTypes = new SelectList(cfopsTypes, "Id", "Name", null);
+                ViewBag.ListTypes = cfopTypes;
 
-                    List<CfopType> cfopsTypes = new List<CfopType>();
-                    cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
+                ViewBag.CompanyName = company.SocialName;
+                ViewBag.Document = company.Document;
+                ViewBag.CompanyId = company.Id;
+                var result = _service.FindByCompany(id);
+                SessionManager.SetCompanyIdInSession(id);
+                return View(null);
 
-                    foreach (var item in cfopType)
-                    {
-                        cfopsTypes.Add(new CfopType() { Id = item.Id, Name = item.Name });
-                    }
-
-                    SelectList cfopTypes = new SelectList(cfopsTypes, "Id", "Name", null);
-                    ViewBag.ListTypes = cfopTypes;
-
-                    ViewBag.CompanyName = company.SocialName;
-                    ViewBag.Document = company.Document;
-                    ViewBag.CompanyId = company.Id;
-                    var result = _service.FindByCompany(id);
-                    SessionManager.SetCompanyIdInSession(id);
-                    return View(null);
-                }
-               
             }
             catch (Exception ex)
             {
@@ -122,7 +115,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -144,13 +137,15 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
         {
-            if (!SessionManager.GetCompanyCfopInSession().Equals(17))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
+                
+                
                 var entity = _service.FindById(updateCfopType.CompanyCfopId, GetLog(Model.OccorenceLog.Read));
 
                 if (updateCfopType.CfopTypeId.Equals(0))
@@ -174,11 +169,10 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult GetAll(int draw, int start)
         {
 
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var cfopsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession());
+            var cfopsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => Convert.ToInt32(_.Cfop.Code)).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -210,7 +204,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
+                               CfopType = r.CfopType.Name
 
                            };
 
@@ -228,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Code = r.Cfop.Code,
                                Description = r.Cfop.Description,
                                Active = r.Active,
-                               CfopTypeId = Convert.ToInt32(r.CfopTypeId),
+                               CfopType = r.CfopType.Name
 
                            };
                 return Ok(new { draw = draw, recordsTotal = cfopsAll.Count(), recordsFiltered = cfopsAll.Count(), data = cfop.Skip(start).Take(lenght) });

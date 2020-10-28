@@ -8,14 +8,14 @@ namespace Escon.SisctNET.Model
     public class Annex : EntityBase
     {
 
-        [Display(Name = "Convênio")]
+        [Display(Name = "Convênio/Portaria")]
         public string Convenio { get; set; } 
 
-        [Display(Name = "Data do Convênio")]
+        [Display(Name = "Data do Convênio/Portaria")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Display(Name = "Descrição do Anexo")]
+        [Display(Name = "Descrição")]
         public string Description { get; set; }
     }
 }

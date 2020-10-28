@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace Escon.SisctNET.Web.Controllers
             IProfileService profileService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "Person")
+            : base(functionalityService, "User")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
 
@@ -28,24 +29,14 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
             try
             {
-
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
             }
             catch (Exception ex)
             {
@@ -56,7 +47,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -74,7 +65,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Person entity)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -86,7 +77,6 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Password = new Crypto.HashManager().GenerateHash(entity.Password);
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
-
 
                 return RedirectToAction("Index");
             }
@@ -101,7 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -122,7 +112,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Person person)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -203,7 +193,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -221,7 +211,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetPersonInSession().Equals(5))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

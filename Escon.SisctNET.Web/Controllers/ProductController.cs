@@ -1,25 +1,25 @@
-﻿using Escon.SisctNET.Model;
-using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Ato;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Escon.SisctNET.Web.Controllers
 {
     public class ProductController : ControllerBaseSisctNET
     {
-        private readonly IProductService _service;
+        private readonly IProduct2Service _service;
         private readonly IGroupService _groupService;
         private readonly IHostingEnvironment _appEnvironment;
+
         public ProductController(
-            IProductService service,
+            IProduct2Service service,
             IGroupService groupService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
@@ -32,28 +32,17 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-
         [HttpGet]
         public IActionResult Index()
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-
-                    return View(null);
-                }
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -65,51 +54,48 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
-
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
                 lista_group.Insert(0, new Model.Group() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList groups = new SelectList(lista_group, "Id", "Description", null);
                 ViewBag.GroupId = groups;
 
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-           
+
         }
 
         [HttpPost]
-        public IActionResult Create(Model.Product entity)
+        public IActionResult Create(Model.Product2 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
             try
             {
-                var result = _service.FindByProduct(entity.Code, entity.GroupId,entity.Description);
-                if (result != null)
-                {
-                    result.Updated = DateTime.Now;
-                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
-                }
-                
                 var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.DateEnd = null;
                 entity.Price = price;
-                entity.Id = lastId+1;
+                entity.Id = lastId + 1;
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -123,7 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -131,9 +117,16 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                ViewBag.GroupId = new SelectList(_groupService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
 
-                if(result.DateEnd != null)
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
+
+                if (result.DateEnd != null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -141,7 +134,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     return View(result);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -150,9 +143,9 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Product entity)
+        public IActionResult Edit(int id, Model.Product2 entity)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -167,21 +160,103 @@ namespace Escon.SisctNET.Web.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
 
         [HttpGet]
-        public IActionResult Import()
+        public IActionResult Atualize(int id)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
             try
             {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
+
+                if (result.DateEnd != null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(result);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(int id, Model.Product2 entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.Updated = DateTime.Now;
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.Price = price;
+                entity.Description = result.Description;
+                entity.GroupId = result.GroupId;
+                entity.Unity = result.Unity;
+                entity.Code = result.Code;
+                entity.Id = lastId + 1;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+        
+        [HttpGet]
+        public IActionResult Import()
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                ViewBag.GroupId = new SelectList(lista_group, "Id", "Description", null);
                 return View();
             }
             catch (Exception ex)
@@ -191,9 +266,9 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(IFormFile arquivo, Model.Product entity)
+        public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)
         {
-            if (!SessionManager.GetProductInSession().Equals(3))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -205,12 +280,17 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(ViewData);
                 }
 
-                string nomeArquivo = "ato";
+                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Atos");
 
-                if (arquivo.FileName.Contains(".csv"))
-                    nomeArquivo += ".csv";
-                else
-                    nomeArquivo += ".tmp";
+                if (!Directory.Exists(filedir))
+                {
+                    Directory.CreateDirectory(filedir);
+                }
+
+                string nomeArquivo = "Ato";
+
+                if (arquivo.FileName.Contains(".xls") || arquivo.FileName.Contains(".xlsx"))
+                    nomeArquivo += ".xls";
 
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
                 string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Atos\\";
@@ -228,38 +308,49 @@ namespace Escon.SisctNET.Web.Controllers
                 await arquivo.CopyToAsync(stream);
                 stream.Close();
 
-                var import = new Import();
+                var import = new Planilha.Import();
 
                 List<List<string>> products = new List<List<string>>();
-                products = import.Product(caminhoDestinoArquivoOriginal);
+                products = import.Products(caminhoDestinoArquivoOriginal);
+
+                List<Model.Product2> addProduct = new List<Model.Product2>();
+                List<Model.Product2> updateProduct = new List<Model.Product2>();
+
+                var productsGroup = _service.FindByGroup(groupId);
 
                 for (int i = 0; i < products.Count(); i++)
                 {
-                    var item = _service.FindByProduct(products[i][0], Convert.ToInt32(products[i][5]), products[i][1]);
+                    //var item = _service.FindByProduct(products[i][0], groupId);
+
+                    var item = productsGroup.Where(_ => _.Code.Equals(products[i][0])).FirstOrDefault();
 
                     if (item != null)
                     {
                         item.Updated = DateTime.Now;
-                        item.DateEnd = Convert.ToDateTime(products[i][4]).AddDays(-1);
-                        _service.Update(item, GetLog(Model.OccorenceLog.Update));
+                        item.DateEnd = inicioATo.AddDays(-1);
+                        updateProduct.Add(item);
+                        //_service.Update(item, GetLog(Model.OccorenceLog.Update));
                     }
 
-                    var id = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
-                    var product = new Model.Product
+                    if (!products[i][0].Equals("") && !products[i][1].Equals("") && !products[i][3].Equals(""))
                     {
-                        Id = id + 1,
-                        Code = products[i][0],
-                        Description = products[i][1],
-                        Unity = products[i][2],
-                        Price = Convert.ToDecimal(products[i][3]),
-                        DateStart = Convert.ToDateTime(products[i][4]),
-                        GroupId = Convert.ToInt32(products[i][5]),
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now
-                    };
-                    _service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
+                        Model.Product2 product = new Model.Product2();
+                        product.Code = products[i][0];
+                        product.Description = products[i][1];
+                        product.Unity = products[i][2];
+                        product.Price = Convert.ToDecimal(products[i][3]);
+                        product.DateStart = inicioATo;
+                        product.GroupId = groupId;
+                        product.Created = DateTime.Now;
+                        product.Updated = DateTime.Now;
+                        addProduct.Add(product);
+                        //_service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
+                    }
 
                 }
+
+                _service.Create(addProduct);
+                _service.Update(updateProduct);
 
                 return RedirectToAction("Index");
 
@@ -273,26 +364,25 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult GetAll(int draw, int start)
         {
 
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var productsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code);
+            var productsAll = _service.FindAll(null).OrderBy(_ => _.Group.AttachmentId).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
-                List<Product> products = new List<Product>();
+                List<Product2> products = new List<Product2>();
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Product> productTemp = new List<Product>();
+                List<Product2> productTemp = new List<Product2>();
                 productsAll.ToList().ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
                     s.Code = s.Code;
                     s.Price = s.Price;
-                    s.GroupId = s.GroupId;
+                    s.Group.Description = s.Group.Description;
                     s.Unity = s.Unity;
                     s.DateStart = s.DateStart;
                     s.DateEnd = s.DateEnd;
@@ -315,8 +405,8 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Code = r.Code,
                               Description = r.Description,
-                              GroupName = r.Group.Description,
-                              Price = r.Price.ToString().Replace(".",","),
+                              GroupName = r.Group.Item + " - " + r.Group.Description,
+                              Price = r.Price,
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
@@ -329,24 +419,22 @@ namespace Escon.SisctNET.Web.Controllers
             else
             {
 
-
                 var product = from r in productsAll
-                          select new
-                          {
-                              Id = r.Id.ToString(),
-                              Code = r.Code,
-                              Description = r.Description,
-                              GroupName = r.Group.Description,
-                              Price = r.Price.ToString().Replace(".", ","),
-                              Unity = r.Unity,
-                              Inicio = r.DateStart.ToString("dd/MM/yyyy"),
-                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Code = r.Code,
+                                  Description = r.Description,
+                                  GroupName = r.Group.Item + " - " + r.Group.Description,
+                                  Price = r.Price,
+                                  Unity = r.Unity,
+                                  Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
-                          };
+                              };
                 return Ok(new { draw = draw, recordsTotal = productsAll.Count(), recordsFiltered = productsAll.Count(), data = product.Skip(start).Take(lenght) });
             }
 
         }
-
     }
 }

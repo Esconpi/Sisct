@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -17,24 +18,15 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
 
             try
             {
-                var login = SessionManager.GetLoginInSession();
-
-                if (login == null)
-                {
-                    return RedirectToAction("Index", "Authentication");
-                }
-                else
-                {
-                    var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                    return View(result);
-                }
+                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                return View(result);
             }
             catch (Exception ex)
             {
@@ -46,7 +38,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -61,11 +53,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public IActionResult Create(Model.Configuration entity)
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -87,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -106,7 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Configuration entity)
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -125,11 +116,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }
@@ -148,7 +138,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (!SessionManager.GetConfigurationInSession().Equals(12))
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
             {
                 return Unauthorized();
             }

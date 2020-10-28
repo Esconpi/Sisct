@@ -1,0 +1,44 @@
+﻿@model Escon.SisctNET.Model.Suspension
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title">
+            <strong>Nova Suspensão</strong>
+        </h3>
+
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input type="text" name="dateStart" class="form-control dateformatmask" required/>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <label asp-for="DateEnd" class="control-label"></label>
+                        <input type="text" name="dateEnd" class="form-control dateformatmask" required/>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right"/>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="box-footer">
+
+    </div>
+</div>

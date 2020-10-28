@@ -19,6 +19,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         }
 
+        public DbQuery<DarDocumentCompany> DarDocumentCompanies { get; set; }
+
         public DbSet<Log> Logs { get; set; }
 
         public DbSet<Functionality> Functionalities { get; set; }
@@ -30,6 +32,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<Configuration> Configurations { get; set; }
 
         public DbSet<Occurrence> Occurrences { get; set; }
+
+        public DbSet<CountingType> CountingTypes { get; set; }
 
         public DbSet<Person> Persons { get; set; }
 
@@ -61,6 +65,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Dar> Dars { get; set; }
 
+        public DbSet<DarDocument> DarDocuments { get; set; }
+
         public DbSet<Annex> Annices { get; set; }
 
         public DbSet<NcmConvenio> NcmConvenios { get; set; }
@@ -73,5 +79,36 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Product1> Product1s { get; set; }
 
+        public DbSet<Suspension> Suspensions { get; set; }
+
+        public DbSet<Section> Sections { get; set; }
+
+        public DbSet<Chapter> Chapters { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
+
+        public DbSet<CreditBalance> CreditBalances { get; set; }
+
+        public DbSet<Tax> Taxes { get; set; }
+
+        public DbSet<Grupo> Grupos { get; set; }
+
+        public DbSet<TypeNcm> TypeNcms { get; set; }
+
+        public DbSet<Base> Bases { get; set; }
+
+        public DbSet<Product2> Product2s { get; set; }
+
+        public DbSet<EmailResponsible> EmailResponsible { get; set; }
+
+        public DbSet<TaxAnexo> TaxAnexos { get; set; }
+
+        public DbSet<CompraAnexo> CompraAnexos { get; set; }
+
+        public DbSet<DevoCliente> DevoClientes { get; set; }
+
+        public DbSet<DevoFornecedor> DevoFornecedors { get; set; }
+
+        public DbSet<VendaAnexo> VendaAnexos { get; set; }
     }
 }
