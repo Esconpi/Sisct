@@ -1965,20 +1965,20 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Elencadas
                             // Internas
                             decimal icmsInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInternaElencada = Math.Round((InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInternasElencada = icmsInternaElencada;
                             decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
-                            decimal totalIcmsInternaElencada = totalInternasElencada - icmsPresumidoInternaElencada;
+                            decimal totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada,2);
 
                             totalDarFecop += fecopInternaElencada;
                             totalDarIcms += totalIcmsInternaElencada;
 
                             // Interestadual
                             decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInterestadualElencada =Math.Round((InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInterestadualElencada = icmsInterestadualElencada;
                             decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
-                            decimal totalIcmsInterestadualElencada = totalInterestadualElencada - icmsPresumidoInterestadualElencada;
+                            decimal totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada,2);
 
                             totalDarFecop += fecopInterestadualElencada;
                             totalDarIcms += totalIcmsInterestadualElencada;
@@ -1986,20 +1986,20 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Deselencadas
                             //  Internas
                             decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInternasDeselencada = icmsInternaDeselencada;
                             decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
-                            decimal totalIcmsInternaDeselencada = totalInternasDeselencada - icmsPresumidoInternaDeselencada;
+                            decimal totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada,2);
 
                             totalDarFecop += fecopInternaDeselencada;
                             totalDarIcms += totalIcmsInternaDeselencada;
 
                             // Interestadual
                             decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                            decimal fecopInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100;
+                            decimal fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100,2);
                             decimal totalInterestadualDeselencada = icmsInterestadualDeselencada;
                             decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
-                            decimal totalIcmsInterestadualDeselencada = totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada;
+                            decimal totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada,2);
 
                             totalDarFecop += fecopInterestadualDeselencada;
                             totalDarIcms += totalIcmsInterestadualDeselencada;
@@ -2039,7 +2039,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             //  Suspensão
-                            decimal totalSuspensao = (suspensao * Convert.ToDecimal(comp.Suspension)) / 100;
+                            decimal totalSuspensao = Math.Round((suspensao * Convert.ToDecimal(comp.Suspension)) / 100,2);
                             totalDarIcms += totalSuspensao;
 
 
