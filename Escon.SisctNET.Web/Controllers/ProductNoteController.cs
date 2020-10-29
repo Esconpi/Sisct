@@ -1288,7 +1288,7 @@ namespace Escon.SisctNET.Web.Controllers
                         inscricao = ie.Ie,
                         numeroDocumento = requestBarCode.PeriodoReferencia,
                         periodoReferencia = requestBarCode.PeriodoReferencia,
-                        substitoTributo = "0",
+                        substitoTributo = requestBarCode.RecipeCodeValues.FirstOrDefault(x => x.RecipeCode == item.Key).St.ToString(),
                         taxaEmissao = "0",
                         tokenAcesso = accessToken.Value,
                         valorTotal = valueTotal

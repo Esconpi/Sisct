@@ -27,13 +27,13 @@ function GenerateBillet() {
 
         var recipeCode = [];
 
-        recipeCode.push({ RecipeCode: $('#DarSTCO').data('code'), Value: $('#DarSTCO').val() });
-        recipeCode.push({ RecipeCode: $('#DarFecop').data('code'), Value: $('#DarFecop').val() });
-        recipeCode.push({ RecipeCode: $('#DarIcms').data('code'), Value: $('#DarIcms').val() });
-        recipeCode.push({ RecipeCode: $('#DarFecopEI').data('code'), Value: $('#DarFecopEI').val() });
-        recipeCode.push({ RecipeCode: $('#DarFunef').data('code'), Value: $('#DarFunef').val() });
-        recipeCode.push({ RecipeCode: $('#DarAp').data('code'), Value: $('#DarAp').val() });
-        recipeCode.push({ RecipeCode: $('#DarIm').data('code'), Value: $('#DarIm').val() });
+        recipeCode.push({ RecipeCode: $('#DarSTCO').data('code'), Value: $('#DarSTCO').val(), St: $('#DarSTCO').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarFecop').data('code'), Value: $('#DarFecop').val(), St: $('#DarFecop').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarIcms').data('code'), Value: $('#DarIcms').val(), St: $('#DarIcms').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarFecopEI').data('code'), Value: $('#DarFecopEI').val(), St: $('#DarFecopEI').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarFunef').data('code'), Value: $('#DarFunef').val(), St: $('#DarFunef').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarAp').data('code'), Value: $('#DarAp').val(), St: $('#DarAp').data('substituicao') });
+        recipeCode.push({ RecipeCode: $('#DarIm').data('code'), Value: $('#DarIm').val(), St: $('#DarIm').data('substituicao')});
 
         var payload = {
             TypeTaxation: $('#TypeTaxation').val(),
