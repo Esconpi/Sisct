@@ -6,6 +6,6 @@
 
         public string Value { get; set; }
 
-        public bool St { get; set; }
+        public int St { get; set; }
     }
 }
