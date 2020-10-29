@@ -339,7 +339,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return View(ViewData);
                     }
 
-                    string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
+                    string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Malha");
 
                     if (!Directory.Exists(filedirExcel))
                     {
@@ -351,7 +351,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (arquivoExcel.FileName.Contains(".xls") || arquivoExcel.FileName.Contains(".xlsx"))
                         nomeArquivoExcel += ".xls";
 
-                    string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Planilha\\";
+                    string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Malha\\";
                     string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
 
                     string[] paths_upload_excel = Directory.GetFiles(caminhoDestinoArquivoExcel);

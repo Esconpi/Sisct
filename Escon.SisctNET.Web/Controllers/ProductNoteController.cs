@@ -1000,6 +1000,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
+                        ViewBag.DarSTCO_Substituicao = 1;
+                        ViewBag.DarFecop_Substituicao = 0;
+                        ViewBag.DarIcms_Substituicao = 0;
+                        ViewBag.DarFunef_Substituicao = 0;
+
                         decimal totalIcmsFreteIE = 0, totalFecop1FreteIE = 0, totalFecop2FreteIE = 0, base1FecopFreteIE = 0, base2FecopFreteIE = 0,
                             totalDarSTCO = 0, totalDarFecop = 0, totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
 
@@ -1965,6 +1970,9 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (typeTaxation.Equals(Model.TypeTaxation.AP) || typeTaxation.Equals(Model.TypeTaxation.CO) ||
                             typeTaxation.Equals(Model.TypeTaxation.COR) || typeTaxation.Equals(Model.TypeTaxation.IM))
                          {
+                            ViewBag.DarAp_Substituicao = 0;
+                            ViewBag.DarIm_Substituicao = 0;
+                            ViewBag.DarSTCO_Substituicao = 0;
 
                             decimal totalIcmsFreteIE = 0;
                             foreach(var prod in products)
