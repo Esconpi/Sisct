@@ -53,6 +53,8 @@
         </div>
     </div>
 
+    
+
     <script type="text/javascript">
         $(document).ready(function () {
             $(function () {
@@ -68,6 +70,8 @@
                         $("#tblCompanyCfop").on("change", "input[type='checkbox']", function(){
                             try {
 
+                                var status = "";
+                                status = $(this).prop('checked');
                                 $.ajax({
                                 url: '@(Url.Action("UpdateStatus", "CompanyCfop"))',
                                 dataType: 'json',
@@ -76,7 +80,13 @@
                                 data: JSON.stringify({ "Id": $(this).prop('id'), "Active": $(this).prop('checked') }),
                                 processData: false,
                                 success: function (data, textStatus, jQxhr) {
-
+                                    if (status == false) {
+                                        console.log(status);
+                                    }
+                                    else {
+                                        console.log(status);
+                                    }
+                                    
                                 },
                                 error: function (jqXhr, textStatus, errorThrown) {
                                     alert(errorThrown);
@@ -119,10 +129,9 @@
                                 data: JSON.stringify({ "CompanyCfopId": companyCfopId, "cfopTypeId": cfopTypeId }),
                                 processData: false,
                                 success: function (data, textStatus, jQxhr) {
-
                                 },
                                 error: function (jqXhr, textStatus, errorThrown) {
-
+                                    alert(errorThrown);
                                 }
                             });
                         });

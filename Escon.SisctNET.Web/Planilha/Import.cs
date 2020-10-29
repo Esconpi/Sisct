@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Planilha
 {
@@ -10,23 +12,49 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> products = new List<List<string>>();
 
-            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
-            string commandoSql = "Select * from [Plan1$]";
-            OleDbCommand comando = new OleDbCommand(commandoSql, connect);
+            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
 
             try
             {
-                connect.Open();
-                OleDbDataReader rd = comando.ExecuteReader();
+                WorkbookPart workbookPart = doc.WorkbookPart;
+                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
 
-                while (rd.Read())
+                foreach (Sheet thesheet in thesheetcollection)
                 {
-                    List<string> product = new List<string>();
-                    product.Add(rd[0].ToString());
-                    product.Add(rd[1].ToString());
-                    product.Add(rd[2].ToString());
-                    product.Add(rd[3].ToString());
-                    products.Add(product);
+                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                    foreach (Row thecurrentrow in thesheetdata)
+                    {
+                        List<string> product = new List<string>();
+
+                        foreach (Cell thecurrentcell in thecurrentrow)
+                        {
+                            if (thecurrentcell.DataType != null)
+                            {
+                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                {
+                                    int id;
+                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    {
+                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                        if (item.Text != null)
+                                        {
+                                            product.Add(item.Text.Text);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                product.Add(thecurrentcell.CellValue.Text);
+                            }
+                        }
+
+                        products.Add(product);
+
+                    }
                 }
 
             }
@@ -36,54 +64,9 @@ namespace Escon.SisctNET.Web.Planilha
             }
             finally
             {
-                connect.Close();
+                doc.Close();
             }
 
-            /*StreamReader archive = new StreamReader(directoryPlanilha, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archive.ReadLine()) != null)
-                {
-                    List<string> product = new List<string>();
-
-                    string[] linhas = line.Split(";");
-                    foreach (var linha in linhas)
-                    {
-                        if (!linha.Equals(""))
-                        {
-                            product.Add(linha);
-                        }
-                        //product.Add(linha);
-                    }
-                    if (product.Count > 0)
-                    {
-                        if (product.Count.Equals(4))
-                        {
-                            var ultimo = products[products.Count - 1];
-                            ultimo[1] = (ultimo[1] + " " + product[0]);
-                            product.RemoveAt(0);
-                            ultimo.AddRange(product);
-                            products[products.Count - 1] = ultimo;
-                        }
-                        else
-                        {
-                            products.Add(product);
-                        }
-                    }
-                    
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archive.Close();
-            }*/
             return products;
         }
         
@@ -91,33 +74,52 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> notes = new List<List<string>>();
 
-            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
-            string commandoSql = "Select * from [Plan1$]";
-            OleDbCommand comando = new OleDbCommand(commandoSql, connect);
+            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
 
             try
             {
 
-                connect.Open();
-                OleDbDataReader rd = comando.ExecuteReader();
+                WorkbookPart workbookPart = doc.WorkbookPart;
+                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
 
-                int cont = 0;
-
-                while (rd.Read())
+                foreach (Sheet thesheet in thesheetcollection)
                 {
-                    if(cont > 10)
+                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                    foreach (Row thecurrentrow in thesheetdata)
                     {
                         List<string> note = new List<string>();
-                        note.Add(rd[0].ToString());
-                        note.Add(rd[1].ToString());
-                        note.Add(rd[2].ToString());
-                        note.Add(rd[3].ToString());
-                        note.Add(rd[4].ToString());
-                        note.Add(rd[5].ToString());
+
+                        foreach (Cell thecurrentcell in thecurrentrow)
+                        {
+                            if (thecurrentcell.DataType != null)
+                            {
+                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                {
+                                    int id;
+                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    {
+                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                        if (item.Text != null)
+                                        {
+                                            note.Add(item.Text.Text);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                note.Add(thecurrentcell.CellValue.Text);
+                            }
+                        }
+
                         notes.Add(note);
+
                     }
-                    cont += 1;
                 }
+
 
             }
             catch (Exception ex)
@@ -126,7 +128,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             finally
             {
-                connect.Close();
+                doc.Close();
             }
             return notes;
         }
@@ -135,28 +137,57 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> ncms = new List<List<string>>();
 
-            OleDbConnection connect = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + directoryPlanilha + "; " + "Extended Properties = 'Excel 12.0 Xml;HDR=NO';");
-            string commandoSql = "Select * from [Sheet1$]";
-            OleDbCommand comando = new OleDbCommand(commandoSql, connect);
+            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
 
             try
             {
 
-                connect.Open();
-                OleDbDataReader rd = comando.ExecuteReader();
-                int cont = 0;
-                while (rd.Read())
+                WorkbookPart workbookPart = doc.WorkbookPart;
+                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+
+                foreach (Sheet thesheet in thesheetcollection)
                 {
-                    if(cont > 5 && !rd[4].ToString().Equals("") && !rd[8].ToString().Equals(""))
+                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                    foreach (Row thecurrentrow in thesheetdata)
                     {
                         List<string> ncm = new List<string>();
-                        ncm.Add(rd[1].ToString().Replace(".",""));
-                        ncm.Add(rd[4].ToString());
-                        ncm.Add(rd[8].ToString());
-                        ncms.Add(ncm);
+
+                        foreach (Cell thecurrentcell in thecurrentrow)
+                        {
+                            if (thecurrentcell.DataType != null)
+                            {
+                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                {
+                                    int id;
+                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    {
+                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                        if (item.Text != null)
+                                        {
+                                            ncm.Add(item.Text.Text);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    ncm.Add(thecurrentcell.CellValue.Text);
+                                }
+                            }
+                        }
+
+                        if(ncm.Count() >= 15)
+                        {
+                            if (!ncm[0].Equals("CFOP") && !ncm[1].Equals("Item/Serviço") && !ncm[2].Equals("NCM"))
+                            {
+                                ncms.Add(ncm);
+                            }
+                            
+                        }
+                        
                     }
-                    
-                    cont += 1;
                 }
 
             }
@@ -166,7 +197,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             finally
             {
-                connect.Close();
+                doc.Close();
             }
             return ncms;
         }

@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Web.Controllers
                     Directory.CreateDirectory(filedirSped);
                 }
 
-                string nomeArquivoSped = company.Document + year + month;
+                string nomeArquivoSped = company.Document + "Empresa";
 
                 if (arquivoSped.FileName.Contains(".txt"))
                     nomeArquivoSped += ".txt";
@@ -346,10 +346,10 @@ namespace Escon.SisctNET.Web.Controllers
                         Directory.CreateDirectory(filedirExcel);
                     }
 
-                    string nomeArquivoExcel = company.Document + year + month;
+                    string nomeArquivoExcel = company.Document + "Sefaz";
 
                     if (arquivoExcel.FileName.Contains(".xls") || arquivoExcel.FileName.Contains(".xlsx"))
-                        nomeArquivoExcel += ".xlsx";
+                        nomeArquivoExcel += ".xls";
 
                     string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Planilha\\";
                     string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
@@ -368,9 +368,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
-                        var notesPlanilha = imporrExcel.Notes(caminhoDestinoArquivoOriginalExcel);
                         var notesSped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
-
+                        var notesPlanilha = imporrExcel.Notes(caminhoDestinoArquivoOriginalExcel);
+                        
                         foreach (var nPlanilha in notesPlanilha)
                         {
                             bool nota_encontrada = false;

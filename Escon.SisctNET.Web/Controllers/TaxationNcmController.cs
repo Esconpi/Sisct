@@ -648,20 +648,20 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(ViewData);
                 }
 
-                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Atos");
+                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
 
                 if (!Directory.Exists(filedir))
                 {
                     Directory.CreateDirectory(filedir);
                 }
 
-                string nomeArquivo = "Ato";
+                string nomeArquivo = comp.Document + "Fortes";
 
                 if (arquivo.FileName.Contains(".xls") || arquivo.FileName.Contains(".xlsx"))
                     nomeArquivo += ".xls";
 
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
-                string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Atos\\";
+                string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Planilha\\";
                 string caminhoDestinoArquivoOriginal = caminhoDestinoArquivo + nomeArquivo;
 
                 string[] paths_upload_ato = Directory.GetFiles(caminhoDestinoArquivo);
@@ -691,7 +691,7 @@ namespace Escon.SisctNET.Web.Controllers
                     
                     foreach (var nF in ncmsFortes)
                     {
-                        int contF = nF[1].Count();
+                        int contF = nF[2].Count();
                         string nSTEmp = "", nFTemp = "";
                         int dif = 0;
 
@@ -702,7 +702,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 nFTemp += "0";
                             }
-                            nFTemp += nF[1];
+                            nFTemp += nF[2];
                             nSTEmp = nS.CodeProduct;
                         }
                         else
@@ -713,10 +713,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 nSTEmp += "0";
                             }
                             nSTEmp += nS.CodeProduct;
-                            nFTemp = nF[1];
+                            nFTemp = nF[2];
                         }
 
-                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[2]))
+                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]))
                         {
                             achou = true;
                             break;
