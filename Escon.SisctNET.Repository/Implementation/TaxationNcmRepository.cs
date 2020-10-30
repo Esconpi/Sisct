@@ -92,6 +92,29 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public List<TaxationNcm> FindByPeriod(List<TaxationNcm> taxationNcms, DateTime inicio, DateTime fim, Log log = null)
+        {
+            List<TaxationNcm> ncms = new List<TaxationNcm>();
+
+            foreach (var ncm in taxationNcms)
+            {
+                if(ncm.DateEnd == null && fim >= ncm.DateStart)
+                {
+                    ncms.Add(ncm);
+                }
+                else
+                {
+                    if (inicio >= ncm.DateStart && fim <= ncm.DateEnd)
+                    {
+                        ncms.Add(ncm);
+                    }
+                }
+
+            }
+
+            return ncms;
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();

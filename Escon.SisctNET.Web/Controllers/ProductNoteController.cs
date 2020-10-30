@@ -189,7 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                 {
-                    List<Product> list_product = _service.FindAllInDate(result.Note.Dhemi);
+                    List<Product> list_product = _productService.FindAllInDate(result.Note.Dhemi);
                     foreach (var prod in list_product)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -200,7 +200,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >=  Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product1> list_product1 = _service.FindAllInDate1(result.Note.Dhemi);
+                    List<Product1> list_product1 = _productService.FindAllInDate1(result.Note.Dhemi);
                     foreach (var prod in list_product1)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -211,7 +211,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if(Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product2> list_product2 = _service.FindAllInDate2(result.Note.Dhemi);
+                    List<Product2> list_product2 = _productService.FindAllInDate2(result.Note.Dhemi);
                     foreach (var prod in list_product2)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;

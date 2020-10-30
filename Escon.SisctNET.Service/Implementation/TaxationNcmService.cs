@@ -64,6 +64,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<TaxationNcm> FindByPeriod(List<TaxationNcm> taxationNcms, DateTime inicio, DateTime fim, Log log = null)
+        {
+            return _repository.FindByPeriod(taxationNcms, inicio, fim, log);
+        }
+
         public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
         {
             return _repository.FindMono(typeCompany, log);

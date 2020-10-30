@@ -1,5 +1,4 @@
-﻿
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using System;
 using System.Collections.Generic;
 
@@ -7,6 +6,8 @@ namespace Escon.SisctNET.Repository
 {
     public interface ITaxationNcmRepository : IRepository<Model.TaxationNcm>
     {
+        List<Model.TaxationNcm> FindByPeriod(List<Model.TaxationNcm> taxationNcms,DateTime inicio, DateTime fim, Model.Log log = null);
+
         List<Model.TaxationNcm> FindByCompany(string company, Model.Log log = null);
 
         List<Model.TaxationNcm> FindByCompany(int company, Model.Log log = null);

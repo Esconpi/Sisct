@@ -40,11 +40,5 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
 
-        List<Model.Product> FindAllInDate(DateTime dateProd, Model.Log log = null);
-
-        List<Model.Product1> FindAllInDate1(DateTime dateProd, Model.Log log = null);
-
-        List<Model.Product2> FindAllInDate2(DateTime dateProd, Model.Log log = null);
-
     }
 }

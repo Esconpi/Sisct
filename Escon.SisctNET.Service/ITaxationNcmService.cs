@@ -6,6 +6,8 @@ namespace Escon.SisctNET.Service
 {
     public interface ITaxationNcmService : IServiceBase<Model.TaxationNcm>
     {
+        List<Model.TaxationNcm> FindByPeriod(List<Model.TaxationNcm> taxationNcms, DateTime inicio, DateTime fim, Model.Log log = null);
+
         List<Model.TaxationNcm> FindByCompany(string company, Model.Log log = null);
 
         List<Model.TaxationNcm> FindByCompany(int company, Model.Log log = null);

@@ -685,7 +685,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsSisct = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).ToList();
+                var ncmsMono = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico")).ToList();
+
+                var ncmsSisct = _service.FindByPeriod(ncmsMono,inicio,fim);
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
                 var ncmsAll = _ncmService.FindAll(null);

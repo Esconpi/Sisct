@@ -74,7 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public IActionResult Import(int id, string year, string month)
         {
@@ -185,9 +184,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     return RedirectToAction("Index", new { id = result.CompanyId });
                 }
-                var comp = _companyService.FindById(result.CompanyId, null);
-                ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.CompanyId = comp.Id;
                 return View(result);
             }
             catch (Exception ex)
@@ -270,7 +266,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult Details(int companyId, string year, string month)
         {
@@ -303,12 +298,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var prod = _service.FindById(id, null);
-                var comp = _companyService.FindById(prod.CompanyId, null);
 
-                ViewBag.CompanyId = prod.CompanyId;
-                ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Mes = prod.Month;
-                ViewBag.Ano = prod.Year;
                 return View(prod);
             }
             catch (Exception ex)
@@ -460,7 +450,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _companyService.FindById(id, null);
-                ViewBag.CompanyId = id;
                 return View(result);
             }
             catch (Exception ex)
@@ -491,10 +480,9 @@ namespace Escon.SisctNET.Web.Controllers
                     products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Isento")).ToList();
                 }
                 var comp = _companyService.FindById(id, null);
-                ViewBag.CompanyId = id;
+   
                 ViewBag.Tipo = tipo;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
+                ViewBag.Comp = comp;
                 return PartialView(products);
             }
             catch (Exception ex)

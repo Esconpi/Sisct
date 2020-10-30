@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,18 @@ namespace Escon.SisctNET.Web.Controllers
     public class NatReceitaController : ControllerBaseSisctNET
     {
         private readonly INatReceitaService _service;
+        private readonly ICstService _cstService;
 
         public NatReceitaController(
             INatReceitaService service,
+            ICstService cstService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "NatReceita")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
+            _cstService = cstService;
         }
 
         public IActionResult Index()
@@ -38,7 +42,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult Create()
         {
@@ -49,6 +52,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                List<Model.Cst> list_cst = _cstService.FindAll(GetLog(Model.OccorenceLog.Read));
+                SelectList cst = new SelectList(list_cst, "Id", "Code", null);
+                ViewBag.CstId = cst;
+
                 return View();
             }
             catch (Exception ex)
@@ -56,7 +63,6 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-
 
         [HttpPost]
         public IActionResult Create(Model.NatReceita entity)
@@ -90,6 +96,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                List<Model.Cst> list_cst = _cstService.FindAll(GetLog(Model.OccorenceLog.Read));
+                SelectList cst = new SelectList(list_cst, "Id", "Code", null);
+                ViewBag.CstId = cst;
+
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 return View(result);
             }
@@ -145,7 +155,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var natReceitaAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Cst);
+            var natReceitaAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Cst.Code);
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -159,14 +169,14 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     s.CodigoAC = s.CodigoAC;
                     s.Code = s.Code;
-                    s.Cst = s.Cst;
+                    s.Cst.Code = s.Cst.Code;
                     natReceitasTemp.Add(s);
                 });
 
                 var ids = natReceitasTemp.Where(c =>
                     c.CodigoAC.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    c.Cst.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                    c.Cst.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Select(s => s.Id).ToList();
 
                 natReceitas = natReceitaAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
@@ -178,7 +188,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Id = r.Id.ToString(),
                                Code = r.Code,
                                CodigoAc = r.CodigoAC,
-                               Cst = r.Cst,
+                               Cst = r.Cst.Code,
                                Description = r.Description
 
                            };
@@ -196,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Id = r.Id.ToString(),
                                Code = r.Code,
                                CodigoAc = r.CodigoAC,
-                               Cst = r.Cst,
+                               Cst = r.Cst.Code,
                                Description = r.Description
 
                            };

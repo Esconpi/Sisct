@@ -24,10 +24,10 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Apuração do regime de ICMS")]
         public bool TipoApuracao { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Razão Social")]
         public string SocialName { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Nome Fantasia")]
         public string FantasyName { get; set; }
 

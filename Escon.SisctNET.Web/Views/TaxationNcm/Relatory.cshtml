@@ -16,7 +16,7 @@
             <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
-            <div style="float:left;"><strong>Tributação Divergente</strong></div>
+            <div style="float:left;"><strong>Tributação Divergente (Pis/Cofins)</strong></div>
             <div style="float:right;"><strong>Perido:</strong> @ViewBag.Inicio.ToString("dd/MM/yyyy") à @ViewBag.Fim.ToString("dd/MM/yyyy")</div>
         </div>
     </div>
@@ -62,9 +62,9 @@
                                 <td style="border:1px solid; padding-left:1%;" rowspan="2">
                                     @item[1]
                                 </td>
-                                <td style="border:1px solid; padding-left:1%;">
+                                <th style="border:1px solid; padding-left:1%;">
                                     XML
-                                </td>
+                                </th>
                                 <td style="border:1px solid; padding-left:1%;">
                                     @item[2]
                                 </td>
@@ -79,9 +79,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="border:1px solid; padding-left:1%;">
+                                <th style="border:1px solid; padding-left:1%;">
                                     FORTES
-                                </td>
+                                </th>
                                 <td style="border:1px solid; padding-left:1%;">
                                     @item[6]
                                 </td>

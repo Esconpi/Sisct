@@ -24,9 +24,9 @@
                         <span asp-validation-for="CodigoAC" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                        <label asp-for="Cst" class="control-label"></label>
-                        <input asp-for="Cst" class="form-control" />
-                        <span asp-validation-for="Cst" class="text-danger"></span>
+                        <label asp-for="CstId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstId" name="CstId" class="form-control selectoption" id="cst"></select>
+                        <span asp-validation-for="CstId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-4 col-md-4 col-xs-12">
                         <label asp-for="Code" class="control-label"></label>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                 </div>
 
             </form>
@@ -52,3 +52,13 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+     var cst = @Model.CstId;
+    $("#cst").children('option').each(function () {
+        if ($(this).val() == cst) {
+            $(this).attr('selected', true);
+        }
+    });
+
+</script>
