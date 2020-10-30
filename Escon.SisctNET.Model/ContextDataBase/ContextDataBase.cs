@@ -110,5 +110,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<DevoFornecedor> DevoFornecedors { get; set; }
 
         public DbSet<VendaAnexo> VendaAnexos { get; set; }
+
+        public DbSet<NatReceita> NatReceitas { get; set; }
     }
 }

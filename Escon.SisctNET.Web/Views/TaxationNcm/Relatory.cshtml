@@ -1,6 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.TaxationNcm>
-
-@{
+﻿@{
     ViewData["Title"] = "Relatory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -19,49 +17,88 @@
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
             <div style="float:left;"><strong>Tributação Divergente</strong></div>
-            <div style="float:right;"><strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")</div>
+            <div style="float:right;"><strong>Perido:</strong> @ViewBag.Inicio.ToString("dd/MM/yyyy") à @ViewBag.Fim.ToString("dd/MM/yyyy")</div>
         </div>
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-            <table class="table" style="border:1px solid;">
-                <thead>
-                    <tr style="border:1px solid;">
-                        <th style="border:1px solid; text-align:center;">
-                            Produto
-                        </th>
-                        <th style="border:1px solid; text-align:center;">
-                            Descrição
-                        </th>
-                        <th style="border:1px solid; text-align:center;">
-                            Ncm
-                        </th>
-                        <th style="border:1px solid; text-align:center;">
-                            Descrição
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            @if (ViewBag.Erro == 1)
+            {
+                <p style="text-align:center;color:red;"><strong>O NCM @ViewBag.Ncm não estar Cadastrado na Tabela Geral</strong></p>
+            }
+            else
+            {
+                <table class="table" style="border:1px solid;">
+                    <thead>
                         <tr style="border:1px solid;">
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.CodeProduct
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Product
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Ncm.Code
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Ncm.Description
-                            </td>
+                            <th style="border:1px solid; text-align:center;">
+                                Produto
+                            </th>
+                            <th style="border:1px solid; text-align:center;">
+                                Descrição
+                            </th>
+                            <th style="border:1px solid; text-align:center;">Origem</th>
+                            <th style="border:1px solid; text-align:center;">
+                                Ncm
+                            </th>
+                            <th style="border:1px solid; text-align:center;">
+                                Descrição
+                            </th>
+                            <th style="border:1px solid; text-align:center;">
+                                CST
+                            </th>
+                            <th style="border:1px solid; text-align:center;">
+                                Nat. Receita
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Divergentes)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;" rowspan="2">
+                                    @item[0]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;" rowspan="2">
+                                    @item[1]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    XML
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[2]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[3]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[4]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[5]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    FORTES
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[6]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[7]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[8]
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item[9]
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
     <div class="box-footer"></div>

@@ -21,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICstService _cstService;
         private readonly ITaxationNcmService _service;
         private readonly ITypeNcmService _typeNcmService;
+        private readonly INatReceitaService _natReceitaService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public TaxationNcmController(
@@ -30,6 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICstService cstService,
             ITaxationNcmService service,
             ITypeNcmService typeNcmService,
+            INatReceitaService natReceitaService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
@@ -41,6 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             _cstService = cstService;
             _service = service;
             _typeNcmService = typeNcmService;
+            _natReceitaService = natReceitaService;
             _appEnvironment = env;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -631,7 +634,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Relatory(IFormFile arquivo)
+        public async Task<IActionResult> Relatory(DateTime inicio, DateTime fim, IFormFile arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
             {
@@ -641,6 +644,10 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+
+                ViewBag.Comp = comp;
+                ViewBag.Inicio = inicio;
+                ViewBag.Fim = fim;
 
                 if (arquivo == null || arquivo.Length == 0)
                 {
@@ -678,21 +685,23 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsSisct = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico")).ToList();
+                var ncmsSisct = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).ToList();
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
-                List<Model.TaxationNcm> ncmdivergentes = new List<TaxationNcm>();
+                var ncmsAll = _ncmService.FindAll(null);
+                var natReceitasAll = _natReceitaService.FindAll(null);
 
-                foreach(var nS in ncmsSisct)
+                List<List<string>> ncmdivergentes = new List<List<string>>();
+
+                foreach (var nS in ncmsSisct)
                 {
                     bool achou = false;
-
                     int contS = nS.CodeProduct.Count();
                     
                     foreach (var nF in ncmsFortes)
                     {
                         int contF = nF[2].Count();
-                        string nSTEmp = "", nFTemp = "";
+                        string nSTEmp = "", nFTemp = "", natReceitaTemp = null;
                         int dif = 0;
 
                         if (contS > contF)
@@ -715,8 +724,15 @@ namespace Escon.SisctNET.Web.Controllers
                             nSTEmp += nS.CodeProduct;
                             nFTemp = nF[2];
                         }
+                        var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
 
-                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]))
+                        if (natReceita != null)
+                        {
+                            natReceitaTemp = natReceita.Code;
+                        }
+
+                        // && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(nF[10]))
+                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]) && nS.CstSaida.Code.Equals(nF[5]) && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(natReceitaTemp)))
                         {
                             achou = true;
                             break;
@@ -725,13 +741,89 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if(achou == false)
                     {
-                        ncmdivergentes.Add(nS);
+                        List<string> divergente = new List<string>();
+                        divergente.Add(nS.CodeProduct);
+                        divergente.Add(nS.Product);
+                        divergente.Add(nS.Ncm.Code);
+                        divergente.Add(nS.Ncm.Description);
+                        if(nS.CstSaidaId != null)
+                        {
+                            divergente.Add(nS.CstSaida.Code);
+                        }
+                        else
+                        {
+                            divergente.Add("");
+                        }
+                        
+                        divergente.Add(nS.NatReceita);
+
+                        List<string> temp = new List<string>();
+
+                        foreach (var nF in ncmsFortes)
+                        {
+                            int contF = nF[2].Count();
+                            string nSTEmp = "", nFTemp = "";
+                            int dif = 0;
+
+                            if (contS > contF)
+                            {
+                                dif = contS - contF;
+                                for (int i = 0; i < dif; i++)
+                                {
+                                    nFTemp += "0";
+                                }
+                                nFTemp += nF[2];
+                                nSTEmp = nS.CodeProduct;
+                            }
+                            else
+                            {
+                                dif = contF - contS;
+                                for (int i = 0; i < dif; i++)
+                                {
+                                    nSTEmp += "0";
+                                }
+                                nSTEmp += nS.CodeProduct;
+                                nFTemp = nF[2];
+                            }
+
+                            if (nSTEmp.Equals(nFTemp))
+                            {
+                                temp = nF;
+                                break;
+                            }
+                        }
+
+                        var tempNcm = ncmsAll.Where(_ => _.Code.Equals(temp[3])).FirstOrDefault();
+                        var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(temp[10])).FirstOrDefault();
+
+                        if (tempNcm == null)
+                        {
+                            ViewBag.Ncm = temp[3];
+                            ViewBag.Erro = 1;
+                            return View();
+                        }
+
+                        divergente.Add(temp[3]);
+                        divergente.Add(tempNcm.Description);
+                        divergente.Add(temp[5]);
+
+                        if (natReceita != null)
+                        {
+                            divergente.Add(natReceita.Code);
+                        }
+                        else
+                        {
+                            divergente.Add("");
+                        }
+                        
+
+                        ncmdivergentes.Add(divergente);
                     }
                 }
 
-                ViewBag.Comp = comp;
+                ViewBag.Divergentes = ncmdivergentes;
 
-                return View(ncmdivergentes.OrderBy(_ => Convert.ToInt32(_.Ncm.Code)).ToList());
+                return View();
             }
             catch (Exception ex)
             {

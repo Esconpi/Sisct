@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
 {
-    public class ChapterService : IChapterService
+    public class NatReceitaService : INatReceitaService
     {
-        private readonly IChapterRepository _repository;
+        private readonly INatReceitaRepository _repository;
 
-        public ChapterService(IChapterRepository repository)
+        public NatReceitaService(INatReceitaRepository repository)
         {
             _repository = repository;
-        }
 
-        public Chapter Create(Chapter entity, Log log)
+        }
+        public NatReceita Create(NatReceita entity, Log log)
         {
             return _repository.Create(entity, log);
         }
@@ -23,22 +23,22 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
-        public List<Chapter> FindAll(Log log)
+        public List<NatReceita> FindAll(Log log)
         {
             return _repository.FindAll(log);
         }
 
-        public List<Chapter> FindAll(int page, int countrow, Log log)
+        public List<NatReceita> FindAll(int page, int countrow, Log log)
         {
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Chapter FindById(int id, Log log)
+        public NatReceita FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public Chapter Update(Chapter entity, Log log)
+        public NatReceita Update(NatReceita entity, Log log)
         {
             return _repository.Update(entity, log);
         }

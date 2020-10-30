@@ -152,6 +152,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IDevoClienteRepository, DevoClienteRepository>();
             services.AddScoped<IDevoFornecedorRepository, DevoFornecedorRepository>();
             services.AddScoped<IVendaAnexoRepository, VendaAnexoRepository>();
+            services.AddScoped<INatReceitaRepository, NatReceitaRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -203,6 +204,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IDevoClienteService, DevoClienteService>();
             services.AddScoped<IDevoFornecedorService, DevoFornecedorService>();
             services.AddScoped<IVendaAnexoService, VendaAnexoService>();
+            services.AddScoped<INatReceitaService, NatReceitaService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();

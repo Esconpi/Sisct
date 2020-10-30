@@ -44,7 +44,8 @@
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active ||
-   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active)
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -69,6 +70,7 @@
             {
                 <li><a href="@Url.Action("Index","Cst")"><i class="fa fa-circle-o"></i>CST</a></li>
             }
+
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
@@ -97,6 +99,11 @@
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","NatReceita")"><i class="fa fa-circle-o"></i>Natureza da Receita</a></li>
             }
 
         </ul>
