@@ -55,5 +55,16 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Incentivo %")]
         public decimal ? Percentual { get; set; }
+
+        [Display(Name = "Cst")]
+        [ForeignKey("Cst")]
+        public int? CstId { get; set; }
+
+        private Cst cst;
+        public Cst Cst
+        {
+            get => LazyLoader.Load(this, ref cst);
+            set => cst = value;
+        }
     }
 }

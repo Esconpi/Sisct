@@ -35,6 +35,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<ProductIncentivo> FindByAllProducts(string company, Log log = null)
+        {
+            var result = _context.ProductIncentivos.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8))).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<ProductIncentivo> FindByDate(int company, DateTime date, Log log = null)
         {
             List<ProductIncentivo> products = new List<ProductIncentivo>();

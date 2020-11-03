@@ -210,12 +210,12 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
                 ViewBag.CstEntradaId = cstE;
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
                 ViewBag.CstSaidaID = cstS;
@@ -351,12 +351,12 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try {
 
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
                 ViewBag.CstEntradaId = cstE;
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
                 ViewBag.CstSaidaID = cstS;
@@ -520,12 +520,12 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false)).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
                 ViewBag.CstEntradaId = cstE;
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true)).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
                 SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
                 ViewBag.CstSaidaID = cstS;
@@ -733,7 +733,6 @@ namespace Escon.SisctNET.Web.Controllers
                             natReceitaTemp = natReceita.Code;
                         }
 
-                        // && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(nF[10]))
                         if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]) && nS.CstSaida.Code.Equals(nF[5]) && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(natReceitaTemp)))
                         {
                             achou = true;
@@ -826,6 +825,10 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Divergentes = ncmdivergentes;
 
                 return View();
+            }
+            catch (ArgumentException aEx)
+            {
+                return BadRequest(new { erro = 500, message = aEx.Message });
             }
             catch (Exception ex)
             {

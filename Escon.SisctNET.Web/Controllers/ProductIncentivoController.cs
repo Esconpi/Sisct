@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Web.Taxation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -15,11 +14,13 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IProductIncentivoService _service;
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
+        private readonly ICstService _cstService;
 
         public ProductIncentivoController(
             IProductIncentivoService service,
             ICompanyService companyService,
             IConfigurationService configurationService,
+            ICstService cstService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductIncentivo")
@@ -27,6 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
             _service = service;
             _companyService = companyService;
             _configurationService = configurationService;
+            _cstService = cstService;
         }
 
         public IActionResult Index(int id)
@@ -95,7 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 products = importXml.NfeExitProducts(directoryNfe);
 
-                var productsAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
+                var productsAll = _service.FindByAllProducts(comp.Document);
 
                 List<Model.ProductIncentivo> addProducts = new List<Model.ProductIncentivo>();
 
@@ -139,21 +141,6 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Updated = DateTime.Now;
 
                         addProducts.Add(product);
-                        /*var product = new Model.ProductIncentivo
-                        {
-                            Code = prod["cProd"],
-                            Ncm = prod["NCM"],
-                            Name = prod["xProd"],
-                            Cest = cest,
-                            TypeTaxation = "",
-                            Active = false,
-                            CompanyId = id,
-                            Month = month,
-                            Year = year,
-                            Created = DateTime.Now,
-                            Updated = DateTime.Now
-                        };*/
-                        //_service.Create(entity: product, null);
                     }
                 }
 
@@ -180,6 +167,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+
+                List<Model.Cst> list_cst = _cstService.FindAll(null).Where(_ => _.Type.Equals(false)).OrderBy(_ => _.Code).ToList();
+                list_cst.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
+                SelectList cst = new SelectList(list_cst, "Id", "Code", null);
+                ViewBag.CstID = cst;
+
                 if (result.DateEnd != null)
                 {
                     return RedirectToAction("Index", new { id = result.CompanyId });
@@ -211,6 +204,16 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = entity.TypeTaxation;
+
+                    if (entity.CstId.Equals(0))
+                    {
+                        prod.CstId = null;
+                    }
+                    else
+                    {
+                        prod.CstId = entity.CstId;
+                    }
+                   
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
@@ -228,6 +231,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        if (entity.CstId.Equals(0))
+                        {
+                            p.CstId = null;
+                        }
+                        else
+                        {
+                            p.CstId = entity.CstId;
+                        }
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -246,6 +257,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        if (entity.CstId.Equals(0))
+                        {
+                            p.CstId = null;
+                        }
+                        else
+                        {
+                            p.CstId = entity.CstId;
+                        }
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -299,6 +318,11 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var prod = _service.FindById(id, null);
 
+                List<Model.Cst> list_cst = _cstService.FindAll(null).Where(_ => _.Type.Equals(false)).OrderBy(_ => _.Code).ToList();
+                list_cst.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
+                SelectList cst = new SelectList(list_cst, "Id", "Code", null);
+                ViewBag.CstID = cst;
+
                 return View(prod);
             }
             catch (Exception ex)
@@ -326,6 +350,14 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = entity.TypeTaxation;
+                    if (entity.CstId.Equals(0))
+                    {
+                        prod.CstId = null;
+                    }
+                    else
+                    {
+                        prod.CstId = entity.CstId;
+                    }
                     prod.Active = true;
                     prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
@@ -344,6 +376,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        if (entity.CstId.Equals(0))
+                        {
+                            p.CstId = null;
+                        }
+                        else
+                        {
+                            p.CstId = entity.CstId;
+                        }
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -363,6 +403,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        if (entity.CstId.Equals(0))
+                        {
+                            p.CstId = null;
+                        }
+                        else
+                        {
+                            p.CstId = entity.CstId;
+                        }
                         p.Active = true;
                         p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
@@ -393,6 +441,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+
+                List<Model.Cst> list_cst = _cstService.FindAll(null).Where(_ => _.Type.Equals(false)).OrderBy(_ => _.Code).ToList();
+                list_cst.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
+                SelectList cst = new SelectList(list_cst, "Id", "Code", null);
+                ViewBag.CstID = cst;
+
                 if (result.DateEnd != null)
                 {
                     return RedirectToAction("Index", new { id = result.CompanyId });
@@ -429,6 +483,11 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Month = result.Month;
                 entity.Year = result.Year;
                 entity.DateEnd = null;
+
+                if (entity.CstId.Equals(0))
+                {
+                    entity.CstId = null;
+                }
                 _service.Create(entity, null);
 
 

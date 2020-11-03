@@ -64,7 +64,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
-                var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ToList();
+                var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ThenBy(_ => _.View).ToList();
                 ViewBag.Count = result.Count();
                 return View(result);
             }

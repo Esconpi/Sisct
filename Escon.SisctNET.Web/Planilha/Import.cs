@@ -12,59 +12,66 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> products = new List<List<string>>();
 
-            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
-
             try
             {
-                WorkbookPart workbookPart = doc.WorkbookPart;
-                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
-
-                foreach (Sheet thesheet in thesheetcollection)
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+                try
                 {
-                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
 
-                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
-
-                    foreach (Row thecurrentrow in thesheetdata)
+                    foreach (Sheet thesheet in thesheetcollection)
                     {
-                        List<string> product = new List<string>();
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
-                        foreach (Cell thecurrentcell in thecurrentrow)
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
                         {
-                            if (thecurrentcell.DataType != null)
+                            List<string> product = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
                             {
-                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                if (thecurrentcell.DataType != null)
                                 {
-                                    int id;
-                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
                                     {
-                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
-                                        if (item.Text != null)
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
                                         {
-                                            product.Add(item.Text.Text);
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                product.Add(item.Text.Text);
+                                            }
                                         }
                                     }
                                 }
+                                else if (thecurrentcell.CellValue != null)
+                                {
+                                    product.Add(thecurrentcell.CellValue.Text);
+                                }
                             }
-                            else
-                            {
-                                product.Add(thecurrentcell.CellValue.Text);
-                            }
+
+                            products.Add(product);
+
                         }
-
-                        products.Add(product);
-
                     }
-                }
 
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
             }
             catch (Exception ex)
             {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                doc.Close();
+                throw new ArgumentException("Arquvivo Excel Corrompido",
+                                ex);
             }
 
             return products;
@@ -74,62 +81,76 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> notes = new List<List<string>>();
 
-            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
-
             try
             {
-
-                WorkbookPart workbookPart = doc.WorkbookPart;
-                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
-
-                foreach (Sheet thesheet in thesheetcollection)
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+                try
                 {
-                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
-                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
 
-                    foreach (Row thecurrentrow in thesheetdata)
+                    foreach (Sheet thesheet in thesheetcollection)
                     {
-                        List<string> note = new List<string>();
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
-                        foreach (Cell thecurrentcell in thecurrentrow)
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
                         {
-                            if (thecurrentcell.DataType != null)
+                            List<string> note = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
                             {
-                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                if (thecurrentcell.DataType != null)
                                 {
-                                    int id;
-                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
                                     {
-                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
-                                        if (item.Text != null)
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
                                         {
-                                            note.Add(item.Text.Text);
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                note.Add(item.Text.Text);
+                                            }
                                         }
                                     }
                                 }
+                                else if (thecurrentcell.CellValue != null)
+                                {
+                                    note.Add(thecurrentcell.CellValue.Text);
+                                }
                             }
-                            else
+
+                            if (note.Count() == 6)
                             {
-                                note.Add(thecurrentcell.CellValue.Text);
+                                if (note[5].Count() == 44)
+                                {
+                                    notes.Add(note);
+                                }
                             }
+
                         }
-
-                        notes.Add(note);
-
                     }
+
+
                 }
-
-
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
             }
             catch (Exception ex)
             {
-                Console.Out.WriteLine(ex.Message);
+                throw new ArgumentException("Arquvivo Excel Corrompido",
+                                ex);
             }
-            finally
-            {
-                doc.Close();
-            }
+           
             return notes;
         }
 
@@ -137,68 +158,76 @@ namespace Escon.SisctNET.Web.Planilha
         {
             List<List<string>> ncms = new List<List<string>>();
 
-            SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
-
             try
             {
-
-                WorkbookPart workbookPart = doc.WorkbookPart;
-                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
-
-                foreach (Sheet thesheet in thesheetcollection)
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+                try
                 {
-                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
-                    SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
 
-                    foreach (Row thecurrentrow in thesheetdata)
+                    foreach (Sheet thesheet in thesheetcollection)
                     {
-                        List<string> ncm = new List<string>();
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
-                        foreach (Cell thecurrentcell in thecurrentrow)
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
                         {
-                            if (thecurrentcell.DataType != null)
+                            List<string> ncm = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
                             {
-                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                if (thecurrentcell.DataType != null)
                                 {
-                                    int id;
-                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
                                     {
-                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
-                                        if (item.Text != null)
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
                                         {
-                                            ncm.Add(item.Text.Text);
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                ncm.Add(item.Text.Text);
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    ncm.Add(thecurrentcell.CellValue.Text);
+                                    else if (thecurrentcell.CellValue != null)
+                                    {
+                                        ncm.Add(thecurrentcell.CellValue.Text);
+                                    }
                                 }
                             }
-                        }
 
-                        if(ncm.Count() >= 15)
-                        {
-                            if (!ncm[0].Equals("CFOP") && !ncm[1].Equals("Item/Serviço") && !ncm[2].Equals("NCM"))
+                            if (ncm.Count() >= 15)
                             {
-                                ncms.Add(ncm);
-                            }
-                            
-                        }
-                        
-                    }
-                }
+                                if (!ncm[0].Equals("CFOP") && !ncm[1].Equals("Item/Serviço") && !ncm[2].Equals("NCM"))
+                                {
+                                    ncms.Add(ncm);
+                                }
 
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
             }
             catch (Exception ex)
             {
-                Console.Out.WriteLine(ex.Message);
+                throw new ArgumentException("Arquvivo Excel Corrompido",
+                                ex);
             }
-            finally
-            {
-                doc.Close();
-            }
+           
             return ncms;
         }
 

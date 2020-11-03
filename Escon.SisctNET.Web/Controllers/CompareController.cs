@@ -7,7 +7,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Globalization;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -401,9 +400,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                 return View();
                 
-               
             }
-            catch(Exception ex)
+            catch (ArgumentException aEx)
+            {
+                return BadRequest(new { erro = 500, message = aEx.Message });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }

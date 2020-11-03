@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Escon.SisctNET.Model
 {
@@ -17,5 +14,8 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Identificador")]
         public bool Ident { get; set; }
+
+        [Display(Name = "Tipo")]
+        public bool Type { get; set; }
     }
 }

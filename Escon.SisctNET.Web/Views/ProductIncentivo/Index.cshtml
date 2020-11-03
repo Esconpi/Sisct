@@ -170,9 +170,15 @@
                         {
                             "mData": "id",
                             "mRender": function (data, type, row) {
-                                return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> " +
-                                    "<a href='/ProductIncentivo/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
 
+                                }
+                                else {
+                                    return ""
+                                }
                             }
                         }
                     ]
@@ -313,7 +319,13 @@ else
                         {
                             "mData": "id",
                             "mRender": function (data, type, row) {
-                                return "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Ncm' /> " 
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/ProductIncentivo/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/ProductIncentivo/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                                }
+                                else {
+                                    return ""
+                                }
                             }
                         }
                     ]

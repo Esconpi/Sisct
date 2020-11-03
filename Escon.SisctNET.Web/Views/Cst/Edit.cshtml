@@ -16,6 +16,15 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        @Html.LabelFor(model => model.Type, "Tipo", htmlAttributes: new { @class = "control-label col-md-12" })
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Type, new { @data_off = "ICMS", @data_on = "PIS/COFINS", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "primary", @data_onstyle = "warning", @readonly = "true" })
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         @Html.LabelFor(model => model.Ident, "Identificador", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
@@ -24,7 +33,7 @@
                             </label>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">

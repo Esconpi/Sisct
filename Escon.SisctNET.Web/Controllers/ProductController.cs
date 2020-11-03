@@ -355,6 +355,10 @@ namespace Escon.SisctNET.Web.Controllers
                 return RedirectToAction("Index");
 
             }
+            catch (ArgumentException aEx)
+            {
+                return BadRequest(new { erro = 500, message = aEx.Message });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
