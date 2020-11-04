@@ -128,10 +128,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals("resumoCfop"))
                 {
-
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
                     List<List<string>> cfops = new List<List<string>>();
-
 
                     if (opcao.Equals("saida"))
                     {
@@ -2495,7 +2493,158 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualDaselencadaInterestadual = comp.IncIIInterestadual.ToString().Replace(".", ",");
 
                 }
-                
+                else if (type.Equals("tributacaoDiveregente"))
+                {
+                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+                    List<List<string>> prodsXml = new List<List<string>>();
+
+                    notes = importXml.Nfe(directoryNfeExit);
+
+                    var prodsAll = _productIncentivoService.FindByAllProducts(comp.Document);
+
+                    var ncmsAll = _ncmService.FindAll(null);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string cProd = "", xProd = "",ncm = "",cest = "";
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+                            if (notes[i][j].ContainsKey("cProd"))
+                            {
+                                cProd = notes[i][j]["cProd"];
+                                xProd = notes[i][j]["xProd"];
+                                ncm = notes[i][j]["NCM"];
+                            }
+
+                            if (notes[i][j].ContainsKey("CEST"))
+                            {
+                                cest = notes[i][j]["CEST"];
+                            }
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+                                int pos = -1;
+
+                                for (int k = 0; k < prodsXml.Count(); k++)
+                                {
+                                    if (prodsXml[k][0].Equals(cProd) && prodsXml[k][2].Equals(ncm) && prodsXml[k][3].Equals(cest) &&
+                                        prodsXml[k][4].Equals(notes[i][j]["CST"]))
+                                    {
+                                        pos = k;
+                                        break;
+                                    }
+                                }
+
+                                if(pos < 0)
+                                {
+                                    List<string> prods = new List<string>();
+                                    prods.Add(cProd);
+                                    prods.Add(xProd);
+                                    prods.Add(ncm);
+                                    prods.Add(cest);
+                                    prods.Add(notes[i][j]["CST"]);
+
+                                    prodsXml.Add(prods);
+
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    List<List<string>> divergentes = new List<List<string>>();
+
+                    foreach (var prodX in prodsXml)
+                    {
+                        bool achou = false;
+                        foreach (var prodS in prodsAll)
+                        {
+                            string cst = "";
+                            if (prodS.CstId != null)
+                            {
+                                cst = prodS.Cst.Code;
+                            }
+
+                            if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
+                               prodS.Cest.Equals(prodX[3]) && cst.Equals(prodX[4]))
+                            {
+                                achou = true;
+                                break;
+                            }
+                        }
+
+                        if(achou == false)
+                        {
+                            Model.ProductIncentivo temp = new Model.ProductIncentivo();
+                            bool contem = false;
+
+                            foreach (var prodS in prodsAll)
+                            {
+                                if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
+                                   prodS.Cest.Equals(prodX[3]))
+                                {
+                                    contem = true;
+                                    temp = prodS;
+                                    break;
+                                }
+                            }
+
+                            if (contem == true)
+                            {
+                                List<string> divergente = new List<string>();
+
+                                var ncmSTemp = ncmsAll.Where(_ => _.Code.Equals(temp.Ncm)).FirstOrDefault();
+                                var ncmXTemp = ncmsAll.Where(_ => _.Code.Equals(prodX[2])).FirstOrDefault();
+
+                                if (ncmSTemp == null)
+                                {
+                                    ViewBag.Ncm = temp.Ncm;
+                                    ViewBag.Erro = 1;
+                                    return View();
+                                }
+
+                                if (ncmXTemp == null)
+                                {
+                                    ViewBag.Ncm = prodX[2];
+                                    ViewBag.Erro = 1;
+                                    return View();
+                                }
+
+                                divergente.Add(temp.Code);
+                                divergente.Add(temp.Name);
+                                divergente.Add(temp.Ncm);
+                                divergente.Add(ncmSTemp.Description);
+                                divergente.Add(temp.Cest);
+                                if (temp.CstId == null)
+                                {
+                                    divergente.Add("");
+                                }
+                                else
+                                {
+                                    divergente.Add(temp.Cst.Code);
+                                }
+                                divergente.Add(prodX[0]);
+                                divergente.Add(prodX[1]);
+                                divergente.Add(prodX[2]);
+                                divergente.Add(ncmXTemp.Description);
+                                divergente.Add(prodX[3]);
+                                divergente.Add(prodX[4]);
+                                divergentes.Add(divergente);
+                            }
+                        }
+
+                    }
+                   
+                }
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return View();

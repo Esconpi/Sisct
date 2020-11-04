@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model;
+﻿using DocumentFormat.OpenXml.Drawing;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -631,7 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(ViewData);
                 }
 
-                string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
+                string filedir = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
 
                 if (!Directory.Exists(filedir))
                 {
@@ -671,21 +672,20 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<string>> ncmdivergentes = new List<List<string>>();
 
-                foreach (var nS in ncmsSisct)
+                foreach (var nF in ncmsFortes)
                 {
                     bool achou = false;
-                    int contS = nS.CodeProduct.Count();
-                    
-                    foreach (var nF in ncmsFortes)
+                    int contF = nF[2].Count();
+                    foreach (var nS in ncmsSisct)
                     {
-                        int contF = nF[2].Count();
+                        int contS = nS.CodeProduct.Count();
                         string nSTEmp = "", nFTemp = "", natReceitaTemp = null;
                         int dif = 0;
 
                         if (contS > contF)
                         {
                             dif = contS - contF;
-                            for(int i = 0; i < dif; i++)
+                            for (int i = 0; i < dif; i++)
                             {
                                 nFTemp += "0";
                             }
@@ -702,6 +702,7 @@ namespace Escon.SisctNET.Web.Controllers
                             nSTEmp += nS.CodeProduct;
                             nFTemp = nF[2];
                         }
+
                         var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
 
                         if (natReceita != null)
@@ -716,30 +717,16 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    if(achou == false)
+                    if (achou == false)
                     {
-                        List<string> divergente = new List<string>();
-                        divergente.Add(nS.CodeProduct);
-                        divergente.Add(nS.Product);
-                        divergente.Add(nS.Ncm.Code);
-                        divergente.Add(nS.Ncm.Description);
-                        if(nS.CstSaidaId != null)
-                        {
-                            divergente.Add(nS.CstSaida.Code);
-                        }
-                        else
-                        {
-                            divergente.Add("");
-                        }
-                        
-                        divergente.Add(nS.NatReceita);
+                        Model.TaxationNcm temp = new Model.TaxationNcm();
 
-                        List<string> temp = new List<string>();
+                        bool contem = false;
 
-                        foreach (var nF in ncmsFortes)
+                        foreach (var nS in ncmsSisct)
                         {
-                            int contF = nF[2].Count();
-                            string nSTEmp = "", nFTemp = "";
+                            int contS = nS.CodeProduct.Count();
+                            string nSTemp = "", nFTemp = "";
                             int dif = 0;
 
                             if (contS > contF)
@@ -750,51 +737,71 @@ namespace Escon.SisctNET.Web.Controllers
                                     nFTemp += "0";
                                 }
                                 nFTemp += nF[2];
-                                nSTEmp = nS.CodeProduct;
+                                nSTemp = nS.CodeProduct;
                             }
                             else
                             {
                                 dif = contF - contS;
                                 for (int i = 0; i < dif; i++)
                                 {
-                                    nSTEmp += "0";
+                                    nSTemp += "0";
                                 }
-                                nSTEmp += nS.CodeProduct;
+                                nSTemp += nS.CodeProduct;
                                 nFTemp = nF[2];
                             }
 
-                            if (nSTEmp.Equals(nFTemp))
+                            if (nSTemp.Equals(nFTemp))
                             {
-                                temp = nF;
+                                temp = nS;
+                                contem = true;
                                 break;
                             }
                         }
 
-                        var tempNcm = ncmsAll.Where(_ => _.Code.Equals(temp[3])).FirstOrDefault();
-                        var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(temp[10])).FirstOrDefault();
-
-                        if (tempNcm == null)
+                        if(contem == true)
                         {
-                            ViewBag.Ncm = temp[3];
-                            ViewBag.Erro = 1;
-                            return View();
-                        }
+                            List<string> divergente = new List<string>();
+                            divergente.Add(temp.CodeProduct);
+                            divergente.Add(temp.Product);
+                            divergente.Add(temp.Ncm.Code);
+                            divergente.Add(temp.Ncm.Description);
+                            if (temp.CstSaidaId != null)
+                            {
+                                divergente.Add(temp.CstSaida.Code);
+                            }
+                            else
+                            {
+                                divergente.Add("");
+                            }
 
-                        divergente.Add(temp[3]);
-                        divergente.Add(tempNcm.Description);
-                        divergente.Add(temp[5]);
+                            divergente.Add(temp.NatReceita);
 
-                        if (natReceita != null)
-                        {
-                            divergente.Add(natReceita.Code);
-                        }
-                        else
-                        {
-                            divergente.Add("");
-                        }
-                        
+                            var tempNcm = ncmsAll.Where(_ => _.Code.Equals(nF[3])).FirstOrDefault();
+                            var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
 
-                        ncmdivergentes.Add(divergente);
+                            if (tempNcm == null)
+                            {
+                                ViewBag.Ncm = nF[3];
+                                ViewBag.Erro = 1;
+                                return View();
+                            }
+
+                            divergente.Add(nF[3]);
+                            divergente.Add(tempNcm.Description);
+                            divergente.Add(nF[5]);
+
+                            if (natReceita != null)
+                            {
+                                divergente.Add(natReceita.Code);
+                            }
+                            else
+                            {
+                                divergente.Add("");
+                            }
+
+                            ncmdivergentes.Add(divergente);
+                        }
+                       
                     }
                 }
 

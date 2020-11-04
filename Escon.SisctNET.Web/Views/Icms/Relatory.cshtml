@@ -148,7 +148,14 @@
                 }
                 else if (ViewBag.Type == "tributacaoDiveregente")
                 {
-
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>O NCM @ViewBag.Ncm não estar cadastrado</strong></p>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
+                    }
                 }
             </div>
         </div>

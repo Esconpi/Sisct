@@ -1622,6 +1622,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 List<string> cestST = new List<string>();
                                 List<string> cestIsento = new List<string>();
 
+                                var codeProd = prodsAll.Select(_ => _.Code).ToList();
+                                var cestProd = prodsAll.Select(_ => _.Cest).ToList();
+
                                 if (comp.TypeCompany.Equals(true))
                                 {
 
@@ -1709,7 +1712,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         bool cfop = false;
                                         decimal valorProduto = 0;
-                                        string cProd = null, cest = null;
+                                        string cProd = "", cest = "";
 
                                         for (int k = 0; k < exitNotes[i].Count(); k++)
                                         {
@@ -1771,77 +1774,80 @@ namespace Escon.SisctNET.Web.Controllers
                                                     debitosIcms += Convert.ToDecimal(exitNotes[i][k]["vICMS"]);
                                                 }
 
-                                                if (codeProdIncentivado.Contains(cProd) && cestIncentivado.Contains(cest))
+                                                if(codeProd.Contains(cProd) && cestProd.Contains(cest))
                                                 {
-
-                                                    if (posCliente < 0)
+                                                    if (codeProdIncentivado.Contains(cProd) && cestIncentivado.Contains(cest))
                                                     {
-                                                        naoContribuinteIncentivo += Convert.ToDecimal(valorProduto);
 
-                                                        if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                        if (posCliente < 0)
                                                         {
-                                                            naoContriForaDoEstadoIncentivo += Convert.ToDecimal(valorProduto);
-                                                            icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        if (aliquota <= 25)
-                                                        {
-                                                            ContribuintesIncentivo += Convert.ToDecimal(valorProduto);
+                                                            naoContribuinteIncentivo += Convert.ToDecimal(valorProduto);
+
+                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            {
+                                                                naoContriForaDoEstadoIncentivo += Convert.ToDecimal(valorProduto);
+                                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
+                                                            }
                                                         }
                                                         else
                                                         {
-                                                            ContribuintesIncentivoAliqM25 += Convert.ToDecimal(valorProduto);
+                                                            if (aliquota <= 25)
+                                                            {
+                                                                ContribuintesIncentivo += Convert.ToDecimal(valorProduto);
+                                                            }
+                                                            else
+                                                            {
+                                                                ContribuintesIncentivoAliqM25 += Convert.ToDecimal(valorProduto);
+                                                            }
+
                                                         }
+                                                        totalVendas += Convert.ToDecimal(valorProduto);
 
                                                     }
-                                                    totalVendas += Convert.ToDecimal(valorProduto);
-
-                                                }
-                                                else if (codeProdST.Contains(cProd) && cestST.Contains(cest))
-                                                {
-                                                    if (posCliente < 0)
+                                                    else if (codeProdST.Contains(cProd) && cestST.Contains(cest))
                                                     {
-                                                        naoContribuinteNIncetivo += Convert.ToDecimal(valorProduto);
-
-                                                        if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                        if (posCliente < 0)
                                                         {
-                                                            naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(valorProduto);
-                                                            icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
+                                                            naoContribuinteNIncetivo += Convert.ToDecimal(valorProduto);
+
+                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            {
+                                                                naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(valorProduto);
+                                                                icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
+                                                            }
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        ContribuintesNIncentivo += Convert.ToDecimal(valorProduto);
-                                                    }
-                                                    totalVendas += Convert.ToDecimal(valorProduto);
-
-                                                }
-                                                else if (codeProdIsento.Contains(cProd) && cestIsento.Contains(cest))
-                                                {
-                                                    if (posCliente < 0)
-                                                    {
-                                                        NaoContribuiteIsento += Convert.ToDecimal(valorProduto);
-
-                                                        if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                        else
                                                         {
-                                                            NaoContribuinteForaDoEstadoIsento += Convert.ToDecimal(valorProduto);
+                                                            ContribuintesNIncentivo += Convert.ToDecimal(valorProduto);
                                                         }
+                                                        totalVendas += Convert.ToDecimal(valorProduto);
+
                                                     }
-                                                    else
+                                                    else if (codeProdIsento.Contains(cProd) && cestIsento.Contains(cest))
                                                     {
-                                                        ContribuinteIsento += Convert.ToDecimal(valorProduto);
+                                                        if (posCliente < 0)
+                                                        {
+                                                            NaoContribuiteIsento += Convert.ToDecimal(valorProduto);
+
+                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            {
+                                                                NaoContribuinteForaDoEstadoIsento += Convert.ToDecimal(valorProduto);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            ContribuinteIsento += Convert.ToDecimal(valorProduto);
+                                                        }
+                                                        totalVendas += Convert.ToDecimal(valorProduto);
                                                     }
-                                                    totalVendas += Convert.ToDecimal(valorProduto);
                                                 }
                                                 else
                                                 {
                                                     ViewBag.Erro = 3;
                                                     return View(comp);
                                                 }
-                                                cest = null;
-                                                cProd = null;
+                                                cest = "";
+                                                cProd = "";
                                                 valorProduto = 0;
                                                 aliquota = 0;
                                             }
@@ -2232,22 +2238,25 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (cfop == true)
                                                 {
-                                                    if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
+                                                    if (codeProd.Contains(exitNotes[i][k]["cProd"]) && cestProd.Contains(cest))
                                                     {
-                                                        status = 1;
-                                                        var percentualIncentivado = Convert.ToDecimal(prodsTemp.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
-                                                        percent = percentualIncentivado;
-                                                       
-                                                    }
-                                                    else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
-                                                    {
-                                                        status = 2;
-                                                        percent = 0;
-                                                    }
-                                                    else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
-                                                    {
-                                                        status = 3;
-                                                        percent = 0;
+                                                        if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
+                                                        {
+                                                            status = 1;
+                                                            var percentualIncentivado = Convert.ToDecimal(prodsTemp.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
+                                                            percent = percentualIncentivado;
+
+                                                        }
+                                                        else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
+                                                        {
+                                                            status = 2;
+                                                            percent = 0;
+                                                        }
+                                                        else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
+                                                        {
+                                                            status = 3;
+                                                            percent = 0;
+                                                        }
                                                     }
                                                     else
                                                     {
@@ -3148,8 +3157,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (imposto.Equals("pisCofins"))
                 {
-                    var companies = _companyService.FindByCompanies().Where(_ => _.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
-                    var ncmsCompany = _taxationNcmService.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
+                    var companies = _companyService.FindByCompanies(comp.Document);
+                    var ncmsCompany = _taxationNcmService.FindByCompany(comp.Document);
                     
                     if (type.Equals("sped") && comp.Sped.Equals(true))
                     {

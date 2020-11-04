@@ -39,11 +39,6 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Company> FindAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Company FindByCode(string code, Log log = null)
         {
             return _repository.FindByCode(code);
@@ -75,5 +70,10 @@ namespace Escon.SisctNET.Service.Implementation
         }
 
         public async Task<List<Company>> ListAllActiveAsync(Log log) => await _repository.ListAllActiveAsync(log);
+
+        public List<Company> FindByCompanies(string company, Log log = null)
+        {
+            return _repository.FindByCompanies(company, log);
+        }
     }
 }

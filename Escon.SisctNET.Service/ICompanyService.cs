@@ -16,6 +16,8 @@ namespace Escon.SisctNET.Service
 
         List<Model.Company> FindByCompanies(Model.Log log = null);
 
+        List<Model.Company> FindByCompanies(string company, Model.Log log = null);
+
         Task<List<Company>> ListAllActiveAsync(Log log);
 
     }
