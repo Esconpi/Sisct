@@ -163,11 +163,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Name = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.CompanyId = id;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                ViewBag.Comp = comp;
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
@@ -189,9 +185,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Name = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.CompanyId = id;
+                ViewBag.Comp = comp;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
             }
@@ -591,24 +585,6 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId });
                 //return View(rst);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        public IActionResult DetailsAll (int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                var rst = _service.FindById(id, null);
-                return PartialView(rst);
             }
             catch (Exception ex)
             {

@@ -7,17 +7,17 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="TaxationNcm" asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="TaxationNcm" asp-action="Import" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
 
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.Name - @ViewBag.Document</strong>
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
 
         <br />
 
         <div style="width:100%; text-align:right; padding-right:1%;">
-            <strong>@ViewBag.Month/@ViewBag.Year</strong>
+            <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
         </div>
     </div>
     <div class="box-body">

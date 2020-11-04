@@ -1613,17 +1613,17 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (!comp.AnnexId.Equals(3))
                             {
+                                var prodsAll = _productIncentivoService.FindByAllProducts(companyid);
+                                List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
+                                List<string> codeProdIncentivado = new List<string>();
+                                List<string> codeProdST = new List<string>();
+                                List<string> codeProdIsento = new List<string>();
+                                List<string> cestIncentivado = new List<string>();
+                                List<string> cestST = new List<string>();
+                                List<string> cestIsento = new List<string>();
+
                                 if (comp.TypeCompany.Equals(true))
                                 {
-                                    var productincentivo = _productIncentivoService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(companyid)).ToList();
-
-                                    var codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
-                                    var codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
-                                    var codeProdIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
-
-                                    var cestIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Cest).ToList();
-                                    var cestST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
-                                    var cestIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
 
                                     List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -1644,6 +1644,19 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             exitNotes.RemoveAt(i);
                                             continue;
+                                        }
+
+                                        if (exitNotes[i][1].ContainsKey("dhEmi"))
+                                        {
+                                            prodsTemp = _productIncentivoService.FindByDate(prodsAll, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
+                                            codeProdIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Code).ToList();
+                                            codeProdST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
+                                            codeProdIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
+
+                                            cestIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Cest).ToList();
+                                            cestST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
+                                            cestIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
                                         }
 
                                         int posCliente = -1;
@@ -2159,19 +2172,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else
                                 {
-                                    List<ProductIncentivo> productincentivo = new List<ProductIncentivo>();
-                                    List<string> codeProdIncentivado = new List<string>();
-                                    List<string> codeProdST = new List<string>();
-                                    List<string> codeProdIsento = new List<string>();
-                                    List<string> cestIncentivado = new List<string>();
-                                    List<string> cestST = new List<string>();
-                                    List<string> cestIsento = new List<string>();
                                     List<List<string>> percentuaisIncentivado = new List<List<string>>();
                                     List<List<string>> percentuaisNIncentivado = new List<List<string>>();
 
                                     exitNotes = importXml.Nfe(directoryNfeExit);
-
-                                    var prodsIncentivo = _productIncentivoService.FindAll(null).Where(_ => _.CompanyId.Equals(companyid)).ToList();
 
                                     decimal vendasIncentivada = 0, vendasNIncentivada = 0, debitoIncetivo = 0, debitoNIncentivo = 0;
 
@@ -2187,15 +2191,15 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (exitNotes[i][1].ContainsKey("dhEmi"))
                                         {
                                             //productincentivo = _productIncentivoService.FindByDate(comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
-                                            productincentivo = _productIncentivoService.FindByDate(prodsIncentivo, comp.Id, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+                                            prodsTemp = _productIncentivoService.FindByDate(prodsAll, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
 
-                                            codeProdIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Code).ToList();
-                                            codeProdST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
-                                            codeProdIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
+                                            codeProdIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Code).ToList();
+                                            codeProdST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
+                                            codeProdIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
 
-                                            cestIncentivado = productincentivo.Where(_ => _.TypeTaxation.Equals("Incentivado")).Select(_ => _.Cest).ToList();
-                                            cestST = productincentivo.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
-                                            cestIsento = productincentivo.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
+                                            cestIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Cest).ToList();
+                                            cestST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
+                                            cestIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
                                         }
 
                                         int status = 3;
@@ -2231,7 +2235,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
                                                     {
                                                         status = 1;
-                                                        var percentualIncentivado = Convert.ToDecimal(productincentivo.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
+                                                        var percentualIncentivado = Convert.ToDecimal(prodsTemp.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
                                                         percent = percentualIncentivado;
                                                        
                                                     }

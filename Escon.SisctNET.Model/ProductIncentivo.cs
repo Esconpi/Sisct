@@ -66,5 +66,11 @@ namespace Escon.SisctNET.Model
             get => LazyLoader.Load(this, ref cst);
             set => cst = value;
         }
+
+        [Display(Name = "BCR")]
+        public bool Bcr { get; set; }
+
+        [Display(Name = "BCR %")]
+        public decimal? PercentualBcr { get; set; }
     }
 }

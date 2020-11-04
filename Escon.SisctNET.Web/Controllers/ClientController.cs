@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int id)
+        public IActionResult IndexAll(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -43,9 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id,GetLog(Model.OccorenceLog.Read));
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Id = id;
+                ViewBag.Comp = comp;
                 List<Model.Client> list_clients = _service.FindByCompanyId(id);
 
                 foreach (var client in list_clients)
@@ -182,27 +180,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                return RedirectToAction("Details",new {companyId = id, year = year, month = month });
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult Filter(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                var result = _service.FindById(id,GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = result.CompanyId;
-                return View(result);
+                return RedirectToAction("Index",new {companyId = id, year = year, month = month });
             }
             catch(Exception ex)
             {
@@ -211,7 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int companyId, string year, string month)
+        public IActionResult Index(int companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -220,10 +198,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.Id = companyId;
-                var client = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).ToList();
-                ViewBag.Count = client.Count();
-                return View(client);
+                SessionManager.SetCompanyIdInSession(companyId);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
+                return View(null);
             }
             catch(Exception ex)
             {
@@ -271,7 +249,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Index", new { id = client.CompanyId});
+                return RedirectToAction("IndexAll", new { id = client.CompanyId});
             }
             catch (Exception ex)
             {
@@ -291,9 +269,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
-                ViewBag.Company = result.CompanyId;
-                ViewBag.Mes = result.MesRef;
-                ViewBag.Ano = result.AnoRef;
                 return View(result);
             }
             catch (Exception ex)
@@ -321,7 +296,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
-                return RedirectToAction("Details", new { companyId = client.CompanyId, year = client.AnoRef, month = client.MesRef });
+                return RedirectToAction("Index", new { companyId = client.CompanyId, year = client.AnoRef, month = client.MesRef });
             }
             catch (Exception ex)
             {
@@ -345,7 +320,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult GetAll(int draw, int start)
+        public IActionResult GetAllCompany(int draw, int start)
         {
 
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
@@ -412,5 +387,72 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+        public IActionResult GetAll(int draw, int start)
+        {
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var clintesAll = _service.FindByCompanyId(SessionManager.GetCompanyIdInSession()).Where(_ => _.AnoRef.Equals(SessionManager.GetYearInSession()) &&
+                                                       _.MesRef.Equals(SessionManager.GetMonthInSession())).ToList();
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Client> clientes = new List<Client>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Client> clientTemp = new List<Client>();
+                clintesAll.ToList().ForEach(s =>
+                {
+                    s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
+                    s.Document = s.Document;
+                    s.Ie = s.Ie;
+                    s.TypeClientId = s.TypeClientId;
+                    clientTemp.Add(s);
+                });
+
+                var ids = clientTemp.Where(c =>
+                    c.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ie.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                clientes = clintesAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var cfop = from r in clientes
+                           where ids.ToArray().Contains(r.Id)
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Name = r.Name,
+                               Document = r.Document,
+                               Ie = r.Ie,
+                               TypeClient = r.TypeClientId
+
+                           };
+
+                return Ok(new { draw = draw, recordsTotal = clientes.Count(), recordsFiltered = clientes.Count(), data = cfop.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var cfop = from r in clintesAll
+                           select new
+                           {
+                               Id = r.Id.ToString(),
+                               Name = r.Name,
+                               Document = r.Document,
+                               Ie = r.Ie,
+                               TypeClient = r.TypeClientId
+
+                           };
+                return Ok(new { draw = draw, recordsTotal = clintesAll.Count(), recordsFiltered = clintesAll.Count(), data = cfop.Skip(start).Take(lenght) });
+            }
+
+        }
     }
 } 

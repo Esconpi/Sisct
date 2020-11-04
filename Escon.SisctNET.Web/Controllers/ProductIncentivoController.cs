@@ -31,7 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             _cstService = cstService;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult IndexAll(int id)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -41,11 +41,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Id = comp.Id;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Status = comp.Status;
-                ViewBag.TypeCompany = comp.TypeCompany;
+                ViewBag.Comp = comp;
                 SessionManager.SetCompanyIdInSession(id);
 
                 return View(null);
@@ -148,7 +144,25 @@ namespace Escon.SisctNET.Web.Controllers
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                return RedirectToAction("Details", new { companyId = id, year = year, month = month });
+                return RedirectToAction("Index", new { companyId = id, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Details(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                return PartialView(result);
             }
             catch (Exception ex)
             {
@@ -204,6 +218,8 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = entity.TypeTaxation;
+                    prod.Bcr = entity.Bcr;
+                    prod.PercentualBcr = entity.PercentualBcr;
 
                     if (entity.CstId.Equals(0))
                     {
@@ -231,6 +247,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        p.Bcr = entity.Bcr;
+                        p.PercentualBcr = entity.PercentualBcr;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -257,6 +275,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        p.Bcr = entity.Bcr;
+                        p.PercentualBcr = entity.PercentualBcr;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -277,7 +297,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", new { id = companyId });
+                return RedirectToAction("IndexAll", new { id = companyId });
             }
             catch (Exception ex)
             {
@@ -286,7 +306,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int companyId, string year, string month)
+        public IActionResult Index(int companyId, string year, string month)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -294,12 +314,10 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                ViewBag.CompanyId = companyId;
-                var comp = _companyService.FindById(companyId, null);
-                var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
-                ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Count = products.Count();
-                return View(products);
+                SessionManager.SetCompanyIdInSession(companyId);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -350,6 +368,8 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = entity.TypeTaxation;
+                    prod.Bcr = entity.Bcr;
+                    prod.PercentualBcr = entity.PercentualBcr;
                     if (entity.CstId.Equals(0))
                     {
                         prod.CstId = null;
@@ -376,6 +396,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        p.Bcr = entity.Bcr;
+                        p.PercentualBcr = entity.PercentualBcr;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -403,6 +425,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.TypeTaxation = entity.TypeTaxation;
+                        p.Bcr = entity.Bcr;
+                        p.PercentualBcr = entity.PercentualBcr;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -423,7 +447,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
                 _service.Update(updateProducts);
-                return RedirectToAction("Details", new { companyId = companyId, year = year, month = month });
+                return RedirectToAction("Index", new { companyId = companyId, year = year, month = month });
             }
             catch (Exception ex)
             {
@@ -470,7 +494,18 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                result.TypeTaxation = entity.TypeTaxation;
                 result.Percentual = entity.Percentual;
+                result.PercentualBcr = entity.PercentualBcr;
+                result.Bcr = entity.Bcr;
+                if (entity.CstId.Equals(0))
+                {
+                    result.CstId = null;
+                }
+                else
+                {
+                    result.CstId = entity.CstId;
+                }
                 result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 result.Updated = DateTime.Now;
                 _service.Update(result, null);
@@ -491,7 +526,7 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Create(entity, null);
 
 
-                return RedirectToAction("Index", new { id = result.CompanyId });
+                return RedirectToAction("IndexAll", new { id = result.CompanyId });
             }
             catch (Exception ex)
             {
@@ -526,9 +561,13 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<ProductIncentivo> products = new List<ProductIncentivo>();
-                if (tipo.Equals("Incentivado"))
+                if (tipo.Equals("Incentivado/Normal"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado")).ToList();
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado/Normal")).ToList();
+                }
+                else if (tipo.Equals("Incentivado/ST"))
+                {
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado/ST")).ToList();
                 }
                 else if (tipo.Equals("ST"))
                 {
@@ -537,6 +576,10 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (tipo.Equals("Isento"))
                 {
                     products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Isento")).ToList();
+                }
+                else if (tipo.Equals("Normal"))
+                {
+                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Normal")).ToList();
                 }
                 var comp = _companyService.FindById(id, null);
    
@@ -569,7 +612,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult GetAll(int draw, int start)
+        public IActionResult GetAllCompany(int draw, int start)
         {
 
 
@@ -647,5 +690,82 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+        public IActionResult GetAll(int draw, int start)
+        {
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession()).Where(_ => _.Year.Equals(SessionManager.GetYearInSession())
+                                                            && _.Month.Equals(SessionManager.GetMonthInSession())).OrderBy(_ => _.Active).ToList();
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<ProductIncentivo> produtos = new List<ProductIncentivo>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<ProductIncentivo> productTemp = new List<ProductIncentivo>();
+                produtosAll.ToList().ForEach(s =>
+                {
+                    s.Code = s.Code;
+                    s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
+                    s.Ncm = s.Ncm;
+                    s.Active = s.Active;
+                    s.TypeTaxation = s.TypeTaxation;
+                    s.DateStart = s.DateStart;
+                    s.DateEnd = s.DateEnd;
+                    productTemp.Add(s);
+                });
+
+                var ids = productTemp.Where(c =>
+                    c.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ncm.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                produtos = produtosAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var product = from r in produtos
+                              where ids.ToArray().Contains(r.Id)
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Code = r.Code,
+                                  Name = r.Name,
+                                  Nncm = r.Ncm,
+                                  Ccest = r.Cest,
+                                  Active = r.Active,
+                                  TipoTaxation = r.TypeTaxation,
+                                  Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
+
+                              };
+
+                return Ok(new { draw = draw, recordsTotal = produtos.Count(), recordsFiltered = produtos.Count(), data = product.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var product = from r in produtosAll
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Code = r.Code,
+                                  Name = r.Name,
+                                  Nncm = r.Ncm,
+                                  Ccest = r.Cest,
+                                  Active = r.Active,
+                                  TipoTaxation = r.TypeTaxation,
+                                  Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
+
+                              };
+                return Ok(new { draw = draw, recordsTotal = produtosAll.Count(), recordsFiltered = produtosAll.Count(), data = product.Skip(start).Take(lenght) });
+            }
+
+        }
     }
 }

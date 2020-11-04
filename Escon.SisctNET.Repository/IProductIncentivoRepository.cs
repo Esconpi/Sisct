@@ -16,7 +16,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.ProductIncentivo> FindByDate(int company, DateTime date, Model.Log log = null);
 
-        List<Model.ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos,int company, DateTime date, Model.Log log = null);
+        List<Model.ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, DateTime date, Model.Log log = null);
 
         void Create(List<Model.ProductIncentivo> productIncentivos, Model.Log log = null);
 

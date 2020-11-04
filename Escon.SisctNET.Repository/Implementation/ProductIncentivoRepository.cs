@@ -67,11 +67,11 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public List<ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, int company, DateTime date, Log log = null)
+        public List<ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, DateTime date, Log log = null)
         {
             List<ProductIncentivo> products = new List<ProductIncentivo>();
 
-            var productsIncentivo = productIncentivos.Where(_ => _.CompanyId.Equals(company));
+            var productsIncentivo = productIncentivos;
 
             foreach (var prod in productsIncentivo)
             {

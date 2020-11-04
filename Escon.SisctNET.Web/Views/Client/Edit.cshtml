@@ -7,7 +7,7 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-action="Index" asp-route-id="@ViewBag.Company" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-action="IndexAll" asp-route-id="@ViewBag.Company" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Editar Cliente:</strong> @Model.Name</h3>
     </div>
     <hr />
@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label asp-for="Ie" class="control-label"></label>
-                        <input asp-for="Ie" class="form-control" disabled/>
+                        <input asp-for="Ie" class="form-control" disabled />
                         <span asp-validation-for="Ie" class="text-danger"></span>
                     </div>
 
@@ -45,13 +45,24 @@
                     <div class="form-group col-lg-2 col-md-2 col-xs-12" id="checkbox">
                         @Html.LabelFor(model => model.Diferido, "Diferido", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
-                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger" , @readonly = "true"})
+                            @Html.CheckBoxFor(model => model.Diferido, new { @id = "diferido", @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
                         </div>
                     </div>
-                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
-                        <label asp-for="Percentual" class="control-label"></label>
-                        <input  type="text" name="percentual"  id="percentual" class="form-control money" value="@Model.Percentual" disabled />
-                    </div>
+
+                    @if (Model.Diferido == false)
+                    {
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label asp-for="Percentual" class="control-label"></label>
+                            <input type="text" name="percentual" id="percentual" class="form-control money" value="@Model.Percentual" disabled />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label asp-for="Percentual" class="control-label"></label>
+                            <input type="text" name="percentual" id="percentual" class="form-control money" value="@Model.Percentual" />
+                        </div>
+                    }
 
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">

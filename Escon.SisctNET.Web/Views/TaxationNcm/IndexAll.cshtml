@@ -10,11 +10,11 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Compare" asp-route-companyid="@ViewBag.CompanyId" size="large" class="btn btn-primary fa fa-copy pull-left"> Compara</a>
-            <a asp-action="Import" asp-route-companyid="@ViewBag.CompanyId" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
+            <a asp-action="Compare" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-copy pull-left"> Compara</a>
+            <a asp-action="Import" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
         </div>
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.Name - @ViewBag.Document</strong>
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
     </div>
     <div class="box-body">
@@ -74,7 +74,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
                 $('.showDetails').click(function () {
-                    $.get('/TaxationNcm/DetailsAll/' + $(this).attr('id'), function (html) {
+                    $.get('/TaxationNcm/Details/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');

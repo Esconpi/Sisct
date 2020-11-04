@@ -95,12 +95,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
                 ViewBag.Company = comp;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.TypeCompany = comp.TypeCompany;
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
@@ -114,8 +111,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;
-                ViewBag.AnnexId = comp.AnnexId;
-                ViewBag.SectionId = comp.SectionId;
 
                 var imp = _taxService.FindByMonth(id, month, year);
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
