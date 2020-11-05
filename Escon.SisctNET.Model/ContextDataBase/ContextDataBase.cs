@@ -112,5 +112,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<VendaAnexo> VendaAnexos { get; set; }
 
         public DbSet<NatReceita> NatReceitas { get; set; }
+
+        public DbSet<Csosn> Csosns { get; set; }
     }
 }

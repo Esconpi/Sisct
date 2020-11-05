@@ -1,8 +1,8 @@
 ﻿@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault().Active ||
     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault().Active ||
     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active ||
-    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active
-    )
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -28,6 +28,11 @@
                 <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configuração</a></li>
             }
 
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
+            }
+
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Base</a></li>
@@ -43,9 +48,9 @@
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active ||
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
-   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active ||
    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active ||
-   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active ||
+   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Csosn")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -71,9 +76,19 @@
                 <li><a href="@Url.Action("Index","Cst")"><i class="fa fa-circle-o"></i>CST</a></li>
             }
 
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Csosn")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Csosn")"><i class="fa fa-circle-o"></i>Csosn</a></li>
+            }
+
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","NatReceita")"><i class="fa fa-circle-o"></i>Natureza da Receita</a></li>
             }
 
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active)
@@ -95,17 +110,6 @@
             {
                 <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Aliquota Estado</a></li>
             }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
-            }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","NatReceita")"><i class="fa fa-circle-o"></i>Natureza da Receita</a></li>
-            }
-
         </ul>
     </li>
 

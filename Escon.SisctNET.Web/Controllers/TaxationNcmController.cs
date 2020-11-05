@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing;
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -662,7 +661,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsMono = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico")).ToList();
+                var ncmsMono = _service.FindByCompany(comp.Document);
 
                 var ncmsSisct = _service.FindByPeriod(ncmsMono,inicio,fim);
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
@@ -782,7 +781,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (tempNcm == null)
                             {
                                 ViewBag.Ncm = nF[3];
-                                ViewBag.Erro = 1;
+                                ViewBag.Erro = 2;
                                 return View();
                             }
 
@@ -801,7 +800,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             ncmdivergentes.Add(divergente);
                         }
-                       
+                        else
+                        {
+                            ViewBag.Erro = 1;
+                            return View();
+                        }
                     }
                 }
 
