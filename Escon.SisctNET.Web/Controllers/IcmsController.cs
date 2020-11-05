@@ -555,6 +555,241 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                 }
+                else if (type.Equals("resumoCfopCst"))
+                {
+                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+                    List<List<string>> cfops = new List<List<string>>();
+
+                    notes = importXml.Nfe(directoryNfeExit);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string cfop = "";
+                        decimal vProd = 0;
+                        int pos = -1;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
+                            {
+                                pos = -1;
+                                cfop = notes[i][j]["CFOP"];
+
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd = 0;
+                                    vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
+
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+                            }
+
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+
+                                for (int e = 0; e < cfops.Count(); e++)
+                                {
+                                    if (cfops[e][0].Equals(cfop) && cfops[e][2].Equals(notes[i][j]["CST"]))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = _cfopService.FindByCode(cfop);
+                                    List<string> cc = new List<string>();
+                                    cc.Add(cfop);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(notes[i][j]["CST"]);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cfops.Add(cc);
+                                    pos = cfops.Count() - 1;
+                                }
+                                cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + vProd).ToString();
+                            }
+
+
+                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pICMS"))
+                            {
+                                cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+
+                            }
+
+                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pFCP"))
+                            {
+                                cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                            }
+                        }
+
+                    }
+
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
+                else if (type.Equals("resumoPorCfop"))
+                {
+                    var cfop = _cfopService.FindById(cfopid, null);
+                    decimal totalNota = 0, valorContabil = 0, baseIcms = 0, valorIcms = 0, valorFecop = 0;
+                    ViewBag.Code = cfop.Code;
+                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
+                    if (opcao.Equals("saida"))
+                    {
+                        notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
+                    }
+                    else
+                    {
+                        notes = importXml.NfeExit(directoryNfeEntrada, cfop.Code);
+                    }
+
+
+                    List<List<string>> resumoNote = new List<List<string>>();
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (opcao.Equals("saida"))
+                        {
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
+                            {
+                                notes.RemoveAt(i);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (!notes[i][3]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
+                            {
+                                notes.RemoveAt(i);
+                                continue;
+                            }
+                        }
+
+
+                        int pos = -1;
+                        for (int e = 0; e < resumoNote.Count(); e++)
+                        {
+                            if (resumoNote[e][0].Equals(notes[i][0]["chave"]))
+                            {
+                                pos = e;
+                            }
+                        }
+
+                        if (pos < 0)
+                        {
+                            List<string> note = new List<string>();
+                            note.Add(notes[i][0]["chave"]);
+                            note.Add(notes[i][1]["nNF"]);
+                            note.Add("0");
+                            note.Add("0");
+                            note.Add("0");
+                            note.Add("0");
+                            note.Add("0");
+                            note.Add(notes[i][1]["dhEmi"]);
+                            resumoNote.Add(note);
+                            pos = resumoNote.Count() - 1;
+                        }
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                            {
+                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                            {
+                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                            {
+                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                            {
+                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                            {
+                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
+                            {
+                                resumoNote[pos][3] = (Convert.ToDecimal(resumoNote[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                baseIcms += Convert.ToDecimal(notes[i][j]["vBC"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                            {
+                                resumoNote[pos][4] = (Convert.ToDecimal(resumoNote[pos][4]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
+                            {
+                                resumoNote[pos][5] = (Convert.ToDecimal(resumoNote[pos][5]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("vNF"))
+                            {
+                                resumoNote[pos][6] = notes[i][j]["vNF"];
+                                totalNota += Convert.ToDecimal(notes[i][j]["vNF"]);
+                            }
+                        }
+
+                    }
+
+
+                    ViewBag.Cfop = resumoNote.OrderBy(_ => Convert.ToInt32(_[1])).ToList();
+                    ViewBag.TotalNota = totalNota;
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseIcms = baseIcms;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
+                }
                 else if (type.Equals("anexo"))
                 {
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
@@ -921,137 +1156,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualTotal = percentualTotal;
                     ViewBag.TotalVendas = totalVendas;
                     ViewBag.TotalNcm = valorTotalNcm;
-                }
-                else if (type.Equals("resumoPorCfop"))
-                {
-                    var cfop = _cfopService.FindById(cfopid, null);
-                    decimal totalNota = 0, valorContabil = 0, baseIcms = 0, valorIcms = 0, valorFecop = 0;
-                    ViewBag.Code = cfop.Code;
-                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-
-                    if (opcao.Equals("saida"))
-                    {
-                        notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
-                    }
-                    else
-                    {
-                        notes = importXml.NfeExit(directoryNfeEntrada, cfop.Code);
-                    }
-
-
-                    List<List<string>> resumoNote = new List<List<string>>();
-
-                    for (int i = notes.Count - 1; i >= 0; i--)
-                    {
-                        if (opcao.Equals("saida"))
-                        {
-                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
-                            {
-                                notes.RemoveAt(i);
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            if (!notes[i][3]["CNPJ"].Equals(comp.Document) || notes[i].Count() <= 5)
-                            {
-                                notes.RemoveAt(i);
-                                continue;
-                            }
-                        }
-
-
-                        int pos = -1;
-                        for (int e = 0; e < resumoNote.Count(); e++)
-                        {
-                            if (resumoNote[e][0].Equals(notes[i][0]["chave"]))
-                            {
-                                pos = e;
-                            }
-                        }
-
-                        if (pos < 0)
-                        {
-                            List<string> note = new List<string>();
-                            note.Add(notes[i][0]["chave"]);
-                            note.Add(notes[i][1]["nNF"]);
-                            note.Add("0");
-                            note.Add("0");
-                            note.Add("0");
-                            note.Add("0");
-                            note.Add("0");
-                            note.Add(notes[i][1]["dhEmi"]);
-                            resumoNote.Add(note);
-                            pos = resumoNote.Count() - 1;
-                        }
-
-                        for (int j = 0; j < notes[i].Count(); j++)
-                        {
-
-                            if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                            {
-                                resumoNote[pos][2] = (Convert.ToDecimal(resumoNote[pos][2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
-                            {
-                                resumoNote[pos][3] = (Convert.ToDecimal(resumoNote[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                baseIcms += Convert.ToDecimal(notes[i][j]["vBC"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                            {
-                                resumoNote[pos][4] = (Convert.ToDecimal(resumoNote[pos][4]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
-                                valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
-                            {
-                                resumoNote[pos][5] = (Convert.ToDecimal(resumoNote[pos][5]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
-                                valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
-                            }
-
-                            if (notes[i][j].ContainsKey("vNF"))
-                            {
-                                resumoNote[pos][6] = notes[i][j]["vNF"];
-                                totalNota += Convert.ToDecimal(notes[i][j]["vNF"]);
-                            }
-                        }
-
-                    }
-
-
-                    ViewBag.Cfop = resumoNote.OrderBy(_ => Convert.ToInt32(_[1])).ToList();
-                    ViewBag.TotalNota = totalNota;
-                    ViewBag.ValorContabil = valorContabil;
-                    ViewBag.BaseIcms = baseIcms;
-                    ViewBag.ValorIcms = valorIcms;
-                    ViewBag.ValorFecop = valorFecop;
                 }
                 else if (type.Equals("suspensao"))
                 {
@@ -1526,6 +1630,176 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Produtos = produtos.OrderBy(_ => _[2]).ThenBy(_ => _[3]).ToList();
+                }
+                else if (type.Equals("tributacaoDiveregente"))
+                {
+                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+                    List<List<string>> prodsXml = new List<List<string>>();
+
+                    notes = importXml.Nfe(directoryNfeExit);
+
+                    var prodsAllCompany = _productIncentivoService.FindByAllProducts(comp.Document);
+
+
+                    var mes = importMes.NumberMonth(month);
+
+                    DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
+                    var prodsAll = _productIncentivoService.FindByDate(prodsAllCompany, data);
+
+                    var ncmsAll = _ncmService.FindAll(null);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string cProd = "", xProd = "", ncm = "", cest = "";
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+                            if (notes[i][j].ContainsKey("cProd"))
+                            {
+                                cProd = notes[i][j]["cProd"];
+                                xProd = notes[i][j]["xProd"];
+                                ncm = notes[i][j]["NCM"];
+                            }
+
+                            if (notes[i][j].ContainsKey("CEST"))
+                            {
+                                cest = notes[i][j]["CEST"];
+                            }
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+                                var temp = prodsAllCompany.Where(_ => _.Code.Equals(cProd) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).FirstOrDefault();
+
+                                if (temp == null)
+                                {
+                                    ViewBag.Erro = 1;
+                                    return View();
+                                }
+
+                                int pos = -1;
+
+                                for (int k = 0; k < prodsXml.Count(); k++)
+                                {
+                                    if (prodsXml[k][0].Equals(cProd) && prodsXml[k][2].Equals(ncm) && prodsXml[k][3].Equals(cest) &&
+                                        prodsXml[k][4].Equals(notes[i][j]["CST"]))
+                                    {
+                                        pos = k;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    List<string> prods = new List<string>();
+                                    prods.Add(cProd);
+                                    prods.Add(xProd);
+                                    prods.Add(ncm);
+                                    prods.Add(cest);
+                                    prods.Add(notes[i][j]["CST"]);
+
+                                    prodsXml.Add(prods);
+
+                                }
+                                cProd = "";
+                                xProd = "";
+                                ncm = "";
+                                cest = "";
+                            }
+
+                        }
+
+                    }
+
+                    List<List<string>> divergentes = new List<List<string>>();
+
+                    foreach (var prodX in prodsXml)
+                    {
+                        bool achou = false;
+                        foreach (var prodS in prodsAll)
+                        {
+                            string cst = "";
+                            if (prodS.CstId != null)
+                            {
+                                cst = prodS.Cst.Code;
+                            }
+
+                            if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
+                               prodS.Cest.Equals(prodX[3]) && cst.Equals(prodX[4]))
+                            {
+                                achou = true;
+                                break;
+                            }
+                        }
+
+                        if (achou == false)
+                        {
+                            Model.ProductIncentivo temp = new Model.ProductIncentivo();
+                            bool contem = false;
+
+                            foreach (var prodS in prodsAll)
+                            {
+                                if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
+                                   prodS.Cest.Equals(prodX[3]))
+                                {
+                                    contem = true;
+                                    temp = prodS;
+                                    break;
+                                }
+                            }
+
+                            if (contem == true)
+                            {
+                                List<string> divergente = new List<string>();
+
+                                var ncmSTemp = ncmsAll.Where(_ => _.Code.Equals(temp.Ncm)).FirstOrDefault();
+                                var ncmXTemp = ncmsAll.Where(_ => _.Code.Equals(prodX[2])).FirstOrDefault();
+
+                                if (ncmSTemp == null)
+                                {
+                                    ViewBag.Ncm = temp.Ncm;
+                                    ViewBag.Erro = 2;
+                                    return View();
+                                }
+
+                                if (ncmXTemp == null)
+                                {
+                                    ViewBag.Ncm = prodX[2];
+                                    ViewBag.Erro = 2;
+                                    return View();
+                                }
+
+                                divergente.Add(prodX[0]);
+                                divergente.Add(prodX[1]);
+                                divergente.Add(prodX[2]);
+                                divergente.Add(ncmXTemp.Description);
+                                divergente.Add(prodX[3]);
+                                divergente.Add(prodX[4]);
+
+                                divergente.Add(temp.Ncm);
+                                divergente.Add(ncmSTemp.Description);
+                                divergente.Add(temp.Cest);
+                                if (temp.CstId == null)
+                                {
+                                    divergente.Add("");
+                                }
+                                else
+                                {
+                                    divergente.Add(temp.Cst.Code);
+                                }
+
+                                divergentes.Add(divergente);
+                            }
+                        }
+
+                    }
+
+                    ViewBag.Divergentes = divergentes.OrderBy(_ => _[0]).ToList();
                 }
                 else if (type.Equals("venda"))
                 {
@@ -2214,7 +2488,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TaxAnexo = impAnexo;
 
                     var mesAtual = importMes.NumberMonth(month);
-                    var mesAnterior = importMes.NameMonth(mesAtual);
+                    var mesAnterior = importMes.NameMonthLast(mesAtual);
                     decimal saldoCredorAnterior = 0;
 
                     string ano = year;
@@ -2492,157 +2766,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorCreditoDaselencadaInterestadual = valorCreditoDaselencadaInterestadual.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualDaselencadaInterestadual = comp.IncIIInterestadual.ToString().Replace(".", ",");
 
-                }
-                else if (type.Equals("tributacaoDiveregente"))
-                {
-                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-                    List<List<string>> prodsXml = new List<List<string>>();
-
-                    notes = importXml.Nfe(directoryNfeExit);
-
-                    var prodsAll = _productIncentivoService.FindByAllProducts(comp.Document);
-
-                    var ncmsAll = _ncmService.FindAll(null);
-
-                    for (int i = notes.Count - 1; i >= 0; i--)
-                    {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
-                        {
-                            notes.RemoveAt(i);
-                            continue;
-                        }
-
-                        string cProd = "", xProd = "",ncm = "",cest = "";
-
-                        for (int j = 0; j < notes[i].Count(); j++)
-                        {
-                            if (notes[i][j].ContainsKey("cProd"))
-                            {
-                                cProd = notes[i][j]["cProd"];
-                                xProd = notes[i][j]["xProd"];
-                                ncm = notes[i][j]["NCM"];
-                            }
-
-                            if (notes[i][j].ContainsKey("CEST"))
-                            {
-                                cest = notes[i][j]["CEST"];
-                            }
-
-                            if (notes[i][j].ContainsKey("CST"))
-                            {
-                                int pos = -1;
-
-                                for (int k = 0; k < prodsXml.Count(); k++)
-                                {
-                                    if (prodsXml[k][0].Equals(cProd) && prodsXml[k][2].Equals(ncm) && prodsXml[k][3].Equals(cest) &&
-                                        prodsXml[k][4].Equals(notes[i][j]["CST"]))
-                                    {
-                                        pos = k;
-                                        break;
-                                    }
-                                }
-
-                                if(pos < 0)
-                                {
-                                    List<string> prods = new List<string>();
-                                    prods.Add(cProd);
-                                    prods.Add(xProd);
-                                    prods.Add(ncm);
-                                    prods.Add(cest);
-                                    prods.Add(notes[i][j]["CST"]);
-
-                                    prodsXml.Add(prods);
-
-                                }
-                            }
-
-                        }
-
-                    }
-
-                    List<List<string>> divergentes = new List<List<string>>();
-
-                    foreach (var prodX in prodsXml)
-                    {
-                        bool achou = false;
-                        foreach (var prodS in prodsAll)
-                        {
-                            string cst = "";
-                            if (prodS.CstId != null)
-                            {
-                                cst = prodS.Cst.Code;
-                            }
-
-                            if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
-                               prodS.Cest.Equals(prodX[3]) && cst.Equals(prodX[4]))
-                            {
-                                achou = true;
-                                break;
-                            }
-                        }
-
-                        if(achou == false)
-                        {
-                            Model.ProductIncentivo temp = new Model.ProductIncentivo();
-                            bool contem = false;
-
-                            foreach (var prodS in prodsAll)
-                            {
-                                if (prodS.Code.Equals(prodX[0]) && prodS.Ncm.Equals(prodX[2]) &&
-                                   prodS.Cest.Equals(prodX[3]))
-                                {
-                                    contem = true;
-                                    temp = prodS;
-                                    break;
-                                }
-                            }
-
-                            if (contem == true)
-                            {
-                                List<string> divergente = new List<string>();
-
-                                var ncmSTemp = ncmsAll.Where(_ => _.Code.Equals(temp.Ncm)).FirstOrDefault();
-                                var ncmXTemp = ncmsAll.Where(_ => _.Code.Equals(prodX[2])).FirstOrDefault();
-
-                                if (ncmSTemp == null)
-                                {
-                                    ViewBag.Ncm = temp.Ncm;
-                                    ViewBag.Erro = 1;
-                                    return View();
-                                }
-
-                                if (ncmXTemp == null)
-                                {
-                                    ViewBag.Ncm = prodX[2];
-                                    ViewBag.Erro = 1;
-                                    return View();
-                                }
-
-                                divergente.Add(temp.Code);
-                                divergente.Add(temp.Name);
-                                divergente.Add(temp.Ncm);
-                                divergente.Add(ncmSTemp.Description);
-                                divergente.Add(temp.Cest);
-                                if (temp.CstId == null)
-                                {
-                                    divergente.Add("");
-                                }
-                                else
-                                {
-                                    divergente.Add(temp.Cst.Code);
-                                }
-                                divergente.Add(prodX[0]);
-                                divergente.Add(prodX[1]);
-                                divergente.Add(prodX[2]);
-                                divergente.Add(ncmXTemp.Description);
-                                divergente.Add(prodX[3]);
-                                divergente.Add(prodX[4]);
-                                divergentes.Add(divergente);
-                            }
-                        }
-
-                    }
-                   
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

@@ -57,6 +57,59 @@ namespace Escon.SisctNET.Web.Period
         
         public string NameMonth(int numero)
         {
+
+            if (numero.Equals(1))
+            {
+                return "Janeiro";
+            }
+            else if (numero.Equals(2))
+            {
+                return "Fevereiro";
+            }
+            else if (numero.Equals(3))
+            {
+                return "Março";
+            }
+            else if (numero.Equals(4))
+            {
+                return "Abril";
+            }
+            else if (numero.Equals(5))
+            {
+                return "Maio";
+            }
+            else if (numero.Equals(6))
+            {
+                return "Junho";
+            }
+            else if (numero.Equals(7))
+            {
+                return "Julho";
+            }
+            else if (numero.Equals(8))
+            {
+                return "Agosto";
+            }
+            else if (numero.Equals(9))
+            {
+                return "Setembro";
+            }
+            else if (numero.Equals(10))
+            {
+                return "Outubro";
+            }
+            else if (numero.Equals(11))
+            {
+                return "Novembro";
+            }
+            else
+            {
+                return "Dezembro";
+            }
+        }
+
+        public string NameMonthLast(int numero)
+        {
             if (numero.Equals(1))
             {
                 numero = 12;

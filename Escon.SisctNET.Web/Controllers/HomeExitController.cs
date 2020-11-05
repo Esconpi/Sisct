@@ -64,7 +64,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     cfop.Description = cfop.Code + " - " + cfop.Description;
                 }
-                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
                 ViewBag.CfopId = cfops;
                 return View(result);
@@ -126,7 +125,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     cfop.Description = cfop.Code + " - " + cfop.Description;
                 }
-                list_cfop.Insert(0, new Cfop() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList cfops = new SelectList(list_cfop, "Id", "Description", null);
                 ViewBag.CfopId = cfops;
                 ViewBag.TypeCompany = comp.TypeCompany;

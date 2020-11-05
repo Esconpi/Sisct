@@ -3576,7 +3576,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         var mesAtual = importMes.NumberMonth(month);
-                        var mesAnterior = importMes.NameMonth(mesAtual);
+                        var mesAnterior = importMes.NameMonthLast(mesAtual);
                         decimal saldoCredorAnterior = 0;
 
                         string ano = year;

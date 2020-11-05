@@ -51,6 +51,14 @@
                     }
 
                 }
+                else if (ViewBag.Type == "resumoCfopCst")
+                {
+                    @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "resumoPorCfop")
+                {
+                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "anexo")
                 {
                     @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
@@ -58,10 +66,6 @@
                 else if (ViewBag.Type == "foraAnexo")
                 {
                     @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoPorCfop")
-                {
-                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "suspensao")
                 {
@@ -74,6 +78,21 @@
                 else if (ViewBag.Type == "produtoST")
                 {
                     @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "tributacaoDiveregente")
+                {
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>Há Produto não Tributado</strong></p>
+                    }
+                    else if (ViewBag.Erro == 2)
+                    {
+                        <p style="text-align:center;color:red;"><strong>O NCM @ViewBag.Ncm não estar cadastrado</strong></p>
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
+                    }
                 }
                 else if (ViewBag.Type == "anexoAutoPecas")
                 {
@@ -146,17 +165,7 @@
                         }
                     }
                 }
-                else if (ViewBag.Type == "tributacaoDiveregente")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center;color:red;"><strong>O NCM @ViewBag.Ncm não estar cadastrado</strong></p>
-                    }
-                    else
-                    {
-                        @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
-                    }
-                }
+
             </div>
         </div>
     </div>
