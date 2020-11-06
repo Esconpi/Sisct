@@ -52,7 +52,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import();
                 var importSped = new Sped.Import();
-                var imporrExcel = new Planilha.Import();
+                var importExcel = new Planilha.Import();
+                var importEvento = new Evento.Import();
                 var confDBSisctNfe = new Model.Configuration();
 
                 if (arquivoSped == null || arquivoSped.Length == 0)
@@ -92,8 +93,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (opcao.Equals(Model.Opcao.NFe))
                 {
+                    List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
 
-                    List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
                     List<List<string>> sped = new List<List<string>>();
                     //List<List<string>> SpedDif = new List<List<string>>();
 
@@ -106,10 +109,14 @@ namespace Escon.SisctNET.Web.Controllers
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
                     }
 
-                    string directoryNfe = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                    string directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                    string directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
+                    string directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
 
-                    notes = importXml.NfeResume(directoryNfe);
-                        
+                    notesValidas = importXml.NfeResume(directoryValida);
+                    notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
+                    notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCT))
                     {
                         sped = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
@@ -132,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.Xml))
                     {
-                        foreach (var note in notes)
+                        foreach (var note in notesValidas)
                         {
                             string nota_xml = note[0]["chave"];
                             bool nota_encontrada = false;
@@ -162,7 +169,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             bool nota_encontrada = false;
 
-                            foreach (var notaXml in notes)
+                            foreach (var notaXml in notesValidas)
                             {
                                 string nota_xml = notaXml[0]["chave"];
                                 if (note[0].Equals(nota_xml))
@@ -193,7 +200,7 @@ namespace Escon.SisctNET.Web.Controllers
                         foreach (var linha in sped)
                         {
                             List<string> Valores = new List<string>();
-                            foreach (var notaXml in notes)
+                            foreach (var notaXml in notesValidas)
                             {
                                 string nota_xml = notaXml[0]["chave"];
                                 if (linha[1].Equals(nota_xml))
@@ -251,7 +258,7 @@ namespace Escon.SisctNET.Web.Controllers
                         foreach (var linha in sped)
                         {
                             List<string> Valores = new List<string>();
-                            foreach (var notaXml in notes)
+                            foreach (var notaXml in notesValidas)
                             {
                                 string nota_xml = notaXml[0]["chave"];
                                 if (linha[1].Equals(nota_xml))
@@ -368,7 +375,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
                         var notesSped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
-                        var notesPlanilha = imporrExcel.Notes(caminhoDestinoArquivoOriginalExcel);
+                        var notesPlanilha = importExcel.Notes(caminhoDestinoArquivoOriginalExcel);
                         
                         foreach (var nPlanilha in notesPlanilha)
                         {

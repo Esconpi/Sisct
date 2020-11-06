@@ -39,16 +39,16 @@
         <dd>
             @if (Model.CstEntradaId != null)
             {
-                @Html.DisplayFor(model => model.CstEntrada.Code)
+                @Model.CstEntrada.Code <span>-</span> @Model.CstEntrada.Description
             }
         </dd>
         <dt>
             Cst Saída
         </dt>
         <dd>
-            @if (Model.CstEntradaId != null)
+            @if (Model.CstSaidaId != null)
             {
-                @Html.DisplayFor(model => model.CstSaida.Code)
+                @Model.CstSaida.Code <span>-</span> @Model.CstSaida.Description
             }
         </dd>
         <dt>

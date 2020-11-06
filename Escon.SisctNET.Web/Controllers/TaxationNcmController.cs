@@ -205,13 +205,21 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
+                foreach (var c in list_cstE)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
                 ViewBag.CstEntradaId = cstE;
 
                 List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
+                foreach (var c in list_cstS)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
                 ViewBag.CstSaidaID = cstS;
 
                 List<Model.TypeNcm> list_tipos = _typeNcmService.FindAll(null);
@@ -346,13 +354,21 @@ namespace Escon.SisctNET.Web.Controllers
             try {
 
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
+                foreach (var c in list_cstE)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
                 ViewBag.CstEntradaId = cstE;
 
                 List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
+                foreach (var c in list_cstS)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
                 ViewBag.CstSaidaID = cstS;
 
                 List<Model.TypeNcm> list_tipos = _typeNcmService.FindAll(null);
@@ -515,13 +531,23 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstE.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Code", null);
+                foreach (var c in list_cstE)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
                 ViewBag.CstEntradaId = cstE;
 
+
+
                 List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                list_cstS.Insert(0, new Model.Cst() { Code = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Code", null);
+                foreach (var c in list_cstS)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
                 ViewBag.CstSaidaID = cstS;
 
                 var result = _service.FindById(id, null);

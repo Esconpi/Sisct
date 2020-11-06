@@ -7,7 +7,6 @@
             <th style="border:1px solid; text-align:center;">
                 Descrição
             </th>
-            <th style="border:1px solid; text-align:center;">Origem</th>
             <th style="border:1px solid; text-align:center;">
                 Ncm
             </th>
@@ -17,12 +16,16 @@
             <th style="border:1px solid; text-align:center;">
                 CEST
             </th>
+            <th style="border:1px solid; text-align:center;">Origem</th>
             <th style="border:1px solid; text-align:center;">
-                CST
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                CST/CSOSN
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="font-size:10px;">
         @foreach (var item in ViewBag.Divergentes)
         {
             <tr style="border:1px solid;">
@@ -32,20 +35,23 @@
                 <td style="border:1px solid; padding-left:1%;" rowspan="2">
                     @item[1]
                 </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;" rowspan="2">
+                    @item[2]
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;" rowspan="2">
+                    @item[3]
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;" rowspan="2">
+                    @item[4]
+                </td>
                 <th style="border:1px solid; padding-left:1%;">
                     XML
                 </th>
                 <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[2]
-                </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[3]
-                </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[4]
-                </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
                     @item[5]
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                    @item[6]
                 </td>
             </tr>
             <tr>
@@ -53,16 +59,10 @@
                     FORTES
                 </th>
                 <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[6]
+                    
                 </td>
                 <td style="border:1px solid; padding-left:1%; padding-right:1%;">
                     @item[7]
-                </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[8]
-                </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @item[9]
                 </td>
             </tr>
         }
