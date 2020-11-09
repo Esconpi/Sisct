@@ -1357,8 +1357,79 @@ namespace Escon.SisctNET.Web.Sped
                 while ((line = archiveSped.ReadLine()) != null)
                 {
                     string[] linha = line.Split('|');
-                    //&& linha[6] != "05" && linha[6] != "03" && linha[6] != "02"
                     if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        spedNf.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNf;
+        }
+
+        public List<List<string>> SpedNfeSaidaNormal(string directorySped)
+        {
+            List<List<string>> spedNf = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")) && linha[6] != "05" && linha[6] != "03" && linha[6] != "02")
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        spedNf.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNf;
+        }
+        
+        public List<List<string>> SpedNfeSaidaCancelada(string directorySped, string modelo)
+        {
+            List<List<string>> spedNf = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")) && (linha[6] == "05" || linha[6] == "03" || linha[6] == "02") && linha[5] == modelo)
                     {
                         List<string> sped = new List<string>();
                         sped.Add(linha[9]);

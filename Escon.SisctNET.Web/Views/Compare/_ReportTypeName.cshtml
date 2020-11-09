@@ -1,0 +1,33 @@
+﻿@if (ViewBag.Opcao == "NFe")
+{
+    <b>NFe </b>
+}
+else if (ViewBag.Opcao == "CTe")
+{
+    <b>CTe</b>
+}
+else if (ViewBag.Opcao == "Planilha")
+{
+    <b>Planilha</b>
+}
+
+@if (ViewBag.Ordem == "Xml")
+{
+    <b>(XML x SPED)</b>
+}
+else if (ViewBag.Ordem == "Sped")
+{
+    <b>(SPED x XML)</b>
+}
+else if (ViewBag.Ordem == "DifereValor")
+{
+    <b>(DIFERENÇA DE TOTAIS)</b>
+}
+else if (ViewBag.Ordem == "SisCT")
+{
+    <b>(XML x SPED SisCT)</b>
+}
+else if(ViewBag.Ordem == "Malha")
+{
+    <b>(Excel x SPED)</b>
+}

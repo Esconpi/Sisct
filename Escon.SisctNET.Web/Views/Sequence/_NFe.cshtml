@@ -1,4 +1,15 @@
-﻿<table class="table" style="border: 2px solid;">
+﻿<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.N55.Count</div>
+
+@if (ViewBag.N55.Count > 0)
+{
+    <div style="float:right;">
+        <b>Primeira Nota: </b> @ViewBag.N55[0] <br />
+        <b>Última Nota: </b> @ViewBag.N55[ViewBag.N55.Count - 1]
+    </div>
+}
+
+
+<table class="table" style="border: 2px solid;">
     <thead>
         <tr>
             <th style="text-align:center;border:1px solid;" colspan="3">NOTAS MODELO 55</th>
@@ -26,6 +37,21 @@
         }
     </tbody>
 </table>
+
+<div style="float:left;"><b>Quantidade: </b> @ViewBag.Notas55.Count</div>
+
+<br />
+<hr />
+
+<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.N65.Count</div>
+
+@if (ViewBag.N65.Count > 0)
+{    
+    <div style="float:right;">
+        <b>Primeira Nota: </b> @ViewBag.N65[0] <br />
+        <b>Última Nota: </b> @ViewBag.N65[ViewBag.N65.Count - 1]
+    </div>
+}
 
 <table class="table" style="border: 2px solid;">
     <thead>
@@ -55,3 +81,5 @@
         }
     </tbody>
 </table>
+
+<div style="float:left;"><b>Quantidade: </b> @ViewBag.Notas65.Count</div>

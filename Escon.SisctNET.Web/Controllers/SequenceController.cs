@@ -44,42 +44,79 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Archive = archive.ToString();
                 ViewBag.Document = comp.Document;
                 ViewBag.SocialName = comp.SocialName;
-                ViewBag.Ano = year;
-                ViewBag.Mes = month;
+
+                SessionManager.SetMonthInSession(month);
+                SessionManager.SetYearInSession(year);
 
                 var importXml = new Xml.Import();
                 var importSped = new Sped.Import();
-                var confDBSisctNfe = new Model.Configuration();
-                var onfDBSisctCte = new Model.Configuration();
-                
-                confDBSisctNfe = _configurationService.FindByName("NFe Saida");
-                onfDBSisctCte = _configurationService.FindByName("CTe Saida");
+                var importEvento = new Evento.Import();
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+                var onfDBSisctCte = _configurationService.FindByName("CTe Saida");
 
-                List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+                string directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
+                string directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
+
                 List<int> nfe55 = new List<int>();
                 List<int> nfe65 = new List<int>();
 
                 if (archive.Equals(Model.Archive.XmlNFe))
                 {
-                    notes = importXml.Nfe(directoryNfe);
+                    List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
 
-                    for (int i = notes.Count - 1; i >= 0; i--)
+                    notesValidas = importXml.NfeResume(directoryValida);
+                    notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
+                    notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+
+                    for (int i = notesValidas.Count - 1; i >= 0; i--)
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        if (!notesValidas[i][2]["CNPJ"].Equals(comp.Document))
                         {
-                            notes.RemoveAt(i);
+                            notesValidas.RemoveAt(i);
                             continue;
                         }
 
-                        if (notes[i][1]["mod"].Equals("55"))
+                        if (notesValidas[i][1]["mod"].Equals("55"))
                         {
-                            nfe55.Add(Convert.ToInt32(notes[i][1]["nNF"]));
+                            nfe55.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                         }
                         else
                         {
-                            nfe65.Add(Convert.ToInt32(notes[i][1]["nNF"]));
+                            nfe65.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
+                        }
+                    }
+
+                    foreach (var note in notesNFeCanceladas)
+                    {
+                        if (note[0]["chNFe"].Substring(20, 2).Equals("55"))
+                        {
+                            nfe55.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
+                        }
+                        else
+                        {
+                            nfe65.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
+                        }
+                    }
+
+                    for (int i = notesNFCeCanceladas.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesNFCeCanceladas[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notesNFCeCanceladas.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (notesNFCeCanceladas[i][1]["mod"].Equals("55"))
+                        {
+                            nfe55.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
+                        }
+                        else
+                        {
+                            nfe65.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                         }
                     }
                 }
@@ -210,9 +247,12 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-
+                ViewBag.N55 = nfe55;
+                ViewBag.N65 = nfe65;
                 ViewBag.Notas55 = nfe55Fora;
                 ViewBag.Notas65 = nfe65Fora;
+
+
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 

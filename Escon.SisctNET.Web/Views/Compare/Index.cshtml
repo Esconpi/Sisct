@@ -16,8 +16,13 @@
             <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
-            <div style="float:left;"><strong>Periodo:</strong> @ViewBag.Mes/@ViewBag.Ano</div>
-            <div style="float:right;"><strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")</div>
+            <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
+            <div style="float:right;">
+                <strong>Periodo:</strong> @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
+                <br />
+                <strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
+            <br />
         </div>
     </div>
     <div class="box-body">
@@ -27,6 +32,7 @@
                 @if (ViewBag.Ordem == "Xml")
                 {
                     @await Html.PartialAsync("_XmlSped", new ViewDataDictionary(ViewData))
+                    
                 }
                 else if (ViewBag.Ordem == "Sped")
                 {
@@ -40,32 +46,29 @@
                 {
                     @await Html.PartialAsync("_XmlSpedSisct", new ViewDataDictionary(ViewData))
                 }
-                <div style="float:left;">
+
+                <div class="col-lg-12">
                     <h6>
                         <strong>
-                            @if (ViewBag.Ordem == "Sped")
+                            @if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "SisCT")
                             {
-                                @ViewBag.notas_sped.Count
+                                @ViewBag.Valores.Count <span>registro(s)</span>
                             }
-                            else if (ViewBag.Ordem == "Xml")
-                            {
-                                @ViewBag.Notas.Count
-                            }
-                            else if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "SisCT")
-                            {
-                                @ViewBag.Valores.Count
-                            }
-                            registro(s)
                         </strong>
                     </h6>
                 </div>
             }
             else if (ViewBag.Opcao == "CTe")
             {
-                @await Html.PartialAsync("_CompareCte", new ViewDataDictionary(ViewData))
+                @if (ViewBag.Ordem == "Xml")
+                {
+                    @await Html.PartialAsync("_CompareCte", new ViewDataDictionary(ViewData))
+                }
+
                 <div style="float:left;">
                     <h6><strong>@ViewBag.Ctes.Count registro(s)</strong></h6>
                 </div>
+
             }
             else if (ViewBag.Opcao == "Planilha")
             {
@@ -74,7 +77,7 @@
                     @await Html.PartialAsync("_Malha", new ViewDataDictionary(ViewData))
 
                     <div style="float:left;">
-                        <h6><strong>@ViewBag.NotasExcelCount registro(s)</strong></h6>
+                        <h6><strong>@ViewBag.NotasExcel.Count registro(s)</strong></h6>
                     </div>
                 }
 

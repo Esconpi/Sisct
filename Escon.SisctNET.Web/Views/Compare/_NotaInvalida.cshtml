@@ -1,0 +1,33 @@
+﻿<br />
+<hr />
+<div><b>Notas Inválidas</b></div>
+<br />
+
+<table class="table" style="width:100%;font-size:10px;">
+    <thead>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;">Chave</th>
+            <th style="border: 1px solid;">Modelo</th>
+            <th style="border: 1px solid;">Nota</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var nota in ViewBag.NotasInvalidas)
+        {
+            <tr style="border: 1px solid;">
+                <td style="border: 1px solid;">@nota[2]</td>
+                <td style="border: 1px solid;">@nota[0]</td>
+                <td style="border: 1px solid;">@nota[1]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-lg-12">
+    <h6>
+        <strong>
+            @ViewBag.NotasInvalidas.Count registro(s)
+        </strong>
+    </h6>
+</div>

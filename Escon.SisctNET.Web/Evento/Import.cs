@@ -24,9 +24,7 @@ namespace Escon.SisctNET.Web.Evento
                     var arquivo = archivesNfes[i];
 
                     if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        Dictionary<string, string> infEvento = new Dictionary<string, string>();
-                        Dictionary<string, string> det = new Dictionary<string, string>();
+                    {                       
                         List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
@@ -38,10 +36,21 @@ namespace Escon.SisctNET.Web.Evento
                                     switch (reader.Name)
                                     {
                                         case "infEvento":
+                                            Dictionary<string, string> infEvento = new Dictionary<string, string>();
                                             reader.Read();
                                             while (reader.Name != "infEvento" && reader.Name != "verEvento")
                                             {
-                                                infEvento.Add(reader.Name, reader.ReadString());
+                                                if (reader.Name == "cOrgao" || reader.Name == "tpAmb" || reader.Name == "CNPJ" ||
+                                                     reader.Name == "chNFe" || reader.Name == "dhEvento" || reader.Name == "tpEvento" ||
+                                                     reader.Name == "nSeqEvento" || reader.Name == "verEvento" || reader.Name == "cStat" || 
+                                                     reader.Name == "xMotivo" || reader.Name == "CNPJDest" || reader.Name == "dhRegEvento" || 
+                                                     reader.Name == "nProt")
+                                                {
+                                                    if (!infEvento.ContainsKey(reader.Name))
+                                                    {
+                                                        infEvento.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                }
                                                 reader.Read();
                                             }
                                             nota.Add(infEvento);
@@ -49,12 +58,16 @@ namespace Escon.SisctNET.Web.Evento
 
 
                                         case "detEvento":
+                                            Dictionary<string, string> det = new Dictionary<string, string>();
                                             reader.Read();
-                                            while (reader.Name.ToString() != "detEvento")
+                                            while (reader.Name.ToString() != "detEvento" && reader.Name.ToString() != "xJust")
                                             {
-                                                if (reader.Name.ToString() != "xJust")
+                                                if (reader.Name == "descEvento" || reader.Name == "nProt" || reader.Name == "xJust")
                                                 {
-                                                    det.Add(reader.Name, reader.ReadString());
+                                                    if (!det.ContainsKey(reader.Name))
+                                                    {
+                                                        det.Add(reader.Name, reader.ReadString());
+                                                    }
                                                 }
                                                 reader.Read();
                                             }

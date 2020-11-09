@@ -47,8 +47,9 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Ordem = ordem.ToString();
                 ViewBag.Document = company.Document;
                 ViewBag.SocialName = company.SocialName;
-                ViewBag.Ano = year;
-                ViewBag.Mes = month;
+
+                SessionManager.SetMonthInSession(month);
+                SessionManager.SetYearInSession(year);
 
                 var importXml = new Xml.Import();
                 var importSped = new Sped.Import();
@@ -97,8 +98,9 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
 
-                    List<List<string>> sped = new List<List<string>>();
-                    //List<List<string>> SpedDif = new List<List<string>>();
+                    List<List<string>> spedNormal = new List<List<string>>();
+                    List<List<string>> spedNFeCancelada = new List<List<string>>();
+                    List<List<string>> spedNFCeCancelada = new List<List<string>>();
 
                     if (ident.Equals("0"))
                     {
@@ -119,22 +121,25 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCT))
                     {
-                        sped = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
+                        spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
                     }
                     else
                     {
                         if (ident.Equals("0"))
                         {
-                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
                             //sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
                         else if (ident.Equals("1"))
                         {
-                            sped = importSped.SpedNfeSaida(caminhoDestinoArquivoOriginalSped);
+                            spedNormal = importSped.SpedNfeSaidaNormal(caminhoDestinoArquivoOriginalSped);
+                            spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped,"55");
+                            spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
                         }
                     }
 
-                    List<List<Dictionary<string, string>>> notas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notasValidas = new List<List<Dictionary<string, string>>>();
+                    List<List<string>> notasInvalidas = new List<List<string>>();
                     List<List<string>> notas_sped = new List<List<string>>();
 
                     if (ordem.Equals(Model.Ordem.Xml))
@@ -143,7 +148,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             string nota_xml = note[0]["chave"];
                             bool nota_encontrada = false;
-                            foreach (var nota_sped in sped)
+                            foreach (var nota_sped in spedNormal)
                             {
                                 if (nota_xml.Equals(nota_sped[0]))
                                 {
@@ -153,19 +158,62 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             if (nota_encontrada.Equals(false))
                             {
-                                notas.Add(note);
+                                notasValidas.Add(note);
                             }
                         }
-                            
+
+                        foreach (var note in notesNFeCanceladas)
+                        {
+                            string nota_xml = note[0]["chNFe"];
+                            bool nota_encontrada = false;
+                            foreach (var nota_sped in spedNFeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[0]["chNFe"].Substring(20,2));
+                                n.Add(note[0]["chNFe"].Substring(25,9));
+                                n.Add(note[0]["chNFe"]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
+
+                        foreach (var note in notesNFCeCanceladas)
+                        {
+                            string nota_xml = note[0]["chave"];
+                            bool nota_encontrada = false;
+                            foreach (var nota_sped in spedNFCeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[1]["mod"]);
+                                n.Add(note[1]["nNF"]);
+                                n.Add(note[0]["chave"]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
                     }
                     else if (ordem.Equals(Model.Ordem.Sped))
                     {
                         if (ident.Equals("0"))
                         {
-                            sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
                        
-                        foreach (var note in sped)
+                        foreach (var note in spedNormal)
                         {
                             bool nota_encontrada = false;
 
@@ -183,21 +231,60 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 notas_sped.Add(note);
                             }
-
-                            /*if (nota_encontrada.Equals(false))
-                            {
-                                if (note[4].Equals("0") && note[5].Equals("0"))
-                                {
-                                    notas_sped.Add(note);
-                                }
-                            }*/
                         }
 
+                        foreach (var note in spedNFeCancelada)
+                        {
+                            bool nota_encontrada = false;
+
+                            foreach (var notaXml in notesNFeCanceladas)
+                            {
+                                string nota_xml = notaXml[0]["chNFe"];
+                                if (note[0].Equals(nota_xml))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[1]);
+                                n.Add(note[2]);
+                                n.Add(note[0]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
+
+                        foreach (var note in spedNFCeCancelada)
+                        {
+                            bool nota_encontrada = false;
+
+                            foreach (var notaXml in notesNFCeCanceladas)
+                            {
+                                string nota_xml = notaXml[0]["chave"];
+                                if (note[0].Equals(nota_xml))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[1]);
+                                n.Add(note[2]);
+                                n.Add(note[0]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
                     }
                     else if (ordem.Equals(Model.Ordem.DifereValor))
                     {
                         List<List<string>> registros = new List<List<string>>();
-                        foreach (var linha in sped)
+                        foreach (var linha in spedNormal)
                         {
                             List<string> Valores = new List<string>();
                             foreach (var notaXml in notesValidas)
@@ -255,7 +342,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         List<List<string>> registros = new List<List<string>>();
                         decimal valorTotaGeralXml = 0, valorTotalGeralSped = 0;
-                        foreach (var linha in sped)
+                        foreach (var linha in spedNormal)
                         {
                             List<string> Valores = new List<string>();
                             foreach (var notaXml in notesValidas)
@@ -286,8 +373,9 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
                     }
 
-                    ViewBag.Notas = notas;
-                    ViewBag.notas_sped = notas_sped;
+                    ViewBag.Notas = notasValidas;
+                    ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
+                    ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
                        
                 }
                 else if (opcao.Equals(Model.Opcao.CTe))
@@ -305,31 +393,34 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> ctes_nao_encontrados = new List<List<Dictionary<string, string>>>();
 
-                    foreach (var cte in ctes)
+                    if (ordem.Equals(Model.Ordem.Xml))
                     {
-                        for (int i = 0; i < cte.Count; i++)
+                        foreach (var cte in ctes)
                         {
-                            if (cte[i].ContainsKey("chave"))
+                            for (int i = 0; i < cte.Count; i++)
                             {
-                                string cte_xml = cte[i]["chave"];
-                                bool cte_encontrado = false;
-                                for (int k = 0; k < sped.Count(); k++)
+                                if (cte[i].ContainsKey("chave"))
                                 {
-                                    if (cte_xml == sped[k])
+                                    string cte_xml = cte[i]["chave"];
+                                    bool cte_encontrado = false;
+                                    for (int k = 0; k < sped.Count(); k++)
                                     {
-                                        cte_encontrado = true;
-                                        break;
+                                        if (cte_xml == sped[k])
+                                        {
+                                            cte_encontrado = true;
+                                            break;
+                                        }
                                     }
-                                }
 
-                                if (cte_encontrado == false)
-                                {
-                                    ctes_nao_encontrados.Add(cte);
+                                    if (cte_encontrado == false)
+                                    {
+                                        ctes_nao_encontrados.Add(cte);
+                                    }
                                 }
                             }
                         }
                     }
-
+                   
                     List<string> modal = new List<string> { "Rod", "Aér", "Aquav", "Ferrov", "Dutov", "Multi" };
                     List<string> tipo = new List<string> { "Normal", "Subcontratação", "Redespacho", "Red. Inter", "Ser. Vin. Multi" };
                     ViewBag.Modal = modal;
@@ -400,7 +491,6 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                         
                     ViewBag.NotasExcel = notasExcel;
-                    ViewBag.NotasExcelCount = notasExcel.Count();
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

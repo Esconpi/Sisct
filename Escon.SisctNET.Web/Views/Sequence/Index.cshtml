@@ -17,8 +17,12 @@
             <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
-            <div style="float:left;"><strong>Periodo:</strong> @ViewBag.Mes/@ViewBag.Ano</div>
-            <div style="float:right;"><strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")</div>
+            <div style="float:left;"><b>Sequência de Notas</b></div>
+            <div style="float:right;">
+                <strong>Periodo:</strong> @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
+                <br />
+                <strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
         </div>
     </div>
     <div class="box-body">
