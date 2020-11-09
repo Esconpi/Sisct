@@ -11,7 +11,7 @@
         <h3 class="box-title"><strong>Clientes</strong></h3>
         <div class="btn-group pull-right">
             @Html.ActionLink("Relação de Contribuintes", "Contribuinte", new { id = @ViewBag.Comp.Id }, new { @class = "btn btn-primary" })
-            <a href="#" id=@ViewBag.Id class="btn btn-primary showAtualize">
+            <a href="#" id=@SessionManager.GetCompanyIdInSession() class="btn btn-primary showAtualize">
                 <i class="fa fa-refresh"></i>
                 Atualizar
             </a>

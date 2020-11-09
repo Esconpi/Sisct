@@ -55,18 +55,29 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
                 var onfDBSisctCte = _configurationService.FindByName("CTe Saida");
 
-                string directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                string directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
-                string directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
-
                 List<int> nfe55 = new List<int>();
                 List<int> nfe65 = new List<int>();
 
-                if (archive.Equals(Model.Archive.XmlNFe))
+                if (archive.Equals(Model.Archive.XmlNFeSefaz) || archive.Equals(Model.Archive.XmlNFeEmpresa))
                 {
                     List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
+
+                    string directoryValida = "", directoryNFeCancelada = "", directoryNFCeCancelada = "";
+                    if (archive.Equals(Model.Archive.XmlNFeEmpresa))
+                    {
+
+                        directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
+                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFCe CANCELADA";
+                    }
+                    else
+                    {
+                        directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFe CANCELADA";
+                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFCe CANCELADA";
+                    }
 
                     notesValidas = importXml.NfeResume(directoryValida);
                     notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
@@ -120,7 +131,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                 }
-                else if (archive.Equals(Model.Archive.XmlCTe))
+                else if (archive.Equals(Model.Archive.XmlCTeSefaz) || archive.Equals(Model.Archive.XmlCTeEmpresa))
                 {
 
                 }

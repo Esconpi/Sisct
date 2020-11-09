@@ -102,24 +102,39 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> spedNFeCancelada = new List<List<string>>();
                     List<List<string>> spedNFCeCancelada = new List<List<string>>();
 
+                    string directoryValida = "", directoryNFeCancelada = "", directoryNFCeCancelada = "";
+
                     if (ident.Equals("0"))
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe");
+                        directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
+                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
                     }
                     else if (ident.Equals("1"))
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
-                    }
 
-                    string directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
-                    string directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
-                    string directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa))
+                        {
+                            directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                            directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
+                            directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFCe CANCELADA";
+                        }
+                        else
+                        {
+                            directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                            directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFe CANCELADA";
+                            directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFCe CANCELADA";
+                        }
+                       
+                    }
 
                     notesValidas = importXml.NfeResume(directoryValida);
                     notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
                     notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
 
-                    if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCT))
+                    if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
                         spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
                     }
@@ -142,7 +157,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> notasInvalidas = new List<List<string>>();
                     List<List<string>> notas_sped = new List<List<string>>();
 
-                    if (ordem.Equals(Model.Ordem.Xml))
+                    if (ordem.Equals(Model.Ordem.XmlSefaz) || ordem.Equals(Model.Ordem.XmlEmpresa))
                     {
                         foreach (var note in notesValidas)
                         {
@@ -206,7 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    else if (ordem.Equals(Model.Ordem.Sped))
+                    else if (ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
                     {
                         if (ident.Equals("0"))
                         {
@@ -338,7 +353,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         ViewBag.Valores = registros;
                     }
-                    else if (ordem.Equals(Model.Ordem.SisCT))
+                    else if (ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
                         List<List<string>> registros = new List<List<string>>();
                         decimal valorTotaGeralXml = 0, valorTotalGeralSped = 0;
@@ -382,7 +397,16 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     var confDBSisctCte = _configurationService.FindByName("CTe");
                         
-                    string directoryCte = confDBSisctCte.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                    string directoryCte = "";
+
+                    if (ordem.Equals(Model.Ordem.XmlEmpresa))
+                    {
+                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    }
+                    else
+                    {
+                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    }
 
                     List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
                     List<string> sped = new List<string>();
@@ -393,7 +417,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<Dictionary<string, string>>> ctes_nao_encontrados = new List<List<Dictionary<string, string>>>();
 
-                    if (ordem.Equals(Model.Ordem.Xml))
+                    if (ordem.Equals(Model.Ordem.XmlSefaz) || ordem.Equals(Model.Ordem.XmlEmpresa))
                     {
                         foreach (var cte in ctes)
                         {

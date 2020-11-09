@@ -29,12 +29,12 @@
         <div style="width:100%;font-size:11px; padding:20px;">
             @if (ViewBag.Opcao == "NFe")
             {
-                @if (ViewBag.Ordem == "Xml")
+                @if (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa")
                 {
                     @await Html.PartialAsync("_XmlSped", new ViewDataDictionary(ViewData))
                     
                 }
-                else if (ViewBag.Ordem == "Sped")
+                else if (ViewBag.Ordem == "SpedXS" || ViewBag.Ordem == "SpedXE")
                 {
                     @await Html.PartialAsync("_SpedXml", new ViewDataDictionary(ViewData))
                 }
@@ -42,7 +42,7 @@
                 {
                     @await Html.PartialAsync("_TotalDifference", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Ordem == "SisCT")
+                else if (ViewBag.Ordem == "SisCTXS" || ViewBag.Ordem == "SisCTXE")
                 {
                     @await Html.PartialAsync("_XmlSpedSisct", new ViewDataDictionary(ViewData))
                 }
@@ -50,7 +50,7 @@
                 <div class="col-lg-12">
                     <h6>
                         <strong>
-                            @if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "SisCT")
+                            @if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "SisCTXS" || ViewBag.Ordem == "SisCTXE")
                             {
                                 @ViewBag.Valores.Count <span>registro(s)</span>
                             }
@@ -60,7 +60,7 @@
             }
             else if (ViewBag.Opcao == "CTe")
             {
-                @if (ViewBag.Ordem == "Xml")
+                @if (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa")
                 {
                     @await Html.PartialAsync("_CompareCte", new ViewDataDictionary(ViewData))
                 }

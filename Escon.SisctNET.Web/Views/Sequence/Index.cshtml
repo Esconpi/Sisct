@@ -17,7 +17,7 @@
             <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
-            <div style="float:left;"><b>Sequência de Notas</b></div>
+            <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
             <div style="float:right;">
                 <strong>Periodo:</strong> @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
                 <br />
@@ -27,11 +27,11 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-            @if (ViewBag.Archive == "SpedNFe" || ViewBag.Archive == "XmlNFe")
+            @if (ViewBag.Archive == "SpedNFe" || ViewBag.Archive == "XmlNFeSefaz" || ViewBag.Archive == "XmlNFeEmpresa")
             {
                 @await Html.PartialAsync("_NFe", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Archive == "SpedCTe" || ViewBag.Archive == "XmlCTe")
+            else if (ViewBag.Archive == "SpedCTe" || ViewBag.Archive == "XmlCTeSefaz" || ViewBag.Archive == "XmlCTeEmpresa")
             {
                 @await Html.PartialAsync("_CTe", new ViewDataDictionary(ViewData))
             }

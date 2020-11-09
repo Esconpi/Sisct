@@ -11,23 +11,35 @@ else if (ViewBag.Opcao == "Planilha")
     <b>Planilha</b>
 }
 
-@if (ViewBag.Ordem == "Xml")
+@if (ViewBag.Ordem == "XmlSefaz")
 {
-    <b>(XML x SPED)</b>
+    <b>(XML SEFAZ x SPED)</b>
 }
-else if (ViewBag.Ordem == "Sped")
+else if (ViewBag.Ordem == "XmlEmpresa")
 {
-    <b>(SPED x XML)</b>
+    <b>(XML EMPRESA x SPED)</b>
+}
+else if (ViewBag.Ordem == "SpedXS")
+{
+    <b>(SPED x XML SEFAZ)</b>
+}
+else if (ViewBag.Ordem == "SpedXE")
+{
+    <b>(SPED x XML EMPRESA)</b>
 }
 else if (ViewBag.Ordem == "DifereValor")
 {
     <b>(DIFERENÇA DE TOTAIS)</b>
 }
-else if (ViewBag.Ordem == "SisCT")
+else if (ViewBag.Ordem == "SisCTXS")
 {
-    <b>(XML x SPED SisCT)</b>
+    <b>(XML SEFAZ x SPED SisCT)</b>
 }
-else if(ViewBag.Ordem == "Malha")
+else if (ViewBag.Ordem == "SisCTXS")
 {
-    <b>(Excel x SPED)</b>
+    <b>(XML EMPRESA x SPED SisCT)</b>
+}
+else if (ViewBag.Ordem == "Malha")
+{
+    <b>(EXCEL MALHA x SPED)</b>
 }

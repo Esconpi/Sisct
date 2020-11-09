@@ -60,18 +60,24 @@ namespace Escon.SisctNET.Model
 
     public enum Ordem
     {
-        [Display(Name = "XML x SPED")] Xml = 1,
-        [Display(Name = "SPED x XML")] Sped = 2,
-        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 3,
-        [Display(Name = "XML x SPED SisCT")] SisCT = 4,
-        [Display(Name = "Excel x SPED")] Malha = 5
+        [Display(Name = "XML SEFAZ x SPED")] XmlSefaz = 1,
+        [Display(Name = "XML EMPRESA x SPED")] XmlEmpresa = 2,
+        [Display(Name = "XML SEFAZ x SPED SisCT")] SisCTXS = 3,
+        [Display(Name = "XML EMPRESA x SPED SisCT")] SisCTXE = 3,
+        [Display(Name = "SPED x XML SEFAZ")] SpedXS = 5,
+        [Display(Name = "SPED x XML EMPRESA")] SpedXE = 6,
+        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 7,
+        [Display(Name = "EXCEL MALHA x SPED")] Malha = 8
+        
     }
 
     public enum Archive
     {
-        [Display(Name = "NFe Xml")] XmlNFe = 1,
-        [Display(Name = "CTe Xml")] XmlCTe = 2,
-        [Display(Name = "NFe Sped")] SpedNFe = 3,
-        [Display(Name = "CTe Sped")] SpedCTe = 4
+        [Display(Name = "NFe XML SEFAZ")] XmlNFeSefaz = 1,
+        [Display(Name = "NFe XML EMPRESA")] XmlNFeEmpresa = 2,
+        [Display(Name = "CTe XML SEFAZ")] XmlCTeSefaz = 3,
+        [Display(Name = "CTe XML EMPRESA")] XmlCTeEmpresa = 4,
+        [Display(Name = "NFe Sped")] SpedNFe = 5,
+        [Display(Name = "CTe Sped")] SpedCTe = 6
     }
 }

@@ -13,7 +13,7 @@
         <div class="btn-group pull-right">
             @Html.ActionLink("Relação de Produtos", "Lista", new { id = @ViewBag.Comp.Id }, new { @class = "btn btn-primary" })
 
-            <a href="#" id=@ViewBag.Comp.Id class="btn btn-primary showImport">
+            <a href="#" id=@SessionManager.GetCompanyIdInSession() class="btn btn-primary showImport">
                 <i class="fa fa-cloud-upload"></i>
                 Importar
             </a>
