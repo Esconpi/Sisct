@@ -27,13 +27,14 @@ function GenerateBillet() {
 
         var recipeCode = [];
 
-        recipeCode.push({ RecipeCode: $('#DarSTCO').data('code'), Value: $('#DarSTCO').val(), St: $('#DarSTCO').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarFecop').data('code'), Value: $('#DarFecop').val(), St: $('#DarFecop').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarIcms').data('code'), Value: $('#DarIcms').val(), St: $('#DarIcms').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarFecopEI').data('code'), Value: $('#DarFecopEI').val(), St: $('#DarFecopEI').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarFunef').data('code'), Value: $('#DarFunef').val(), St: $('#DarFunef').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarAp').data('code'), Value: $('#DarAp').val(), St: $('#DarAp').data('substituicao') });
-        recipeCode.push({ RecipeCode: $('#DarIm').data('code'), Value: $('#DarIm').val(), St: $('#DarIm').data('substituicao')});
+        recipeCode.push({ RecipeCode: $('#DarST').data('code'), Value: $('#DarST').val(), St: $('#DarST').data('substituicao'), FieldName: "DarST" });
+        recipeCode.push({ RecipeCode: $('#DarCO').data('code'), Value: $('#DarCO').val(), St: $('#DarCO').data('substituicao'), FieldName: "DarCO" });
+        recipeCode.push({ RecipeCode: $('#DarFecop').data('code'), Value: $('#DarFecop').val(), St: $('#DarFecop').data('substituicao'), FieldName: "DarFecop" });
+        recipeCode.push({ RecipeCode: $('#DarIcms').data('code'), Value: $('#DarIcms').val(), St: $('#DarIcms').data('substituicao'), FieldName: "DarIcms" });
+        recipeCode.push({ RecipeCode: $('#DarCotac').data('code'), Value: $('#DarCotac').val(), St: $('#DarCotac').data('substituicao'), FieldName: "DarCotac" });
+        recipeCode.push({ RecipeCode: $('#DarFunef').data('code'), Value: $('#DarFunef').val(), St: $('#DarFunef').data('substituicao'), FieldName: "DarFunef" });
+        recipeCode.push({ RecipeCode: $('#DarAp').data('code'), Value: $('#DarAp').val(), St: $('#DarAp').data('substituicao'), FieldName: "DarAp" });
+        recipeCode.push({ RecipeCode: $('#DarIm').data('code'), Value: $('#DarIm').val(), St: $('#DarIm').data('substituicao'), FieldName: "DarIm"});
 
         var payload = {
             TypeTaxation: $('#TypeTaxation').val(),

@@ -2,6 +2,10 @@
 {
     public class RecipeCodeValue
     {
+        public int Processed { get; set; }
+
+        public string FieldName { get; set; }
+
         public string RecipeCode { get; set; }
 
         public string Value { get; set; }

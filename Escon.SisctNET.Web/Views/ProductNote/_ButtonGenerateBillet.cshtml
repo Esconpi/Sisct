@@ -4,49 +4,8 @@
 <input type="hidden" id="TypeTaxation" value="@ViewBag.TypeTaxation" />
 
 <!--Total-->
-<input type="hidden" id="ValorTotal" value="@ViewBag.TotalImpostoIncentivo" />
+<input type="hidden" id="ValorTotal" value="0" />
 <input type="hidden" id="PeriodoReferencia" value="@ViewBag.PeriodReferenceDarWs" />
-
-<!--ICMS por MVA-->
-@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT" || ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR")
-{
-    <input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="@ViewBag.IcmsPagar" data-substituicao="@ViewBag.DarSTCO_Substituicao"/>
-}
-else
-{
-    <input type="hidden" id="DarSTCO" data-code="@ViewBag.DarSTCO" value="" data-substituicao="@ViewBag.DarSTCO_Substituicao"/>
-}
-
-
-<!--Fecop por MVA-->
-<input type="hidden" id="DarFecop" data-code="@ViewBag.DarFecop" value="@ViewBag.TotalFinalFecopCalculada" data-substituicao="@ViewBag.DarFecop_Substituicao"/>
-
-<!--Fecop Incentivo-->
-<input type="hidden" id="DarFecopEI" data-code="@ViewBag.DarFecop" value="@ViewBag.ImpostoFecop" data-substituicao="@ViewBag.DarFecop_Substituicao"/>
-
-<!--ICMS Incentivo-->
-<input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms" value="@ViewBag.ImpostoIcms" data-substituicao="@ViewBag.DarIcms_Substituicao"/>
-
-<!--Funef-->
-<input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="@ViewBag.TaxaFunef" data-substituicao="@ViewBag.DarFunef_Substituicao"/>
-
-@if (ViewBag.TypeTaxation == "AP")
-{
-    <input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="@ViewBag.IcmsPagar" data-substituicao="@ViewBag.DarAp_Substituicao" />
-}
-else
-{
-    <input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="" data-substituicao="@ViewBag.DarAp_Substituicao" />
-}
-
-@if (ViewBag.TypeTaxation == "IM")
-{
-    <input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="@ViewBag.IcmsPagar" data-substituicao="@ViewBag.DarIm_Substituicao"/>
-}
-else
-{
-    <input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="" data-substituicao="@ViewBag.DarIm_Substituicao"/>
-}
 
 <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnSendBillet">
     <div id="loaderBillet" class="loader pull-left" style="display:none;"></div>

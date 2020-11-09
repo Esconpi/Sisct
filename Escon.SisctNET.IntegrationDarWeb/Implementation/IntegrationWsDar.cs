@@ -113,24 +113,31 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
 
         public async Task<ResponseGetDarIcms> RequestDarIcmsAsync(solicitarDarIcmsRequest request)
         {
-            ResponseGetDarIcms resultQuery = null;
-
-            var response = await wsClient.solicitarDarIcmsAsync(request.codigoReceita, request.inscricao, request.substitoTributo, request.periodoReferencia, request.dataVencimento, request.dataPagamento, request.taxaEmissao, request.valorTotal, request.numeroDocumento, request.codigoOrgao, request.tokenAcesso);
-            if (!response.@return.tipoRetorno.Equals("SUCESSO"))
-                throw new System.Exception("Houve uma falha na consulta do SEFAZ: " + response.@return.mensagemRetorno1);
-
-            resultQuery = new ResponseGetDarIcms()
+            try
             {
-                BoletoBytes = response.@return.boletoBytes,
-                CodigoBarras = response.@return.codigoBarras,
-                LinhaDigitavel = response.@return.linhaDigitavel,
-                MensagemRetorno = response.@return.mensagemRetorno1,
-                NumeroControle = response.@return.numeroControle,
-                NumeroDocumento = response.@return.numeroDocumento,
-                TipoRetorno = response.@return.tipoRetorno
-            };
+                ResponseGetDarIcms resultQuery = null;
 
-            return resultQuery;
+                var response = await wsClient.solicitarDarIcmsAsync(request.codigoReceita, request.inscricao, request.substitoTributo, request.periodoReferencia, request.dataVencimento, request.dataPagamento, request.taxaEmissao, request.valorTotal, request.numeroDocumento, request.codigoOrgao, request.tokenAcesso);
+                if (!response.@return.tipoRetorno.Equals("SUCESSO"))
+                    throw new System.Exception("Houve uma falha na consulta do SEFAZ: " + response.@return.mensagemRetorno1);
+
+                resultQuery = new ResponseGetDarIcms()
+                {
+                    BoletoBytes = response.@return.boletoBytes,
+                    CodigoBarras = response.@return.codigoBarras,
+                    LinhaDigitavel = response.@return.linhaDigitavel,
+                    MensagemRetorno = response.@return.mensagemRetorno1,
+                    NumeroControle = response.@return.numeroControle,
+                    NumeroDocumento = response.@return.numeroDocumento,
+                    TipoRetorno = response.@return.tipoRetorno
+                };
+
+                return resultQuery;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
