@@ -230,6 +230,7 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = entity.TypeTaxation;
                     prod.Bcr = entity.Bcr;
                     prod.PercentualBcr = entity.PercentualBcr;
+                    prod.DateStart = entity.DateStart;
 
                     if (entity.CstId.Equals(0))
                     {
@@ -245,7 +246,6 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
                     {
                         prod.Percentual = entity.Percentual;
-                        prod.DateStart = entity.DateStart;
                     }
                     
                     _service.Update(prod, null);
@@ -259,6 +259,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = entity.TypeTaxation;
                         p.Bcr = entity.Bcr;
                         p.PercentualBcr = entity.PercentualBcr;
+                        p.DateStart = entity.DateStart;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -272,7 +273,6 @@ namespace Escon.SisctNET.Web.Controllers
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual =  entity.Percentual;
-                            p.DateStart = entity.DateStart;
                         }
 
                         _service.Update(p, null);
@@ -287,6 +287,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = entity.TypeTaxation;
                         p.Bcr = entity.Bcr;
                         p.PercentualBcr = entity.PercentualBcr;
+                        p.DateStart = entity.DateStart;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -300,7 +301,6 @@ namespace Escon.SisctNET.Web.Controllers
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
-                            p.DateStart = entity.DateStart;
                         }
 
                         _service.Update(p, null);
@@ -380,6 +380,7 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.TypeTaxation = entity.TypeTaxation;
                     prod.Bcr = entity.Bcr;
                     prod.PercentualBcr = entity.PercentualBcr;
+                    prod.DateStart = entity.DateStart;
                     if (entity.CstId.Equals(0))
                     {
                         prod.CstId = null;
@@ -396,7 +397,6 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.DateStart = entity.DateStart;
                     }
                     updateProducts.Add(prod);
-                    //_service.Update(prod, null);
                 }
                 else if (Request.Form["type"].ToString() == "2")
                 {
@@ -408,6 +408,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = entity.TypeTaxation;
                         p.Bcr = entity.Bcr;
                         p.PercentualBcr = entity.PercentualBcr;
+                        p.DateStart = entity.DateStart;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -424,7 +425,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.DateStart = entity.DateStart;
                         }
                         updateProducts.Add(p);
-                        //_service.Update(p, null);
                     }
                 }
                 else if (Request.Form["type"].ToString() == "3")
@@ -437,6 +437,7 @@ namespace Escon.SisctNET.Web.Controllers
                         p.TypeTaxation = entity.TypeTaxation;
                         p.Bcr = entity.Bcr;
                         p.PercentualBcr = entity.PercentualBcr;
+                        p.DateStart = entity.DateStart;
                         if (entity.CstId.Equals(0))
                         {
                             p.CstId = null;
@@ -453,7 +454,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.DateStart = entity.DateStart;
                         }
                         updateProducts.Add(p);
-                        //_service.Update(p, null);
                     }
                 }
                 _service.Update(updateProducts);

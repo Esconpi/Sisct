@@ -320,8 +320,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < products.Count(); i++)
                 {
-                    //var item = _service.FindByProduct(products[i][0], groupId);
-
                     var item = productsGroup.Where(_ => _.Code.Equals(products[i][0])).FirstOrDefault();
 
                     if (item != null)
@@ -329,7 +327,6 @@ namespace Escon.SisctNET.Web.Controllers
                         item.Updated = DateTime.Now;
                         item.DateEnd = inicioATo.AddDays(-1);
                         updateProduct.Add(item);
-                        //_service.Update(item, GetLog(Model.OccorenceLog.Update));
                     }
 
                     if (!products[i][0].Equals("") && !products[i][1].Equals("") && !products[i][3].Equals(""))
@@ -344,7 +341,6 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Created = DateTime.Now;
                         product.Updated = DateTime.Now;
                         addProduct.Add(product);
-                        //_service.Create(entity: product, GetLog(Model.OccorenceLog.Create));
                     }
 
                 }
