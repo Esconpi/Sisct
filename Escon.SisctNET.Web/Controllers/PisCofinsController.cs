@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(int id, string year, string month,string trimestre, string type, int cfopid)
+        public IActionResult Relatory(int id, string year, string month,string trimestre, string type, int cfopid, string arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -60,6 +60,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Document = comp.Document;
                 ViewBag.Type = type;
                 ViewBag.Trimestre = trimestre;
+                ViewBag.Arquivo = arquivo;
 
                 if (comp.CountingTypeId == null)
                 {
@@ -75,7 +76,20 @@ namespace Escon.SisctNET.Web.Controllers
                 var importSped = new Sped.Import(_companyCfopService, _service);
                 var import = new Period.Trimestre();
 
-                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeExit = "";
+
+                if (arquivo != null)
+                {
+                    if (arquivo.Equals("xmlE"))
+                    {
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    }
+                    else
+                    {
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    }
+                }
+
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();

@@ -20,7 +20,8 @@
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="nenhum">Selecione um tipo de arquivo</option>
                             <option value="sped">SPED</option>
-                            <option value="xml">XML</option>
+                            <option value="xmlS">XML SEFAZ</option>
+                            <option value="xmlE">XML EMPRESA</option>
                         </select>
                     </div>
                     <div class="form-group col-lg-9 col-md-6 col-xs-12">
@@ -50,7 +51,7 @@
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = false;
         }
-        else if (tipo == "xml") {
+        else if (tipo == "xmlS" || tipo == "xmlE") {
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = true;
         }

@@ -44,6 +44,11 @@ namespace Escon.SisctNET.Web.Planilha
                                             {
                                                 product.Add(item.Text.Text);
                                             }
+                                            else if (item.InnerText != null)
+                                            {
+                                                product.Add(item.InnerText);
+                                            }
+
                                         }
                                     }
                                 }

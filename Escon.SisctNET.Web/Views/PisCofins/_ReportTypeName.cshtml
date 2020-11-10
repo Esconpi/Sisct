@@ -33,3 +33,14 @@
     <strong>Resumo Produto/NCM/CFOP/CST Monofásico</strong>
 }
 
+@if (ViewBag.Type != "imposto")
+{
+    @if (ViewBag.Arquivo == "xmlS")
+    {
+        <b>(XML SEFAZ)</b>
+    }
+    else if (ViewBag.Arquivo == "xmlE")
+    {
+        <b>(XML EMPRESA)</b>
+    }
+}

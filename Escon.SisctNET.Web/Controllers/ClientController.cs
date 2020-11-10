@@ -84,7 +84,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id,string year,string month)
+        public IActionResult Atualize(int id,string year,string month, string type)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -95,10 +95,18 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                var confDBSisctNfEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                string directoryNfeEntrada = confDBSisctNfEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeSaida = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                }
+                else
+                {
+                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                }
+                
                 var importXml = new Xml.Import();
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
@@ -113,7 +121,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.Client> addClientes = new List<Model.Client>();
 
-                var clientesAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id)).ToList();
+                var clientesAll = _service.FindByCompanyId(id);
 
                 foreach (var det in dets)
                 {
@@ -125,7 +133,6 @@ namespace Escon.SisctNET.Web.Controllers
                         string IE = det.ContainsKey("IE") ? det["IE"] : "";
                         if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
-                            //var existCnpj = _service.FindByDocumentCompany(id, CNPJ);
                             var existCnpj = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
 
                             if (existCnpj == null)
@@ -157,19 +164,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 client.Updated = DateTime.Now;
 
                                 addClientes.Add(client);
-                                /*var client = new Model.Client
-                                {
-                                    Name = det["xNome"],
-                                    CompanyId = id,
-                                    Document = CNPJ,
-                                    CnpjRaiz = CNPJRaiz,
-                                    Ie = IE,
-                                    TypeClientId = tipoCliente,
-                                    Created = DateTime.Now,
-                                    Updated = DateTime.Now
-
-                                };
-                                _service.Create(entity: client,GetLog(Model.OccorenceLog.Create));*/
                             }
                         }
                     }
@@ -221,7 +215,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
                 var result = _service.FindById(id, null);
-                ViewBag.Company = result.CompanyId;
                 return View(result);
             }
             catch (Exception ex)

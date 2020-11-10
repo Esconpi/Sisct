@@ -143,7 +143,17 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeExit = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                }
+                else
+                {
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                }
+
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 var importXml = new Xml.Import(_companyCfopService);
@@ -169,13 +179,32 @@ namespace Escon.SisctNET.Web.Controllers
 
                 Model.TaxAnexo taxAnexo = new Model.TaxAnexo();
 
+                string arqu = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    arqu = "XML EMPRESA";
+                }
+                else if (type.Equals("xmlS"))
+                {
+                    arqu = "XML SEFAZ";
+                }
+
 
                 if (imp != null)
                 {
+                    if (arqu != "")
+                    {
+                        imp.Arquivo = arqu;
+                    }
                     imp.Updated = DateTime.Now;
                 }
                 else
                 {
+                    if (arqu != "")
+                    {
+                        taxAnexo.Arquivo = arqu;
+                    }
                     taxAnexo.CompanyId = companyid;
                     taxAnexo.MesRef = month;
                     taxAnexo.AnoRef = year;

@@ -473,7 +473,17 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
                 var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeExit = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                }
+                else
+                {
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                }
+                
                 string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 List<string> caminhos = new List<string>();
@@ -487,12 +497,33 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _service.FindByMonth(companyid,month,year);
 
+                string arqu = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    arqu = "XML EMPRESA";
+                }
+                else if (type.Equals("xmlS"))
+                {
+                    arqu = "XML SEFAZ";
+                }
+
                 if(imp != null)
                 {
+                    if(arqu != "")
+                    {
+                        imp.Arquivo = arqu;
+                    }
+
                     imp.Updated = DateTime.Now;
                 }
                 else
                 {
+                    if (arqu != "")
+                    {
+                        tax.Arquivo = arqu;
+                    }
+
                     tax.CompanyId = companyid;
                     tax.MesRef = month;
                     tax.AnoRef = year;
@@ -571,7 +602,7 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.Credito = credito;
                         }
                     }
-                    else if (type.Equals("xml"))
+                    else if (type.Equals("xmlS") || type.Equals("xmlE"))
                     {
                         List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
@@ -3194,7 +3225,7 @@ namespace Escon.SisctNET.Web.Controllers
   
 
                     }
-                    else if (type.Equals("xml"))
+                    else if (type.Equals("xmlS") || type.Equals("xmlE"))
                     {
                         List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                         List<string> codeProdMono = new List<string>();

@@ -24,13 +24,13 @@
             {
                 <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
             }
-            <a asp-action="Retention"  size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
+            <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
             @if ((ViewBag.Month == "Março" || ViewBag.Month == "Junho" || ViewBag.Month == "Setembro" || ViewBag.Month == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
             {
                 <br />
                 <br />
-                <a asp-action="Pag"  size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
+                <a asp-action="Pag" size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
             }
 
         </div>
@@ -40,8 +40,20 @@
         </div>
 
         <br />
+        <br />
 
         <div style="width:100%; text-align:left; padding-left:1%;">
+            <strong>Arquivo: </strong> 
+            @if (Model != null)
+            {
+                @Model.Arquivo
+            }
+            else
+            {
+                <span>Nenhum</span>
+            }
+        </div>
+        <div style="width:100%; text-align:right; padding-right:1%;">
             <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
         </div>
 

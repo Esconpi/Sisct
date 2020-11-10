@@ -73,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(int id, string year, string month)
+        public IActionResult Import(int id, string year, string month, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -87,7 +87,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import();
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfe = "";
+
+                if (type.Equals("xmlE"))
+                {
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                }
+                else
+                {
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                }
+               
 
                 List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
 

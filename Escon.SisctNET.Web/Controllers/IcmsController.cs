@@ -83,7 +83,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(int id, string year, string month, string type, int cfopid, string opcao)
+        public IActionResult Relatory(int id, string year, string month, string type, int cfopid, string opcao, string arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null))
             {
@@ -106,11 +106,26 @@ namespace Escon.SisctNET.Web.Controllers
                 var importSped = new Sped.Import(_companyCfopService);
                 var importMes = new Period.Month();
 
-                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeExit = "";
+
+                if (arquivo != null)
+                {
+                    if (arquivo.Equals("xmlE"))
+                    {
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    }
+                    else
+                    {
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    }
+                }
+                
+               
                 string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
 
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;
+                ViewBag.Arquivo = arquivo;
 
                 var imp = _taxService.FindByMonth(id, month, year);
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);

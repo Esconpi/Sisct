@@ -108,14 +108,12 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe");
                         directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
-                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFe CANCELADA";
-                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "NFCe CANCELADA";
                     }
                     else if (ident.Equals("1"))
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
 
-                        if (ordem.Equals(Model.Ordem.XmlEmpresa))
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE))
                         {
                             directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                             directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
@@ -395,18 +393,29 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (opcao.Equals(Model.Opcao.CTe))
                 {
-                    var confDBSisctCte = _configurationService.FindByName("CTe");
+                   
                         
                     string directoryCte = "";
 
-                    if (ordem.Equals(Model.Ordem.XmlEmpresa))
+                    if (ident.Equals("0"))
                     {
-                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        var confDBSisctCte = _configurationService.FindByName("CTe");
+                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
                     }
                     else
                     {
-                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        var confDBSisctCte = _configurationService.FindByName("CTe Saida");
+
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa))
+                        {
+                            directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        }
+                        else
+                        {
+                            directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        }
                     }
+                    
 
                     List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
                     List<string> sped = new List<string>();

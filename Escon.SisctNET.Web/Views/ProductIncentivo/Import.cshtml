@@ -9,8 +9,12 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
 
-                <div class="form-group col-lg-1 col-md-1 col-xs-12">
-
+                <div class="form-group col-lg-4 col-md-12 col-xs-12">
+                    <label class="control-label">Arquivo</label>
+                    <select name="type" class="form-control selectoption">
+                        <option value="xmlS" selected>XML SEFAZ</option>
+                        <option value="xmlE">XML EMPRESA</option>
+                    </select>
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label class="control-label">Ano</label>

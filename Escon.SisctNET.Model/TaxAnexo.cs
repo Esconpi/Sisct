@@ -20,6 +20,8 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
+        public string Arquivo { get; set; }
+
         [Display(Name = "Mes")]
         public string MesRef { get; set; }
 
