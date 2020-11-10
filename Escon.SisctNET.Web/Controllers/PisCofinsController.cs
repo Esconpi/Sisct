@@ -82,15 +82,15 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (arquivo.Equals("xmlE"))
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                     }
                     else
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
                     }
                 }
 
-                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
 
                 var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();

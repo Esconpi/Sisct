@@ -91,11 +91,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals("xmlE"))
                 {
-                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                 }
                 else
                 {
-                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
                 }
                
 

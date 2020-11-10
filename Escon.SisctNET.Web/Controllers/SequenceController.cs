@@ -68,15 +68,15 @@ namespace Escon.SisctNET.Web.Controllers
                     if (archive.Equals(Model.Archive.XmlNFeEmpresa))
                     {
 
-                        directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
-                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
-                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFCe CANCELADA";
+                        directoryValida = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
+                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" +  comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFCe CANCELADA";
                     }
                     else
                     {
-                        directoryValida = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
-                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFe CANCELADA";
-                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFCe CANCELADA";
+                        directoryValida = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNFeCancelada = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFe CANCELADA";
+                        directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFCe CANCELADA";
                     }
 
                     notesValidas = importXml.NfeResume(directoryValida);

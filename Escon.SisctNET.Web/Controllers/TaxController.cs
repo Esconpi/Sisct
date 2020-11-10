@@ -477,14 +477,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals("xmlE"))
                 {
-                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                 }
                 else
                 {
-                    directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
                 }
                 
-                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
 
                 List<string> caminhos = new List<string>();
                  

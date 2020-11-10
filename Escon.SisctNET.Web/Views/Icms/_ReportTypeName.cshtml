@@ -57,8 +57,7 @@ else if (ViewBag.Type == "resumoCfopCst")
     <strong>Resumo CFOP/CST</strong>
 }
 
-@if (ViewBag.Type != "tributacaoDiveregente" || ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" ||
-   ViewBag.Type != "venda")
+@if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {
     @if (ViewBag.Arquivo == "xmlS")
     {

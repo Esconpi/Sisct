@@ -112,16 +112,16 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (arquivo.Equals("xmlE"))
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                     }
                     else
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
                     }
                 }
                 
                
-                string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
 
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;

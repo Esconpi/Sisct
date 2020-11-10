@@ -68,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(int companyid, string year, string month)
+        public IActionResult Import(int companyid, string year, string month,string arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
             {
@@ -89,7 +89,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfe = "";
+
+                if (arquivo.Equals("xmlE"))
+                {
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                }
+                else
+                {
+                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                }
 
                 var importXml = new Xml.Import();
                 List<List<string>> ncms = new List<List<string>>();
@@ -687,7 +696,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsMono = _service.FindByCompany(comp.Document);
+                var ncmsMono = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico"));
 
                 var ncmsSisct = _service.FindByPeriod(ncmsMono,inicio,fim);
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);

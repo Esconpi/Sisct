@@ -100,11 +100,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals("xmlE"))
                 {
-                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
                 }
                 else
                 {
-                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
                 }
                 
                 var importXml = new Xml.Import();

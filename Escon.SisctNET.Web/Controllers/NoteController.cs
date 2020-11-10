@@ -94,8 +94,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Comp = comp; 
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                string directotyCte = confDBSisctCte.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
+                string directotyCte = confDBSisctCte.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
