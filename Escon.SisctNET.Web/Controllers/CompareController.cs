@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConsultaDocumentoArrecadacaoDarWeb;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -56,6 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importExcel = new Planilha.Import();
                 var importEvento = new Evento.Import();
                 var confDBSisctNfe = new Model.Configuration();
+                var importDir = new Diretorio.Import();
 
                 if (arquivoSped == null || arquivoSped.Length == 0)
                 {
@@ -96,7 +98,9 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFeCanceladasEvento = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento = new List<List<Dictionary<string, string>>>();
 
                     List<List<string>> spedNormal = new List<List<string>>();
                     List<List<string>> spedNFeCancelada = new List<List<string>>();
@@ -107,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (ident.Equals("0"))
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe");
-                        directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                        directoryValida = importDir.Entrada(company, confDBSisctNfe.Value, year, month);
                     }
                     else if (ident.Equals("1"))
                     {
@@ -115,22 +119,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE))
                         {
-                            directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
-                            directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFe CANCELADA";
-                            directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA" + "\\" + "NFCe CANCELADA";
+                            directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
+                            directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
+                            directoryNFCeCancelada = importDir.NFCeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
                         }
                         else
                         {
-                            directoryValida = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
-                            directoryNFeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFe CANCELADA";
-                            directoryNFCeCancelada = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ" + "\\" + "NFCe CANCELADA";
+                            directoryValida = importDir.SaidaSefaz(company, confDBSisctNfe.Value, year, month);
+                            directoryNFeCancelada = importDir.NFeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
+                            directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
                         }
                        
                     }
 
                     notesValidas = importXml.NfeResume(directoryValida);
-                    notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
+                    notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                    notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
                     notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                    notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
 
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
@@ -177,6 +183,28 @@ namespace Escon.SisctNET.Web.Controllers
 
                         foreach (var note in notesNFeCanceladas)
                         {
+                            string nota_xml = note[0]["chave"];
+                            bool nota_encontrada = false;
+                            foreach (var nota_sped in spedNFeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[1]["mod"]);
+                                n.Add(note[1]["nNF"]);
+                                n.Add(note[0]["chave"]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
+                        
+                        foreach (var note in notesNFeCanceladasEvento)
+                        {
                             string nota_xml = note[0]["chNFe"];
                             bool nota_encontrada = false;
                             foreach (var nota_sped in spedNFeCancelada)
@@ -218,6 +246,29 @@ namespace Escon.SisctNET.Web.Controllers
                                 notasInvalidas.Add(n);
                             }
                         }
+
+                        foreach (var note in notesNFCeCanceladasEvento)
+                        {
+                            string nota_xml = note[0]["chNFe"];
+                            bool nota_encontrada = false;
+                            foreach (var nota_sped in spedNFCeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+                            if (nota_encontrada.Equals(false))
+                            {
+                                List<string> n = new List<string>();
+                                n.Add(note[0]["chNFe"].Substring(20, 2));
+                                n.Add(note[0]["chNFe"].Substring(25, 9));
+                                n.Add(note[0]["chNFe"]);
+                                notasInvalidas.Add(n);
+                            }
+                        }
+
                     }
                     else if (ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
                     {
@@ -252,7 +303,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             foreach (var notaXml in notesNFeCanceladas)
                             {
-                                string nota_xml = notaXml[0]["chNFe"];
+                                string nota_xml = notaXml[0]["chave"];
                                 if (note[0].Equals(nota_xml))
                                 {
                                     nota_encontrada = true;
@@ -270,6 +321,67 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        foreach (var note in spedNFeCancelada)
+                        {
+                            bool nota_encontrada = false;
+
+                            foreach (var notaXml in notesNFeCanceladasEvento)
+                            {
+                                string nota_xml = notaXml[0]["chNFe"];
+                                if (note[0].Equals(nota_xml))
+                                {
+                                    nota_encontrada = true;
+                                    for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                    {
+                                        if (notasInvalidas[i][2].Equals(nota_xml))
+                                        {
+                                            notasInvalidas.RemoveAt(i);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+                            if (nota_encontrada.Equals(false))
+                            {
+                                for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                {
+                                    if (notasInvalidas[i][2].Equals(note[0]))
+                                    {
+                                        notasInvalidas.RemoveAt(i);
+                                        break;
+                                    }
+                                }
+
+                                List<string> n = new List<string>();
+                                n.Add(note[1]);
+                                n.Add(note[2]);
+                                n.Add(note[0]);
+                                notasInvalidas.Add(n);
+
+                                for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                {
+                                    bool achou = false;
+                                    foreach (var notaXml in notesNFeCanceladas)
+                                    {
+                                        string nota_xml = notaXml[0]["chave"];
+                                        if (notasInvalidas[i][2].Equals(nota_xml))
+                                        {
+                                            achou = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (achou == true)
+                                    {
+                                        notasInvalidas.RemoveAt(i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
                         foreach (var note in spedNFCeCancelada)
                         {
                             bool nota_encontrada = false;
@@ -291,6 +403,67 @@ namespace Escon.SisctNET.Web.Controllers
                                 n.Add(note[2]);
                                 n.Add(note[0]);
                                 notasInvalidas.Add(n);
+                            }
+                        }
+
+                        foreach (var note in spedNFCeCancelada)
+                        {
+                            bool nota_encontrada = false;
+
+                            foreach (var notaXml in notesNFCeCanceladasEvento)
+                            {
+                                string nota_xml = notaXml[0]["chNFe"];
+                                if (note[0].Equals(nota_xml))
+                                {
+                                    nota_encontrada = true;
+                                    for(int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                    {
+                                        if (notasInvalidas[i][2].Equals(nota_xml))
+                                        {
+                                            notasInvalidas.RemoveAt(i);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+                            if (nota_encontrada.Equals(false))
+                            {
+                                for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                {
+                                    if (notasInvalidas[i][2].Equals(note[0]))
+                                    {
+                                        notasInvalidas.RemoveAt(i);
+                                        break;
+                                    }
+                                }
+                                
+                                List<string> n = new List<string>();
+                                n.Add(note[1]);
+                                n.Add(note[2]);
+                                n.Add(note[0]);
+                                notasInvalidas.Add(n);
+
+                                for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                {
+                                    bool achou = false;
+                                    foreach (var notaXml in notesNFCeCanceladas)
+                                    {
+                                        string nota_xml = notaXml[0]["chave"];
+                                        if (notasInvalidas[i][2].Equals(nota_xml))
+                                        {
+                                            achou = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (achou == true)
+                                    {
+                                        notasInvalidas.RemoveAt(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -386,21 +559,19 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
                     }
 
-                    ViewBag.Notas = notasValidas;
+                    ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
                     ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
-                       
+                    
                 }
                 else if (opcao.Equals(Model.Opcao.CTe))
                 {
-                   
-                        
                     string directoryCte = "";
 
                     if (ident.Equals("0"))
                     {
                         var confDBSisctCte = _configurationService.FindByName("CTe");
-                        directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month;
+                        directoryCte = importDir.Entrada(company, confDBSisctCte.Value, year, month);
                     }
                     else
                     {
@@ -408,11 +579,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (ordem.Equals(Model.Ordem.XmlEmpresa))
                         {
-                            directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                            directoryCte = importDir.SaidaEmpresa(company, confDBSisctCte.Value, year, month);
                         }
                         else
                         {
-                            directoryCte = confDBSisctNfe.Value + "\\" + company.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                            directoryCte = importDir.SaidaSefaz(company, confDBSisctCte.Value, year, month);
                         }
                     }
                     

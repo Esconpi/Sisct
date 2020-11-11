@@ -75,6 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);
                 var import = new Period.Trimestre();
+                var importDir = new Diretorio.Import();
 
                 string directoryNfeExit = "";
 
@@ -82,15 +83,15 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (arquivo.Equals("xmlE"))
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
                     }
                     else
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
                     }
                 }
 
-                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month);
 
                 var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();

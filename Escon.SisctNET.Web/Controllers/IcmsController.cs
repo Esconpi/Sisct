@@ -105,6 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importXml = new Xml.Import(_companyCfopService);
                 var importSped = new Sped.Import(_companyCfopService);
                 var importMes = new Period.Month();
+                var importDir = new Diretorio.Import();
 
                 string directoryNfeExit = "";
 
@@ -112,16 +113,16 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (arquivo.Equals("xmlE"))
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                        directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
                     }
                     else
                     {
-                        directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                        directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
                     }
                 }
                 
                
-                string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfeEntrada = importDir.Entrada(comp, NfeEntrada.Value, year, month);
 
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;
@@ -140,6 +141,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
+
+                opcao = "saida";
 
                 if (type.Equals("resumoCfop"))
                 {

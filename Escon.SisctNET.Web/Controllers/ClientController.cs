@@ -96,18 +96,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
 
+                var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
+
                 string directoryNfeSaida = "";
 
                 if (type.Equals("xmlE"))
                 {
-                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfeSaida = importDir.SaidaEmpresa(comp, confDBSisctNfeSaida.Value, year, month);
                 }
                 else
                 {
-                    directoryNfeSaida = confDBSisctNfeSaida.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfeSaida = importDir.SaidaSefaz(comp, confDBSisctNfeSaida.Value, year, month);
                 }
-                
-                var importXml = new Xml.Import();
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 

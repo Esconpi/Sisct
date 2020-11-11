@@ -141,20 +141,19 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+
+                var importDir = new Diretorio.Import();
 
                 string directoryNfeExit = "";
 
                 if (type.Equals("xmlE"))
                 {
-                    directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
                 }
                 else
                 {
-                    directoryNfeExit = NfeExit.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
                 }
-
-                string directoryNfeEntry = NfeEntry.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
 
                 var importXml = new Xml.Import(_companyCfopService);
                 var importSped = new Sped.Import(_companyCfopService);

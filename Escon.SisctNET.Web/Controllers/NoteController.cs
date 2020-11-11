@@ -90,12 +90,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
                 var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
+
                 var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
 
                 ViewBag.Comp = comp; 
 
-                string directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
-                string directotyCte = confDBSisctCte.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month;
+                string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
+                string directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 

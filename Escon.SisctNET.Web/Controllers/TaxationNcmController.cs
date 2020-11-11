@@ -89,15 +89,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
 
+                var importDir = new Diretorio.Import();
+
                 string directoryNfe = "";
 
                 if (arquivo.Equals("xmlE"))
                 {
-                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "EMPRESA";
+                    directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
                 }
                 else
                 {
-                    directoryNfe = confDBSisctNfe.Value + "\\" + comp.SocialName + "-" + comp.Document + "\\" + year + "\\" + month + "\\" + "SEFAZ";
+                    directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
                 }
 
                 var importXml = new Xml.Import();
@@ -696,7 +698,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsMono = _service.FindByCompany(comp.Document).Where(_ => _.Type.Equals("Monofásico"));
+                var ncmsMono = _service.FindByCompany(comp.Document);
 
                 var ncmsSisct = _service.FindByPeriod(ncmsMono,inicio,fim);
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
