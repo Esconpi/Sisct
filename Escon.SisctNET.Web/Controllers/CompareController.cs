@@ -59,40 +59,42 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctNfe = new Model.Configuration();
                 var importDir = new Diretorio.Import();
 
-                if (arquivoSped == null || arquivoSped.Length == 0)
-                {
-                    ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
-                    return View(ViewData);
-                }
-
-                string filedirSped = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
-
-                if (!Directory.Exists(filedirSped))
-                {
-                    Directory.CreateDirectory(filedirSped);
-                }
-
-                string nomeArquivoSped = company.Document + "Empresa";
-
-                if (arquivoSped.FileName.Contains(".txt"))
-                    nomeArquivoSped += ".txt";
-                else
-                    nomeArquivoSped += ".tmp";
-
+                string caminhoDestinoArquivoOriginalSped = "";
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
 
-                string caminhoDestinoArquivoSped = caminho_WebRoot + "\\Uploads\\Speds\\";
-                string caminhoDestinoArquivoOriginalSped = caminhoDestinoArquivoSped + nomeArquivoSped;
-
-                string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivoSped);
-                if (System.IO.File.Exists(caminhoDestinoArquivoOriginalSped))
+                if (arquivoSped != null)
                 {
-                    System.IO.File.Delete(caminhoDestinoArquivoOriginalSped);
+                    string filedirSped = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
+
+                    if (!Directory.Exists(filedirSped))
+                    {
+                        Directory.CreateDirectory(filedirSped);
+                    }
+
+                    string nomeArquivoSped = company.Document + "Empresa";
+
+                    if (arquivoSped.FileName.Contains(".txt"))
+                        nomeArquivoSped += ".txt";
+                    else
+                        nomeArquivoSped += ".tmp";
+
+                    
+
+                    string caminhoDestinoArquivoSped = caminho_WebRoot + "\\Uploads\\Speds\\";
+                    caminhoDestinoArquivoOriginalSped = caminhoDestinoArquivoSped + nomeArquivoSped;
+
+                    string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivoSped);
+                    if (System.IO.File.Exists(caminhoDestinoArquivoOriginalSped))
+                    {
+                        System.IO.File.Delete(caminhoDestinoArquivoOriginalSped);
+
+                    }
+                    var streamSped = new FileStream(caminhoDestinoArquivoOriginalSped, FileMode.Create);
+                    await arquivoSped.CopyToAsync(streamSped);
+                    streamSped.Close();
 
                 }
-                var streamSped = new FileStream(caminhoDestinoArquivoOriginalSped, FileMode.Create);
-                await arquivoSped.CopyToAsync(streamSped);
-                streamSped.Close();
+
 
                 if (opcao.Equals(Model.Opcao.NFe))
                 {
@@ -131,16 +133,24 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                        
                     }
-
-                    notesValidas = importXml.NfeResume(directoryValida);
-                    notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
-                    notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                    notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
-                    notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                   
 
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
                         spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
+                        notesValidas = importXml.NfeResume(directoryValida);
+                    }
+                    else if (ordem.Equals(Model.Ordem.VerificarSefaz))
+                    {
+                        notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                        notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
+                        notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                        notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                    }
+                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa))
+                    {
+                        spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "55");
+                        spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
                     }
                     else
                     {
@@ -155,6 +165,12 @@ namespace Escon.SisctNET.Web.Controllers
                             spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped,"55");
                             spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
                         }
+
+                        notesValidas = importXml.NfeResume(directoryValida);
+                        notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                        notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
+                        notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                        notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
                     }
 
                     List<List<Dictionary<string, string>>> notasValidas = new List<List<Dictionary<string, string>>>();
@@ -557,6 +573,15 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalXml = valorTotaGeralXml;
                         ViewBag.TotalSped = valorTotalGeralSped;
                         ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
+                    }
+                    else if (ordem.Equals(Model.Ordem.VerificarSefaz))
+                    {
+                        List<List<List<string>>> notasCanceladas = new List<List<List<string>>>();
+                        notasCanceladas = importXml.FindByMoveCancelada(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
+                    }
+                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa))
+                    {
+
                     }
 
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();

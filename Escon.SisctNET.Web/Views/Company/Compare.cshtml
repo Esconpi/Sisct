@@ -55,7 +55,7 @@
 
                         <div class="form-group col-lg-5 col-md-5 col-xs-12">
                             <label class="control-label">Tipo</label>
-                            <select name="ordem" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Ordem>()"></select>
+                            <select name="ordem" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Ordem>()" id="ordem" onchange="ativar_button()"></select>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@
                     <div class="row"> 
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
+                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required disabled/>
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label"><strong>Selecione o arquivo Excel</strong></label>
@@ -85,6 +85,14 @@
 <script>
     function ativar_button() {
         var opcao = document.getElementById("opcao").value;
+        var ordem = document.getElementById("ordem").value;
+
+        if (ordem == "1") {
+            document.getElementById("arquivoSped").disabled = true;
+        }
+        else {
+            document.getElementById("arquivoSped").disabled = false;
+        }
 
         if (opcao == "1" || opcao == "2") {
             document.getElementById("arquivoExcel").disabled = true;

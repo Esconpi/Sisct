@@ -60,14 +60,16 @@ namespace Escon.SisctNET.Model
 
     public enum Ordem
     {
-        [Display(Name = "XML SEFAZ x SPED")] XmlSefaz = 1,
-        [Display(Name = "XML EMPRESA x SPED")] XmlEmpresa = 2,
-        [Display(Name = "XML SEFAZ x SPED SisCT")] SisCTXS = 3,
-        [Display(Name = "XML EMPRESA x SPED SisCT")] SisCTXE = 3,
-        [Display(Name = "SPED x XML SEFAZ")] SpedXS = 5,
-        [Display(Name = "SPED x XML EMPRESA")] SpedXE = 6,
-        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 7,
-        [Display(Name = "EXCEL MALHA x SPED")] Malha = 8
+        [Display(Name = "VERIFICAR NOTAS CANCELADAS SEFAZ")] VerificarSefaz = 1,
+        [Display(Name = "VERIFICAR NOTAS CANCELADAS EMPRESA")] VerificarEmpresa = 2,
+        [Display(Name = "XML SEFAZ x SPED")] XmlSefaz = 3,
+        [Display(Name = "XML EMPRESA x SPED")] XmlEmpresa = 4,
+        [Display(Name = "XML SEFAZ x SPED SisCT")] SisCTXS = 5,
+        [Display(Name = "XML EMPRESA x SPED SisCT")] SisCTXE = 6,
+        [Display(Name = "SPED x XML SEFAZ")] SpedXS = 7,
+        [Display(Name = "SPED x XML EMPRESA")] SpedXE = 8,
+        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 9,
+        [Display(Name = "EXCEL MALHA x SPED")] Malha = 10
         
     }
 
