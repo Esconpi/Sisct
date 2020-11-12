@@ -89,9 +89,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var Nfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
-                string directoryNfe = Nfe.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-
                 var importSped = new Sped.Import();
+                var importDir = new Diretorio.Import();
+
+                string directoryNfe = importDir.Entrada(comp,Nfe.Value,year,month) ;
+                
 
                 string dirUpload = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
 

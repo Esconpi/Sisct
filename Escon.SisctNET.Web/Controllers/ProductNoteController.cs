@@ -2562,9 +2562,9 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarFecop += Math.Round(impostoFecop, 2);
                         totalApuradoFecop += Math.Round(impostoFecop, 2);
 
-                        decimal icmsGeralNormal = IcmsAPagarSTSIE + IcmsAPagarSTIE;
+                        decimal icmsGeralNormal = Convert.ToDecimal(totalApuradoSTIE) + Convert.ToDecimal(totalApuradoSTSIE);
                         decimal icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum());
-                        decimal fecopGeralNomal = Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) + Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE));
+                        decimal fecopGeralNomal = Convert.ToDecimal(TotalFecopCalcSTIE) + Convert.ToDecimal(TotalFecopCalcSTSIE);
                         decimal fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum());
                         decimal impostoGeral = icmsGeralNormal + icmsGeralIncetivo + fecopGeralNomal + fecopGeralIncentivo;
 

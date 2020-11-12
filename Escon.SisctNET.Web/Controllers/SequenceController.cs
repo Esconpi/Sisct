@@ -63,7 +63,10 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFeCanceladasEvento = new List<List<Dictionary<string, string>>>();
                     List<List<Dictionary<string, string>>> notesNFCeCanceladas = new List<List<Dictionary<string, string>>>();
+                    List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento = new List<List<Dictionary<string, string>>>();
+
 
                     string directoryValida = "", directoryNFeCancelada = "", directoryNFCeCancelada = "";
                     if (archive.Equals(Model.Archive.XmlNFeEmpresa))
@@ -80,8 +83,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     notesValidas = importXml.NfeResume(directoryValida);
-                    notesNFeCanceladas = importEvento.Nfe(directoryNFeCancelada);
+                    notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                    notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
                     notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                    notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
 
                     for (int i = notesValidas.Count - 1; i >= 0; i--)
                     {
@@ -100,8 +105,26 @@ namespace Escon.SisctNET.Web.Controllers
                             nfe65.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                         }
                     }
+                    
+                    for (int i = notesNFeCanceladas.Count - 1; i >= 0; i--)
+                    {
+                        if (!notesNFeCanceladas[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notesNFeCanceladas.RemoveAt(i);
+                            continue;
+                        }
 
-                    foreach (var note in notesNFeCanceladas)
+                        if (notesNFeCanceladas[i][1]["mod"].Equals("55"))
+                        {
+                            nfe55.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
+                        }
+                        else
+                        {
+                            nfe65.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
+                        }
+                    }
+
+                    foreach (var note in notesNFeCanceladasEvento)
                     {
                         if (note[0]["chNFe"].Substring(20, 2).Equals("55"))
                         {
@@ -130,6 +153,19 @@ namespace Escon.SisctNET.Web.Controllers
                             nfe65.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                         }
                     }
+
+                    foreach (var note in notesNFCeCanceladasEvento)
+                    {
+                        if (note[0]["chNFe"].Substring(20, 2).Equals("55"))
+                        {
+                            nfe55.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
+                        }
+                        else
+                        {
+                            nfe65.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
+                        }
+                    }
+
                 }
                 else if (archive.Equals(Model.Archive.XmlCTeSefaz) || archive.Equals(Model.Archive.XmlCTeEmpresa))
                 {

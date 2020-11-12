@@ -356,6 +356,21 @@ namespace Escon.SisctNET.Web.Sped
 
                                 string pICMSTemp = "";
 
+                                if (valorProduto == 0)
+                                {
+                                    valorProduto = Convert.ToDecimal(linha[7].Replace(",", "."));
+
+                                    if (linha[8] != "")
+                                    {
+                                        valorProduto -= Convert.ToDecimal(linha[8].Replace(",", "."));
+                                    }
+
+                                    if (linha[24] != "")
+                                    {
+                                        valorProduto += Convert.ToDecimal(linha[24].Replace(",", "."));
+                                    }
+                                }
+
                                 if (notes[posC100][1]["finNFe"].Equals("2"))
                                 {
                                     valorProduto = 0;
@@ -905,6 +920,16 @@ namespace Escon.SisctNET.Web.Sped
                                 if (valorProduto == 0)
                                 {
                                     valorProduto = Convert.ToDecimal(linha[7].Replace(",", "."));
+
+                                    if (linha[8] != "")
+                                    {
+                                        valorProduto -= Convert.ToDecimal(linha[8].Replace(",", "."));
+                                    }
+
+                                    if (linha[24] != "")
+                                    {
+                                        valorProduto += Convert.ToDecimal(linha[24].Replace(",", "."));
+                                    }
                                 }
 
                                 string pICMSTemp = "";
