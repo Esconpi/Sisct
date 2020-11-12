@@ -1,4 +1,10 @@
-﻿<div><b>Notas Válidas</b></div>
+﻿<div class="col-lg-6">
+    <b>Notas Válidas</b>
+
+</div>
+<div class="col-lg-6" style="text-align:right">
+    <b>Quantidade:</b> @ViewBag.QtdValida
+</div>
 <br />
 
 <table class="table" style="width:100%;font-size:10px;">
@@ -14,10 +20,10 @@
         @foreach (var nota in ViewBag.notas_sped)
         {
             <tr>
-                <th style="border: 1px solid;">@nota[0]</th>
-                <th style="border: 1px solid;">@nota[1]</th>
-                <th style="border: 1px solid;">@nota[2]</th>
-                <th style="border: 1px solid;">@nota[3]</th>
+                <td style="border: 1px solid;">@nota[0]</td>
+                <td style="border: 1px solid;">@nota[1]</td>
+                <td style="border: 1px solid;">@nota[2]</td>
+                <td style="border: 1px solid;">@nota[3]</td>
             </tr>
         }
     </tbody>

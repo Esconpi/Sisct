@@ -1976,13 +1976,14 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<List<List<string>>> FindByMoveCancelada(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
+        public List<List<List<string>>> MoveCanceladaSefaz(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
             List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
             List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
         {
             List<List<List<string>>> notes = new List<List<List<string>>>();
             List<List<string>> notes55 = new List<List<string>>();
             List<List<string>> notes65 = new List<List<string>>();
+            List<List<string>> notesInfo = new List<List<string>>();
 
             try
             {
@@ -2011,48 +2012,80 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "Id")
                                                 {
                                                     string chave = reader.Value.Substring(3, 44);
-                                                    string serie = chave.Substring(20, 2);
                                                     List<string> nn = new List<string>();
+                                                    List<string> nnInfo = new List<string>();
 
-                                                    foreach (var note in notesNFeCanceladas)
+                                                    bool achou = false;
+
+                                                    for (int k = 0; k < notesInfo.Count(); k++)
                                                     {
-                                                        if (note[0]["chave"].Equals(chave))
+
+                                                        if (notesInfo[k][0].Equals(chave))
                                                         {
-                                                            nn.Add(arquivo);
-                                                            notes55.Add(nn);
+                                                            achou = true;
                                                             break;
                                                         }
                                                     }
 
-                                                    foreach (var note in notesNFeCanceladasEvento)
+                                                    if (achou == false)
                                                     {
-                                                        if (note[0]["chNFe"].Equals(chave))
+                                                        foreach (var note in notesNFeCanceladas)
                                                         {
-                                                            nn.Add(arquivo);
-                                                            notes55.Add(nn);
-                                                            break;
+                                                            if (note[0]["chave"].Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]["chave"]);
+                                                                nnInfo.Add(note[1]["mod"]);
+                                                                nnInfo.Add(note[1]["nNF"]);
+                                                                notes55.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        foreach (var note in notesNFeCanceladasEvento)
+                                                        {
+                                                            if (note[0]["chNFe"].Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]["chNFe"]);
+                                                                nnInfo.Add(note[0]["chNFe"].Substring(20, 2));
+                                                                nnInfo.Add(note[0]["chNFe"].Substring(25, 9));
+                                                                notes55.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        foreach (var note in notesNFCeCanceladas)
+                                                        {
+                                                            if (note[0]["chave"].Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]["chave"]);
+                                                                nnInfo.Add(note[1]["mod"]);
+                                                                nnInfo.Add(note[1]["nNF"]);
+                                                                notes65.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        foreach (var note in notesNFCeCanceladasEvento)
+                                                        {
+                                                            if (note[0]["chNFe"].Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]["chNFe"]);
+                                                                nnInfo.Add(note[0]["chNFe"].Substring(20, 2));
+                                                                nnInfo.Add(note[0]["chNFe"].Substring(25, 9));
+                                                                notes65.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
                                                         }
                                                     }
 
-                                                    foreach (var note in notesNFCeCanceladas)
-                                                    {
-                                                        if (note[0]["chave"].Equals(chave))
-                                                        {
-                                                            nn.Add(arquivo);
-                                                            notes55.Add(nn);
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    foreach (var note in notesNFCeCanceladasEvento)
-                                                    {
-                                                        if (note[0]["chNFe"].Equals(chave))
-                                                        {
-                                                            nn.Add(arquivo);
-                                                            notes55.Add(nn);
-                                                            break;
-                                                        }
-                                                    }
                                                 }
                                             }
                                             break;
@@ -2073,6 +2106,112 @@ namespace Escon.SisctNET.Web.Xml
 
             notes.Add(notes55);
             notes.Add(notes65);
+            notes.Add(notesInfo);
+
+            return notes;
+        }
+
+        public List<List<List<string>>> MoveCanceladaEmpresa(string directoryNfe, List<List<string>> spedNFeCancelada, List<List<string>> spedNFCeCancelada)
+        {
+            List<List<List<string>>> notes = new List<List<List<string>>>();
+            List<List<string>> notes55 = new List<List<string>>();
+            List<List<string>> notes65 = new List<List<string>>();
+            List<List<string>> notesInfo = new List<List<string>>();
+
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    string chave = reader.Value.Substring(3, 44);
+                                                    List<string> nn = new List<string>();
+                                                    List<string> nnInfo = new List<string>();
+
+                                                    bool achou = false;
+
+                                                    for (int k = 0; k < notesInfo.Count(); k++)
+                                                    {
+
+                                                        if (notesInfo[k][0].Equals(chave))
+                                                        {
+                                                            achou = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if (achou == false)
+                                                    {
+                                                        foreach (var note in spedNFeCancelada)
+                                                        {
+                                                            if (note.Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]);
+                                                                nnInfo.Add(note[1]);
+                                                                nnInfo.Add(note[2]);
+                                                                notes55.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        foreach (var note in spedNFCeCancelada)
+                                                        {
+                                                            if (note[0].Equals(chave))
+                                                            {
+                                                                nn.Add(arquivo);
+                                                                nnInfo.Add(note[0]);
+                                                                nnInfo.Add(note[1]);
+                                                                nnInfo.Add(note[2]);
+                                                                notes55.Add(nn);
+                                                                notesInfo.Add(nnInfo);
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                   
+                                                }
+                                            }
+                                            break;
+
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            notes.Add(notes55);
+            notes.Add(notes65);
+            notes.Add(notesInfo);
 
             return notes;
         }

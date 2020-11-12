@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ConsultaDocumentoArrecadacaoDarWeb;
+using System.Reflection.Metadata;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -119,7 +120,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
 
-                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE))
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE) || ordem.Equals(Model.Ordem.VerificarEmpresa))
                         {
                             directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
                             directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
@@ -177,8 +178,17 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> notasInvalidas = new List<List<string>>();
                     List<List<string>> notas_sped = new List<List<string>>();
 
+                    List<List<List<string>>> notasCanceladas = new List<List<List<string>>>();
+                    List<List<List<string>>> eventos = new List<List<List<string>>>();
+
+                    int qtdValida = 0;
+                    int qtdInvalida = 0;
+
                     if (ordem.Equals(Model.Ordem.XmlSefaz) || ordem.Equals(Model.Ordem.XmlEmpresa))
                     {
+                        qtdValida += notesValidas.Count();
+                        qtdInvalida += (notesNFeCanceladas.Count() + notesNFeCanceladasEvento.Count() + notesNFCeCanceladas.Count() + notesNFCeCanceladasEvento.Count());
+
                         foreach (var note in notesValidas)
                         {
                             string nota_xml = note[0]["chave"];
@@ -218,7 +228,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 notasInvalidas.Add(n);
                             }
                         }
-                        
+
                         foreach (var note in notesNFeCanceladasEvento)
                         {
                             string nota_xml = note[0]["chNFe"];
@@ -234,8 +244,8 @@ namespace Escon.SisctNET.Web.Controllers
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
-                                n.Add(note[0]["chNFe"].Substring(20,2));
-                                n.Add(note[0]["chNFe"].Substring(25,9));
+                                n.Add(note[0]["chNFe"].Substring(20, 2));
+                                n.Add(note[0]["chNFe"].Substring(25, 9));
                                 n.Add(note[0]["chNFe"]);
                                 notasInvalidas.Add(n);
                             }
@@ -292,7 +302,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
-                       
+
+                        qtdValida += spedNormal.Count();
+                        qtdInvalida += (spedNFeCancelada.Count() + spedNFCeCancelada.Count());
+
                         foreach (var note in spedNormal)
                         {
                             bool nota_encontrada = false;
@@ -397,7 +410,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
-                        
+
                         foreach (var note in spedNFCeCancelada)
                         {
                             bool nota_encontrada = false;
@@ -432,7 +445,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (note[0].Equals(nota_xml))
                                 {
                                     nota_encontrada = true;
-                                    for(int i = notasInvalidas.Count() - 1; i >= 0; i--)
+                                    for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
                                     {
                                         if (notasInvalidas[i][2].Equals(nota_xml))
                                         {
@@ -454,7 +467,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         break;
                                     }
                                 }
-                                
+
                                 List<string> n = new List<string>();
                                 n.Add(note[1]);
                                 n.Add(note[2]);
@@ -497,7 +510,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalXml = notaXml[3]["vNF"];
                                     string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
-                                    string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();                                       
+                                    string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
                                     string descXml = notaXml[3]["vDesc"];
                                     string descSped = linha[3].Equals("") ? "0" : linha[3].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
@@ -512,7 +525,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     string freteDif = (Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped)).ToString();
 
                                     if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
-                                        !Convert.ToDecimal(outDespDif).Equals(0) || !Convert.ToDecimal(segDif).Equals(0) || 
+                                        !Convert.ToDecimal(outDespDif).Equals(0) || !Convert.ToDecimal(segDif).Equals(0) ||
                                         !Convert.ToDecimal(freteDif).Equals(0))
                                     {
                                         Valores.Add(linha[0]);
@@ -576,18 +589,180 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else if (ordem.Equals(Model.Ordem.VerificarSefaz))
                     {
-                        List<List<List<string>>> notasCanceladas = new List<List<List<string>>>();
-                        notasCanceladas = importXml.FindByMoveCancelada(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
+                        notasCanceladas = importXml.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
+                        eventos = importEvento.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
+
+                        if (!Directory.Exists(directoryNFeCancelada))
+                        {
+                            Directory.CreateDirectory(directoryNFeCancelada);
+                        }
+
+                        for (int i = 0; i < notasCanceladas[0].Count(); i++)
+                        {
+                            var temp = notasCanceladas[0][i][0].Split("\\");
+                            var dirtemp = directoryNFeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(notasCanceladas[0][i][0]))
+                            {
+                                System.IO.File.Move(notasCanceladas[0][i][0], dirtemp);
+                            }
+
+                        }
+
+                        for (int i = 0; i < eventos[0].Count(); i++)
+                        {
+                            var temp = eventos[0][i][0].Split("\\");
+                            var dirtemp = directoryNFeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(eventos[0][i][0]))
+                            {
+                                System.IO.File.Move(eventos[0][i][0], dirtemp);
+                            }
+
+                        }
+
+                        if (!Directory.Exists(directoryNFCeCancelada))
+                        {
+                            Directory.CreateDirectory(directoryNFCeCancelada);
+                        }
+
+                        for (int i = 0; i < notasCanceladas[1].Count(); i++)
+                        {
+                            var temp = notasCanceladas[1][i][0].Split("\\");
+                            var dirtemp = directoryNFCeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(notasCanceladas[1][i][0]))
+                            {
+                                System.IO.File.Move(notasCanceladas[1][i][0], dirtemp);
+                            }
+
+                        }
+
+                        for (int i = 0; i < eventos[1].Count(); i++)
+                        {
+                            var temp = eventos[1][i][0].Split("\\");
+                            var dirtemp = directoryNFCeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(eventos[1][i][0]))
+                            {
+                                System.IO.File.Move(eventos[1][i][0], dirtemp);
+                            }
+                        }
+
                     }
                     else if (ordem.Equals(Model.Ordem.VerificarEmpresa))
                     {
+                        notasCanceladas = importXml.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
+                        eventos = importEvento.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
+
+                        if (!Directory.Exists(directoryNFeCancelada))
+                        {
+                            Directory.CreateDirectory(directoryNFeCancelada);
+                        }
+
+                        for (int i = 0; i < notasCanceladas[0].Count(); i++)
+                        {
+                            var temp = notasCanceladas[0][i][0].Split("\\");
+                            var dirtemp = directoryNFeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(notasCanceladas[0][i][0]))
+                            {
+                                System.IO.File.Move(notasCanceladas[0][i][0], dirtemp);
+                            }
+
+                        }
+
+                        for (int i = 0; i < eventos[0].Count(); i++)
+                        {
+                            var temp = eventos[0][i][0].Split("\\");
+                            var dirtemp = directoryNFeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(eventos[0][i][0]))
+                            {
+                                System.IO.File.Move(eventos[0][i][0], dirtemp);
+                            }
+
+                        }
+
+                        if (!Directory.Exists(directoryNFCeCancelada))
+                        {
+                            Directory.CreateDirectory(directoryNFCeCancelada);
+                        }
+
+                        for (int i = 0; i < notasCanceladas[1].Count(); i++)
+                        {
+                            var temp = notasCanceladas[1][i][0].Split("\\");
+                            var dirtemp = directoryNFCeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(notasCanceladas[1][i][0]))
+                            {
+                                System.IO.File.Move(notasCanceladas[1][i][0], dirtemp);
+                            }                            
+
+                        }
+
+                        for (int i = 0; i < eventos[1].Count(); i++)
+                        {
+                            var temp = eventos[1][i][0].Split("\\");
+                            var dirtemp = directoryNFCeCancelada + "\\" + temp[temp.Count() - 1];
+
+                            if (System.IO.File.Exists(dirtemp))
+                            {
+                                System.IO.File.Delete(dirtemp);
+                            }
+
+                            if (System.IO.File.Exists(eventos[1][i][0]))
+                            {
+                                System.IO.File.Move(eventos[1][i][0], dirtemp);
+                            }
+                        }
+
 
                     }
 
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
                     ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
-                    
+                    ViewBag.NotasCanceladas = notasCanceladas;
+                    ViewBag.Eventos = eventos;
+                    ViewBag.QtdValida = qtdValida;
+                    ViewBag.QtdInvalida = qtdInvalida;
+
                 }
                 else if (opcao.Equals(Model.Opcao.CTe))
                 {

@@ -603,8 +603,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Company> companyTemp = new List<Company>();
                 companies.ToList().ForEach(s =>
                 {
-                    s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
-                    s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
+                    //s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
+                    //s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
                     companyTemp.Add(s);
                 });
 
@@ -674,8 +674,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Company> companyTemp = new List<Company>();
                 companies.ToList().ForEach(s =>
                 {
-                    s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
-                    s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
+                    //s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
+                    //s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
                     companyTemp.Add(s);
                 });
 
