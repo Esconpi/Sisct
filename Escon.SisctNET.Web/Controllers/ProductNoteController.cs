@@ -1482,7 +1482,10 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalFinalFecopCalculadaIE = Math.Round(totalfecop1IE + totalfecop2IE, 2);
                             ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
 
-                            totalDarFecop += Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
+                            if ((totalfecop1SIE + totalfecop2SIE) > 0)
+                            {
+                                totalDarFecop += Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
+                            }
 
                             if ((totalfecop1IE + totalfecop2IE) > 0)
                             {

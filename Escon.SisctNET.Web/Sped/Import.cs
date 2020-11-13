@@ -225,19 +225,38 @@ namespace Escon.SisctNET.Web.Sped
                     {
                         string textoC170 = "";
 
+                        decimal valorProdutoTemp = Convert.ToDecimal(linha[7].Replace(",", "."));
+
+                        if (linha[8] != "")
+                        {
+                            valorProdutoTemp -= Convert.ToDecimal(linha[8].Replace(",", "."));
+                        }
+
+                        if (linha[24] != "")
+                        {
+                            valorProdutoTemp += Convert.ToDecimal(linha[24].Replace(",", "."));
+                        }
+
                         if (posC100 >= 0)
                         {
-                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) 
-                                || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
+                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0)
+                                || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[7].Equals(linha[13]))
                             {
-                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0,
-                                    vItem = Convert.ToDecimal(linha[7].Replace(",", "."));
+                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0, vIPI = 0, vICMSST = 0,
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vBaseItem = 0;
 
-                                if(linha[24] != "")
+                                if (linha[24] != "")
                                 {
                                     vItem += Convert.ToDecimal(linha[24].Replace(",", "."));
                                 }
-                                
+
+                                if (linha[13] != "")
+                                {
+                                    vBaseItem += Convert.ToDecimal(linha[13].Replace(",", "."));
+                                }
+
+
+
                                 int posCfop = -1, nItem = 0;
 
                                 for (int i = 0; i < cfops.Count(); i++)
@@ -262,6 +281,8 @@ namespace Escon.SisctNET.Web.Sped
                                     posCfop = cfops.Count() - 1;
                                 }
 
+                                int cont = 0;
+
                                 for (int i = posC100; i < posC100 + 1; i++)
                                 {
                                     for (int j = 0; j < notes[i].Count(); j++)
@@ -269,6 +290,17 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                         {
+                                            if (cont > 0)
+                                            {
+                                                if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+
+                                                }
+                                            }
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
                                             vProd = 0;
                                             vOutro = 0;
@@ -279,10 +311,14 @@ namespace Escon.SisctNET.Web.Sped
                                             vBC = 0;
                                             vICMS = 0;
                                             pICMS = 0;
+                                            vIPI = 0;
+                                            vICMSST = 0;
+
+                                            cont++;
 
                                             if (notes[i][j].ContainsKey("vProd"))
                                             {
-                                                 vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                                vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
                                             }
 
                                             if (notes[i][j].ContainsKey("vFrete"))
@@ -309,12 +345,12 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("pIPI"))
                                         {
-                                            vProd += Convert.ToDecimal(notes[i][j]["vIPI"]);
+                                            vIPI = Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            vProd += Convert.ToDecimal(notes[i][j]["vICMSST"]);
+                                            vICMSST = Convert.ToDecimal(notes[i][j]["vICMSST"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
@@ -345,16 +381,23 @@ namespace Escon.SisctNET.Web.Sped
                                             vFCPST = Convert.ToDecimal(notes[i][j]["vFCPST"]);
                                         }
 
-                                        if (Convert.ToInt32(linha[2]).Equals(nItem) && vItem.Equals(vProd))
+
+                                        if (notes[i][j].ContainsKey("vNF"))
                                         {
-                                            valorProduto = vProd + vFCPST - vDesc + vOutro + vFrete + vSeg;
-                                            break;
+                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+
+                                            }
                                         }
+
+
                                     }
 
                                 }
-
-                                string pICMSTemp = "";
 
                                 if (valorProduto == 0)
                                 {
@@ -370,6 +413,8 @@ namespace Escon.SisctNET.Web.Sped
                                         valorProduto += Convert.ToDecimal(linha[24].Replace(",", "."));
                                     }
                                 }
+
+                                string pICMSTemp = "";
 
                                 if (notes[posC100][1]["finNFe"].Equals("2"))
                                 {
@@ -486,14 +531,15 @@ namespace Escon.SisctNET.Web.Sped
 
                         if (posC100 >= 0)
                         {
-                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
+                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) ||
+                                !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[5].Equals(linha[6]))
                             {
 
                                 for (int i = 0; i < cfops.Count(); i++)
                                 {
                                     if (cfops[i][0].Equals(linha[3]) && cfops[i][2].Equals(linha[2]) && cfops[i][3].Equals(linha[4]))
                                     {
-                                        if(notes[posC100][1]["finNFe"].Equals("2"))
+                                        if (notes[posC100][1]["finNFe"].Equals("2"))
                                         {
                                             textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + cfops[i][5] + "|" + cfops[i][1].Replace(".", ",") + "|"
                                              + cfops[i][4].Replace(".", ",") + "|" + cfops[i][6].Replace(".", ",") + "|" + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
@@ -503,7 +549,7 @@ namespace Escon.SisctNET.Web.Sped
                                             textoC190 += "|" + linha[1] + "|" + linha[2] + "|" + linha[3] + "|" + linha[4] + "|" + cfops[i][1].Replace(".", ",") + "|"
                                             + linha[6] + "|" + linha[7] + "|" + "" + "|" + "" + "|" + linha[10] + "|" + "" + "|" + linha[12] + "|";
                                         }
-                                        
+
                                         sped.Add(textoC190);
                                     }
                                 }
@@ -788,18 +834,37 @@ namespace Escon.SisctNET.Web.Sped
                     {
                         string textoC170 = "";
 
+                        decimal valorProdutoTemp = Convert.ToDecimal(linha[7].Replace(",", "."));
+
+                        if (linha[8] != "")
+                        {
+                            valorProdutoTemp -= Convert.ToDecimal(linha[8].Replace(",", "."));
+                        }
+
+                        if (linha[24] != "")
+                        {
+                            valorProdutoTemp += Convert.ToDecimal(linha[24].Replace(",", "."));
+                        }
+
                         if (posC100 >= 0)
                         {
                             if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0)
-                                || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
+                                || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[7].Equals(linha[13]))
                             {
-                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0,
-                                    vItem = Convert.ToDecimal(linha[7].Replace(",", "."));
+                                decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0, vIPI = 0, vICMSST = 0,
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vBaseItem = 0;
 
                                 if (linha[24] != "")
                                 {
                                     vItem += Convert.ToDecimal(linha[24].Replace(",", "."));
                                 }
+
+                                if (linha[13] != "")
+                                {
+                                    vBaseItem += Convert.ToDecimal(linha[13].Replace(",", "."));
+                                }
+
+                                
 
                                 int posCfop = -1, nItem = 0;
 
@@ -825,6 +890,8 @@ namespace Escon.SisctNET.Web.Sped
                                     posCfop = cfops.Count() - 1;
                                 }
 
+                                int cont = 0;
+
                                 for (int i = posC100; i < posC100 + 1; i++)
                                 {
                                     for (int j = 0; j < notes[i].Count(); j++)
@@ -832,6 +899,17 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("uCom") && notes[i][j].ContainsKey("qCom"))
                                         {
+                                            if (cont > 0)
+                                            {
+                                                if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
+                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+
+                                                }
+                                            }
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
                                             vProd = 0;
                                             vOutro = 0;
@@ -842,6 +920,10 @@ namespace Escon.SisctNET.Web.Sped
                                             vBC = 0;
                                             vICMS = 0;
                                             pICMS = 0;
+                                            vIPI = 0;
+                                            vICMSST = 0;
+
+                                            cont++;
 
                                             if (notes[i][j].ContainsKey("vProd"))
                                             {
@@ -872,12 +954,12 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("pIPI"))
                                         {
-                                            vProd += Convert.ToDecimal(notes[i][j]["vIPI"]);
+                                            vIPI = Convert.ToDecimal(notes[i][j]["vIPI"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("orig"))
                                         {
-                                            vProd += Convert.ToDecimal(notes[i][j]["vICMSST"]);
+                                            vICMSST = Convert.ToDecimal(notes[i][j]["vICMSST"]);
                                         }
 
                                         if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
@@ -908,11 +990,20 @@ namespace Escon.SisctNET.Web.Sped
                                             vFCPST = Convert.ToDecimal(notes[i][j]["vFCPST"]);
                                         }
 
-                                        if (Convert.ToInt32(linha[2]).Equals(nItem) && vItem.Equals(vProd))
+
+                                        if (notes[i][j].ContainsKey("vNF"))
                                         {
-                                            valorProduto = vProd + vFCPST - vDesc + vOutro + vFrete + vSeg;
-                                            break;
+                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                  vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
+                                                  vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+
+                                            }
                                         }
+
+                                        
                                     }
 
                                 }
@@ -1039,7 +1130,8 @@ namespace Escon.SisctNET.Web.Sped
 
                         if (posC100 >= 0)
                         {
-                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true))
+                            if (!descontoNota.Equals(0) || !freteNota.Equals(0) || !seguroNota.Equals(0) || !outrasDespesasNota.Equals(0) || !ipiNota.Equals(0) || !icmsRetidoST.Equals(0) || 
+                                !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[5].Equals(linha[6]))
                             {
 
                                 for (int i = 0; i < cfops.Count(); i++)
@@ -1563,6 +1655,44 @@ namespace Escon.SisctNET.Web.Sped
                 {
                     string[] linha = line.Split('|');
                     if (linha[1] == "C100" && linha[2].Equals(tipo))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
+
+        public List<List<string>> SpedNfe(string directorySped, string tipo, string emissao)
+        {
+            List<List<string>> spedNfe = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100" && linha[2].Equals(tipo) && linha[3].Equals(emissao))
                     {
                         List<string> sped = new List<string>();
                         sped.Add(linha[9]);

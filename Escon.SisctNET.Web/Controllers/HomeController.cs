@@ -189,6 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Year = year;
                 ViewBag.Month = month;
+                ViewBag.Produtos = SessionManager.GetProductsSped().OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 return View(comp);
             }
             catch (Exception ex)

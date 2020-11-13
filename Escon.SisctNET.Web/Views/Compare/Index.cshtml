@@ -48,7 +48,10 @@
                 }
                 else if (ViewBag.Ordem == "VerificarSefaz" || ViewBag.Ordem == "VerificarEmpresa")
                 {
-                    @await Html.PartialAsync("_CheckNotes", new ViewDataDictionary(ViewData))
+                    @if (ViewBag.NotasCanceladas.Count > 0 && ViewBag.Eventos.Count > 0)
+                    {
+                        @await Html.PartialAsync("_CheckNotes", new ViewDataDictionary(ViewData))
+                    }
                 }
             }
             else if (ViewBag.Opcao == "CTe")

@@ -7,8 +7,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ConsultaDocumentoArrecadacaoDarWeb;
-using System.Reflection.Metadata;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -141,24 +139,23 @@ namespace Escon.SisctNET.Web.Controllers
                         spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
                         notesValidas = importXml.NfeResume(directoryValida);
                     }
-                    else if (ordem.Equals(Model.Ordem.VerificarSefaz))
+                    else if (ordem.Equals(Model.Ordem.VerificarSefaz) && ident.Equals("1"))
                     {
                         notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
                         notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
                         notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
                         notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
                     }
-                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa))
+                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa) && ident.Equals("1"))
                     {
                         spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "55");
                         spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
                     }
-                    else
+                    else if(!ordem.Equals(Model.Ordem.VerificarSefaz) && !ordem.Equals(Model.Ordem.VerificarEmpresa))
                     {
                         if (ident.Equals("0"))
                         {
                             spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
-                            //sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
                         }
                         else if (ident.Equals("1"))
                         {
@@ -300,7 +297,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (ident.Equals("0"))
                         {
-                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident, "1");
                         }
 
                         qtdValida += spedNormal.Count();
@@ -587,7 +584,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalSped = valorTotalGeralSped;
                         ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
                     }
-                    else if (ordem.Equals(Model.Ordem.VerificarSefaz))
+                    else if (ordem.Equals(Model.Ordem.VerificarSefaz) && ident.Equals("1"))
                     {
                         notasCanceladas = importXml.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
                         eventos = importEvento.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
@@ -670,7 +667,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                     }
-                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa))
+                    else if (ordem.Equals(Model.Ordem.VerificarEmpresa) && ident.Equals("1"))
                     {
                         notasCanceladas = importXml.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
                         eventos = importEvento.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
