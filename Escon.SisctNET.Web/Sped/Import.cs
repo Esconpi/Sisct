@@ -243,18 +243,17 @@ namespace Escon.SisctNET.Web.Sped
                                 || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[7].Equals(linha[13]))
                             {
                                 decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0, vIPI = 0, vICMSST = 0,
-                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vBaseItem = 0;
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vIpiItem = 0, vDescItem = 0;
 
                                 if (linha[24] != "")
                                 {
-                                    vItem += Convert.ToDecimal(linha[24].Replace(",", "."));
+                                    vIpiItem = Convert.ToDecimal(linha[24].Replace(",", "."));
                                 }
 
-                                if (linha[13] != "")
+                                if (linha[8] != "")
                                 {
-                                    vBaseItem += Convert.ToDecimal(linha[13].Replace(",", "."));
+                                    vDescItem = Convert.ToDecimal(linha[8].Replace(",", "."));
                                 }
-
 
 
                                 int posCfop = -1, nItem = 0;
@@ -292,13 +291,81 @@ namespace Escon.SisctNET.Web.Sped
                                         {
                                             if (cont > 0)
                                             {
-                                                if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                                if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                    (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro) ||
+                                                    vItem.Equals(vProd - vDesc) ||
+                                                    vItem.Equals(vProd)))
                                                 {
                                                     valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                     break;
 
+                                                }
+                                                else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                    ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                    (vItem + vIpiItem).Equals(vProd)))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                    ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd)))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro) ||
+                                                    vItem.Equals(vProd - vDesc) ||
+                                                    vItem.Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                   (vItem + vIpiItem).Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
                                                 }
                                             }
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
@@ -384,13 +451,81 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("vNF"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                            if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                   (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro) ||
+                                                   vItem.Equals(vProd - vDesc) ||
+                                                   vItem.Equals(vProd)))
                                             {
                                                 valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                 break;
 
+                                            }
+                                            else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                (vItem + vIpiItem).Equals(vProd)))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd)))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                vItem.Equals(vProd - vDesc + vOutro) ||
+                                                vItem.Equals(vProd - vDesc) ||
+                                                vItem.Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                               (vItem + vIpiItem).Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
                                             }
                                         }
 
@@ -852,19 +987,18 @@ namespace Escon.SisctNET.Web.Sped
                                 || !icmsRetidoST.Equals(0) || !valorNota.Equals(valorNotaNF) || diferenca.Equals(true) || !linha[7].Equals(linha[13]))
                             {
                                 decimal valorProduto = 0, vProd = 0, vFCPST = 0, vOutro = 0, vSeg = 0, vFrete = 0, vDesc = 0, vBC = 0, vICMS = 0, pICMS = 0, vIPI = 0, vICMSST = 0,
-                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vBaseItem = 0;
+                                    vItem = Convert.ToDecimal(linha[7].Replace(",", ".")), vIpiItem = 0, vDescItem = 0;
 
                                 if (linha[24] != "")
                                 {
-                                    vItem += Convert.ToDecimal(linha[24].Replace(",", "."));
+                                    vIpiItem = Convert.ToDecimal(linha[24].Replace(",", "."));
                                 }
 
-                                if (linha[13] != "")
+                                if (linha[8] != "")
                                 {
-                                    vBaseItem += Convert.ToDecimal(linha[13].Replace(",", "."));
+                                    vDescItem = Convert.ToDecimal(linha[8].Replace(",", "."));
                                 }
 
-                                
 
                                 int posCfop = -1, nItem = 0;
 
@@ -901,13 +1035,81 @@ namespace Escon.SisctNET.Web.Sped
                                         {
                                             if (cont > 0)
                                             {
-                                                if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
-                                                 vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                                if (Convert.ToInt32(linha[2]).Equals(nItem) && 
+                                                    (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro) ||
+                                                    vItem.Equals(vProd - vDesc) ||
+                                                    vItem.Equals(vProd)))
                                                 {
                                                     valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                     break;
 
+                                                }
+                                                else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                    ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                    (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                    (vItem + vIpiItem).Equals(vProd)))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                    ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                    (vItem + vIpiItem - vDescItem).Equals(vProd)))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                    vItem.Equals(vProd - vDesc + vOutro) ||
+                                                    vItem.Equals(vProd - vDesc) ||
+                                                    vItem.Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                   (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                   (vItem + vIpiItem).Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
+                                                }
+                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                   (vItem + vIpiItem - vDescItem).Equals(vProd))
+                                                {
+                                                    valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                    break;
                                                 }
                                             }
                                             nItem = Convert.ToInt32(notes[i][j]["nItem"]);
@@ -993,13 +1195,81 @@ namespace Escon.SisctNET.Web.Sped
 
                                         if (notes[i][j].ContainsKey("vNF"))
                                         {
-                                            if (Convert.ToInt32(linha[2]).Equals(nItem) && (vItem.Equals(vProd) || vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
-                                                  vBaseItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) || vBaseItem.Equals(vProd - vDesc + vFrete + vSeg) ||
-                                                  vBaseItem.Equals(vProd - vDesc + vSeg) || vBaseItem.Equals(vProd - vDesc) || vBaseItem.Equals(vProd)) && vBaseItem.Equals(vBC))
+                                            if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                   (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                   vItem.Equals(vProd - vDesc + vOutro) ||
+                                                   vItem.Equals(vProd - vDesc) ||
+                                                   vItem.Equals(vProd)))
                                             {
                                                 valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                 break;
 
+                                            }
+                                            else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                                (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                                (vItem + vIpiItem).Equals(vProd)))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if (Convert.ToInt32(linha[2]).Equals(nItem) &&
+                                                ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                                (vItem + vIpiItem - vDescItem).Equals(vProd)))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if (vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                                vItem.Equals(vProd - vDesc + vOutro + vFrete) ||
+                                                vItem.Equals(vProd - vDesc + vOutro) ||
+                                                vItem.Equals(vProd - vDesc) ||
+                                                vItem.Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc + vOutro) ||
+                                               (vItem + vIpiItem).Equals(vProd - vDesc) ||
+                                               (vItem + vIpiItem).Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
+                                            }
+                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc) ||
+                                               (vItem + vIpiItem - vDescItem).Equals(vProd))
+                                            {
+                                                valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
+                                                break;
                                             }
                                         }
 

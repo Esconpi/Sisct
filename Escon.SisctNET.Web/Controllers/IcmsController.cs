@@ -2580,7 +2580,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TaxAnexo = impAnexo;
 
                     var mesAtual = importMes.NumberMonth(month);
-                    var mesAnterior = importMes.NameMonthLast(mesAtual);
+                    var mesAnterior = importMes.NameMonthPrevious(mesAtual);
                     decimal saldoCredorAnterior = 0;
 
                     string ano = year;

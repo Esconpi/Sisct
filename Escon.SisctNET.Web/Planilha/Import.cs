@@ -48,6 +48,10 @@ namespace Escon.SisctNET.Web.Planilha
                                             {
                                                 product.Add(item.InnerText);
                                             }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                product.Add(item.InnerXml);
+                                            }
 
                                         }
                                     }
@@ -75,8 +79,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido",
-                                ex);
+                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
             }
 
             return products;
@@ -119,6 +122,14 @@ namespace Escon.SisctNET.Web.Planilha
                                             {
                                                 note.Add(item.Text.Text);
                                             }
+                                            else if (item.InnerText != null)
+                                            {
+                                                note.Add(item.InnerText);
+                                            }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                note.Add(item.InnerXml);
+                                            }
                                         }
                                     }
                                 }
@@ -152,8 +163,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido",
-                                ex);
+                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
             }
            
             return notes;
@@ -196,6 +206,14 @@ namespace Escon.SisctNET.Web.Planilha
                                             {
                                                 ncm.Add(item.Text.Text);
                                             }
+                                            else if (item.InnerText != null)
+                                            {
+                                                ncm.Add(item.InnerText);
+                                            }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                ncm.Add(item.InnerXml);
+                                            }
                                         }
                                     }
                                     else if (thecurrentcell.CellValue != null)
@@ -229,8 +247,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido",
-                                ex);
+                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
             }
            
             return ncms;

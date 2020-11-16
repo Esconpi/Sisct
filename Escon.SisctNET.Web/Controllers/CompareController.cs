@@ -46,7 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Opcao = opcao.ToString();
                 ViewBag.Ordem = ordem.ToString();
                 ViewBag.Document = company.Document;
-                ViewBag.SocialName = company.SocialName;
+                ViewBag.SocialName = company.SocialName; 
 
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
