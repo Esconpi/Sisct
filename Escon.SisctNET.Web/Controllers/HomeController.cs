@@ -146,6 +146,10 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     sped = importSped.SpedEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
                 }
+                else if (option.Equals("entryOriginal"))
+                {
+                    sped = importSped.SpedEntry(caminhoDestinoArquivoOriginalUpload);
+                }
                 
 
                 // Criando Novo Arquivo Sped
@@ -189,7 +193,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 ViewBag.Year = year;
                 ViewBag.Month = month;
-                ViewBag.Produtos = SessionManager.GetProductsSped().OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                List<List<string>> products = new List<List<string>>();
+
+                if(SessionManager.GetProductsSped() != null)
+                {
+                    products = SessionManager.GetProductsSped().OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
+
+                ViewBag.Produtos = products;
                 return View(comp);
             }
             catch (Exception ex)

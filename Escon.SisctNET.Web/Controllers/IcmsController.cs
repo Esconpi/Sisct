@@ -92,6 +92,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                opcao = "saida";
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
@@ -141,8 +142,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
-
-                opcao = "saida";
 
                 if (type.Equals("resumoCfop"))
                 {

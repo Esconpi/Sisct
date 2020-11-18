@@ -355,7 +355,7 @@ namespace Escon.SisctNET.Web.Sped
                                                     valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                     break;
                                                 }
-                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                else if ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
@@ -515,7 +515,7 @@ namespace Escon.SisctNET.Web.Sped
                                                 valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                 break;
                                             }
-                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                            else if ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
@@ -1099,7 +1099,7 @@ namespace Escon.SisctNET.Web.Sped
                                                     valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                     break;
                                                 }
-                                                else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                                else if ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
                                                    (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
@@ -1259,7 +1259,7 @@ namespace Escon.SisctNET.Web.Sped
                                                 valorProduto = vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST;
                                                 break;
                                             }
-                                            else if ((vItem + vIpiItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
+                                            else if ((vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST + vFCPST) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI + vICMSST) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg + vIPI) ||
                                                (vItem + vIpiItem - vDescItem).Equals(vProd - vDesc + vOutro + vFrete + vSeg) ||
@@ -1503,6 +1503,109 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
+        public List<string> SpedEntry(string directorySped)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+            List<string> sped = new List<string>();
+
+            string line, tipoOperacao = "";
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipoOperacao = linha[2];
+                    }
+
+                    if (linha[1].Equals("D100"))
+                    {
+                        tipoOperacao = linha[2];
+                    }
+
+                    if (linha[1].Equals("C100") && tipoOperacao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("C170") && tipoOperacao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("C190") && tipoOperacao.Equals("0"))
+                    {
+                        string textoC190 = "";
+                        foreach (var l in linha)
+                        {
+                            textoC190 += l + "|";
+                        }
+                        sped.Add(textoC190);
+
+                    }
+
+                    if (!linha[1].Equals("C100") && !linha[1].Equals("C170") && !linha[1].Equals("C190") &&
+                        !linha[1].Equals("D100") && !linha[1].Equals("D190"))
+                    {
+                        linha = line.TrimEnd('|').Split('|');
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("D100") && tipoOperacao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                    if (linha[1].Equals("D190") && tipoOperacao.Equals("0"))
+                    {
+                        string texto = "";
+                        foreach (var l in linha)
+                        {
+                            texto += l + "|";
+                        }
+                        sped.Add(texto);
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return sped;
+        }
+
         public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra,
                                     List<string> cfopsBonifi, List<string> cfopsCompraST, List<string> cfopsTransf,
                                     List<string> cfopsTransfST)
@@ -1577,7 +1680,7 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
             return totalDeCredito;
-        }
+        } 
 
         public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
         {

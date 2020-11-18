@@ -12,7 +12,7 @@
             <strong>
                 DEMONSTRATIVO DA BASE DE CÁLCULO E APURAÇÃO DO ICMS (Art.813-M, §6°) <br />
             </strong>
-            MÊS/ANO DE REFERÊNCIA: @ViewBag.Month/@ViewBag.Year
+            MÊS/ANO DE REFERÊNCIA: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
         </div>
 
     }
@@ -30,7 +30,7 @@
             <strong>
                 DEMONSTRATIVO DE APROPRIAÇÃO DE CRÉDITO PRESUMIDO<br />
             </strong>
-            MÊS/ANO DE REFERÊNCIA: @ViewBag.Month/@ViewBag.Year
+            MÊS/ANO DE REFERÊNCIA: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
         </div>
     }
 </div>
