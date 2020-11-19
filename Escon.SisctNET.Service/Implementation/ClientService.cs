@@ -38,9 +38,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Client> FindByCompanyId(int companyId, Log log = null)
+        public List<Client> FindByCompany(int companyId, Log log = null)
         {
-            return _repository.FindByCompanyId(companyId, log);
+            return _repository.FindByCompany(companyId, log);
+        }
+
+        public List<Client> FindByCompany(int companyId, string year, string month, Log log = null)
+        {
+            return _repository.FindByCompany(companyId, year, month, log);
         }
 
         public List<string> FindByContribuinte(int companyId, string type, Log log = null)

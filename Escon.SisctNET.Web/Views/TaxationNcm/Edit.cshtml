@@ -18,21 +18,44 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
-                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <label asp-for="Ncm.Description" class="control-label"></label>
-                        <input asp-for="Ncm.Description" class="form-control" readonly />
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
-                        <label asp-for="Ncm.Code" class="control-label"></label>
-                        <input asp-for="Ncm.Code" class="form-control" readonly />
-                    </div>
                     <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label class="control-label">Produto</label>
                         <input asp-for="CodeProduct" class="form-control" readonly />
                     </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label">Descrição</label>
+                        <textarea asp-for="Product" class="form-control" readonly></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label asp-for="Ncm.Code" class="control-label"></label>
+                        <input asp-for="Ncm.Code" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="Ncm.Description" class="control-label"></label>
+                        <textarea asp-for="Ncm.Description" class="form-control" readonly></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="CstEntradaId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" name="CstEntradaId" id="cstEntrada"></select>
+                        <span asp-validation-for="CstEntradaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="CstSaidaId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" name="CstSaidaId" id="cstSaida"></select>
+                        <span asp-validation-for="CstSaidaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label class="control-label">Tipo Receita</label>
                         <select asp-items="@ViewBag.ListaTipoNcm" class="form-control selectoption" name="TypeNcmId" id="TypeNcmId"></select>
@@ -62,39 +85,25 @@
                             </select>
                         }
                     </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="NatReceita" class="control-label"></label>
+                        <input asp-for="NatReceita" class="form-control" />
+                        <span asp-validation-for="NatReceita" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                        <label asp-for="Pis" class="control-label"></label>
+                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
+                    </div>
+                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                        <label asp-for="Cofins" class="control-label"></label>
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
+                    </div>
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label class="control-label">Opção</label>
                         <select class="form-control selectoption" name="opcao">
                             <option value="1" selected>Por Produto</option>
                             <option value="2">Por Ncm</option>
                         </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                        <label asp-for="CstEntradaId" class="control-label"></label>
-                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" name="CstEntradaId" id="cstEntrada"></select>
-                        <span asp-validation-for="CstEntradaId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                        <label asp-for="CstSaidaId" class="control-label"></label>
-                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" name="CstSaidaId" id="cstSaida"></select>
-                        <span asp-validation-for="CstSaidaId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="NatReceita" class="control-label"></label>
-                        <input asp-for="NatReceita" class="form-control" />
-                        <span asp-validation-for="NatReceita" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Pis" class="control-label"></label>
-                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
-                    </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="Cofins" class="control-label"></label>
-                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>

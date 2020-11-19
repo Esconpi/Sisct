@@ -32,6 +32,8 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
+        public string Arquivo { get; set; }
+
         [Display(Name = "Tributado")]
         public bool Status { get; set; }
 
@@ -85,7 +87,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo Ncm")]
         [ForeignKey("TypeNcm")]
-        public int? TypeNcmId { get; set; }
+        public int TypeNcmId { get; set; }
 
         private TypeNcm typeNcm;
         public TypeNcm TypeNcm

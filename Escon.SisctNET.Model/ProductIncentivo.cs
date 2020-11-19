@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Escon.SisctNET.Model
 {
@@ -11,6 +9,8 @@ namespace Escon.SisctNET.Model
     public class ProductIncentivo : EntityBase
     {
         public ILazyLoader LazyLoader { get; set; }
+
+        public string Arquivo { get; set; }
 
         [Display(Name = "Código")]
         public string Code { get; set; }

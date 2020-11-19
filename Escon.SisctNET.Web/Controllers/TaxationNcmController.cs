@@ -68,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(int companyid, string year, string month,string arquivo)
+        public IActionResult Import(int companyid, string year, string month,string arquivo,string option)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
             {
@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
-                var ncmsMonofasicoAll = _service.FindByCompany(comp.Document);
+                var taxatioNcmsAll = _service.FindByCompany(comp.Document);
                 var ncmsAll = _ncmService.FindAll(null);                
 
                 if (comp.CountingTypeId == null)
@@ -109,15 +109,52 @@ namespace Escon.SisctNET.Web.Controllers
                 List<TaxationNcm> monoAdd = new List<TaxationNcm>();
                 List<TaxationNcm> monoUpdate = new List<TaxationNcm>();
 
+                string arqui = "";
+
+                if (arquivo.Equals("xmlE"))
+                {
+                    arqui = "XML EMPRESA";
+                }
+                else
+                {
+                    arqui = "XML SEFAZ";
+                }
+
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                    var ncmMonofasicoTemp = ncmsMonofasicoAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    var taxationTemp = taxatioNcmsAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
-                    if (ncmMonofasicoTemp == null && ncmTemp != null) 
+                    if (taxationTemp == null && ncmTemp != null) 
                     {
                         TaxationNcm tributacao = new TaxationNcm();
+                        
+                        string type = "Normal", natReceita = "";
+                        int typeNcmId = 2;
+                        int? cstEntradaId = null, cstSaidaId = null;
+                        bool status = false;
+                        decimal? pis = null, cofins = null;
+                        DateTime? dateStart = null;
+
+                        if (option.Equals("ncm"))
+                        {
+                            var taxationNcmTemp = taxatioNcmsAll.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).ToList();
+
+                            //  Procura se o NCM tem só uma tributação 
+                            if (taxationNcmTemp.Select(_ => _.Type).Distinct().ToList().Count() == 1)
+                            {
+                                type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Type;
+                                typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().TypeNcmId;
+                                cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstEntradaId;
+                                cstSaidaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstSaidaId;
+                                natReceita = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().NatReceita;
+                                pis = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Pis;
+                                cofins = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Cofins;
+                                dateStart = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().DateStart;
+                                status = true;
+                            }
+                        }
 
                         tributacao.CompanyId = companyid;
                         tributacao.NcmId = ncmTemp.Id;
@@ -125,10 +162,18 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.Product = ncms[i][2];
                         tributacao.Year = year;
                         tributacao.Month = month;
+                        tributacao.CstEntradaId = cstEntradaId;
+                        tributacao.CstSaidaId = cstSaidaId;
+                        tributacao.NatReceita = natReceita;
+                        tributacao.Pis = pis;
+                        tributacao.Cofins = cofins;
+                        tributacao.Type = type;
+                        tributacao.TypeNcmId = typeNcmId;
+                        tributacao.Arquivo = arqui;
+                        tributacao.Status = status;
+                        tributacao.DateStart = dateStart;
                         tributacao.Created = DateTime.Now;
                         tributacao.Updated = DateTime.Now;
-                        tributacao.Type = "Normal";
-                        tributacao.TypeNcmId = 2;
 
                         monoAdd.Add(tributacao);
 
@@ -141,19 +186,20 @@ namespace Escon.SisctNET.Web.Controllers
                         return View(comp);
                     }
 
-                    if (ncmMonofasicoTemp != null)
+                    if (taxationTemp != null)
                     {
-                        ncmMonofasicoTemp.CodeProduct = ncms[i][0];
-                        ncmMonofasicoTemp.NcmId = ncmTemp.Id;
-                        ncmMonofasicoTemp.Product = ncms[i][2];
-                        ncmMonofasicoTemp.Updated = DateTime.Now;
+                        taxationTemp.CodeProduct = ncms[i][0];
+                        taxationTemp.Product = ncms[i][2];
+                        taxationTemp.Arquivo = arqui;
+                        taxationTemp.NcmId = ncmTemp.Id;
+                        taxationTemp.Updated = DateTime.Now;
 
-                        monoUpdate.Add(ncmMonofasicoTemp);
+                        monoUpdate.Add(taxationTemp);
                     }
                 }
 
                 _service.Create(monoAdd, null);
-                _service.Update(monoUpdate, null);
+                //_service.Update(monoUpdate, null);
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -178,7 +224,6 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(id) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
                 return View(null);
             }
             catch(Exception ex)
@@ -899,6 +944,7 @@ namespace Escon.SisctNET.Web.Controllers
                 });
 
                 var ids = ncmTemp.Where(c =>
+                    c.CodeProduct.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Select(s => s.Id).ToList();
@@ -947,8 +993,8 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Year.Equals(SessionManager.GetYearInSession()) && _.Month.Equals(SessionManager.GetMonthInSession())).ToList().OrderBy(_ => _.Status).ToList();
-
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(), SessionManager.GetYearInSession(), SessionManager.GetMonthInSession())
+                .OrderBy(_ => _.Ncm.Code).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -965,6 +1011,7 @@ namespace Escon.SisctNET.Web.Controllers
                 });
 
                 var ids = ncmTemp.Where(c =>
+                    c.CodeProduct.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Select(s => s.Id).ToList();

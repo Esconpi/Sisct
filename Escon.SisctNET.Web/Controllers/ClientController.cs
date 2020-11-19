@@ -44,17 +44,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id,GetLog(Model.OccorenceLog.Read));
                 ViewBag.Comp = comp;
-                List<Model.Client> list_clients = _service.FindByCompanyId(id);
-
-                foreach (var client in list_clients)
-                {
-                    client.Name = client.Document + " - " + client.Name;
-                }
-
-                list_clients.Insert(0, new Model.Client() { Name = "Nennhum item selecionado", Id = 0 });
-                SelectList clients = new SelectList(list_clients, "Id", "Name", null);
-                ViewBag.ClientId = clients;
-                var result = _service.FindByCompanyId(id).TakeLast(1000);
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
             }
@@ -122,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.Client> addClientes = new List<Model.Client>();
 
-                var clientesAll = _service.FindByCompanyId(id);
+                var clientesAll = _service.FindByCompany(id);
 
                 foreach (var det in dets)
                 {
@@ -303,9 +292,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                var clients = _service.FindAll(null).Where(_ => _.CompanyId.Equals(id) && _.TypeClientId.Equals(1)).ToList();
+                ViewBag.Comp = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.TypeClientId.Equals(1)).ToList();
                 return View(clients);
             }
             catch (Exception ex)
@@ -320,7 +308,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var clintesAll = _service.FindByCompanyId(SessionManager.GetCompanyIdInSession());
+            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession());
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -387,8 +375,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var clintesAll = _service.FindByCompanyId(SessionManager.GetCompanyIdInSession()).Where(_ => _.AnoRef.Equals(SessionManager.GetYearInSession()) &&
-                                                       _.MesRef.Equals(SessionManager.GetMonthInSession())).ToList();
+            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(),SessionManager.GetYearInSession(),SessionManager.GetMonthInSession());
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

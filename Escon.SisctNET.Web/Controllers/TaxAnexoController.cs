@@ -144,15 +144,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importDir = new Diretorio.Import();
 
-                string directoryNfeExit = "";
+                string directoryNfeExit = "",arqui = "";
 
                 if (type.Equals("xmlE"))
                 {
                     directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
+                    arqui = "XML EMPRESA";
                 }
                 else
                 {
                     directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
+                    arqui = "XML SEFAZ";
                 }
 
                 var importXml = new Xml.Import(_companyCfopService);
@@ -178,31 +180,20 @@ namespace Escon.SisctNET.Web.Controllers
 
                 Model.TaxAnexo taxAnexo = new Model.TaxAnexo();
 
-                string arqu = "";
-
-                if (type.Equals("xmlE"))
-                {
-                    arqu = "XML EMPRESA";
-                }
-                else if (type.Equals("xmlS"))
-                {
-                    arqu = "XML SEFAZ";
-                }
-
 
                 if (imp != null)
                 {
-                    if (arqu != "")
+                    if (arqui != "")
                     {
-                        imp.Arquivo = arqu;
+                        imp.Arquivo = arqui;
                     }
                     imp.Updated = DateTime.Now;
                 }
                 else
                 {
-                    if (arqu != "")
+                    if (arqui != "")
                     {
-                        taxAnexo.Arquivo = arqu;
+                        taxAnexo.Arquivo = arqui;
                     }
                     taxAnexo.CompanyId = companyid;
                     taxAnexo.MesRef = month;

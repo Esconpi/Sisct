@@ -88,15 +88,17 @@ namespace Escon.SisctNET.Web.Controllers
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
 
-                string directoryNfe = "";
+                string directoryNfe = "",arqui = "";
 
                 if (type.Equals("xmlE"))
                 {
                     directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
+                    arqui = "XML EMPRESA";
                 }
                 else
                 {
                     directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
+                    arqui = "XML SEFAZ";
                 }
 
                 List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
@@ -106,6 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var productsAll = _service.FindByAllProducts(comp.Document);
 
                 List<Model.ProductIncentivo> addProducts = new List<Model.ProductIncentivo>();
+
 
                 foreach (var prod in products)
                 {
@@ -129,7 +132,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    //var prodImport = _service.FindByProduct(id, cProd, ncm, cest);
                     var prodImport = productsAll.Where(_ => _.Code.Equals(cProd) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).FirstOrDefault();
                     if (prodImport == null)
                     {
@@ -143,6 +145,7 @@ namespace Escon.SisctNET.Web.Controllers
                         product.CompanyId = id;
                         product.Month = month;
                         product.Year = year;
+                        product.Arquivo = arqui;
                         product.Created = DateTime.Now;
                         product.Updated = DateTime.Now;
 
@@ -706,8 +709,8 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession()).Where(_ => _.Year.Equals(SessionManager.GetYearInSession())
-                                                            && _.Month.Equals(SessionManager.GetMonthInSession())).OrderBy(_ => _.Active).ToList();
+            var produtosAll = _service.FindByProducts(SessionManager.GetCompanyIdInSession(),SessionManager.GetYearInSession(),SessionManager.GetMonthInSession())
+                .OrderBy(_ => _.Active).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

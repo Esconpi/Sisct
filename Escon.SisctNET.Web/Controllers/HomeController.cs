@@ -85,6 +85,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                SessionManager.SetProductsSped(null);
+
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var Nfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));

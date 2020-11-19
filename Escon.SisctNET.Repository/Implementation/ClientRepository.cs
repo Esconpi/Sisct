@@ -26,9 +26,16 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<Client> FindByCompanyId(int companyId, Log log = null)
+        public List<Client> FindByCompany(int companyId, Log log = null)
         {
             var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<Client> FindByCompany(int companyId, string year, string month, Log log = null)
+        {
+            var result = _context.Clients.Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month)).ToList();
             AddLog(log);
             return result;
         }

@@ -92,6 +92,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public List<TaxationNcm> FindByCompany(int company, string year, string month, Log log = null)
+        {
+            var rst = _context.TaxationNcms.Where(_ => _.CompanyId.Equals(company) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public List<TaxationNcm> FindByPeriod(List<TaxationNcm> taxationNcms, DateTime inicio, DateTime fim, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();
