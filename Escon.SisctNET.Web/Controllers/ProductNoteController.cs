@@ -3871,7 +3871,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             if (organCode == null) return BadRequest(new { code = 400, message = "A date de vencimento para o boleto não foi encontrado na base de dados" });
 
-            var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => x.RecipeCode);
+            var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => new { x.RecipeCode , x.St });
+
             var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 
             var ie = _companyService.FindByDocument(requestBarCode.CpfCnpjIE);
@@ -3880,7 +3881,7 @@ namespace Escon.SisctNET.Web.Controllers
                 try
                 {
                     var hasValue = false;
-                    var darCodes = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode.Equals(item.Key));
+                    var darCodes = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode.Equals(item.Key.RecipeCode));
 
                     foreach (var darC in darCodes)
                     {
@@ -3894,13 +3895,8 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!hasValue)
                         continue;
 
-                    var valueTotal = requestBarCode.RecipeCodeValues
-                        .Where(x => x.RecipeCode.Equals(item.Key) && !string.IsNullOrEmpty(x.Value))
-                        .Sum(x => Convert.ToDecimal(x.Value))
-                        .ToString();
-
                     var substitoTributo = "0";
-                    var substitoTributoLst = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode == item.Key);
+                    var substitoTributoLst = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode == item.Key.RecipeCode);
                     if (substitoTributoLst.Count() > 1)
                     {
                         substitoTributo = substitoTributoLst.First(x => x.Processed == 0).St.ToString();
@@ -3908,12 +3904,17 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                         substitoTributo = substitoTributoLst.First().St.ToString();
+                    var st = int.Parse(substitoTributo);
+                    var valueTotal = requestBarCode.RecipeCodeValues
+                        .Where(x => x.RecipeCode.Equals(item.Key.RecipeCode) && !string.IsNullOrEmpty(x.Value) && x.St == st)
+                        .Sum(x => Convert.ToDecimal(x.Value))
+                        .ToString();
 
 
                     var response = await _integrationWsDar.RequestDarIcmsAsync(new IntegrationDarService.solicitarDarIcmsRequest()
                     {
                         codigoOrgao = organCode.Value,
-                        codigoReceita = item.Key,
+                        codigoReceita = item.Key.RecipeCode,
                         dataPagamento = dueDate.ToString("dd/MM/yyyy"),
                         dataVencimento = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"),
                         inscricao = ie.Ie,
@@ -3931,7 +3932,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!System.IO.Directory.Exists(dirOutput))
                         System.IO.Directory.CreateDirectory(dirOutput);
 
-                    var fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
+                    var fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key.RecipeCode}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
                     var fileOutput = System.IO.Path.Combine(dirOutput, fileName);
 
                     System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.BoletoBytes));
@@ -3941,7 +3942,7 @@ namespace Escon.SisctNET.Web.Controllers
                         .GetByCompanyAndPeriodReferenceAndDarAsync(
                             SessionManager.GetCompanyIdInSession(),
                             Convert.ToInt32(requestBarCode.PeriodoReferencia),
-                            Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id)
+                            Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id)
                         );
 
                     //Caso exista o DAR e ele esteja pago, não será mais possível editar
@@ -3964,11 +3965,11 @@ namespace Escon.SisctNET.Web.Controllers
                         Message = response.MensagemRetorno,
                         Created = DateTime.Now,
                         DigitableLine = response.LinhaDigitavel,
-                        DocumentNumber = long.Parse($"{response.NumeroDocumento}{item.Key}"),
+                        DocumentNumber = long.Parse($"{response.NumeroDocumento}{item.Key.RecipeCode}"),
                         MessageType = response.TipoRetorno,
                         Updated = DateTime.Now,
                         CompanyId = SessionManager.GetCompanyIdInSession(),
-                        DarId = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Id,
+                        DarId = dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id,
                         PaidOut = false,
                         PeriodReference = Convert.ToInt32(requestBarCode.PeriodoReferencia),
                         DueDate = dueDate,
@@ -3978,8 +3979,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }, null);
 
                     //Enviar Email
-                    var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description}";
-                    var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description} 
+                    var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description}";
+                    var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description} 
                                   referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {dueDate.ToString("dd/MM/yyyy")}";
 
                     var emailFrom = _emailConfiguration.SmtpUsername;
@@ -3996,14 +3997,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (darDoc.Id <= 0) return BadRequest(new { code = 500, message = "falha ao tentar gravar dados de resposta do ws." });
 
-                    var recipe = dar.FirstOrDefault(x => x.Code.Equals(item.Key));
+                    var recipe = dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode));
                     var recipedesc = recipe.Description;
 
-                    messageResponse.Add(new { code = 200, recipecode = item.Key, recipedesc, barcode = response.CodigoBarras, line = response.LinhaDigitavel, download = fileName });
+                    messageResponse.Add(new { code = 200, recipecode = item.Key.RecipeCode, recipedesc, barcode = response.CodigoBarras, line = response.LinhaDigitavel, download = fileName });
                 }
                 catch (Exception ex)
                 {
-                    messageResponse.Add(new { code = 500, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key)).Description, recipecode = item.Key, message = ex.Message });
+                    messageResponse.Add(new { code = 500, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description, recipecode = item.Key.RecipeCode, message = ex.Message });
                 }
             }
 
