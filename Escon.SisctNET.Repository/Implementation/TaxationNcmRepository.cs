@@ -105,7 +105,7 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var ncm in taxationNcms)
             {
-                if(ncm.DateEnd == null && fim >= ncm.DateStart)
+                if(ncm.DateEnd == null && (fim >= ncm.DateStart || ncm.DateStart == null))
                 {
                     ncms.Add(ncm);
                 }

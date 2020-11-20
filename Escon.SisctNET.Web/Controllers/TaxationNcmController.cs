@@ -139,20 +139,26 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (option.Equals("ncm"))
                         {
+                            // Tributção por NCM 
+
                             var taxationNcmTemp = taxatioNcmsAll.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).ToList();
 
-                            //  Procura se o NCM tem só uma tributação 
-                            if (taxationNcmTemp.Select(_ => _.Type).Distinct().ToList().Count() == 1)
+                            if (taxationNcmTemp.Count() > 0)
                             {
-                                type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Type;
-                                typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().TypeNcmId;
-                                cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstEntradaId;
-                                cstSaidaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstSaidaId;
-                                natReceita = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().NatReceita;
-                                pis = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Pis;
-                                cofins = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Cofins;
-                                dateStart = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().DateStart;
-                                status = true;
+                                //  Procura se o NCM tem apenas uma tributação 
+
+                                if (taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).Select(_ => _.Type).Distinct().ToList().Count() == 1)
+                                {
+                                    type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Type;
+                                    typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().TypeNcmId;
+                                    cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstEntradaId;
+                                    cstSaidaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstSaidaId;
+                                    natReceita = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().NatReceita;
+                                    pis = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Pis;
+                                    cofins = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Cofins;
+                                    dateStart = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().DateStart;
+                                    status = true;
+                                }
                             }
                         }
 
@@ -743,9 +749,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var import = new Planilha.Import();
 
-                var ncmsMono = _service.FindByCompany(comp.Document);
+                var taxxationNcm = _service.FindByCompany(comp.Document);
 
-                var ncmsSisct = _service.FindByPeriod(ncmsMono,inicio,fim);
+                var ncmsSisct = _service.FindByPeriod(taxxationNcm,inicio,fim).Where(_ => _.Type.Equals("Monofásico")).ToList();
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
                 var ncmsAll = _ncmService.FindAll(null);
@@ -757,6 +763,12 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     bool achou = false;
                     int contF = nF[2].Count();
+
+                    //  Existe Natureza da Receita
+                    if (!nF[10].Equals(""))
+                    {
+                        
+                    }
                     foreach (var nS in ncmsSisct)
                     {
                         int contS = nS.CodeProduct.Count();
@@ -802,7 +814,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         Model.TaxationNcm temp = new Model.TaxationNcm();
 
-                        bool contem = false;
+                        bool contem = false, existe = false;
 
                         foreach (var nS in ncmsSisct)
                         {
@@ -839,7 +851,16 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-                        if(contem == true)
+                        foreach (var trib in ncmdivergentes)
+                        {
+                            if (trib[0].Equals(temp.CodeProduct))
+                            {
+                                existe = true;
+                                break;
+                            }
+                        }
+
+                        if (contem == true && existe == false)
                         {
                             List<string> divergente = new List<string>();
                             divergente.Add(temp.CodeProduct);
@@ -882,11 +903,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             ncmdivergentes.Add(divergente);
                         }
-                        else
-                        {
-                            ViewBag.Erro = 1;
-                            return View();
-                        }
                     }
                 }
 
@@ -897,6 +913,26 @@ namespace Escon.SisctNET.Web.Controllers
             catch (ArgumentException aEx)
             {
                 return BadRequest(new { erro = 500, message = aEx.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Lista(int companyid)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                ViewBag.Comp = comp;
+                var result = _service.FindByCompany(companyid).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ToList();
+                return View(result);
             }
             catch (Exception ex)
             {

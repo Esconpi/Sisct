@@ -11,6 +11,6 @@ namespace Escon.SisctNET.Service
 
         Model.State FindByUf(string uf, Model.Log log = null);
 
-        Model.State FindByUf(List<State> states, DateTime data, string uf, Model.Log log = null);
+        Model.State FindByUf(List<State> states, DateTime data, string ufOrigem, string ufDestino, Model.Log log = null);
     }
 }

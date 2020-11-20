@@ -369,8 +369,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (!number.Equals("4.00"))
                                 {
-                                    //var state = _stateService.FindByUf(notes[i][2]["UF"]);
-                                    var state = _stateService.FindByUf(states, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"]);
+                                    var state = _stateService.FindByUf(states, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
                                     number = state.Aliquota.ToString();
                                 }
 
@@ -381,7 +380,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (nota.Company.Incentive && (!nota.Company.AnnexId.Equals(2) && nota.Company.AnnexId != null))
                                 {
-                                    //incentivo = _itemService.FindByNcmAnnex(Convert.ToInt32(nota.Company.AnnexId), NCM);
                                     incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }
 

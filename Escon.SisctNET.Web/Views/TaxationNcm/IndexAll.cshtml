@@ -10,9 +10,12 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
         <div class="btn-group pull-right">
+            <a asp-action="Lista" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-file pull-left"> Monofásico</a>
             <a asp-action="Compare" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-copy pull-left"> Compara</a>
             <a asp-action="Import" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
         </div>
+        <br />
+        <br />
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>

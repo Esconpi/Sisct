@@ -34,11 +34,11 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public State FindByUf(List<State> states, DateTime data, string uf, Log log = null)
+        public State FindByUf(List<State> states, DateTime data, string ufOrigem, string ufDestino, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");
             State result = null;
-            var statesAll = states.Where(_ => _.UfOrigem.Equals(uf));
+            var statesAll = states.Where(_ => _.UfOrigem.Equals(ufOrigem) && _.UfDestino.Equals(ufDestino)).ToList();
 
             foreach (var t in statesAll)
             {
