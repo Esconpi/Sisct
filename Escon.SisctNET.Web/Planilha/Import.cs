@@ -3,7 +3,6 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Planilha
 {
@@ -228,7 +227,20 @@ namespace Escon.SisctNET.Web.Planilha
                             {
                                 if (!ncm[0].Equals("CFOP") && !ncm[1].Equals("Item/Serviço") && !ncm[2].Equals("NCM"))
                                 {
-                                    ncms.Add(ncm);
+                                    bool achou = false;
+                                    foreach (var n in ncms)
+                                    {
+                                        if (n[2].Equals(ncm[2]) && n[3].Equals(ncm[3]))
+                                        {
+                                            achou = true;
+                                            break;
+                                        }
+                                            
+                                    }
+
+                                    if(achou == false)
+                                        ncms.Add(ncm);
+                                       
                                 }
 
                             }

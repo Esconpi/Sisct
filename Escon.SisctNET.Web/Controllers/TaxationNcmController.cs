@@ -764,11 +764,6 @@ namespace Escon.SisctNET.Web.Controllers
                     bool achou = false;
                     int contF = nF[2].Count();
 
-                    //  Existe Natureza da Receita
-                    if (!nF[10].Equals(""))
-                    {
-                        
-                    }
                     foreach (var nS in ncmsSisct)
                     {
                         int contS = nS.CodeProduct.Count();
