@@ -2,20 +2,24 @@
 
 $(document).ready(function () {
 
-    $('.btnSendBillet').click(function () {
+   
 
+    $('.btnSendBillet').click(function () {
+        var id = $(this).data('billet');
         $.ajax({
-            url: '/BilletDar/SendBillet?id=' + $(this).data('billet'),
+            url: '/BilletDar/SendBillet?id=' + id,
             dataType: 'json',
             type: 'get',
             method: 'get',
             contentType: 'application/json',
             beforeSend: function () {
-                $(this).attr('disabled', 'disable');
+                $("#remove_" + id).css('display', 'none');
+                $('#loader_' + id).css('display', 'block');
                 $('#loaderBillet').css('display', 'block');
             },
             complete: function () {
-                $(this).removeAttr('disabled');
+                $("#remove_" + id).css('display', 'block');
+                $('#loader_' + id).css('display', 'none');
                 $('#loaderBillet').css('display', 'none');
             },
             success: function (data, textStatus, jQxhr) {

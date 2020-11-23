@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Repository.Implementation
                     + "  left join dardocument on dardocument.companyid = company.id "
                     + "  left join dar on dar.id = dardocument.darid "
                     + " WHERE dardocument.periodreference = {0} OR dardocument.periodreference IS NULL "
-                    + "  and company.active = 1 ";
+                    + "  and company.active = 1 and dardocument.canceled = 0";
 
             if (companyid != null)
             {

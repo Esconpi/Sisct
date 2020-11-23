@@ -94,7 +94,7 @@
         var companyName = $(this).data("companyname");
 
         $.ajax({
-            url: `/ProductNote/Relatory?id=${companyId}&typeTaxation=${1}&type=${1}&year=${year}&month=${month}&nota=`,
+            url: `/ProductNote/Relatory?id=${companyId}&year=${year}&month=${month}&typeTaxation=0&type=9&nota=`,
             dataType: 'html',
             type: 'post',
             method: 'post',
@@ -112,13 +112,14 @@
 
                 var recipeCode = [];
 
-                recipeCode.push({ RecipeCode: html.find('#DarSTCO').data('code'), Value: html.find('#DarSTCO').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarFecop').data('code'), Value: html.find('#DarFecop').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarIcms').data('code'), Value: html.find('#DarIcms').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarFecopEI').data('code'), Value: html.find('#DarFecopEI').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarFunef').data('code'), Value: html.find('#DarFunef').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarAp').data('code'), Value: html.find('#DarAp').val() });
-                recipeCode.push({ RecipeCode: html.find('#DarIm').data('code'), Value: html.find('#DarIm').val() });
+                recipeCode.push({ RecipeCode:html.find('#DarST').data('code'), Value: html.find('#DarST').val(), St: html.find('#DarST').data('substituicao'), FieldName: "DarST" });
+                recipeCode.push({ RecipeCode:html.find('#DarCO').data('code'), Value: html.find('#DarCO').val(), St: html.find('#DarCO').data('substituicao'), FieldName: "DarCO" });
+                recipeCode.push({ RecipeCode:html.find('#DarFecop').data('code'), Value: html.find('#DarFecop').val(), St: html.find('#DarFecop').data('substituicao'), FieldName: "DarFecop" });
+                recipeCode.push({ RecipeCode:html.find('#DarIcms').data('code'), Value: html.find('#DarIcms').val(), St: html.find('#DarIcms').data('substituicao'), FieldName: "DarIcms" });
+                recipeCode.push({ RecipeCode:html.find('#DarCotac').data('code'), Value: html.find('#DarCotac').val(), St: html.find('#DarCotac').data('substituicao'), FieldName: "DarCotac" });
+                recipeCode.push({ RecipeCode:html.find('#DarFunef').data('code'), Value: html.find('#DarFunef').val(), St: html.find('#DarFunef').data('substituicao'), FieldName: "DarFunef" });
+                recipeCode.push({ RecipeCode:html.find('#DarAp').data('code'), Value: html.find('#DarAp').val(), St: html.find('#DarAp').data('substituicao'), FieldName: "DarAp" });
+                recipeCode.push({ RecipeCode: html.find('#DarIm').data('code'), Value: html.find('#DarIm').val(), St: html.find('#DarIm').data('substituicao'), FieldName: "DarIm" });
 
                 var payload = {
                     TypeTaxation: html.find('#TypeTaxation').val(),

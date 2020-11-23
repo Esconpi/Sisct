@@ -25,27 +25,33 @@ namespace Escon.SisctNET.IntegrationDarWeb.Implementation
 
         public async Task<ResponseBarCodeDarService> GetBarCodeAsync(solicitarCodigoBarrasRequest request)
         {
-            var response = await wsClient.solicitarCodigoBarrasAsync(
-                request.cpfCnpjIE,
-                request.numeroDocumento,
-                request.valorTotal,
-                request.dataVencimento,
-                request.periodoReferencia,
-                request.codigoOrgao,
-                request.codigoReceita,
-                request.tokenAcesso);
-
-            ResponseBarCodeDarService codigoBarrasResponse = new ResponseBarCodeDarService()
+            try
             {
-                BarCode = response.@return.codigoBarras,
-                ControlNumber = response.@return.numeroControle,
-                DigitableLine = response.@return.linhaDigitavel,
-                DocumentNumber = response.@return.numeroDocumento,
-                Message = response.@return.mensagemRetorno1,
-                MessageType = response.@return.tipoRetorno
-            };
+                var response = await wsClient.solicitarCodigoBarrasAsync(
+                        request.cpfCnpjIE,
+                        request.numeroDocumento,
+                        request.valorTotal,
+                        request.dataVencimento,
+                        request.periodoReferencia,
+                        request.codigoOrgao,
+                        request.codigoReceita,
+                        request.tokenAcesso);
 
-            return codigoBarrasResponse;
+                ResponseBarCodeDarService codigoBarrasResponse = new ResponseBarCodeDarService()
+                {
+                    BarCode = response.@return.codigoBarras,
+                    ControlNumber = response.@return.numeroControle,
+                    DigitableLine = response.@return.linhaDigitavel,
+                    DocumentNumber = response.@return.numeroDocumento,
+                    Message = response.@return.mensagemRetorno1,
+                    MessageType = response.@return.tipoRetorno
+                };
+                return codigoBarrasResponse;
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseBarCodeDarService() { MessageType = "ERRO", Message = ex.Message };
+            }
         }
 
         public async Task<ResponseBarCodeDarService> GetBarCodePdfAsync(solicitarCodigoBarrasPDFRequest request)
