@@ -161,23 +161,23 @@ namespace Escon.SisctNET.Web.Controllers
             }
             try
             {
-                var result = _service.FindById(id, GetLog(OccorenceLog.Read));
-                var note = _noteService.FindByNote(result.Note.Chave);
-                var ncm = _ncmService.FindByCode(result.Ncm);
+                var product = _service.FindById(id, GetLog(OccorenceLog.Read));
+                //var note = _noteService.FindByNote(prod.Note.Chave);
+                var ncm = _ncmService.FindByCode(product.Ncm);
 
-                ViewBag.Uf = note.Uf;
-                ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
-                ViewBag.Note = note.Nnf;
-                ViewBag.NoteId = note.Id;
+                //ViewBag.Uf = note.Uf;
+                //ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
+                //ViewBag.Note = note.Nnf;
+                //ViewBag.NoteId = note.Id;
 
                 if (ncm == null)
                 {
                     ViewBag.Erro = 1;
-                    return View(result);
+                    return View(product);
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;
-                ViewBag.DataNote = note.Dhemi;
+                //ViewBag.DataNote = prod.Note.Dhemi;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
 
@@ -187,9 +187,9 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 ViewBag.TaxationTypeId = taxationtypes;
 
-                if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
+                if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                 {
-                    List<Product> list_product = _productService.FindAllInDate(result.Note.Dhemi);
+                    List<Product> list_product = _productService.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -198,9 +198,10 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products = new SelectList(list_product, "Id", "Description", null);
                     ViewBag.Productd = products;
                 }
-                else if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
+                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") &&
+                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product1> list_product1 = _productService.FindAllInDate1(result.Note.Dhemi);
+                    List<Product1> list_product1 = _productService.FindAllInDate1(product.Note.Dhemi);
                     foreach (var prod in list_product1)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -209,9 +210,9 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
                     ViewBag.ProductId = products1;
                 }
-                else if (Convert.ToDateTime(note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
+                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product2> list_product2 = _productService.FindAllInDate2(result.Note.Dhemi);
+                    List<Product2> list_product2 = _productService.FindAllInDate2(product.Note.Dhemi);
                     foreach (var prod in list_product2)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -221,25 +222,25 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ProductId = products2;
                 }
 
-                if (result.TaxationTypeId == null)
+                if (product.TaxationTypeId == null)
                 {
-                    result.TaxationTypeId = 0;
+                    product.TaxationTypeId = 0;
                 }
-                if (result.ProductId == null)
+                if (product.ProductId == null)
                 {
-                    result.ProductId = 0;
-                }
-
-                if (result.Product1Id == null)
-                {
-                    result.Product1Id = 0;
+                    product.ProductId = 0;
                 }
 
-                if (result.Product2Id == null)
+                if (product.Product1Id == null)
                 {
-                    result.Product2Id = 0;
+                    product.Product1Id = 0;
                 }
-                return View(result);
+
+                if (product.Product2Id == null)
+                {
+                    product.Product2Id = 0;
+                }
+                return View(product);
             }
             catch (Exception ex)
             {
@@ -257,8 +258,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(OccorenceLog.Read));
-                var note = _noteService.FindByNote(rst.Note.Chave);
+                var prod = _service.FindById(id, GetLog(OccorenceLog.Read));
+                //var note = _noteService.FindByNote(rst.Note.Chave);
                 var calculation = new Calculation();
 
                 var mva = entity.Mva;
@@ -271,51 +272,43 @@ namespace Escon.SisctNET.Web.Controllers
                 var product2id = Request.Form["product2id"];
                 var quantPauta = Request.Form["quantAlterada"];
                 var dateStart = Request.Form["dateStart"];
-                var dateNote = Request.Form["dataNote"];
+                //var dateNote = Request.Form["dataNote"];
 
                 decimal valorAgreg = 0, dif = 0;
                 decimal valor_fecop = 0;
 
-                var notes = _noteService.FindByUf(note.Company.Id, note.AnoRef, note.MesRef, note.Uf);
+                var notes = _noteService.FindByUf(prod.Note.Company.Id, prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
 
-                var products = _service.FindByNcmUfAliq(notes, entity.Ncm, entity.Picms, rst.Cest);
+                var products = _service.FindByNcmUfAliq(notes, entity.Ncm, entity.Picms, prod.Cest);
 
                 var taxedtype = _taxationTypeService.FindById(Convert.ToInt32(taxaType), GetLog(OccorenceLog.Read));
 
+                List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
                 if (entity.Pautado == true)
                 {
+                    //var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
                     Product product = null;
                     Product1 product1 = null;
                     Product2 product2 = null;
 
-                    if (Convert.ToDateTime(dateNote) < Convert.ToDateTime("10/02/2020"))
-                    {
-                        product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
-                    }
-                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(dateNote) < Convert.ToDateTime("14/09/2020"))
-                    {
-                        product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
-                    }
-                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("14/09/2020"))
-                    {
-                        product2 = _product2Service.FindById(Convert.ToInt32(product2id), GetLog(OccorenceLog.Read));
-                    }
-
-                    var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-
                     decimal precoPauta = 0;
 
-                    if (Convert.ToDateTime(dateNote) < Convert.ToDateTime("10/02/2020"))
+                    if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                     {
+                        product = _productService.FindById(Convert.ToInt32(productid), GetLog(OccorenceLog.Read));
                         precoPauta = Convert.ToDecimal(product.Price);
                     }
-                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(dateNote) < Convert.ToDateTime("14/09/2020"))
+                    else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && 
+                            Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                     {
+                        product1 = _product1Service.FindById(Convert.ToInt32(product1id), GetLog(OccorenceLog.Read));
                         precoPauta = Convert.ToDecimal(product1.Price);
                     }
-                    else if (Convert.ToDateTime(dateNote) >= Convert.ToDateTime("14/09/2020"))
+                    else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                     {
+                        product2 = _product2Service.FindById(Convert.ToInt32(product2id), GetLog(OccorenceLog.Read));
                         precoPauta = Convert.ToDecimal(product2.Price);
                     }
 
@@ -413,20 +406,36 @@ namespace Escon.SisctNET.Web.Controllers
                         if (product != null)
                         {
                             prod.ProductId = product.Id;
+
+                            if (product.Group.Active.Equals(true))
+                            {
+                                prod.Incentivo = true;
+                            }
                         }
 
                         if (product1 != null)
                         {
                             prod.Product1Id = product1.Id;
+
+                            if (product1.Group.Active.Equals(true))
+                            {
+                                prod.Incentivo = true;
+                            }
                         }
 
                         if (product2 != null)
                         {
                             prod.Product2Id = product2.Id;
+
+                            if (product2.Group.Active.Equals(true))
+                            {
+                                prod.Incentivo = true;
+                            }
                         }
 
                     }
 
+                    /*
                     if (product != null)
                     {
                         if (product.Group.Active.Equals(true))
@@ -451,7 +460,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-
+                    */
 
                     prod.TaxationTypeId = Convert.ToInt32(taxaType);
                     prod.Updated = DateTime.Now;
@@ -461,13 +470,12 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.DateStart = Convert.ToDateTime(dateStart);
                     prod.Produto = "Especial";
 
-                    _service.Update(prod, GetLog(Model.OccorenceLog.Read));
+                    updateProducts.Add(prod);
                 }
                 else
                 {
                     if (Request.Form["produto"].ToString() == "2")
                     {
-                        var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                         decimal baseCalc = 0;
                         decimal valor_icms = prod.IcmsCTe + prod.Vicms;
 
@@ -530,7 +538,7 @@ namespace Escon.SisctNET.Web.Controllers
                             baseCalc = prod.Vbasecalc;
                             if (prod.Picms != 4)
                             {
-                                var aliq_simples = _stateService.FindByUf(note.Uf);
+                                var aliq_simples = _stateService.FindByUf(prod.Note.Uf);
                                 dif = calculation.diferencialAliq(AliqInt, aliq_simples.Aliquota);
                                 prod.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
                             }
@@ -572,7 +580,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Pautado = false;
                         prod.DateStart = Convert.ToDateTime(dateStart);
 
-                        if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
+                        if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
                         {
                             prod.Incentivo = false;
                         }
@@ -580,12 +588,10 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
 
-                        var result = _service.Update(prod, GetLog(OccorenceLog.Update));
+                        updateProducts.Add(prod);
                     }
                     else
                     {
-                        List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
-
                         foreach (var item in products)
                         {
                             decimal baseCalc = 0;
@@ -649,7 +655,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 baseCalc = item.Vbasecalc;
                                 if (item.Picms != 4)
                                 {
-                                    var aliq_simples = _stateService.FindByUf(note.Uf);
+                                    var aliq_simples = _stateService.FindByUf(prod.Note.Uf);
                                     dif = calculation.diferencialAliq(AliqInt, aliq_simples.Aliquota);
                                     item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
                                 }
@@ -691,7 +697,7 @@ namespace Escon.SisctNET.Web.Controllers
                             item.Pautado = false;
                             item.DateStart = Convert.ToDateTime(dateStart);
 
-                            if (note.Company.Incentive.Equals(true) && note.Company.AnnexId.Equals(2))
+                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
                             {
                                 item.Incentivo = false;
                             }
@@ -700,12 +706,11 @@ namespace Escon.SisctNET.Web.Controllers
                             item.Produto = "Normal";
 
                             updateProducts.Add(item);
-                            //var result = _service.Update(item, GetLog(OccorenceLog.Update));
                         }
-
-                        _service.Update(updateProducts);
                     }
                 }
+
+                _service.Update(updateProducts);
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
@@ -715,16 +720,16 @@ namespace Escon.SisctNET.Web.Controllers
                         bcr = Convert.ToDecimal(bcrForm);
                     }
 
-                    var ncm = _ncmService.FindByCode(rst.Ncm);
+                    var ncm = _ncmService.FindByCode(prod.Ncm);
 
-                    if (rst.Picms != 4)
+                    if (prod.Picms != 4)
                     {
-                        var state = _stateService.FindByUf(note.Uf);
-                        rst.Picms = state.Aliquota;
+                        var state = _stateService.FindByUf(prod.Note.Uf);
+                        prod.Picms = state.Aliquota;
                     }
-                    string code = note.Company.Document + rst.Ncm + note.Uf + rst.Picms;
+                    string code = prod.Note.Company.Document + prod.Ncm + prod.Note.Uf + prod.Picms;
 
-                    var taxationcm = _taxationService.FindByNcm(code, rst.Cest);
+                    var taxationcm = _taxationService.FindByNcm(code, prod.Cest);
 
                     if (taxationcm != null)
                     {
@@ -733,9 +738,9 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     var taxation = new Model.Taxation
                     {
-                        CompanyId = note.CompanyId,
+                        CompanyId = prod.Note.CompanyId,
                         Code = code,
-                        Cest = rst.Cest,
+                        Cest = prod.Cest,
                         AliqInterna = Convert.ToDecimal(AliqInt),
                         Diferencial = dif,
                         MVA = entity.Mva,
@@ -747,8 +752,8 @@ namespace Escon.SisctNET.Web.Controllers
                         Created = DateTime.Now,
                         Updated = DateTime.Now,
                         NcmId = ncm.Id,
-                        Picms = rst.Picms,
-                        Uf = note.Uf
+                        Picms = prod.Picms,
+                        Uf = prod.Note.Uf
 
                     };
                     _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
@@ -758,10 +763,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> updateNote = new List<Note>();
 
-                foreach (var prod in products)
+                foreach (var product in products)
                 {
                     bool status = false;
-                    var nota = _noteService.FindById(Convert.ToInt32(prod.NoteId), GetLog(OccorenceLog.Read));
+                    var nota = _noteService.FindById(Convert.ToInt32(product.NoteId), GetLog(OccorenceLog.Read));
 
                     var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
 
@@ -773,13 +778,11 @@ namespace Escon.SisctNET.Web.Controllers
                     nota.Status = status;
 
                     updateNote.Add(nota);
-
-                    //_noteService.Update(nota, GetLog(OccorenceLog.Update));
                 }
 
                 _noteService.Update(updateNote);
 
-                return RedirectToAction("Index", new { noteId = note.Id });
+                return RedirectToAction("Index", new { noteId = prod.NoteId });
             }
             catch (Exception ex)
             {

@@ -751,6 +751,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var taxxationNcm = _service.FindByCompany(comp.Document);
 
+                //var ncmsSisct = _service.FindByPeriod(taxxationNcm, inicio, fim);
                 var ncmsSisct = _service.FindByPeriod(taxxationNcm,inicio,fim).Where(_ => _.Type.Equals("Monofásico")).ToList();
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
@@ -761,13 +762,28 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach (var nF in ncmsFortes)
                 {
-                    bool achou = false;
-                    int contF = nF[2].Count();
+                    /*bool achou = false, contem = false;
+                    int contF = nF[2].Count();*/
+                    string natReceitaTemp = null;
 
-                    foreach (var nS in ncmsSisct)
+                    //Model.TaxationNcm temp = new Model.TaxationNcm();
+
+                    var prod = ncmsSisct.Where(_ => _.CodeProduct.Equals(nF[2])).FirstOrDefault();
+
+                    var natReceitaAux = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
+
+                    if (natReceitaAux != null)
+                    {
+                        natReceitaTemp = natReceitaAux.Code;
+                    }
+
+                    var prodNcm = ncmsSisct.Where(_ => _.CodeProduct.Equals(nF[2]) && _.Ncm.Code.Equals(nF[3]) && _.CstSaida.Code.Equals(nF[5]) &&
+                                                        Convert.ToInt32(_.NatReceita).Equals(Convert.ToInt32(natReceitaTemp))).FirstOrDefault();
+
+                    /*foreach (var nS in ncmsSisct)
                     {
                         int contS = nS.CodeProduct.Count();
-                        string nSTEmp = "", nFTemp = "", natReceitaTemp = null;
+                        string nSTemp = "", nFTemp = "", natReceitaTemp = null;
                         int dif = 0;
 
                         if (contS > contF)
@@ -778,16 +794,16 @@ namespace Escon.SisctNET.Web.Controllers
                                 nFTemp += "0";
                             }
                             nFTemp += nF[2];
-                            nSTEmp = nS.CodeProduct;
+                            nSTemp = nS.CodeProduct;
                         }
                         else
                         {
                             dif = contF - contS;
                             for (int i = 0; i < dif; i++)
                             {
-                                nSTEmp += "0";
+                                nSTemp += "0";
                             }
-                            nSTEmp += nS.CodeProduct;
+                            nSTemp += nS.CodeProduct;
                             nFTemp = nF[2];
                         }
 
@@ -798,80 +814,91 @@ namespace Escon.SisctNET.Web.Controllers
                             natReceitaTemp = natReceita.Code;
                         }
 
-                        if (nSTEmp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]) && nS.CstSaida.Code.Equals(nF[5]) && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(natReceitaTemp)))
+                        if (nSTemp.Equals(nFTemp) && nS.Ncm.Code.Equals(nF[3]) && nS.CstSaida.Code.Equals(nF[5]) && Convert.ToInt32(nS.NatReceita).Equals(Convert.ToInt32(natReceitaTemp)))
                         {
                             achou = true;
                             break;
                         }
-                    }
 
-                    if (achou == false)
-                    {
-                        Model.TaxationNcm temp = new Model.TaxationNcm();
-
-                        bool contem = false, existe = false;
-
-                        foreach (var nS in ncmsSisct)
+                        if (nSTemp.Equals(nFTemp))
                         {
-                            int contS = nS.CodeProduct.Count();
-                            string nSTemp = "", nFTemp = "";
-                            int dif = 0;
-
-                            if (contS > contF)
-                            {
-                                dif = contS - contF;
-                                for (int i = 0; i < dif; i++)
-                                {
-                                    nFTemp += "0";
-                                }
-                                nFTemp += nF[2];
-                                nSTemp = nS.CodeProduct;
-                            }
-                            else
-                            {
-                                dif = contF - contS;
-                                for (int i = 0; i < dif; i++)
-                                {
-                                    nSTemp += "0";
-                                }
-                                nSTemp += nS.CodeProduct;
-                                nFTemp = nF[2];
-                            }
-
-                            if (nSTemp.Equals(nFTemp))
-                            {
-                                temp = nS;
-                                contem = true;
-                                break;
-                            }
+                            temp = nS;
+                            contem = true;
+                            break;
                         }
+                    }*/
+
+                    if (prod != null && prodNcm == null)
+                    {
+                        /*bool existe = false;
 
                         foreach (var trib in ncmdivergentes)
                         {
-                            if (trib[0].Equals(temp.CodeProduct))
+                            if (trib[0].Equals(prod.CodeProduct))
                             {
                                 existe = true;
                                 break;
                             }
+                        }*/
+
+                        List<string> divergente = new List<string>();
+                        divergente.Add(prod.CodeProduct);
+                        divergente.Add(prod.Product);
+                        divergente.Add(prod.Ncm.Code);
+                        divergente.Add(prod.Ncm.Description);
+                        if (prod.CstSaidaId != null)
+                        {
+                            divergente.Add(prod.CstSaida.Code);
+                        }
+                        else
+                        {
+                            divergente.Add("");
                         }
 
-                        if (contem == true && existe == false)
+                        divergente.Add(prod.NatReceita);
+
+                        var tempNcm = ncmsAll.Where(_ => _.Code.Equals(nF[3])).FirstOrDefault();
+                        var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
+
+                        if (tempNcm == null)
+                        {
+                            ViewBag.Ncm = nF[3];
+                            ViewBag.Erro = 2;
+                            return View();
+                        }
+
+                        divergente.Add(nF[3]);
+                        divergente.Add(tempNcm.Description);
+                        divergente.Add(nF[5]);
+
+                        if (natReceita != null)
+                        {
+                            divergente.Add(natReceita.Code);
+                        }
+                        else
+                        {
+                            divergente.Add("");
+                        }
+
+                        ncmdivergentes.Add(divergente);
+
+                        /*if (existe == false)
                         {
                             List<string> divergente = new List<string>();
-                            divergente.Add(temp.CodeProduct);
-                            divergente.Add(temp.Product);
-                            divergente.Add(temp.Ncm.Code);
-                            divergente.Add(temp.Ncm.Description);
-                            if (temp.CstSaidaId != null)
+                            divergente.Add(prod.CodeProduct);
+                            divergente.Add(prod.Product);
+                            divergente.Add(prod.Ncm.Code);
+                            divergente.Add(prod.Ncm.Description);
+                            if (prod.CstSaidaId != null)
                             {
-                                divergente.Add(temp.CstSaida.Code);
+                                divergente.Add(prod.CstSaida.Code);
                             }
                             else
                             {
                                 divergente.Add("");
                             }
 
-                            divergente.Add(temp.NatReceita);
+                            divergente.Add(prod.NatReceita);
 
                             var tempNcm = ncmsAll.Where(_ => _.Code.Equals(nF[3])).FirstOrDefault();
                             var natReceita = natReceitasAll.Where(_ => _.CodigoAC.Equals(nF[10])).FirstOrDefault();
@@ -897,7 +924,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             ncmdivergentes.Add(divergente);
-                        }
+                        }*/
                     }
                 }
 

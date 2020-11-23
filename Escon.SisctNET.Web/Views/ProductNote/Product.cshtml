@@ -8,7 +8,7 @@
 <div class="box box-primary">
     <div class="box-header">
         
-        <a asp-controller="ProductNote" asp-action="Index" asp-route-noteId="@ViewBag.NoteId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="ProductNote" asp-action="Index" asp-route-noteId="@Model.NoteId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Tributação</strong></h3>
     </div>
     <div class="box-body">
@@ -30,17 +30,19 @@
                     <input asp-for="Vicms" class="form-control" type="hidden" />
                     <input asp-for="Vipi" class="form-control" type="hidden" />
                     <input asp-for="Picms" class="form-control" type="hidden" />
-                    <input class="form-control" name="dataNote" value="@ViewBag.DataNote" type="hidden" />
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Note.Nnf" class="control-label"></label>
                         <input asp-for="Note.Nnf" class="form-control" readonly />
-                        <span asp-validation-for="Note.Nnf" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                        <label class="control-label">Fornecedor</label>
+                        <input asp-for="Note.Xnome" class="form-control" readonly />
                     </div>
 
                     <div class="form-group col-lg-12 col-md-6 col-xs-12">
                         <label asp-for="Xprod" class="control-label"></label>
-                        <textarea asp-for="Xprod" class="form-control" readonly ></textarea>
+                        <textarea asp-for="Xprod" class="form-control" readonly></textarea>
                         <span asp-validation-for="Xprod" class="text-danger"></span>
                     </div>
 
@@ -70,7 +72,7 @@
                         <input type="text" asp-for="Picms" class="form-control" disabled />
                         <span asp-validation-for="Picms" class="text-danger"></span>
                         <label class="control-label">UF</label>
-                        <input type="text" class="form-control" value="@ViewBag.Uf" name="Uf" readonly />
+                        <input type="text" class="form-control" value="@Model.Note.Uf" name="Uf" readonly />
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         @if (Model.Aliqinterna != null)
@@ -99,7 +101,7 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Emissão</label>
-                        <input type="text" class="form-control" value="@ViewBag.Dhemi" readonly />
+                        <input type="text" class="form-control" value="@Model.Note.Dhemi.ToString("dd/MM/yyyy")" readonly />
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group col-lg-2 col-md-3 col-xs-12" id="checkbox">
@@ -121,7 +123,7 @@
                             </div>
                         }
 
-                        @if (Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("10/02/2020"))
+                        @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                         {
                             @if (Model.Pautado == true)
                             {
@@ -139,7 +141,7 @@
                             }
 
                         }
-                        else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(@ViewBag.DataNote) < Convert.ToDateTime("14/09/2020"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                         {
                             if (Model.Pautado == true)
                             {
@@ -156,7 +158,7 @@
                                 </div>
                             }
                         }
-                        else if (Convert.ToDateTime(@ViewBag.DataNote) >= Convert.ToDateTime("14/09/2020"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                         {
                             if (Model.Pautado == true)
                             {
