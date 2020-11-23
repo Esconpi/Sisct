@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.IntegrationDarWeb;
 using Escon.SisctNET.Model;
+using Escon.SisctNET.Model.DarWebWs;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Email;
 using Escon.SisctNET.Web.Taxation;
@@ -7,6 +8,7 @@ using Escon.SisctNET.Web.ViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -48,8 +50,10 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IDevoFornecedorService _devoFornecedorService;
         private readonly IVendaAnexoService _vendaAnexoService;
         private readonly ICreditBalanceService _creditBalanceService;
+        private readonly IConfiguration _configuration;
 
         public ProductNote(
+            IConfiguration configuration,
             IProductNoteService service,
             INoteService noteService,
             INcmService ncmService,
@@ -117,6 +121,8 @@ namespace Escon.SisctNET.Web.Controllers
             _devoFornecedorService = devoFornecedorService;
             _vendaAnexoService = vendaAnexoService;
             _creditBalanceService = creditBalanceService;
+
+            _configuration = configuration;
         }
 
         public IActionResult Index(int noteId)
@@ -3853,7 +3859,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 messageResponse.Add(new { code = 500, recipedesc = "Email", recipecode = "Não cadastrado", message = "Essa empresa não possui destinatários cadastrados. Por favor, faça o cadastro dos destinatários dos boletos para esta empresa" });
                 return Ok(new { code = 200, response = messageResponse });
-
             }
 
             var accessToken = _configurationService.FindByName("TokenAccessDarWs", null);
@@ -3874,11 +3879,13 @@ namespace Escon.SisctNET.Web.Controllers
 
             if (organCode == null) return BadRequest(new { code = 400, message = "A date de vencimento para o boleto não foi encontrado na base de dados" });
 
-            var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => new { x.RecipeCode , x.St });
+            var recipeCode = requestBarCode.RecipeCodeValues.GroupBy(x => new { x.RecipeCode, x.St });
 
             var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 
             var ie = _companyService.FindByDocument(requestBarCode.CpfCnpjIE);
+            var recipeCodeValuesRecipesImplemented = _configuration["Sefaz:RecipesImplemented"].Split(',').ToList();
+
             foreach (var item in recipeCode)
             {
                 try
@@ -3913,45 +3920,85 @@ namespace Escon.SisctNET.Web.Controllers
                         .Sum(x => Convert.ToDecimal(x.Value))
                         .ToString();
 
+                    if (valueTotal == null || valueTotal == "0")
+                        continue;
 
-                    var response = await _integrationWsDar.RequestDarIcmsAsync(new IntegrationDarService.solicitarDarIcmsRequest()
+                    ResponseGetDarIcms response = new ResponseGetDarIcms();
+                    string fileName = null;
+                    string fileOutput = null;
+
+                    if (!recipeCodeValuesRecipesImplemented.Contains(item.Key.RecipeCode))
                     {
-                        codigoOrgao = organCode.Value,
-                        codigoReceita = item.Key.RecipeCode,
-                        dataPagamento = dueDate.ToString("dd/MM/yyyy"),
-                        dataVencimento = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"),
-                        inscricao = ie.Ie,
-                        numeroDocumento = requestBarCode.PeriodoReferencia,
-                        periodoReferencia = requestBarCode.PeriodoReferencia,
-                        substitoTributo = substitoTributo,
-                        taxaEmissao = "0",
-                        tokenAcesso = accessToken.Value,
-                        valorTotal = valueTotal
-                    });
+                        var varResp = await _integrationWsDar.GetBarCodeAsync(new IntegrationDarService.solicitarCodigoBarrasRequest()
+                        {
+                            codigoOrgao = organCode.Value,
+                            codigoReceita = item.Key.RecipeCode,
+                            cpfCnpjIE = ie.Ie,
+                            dataVencimento = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"),
+                            numeroDocumento = requestBarCode.PeriodoReferencia,
+                            periodoReferencia = requestBarCode.PeriodoReferencia,
+                            tokenAcesso = accessToken.Value,
+                            valorTotal = valueTotal
+                        });
 
-                    if (response.TipoRetorno.ToLowerInvariant().Equals("erro")) return BadRequest(new { code = 400, message = response.MensagemRetorno });
+                        if (varResp.MessageType.ToLowerInvariant().Equals("erro"))
+                        {
+                            messageResponse.Add(new { code = 500, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description, recipecode = item.Key.RecipeCode, message = varResp.Message });
+                            continue;
+                        }
 
-                    var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot/Billets");
-                    if (!System.IO.Directory.Exists(dirOutput))
-                        System.IO.Directory.CreateDirectory(dirOutput);
+                        response.MensagemRetorno = varResp.Message;
+                        response.BoletoBytes = null;
+                        response.CodigoBarras = varResp.BarCode;
+                        response.LinhaDigitavel = varResp.DigitableLine;
+                        response.NumeroControle = varResp.ControlNumber;
+                        response.NumeroDocumento = varResp.DocumentNumber;
+                        response.TipoRetorno = varResp.MessageType;
+                    }
+                    else
+                    {
+                        response = await _integrationWsDar.RequestDarIcmsAsync(new IntegrationDarService.solicitarDarIcmsRequest()
+                        {
+                            codigoOrgao = organCode.Value,
+                            codigoReceita = item.Key.RecipeCode,
+                            dataPagamento = dueDate.ToString("dd/MM/yyyy"),
+                            dataVencimento = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"),
+                            inscricao = ie.Ie,
+                            numeroDocumento = requestBarCode.PeriodoReferencia,
+                            periodoReferencia = requestBarCode.PeriodoReferencia,
+                            substitoTributo = substitoTributo,
+                            taxaEmissao = "0",
+                            tokenAcesso = accessToken.Value,
+                            valorTotal = valueTotal
+                        });
 
-                    var fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key.RecipeCode}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
-                    var fileOutput = System.IO.Path.Combine(dirOutput, fileName);
+                        if (response.TipoRetorno.ToLowerInvariant().Equals("erro"))
+                        {
+                            messageResponse.Add(new { code = 500, recipedesc = dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description, recipecode = item.Key.RecipeCode, message = response.MensagemRetorno });
+                            continue;
+                        }
 
-                    System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.BoletoBytes));
+                        var dirOutput = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot/Billets");
+                        if (!System.IO.Directory.Exists(dirOutput))
+                            System.IO.Directory.CreateDirectory(dirOutput);
+
+                        fileName = $"{requestBarCode.CpfCnpjIE}-{requestBarCode.PeriodoReferencia}-{item.Key.RecipeCode}-{DateTime.Now.ToString("ddMMyyyy-HHmmss")}.pdf";
+                        fileOutput = System.IO.Path.Combine(dirOutput, fileName);
+
+                        System.IO.File.WriteAllBytes(fileOutput, Convert.FromBase64String(response.BoletoBytes));
+                    }
 
                     //Cancelar caso já existe o documento na base de dados
                     var darDc = await _darDocumentService
-                        .GetByCompanyAndPeriodReferenceAndDarAsync(
-                            SessionManager.GetCompanyIdInSession(),
-                            Convert.ToInt32(requestBarCode.PeriodoReferencia),
-                            Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id)
-                        );
+                    .GetByCompanyAndPeriodReferenceAndDarAsync(
+                        SessionManager.GetCompanyIdInSession(),
+                        Convert.ToInt32(requestBarCode.PeriodoReferencia),
+                        Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id)
+                    );
 
                     //Caso exista o DAR e ele esteja pago, não será mais possível editar
                     if (darDc != null && darDc.PaidOut)
                         continue;
-
 
                     //Caso exista o DAR, ele será cancelado e um novo será criado 
                     if (darDc != null)
@@ -3982,7 +4029,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }, null);
 
                     //Enviar Email
-                    var subject = $"Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description}";
+                    var subject = $"{ie.Document} - {requestBarCode.PeriodoReferencia} - Boleto ESCONPI {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description}";
                     var body = $@"Boleto de {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Code} - {dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Description} 
                                   referente ao período {requestBarCode.PeriodoReferencia} com data de vencimento para {dueDate.ToString("dd/MM/yyyy")}";
 
@@ -3990,13 +4037,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                     EmailMessage email = new EmailMessage()
                     {
-                        Content = body,
                         FromAddresses = new List<EmailAddress>() { new EmailAddress() { Address = _emailConfiguration.SmtpUsername, Name = "Sistems SisCT - ESCONPI" } },
                         Subject = subject,
                         ToAddresses = emailto
                     };
 
-                    _serviceEmail.Send(email, new string[] { fileOutput });
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        email.Content = body;
+                        _serviceEmail.Send(email, new string[] { fileOutput });
+                    }
+                    else
+                    {
+                        var contentBillet = System.IO.File.ReadAllText(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "DocumentModel", "billet-model.html"));
+                        body += "<br/><br/>" + string.Format(contentBillet, response.LinhaDigitavel, response.CodigoBarras, new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).ToString("dd/MM/yyyy"), valueTotal);
+
+                        email.Content = body;
+                        _serviceEmail.Send(email, null);
+                    }
 
                     if (darDoc.Id <= 0) return BadRequest(new { code = 500, message = "falha ao tentar gravar dados de resposta do ws." });
 

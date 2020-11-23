@@ -1,7 +1,0 @@
-No recipients have been specified.   at MailKit.Net.Smtp.SmtpClient.Send(FormatOptions options, MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at MailKit.MailTransport.Send(MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at Escon.SisctNET.Web.Email.EmailService.Send(EmailMessage emailMessage, String[] attachment) in D:\repo\git\esconpi\Sisct\Escon.SisctNET.Web\Email\EmailService.cs:line 86No recipients have been specified.   at MailKit.Net.Smtp.SmtpClient.Send(FormatOptions options, MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at MailKit.MailTransport.Send(MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at Escon.SisctNET.Web.Email.EmailService.Send(EmailMessage emailMessage, String[] attachment)No recipients have been specified.   at MailKit.Net.Smtp.SmtpClient.Send(FormatOptions options, MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at MailKit.MailTransport.Send(MimeMessage message, CancellationToken cancellationToken, ITransferProgress progress)
-   at Escon.SisctNET.Web.Email.EmailService.Send(EmailMessage emailMessage, String[] attachment)
