@@ -3674,8 +3674,8 @@ namespace Escon.SisctNET.Web.Controllers
                     // ICMS A RECOLHER
                     ViewBag.TotalDarST = totalDarST;
                     ViewBag.TotalDarFecop = totalDarFecop;
-                    ViewBag.TotalDarIm = totalDarIm;
-                    ViewBag.TotalDarAp = totalDarAp;
+                    ViewBag.TotalDarIM = totalDarIm;
+                    ViewBag.TotalDarAP = totalDarAp;
                     ViewBag.TotalDarFunef = totalDarFunef;
                     ViewBag.TotalDarIcms = totalDarIcms;
                     ViewBag.TotalDarCotac = totalDarCotac;

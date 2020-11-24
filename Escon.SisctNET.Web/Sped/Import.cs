@@ -2036,6 +2036,7 @@ namespace Escon.SisctNET.Web.Sped
                         sped.Add(linha[12]);
                         sped.Add(linha[3]);
                         sped.Add(linha[2]);
+                        sped.Add(linha[7]);
                         spedNfe.Add(sped);
                     }
                 }

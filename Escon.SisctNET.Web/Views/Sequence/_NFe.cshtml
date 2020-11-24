@@ -1,10 +1,10 @@
-﻿<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.N55.Count</div>
+﻿<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.Qtd55</div>
 
-@if (ViewBag.N55.Count > 0)
+@if (ViewBag.Qtd55 > 0)
 {
     <div style="float:right;">
-        <b>Primeira Nota: </b> @ViewBag.N55[0] <br />
-        <b>Última Nota: </b> @ViewBag.N55[ViewBag.N55.Count - 1]
+        <b>Primeira Nota: </b> @ViewBag.Min55 <br />
+        <b>Última Nota: </b> @ViewBag.Max55
     </div>
 }
 
@@ -12,11 +12,14 @@
 <table class="table" style="border: 2px solid;">
     <thead>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="3">NOTAS MODELO 55</th>
+            <th style="text-align:center;border:1px solid;" colspan="4">NOTAS MODELO 55</th>
         </tr>
     </thead>
     <tbody>
         <tr>
+            <th style="text-align:center;border:1px solid;">
+                SÉRIE
+            </th>
             <th style="text-align:center;border:1px solid;">
                 ÚLTIMA NOTA DE UMA SEQUÊNCIA
             </th>
@@ -33,6 +36,7 @@
                 <td style="text-align:center;border:1px solid;">@note[0]</td>
                 <td style="text-align:center;border:1px solid;">@note[1]</td>
                 <td style="text-align:center;border:1px solid;">@note[2]</td>
+                <td style="text-align:center;border:1px solid;">@note[3]</td>
             </tr>
         }
     </tbody>
@@ -43,24 +47,27 @@
 <br />
 <hr />
 
-<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.N65.Count</div>
+<div style="float:left;"><b>Quantidade de Notas: </b> @ViewBag.Qtd65</div>
 
-@if (ViewBag.N65.Count > 0)
-{    
+@if (ViewBag.Qtd65 > 0)
+{
     <div style="float:right;">
-        <b>Primeira Nota: </b> @ViewBag.N65[0] <br />
-        <b>Última Nota: </b> @ViewBag.N65[ViewBag.N65.Count - 1]
+        <b>Primeira Nota: </b> @ViewBag.Min65 <br />
+        <b>Última Nota: </b> @ViewBag.Max65
     </div>
 }
 
 <table class="table" style="border: 2px solid;">
     <thead>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="3">NOTAS MODELO 65</th>
+            <th style="text-align:center;border:1px solid;" colspan="4">NOTAS MODELO 65</th>
         </tr>
     </thead>
     <tbody>
         <tr>
+            <th style="text-align:center;border:1px solid;">
+                SÉRIE
+            </th>
             <th style="text-align:center;border:1px solid;">
                 ÚLTIMA NOTA DE UMA SEQUÊNCIA
             </th>
@@ -77,6 +84,7 @@
                 <td style="text-align:center;border:1px solid;">@note[0]</td>
                 <td style="text-align:center;border:1px solid;">@note[1]</td>
                 <td style="text-align:center;border:1px solid;">@note[2]</td>
+                <td style="text-align:center;border:1px solid;">@note[3]</td>
             </tr>
         }
     </tbody>

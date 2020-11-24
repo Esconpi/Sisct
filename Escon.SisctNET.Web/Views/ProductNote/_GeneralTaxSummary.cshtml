@@ -113,6 +113,30 @@
         {
             <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="0" data-substituicao="0" />
         }
+
+        
     </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:center">
+                Total
+            </th>
+            <th style="text-align:right; padding-right:1%;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalDarIcms) + Convert.ToDecimal(ViewBag.TotalAPuradoST) + Convert.ToDecimal(ViewBag.TotalAPuradoCO) +
+                                        Convert.ToDecimal(ViewBag.TotalAPuradoAP) + Convert.ToDecimal(ViewBag.TotalAPuradoIM) + Convert.ToDecimal(ViewBag.TotalAPuradoFecop) +
+                                        Convert.ToDecimal(ViewBag.TotalDarCotac) + Convert.ToDecimal(ViewBag.TotalDarFunef))
+            </th>
+            <th style="text-align:right; padding-right:1%;">
+                @string.Format("{0:N}", Convert.ToDecimal(Convert.ToDecimal(ViewBag.TotalRecolhidoST) + Convert.ToDecimal(ViewBag.TotalRecolhidoCO) + 
+                                        Convert.ToDecimal(ViewBag.TotalRecolhidoAP) + Convert.ToDecimal(ViewBag.TotalRecolhidoIM) +
+                                        Convert.ToDecimal(ViewBag.TotalRecolhidoFecop)))
+            </th>
+            <th style="text-align:right; padding-right:1%;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalDarIcms) + Convert.ToDecimal(ViewBag.TotalDarST) + Convert.ToDecimal(ViewBag.TotalDarCO) +
+                                        Convert.ToDecimal(ViewBag.TotalDarAP) + Convert.ToDecimal(ViewBag.TotalDarIM) + Convert.ToDecimal(ViewBag.TotalDarFecop) +
+                                        Convert.ToDecimal(ViewBag.TotalDarCotac) + Convert.ToDecimal(ViewBag.TotalDarFunef))
+            </th>
+        </tr>
+    </tfoot>
 </table>
 
