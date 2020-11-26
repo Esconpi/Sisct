@@ -3,6 +3,17 @@ namespace Escon.SisctNET.Web.Taxation
 {
     public class Calculation
     {
+
+        public decimal baseCalc(decimal vBaseCalc, decimal vDesc)
+        {
+            return vBaseCalc + vDesc;
+        }
+
+        public decimal valorIcms(decimal icmsCTe , decimal vIcms)
+        {
+            return icmsCTe + vIcms;
+        }
+
         public decimal ValorAgregadoMva(decimal baseCalc, decimal mva)
         {
             return (baseCalc * mva / 100) + baseCalc;
@@ -33,9 +44,25 @@ namespace Escon.SisctNET.Web.Taxation
             return (dif / 100) * baseCalc;
         }
 
-        public decimal valorAgregadoPauta(decimal qtd, decimal price)
+        public decimal valorAgregadoPautaProd(decimal baseCalc, decimal quantParaCalc)
+        {
+            return baseCalc / quantParaCalc;
+        }
+
+        public decimal valorAgregadoPautaAto(decimal qtd, decimal price)
         {
             return qtd * price;
         }
+
+        public decimal totalIcms(decimal valorAgregadoAliqInt, decimal valorIcms)
+        {
+            return valorAgregadoAliqInt - valorIcms;
+        }
+
+        public decimal totalIcmsPauta(decimal icmsPauta, decimal valorFecop)
+        {
+            return icmsPauta + valorFecop;
+        }
+
     }
 }

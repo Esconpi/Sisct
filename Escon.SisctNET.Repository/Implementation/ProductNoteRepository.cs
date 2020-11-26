@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public List<ProductNote> FindByNotes(int noteId, Log log)
+        public List<ProductNote> FindByNote(int noteId, Log log)
         {
             var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(noteId));
             AddLog(log);

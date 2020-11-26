@@ -12,7 +12,7 @@ namespace Escon.SisctNET.Service
 
         void Update(List<Model.ProductNote> products, Model.Log log = null);
 
-        List<Model.ProductNote> FindByNotes(int noteId, Model.Log log = null);
+        List<Model.ProductNote> FindByNote(int noteId, Model.Log log = null);
 
         List<Model.ProductNote> FindByProducts(List<Model.Note> notes, Model.Log log = null);
 

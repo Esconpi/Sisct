@@ -176,6 +176,7 @@ namespace Escon.SisctNET.Web.Planilha
             try
             {
                 SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+
                 try
                 {
 

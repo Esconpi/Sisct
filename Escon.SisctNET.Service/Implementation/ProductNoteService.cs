@@ -44,9 +44,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public List<ProductNote> FindByNotes(int noteId, Log log = null)
+        public List<ProductNote> FindByNote(int noteId, Log log = null)
         {
-            return _repository.FindByNotes(noteId, log);
+            return _repository.FindByNote(noteId, log);
         }
 
         public List<ProductNote> FindByProducts(List<Note> notes, Log log = null)

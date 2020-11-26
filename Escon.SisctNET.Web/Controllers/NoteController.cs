@@ -136,42 +136,37 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (notaImport == null)
                     {
-                        int lastposicao = notes[i].Count;
-                        string nCT = notes[i][lastposicao - 1]["nCT"];
-
-                        string IEST = "";
-                        if (notes[i][2].ContainsKey("IEST"))
-                        {
-                            IEST = notes[i][2]["IEST"];
-                        }
-
                         try
                         {
-                            var cnpj = !notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CPF"] : notes[i][2]["CNPJ"];
+                            string nCT = notes[i][notes[i].Count() - 1].ContainsKey("nCT") ? notes[i][notes[i].Count() - 1]["nCT"] : "";
 
-                            var note = new Model.Note
-                            {
-                                CompanyId = id,
-                                Chave = notes[i][0]["chave"],
-                                Nnf = notes[i][1]["nNF"],
-                                Dhemi = Convert.ToDateTime(notes[i][1]["dhEmi"]),
-                                Cnpj = cnpj,
-                                Crt = notes[i][2]["CRT"],
-                                Uf = notes[i][2]["UF"],
-                                Ie = notes[i][2]["IE"],
-                                Iest = IEST,
-                                AnoRef = year,
-                                MesRef = month,
-                                Created = DateTime.Now,
-                                Updated = DateTime.Now,
-                                Nct = nCT,
-                                Xnome = notes[i][2]["xNome"],
-                                Vnf = Convert.ToDecimal(notes[i][4]["vNF"]),
-                                Status = false,
-                                IdDest = Convert.ToInt32(notes[i][1]["idDest"])
-                            };
+                            string IEST = notes[i][2].ContainsKey("IEST") ? notes[i][2]["IEST"] : "";
 
-                            _service.Create(entity: note, GetLog(Model.OccorenceLog.Create));
+                            string cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
+
+                            Model.Note note = new Model.Note();
+
+                            note.CompanyId = id;
+                            note.Chave = notes[i][0]["chave"];
+                            note.Nnf = notes[i][1]["nNF"];
+                            note.Dhemi = Convert.ToDateTime(notes[i][1]["dhEmi"]);
+                            note.Cnpj = cnpj;
+                            note.Crt = notes[i][2]["CRT"];
+                            note.Uf = notes[i][2]["UF"];
+                            note.Ie = notes[i][2]["IE"];
+                            note.Iest = IEST;
+                            note.Nct = nCT;
+                            note.Xnome = notes[i][2]["xNome"];
+                            note.Vnf = Convert.ToDecimal(notes[i][4]["vNF"]);
+                            note.IdDest = Convert.ToInt32(notes[i][1]["idDest"]);
+                            note.Status = false;
+                            note.AnoRef = year;
+                            note.MesRef = month;
+                            note.Created = DateTime.Now;
+                            note.Updated = DateTime.Now;
+
+
+                            _service.Create(note, GetLog(Model.OccorenceLog.Create));
                         }
                         catch
                         {
@@ -184,7 +179,6 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        
                         if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
                         {
                             notas.Add(notaImport);
@@ -193,7 +187,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var nota = _service.FindByNote(notes[i][0]["chave"]);
 
-                    int noteId = nota.Id;
+                    var produtos = _itemService.FindByNote(nota.Id);
+
+                    bool tributada = true;
 
                     List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
 
@@ -323,39 +319,35 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             det.Add("baseCalc", notes[i][j]["baseCalc"]);
 
-                            decimal vUnCom = 0, vICMS = 0, pICMS = 0, vIPI = 0, vPIS = 0, vCOFINS = 0, vFrete = 0,
-                                    vSeg = 0, vOutro = 0, vDesc = 0, vICMSST = 0, frete_icms = 0, frete_prod = 0, baseDeCalc = 0,
-                                    vBCST = 0, vBCFCPST = 0, pFCPST = 0, vFCPST = 0, vBCFCPSTRet = 0, pFCPSTRet = 0, vFCPSTRet = 0;
-                            string NCM = "", CEST = "", CFOP = "";
-                            string nItem = "";
+                            string nItem = det.ContainsKey("nItem") ? det["nItem"] : "";
+                            string NCM = det.ContainsKey("NCM") ? det["NCM"] : "";
+                            string CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "";
+                            string CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
+                            decimal vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : 0;
+                            decimal vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : 0;
+                            decimal pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : 0;
+                            decimal vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : 0;
+                            decimal vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : 0;
+                            decimal vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : 0;
+                            decimal vFrete = det.ContainsKey("vFrete") ? Convert.ToDecimal(det["vFrete"]) : 0;
+                            decimal vSeg = det.ContainsKey("vSeg") ? Convert.ToDecimal(det["vSeg"]) : 0;
+                            decimal vOutro = det.ContainsKey("vOutro") ? Convert.ToDecimal(det["vOutro"]) : 0;
+                            decimal vDesc = det.ContainsKey("vDesc") ? Convert.ToDecimal(det["vDesc"]) : 0;
+                            decimal vICMSST = det.ContainsKey("vICMSST") ? Convert.ToDecimal(det["vICMSST"]) : 0;
+                            decimal vBCST = det.ContainsKey("vBCST") ? Convert.ToDecimal(det["vBCST"]) : 0;
+                            decimal vBCFCPST = det.ContainsKey("vBCFCPST") ? Convert.ToDecimal(det["vBCFCPST"]) : 0;
+                            decimal vBCFCPSTRet = det.ContainsKey("vBCFCPSTRet") ? Convert.ToDecimal(det["vBCFCPSTRet"]) : 0;
+                            decimal pFCPST = det.ContainsKey("pFCPST") ? Convert.ToDecimal(det["pFCPST"]) : 0;
+                            decimal pFCPSTRet = det.ContainsKey("pFCPSTRet") ? Convert.ToDecimal(det["pFCPSTRet"]) : 0;
+                            decimal vFCPST = det.ContainsKey("vFCPST") ? Convert.ToDecimal(det["vFCPST"]) : 0;
+                            decimal vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : 0;
+                            decimal freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0;
+                            decimal frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : 0;
+                            decimal baseDeCalc = det.ContainsKey("baseCalc") ? Convert.ToDecimal(det["baseCalc"]) : 0;
 
-                            NCM = det.ContainsKey("NCM") ? det["NCM"] : NCM;
-                            CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : CFOP;
-                            CEST = det.ContainsKey("CEST") ? det["CEST"] : CEST;
-                            vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : vUnCom;
-                            vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : vICMS;
-                            pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : pICMS;
-                            vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : vIPI;
-                            vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : vPIS;
-                            vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : vCOFINS;
-                            vFrete = det.ContainsKey("vFrete") ? Convert.ToDecimal(det["vFrete"]) : vFrete;
-                            vSeg = det.ContainsKey("vSeg") ? Convert.ToDecimal(det["vSeg"]) : vSeg;
-                            vOutro = det.ContainsKey("vOutro") ? Convert.ToDecimal(det["vOutro"]) : vOutro;
-                            vDesc = det.ContainsKey("vDesc") ? Convert.ToDecimal(det["vDesc"]) : vDesc;
-                            vICMSST = det.ContainsKey("vICMSST") ? Convert.ToDecimal(det["vICMSST"]) : vICMSST;
-                            vBCST = det.ContainsKey("vBCST") ? Convert.ToDecimal(det["vBCST"]) : vBCST;
-                            vBCFCPST = det.ContainsKey("vBCFCPST") ? Convert.ToDecimal(det["vBCFCPST"]) : vBCFCPST;
-                            vBCFCPSTRet = det.ContainsKey("vBCFCPSTRet") ? Convert.ToDecimal(det["vBCFCPSTRet"]) : vBCFCPSTRet;
-                            pFCPST = det.ContainsKey("pFCPST") ? Convert.ToDecimal(det["pFCPST"]) : pFCPST;
-                            pFCPSTRet = det.ContainsKey("pFCPSTRet") ? Convert.ToDecimal(det["pFCPSTRet"]) : pFCPSTRet;
-                            vFCPST = det.ContainsKey("vFCPST") ? Convert.ToDecimal(det["vFCPST"]) : vFCPST;
-                            vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : vFCPSTRet;
-                            frete_icms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : frete_icms;
-                            frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : frete_prod;
-                            baseDeCalc = det.ContainsKey("baseCalc") ? Convert.ToDecimal(det["baseCalc"]) : baseDeCalc;
-                            nItem = det.ContainsKey("nItem") ? det["nItem"] : nItem;
+                            //var productImport = _itemService.FindByProduct(nota.Id, nItem);
+                            var productImport = produtos.Where(_ => _.Nitem.Equals(nItem)).FirstOrDefault();
 
-                            var productImport = _itemService.FindByProduct(noteId, nItem);
                             if (productImport == null)
                             {
 
@@ -389,6 +381,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     try
                                     {
+                                        tributada = false;
+
                                         prod.Cprod = det["cProd"];
                                         prod.Ncm = NCM;
                                         prod.Cest = CEST;
@@ -408,8 +402,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Vseg = vSeg;
                                         prod.Voutro = vOutro;
                                         prod.Vdesc = vDesc;
-                                        prod.Created = DateTime.Now;
-                                        prod.Updated = DateTime.Now;
                                         prod.IcmsST = vICMSST;
                                         prod.VbcFcpSt = vBCFCPST;
                                         prod.VbcFcpStRet = vBCFCPSTRet;
@@ -417,14 +409,16 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.pFCPSTRET = pFCPSTRet;
                                         prod.VfcpST = vFCPST;
                                         prod.VfcpSTRet = vFCPSTRet;
-                                        prod.IcmsCTe = frete_icms;
+                                        prod.IcmsCTe = freteIcms;
                                         prod.Freterateado = frete_prod;
-                                        prod.NoteId = noteId;
+                                        prod.NoteId = nota.Id;
                                         prod.Nitem = det["nItem"];
-                                        prod.Status = false;
                                         prod.Orig = Convert.ToInt32(det["orig"]);
                                         prod.Incentivo = incentivo;
-                                       
+                                        prod.Status = false;
+                                        prod.Created = DateTime.Now;
+                                        prod.Updated = DateTime.Now;
+
                                     }
                                     catch
                                     {
@@ -440,13 +434,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, GetLog(Model.OccorenceLog.Read));
                                     var calculation = new Calculation();
-                                    decimal valorAgreg = 0, valor_fecop = 0, valorbcr = 0, valor_icms = vICMS + frete_icms,
-                                            valorAgre_AliqInt = 0, cms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
-
+                                    decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
+                                            valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
                                     
                                     if (taxedtype.Type == "ST")
                                     {
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]) + vDesc;
+                                        baseCalc = calculation.baseCalc(Convert.ToDecimal(det["baseCalc"]), vDesc);
 
                                         if (taxed.MVA != null)
                                         {
@@ -455,28 +448,29 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.BCR != null)
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
-                                            //valor_icms = valor_icms * Convert.ToDecimal(taxed.BCR) / 100;
-                                            valor_icms = 0;
+                                            valorIcms = 0;
                                         }
 
                                         decimal percentFecop = 0;
+
                                         if (taxed.Fecop != null)
                                         {
                                             percentFecop = Convert.ToDecimal(taxed.Fecop);
-                                            valor_fecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
+                                            valorFecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                         }
                                         else
                                         {
-                                            percentFecop = Convert.ToDecimal(0);
-                                            valor_fecop = calculation.valorFecop(Convert.ToDecimal(0), valorAgreg);
+                                            valorFecop = calculation.valorFecop(0, valorAgreg);
                                         }
-                                        valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
+
+                                        valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
+
                                         if (valorbcr > 0)
                                         {
-                                            valorAgre_AliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
+                                            valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
                                         }
-                                        cms = valorAgre_AliqInt - valor_icms;
 
+                                        totalIcms = calculation.totalIcms(valorAgreAliqInt, valorIcms);
 
                                     }
                                     else if (taxedtype.Type == "Normal")
@@ -513,8 +507,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Vseg = vSeg;
                                         prod.Voutro = vOutro;
                                         prod.Vdesc = vDesc;
-                                        prod.Created = DateTime.Now;
-                                        prod.Updated = DateTime.Now;
                                         prod.IcmsST = vICMSST;
                                         prod.VbcFcpSt = vBCFCPST;
                                         prod.VbcFcpStRet = vBCFCPSTRet;
@@ -522,7 +514,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.pFCPSTRET = pFCPSTRet;
                                         prod.VfcpST = vFCPST;
                                         prod.VfcpSTRet = vFCPSTRet;
-                                        prod.IcmsCTe = frete_icms;
+                                        prod.IcmsCTe = freteIcms;
                                         prod.Freterateado = frete_prod;
                                         prod.Aliqinterna = taxed.AliqInterna;
                                         prod.Mva = taxed.MVA;
@@ -530,20 +522,22 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Fecop = taxed.Fecop;
                                         prod.Valoragregado = valorAgreg;
                                         prod.ValorBCR = valorbcr;
-                                        prod.ValorAC = valorAgre_AliqInt;
-                                        prod.TotalICMS = cms;
-                                        prod.TotalFecop = valor_fecop;
+                                        prod.ValorAC = valorAgreAliqInt;
+                                        prod.TotalICMS = totalIcms;
+                                        prod.TotalFecop = valorFecop;
                                         prod.Diferencial = dif;
                                         prod.IcmsApurado = icmsApu;
-                                        prod.Status = true;
-                                        prod.Pautado = false;
                                         prod.TaxationTypeId = taxed.TaxationTypeId;
-                                        prod.NoteId = noteId;
+                                        prod.NoteId = nota.Id;
                                         prod.Nitem = det["nItem"];
                                         prod.Orig = Convert.ToInt32(det["orig"]);
                                         prod.Incentivo = incentivo;
-                                        prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                         prod.Produto = "Normal";
+                                        prod.Status = true;
+                                        prod.Pautado = false;
+                                        prod.DateStart = Convert.ToDateTime(taxed.DateStart);
+                                        prod.Created = DateTime.Now;
+                                        prod.Updated = DateTime.Now;
 
                                     }
                                     catch
@@ -568,9 +562,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
                     addProduct.Clear();
-                    var productsTaxation = _itemService.FindByTaxation(noteId);
+                    //var productsTaxation = _itemService.FindByTaxation(nota.Id);
 
-                    if (productsTaxation.Count == 0)
+                    if (tributada == true)
                     {
                         nota.Status = true;
                         _service.Update(nota, GetLog(Model.OccorenceLog.Update));
@@ -742,7 +736,7 @@ namespace Escon.SisctNET.Web.Controllers
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
-                var products = _itemService.FindByNotes(id);
+                var products = _itemService.FindByNote(id);
                 List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
                 foreach (var product in products)
                 {
