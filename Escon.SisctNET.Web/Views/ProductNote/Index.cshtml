@@ -8,7 +8,7 @@
 
     <div class="box box-primary">
         <div class="box-header">
-            <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Id" asp-route-year="@ViewBag.Year" asp-route-month="@ViewBag.Month" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+            <a asp-controller="Note" asp-action="Index" asp-route-id="@ViewBag.Note.CompanyId" asp-route-year="@ViewBag.Note.AnoRef" asp-route-month="@ViewBag.Note.MesRef" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
             <h3 class="box-title"><strong>Produtos </strong></h3>
 
             <table class="table">
@@ -23,11 +23,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@ViewBag.Note</td>
-                        <td>@ViewBag.Data</td>
-                        <td>@ViewBag.Uf</td>
-                        <td>@ViewBag.Fornecedor</td>
-                        <td>@string.Format("{0:C}", ViewBag.Valor)</td>
+                        <td>@ViewBag.Note.Nnf</td>
+                        <td>@ViewBag.Note.Dhemi.ToString("dd/MM/yyyy")</td>
+                        <td>@ViewBag.Note.Uf</td>
+                        <td>@ViewBag.Note.Xnome</td>
+                        <td>@string.Format("{0:C}", ViewBag.Note.Vnf)</td>
                     </tr>
                 </tbody>
             </table>
@@ -45,9 +45,9 @@
 
             <div class="btn-group pull-right">
 
-                @if (ViewBag.View == false)
+                @if (ViewBag.Note.View == false)
                 {
-                    <a asp-controller="Note" asp-action="UpdateView" asp-route-id="@ViewBag.NoteId" class="btn btn-primary">
+                    <a asp-controller="Note" asp-action="UpdateView" asp-route-id="@ViewBag.Note.Id" class="btn btn-primary">
                         <i class="fa fa-check-square"></i>
                         Visualizar
                     </a>

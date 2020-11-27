@@ -149,14 +149,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).Select(_ => _.Type).Distinct().ToList().Count() == 1)
                                 {
-                                    type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Type;
-                                    typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().TypeNcmId;
-                                    cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstEntradaId;
-                                    cstSaidaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().CstSaidaId;
-                                    natReceita = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().NatReceita;
-                                    pis = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Pis;
-                                    cofins = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().Cofins;
-                                    dateStart = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).FirstOrDefault().DateStart;
+                                    type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().Type;
+                                    typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().TypeNcmId;
+                                    cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().CstEntradaId;
+                                    cstSaidaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().CstSaidaId;
+                                    natReceita = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().NatReceita;
+                                    pis = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().Pis;
+                                    cofins = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().Cofins;
+                                    dateStart = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
+                                        .FirstOrDefault().DateStart;
                                     status = true;
                                 }
                             }

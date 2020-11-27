@@ -134,20 +134,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindByNote(noteId, GetLog(OccorenceLog.Read)).OrderBy(_ => _.Status).ToList();
-                var rst = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
-                ViewBag.Id = rst.CompanyId;
-                ViewBag.Year = rst.AnoRef;
-                ViewBag.Month = rst.MesRef;
-                ViewBag.Note = rst.Nnf;
-                ViewBag.Fornecedor = rst.Xnome;
-                ViewBag.Valor = rst.Vnf;
-                ViewBag.Data = rst.Dhemi.ToString("dd/MM/yyyy");
-                ViewBag.Uf = rst.Uf;
-                ViewBag.View = rst.View;
-                ViewBag.NoteId = rst.Id;
-                ViewBag.Incentivo = rst.Company.Incentive;
-                ViewBag.Anexo = rst.Company.AnnexId;
+                var result = _service.FindByNote(noteId, GetLog(OccorenceLog.Read))
+                    .OrderBy(_ => _.Status)
+                    .ToList();
+                var note = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
+
+                ViewBag.Note = note;
 
                 return View(result);
 
@@ -826,8 +818,16 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var notes = _noteService.FindByNotes(id, year, month);
-                var products = _service.FindByProductsType(notes, typeTaxation).OrderBy(_ => _.Note.Iest).ThenBy(_ => Convert.ToInt32(_.Note.Nnf)).ToList();
-                var notasTaxation = products.Select(_ => _.Note).Distinct().ToList().OrderBy(_ => _.Iest).ThenBy(_ => Convert.ToInt32(_.Nnf)).ToList();
+                var products = _service.FindByProductsType(notes, typeTaxation)
+                    .OrderBy(_ => _.Note.Iest)
+                    .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
+                    .ToList();
+                var notasTaxation = products.Select(_ => _.Note)
+                    .Distinct()
+                    .ToList()
+                    .OrderBy(_ => _.Iest)
+                    .ThenBy(_ => Convert.ToInt32(_.Nnf))
+                    .ToList();
                 var notas = products.Select(_ => Convert.ToInt32(_.NoteId)).Distinct();
                 var total = _service.FindByTotal(notas.ToList());
                 var notesS = notes.Where(_ => _.Iest == "");
@@ -3812,13 +3812,27 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 
-                var darFecop = dar.Where(_ => _.Type.Equals("Fecop")).Select(_ => _.Code).FirstOrDefault();
-                var darStCo = dar.Where(_ => _.Type.Equals("ST-CO")).Select(_ => _.Code).FirstOrDefault();
-                var darIcms = dar.Where(_ => _.Type.Equals("Icms")).Select(_ => _.Code).FirstOrDefault();
-                var darAp = dar.Where(_ => _.Type.Equals("AP")).Select(_ => _.Code).FirstOrDefault();
-                var darIm = dar.Where(_ => _.Type.Equals("IM")).Select(_ => _.Code).FirstOrDefault();
-                var darFunef = dar.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
-                var darCotac = dar.Where(_ => _.Type.Equals("Cotac")).Select(_ => _.Code).FirstOrDefault();
+                var darFecop = dar.Where(_ => _.Type.Equals("Fecop"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darStCo = dar.Where(_ => _.Type.Equals("ST-CO"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darIcms = dar.Where(_ => _.Type.Equals("Icms"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darAp = dar.Where(_ => _.Type.Equals("AP"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darIm = dar.Where(_ => _.Type.Equals("IM"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darFunef = dar.Where(_ => _.Type.Equals("Funef"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
+                var darCotac = dar.Where(_ => _.Type.Equals("Cotac"))
+                    .Select(_ => _.Code)
+                    .FirstOrDefault();
 
                 ViewBag.DarFecop = darFecop;
                 ViewBag.DarSTCO = darStCo;
