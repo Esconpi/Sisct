@@ -13,7 +13,8 @@ namespace Escon.SisctNET.Repository.Implementation
         private readonly ContextDataBase _context;
         
 
-        public TaxationRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
+        public TaxationRepository(ContextDataBase context, IConfiguration configuration) 
+            : base(context, configuration)
         {
             _context = context;
         }
@@ -73,9 +74,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Taxation> FindByCompany(int companyId, Log log = null)
         {
-            var rst = _context.Taxations.Where(_ => _.CompanyId.Equals(companyId));
+            var rst = _context.Taxations
+                .Where(_ => _.CompanyId.Equals(companyId) && (Convert.ToDateTime(_.DateStart) < Convert.ToDateTime(_.DateEnd) || _.DateEnd.Equals(null)))
+                .ToList();
             AddLog(log);
-            return rst.ToList();
+            return rst;
         }
 
         public Taxation FindByNcm(string code, string cest, Log log = null)

@@ -160,13 +160,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var product = _service.FindById(id, GetLog(OccorenceLog.Read));
-                //var note = _noteService.FindByNote(prod.Note.Chave);
                 var ncm = _ncmService.FindByCode(product.Ncm);
 
-                //ViewBag.Uf = note.Uf;
-                //ViewBag.Dhemi = note.Dhemi.ToString("dd/MM/yyyy");
-                //ViewBag.Note = note.Nnf;
-                //ViewBag.NoteId = note.Id;
 
                 if (ncm == null)
                 {
@@ -175,7 +170,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 ViewBag.DescriptionNCM = ncm.Description;
-                //ViewBag.DataNote = prod.Note.Dhemi;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
 
@@ -727,28 +721,27 @@ namespace Escon.SisctNET.Web.Controllers
                         taxationcm.DateEnd = Convert.ToDateTime(dateStart).AddDays(-1);
                         _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
                     }
-                    var taxation = new Model.Taxation
-                    {
-                        CompanyId = prod.Note.CompanyId,
-                        Code = code,
-                        Cest = prod.Cest,
-                        AliqInterna = Convert.ToDecimal(AliqInt),
-                        Diferencial = dif,
-                        MVA = entity.Mva,
-                        BCR = bcr,
-                        Fecop = entity.Fecop,
-                        DateStart = Convert.ToDateTime(dateStart),
-                        DateEnd = null,
-                        TaxationTypeId = Convert.ToInt32(taxaType),
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now,
-                        NcmId = ncm.Id,
-                        Picms = prod.Picms,
-                        Uf = prod.Note.Uf
 
-                    };
-                    _taxationService.Create(entity: taxation, GetLog(OccorenceLog.Create));
+                    Model.Taxation taxation = new Model.Taxation();
 
+                    taxation.CompanyId = prod.Note.CompanyId;
+                    taxation.Code = code;
+                    taxation.Cest = prod.Cest;
+                    taxation.AliqInterna = Convert.ToDecimal(AliqInt);
+                    taxation.Diferencial = dif;
+                    taxation.MVA = entity.Mva;
+                    taxation.BCR = bcr;
+                    taxation.Fecop = entity.Fecop;
+                    taxation.TaxationTypeId = Convert.ToInt32(taxaType);
+                    taxation.NcmId = ncm.Id;
+                    taxation.Picms = prod.Picms;
+                    taxation.Uf = prod.Note.Uf;
+                    taxation.DateStart = Convert.ToDateTime(dateStart);
+                    taxation.DateEnd = null;
+                    taxation.Created = DateTime.Now;
+                    taxation.Updated = DateTime.Now;
+
+                    _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
 
                 }
 
@@ -811,29 +804,33 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                SessionManager.SetCompanyIdInSession(id);
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                SessionManager.SetCompanyIdInSession(id);
+
+                var calculation = new Calculation();
 
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var notes = _noteService.FindByNotes(id, year, month);
+
                 var products = _service.FindByProductsType(notes, typeTaxation)
                     .OrderBy(_ => _.Note.Iest)
                     .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
                     .ToList();
+
                 var notasTaxation = products.Select(_ => _.Note)
                     .Distinct()
-                    .ToList()
                     .OrderBy(_ => _.Iest)
                     .ThenBy(_ => Convert.ToInt32(_.Nnf))
                     .ToList();
+
                 var notas = products.Select(_ => Convert.ToInt32(_.NoteId)).Distinct();
                 var total = _service.FindByTotal(notas.ToList());
                 var notesS = notes.Where(_ => _.Iest == "");
                 var notesI = notes.Where(_ => _.Iest != "");
 
-                var calculation = new Calculation();
+                
 
                 var icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                 var icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
@@ -3812,24 +3809,37 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
 
+                // Código DAR Fecop
                 var darFecop = dar.Where(_ => _.Type.Equals("Fecop"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+
+                // Código DAR Substituição Tributária e Consumo
                 var darStCo = dar.Where(_ => _.Type.Equals("ST-CO"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+
+                // Código DAR Icms Normal
                 var darIcms = dar.Where(_ => _.Type.Equals("Icms"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+
+                // Código DAR Antecipação Parcial
                 var darAp = dar.Where(_ => _.Type.Equals("AP"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+
+                // Código DAR Imobilizado
                 var darIm = dar.Where(_ => _.Type.Equals("IM"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+
+                // Código DAR Funef
                 var darFunef = dar.Where(_ => _.Type.Equals("Funef"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();
+                
+                // Código DAR Cotac
                 var darCotac = dar.Where(_ => _.Type.Equals("Cotac"))
                     .Select(_ => _.Code)
                     .FirstOrDefault();

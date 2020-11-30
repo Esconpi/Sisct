@@ -3,6 +3,7 @@ namespace Escon.SisctNET.Web.Taxation
 {
     public class Calculation
     {
+        // Cálculos Tributação dos produtos na entrada
 
         public decimal baseCalc(decimal vBaseCalc, decimal vDesc)
         {

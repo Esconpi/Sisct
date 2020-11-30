@@ -56,10 +56,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
                 var onfDBSisctCte = _configurationService.FindByName("CTe Saida");
 
-
-                //List<int> nfe55 = new List<int>();
-                //List<int> nfe65 = new List<int>();
-
                 List<List<List<int>>> nfe55 = new List<List<List<int>>>();
                 List<List<List<int>>> nfe65 = new List<List<List<int>>>();
 
@@ -102,6 +98,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (notesValidas[i][1]["mod"].Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -128,11 +126,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesValidas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                             nfe55[pos].Add(nota);                           
-
-                            //nfe55.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -159,8 +157,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesValidas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                             nfe65[pos].Add(nota);
-
-                            //nfe65.Add(Convert.ToInt32(notesValidas[i][1]["nNF"]));
                         }
                     }
                     
@@ -174,6 +170,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (notesNFeCanceladas[i][1]["mod"].Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -200,11 +198,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
                             nfe55[pos].Add(nota);
-
-                            // nfe55.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -231,8 +229,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
                             nfe65[pos].Add(nota);
-
-                            //nfe65.Add(Convert.ToInt32(notesNFeCanceladas[i][1]["nNF"]));
                         }
                     }
 
@@ -240,6 +236,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (note[0]["chNFe"].Substring(20, 2).Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -266,11 +264,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(22, 3)));
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                             nfe55[pos].Add(nota);
-
-                            // nfe55.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -297,9 +295,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(22, 3)));
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                             nfe65[pos].Add(nota);
-
-
-                            //nfe65.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                         }
                     }
 
@@ -313,6 +308,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (notesNFCeCanceladas[i][1]["mod"].Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -339,11 +336,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                             nfe55[pos].Add(nota);
-
-                            //nfe55.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -370,9 +367,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["serie"]));
                             nota.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                             nfe65[pos].Add(nota);
-
-
-                            // nfe65.Add(Convert.ToInt32(notesNFCeCanceladas[i][1]["nNF"]));
                         }
 
                     }
@@ -382,6 +376,8 @@ namespace Escon.SisctNET.Web.Controllers
                         
                         if (note[0]["chNFe"].Substring(20, 2).Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -408,11 +404,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(22, 3)));
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                             nfe55[pos].Add(nota);
-
-                            //nfe55.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -439,8 +435,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(22, 3)));
                             nota.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                             nfe65[pos].Add(nota);
-
-                            //nfe65.Add(Convert.ToInt32(note[0]["chNFe"].Substring(25, 9)));
                         }
                     }
 
@@ -492,6 +486,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (note[1].Equals("55"))
                         {
+                            // Notas Modelo 55
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe55.Count(); k++)
@@ -518,11 +514,11 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[6]));
                             nota.Add(Convert.ToInt32(note[2]));
                             nfe55[pos].Add(nota);
-
-                            // nfe55.Add(Convert.ToInt32(note[2]));
                         }
                         else
                         {
+                            // Notas Modelo 65
+
                             int pos = -1;
 
                             for (int k = 0; k < nfe65.Count(); k++)
@@ -550,8 +546,6 @@ namespace Escon.SisctNET.Web.Controllers
                             nota.Add(Convert.ToInt32(note[2]));
                             nfe55[pos].Add(nota);
                             nfe65[pos].Add(nota);
-
-                            // nfe65.Add(Convert.ToInt32(note[2]));
                         }                       
                     }
 
@@ -596,14 +590,12 @@ namespace Escon.SisctNET.Web.Controllers
                     var sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped, "1");
                 }
 
-                //nfe55.Sort();
-                //nfe65.Sort();
-
                 List<List<int>> nfe55Fora = new List<List<int>>();
                 List<List<int>> nfe65Fora = new List<List<int>>();
 
                 int qtd55 = 0, qtd65 = 0, min55 = 0, max55 = 0, min65 = 0, max65 = 0;
 
+                // Notas Modelo 55
                 for (int i = 0; i < nfe55.Count(); i++)
                 {
                     var nfe55Ordenada = nfe55[i].ToList().OrderBy(_ => _[1]).ToList();
@@ -642,6 +634,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
+                // Notas Modelo 65
                 for (int i = 0; i < nfe65.Count(); i++)
                 {
                     var nfe65Ordenada = nfe65[i].ToList().OrderBy(_ => _[1]).ToList();
@@ -680,32 +673,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-            /*  for (int i = 1; i < nfe55.Count(); i++)
-                {
-                    if ((nfe55[i] - (nfe55[i - 1])) > 1)
-                    {
-                        List<int> notesIntervalo = new List<int>();
-                        notesIntervalo.Add(nfe55[i - 1]);
-                        notesIntervalo.Add(nfe55[i]);
-                        notesIntervalo.Add((nfe55[i] - nfe55[i - 1]) - 1);
-                        nfe55Fora.Add(notesIntervalo);
-                    }
-                }
-
-                for (int i = 1; i < nfe65.Count(); i++)
-                {
-                    if ((nfe65[i] - (nfe65[i - 1])) > 1)
-                    {
-                        List<int> noteIntervalo = new List<int>();
-                        noteIntervalo.Add(nfe65[i - 1]);
-                        noteIntervalo.Add(nfe65[i]);
-                        noteIntervalo.Add((nfe65[i] - nfe65[i - 1]) -1);
-                        nfe65Fora.Add(noteIntervalo);
-                    }
-                }
-
-                */
-
                 ViewBag.Qtd55 = qtd55;
                 ViewBag.Qtd65 = qtd65;
                 ViewBag.Min55 = min55;
@@ -714,8 +681,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Max65 = max65;
                 ViewBag.Notas55 = nfe55Fora.OrderBy(_ => _[0]).ToList();
                 ViewBag.Notas65 = nfe65Fora.OrderBy(_ => _[0]).ToList();
-
-
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
