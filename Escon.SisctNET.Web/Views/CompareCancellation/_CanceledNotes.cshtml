@@ -1,0 +1,89 @@
+﻿<table class="table" style="width:100%;font-size:11px;">
+    <thead>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;">
+                Chave
+            </th>
+            <th style="border: 1px solid;">
+                NFe
+            </th>
+            <th style="border: 1px solid;">
+                Modelo
+            </th>
+            <th style="border: 1px solid;">
+                Data
+            </th>
+            <th style="border: 1px solid;">
+                Valor
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Notas Modelo 55-->
+        @foreach (var note in ViewBag.NFeCanceladas)
+        {
+            <tr style="border: 1px solid; border-left:5px solid; border-color:limegreen;">
+                <td style="border: 1px solid;">@note[0]["chave"]</td>
+                <td style="border: 1px solid;">@note[1]["nNF"]</td>
+                <td style="border: 1px solid;">@note[1]["mod"]</td>
+                <td style="border: 1px solid;">@note[1]["dhEmi"]</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(note[note.Count - 1]["vNF"]))</td>
+            </tr>
+        }
+
+        <!--Eventos Modelo 55-->
+        @foreach (var note in ViewBag.NFeCanceladasEvento)
+        {
+            <tr style="border: 1px solid; border-left:5px solid; border-color:blue;">
+                <td style="border: 1px solid;">@note[0]["chNFe"]</td>
+                <td style="border: 1px solid;">@note[0]["chNFe"].Substring(25, 9)</td>
+                <td style="border: 1px solid;">@note[0]["chNFe"].Substring(20, 2)</td>
+                <td style="border: 1px solid;">@Convert.ToDateTime(note[0]["dhEvento"]).ToString("dd/MM/yyyy")</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">0,00</td>
+            </tr>
+        }
+
+        <!--Notas Modelo 65-->
+        @foreach (var note in ViewBag.NFCeCanceladas)
+        {
+            <tr style="border: 1px solid; border-left:5px solid; border-color:limegreen;">
+                <td style="border: 1px solid;">@note[0]["chave"]</td>
+                <td style="border: 1px solid;">@note[1]["nNF"]</td>
+                <td style="border: 1px solid;">@note[1]["mod"]</td>
+                <td style="border: 1px solid;">@note[1]["dhEmi"]</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(note[note.Count - 1]["vNF"].Replace(".",",")))</td>
+            </tr>
+        }
+
+        <!--Eventos Modelo 65-->
+        @foreach (var note in ViewBag.NFCeCanceladasEvento)
+        {
+            <tr style="border: 1px solid; border-left:5px solid; border-color:blue;">
+                <td style="border: 1px solid;">@note[0]["chNFe"]</td>
+                <td style="border: 1px solid;">@note[0]["chNFe"].Substring(25, 9)</td>
+                <td style="border: 1px solid;">@note[0]["chNFe"].Substring(20, 2)</td>
+                <td style="border: 1px solid;">@Convert.ToDateTime(note[0]["dhEvento"]).ToString("dd/MM/yyyy")</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">0,00</td>
+            </tr>
+        }
+
+    </tbody>
+
+    <tfoot>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;" colspan="4">Total</th>
+            <th style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalNotas))</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<div class="col-lg-12">
+    <h6>
+        <strong>
+            @Convert.ToInt16(ViewBag.NFeCanceladas.Count + ViewBag.NFeCanceladasEvento.Count + ViewBag.NFCeCanceladas.Count + ViewBag.NFCeCanceladasEvento.Count) <span>registro(s)</span>
+        </strong>
+    </h6>
+</div>
+
+@await Html.PartialAsync("_ProductNotes", new ViewDataDictionary(ViewData))

@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
        
         public IActionResult Import(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            if (SessionManager.GetLoginInSession().Equals(null))
             {
                 return Unauthorized();
             }
@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            if (SessionManager.GetLoginInSession().Equals(null))
             {
                 return Unauthorized();
             }
@@ -113,7 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Icms(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            if (SessionManager.GetLoginInSession().Equals(null))
             {
                 return Unauthorized();
             }
@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sequence(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+            if (SessionManager.GetLoginInSession().Equals(null))
             {
                 return Unauthorized();
             }
@@ -154,5 +154,22 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult CompareCancellation(int id)
+        {
+
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }

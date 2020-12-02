@@ -1,0 +1,47 @@
+﻿<br />
+
+<div>
+    <h4 style="text-align:center;"><b>Produtos</b></h4>
+</div>
+
+<br />
+
+<table class="table" style="width:100%;font-size:11px;">
+    <thead>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;">
+                Produto
+            </th>
+            <th style="border: 1px solid;">
+                Descrição
+            </th>
+            <th style="border: 1px solid;">
+                Valor
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in ViewBag.Produtos)
+        {
+            <tr style="border: 1px solid;">
+                <td style="border: 1px solid;">@produto[0]</td>
+                <td style="border: 1px solid;">@produto[1]</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(produto[2].Replace(".",",")))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;" colspan="2">Total</th>
+            <th style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalProutos))</th>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="col-lg-12">
+    <h6>
+        <strong>
+            @Convert.ToInt16(ViewBag.Produtos.Count) <span>registro(s)</span>
+        </strong>
+    </h6>
+</div>
