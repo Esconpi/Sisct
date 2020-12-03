@@ -18,7 +18,16 @@
         <div style="width:100%; overflow:hidden; padding:20px;">
             <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
             <div style="float:right;">
-                <strong>Periodo:</strong> @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
+                <strong>Periodo:</strong> 
+                @if (ViewBag.Period == "periodo")
+                {
+                    @ViewBag.Inicio <span>à</span> @ViewBag.Fim
+                }
+                else
+                {
+                    <span>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</span>
+                }
+
                 <br />
                 <strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
             </div>
@@ -29,10 +38,12 @@
         <div style="width:100%;font-size:11px; padding:20px;">
             @if (ViewBag.Ordem == "VerificarSefaz" || ViewBag.Ordem == "VerificarEmpresa")
             {
+                <!--Verificação e Remoção de Notas Canceladas-->
                 @await Html.PartialAsync("_CheckNotes", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Ordem == "NotasSefaz" || ViewBag.Ordem == "NotasEmpresa")
             {
+                <!--Compara Notas Canceladas-->
                 @await Html.PartialAsync("_CanceledNotes", new ViewDataDictionary(ViewData))
             }
         </div>

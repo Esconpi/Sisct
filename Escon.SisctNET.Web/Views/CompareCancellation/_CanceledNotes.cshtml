@@ -26,8 +26,8 @@
                 <td style="border: 1px solid;">@note[0]["chave"]</td>
                 <td style="border: 1px solid;">@note[1]["nNF"]</td>
                 <td style="border: 1px solid;">@note[1]["mod"]</td>
-                <td style="border: 1px solid;">@note[1]["dhEmi"]</td>
-                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(note[note.Count - 1]["vNF"]))</td>
+                <td style="border: 1px solid;">@Convert.ToDateTime(note[1]["dhEmi"]).ToString("dd/MM/yyyy")</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(note[note.Count - 1]["vNF"].Replace(".", ",")))</td>
             </tr>
         }
 
@@ -50,7 +50,7 @@
                 <td style="border: 1px solid;">@note[0]["chave"]</td>
                 <td style="border: 1px solid;">@note[1]["nNF"]</td>
                 <td style="border: 1px solid;">@note[1]["mod"]</td>
-                <td style="border: 1px solid;">@note[1]["dhEmi"]</td>
+                <td style="border: 1px solid;">@Convert.ToDateTime(note[1]["dhEmi"]).ToString("dd/MM/yyyy")</td>
                 <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(note[note.Count - 1]["vNF"].Replace(".",",")))</td>
             </tr>
         }
@@ -86,4 +86,5 @@
     </h6>
 </div>
 
+<!--Produtos-->
 @await Html.PartialAsync("_ProductNotes", new ViewDataDictionary(ViewData))

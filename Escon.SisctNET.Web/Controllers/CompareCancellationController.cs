@@ -40,11 +40,17 @@ namespace Escon.SisctNET.Web.Controllers
                 var id = Request.Form["id"];
                 var month = Request.Form["month"];
                 var year = Request.Form["year"];
+                var period = Request.Form["period"];
+                var inicio = Request.Form["inicio"];
+                var fim = Request.Form["fim"];
 
                 var company = _companyService.FindById(Convert.ToInt32(id), null);
 
                 ViewBag.Ordem = ordem.ToString();
                 ViewBag.Comp = company;
+                ViewBag.Period = period;
+                ViewBag.Inicio = inicio;
+                ViewBag.Fim = fim;
 
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
@@ -54,6 +60,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importExcel = new Planilha.Import();
                 var importEvento = new Evento.Import();
                 var importDir = new Diretorio.Import();
+                var importMonth = new Period.Month();
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
 
@@ -70,6 +77,9 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> spedNFeCancelada = new List<List<string>>();
                 List<List<string>> spedNFCeCancelada = new List<List<string>>();
                 List<List<string>> produtos = new List<List<string>>();
+
+                List<string> dirtoriosNFe = new List<string>();
+                List<string> dirtoriosNFCe = new List<string>();
 
                 string caminhoDestinoArquivoOriginalSped = "";
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
@@ -124,11 +134,37 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     directoryNFeCancelada = importDir.NFeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
                     directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
+
+                    if (period.Equals("periodo"))
+                    {
+                        var meses = importMonth.Months(inicio, fim);
+
+                        foreach(var mes in meses)
+                        {
+                            directoryNFeCancelada = importDir.NFeCanceladaSefaz(company, confDBSisctNfe.Value, year, mes);
+                            dirtoriosNFe.Add(directoryNFeCancelada);
+                            directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(company, confDBSisctNfe.Value, year, mes);
+                            dirtoriosNFCe.Add(directoryNFCeCancelada);
+                        }
+                    }
                 }
                 else if(ordem.Equals(Model.OrdemCancellation.NotasEmpresa))
                 {
                     directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
                     directoryNFCeCancelada = importDir.NFCeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
+
+                    if (period.Equals("periodo"))
+                    {
+                        var meses = importMonth.Months(inicio, fim);
+
+                        foreach (var mes in meses)
+                        {
+                            directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
+                            dirtoriosNFe.Add(directoryNFeCancelada);
+                            directoryNFCeCancelada = importDir.NFCeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
+                            dirtoriosNFCe.Add(directoryNFCeCancelada);
+                        }
+                    }
                 }
 
                 if (ordem.Equals(Model.OrdemCancellation.VerificarSefaz))
@@ -147,10 +183,38 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    notesNFeCanceladas = importXml.Nfe(directoryNFeCancelada);
-                    notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                    notesNFCeCanceladas = importXml.Nfe(directoryNFCeCancelada);
-                    notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                    if (period.Equals("periodo"))
+                    {
+                        for(int i = 0; i < dirtoriosNFe.Count(); i++)
+                        {
+                            List<List<Dictionary<string, string>>> notesNFeCanceladasTemp = new List<List<Dictionary<string, string>>>();
+                            List<List<Dictionary<string, string>>> notesNFeCanceladasEventoTemp = new List<List<Dictionary<string, string>>>();
+
+                            notesNFeCanceladasEventoTemp = importEvento.Nfe(dirtoriosNFe[i]);
+                            notesNFeCanceladasEvento.AddRange(notesNFeCanceladasEventoTemp);
+                            notesNFeCanceladasTemp = importXml.Nfe(dirtoriosNFe[i]);
+                            notesNFeCanceladas.AddRange(notesNFeCanceladasTemp);
+                           
+                        }
+
+                        for(int i = 0; i < dirtoriosNFCe.Count(); i++)
+                        {
+                            List<List<Dictionary<string, string>>> notesNFCeCanceladasTemp = new List<List<Dictionary<string, string>>>();
+                            List<List<Dictionary<string, string>>> notesNFCeCanceladasEventoTemp = new List<List<Dictionary<string, string>>>();
+                           
+                            notesNFCeCanceladasTemp = importXml.Nfe(dirtoriosNFCe[i]);
+                            notesNFCeCanceladas.AddRange(notesNFCeCanceladasTemp);
+                            notesNFCeCanceladasEventoTemp = importEvento.Nfe(dirtoriosNFCe[i]);
+                            notesNFCeCanceladasEvento.AddRange(notesNFCeCanceladasEventoTemp);
+                        }
+                    }
+                    else
+                    {
+                        notesNFeCanceladas = importXml.Nfe(directoryNFeCancelada);
+                        notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
+                        notesNFCeCanceladas = importXml.Nfe(directoryNFCeCancelada);
+                        notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                    }
                 }
 
 
@@ -504,6 +568,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 // Produtos
                 ViewBag.Produtos = produtos.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return View();
             }
