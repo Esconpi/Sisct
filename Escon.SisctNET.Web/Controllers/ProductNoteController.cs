@@ -2460,6 +2460,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
                                 {
+                                    // Venda p/ Cliente Credenciado no Art. 781
                                     if (notifi != null)
                                     {
                                         Model.Notification nn = new Notification();

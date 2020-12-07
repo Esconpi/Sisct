@@ -20,22 +20,20 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="font-size:10px;">
         @foreach (var produto in ViewBag.Produtos)
         {
             <tr style="border: 1px solid;">
                 <td style="border: 1px solid;">@produto[0]</td>
                 <td style="border: 1px solid;">@produto[1]</td>
-                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(produto[2].Replace(".",",")))</td>
+                <td style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(produto[2].Replace(".", ",")))</td>
             </tr>
         }
-    </tbody>
-    <tfoot>
         <tr style="border: 1px solid;">
             <th style="border: 1px solid;" colspan="2">Total</th>
             <th style="border: 1px solid; text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalProutos))</th>
         </tr>
-    </tfoot>
+    </tbody>
 </table>
 
 <div class="col-lg-12">

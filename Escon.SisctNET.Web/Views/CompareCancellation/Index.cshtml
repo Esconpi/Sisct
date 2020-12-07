@@ -21,7 +21,7 @@
                 <strong>Periodo:</strong> 
                 @if (ViewBag.Period == "periodo")
                 {
-                    @ViewBag.Inicio <span>à</span> @ViewBag.Fim
+                    @ViewBag.Inicio<span>/</span>@SessionManager.GetYearInSession() <span>à</span> @ViewBag.Fim<span>/</span>@SessionManager.GetYearInSession()
                 }
                 else
                 {

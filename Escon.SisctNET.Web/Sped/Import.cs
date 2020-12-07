@@ -2373,7 +2373,6 @@ namespace Escon.SisctNET.Web.Sped
                             }
                         }
 
-
                     }
                 }
 

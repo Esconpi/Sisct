@@ -37,7 +37,6 @@ namespace Escon.SisctNET.Web.Xml
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
                 foreach (var arquivo in archivesNfes)
                 {
-                    //Task.Factory.StartNew(() => {
                     if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
                     {
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
