@@ -180,6 +180,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 person.Updated = DateTime.Now;
                 person.ProfileId = _person.ProfileId;
+                person.Active = true;
                 _service.Update(person, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", "Home");
             }

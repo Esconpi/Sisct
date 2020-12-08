@@ -554,35 +554,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 _service.Update(tributacoes, null);
-
-                /*rst.Updated = DateTime.Now;
-                var type = Request.Form["type"].ToString();
-
-                if (entity.CstEntradaId.Equals(0))
-                {
-                    rst.CstEntradaId = null;
-                }
-                else
-                {
-                    rst.CstEntradaId = entity.CstEntradaId;
-                }
-                if (entity.CstSaidaId.Equals(0))
-                {
-                    rst.CstSaidaId = null;
-                }
-                else
-                {
-                    rst.CstSaidaId = entity.CstSaidaId;
-                }
-
-                rst.TypeNcmId = entity.TypeNcmId;
-                rst.Status = true;
-                rst.NatReceita = entity.NatReceita;
-                rst.Pis = entity.Pis;
-                rst.Cofins = entity.Cofins;
-                rst.DateStart = entity.DateStart;
-                rst.Type = Request.Form["type"].ToString();
-                _service.Update(rst, GetLog(Model.OccorenceLog.Update));*/
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId});
             }
             catch (Exception ex)
@@ -760,7 +731,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var taxxationNcm = _service.FindByCompany(comp.Document);
 
                 //var ncmsSisct = _service.FindByPeriod(taxxationNcm, inicio, fim);
-                var ncmsSisct = _service.FindByPeriod(taxxationNcm,inicio,fim).Where(_ => _.Type.Equals("Monofásico")).ToList();
+                var ncmsSisct = _service.FindByPeriod(taxxationNcm,inicio,fim)
+                    .Where(_ => _.Type.Equals("Monofásico"))
+                    .ToList();
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
                 var ncmsAll = _ncmService.FindAll(null);

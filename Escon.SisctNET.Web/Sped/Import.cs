@@ -391,7 +391,6 @@ namespace Escon.SisctNET.Web.Sped
                                             if (notes[i][j].ContainsKey("vFrete"))
                                             {
                                                 vFrete = Convert.ToDecimal(notes[i][j]["vFrete"]);
-
                                             }
 
                                             if (notes[i][j].ContainsKey("vDesc"))
