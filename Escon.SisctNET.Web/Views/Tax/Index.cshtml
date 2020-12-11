@@ -62,7 +62,7 @@
         <div style="width:100%; padding:10px;">
             <nr></nr>
 
-            <!-- IMPOSTO ICMS DE EMPRESAS INCENTIVADAS -->
+            <!-- IMPOSTO ICMS DE EMPRESA INCENTIVADA -->
             @if (ViewBag.Comp.Incentive == true)
             {
                 <div style="text-align:center">
@@ -81,12 +81,12 @@
 
                         @if (ViewBag.Comp.TipoApuracao.Equals(true))
                         {
-                            <!-- EMPRESAS INCENTIVO ENTRADA -->
+                            <!-- EMPRESA INCENTIVO ENTRADA -->
                             @await Html.PartialAsync("_InputData", Model, new ViewDataDictionary(ViewData))
                         }
-                        else
+                        else if(ViewBag.Comp.TipoApuracao.Equals(false))
                         {
-                            <!-- EMPRESAS INCENTIVO SAÍDA -->
+                            <!-- EMPRESA INCENTIVO SAÍDA -->
                             @if (ViewBag.Comp.AnnexId != 3)
                             {
                                 @if (ViewBag.Comp.TypeCompany.Equals(true))
@@ -100,6 +100,7 @@
                             }
                             else if (ViewBag.Comp.AnnexId.Equals(3))
                             {
+                                <!-- EMPRESA DE MEDICAMENTO -->
                                 @if (ViewBag.Comp.SectionId.Equals(2))
                                 {
                                     @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
@@ -121,21 +122,21 @@
 
             @if (ViewBag.Comp.CountingTypeId == 1)
             {
-                <!-- EMPRESAS LUCRO REAL -->
+                <!-- EMPRESA LUCRO REAL -->
 
                 @await Html.PartialAsync("_ReceitaDataReal", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataReal", Model, new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Comp.CountingTypeId == 2)
             {
-                <!-- EMPRESAS LUCRO PRESUMIDO -->
+                <!-- EMPRESA LUCRO PRESUMIDO -->
 
                 @await Html.PartialAsync("_ReceitaDataPresumido", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataPresumido", Model, new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Comp.CountingTypeId == 3)
             {
-                <!-- EMPRESAS SIMPLES -->
+                <!-- EMPRESA DO SIMPLES -->
             }
 
         </div>

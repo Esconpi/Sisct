@@ -579,20 +579,23 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (type.Equals("sped"))
                     {
-                        decimal credito = 0;
+                        if (comp.Incentive.Equals(true) && comp.TipoApuracao.Equals(false))
+                        {
+                            decimal credito = 0;
 
-                        foreach (var cc in caminhos)
-                        {
-                            credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST);
-                        }
+                            foreach (var cc in caminhos)
+                            {
+                                credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST);
+                            }
 
-                        if (imp != null)
-                        {
-                            imp.Credito = credito;
-                        }
-                        else
-                        {
-                            tax.Credito = credito;
+                            if (imp != null)
+                            {
+                                imp.Credito = credito;
+                            }
+                            else
+                            {
+                                tax.Credito = credito;
+                            }
                         }
                     }
                     else if (type.Equals("xmlS") || type.Equals("xmlE"))
@@ -600,7 +603,7 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                         List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 
-                        if (comp.TipoApuracao.Equals(true))
+                        if (comp.Incentive.Equals(true) && comp.TipoApuracao.Equals(true))
                         {
                             exitNotes = importXml.Nfe(directoryNfeExit);
                             entryNotes = importXml.Nfe(directoryNfeEntry);
@@ -1510,7 +1513,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         var vendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
                                         var devoGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 2]);
                                         var baseCalcGrupo = (vendaGrupo - devoGrupo);
-                                        if (baseCalcGrupo > limiteGrupo)
+                                        if (baseCalcGrupo > limiteGrupo && vendaGrupo > 0 && limiteGrupo > 0)
                                         {
                                             List<string> grupoExcedente = new List<string>();
                                             var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
@@ -1565,7 +1568,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         var vendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
                                         var devoGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 2]);
                                         var baseCalcGrupo = (vendaGrupo - devoGrupo);
-                                        if (baseCalcGrupo > limiteGrupo)
+                                        if (baseCalcGrupo > limiteGrupo && vendaGrupo > 0 && limiteGrupo > 0)
                                         {
                                             List<string> grupoExcedente = new List<string>();
                                             var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
@@ -1608,7 +1611,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     var vendaGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 1]);
                                     var devoGrupo = Convert.ToDecimal(resumoAllCnpjRaiz[i, 2]);
                                     var baseCalcGrupo = (vendaGrupo - devoGrupo);
-                                    if (baseCalcGrupo > limiteGrupo)
+                                    if (baseCalcGrupo > limiteGrupo && vendaGrupo > 0 && limiteGrupo > 0)
                                     {
                                         List<string> grupoExcedente = new List<string>();
                                         var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
@@ -1633,7 +1636,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                         }
-                        else
+                        else if(comp.Incentive.Equals(true) && comp.TipoApuracao.Equals(false))
                         {
                             if (!comp.AnnexId.Equals(3))
                             {
@@ -3186,36 +3189,48 @@ namespace Escon.SisctNET.Web.Controllers
                     
                     if (type.Equals("sped") && comp.Sped.Equals(true))
                     {
-                        decimal  devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
-
-                        foreach (var cc in caminhos)
+                        if (comp.CountingTypeId.Equals(2))
                         {
-                            var devolucoes = importSped.SpedDevolucao(cc, cfopsDevoCompra, ncmsCompany);
-                            devolucaoPetroleo += devolucoes[0];
-                            devolucaoComercio += devolucoes[1];
-                            devolucaoTransporte += devolucoes[2];
-                            devolucaoServico += devolucoes[3];
-                            devolucaoNormal += devolucoes[4];
+                            // Empresa Lucro Real
                         }
+                        else if (comp.CountingTypeId.Equals(2))
+                        {
+                            // Empresa Lucro Presumido
+
+                            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
+
+                            foreach (var cc in caminhos)
+                            {
+                                var devolucoes = importSped.SpedDevolucao(cc, cfopsDevoCompra, ncmsCompany);
+                                devolucaoPetroleo += devolucoes[0];
+                                devolucaoComercio += devolucoes[1];
+                                devolucaoTransporte += devolucoes[2];
+                                devolucaoServico += devolucoes[3];
+                                devolucaoNormal += devolucoes[4];
+                            }
 
 
-                        if (imp != null)
-                        {
-                            imp.Devolucao1Entrada = devolucaoPetroleo;
-                            imp.Devolucao2Entrada = devolucaoComercio;
-                            imp.Devolucao3Entrada = devolucaoTransporte;
-                            imp.Devolucao4Entrada = devolucaoServico;
-                            imp.DevolucaoNormalEntrada = devolucaoNormal;
+                            if (imp != null)
+                            {
+                                imp.Devolucao1Entrada = devolucaoPetroleo;
+                                imp.Devolucao2Entrada = devolucaoComercio;
+                                imp.Devolucao3Entrada = devolucaoTransporte;
+                                imp.Devolucao4Entrada = devolucaoServico;
+                                imp.DevolucaoNormalEntrada = devolucaoNormal;
+                            }
+                            else
+                            {
+                                tax.Devolucao1Entrada = devolucaoPetroleo;
+                                tax.Devolucao2Entrada = devolucaoComercio;
+                                tax.Devolucao3Entrada = devolucaoTransporte;
+                                tax.Devolucao4Entrada = devolucaoServico;
+                                tax.DevolucaoNormalEntrada = devolucaoNormal;
+                            }
                         }
-                        else
+                        else if (comp.CountingTypeId.Equals(3))
                         {
-                            tax.Devolucao1Entrada = devolucaoPetroleo;
-                            tax.Devolucao2Entrada = devolucaoComercio;
-                            tax.Devolucao3Entrada = devolucaoTransporte;
-                            tax.Devolucao4Entrada = devolucaoServico;
-                            tax.DevolucaoNormalEntrada = devolucaoNormal;
+                            // Empresa do Simples
                         }
-  
 
                     }
                     else if (type.Equals("xmlS") || type.Equals("xmlE"))
@@ -3237,16 +3252,32 @@ namespace Escon.SisctNET.Web.Controllers
                         var ncm3 = ncmsCompany.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
                         var ncm4 = ncmsCompany.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
 
+                        //  Empresa Lucro Real
+                        decimal venda = 0, devolucao = 0;
+
+                        //  Empresa Lucro Presumido
                         decimal receitaComercio = 0, devolucaoComercio = 0, receitaServico = 0, devolucaoServico = 0, receitaPetroleo = 0, devolucaoPetroleo = 0,
                             receitaTransporte = 0, devolucaoTransporte = 0, receitaMono = 0, devolucaoNoraml = 0;
 
+                        //  Empresa do Simples
+
+
+                        //  Importação dos Dados
                         foreach (var c in companies)
                         {
                             List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                             List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
-                            
-                            directoryNfeExit = NfeExit.Value + "\\" + c.Document + "\\" + year + "\\" + month;
-                            directoryNfeEntry = NfeEntry.Value + "\\" + c.Document + "\\" + year + "\\" + month;
+
+                            if (type.Equals("xmlE"))
+                            {
+                                directoryNfeExit = importDir.SaidaEmpresa(c, NfeExit.Value, year, month);
+                            }
+                            else
+                            {
+                                directoryNfeExit = importDir.SaidaSefaz(c, NfeExit.Value, year, month);
+                            }
+
+                            directoryNfeEntry = importDir.Entrada(c, NfeExit.Value, year, month);
 
                             exitNotes = importXml.Nfe(directoryNfeExit);
 
@@ -3257,10 +3288,103 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (comp.CountingTypeId.Equals(1))
                             {
+                                //  Empresa Lucro Real
 
+                                // Receitas
+                                for (int i = exitNotes.Count - 1; i >= 0; i--)
+                                {
+                                    if (!exitNotes[i][2]["CNPJ"].Equals(c.Document))
+                                    {
+                                        exitNotes.RemoveAt(i);
+                                        continue;
+                                    }
+
+                                    if (exitNotes[i][1].ContainsKey("dhEmi"))
+                                    {
+
+                                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsCompany, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
+                                        codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                                        ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                                    }
+
+                                    bool cfop = false;
+
+
+                                    for (int j = 0; j < exitNotes[i].Count; j++)
+                                    {
+                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
+                                        {
+                                            if (exitNotes[i][j].ContainsKey("CFOP"))
+                                            {
+                                                cfop = false;
+                                                var t = exitNotes[i][j]["CFOP"];
+
+                                                if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                    cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                    cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                                {
+                                                    cfop = true;
+                                                }
+
+                                            }
+
+                                            if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
+                                            {
+                                                if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
+                                                {
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    {
+                                                        venda += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    }
+                                                }
+
+                                                if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
+                                                {
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    {
+                                                        venda += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    }
+                                                }
+
+                                                if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
+                                                {
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    {
+                                                        venda -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    }
+                                                }
+
+                                                if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
+                                                {
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    {
+                                                        venda += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    }
+                                                }
+
+                                                if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
+                                                {
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    {
+                                                        venda += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                ViewBag.Erro = 4;
+                                                return View(comp);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             else if (comp.CountingTypeId.Equals(2))
                             {
+
+                                //  Empresa Lucro Presumido
+
                                 // Receitas
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
                                 {
@@ -3433,7 +3557,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                 return View(comp);
                                             }
                                         }
-
 
                                     }
                                 }
@@ -3746,12 +3869,20 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
+                            else if (comp.CountingTypeId.Equals(3))
+                            {
+                                //  Empresa do Simples
+                            }
 
                         }
 
-
                         if (imp != null)
                         {
+                            //  Empresa Lucro Real
+                            imp.Venda = venda;
+                            imp.DevolucaoVenda = devolucao;
+
+                            //  Empresa Lucro Presumido
                             imp.Receita1 = receitaPetroleo;
                             imp.Receita2 = receitaComercio;
                             imp.Receita3 = receitaTransporte;
@@ -3762,9 +3893,16 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.Devolucao3Saida = devolucaoTransporte;
                             imp.Devolucao4Saida = devolucaoServico;
                             imp.DevolucaoNormalSaida = devolucaoNoraml;
+
+                            //  Empresa do Simples
                         }
                         else
                         {
+                            //  Empresa Lucro Real
+                            tax.Venda = venda;
+                            tax.DevolucaoVenda = devolucao;
+
+                            //  Empresa Lucro Presumido
                             tax.Receita1 = receitaPetroleo;
                             tax.Receita2 = receitaComercio;
                             tax.Receita3 = receitaTransporte;
@@ -3775,6 +3913,8 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.Devolucao3Saida = devolucaoTransporte;
                             tax.Devolucao4Saida = devolucaoServico;
                             tax.DevolucaoNormalSaida = devolucaoNoraml;
+
+                            //  Empresa do Simples
                         }
                     }
                 }

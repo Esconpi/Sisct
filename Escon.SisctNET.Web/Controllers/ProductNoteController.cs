@@ -2004,6 +2004,8 @@ namespace Escon.SisctNET.Web.Controllers
                         icmsStnoteSIE += valorNfe1NormalSIE + valorNfe1RetSIE + valorNfe2NormalSIE + valorNfe2RetSIE;
                         icmsStnoteIE += valorNfe1NormalIE + valorNfe1RetIE + valorNfe2NormalIE + valorNfe2RetIE;
 
+                        totalGeralIcmsST = icmsStnoteSIE + icmsStnoteIE;
+
                         decimal gnrePagaIE = 0, gnreNPagaIE = 0, gnrePagaSIE = 0, gnreNPagaSIE = 0;
                         decimal icmsApIE = 0, icmsApSIE = 0;
                         if (typeTaxation.Equals(Model.TypeTaxation.AP))
@@ -2059,6 +2061,9 @@ namespace Escon.SisctNET.Web.Controllers
                         valorDiefIE = Convert.ToDecimal(totalIcmsIE - icmsStnoteIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
                         var valorDiefSIE = Convert.ToDecimal((totalIcmsSIE + totalIcmsFreteIE) - icmsStnoteSIE - gnrePagaSIE + gnreNPagaSIE);
 
+                        ViewBag.IcmsGeralSTIE = icmsStnoteIE;
+                        ViewBag.IcmsGeralSTSIE = icmsStnoteSIE;
+
                         ViewBag.ValorDiefIE = valorDiefIE;
                         ViewBag.ValorDiefSIE = valorDiefSIE;
 
@@ -2067,6 +2072,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         ViewBag.IcmsPagarIE = Math.Round(valorDiefIE - icmsApIE, 2);
                         ViewBag.IcmsPagarSIE = Math.Round(valorDiefSIE - icmsApSIE, 2);
+
+                        ViewBag.TotalICMSST = totalGeralIcmsST;
 
                     }
 
@@ -2604,14 +2611,14 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             decimal totalVendas = Convert.ToDecimal(imp.Vendas), totalNcm = Convert.ToDecimal(imp.VendasNcm), totalTranferencias = Convert.ToDecimal(imp.Transferencia),
-                                 totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoContribuinte = 0,
-                                totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter);
+                                 totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoNContribuinte = Convert.ToDecimal(imp.DevolucaoNContribuinte),
+                                 totalDevoContribuinte = totalDevo - totalDevoNContribuinte, totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), 
+                                 totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter);
 
 
 
                             decimal totalNcontribuinte = Convert.ToDecimal(imp.VendasNContribuinte), baseCalc = totalVendas - totalDevo, totalContribuinte = totalVendas - totalNcontribuinte,
-                            baseCalcContribuinte = totalContribuinte - totalDevoContribuinte, totalDevoNContribuinte = totalDevo - totalDevoContribuinte,
-                            baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte, totalSaida = baseCalc + totalTranferencias;
+                            baseCalcContribuinte = totalContribuinte - totalDevoContribuinte,baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte, totalSaida = baseCalc + totalTranferencias;
 
                             decimal limiteNContribuinte = (baseCalc * (Convert.ToDecimal(comp.VendaCpf))) / 100,
                             limiteNcm = (baseCalc * Convert.ToDecimal(comp.VendaAnexo)) / 100,

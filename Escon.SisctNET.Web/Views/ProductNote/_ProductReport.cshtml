@@ -125,7 +125,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                     <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
                     <td>@Html.DisplayFor(modelItem => item.Picms)</td>
                     <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))</td>
                 </tr>
 

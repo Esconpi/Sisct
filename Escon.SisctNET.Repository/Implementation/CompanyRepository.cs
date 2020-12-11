@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Company> FindByCompanies(string company, Log log = null)
         {
-            var rst = _context.Companies.Where(_ => _.Document.Substring(0, 8).Equals(company.Substring(0, 8))).ToList();
+            var rst = _context.Companies.Where(_ => _.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active).ToList();
             AddLog(log);
             return rst;
         }

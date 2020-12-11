@@ -545,7 +545,6 @@ namespace Escon.SisctNET.Web.Controllers
                     List<string> codeProdMono = new List<string>();
                     List<string> ncmMono = new List<string>();
 
-
                     var ncms = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
 
                     var prodAll = ncms.Select(_ => _.CodeProduct).ToList();
