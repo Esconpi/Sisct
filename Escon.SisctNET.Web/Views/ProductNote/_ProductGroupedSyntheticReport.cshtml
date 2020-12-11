@@ -96,7 +96,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                 <td>@ViewBag.NotasTaxation[i][6]</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][7]))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][14]))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][14]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][20]))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][18]))</td>
             </tr>
         </tbody>

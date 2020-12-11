@@ -74,7 +74,7 @@
                                         <td>@item.Aliqinterna</td>
                                         <td>@item.Picms</td>
                                         <td>@item.Diferencial</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))</td>
                                     </tr>
                                 }

@@ -907,17 +907,12 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<string>> notasAgrup = new List<List<string>>();
                         for (int i = 0; i < notasTaxation.Count; i++)
                         {
-                            List<string> notesAgrup = new List<string>();
-                            notesAgrup.Add(notasTaxation[i].Nnf.ToString());
-                            notesAgrup.Add(notasTaxation[i].Xnome.ToString());
-                            notesAgrup.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
-                            notesAgrup.Add(notasTaxation[i].Vnf.ToString());
                             decimal Vprod = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vprod).Sum() +
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vfrete).Sum() +
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vseg).Sum() +
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Voutro).Sum() -
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum() +
-                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
+                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vfrete).Sum() +
+                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vseg).Sum() +
+                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Voutro).Sum() -
+                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum() +
+                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal Vipi = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal frete = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum());
                             decimal bcTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vbasecalc).Sum());
@@ -935,6 +930,11 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal fecopST = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpST).Sum()) +
                                 Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpSTRet).Sum());
 
+                            List<string> notesAgrup = new List<string>();
+                            notesAgrup.Add(notasTaxation[i].Nnf.ToString());
+                            notesAgrup.Add(notasTaxation[i].Xnome.ToString());
+                            notesAgrup.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
+                            notesAgrup.Add(notasTaxation[i].Vnf.ToString());
                             notesAgrup.Add(Vprod.ToString());
                             notesAgrup.Add(Vipi.ToString());
                             notesAgrup.Add(notasTaxation[i].Nct.ToString());
