@@ -804,13 +804,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                SessionManager.SetCompanyIdInSession(id);
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var calculation = new Calculation();
-
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
                 var notes = _noteService.FindByNotes(id, year, month);
 
@@ -830,27 +827,21 @@ namespace Escon.SisctNET.Web.Controllers
                 var notesS = notes.Where(_ => _.Iest == "");
                 var notesI = notes.Where(_ => _.Iest != "");
 
-                
-
                 var icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                 var icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
 
                 icmsStnoteSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum());
                 icmsStnoteIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum());
 
-                ViewBag.SocialName = comp.SocialName;
-                ViewBag.Document = comp.Document;
-                ViewBag.Year = year;
-                ViewBag.Month = month;
+                ViewBag.Company = comp;
+
+                SessionManager.SetCompanyIdInSession(id);
+                SessionManager.SetMonthInSession(month);
+                SessionManager.SetYearInSession(year);
+
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
 
-                ViewBag.Incetive = comp.Incentive;
-                ViewBag.TypeIncetive = comp.TipoApuracao;
-                ViewBag.TypeCompany = comp.TypeCompany;
-                ViewBag.Anexo = comp.AnnexId;
-                ViewBag.Comp = comp;
-                ViewBag.CompanyId = company.Id;
 
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
 
@@ -3649,6 +3640,9 @@ namespace Escon.SisctNET.Web.Controllers
                             totalApuradoFecop += Math.Round(valorFecop, 2);
                             totalDarFecop += Math.Round(valorFecop, 2);
                             totalDarIcms += Math.Round(saldoDevedor - valorFecop, 2);
+
+                            ViewBag.IcnsAnexo = Math.Round(saldoDevedor - valorFecop, 2);
+                            ViewBag.FecopAnexo = Math.Round(valorFecop, 2);
                         }
                     }
 

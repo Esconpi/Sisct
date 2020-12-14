@@ -2,18 +2,18 @@
 
 @await Html.PartialAsync("_GeneralReportIE", new ViewDataDictionary(ViewData))
 
-@if (ViewBag.Incetive == true && ViewBag.TypeIncetive == true)
+@if (ViewBag.Company.Incentive == true && ViewBag.Company.TipoApuracao == true)
 {
 
     @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
     @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))
 
 }
-else if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false)
+else if (ViewBag.Company.Incentive == true && ViewBag.Company.TipoApuracao == false)
 {
-    @if (ViewBag.Comp.AnnexId != 3)
+    @if (ViewBag.Company.AnnexId != 3)
     {
-        if (ViewBag.TypeCompany == true)
+        if (ViewBag.Company.TypeCompany == true)
         {
             @await Html.PartialAsync("_GeneralProductIncentiveReport", new ViewDataDictionary(ViewData))
         }
@@ -22,9 +22,9 @@ else if (ViewBag.Incetive == true && ViewBag.TypeIncetive == false)
             @await Html.PartialAsync("_GeneralIndustryIncentiveReport", new ViewDataDictionary(ViewData))
         }
     }
-    else if (ViewBag.Comp.AnnexId == 3)
+    else if (ViewBag.Company.AnnexId == 3)
     {
-        if (ViewBag.Comp.SectionId.Equals(2))
+        if (ViewBag.Company.SectionId.Equals(2))
         {
             @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
             @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))

@@ -1,6 +1,6 @@
 ﻿
-<input type="hidden" id="CpfCnpjIE" value="@ViewBag.document" />
-<input type="hidden" id="hddCompanyId" value="@ViewBag.CompanyId" />
+<input type="hidden" id="CpfCnpjIE" value="@ViewBag.Company.Document" />
+<input type="hidden" id="hddCompanyId" value="@SessionManager.GetCompanyIdInSession()" />
 <input type="hidden" id="TypeTaxation" value="@ViewBag.TypeTaxation" />
 
 <!--Total-->

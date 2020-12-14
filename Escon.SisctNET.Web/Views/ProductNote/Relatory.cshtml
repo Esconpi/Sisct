@@ -27,16 +27,16 @@
             </div>
 
             <div style="text-align:center;">
-                <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+                <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
             </div>
 
             @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
 
         </div>
         <div class="form-group col-lg-12 col-md-12 col-xs-12" style="text-align:right;">
-            <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
-            <input type="hidden" value="@(@ViewBag.Year)" id="periodYear" />
-            <input type="hidden" value="@(@ViewBag.Month)" id="periodMonth" />
+            <strong>Periodo: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession() </strong>
+            <input type="hidden" value="@(@SessionManager.GetYearInSession())" id="periodYear" />
+            <input type="hidden" value="@(@SessionManager.GetMonthInSession())" id="periodMonth" />
         </div>
 
     </div>
@@ -111,8 +111,8 @@
                         }
                     }
 
-                    @if (ViewBag.Incetive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Anexo != null &&
-                     ViewBag.Type != "ProdutoFP")
+                    @if (ViewBag.Company.Incentive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Company.AnnexId != null &&
+                    ViewBag.Type != "ProdutoFP")
                     {
                         @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                         {

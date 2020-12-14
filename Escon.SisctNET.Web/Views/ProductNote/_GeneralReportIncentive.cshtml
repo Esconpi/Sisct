@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (ViewBag.Anexo != 3)
+            @if (ViewBag.Company.AnnexId != 3)
             {
                 <tr>
                     <th>
@@ -43,7 +43,7 @@
 </div>
 
 
-    @if (ViewBag.Anexo == 3)
+    @if (ViewBag.Company.AnnexId == 3)
     {
         @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
         
@@ -76,7 +76,7 @@
                 <td style="text-align:right"> @string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
                 <td style="text-align:center">@ViewBag.DarIcms</td>
             </tr>
-            @if (ViewBag.Anexo != 3)
+            @if (ViewBag.Company.AnnexId != 3)
             {
                 <tr>
                     <th style="text-align:center">ICMS Excedente</th>
@@ -84,6 +84,16 @@
                     <td style="text-align:center">@ViewBag.DarIcms</td>
                 </tr>
             }
+
+            @if (ViewBag.Company.AnnexId == 1)
+            {
+                <tr>
+                    <th style="text-align:center">ICMS Anexo</th>
+                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.IcnsAnexo)</td>
+                    <td style="text-align:center">@ViewBag.DarIcms</td>
+                </tr>
+            }
+
             <tr>
                 <th style="text-align:center">Adicional Suspensão</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
@@ -94,6 +104,16 @@
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
                 <td style="text-align:center">@ViewBag.DarFecop</td>
             </tr>
+
+            @if (ViewBag.Company.AnnexId == 1)
+            {
+                <tr>
+                    <th style="text-align:center">Fecop Anexo</th>
+                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.FecopAnexo)</td>
+                    <td style="text-align:center">@ViewBag.DarFecop</td>
+                </tr>
+            }
+
             <tr>
                 <th style="text-align:center">Funef</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef)</td>
