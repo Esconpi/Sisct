@@ -1658,7 +1658,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
                                     var contribuintes = _clientService.FindByContribuinte(companyid, "all");
-                                    var clientesAll = _clientService.FindAll(null).Where(_ => _.CompanyId.Equals(companyid)).Select(_ => _.Document).ToList();
+                                    var clientesAll = _clientService.FindByCompany(companyid).Select(_ => _.Document).ToList();
 
                                     exitNotes = importXml.Nfe(directoryNfeExit);
 

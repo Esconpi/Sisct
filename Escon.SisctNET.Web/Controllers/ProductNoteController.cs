@@ -51,6 +51,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IVendaAnexoService _vendaAnexoService;
         private readonly ICreditBalanceService _creditBalanceService;
         private readonly IConfiguration _configuration;
+        private readonly ITaxProducerService _taxProducerService;
 
         public ProductNote(
             IConfiguration configuration,
@@ -86,6 +87,7 @@ namespace Escon.SisctNET.Web.Controllers
             IDevoFornecedorService devoFornecedorService,
             IVendaAnexoService vendaAnexoService,
             ICreditBalanceService creditBalanceService,
+            ITaxProducerService taxProducerService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
         {
@@ -121,8 +123,8 @@ namespace Escon.SisctNET.Web.Controllers
             _devoFornecedorService = devoFornecedorService;
             _vendaAnexoService = vendaAnexoService;
             _creditBalanceService = creditBalanceService;
-
             _configuration = configuration;
+            _taxProducerService = taxProducerService;
         }
 
         public IActionResult Index(int noteId)
@@ -264,8 +266,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var quantPauta = Request.Form["quantAlterada"];
                 var dateStart = Request.Form["dateStart"];
 
-                decimal valorAgreg = 0, dif = 0;
-                decimal valorFecop = 0;
+                decimal valorAgreg = 0, dif = 0,valorFecop = 0;
+                decimal? bcr = null;
 
                 var notes = _noteService.FindByUf(prod.Note.Company.Id, prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
 
@@ -303,11 +305,21 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseCalc = 0;
                     decimal valorIcms =calculation.valorIcms(prod.IcmsCTe, prod.Vicms);
 
+                    decimal Vbasecalc = Convert.ToDecimal(prod.Vprod) + Convert.ToDecimal(prod.Vfrete) + Convert.ToDecimal(prod.Vseg) +
+                                                Convert.ToDecimal(prod.Voutro) - Convert.ToDecimal(prod.Vdesc) + Convert.ToDecimal(prod.Vipi) +
+                                                Convert.ToDecimal(prod.Freterateado);
+
+
                     if (taxedtype.Type == "ST")
                     {
+                        if (bcrForm != null)
+                        {
+                            bcr = Convert.ToDecimal(bcrForm);
+                        }
+
                         decimal totalIcmsPauta = 0;
                         decimal totalIcms = 0;
-                        baseCalc = calculation.baseCalc(prod.Vbasecalc, prod.Vdesc);
+                        baseCalc = calculation.baseCalc(Vbasecalc, prod.Vdesc);
                         decimal quantParaCalc = 0;
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
                         if (quantPauta != "")
@@ -466,11 +478,19 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         decimal baseCalc = 0;
                         decimal valorIcms = calculation.valorIcms(prod.IcmsCTe, prod.Vicms);
+                        decimal Vbasecalc = Convert.ToDecimal(prod.Vprod) + Convert.ToDecimal(prod.Vfrete) + Convert.ToDecimal(prod.Vseg) +
+                                                Convert.ToDecimal(prod.Voutro) - Convert.ToDecimal(prod.Vdesc) + Convert.ToDecimal(prod.Vipi) +
+                                                Convert.ToDecimal(prod.Freterateado);
 
                         if (taxedtype.Type == "ST")
                         {
+                            if (bcrForm != null)
+                            {
+                                bcr = Convert.ToDecimal(bcrForm);
+                            }
+
                             decimal totalIcms = 0;
-                            baseCalc = calculation.baseCalc(prod.Vbasecalc, prod.Vdesc);
+                            baseCalc = calculation.baseCalc(Vbasecalc, prod.Vdesc);
 
                             if (mva != null)
                             {
@@ -523,7 +543,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.diferencialAliq(AliqInt, prod.Picms);
                             prod.Aliqinterna = AliqInt;
-                            baseCalc = prod.Vbasecalc;
+                            baseCalc = Vbasecalc;
                             if (prod.Picms != 4)
                             {
                                 var aliqSimples = _stateService.FindByUf(prod.Note.Uf);
@@ -544,6 +564,19 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.IcmsApurado = icmsApu;
                         }
                         else if (taxedtype.Type == "Isento")
+                        {
+                            prod.Mva = null;
+                            prod.Valoragregado = null;
+                            prod.ValorBCR = null;
+                            prod.BCR = null;
+                            prod.Fecop = null;
+                            prod.TotalFecop = null;
+                            prod.ValorAC = null;
+                            prod.TotalICMS = null;
+                            prod.Diferencial = null;
+                            prod.IcmsApurado = null;
+                        }
+                        else if (taxedtype.Type == "NT")
                         {
                             prod.Mva = null;
                             prod.Valoragregado = null;
@@ -582,12 +615,19 @@ namespace Escon.SisctNET.Web.Controllers
                         foreach (var item in products)
                         {
                             decimal baseCalc = 0;
-                            decimal valorIcms = calculation.valorIcms(prod.IcmsCTe, prod.Vicms);
-
+                            decimal valorIcms = calculation.valorIcms(item.IcmsCTe, item.Vicms);
+                            decimal Vbasecalc = Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vfrete) + Convert.ToDecimal(item.Vseg) +
+                                                Convert.ToDecimal(item.Voutro) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi) +
+                                                Convert.ToDecimal(item.Freterateado);
                             if (taxedtype.Type == "ST")
                             {
+                                if (bcrForm != null)
+                                {
+                                    bcr = Convert.ToDecimal(bcrForm);
+                                }
+
                                 decimal totalIcms = 0;
-                                baseCalc = calculation.baseCalc(prod.Vbasecalc, prod.Vdesc);
+                                baseCalc = calculation.baseCalc(Vbasecalc, item.Vdesc);
 
                                 if (mva != null)
                                 {
@@ -635,12 +675,12 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else if (taxedtype.Type == "Normal")
                             {
-                                dif = calculation.diferencialAliq(AliqInt, prod.Picms);
+                                dif = calculation.diferencialAliq(AliqInt, item.Picms);
                                 item.Aliqinterna = AliqInt;
-                                baseCalc = item.Vbasecalc;
+                                baseCalc = Vbasecalc;
                                 if (item.Picms != 4)
                                 {
-                                    var aliq_simples = _stateService.FindByUf(prod.Note.Uf);
+                                    var aliq_simples = _stateService.FindByUf(item.Note.Uf);
                                     dif = calculation.diferencialAliq(AliqInt, aliq_simples.Aliquota);
                                     item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
                                 }
@@ -658,6 +698,19 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.TotalICMS = null;
                             }
                             else if (taxedtype.Type == "Isento")
+                            {
+                                item.Mva = null;
+                                item.Valoragregado = null;
+                                item.ValorBCR = null;
+                                item.BCR = null;
+                                item.Fecop = null;
+                                item.TotalFecop = null;
+                                item.ValorAC = null;
+                                item.TotalICMS = null;
+                                item.Diferencial = null;
+                                item.IcmsApurado = null;
+                            }
+                            else if (taxedtype.Type == "NT")
                             {
                                 item.Mva = null;
                                 item.Valoragregado = null;
@@ -699,12 +752,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
-                    decimal? bcr = null;
-                    if (bcrForm != null)
-                    {
-                        bcr = Convert.ToDecimal(bcrForm);
-                    }
-
+                    
                     var ncm = _ncmService.FindByCode(prod.Ncm);
 
                     if (prod.Picms != 4)
@@ -856,6 +904,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _taxService.FindByMonth(id, month, year);
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
+                var impProdutor = _taxProducerService.FindByTaxs(id, month, year);
 
                 var importMes = new Period.Month();
 
@@ -906,7 +955,7 @@ namespace Escon.SisctNET.Web.Controllers
                                products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal Vipi = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum());
                             decimal frete = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum());
-                            decimal bcTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vbasecalc).Sum());
+                            decimal vDesc = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum());
                             decimal bcIcms = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Valoragregado).Sum());
                             decimal bcr = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.ValorBCR).Sum());
                             decimal vAC = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.ValorAC).Sum());
@@ -930,7 +979,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notesAgrup.Add(Vipi.ToString());
                             notesAgrup.Add(notasTaxation[i].Nct.ToString());
                             notesAgrup.Add(frete.ToString());
-                            notesAgrup.Add(bcTotal.ToString());
+                            notesAgrup.Add(vDesc.ToString());
                             notesAgrup.Add(bcIcms.ToString());
                             notesAgrup.Add(bcr.ToString());
                             notesAgrup.Add(vAC.ToString());
@@ -955,14 +1004,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Notes = notes;
 
-                    decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() +
-                        products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() +
-                        products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
-
                     ViewBag.ValorProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vseg).Sum()
                         - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() + products.Select(_ => _.Vipi).Sum());
 
-                    ViewBag.TotalBC = baseCalculo;
 
                     ViewBag.TotalNotas = total;
 
@@ -990,10 +1034,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
-                        ViewBag.DarSTCO_Substituicao = 1;
-                        ViewBag.DarFecop_Substituicao = 0;
-                        ViewBag.DarIcms_Substituicao = 0;
-                        ViewBag.DarFunef_Substituicao = 0;
+                        decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() +
+                                                products.Select(_ => _.Vseg).Sum() + products.Select(_ => _.Vfrete).Sum() +
+                                                products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
+
+                        ViewBag.TotalBC = baseCalculo;
 
                         decimal totalIcmsFreteIE = 0, totalFecop1FreteIE = 0, totalFecop2FreteIE = 0, base1FecopFreteIE = 0, base2FecopFreteIE = 0,
                             totalDarSTCO = 0, totalDarFecop = 0, totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
@@ -1501,7 +1546,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 freterateado = Convert.ToDecimal(productsNormal.Select(_ => _.Freterateado).Sum());
 
                                 totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vprod).Sum() + productsNormal.Select(_ => _.Voutro).Sum() +
-                                                productsNormal.Select(_ => _.Vseg).Sum() - productsNormal.Select(_ => _.Vdesc).Sum() + productsNormal.Select(_ => _.Vfrete).Sum() +
+                                                productsNormal.Select(_ => _.Vseg).Sum() + productsNormal.Select(_ => _.Vfrete).Sum() +
                                                 productsNormal.Select(_ => _.Freterateado).Sum() + productsNormal.Select(_ => _.Vipi).Sum());
                                 //totalBc = Convert.ToDecimal(productsNormal.Select(_ => _.Vbasecalc).Sum());
                                 totalIpi = Convert.ToDecimal(productsNormal.Select(_ => _.Vipi).Sum());
@@ -1528,7 +1573,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() + productsNormal.Select(_ => _.Vipi).Sum());
                                 freterateado = Convert.ToDecimal(productsP.Select(_ => _.Freterateado).Sum());
                                 totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum() + productsP.Select(_ => _.Voutro).Sum() +
-                                                productsP.Select(_ => _.Vseg).Sum() - productsP.Select(_ => _.Vdesc).Sum() + productsP.Select(_ => _.Vfrete).Sum() +
+                                                productsP.Select(_ => _.Vseg).Sum() + productsP.Select(_ => _.Vfrete).Sum() +
                                                 productsP.Select(_ => _.Freterateado).Sum() + productsP.Select(_ => _.Vipi).Sum());
 
                                 //totalBc = Convert.ToDecimal(productsP.Select(_ => _.Vbasecalc).Sum());
@@ -1964,9 +2009,11 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (typeTaxation.Equals(Model.TypeTaxation.AP) || typeTaxation.Equals(Model.TypeTaxation.CO) ||
                             typeTaxation.Equals(Model.TypeTaxation.COR) || typeTaxation.Equals(Model.TypeTaxation.IM))
                     {
-                        ViewBag.DarAp_Substituicao = 0;
-                        ViewBag.DarIm_Substituicao = 0;
-                        ViewBag.DarSTCO_Substituicao = 0;
+                        decimal baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() +
+                                                products.Select(_ => _.Vseg).Sum() - products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vfrete).Sum() +
+                                                products.Select(_ => _.Freterateado).Sum() + products.Select(_ => _.Vipi).Sum());
+
+                        ViewBag.TotalBC = baseCalculo;
 
                         decimal totalIcmsFreteIE = 0;
                         foreach (var prod in products)
@@ -3805,7 +3852,22 @@ namespace Escon.SisctNET.Web.Controllers
                         .Where(_ => !_.TaxationType.Type.Equals("ST") && _.Incentivo.Equals(false))
                         .ToList();
                 }
+                else if (type.Equals(Model.Type.IcmsProdutor))
+                {
+                    if(impProdutor.Count() == 0 || impProdutor == null)
+                    {
+                        ViewBag.Erro = 3;
+                        return View(null);
+                    }
 
+                    var icms = impProdutor.Sum(_ => _.Icms);
+                    var vNF = impProdutor.Sum(_ => _.Vnf);
+                    var baseCalc = impProdutor.Sum(_ => _.Vbasecalc);
+                    ViewBag.Notas = impProdutor;
+                    ViewBag.Vnf = vNF;
+                    ViewBag.BaseCalc = baseCalc;
+                    ViewBag.Icms = icms;
+                }
                 ViewBag.IcmsStNoteS = icmsStnoteSIE;
                 ViewBag.IcmsStNoteI = icmsStnoteIE;
 

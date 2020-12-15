@@ -228,6 +228,24 @@ namespace Escon.SisctNET.Web.Controllers
             return File(fileBytes, contentType, fileName);
         }
 
+        public IActionResult Icms(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null))
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return PartialView(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+
+        }
+
         [HttpGet]
         public IActionResult Taxation(int id)
         {

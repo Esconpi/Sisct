@@ -18,8 +18,12 @@
     <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
 }
 
+@if (ViewBag.Type == "IcmsProdutor")
+{
+    <strong>Icms Produtor Rural</strong>
+}
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI")
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {

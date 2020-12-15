@@ -54,13 +54,18 @@
             {
                 <p style="text-align:center;color:red;"><strong>Os dados para calcular Anexo não foram importados</strong></p>
             }
+            else if (ViewBag.Erro == 3)
+            {
+                <p style="text-align:center;color:red;"><strong>Os dados para calcular Imcs Produtor Rural não foram importados</strong></p>
+            }
             else
             {
+
                 @if (ViewBag.Type == "Geral")
                 {
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" || ViewBag.Type == "ProdutoFP")
+                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" || ViewBag.Type == "ProdutoFP" || ViewBag.Type == "IcmsProdutor")
                 {
                     <table class="table" style="font-size:8px; border: 2px solid;">
                         @if (ViewBag.Type == "GNRE")
@@ -79,12 +84,16 @@
                         {
                             @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
                         }
+                        else if (ViewBag.Type == "IcmsProdutor")
+                        {
+                            @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
+                        }
                     </table>
                 }
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota"
-                    || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
+                   || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
@@ -112,7 +121,7 @@
                     }
 
                     @if (ViewBag.Company.Incentive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Company.AnnexId != null &&
-                    ViewBag.Type != "ProdutoFP")
+                   ViewBag.Type != "ProdutoFP")
                     {
                         @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                         {

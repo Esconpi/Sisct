@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.TaxProducer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+
+        <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong> Dados ICMS Produtor Rural</strong></h3>
+        <div class="btn-group pull-right">
+            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+        </div>
+
+        <div style="width:100%; text-align:center;padding-top:10px;">
+            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+        </div>
+
+        <div style="width:100%; text-align:right; padding-right:1%;">
+            <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
+        </div>
+
+    </div>
+    <div class="box-body">
+
+        <div style="width:100%; padding:20px;">
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Dhemi)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nnf)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cnpj)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Xnome)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Dhemi)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.Nnf)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.Cnpj)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.Xnome)</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+

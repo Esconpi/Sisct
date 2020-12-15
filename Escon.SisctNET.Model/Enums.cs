@@ -48,7 +48,8 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Agrupado - Sintético")] AgrupadoS = 8,
         [Display(Name = "Resumo Geral")] Geral = 9,
         [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 10,
-        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 11
+        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 11,
+        [Display(Name = "Icms Produto Rural")] IcmsProdutor = 12
     }
 
     public enum Opcao

@@ -343,9 +343,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : 0;
                             decimal freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0;
                             decimal frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : 0;
-                            decimal baseDeCalc = det.ContainsKey("baseCalc") ? Convert.ToDecimal(det["baseCalc"]) : 0;
 
-                            //var productImport = _itemService.FindByProduct(nota.Id, nItem);
                             var productImport = produtos.Where(_ => _.Nitem.Equals(nItem)).FirstOrDefault();
 
                             if (productImport == null)
@@ -376,6 +374,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 Model.ProductNote prod = new Model.ProductNote();
+
+                                decimal baseDeCalc = Convert.ToDecimal(det["vProd"]) + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;
 
                                 if (taxed == null)
                                 {
@@ -439,7 +439,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     
                                     if (taxedtype.Type == "ST")
                                     {
-                                        baseCalc = calculation.baseCalc(Convert.ToDecimal(det["baseCalc"]), vDesc);
+                                        baseCalc = calculation.baseCalc(baseDeCalc, vDesc);
 
                                         if (taxed.MVA != null)
                                         {
@@ -477,7 +477,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
 
                                         var aliq_simples = _stateService.FindByUf(notes[i][2]["UF"]);
-                                        baseCalc = Convert.ToDecimal(det["baseCalc"]);
+                                        baseCalc = baseDeCalc;
                                         if (number != "4.00")
                                         {
                                             pICMS = aliq_simples.Aliquota;

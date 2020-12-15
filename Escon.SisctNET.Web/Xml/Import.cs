@@ -729,6 +729,83 @@ namespace Escon.SisctNET.Web.Xml
             return dets;
         }
 
+        public List<Dictionary<string, string>> Provider(string directoryNfe)
+        {
+            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            bool status = false;
+
+                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+
+                                            for (int e = 0; e < dets.Count(); e++)
+                                            {
+                                                if (dets[e].ContainsKey("CNPJ"))
+                                                {
+                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                            if (dets.Count() == 0 || status == false)
+                                            {
+                                                dets.Add(dest);
+                                            }
+
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return dets;
+        }
+
         public List<List<Dictionary<string, string>>> NotesRelatoryIcms(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();

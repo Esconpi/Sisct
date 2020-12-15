@@ -38,7 +38,7 @@
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]))</td>
                 <td>@ViewBag.NotasTaxation[i][6]</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][7]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][7]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][9]))</td>
                 @if (ViewBag.TypeTaxation == "ST")
                 {
@@ -95,7 +95,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]))</td>
                 <td>@ViewBag.NotasTaxation[i][6]</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][7]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][7]))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][14]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][20]))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][18]))</td>
             </tr>
