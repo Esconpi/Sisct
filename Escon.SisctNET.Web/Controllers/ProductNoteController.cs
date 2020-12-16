@@ -859,6 +859,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var notes = _noteService.FindByNotes(id, year, month);
 
+                var prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
+
                 var products = _service.FindByProductsType(notes, typeTaxation)
                     .OrderBy(_ => _.Note.Iest)
                     .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
@@ -893,15 +895,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
 
-                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                var NfeEntrada = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
-
-                var importXnl = new Xml.Import(_companyCfopService);
-                var importSped = new Sped.Import(_companyCfopService);
-
-                string directoryNfeExit = NfeExit.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-                string directoryNfeEntrada = NfeEntrada.Value + "\\" + comp.Document + "\\" + year + "\\" + month;
-
                 var imp = _taxService.FindByMonth(id, month, year);
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
                 var impProdutor = _taxProducerService.FindByTaxs(id, month, year);
@@ -911,6 +904,12 @@ namespace Escon.SisctNET.Web.Controllers
                 if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.AgrupadoA) ||
                     type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
                 {
+
+                    if(prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                    {
+                        ViewBag.Erro = 4;
+                        return View(null);
+                    }
 
                     if (type.Equals(Model.Type.Nota))
                     {
@@ -2124,11 +2123,18 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals(Model.Type.Geral))
                 {
+                    if (prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                    {
+                        ViewBag.Erro = 4;
+                        return View(null);
+                    }
+
                     decimal totalApuradoST = 0, totalApuradoCO = 0, totalApuradoFecop = 0, totalApuradoAP = 0, totalApuradoIM = 0,
                         totalRecolhidoST = 0, totalRecolhidoAP = 0, totalRecolhidoCO = 0, totalRecolhidoFecop = 0, totalRecolhidoIM = 0,
                         totalDarST = 0, totalDarFecop = 0, totalDarAp = 0, totalDarIm = 0, totalDarCO = 0,
                         totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
-                    products = _service.FindByProducts(notes);
+
+                    products = prodsAll;
 
                     // Substituição Tributária
 
@@ -3868,6 +3874,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalc = baseCalc;
                     ViewBag.Icms = icms;
                 }
+                
                 ViewBag.IcmsStNoteS = icmsStnoteSIE;
                 ViewBag.IcmsStNoteI = icmsStnoteIE;
 

@@ -62,6 +62,11 @@ namespace Escon.SisctNET.Web.Planilha
                                 }
                             }
 
+                            if(product.Count() < 4)
+                            {
+                                throw new Exception();
+                            }
+
                             products.Add(product);
 
                         }
@@ -70,16 +75,20 @@ namespace Escon.SisctNET.Web.Planilha
                 }
                 catch (Exception ex)
                 {
-                    Console.Out.WriteLine(ex.Message);
+                    throw new IndexOutOfRangeException();
                 }
                 finally
                 {
                     doc.Close();
                 }
             }
+            catch(IndexOutOfRangeException ex)
+            {
+                throw new IndexOutOfRangeException("Arquivo Excel tem linha com menos de 4 colunas", ex);
+            }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
             }
 
             return products;
@@ -163,7 +172,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
             }
            
             return notes;
@@ -261,7 +270,7 @@ namespace Escon.SisctNET.Web.Planilha
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Arquvivo Excel Corrompido", ex);
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
             }
            
             return ncms;
