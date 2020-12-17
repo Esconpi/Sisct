@@ -14,7 +14,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Cliente")]
         public string Name { get; set; }
 
-        [Display(Name = "CNPJ")]
+        [Display(Name = "CNPJ/CPF")]
         public string Document { get; set; }
 
         [Display(Name = "CNPJ Raiz")]

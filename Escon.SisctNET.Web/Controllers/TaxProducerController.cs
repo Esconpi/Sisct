@@ -44,7 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
                 ViewBag.Comp = comp;
-                var rst = _service.FindByTaxs(id, month, year);
+                var rst = _service.FindByTaxs(id, month, year).OrderBy(_ => Convert.ToInt32(_.Nnf)).ToList();
 
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetMonthInSession(month);
@@ -144,6 +144,56 @@ namespace Escon.SisctNET.Web.Controllers
                         return View(comp);
                     }
 
+                    if (exitNotes[i][2].ContainsKey("CPF"))
+                    {
+                        if (!clientesAll.Contains(exitNotes[i][2]["CPF"]) && !providersAll.Contains(exitNotes[i][2]["CPF"]))
+                        {
+                            ViewBag.Error = 2;
+                            return View(comp);
+                        }
+
+                        if (clientesProdutor.Contains(exitNotes[i][2]["CPF"]) || providersProdutor.Contains(exitNotes[i][2]["CPF"]))
+                        {
+                            var clientTemp = clientes.Where(_ => _.Document.Equals(exitNotes[i][2]["CPF"])).FirstOrDefault();
+                            var providerTemp = providers.Where(_ => _.Document.Equals(exitNotes[i][2]["CPF"])).FirstOrDefault();
+
+                            decimal percentualIcms = 0, baseCalc = 0;
+
+                            if (clientTemp != null)
+                            {
+                                percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
+                            }
+
+                            if (providerTemp != null)
+                            {
+                                percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
+                            }
+
+                            if (Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]) == 0)
+                            {
+                                baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
+                            }
+                            else
+                            {
+                                baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
+                            }
+
+                            decimal icms = baseCalc * percentualIcms / 100;
+
+                            List<string> nota = new List<string>();
+                            nota.Add(exitNotes[i][0]["chave"]);
+                            nota.Add(exitNotes[i][1]["nNF"]);
+                            nota.Add(exitNotes[i][1]["dhEmi"]);
+                            nota.Add(exitNotes[i][2]["CPF"]);
+                            nota.Add(exitNotes[i][2]["xNome"]);
+                            nota.Add(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
+                            nota.Add(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
+                            nota.Add(percentualIcms.ToString());
+                            nota.Add(icms.ToString());
+                            notesProdutor.Add(nota);
+                        }
+                    }
+
                     if (clientesProdutor.Contains(entryNotes[i][2]["CNPJ"]) || providersProdutor.Contains(entryNotes[i][2]["CNPJ"]))
                     {
                         var clientTemp = clientes.Where(_ => _.Document.Equals(entryNotes[i][2]["CNPJ"])).FirstOrDefault();
@@ -194,6 +244,56 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         exitNotes.RemoveAt(i);
                         continue;
+                    }
+
+                    if (exitNotes[i][3].ContainsKey("CPF"))
+                    {
+                        if (!clientesAll.Contains(exitNotes[i][3]["CPF"]) && !providersAll.Contains(exitNotes[i][3]["CPF"]))
+                        {
+                            ViewBag.Error = 2;
+                            return View(comp);
+                        }
+
+                        if (clientesProdutor.Contains(exitNotes[i][3]["CPF"]) || providersProdutor.Contains(exitNotes[i][3]["CPF"]))
+                        {
+                            var clientTemp = clientes.Where(_ => _.Document.Equals(exitNotes[i][3]["CPF"])).FirstOrDefault();
+                            var providerTemp = providers.Where(_ => _.Document.Equals(exitNotes[i][3]["CPF"])).FirstOrDefault();
+
+                            decimal percentualIcms = 0, baseCalc = 0;
+
+                            if (clientTemp != null)
+                            {
+                                percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
+                            }
+
+                            if (providerTemp != null)
+                            {
+                                percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
+                            }
+
+                            if (Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]) == 0)
+                            {
+                                baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
+                            }
+                            else
+                            {
+                                baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
+                            }
+
+                            decimal icms = baseCalc * percentualIcms / 100;
+
+                            List<string> nota = new List<string>();
+                            nota.Add(exitNotes[i][0]["chave"]);
+                            nota.Add(exitNotes[i][1]["nNF"]);
+                            nota.Add(exitNotes[i][1]["dhEmi"]);
+                            nota.Add(exitNotes[i][3]["CPF"]);
+                            nota.Add(exitNotes[i][3]["xNome"]);
+                            nota.Add(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
+                            nota.Add(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
+                            nota.Add(percentualIcms.ToString());
+                            nota.Add(icms.ToString());
+                            notesProdutor.Add(nota);
+                        }
                     }
 
                     if (exitNotes[i][3].ContainsKey("CNPJ"))

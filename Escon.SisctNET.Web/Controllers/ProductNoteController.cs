@@ -3869,7 +3869,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var icms = impProdutor.Sum(_ => _.Icms);
                     var vNF = impProdutor.Sum(_ => _.Vnf);
                     var baseCalc = impProdutor.Sum(_ => _.Vbasecalc);
-                    ViewBag.Notas = impProdutor;
+                    ViewBag.Notas = impProdutor.OrderBy(_ => Convert.ToInt32(_.Nnf));
                     ViewBag.Vnf = vNF;
                     ViewBag.BaseCalc = baseCalc;
                     ViewBag.Icms = icms;

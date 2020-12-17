@@ -41,6 +41,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Xnome)
                         </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vnf)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Vbasecalc)
+                        </th>
 
                         <th></th>
                     </tr>
@@ -57,6 +63,10 @@
                             <td>@Html.DisplayFor(modelItem => item.Cnpj)</td>
 
                             <td>@Html.DisplayFor(modelItem => item.Xnome)</td>
+
+                            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", item.Vnf)</td>
+
+                            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", item.Vbasecalc)</td>
                         </tr>
                     }
                 </tbody>

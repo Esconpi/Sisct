@@ -692,12 +692,22 @@ namespace Escon.SisctNET.Web.Xml
                                             bool status = false;
 
                                             string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
 
                                             for (int e = 0; e < dets.Count(); e++)
                                             {
                                                 if (dets[e].ContainsKey("CNPJ"))
                                                 {
                                                     if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (dets[e].ContainsKey("CPF"))
+                                                {
+                                                    if (dets[e]["CPF"].Equals(CPF))
                                                     {
                                                         status = true;
                                                         break;
@@ -769,12 +779,22 @@ namespace Escon.SisctNET.Web.Xml
                                             bool status = false;
 
                                             string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
 
                                             for (int e = 0; e < dets.Count(); e++)
                                             {
                                                 if (dets[e].ContainsKey("CNPJ"))
                                                 {
                                                     if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (dets[e].ContainsKey("CPF"))
+                                                {
+                                                    if (dets[e]["CPF"].Equals(CPF))
                                                     {
                                                         status = true;
                                                         break;

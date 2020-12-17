@@ -15,12 +15,14 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
         private readonly ITypeClientService _typeClientService;
+        private readonly IProviderService _providerService;
 
         public ClientController(
             IClientService service,
             ICompanyService companyService,
             IConfigurationService  configurationService,
             ITypeClientService typeClientService,
+            IProviderService providerService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Client")
@@ -30,6 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             _companyService = companyService;
             _configurationService = configurationService;
             _typeClientService = typeClientService;
+            _providerService = providerService;
         }
 
         [HttpGet]
@@ -73,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id,string year,string month, string type)
+        public IActionResult Atualize(int id,string year,string month, string type) 
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
             {
@@ -112,20 +115,53 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.Client> addClientes = new List<Model.Client>();
 
                 var clientesAll = _service.FindByCompany(id);
+                var providersAll = _providerService.FindByCompany(id);
 
                 foreach (var det in dets)
                 {
-                    
+                    if (det.ContainsKey("CPF"))
+                    {
+                        string CPF = det["CPF"];
+                        string IE = det.ContainsKey("IE") ? det["IE"] : "";
+
+                        if (!CPF.Equals("escon") || !CPF.Equals(""))
+                        {
+                            var existClient = clientesAll.Where(_ => _.Document.Equals(CPF)).FirstOrDefault();
+                            var existProvider = providersAll.Where(_ => _.Document.Equals(CPF)).FirstOrDefault();
+                            
+
+                            if (existClient == null && existProvider == null)
+                            {
+                                tipoCliente = 2;
+
+                                Model.Client client = new Model.Client();
+                                client.Name = det["xNome"];
+                                client.CompanyId = id;
+                                client.Document = CPF;
+                                client.CnpjRaiz = CPF;
+                                client.Ie = IE;
+                                client.TypeClientId = tipoCliente;
+                                client.MesRef = month;
+                                client.AnoRef = year;
+                                client.Created = DateTime.Now;
+                                client.Updated = DateTime.Now;
+
+                                addClientes.Add(client);
+                            }
+                        }
+                    }
+
                     if (det.ContainsKey("CNPJ"))
                     {
                         string CNPJ = det["CNPJ"];
-                        string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "";
                         string IE = det.ContainsKey("IE") ? det["IE"] : "";
+
                         if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
-                            var existCnpj = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
+                            var existClient = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
+                            var existProvider = providersAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
 
-                            if (existCnpj == null)
+                            if (existClient == null && existProvider == null)
                             {
                                 tipoCliente = 1;
 
@@ -157,7 +193,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                  
+
                 }
 
                 _service.Create(addClientes);

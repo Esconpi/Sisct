@@ -14,12 +14,14 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
         private readonly ITypeClientService _typeClientService;
+        private readonly IClientService _clientService;
 
         public ProviderController(
             IProviderService service,
             ICompanyService companyService,
             IConfigurationService configurationService,
             ITypeClientService typeClientService,
+            IClientService clientService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Client")
@@ -28,6 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             _companyService = companyService;
             _configurationService = configurationService;
             _typeClientService = typeClientService;
+            _clientService = clientService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -102,20 +105,64 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.Provider> addProviders = new List<Model.Provider>();
 
                 var providersAll = _service.FindByCompany(id);
+                var clientesAll = _clientService.FindByCompany(id);
 
                 foreach (var det in dets)
                 {
+                    if (det.ContainsKey("CPF"))
+                    {
+                        string CPF = det["CPF"];
+                        string IE = det.ContainsKey("IE") ? det["IE"] : "";
+
+                        if (!CPF.Equals("escon") || !CPF.Equals(""))
+                        {
+                            var existProvider = providersAll.Where(_ => _.Document.Equals(CPF)).FirstOrDefault();
+                            var existClient = clientesAll.Where(_ => _.Document.Equals(CPF)).FirstOrDefault();
+
+                            if (existProvider == null && existClient == null)
+                            {
+                                tipoCliente = 1;
+
+                                if (Convert.ToInt32(comp.AnnexId).Equals(3))
+                                {
+                                    tipoCliente = 2;
+                                }
+
+                                if (IE.Equals(""))
+                                {
+                                    tipoCliente = 2;
+                                }
+
+
+                                Model.Provider provider = new Model.Provider();
+                                provider.Name = det["xNome"];
+                                provider.CompanyId = id;
+                                provider.Document = CPF;
+                                provider.CnpjRaiz = CPF;
+                                provider.Ie = IE;
+                                provider.TypeClientId = tipoCliente;
+                                provider.MesRef = month;
+                                provider.AnoRef = year;
+                                provider.Created = DateTime.Now;
+                                provider.Updated = DateTime.Now;
+
+                                addProviders.Add(provider);
+                            }
+                        }
+                    }
 
                     if (det.ContainsKey("CNPJ"))
                     {
                         string CNPJ = det["CNPJ"];
-                        string indIEDest = det.ContainsKey("indIEDest") ? det["indIEDest"] : "";
                         string IE = det.ContainsKey("IE") ? det["IE"] : "";
+
                         if (!CNPJ.Equals("escon") || !CNPJ.Equals(""))
                         {
-                            var existCnpj = providersAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
+                            var existProvider = providersAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
+                            var existClient = clientesAll.Where(_ => _.Document.Equals(CNPJ)).FirstOrDefault();
+                            
 
-                            if (existCnpj == null)
+                            if (existProvider == null && existClient == null)
                             {
                                 tipoCliente = 1;
 
