@@ -988,7 +988,7 @@ namespace Escon.SisctNET.Web.Xml
             return ncms;
         }
 
-        public List<List<Dictionary<string, string>>> NfeExit(string directoryNfe, List<string> cfops)
+        public List<List<Dictionary<string, string>>> Nfe(string directoryNfe, List<string> cfops)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             try
@@ -1253,7 +1253,7 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<Dictionary<string, string>> NfeExitProducts(string directoryNfe)
+        public List<Dictionary<string, string>> Products(string directoryNfe)
         {
             List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
             try

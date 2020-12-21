@@ -859,7 +859,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
+                    notesVenda = importXml.Nfe(directoryNfeExit, cfopsVenda);
 
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
@@ -1033,7 +1033,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notesVenda = importXml.NfeExit(directoryNfeExit, cfopsVenda);
+                    notesVenda = importXml.Nfe(directoryNfeExit, cfopsVenda);
 
                     var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
 
@@ -1227,7 +1227,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    exitNotes = importXml.NfeExit(directoryNfeExit, cfopsVenda);
+                    exitNotes = importXml.Nfe(directoryNfeExit, cfopsVenda);
 
                     decimal valorTotal = 0;                    
 

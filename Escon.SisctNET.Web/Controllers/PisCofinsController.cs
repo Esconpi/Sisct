@@ -800,7 +800,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NfeExit(directoryNfeExit, cfopsVenda);
+                    notes = importXml.Nfe(directoryNfeExit, cfopsVenda);
 
 
                     var ncms = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
