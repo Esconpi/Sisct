@@ -102,7 +102,6 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Phone = emp.Phone;
                         company.Updated = DateTime.Now;
                         updateCompany.Add(company);
-                        //_service.Update(company, GetLog(OccorenceLog.Update));
                     }
                 }
                
@@ -482,7 +481,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                var companies = _service.FindAll(null).Where(_ => _.Document.Substring(0, 8).Equals(result.Document.Substring(0, 8))).ToList();
+                var companies = _service.FindByCompanies(result.Document);
 
                 List<Model.Company> comps = new List<Company>();
 
