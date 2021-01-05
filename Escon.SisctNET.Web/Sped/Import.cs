@@ -2211,7 +2211,7 @@ namespace Escon.SisctNET.Web.Sped
                                             devolucaoServico += Convert.ToDecimal(linha[7]);
                                         }
 
-                                        if (!codeProdMono.Contains(linha[3]) && !ncmMono.Contains(linha[8]))
+                                        if (!codeProdMono.Contains(linha[3]) || !ncmMono.Contains(linha[8]))
                                         {
                                             devolucaoNormal += Convert.ToDecimal(linha[7]);
                                         }

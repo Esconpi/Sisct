@@ -3318,7 +3318,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (exitNotes[i][j].ContainsKey("CFOP"))
                                             {
                                                 cfop = false;
-                                                var t = exitNotes[i][j]["CFOP"];
 
                                                 if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
                                                     cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]) ||
@@ -3333,7 +3332,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
                                                 {
-                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) || !ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         venda += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                     }
@@ -3341,7 +3340,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
                                                 {
-                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) || !ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         venda += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                     }
@@ -3349,7 +3348,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
                                                 {
-                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) || !ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         venda -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                     }
@@ -3357,7 +3356,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
                                                 {
-                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) || !ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         venda += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                     }
@@ -3365,7 +3364,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][1]["finNFe"] != "4" && cfop == true)
                                                 {
-                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) && !ncmMono.Contains(exitNotes[i][j]["NCM"]))
+                                                    if (!codeProdMono.Contains(exitNotes[i][j]["cProd"]) || !ncmMono.Contains(exitNotes[i][j]["NCM"]))
                                                     {
                                                         venda += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                     }

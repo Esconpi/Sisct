@@ -211,6 +211,14 @@ namespace Escon.SisctNET.Model
 
         public bool Sped { get; set; }
 
+        public decimal? PercentualPisRF { get; set; }
+
+        public decimal? PercentualPisCredito { get; set; }
+
+        public decimal? PercentualCofinsRF { get; set; }        
+
+        public decimal? PercentualCofinsCredito { get; set; }
+
         public virtual IList<EmailResponsible> EmaiResponsibles { get; set; }
     }
 }

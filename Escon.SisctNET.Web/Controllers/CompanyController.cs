@@ -487,6 +487,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach (var c in companies)
                 {
+
+
+                    //  Empresa Lucro Real
+                    c.PercentualCofinsRF = entity.PercentualCofinsRF;
+                    c.PercentualCofinsCredito = entity.PercentualCofinsCredito;
+                    c.PercentualPisRF = entity.PercentualPisRF;
+                    c.PercentualPisCredito = entity.PercentualPisCredito;
+
+
+                    //  Empresa Lucro Presumido
                     c.IRPJ1 = entity.IRPJ1;
                     c.IRPJ2 = entity.IRPJ2;
                     c.IRPJ3 = entity.IRPJ3;
@@ -497,11 +507,15 @@ namespace Escon.SisctNET.Web.Controllers
                     c.StatusCPRB = entity.StatusCPRB;
                     c.PercentualIRPJ = entity.PercentualIRPJ;
                     c.PercentualCSLL = entity.PercentualCSLL;
+                    c.AdicionalIRPJ = entity.AdicionalIRPJ;
+
+
+                    //  Empresas
                     c.PercentualCofins = entity.PercentualCofins;
                     c.PercentualPis = entity.PercentualPis;
-                    c.AdicionalIRPJ = entity.AdicionalIRPJ;
                     c.Sped = entity.Sped;
                     c.Updated = DateTime.Now;
+
                     comps.Add(c);
                 }
                 

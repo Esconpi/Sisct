@@ -275,3 +275,62 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    var anexo = @Model.AnnexId;
+    $("#annex").children('option').each(function () {
+        if ($(this).val() == anexo) {
+            $(this).attr('selected', true);
+        }
+    });
+
+     var section = @Model.SectionId;
+    $("#section").children('option').each(function () {
+        if ($(this).val() == section) {
+            $(this).attr('selected', true);
+        }
+    });
+
+    $("#tipoApu").on("change", function () {
+        if ($(this).prop('checked')) {
+            $('#icmsAliqM25').prop('disabled', true);
+            $('#icmsNContri').prop('disabled', true);
+            $('#icmsNContriFora').prop('disabled', true);
+            $('#tipoCompany').prop('disabled', true);
+        } else {
+            $('#icmsAliqM25').prop('disabled', false);
+            $('#icmsNContri').prop('disabled', false);
+            $('#icmsNContriFora').prop('disabled', false);
+            $('#tipoCompany').prop('disabled', false);
+        }
+
+    });
+
+    $(".textformartmask").on("input", function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $("#annex").on("change", function () {
+        if ($(this).val() == "3") {
+            $("#section").prop("disabled", false);
+            $("#AliqInterna").prop("disabled", false);
+            $("#IncIInterna").prop("disabled", false);
+            $("#IncIInterestadual").prop("disabled", false);
+            $("#IncIIInterna").prop("disabled", false);
+            $("#IncIIInterestadual").prop("disabled", false);
+            $("#VendaArt781").prop("disabled", false);
+            $("#VendaArt781Excedente").prop("disabled", false);
+        }
+        else {
+            $("#section").prop("disabled", true);
+            $("#AliqInterna").prop("disabled", true);
+            $("#IncIInterna").prop("disabled", true);
+            $("#IncIInterestadual").prop("disabled", true);
+            $("#IncIIInterna").prop("disabled", true);
+            $("#IncIIInterestadual").prop("disabled", true);
+            $("#VendaArt781").prop("disabled", true);
+            $("#VendaArt781Excedente").prop("disabled", true);
+        }
+    });
+
+</script>
