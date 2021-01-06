@@ -18,6 +18,18 @@
             <div class="col-md-12">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            @Html.LabelFor(model => model.Active, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.Active, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
 
                         <div class="form-group col-lg-12 col-md-6 col-xs-12">

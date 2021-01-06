@@ -2113,6 +2113,7 @@ namespace Escon.SisctNET.Web.Sped
                         {
                             fob = false;
                         }
+
                         if (fob.Equals(true) && cfopsCompra.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
                         {
                             totalDeCredito += Convert.ToDecimal(linha[7]);
@@ -2196,23 +2197,28 @@ namespace Escon.SisctNET.Web.Sped
                                     {
                                         if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
                                         {
+                                            // Devolução Pretoleo
                                             devolucaoPetroleo += Convert.ToDecimal(linha[7]);
                                         }
                                         else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
                                         {
+                                            // Devolução Comercio
                                             devolucaoComercio += Convert.ToDecimal(linha[7]);
                                         }
                                         else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
                                         {
+                                            // Devolução Transporte
                                             devolucaoTransporte += Convert.ToDecimal(linha[7]);
                                         }
                                         else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
                                         {
+                                            // Devolução Serviço
                                             devolucaoServico += Convert.ToDecimal(linha[7]);
                                         }
 
                                         if (!codeProdMono.Contains(linha[3]) || !ncmMono.Contains(linha[8]))
                                         {
+                                            // Devolução Normal
                                             devolucaoNormal += Convert.ToDecimal(linha[7]);
                                         }
                                     }

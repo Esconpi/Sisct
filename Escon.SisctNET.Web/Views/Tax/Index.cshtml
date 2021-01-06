@@ -26,7 +26,8 @@
             }
             <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
-            @if ((ViewBag.Month == "Março" || ViewBag.Month == "Junho" || ViewBag.Month == "Setembro" || ViewBag.Month == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
+            @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
+                SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
             {
                 <br />
                 <br />
@@ -35,7 +36,7 @@
 
         </div>
 
-        <div style="width:100%; text-align:center;padding-top:10px;">
+        <div style="width:100%; text-align:center;padding-top:100px;">
             <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
         </div>
 
