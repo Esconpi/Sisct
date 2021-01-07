@@ -67,67 +67,91 @@
 
                 @if (ViewBag.Type == "Geral")
                 {
+                    <!-- Relatório Geral dos Impostos -->
+
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" || 
+                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" ||
                          ViewBag.Type == "ProdutoFP" || ViewBag.Type == "IcmsProdutor")
                 {
-                    <table class="table" style="font-size:8px; border: 2px solid;">
-                        @if (ViewBag.Type == "GNRE")
-                        {
-                            @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
-                        }
-                        else if (ViewBag.Type == "IcmsST")
-                        {
-                            @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
-                        }
-                        else if (ViewBag.Type == "ProdutoFI")
-                        {
-                            @await Html.PartialAsync("_ProductFIncentivoReport", new ViewDataDictionary(ViewData))
-                        }
-                        else if (ViewBag.Type == "ProdutoFP")
-                        {
-                            @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
-                        }
-                        else if (ViewBag.Type == "IcmsProdutor")
-                        {
-                            @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
-                        }
-                    </table>
+                        <table class="table" style="font-size:8px; border: 2px solid;">
+                            @if (ViewBag.Type == "GNRE")
+                            {
+                                <!-- Relatório GNRE -->
+
+                                @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "IcmsST")
+                            {
+                                <!-- Relatório Produtos Substituição Tributária -->
+
+                                @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "ProdutoFI")
+                            {
+                                <!-- Relatório Produtos Fora do Incentivo -->
+
+                                @await Html.PartialAsync("_ProductFIncentivoReport", new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "ProdutoFP")
+                            {
+                                <!-- Relatório Produtos Fora da Pauta -->
+
+                                @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
+                            }
+                            else if (ViewBag.Type == "IcmsProdutor")
+                            {
+                                <!-- Relatório ICMS Produtor Rural -->
+
+                                @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
+                            }
+                        </table>
                 }
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota" ||
-                         ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
+                      ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
                             @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
                             {
+                                <!-- Produtos -->
+
                                 @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
                             }
                             else if (ViewBag.Type == "AgrupadoA")
                             {
+                                <!-- Produtos Agrupado -->
+
                                 @await Html.PartialAsync("_ProductGroupedAnalyticalReport", Model, new ViewDataDictionary(ViewData))
                             }
                             else if (ViewBag.Type == "AgrupadoS")
                             {
+                                <!-- Produtos Sintético -->
+
                                 @await Html.PartialAsync("_ProductGroupedSyntheticReport", Model, new ViewDataDictionary(ViewData))
                             }
 
                         </table>
 
+                        <!-- Resumo Produtos -->
+
                         @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
 
                         if (ViewBag.TypeTaxation != "Isento")
                         {
+                            <!-- Resumo Imposto -->
+
                             @await Html.PartialAsync("_TaxSummary", new ViewDataDictionary(ViewData))
                         }
                     }
 
                     @if (ViewBag.Company.Incentive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Company.AnnexId != null &&
-                         ViewBag.Type != "ProdutoFP")
+                      ViewBag.Type != "ProdutoFP")
                     {
+                        <!-- Resumo Imposto Incentivo -->
+
                         @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                         {
 

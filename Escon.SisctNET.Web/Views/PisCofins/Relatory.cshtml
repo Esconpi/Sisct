@@ -17,7 +17,7 @@
             </div>
 
             <div style="text-align:center;">
-                <strong>@ViewBag.SocialName - @ViewBag.Document</strong>
+                <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
             </div>
 
             <div style="width:100%; overflow:hidden; padding:10px;">
@@ -27,7 +27,7 @@
                             @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
-                            @if (ViewBag.Type != "imposto" || ViewBag.Trimestre == "Nenhum")
+                            @if (ViewBag.Type != "imposto" || ViewBag.Trimestre == "Nenhum" || ViewBag.Trimestre == null)
                             {
                                 <strong>Periodo: @ViewBag.Month/@ViewBag.Year </strong>
                             }
@@ -60,40 +60,74 @@
                 {
                     @if (ViewBag.Type == "resumoCfop")
                     {
+                        <!-- Resumo CFOP -->
+
                         @await Html.PartialAsync("_CfopSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoCfopCst")
                     {
+                        <!-- Resumo CFOP/CST -->
+                        
                         @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoCfopMono")
                     {
+                        <!-- Resumo CFOP Monofásico -->
+
                         @await Html.PartialAsync("_CfopSummaryMono", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoPorCfop")
                     {
+                        <!-- Resumo Por CFOP -->
+
                         @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoProdCfopNcmCstMono")
                     {
+                        <!-- Resumo Produto/NCM/CST -->
+
                         @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoNcmMono")
                     {
+                        <!-- Resumo NCM -->
+
                         @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "imposto")
                     {
-                        @if (ViewBag.Trimestre == "Nenhum")
+                        @if (ViewBag.Company.CountingTypeId == 1)
                         {
-                            @await Html.PartialAsync("_TaxMonth", new ViewDataDictionary(ViewData))
+                            <!-- Empresa Lucro Real -->
+
+                            @await Html.PartialAsync("_TaxMonthReal", new ViewDataDictionary(ViewData))
                         }
-                        else
+                        else if (ViewBag.Company.CountingTypeId == 2)
                         {
-                            @await Html.PartialAsync("_TaxTrimestre", new ViewDataDictionary(ViewData))
-                            @await Html.PartialAsync("_Irpj", new ViewDataDictionary(ViewData))
-                            @await Html.PartialAsync("_Csll", new ViewDataDictionary(ViewData))
+                            <!-- Empresa Lucro Presumido -->
+
+                            @if (ViewBag.Trimestre == "Nenhum")
+                            {
+                                <!-- Imposto Mês -->
+                                
+                                @await Html.PartialAsync("_TaxMonthPresumido", new ViewDataDictionary(ViewData))
+                            }
+                            else
+                            {
+                                <!-- Imposto Trimestre -->
+
+                                @await Html.PartialAsync("_TaxTrimestrePresumido", new ViewDataDictionary(ViewData))
+                                @await Html.PartialAsync("_IrpjPresumido", new ViewDataDictionary(ViewData))
+                                @await Html.PartialAsync("_CsllPresumido", new ViewDataDictionary(ViewData))
+                            }
+
                         }
+                        else if (ViewBag.Company.CountingTypeId == 3)
+                        {
+                            <!-- Empresa do Simples -->
+                        }
+
+
                     }
                 }
 

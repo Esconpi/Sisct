@@ -80,31 +80,56 @@
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Gerar" class="btn btn-success pull-right"/>
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" />
                 </div>
             </form>
         </div>
 
     </div>
 </div>
-<script type="text/javascript">
+@if (Model.CountingTypeId == 2)
+{
+    <script type="text/javascript">
 
-    function ativar_button() {
-        var tipo = document.getElementById("status").value;
-        var cfop = document.getElementById("cfopid").value;
-        if (tipo == "resumoPorCfop") {
-            document.getElementById("cfopid").disabled = false;
-            document.getElementById("arquivo").disabled = false;
+        function ativar_button() {
+            var tipo = document.getElementById("status").value;
+            if (tipo == "resumoPorCfop") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("arquivo").disabled = false;
+            }
+            else if (tipo == "imposto") {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = false;
+                document.getElementById("arquivo").disabled = true;
+            }
+            else {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("arquivo").disabled = false;
+            }
         }
-        else if (tipo == "imposto") {
-            document.getElementById("cfopid").disabled = true;
-            document.getElementById("trimestre").disabled = false;
-            document.getElementById("arquivo").disabled = true;
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+
+        function ativar_button() {
+            var tipo = document.getElementById("status").value;
+            if (tipo == "resumoPorCfop") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("arquivo").disabled = false;
+            }
+            else if (tipo == "imposto") {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("arquivo").disabled = true;
+            }
+            else {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("arquivo").disabled = false;
+            }
         }
-        else{
-            document.getElementById("cfopid").disabled = true;
-            document.getElementById("trimestre").disabled = true;
-            document.getElementById("arquivo").disabled = false;
-        }
-    }
-</script>
+    </script>
+}

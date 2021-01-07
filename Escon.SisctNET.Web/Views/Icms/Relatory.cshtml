@@ -43,40 +43,58 @@
                 {
                     @if (ViewBag.Opcao == "saida")
                     {
+                        <!-- Resumo CFOP Saida -->
+
                         @await Html.PartialAsync("_CfopSummaryExit", new ViewDataDictionary(ViewData))
                     }
                     else
                     {
+                        <!-- Resumo CFOP Entrada -->
+
                         @await Html.PartialAsync("_CfopSummaryEntry", new ViewDataDictionary(ViewData))
                     }
 
                 }
                 else if (ViewBag.Type == "resumoCfopCst")
                 {
+                    <!-- Resumo CFOP/CST -->
+
                     @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "resumoPorCfop")
                 {
+                    <!-- Resumo Por CFOP -->
+
                     @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "anexo")
                 {
+                    <!-- Vendas Anexo -->
+
                     @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "foraAnexo")
                 {
+                    <!-- Vendas Fora do Anexo -->
+
                     @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "suspensao")
                 {
+                    <!-- Notas Durante Suspensão-->
+
                     @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "foraIncentivo")
                 {
+                    <!-- Resumo CFOP Fora do Anexo -->
+
                     @await Html.PartialAsync("_Non-IncentiveSales", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "produtoST")
                 {
+                    <!-- Produtos Substituição Tributária -->
+
                     @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "tributacaoDiveregente")
@@ -91,6 +109,8 @@
                     }
                     else
                     {
+                        <!-- Tributação NCM Divergente -->
+
                         @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
                     }
                 }
@@ -102,6 +122,8 @@
                     }
                     else
                     {
+                        <!-- Relatório Anexo Auto Peças -->
+
                         @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
 
                         @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
@@ -116,6 +138,8 @@
                     }
                     else
                     {
+                        <!-- Relatório Anexo Medicamentos -->
+
                         @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
 
                         @await Html.PartialAsync("_MedicineAttachmentPart1", new ViewDataDictionary(ViewData))
@@ -132,6 +156,8 @@
                     }
                     else
                     {
+                        <!-- Relatório ICMS Excedente-->
+
                         @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
                     }
                 }
@@ -143,14 +169,20 @@
                     }
                     else
                     {
+                        <!-- Relatório ICMS Sobre Compras-->
+
                         if (ViewBag.Company.AnnexId != 3)
                         {
                             if (ViewBag.Company.TypeCompany == true)
                             {
+                                <!-- Empresa/Produto -->
+
                                 @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
                             }
                             else
                             {
+                                <!-- Empresa/Indústria -->
+
                                 @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
                             }
                         }
@@ -158,6 +190,7 @@
                         {
                             if (ViewBag.Company.SectionId == 2)
                             {
+                                <!-- Empresa/Medicamento Seção II -->
 
                                 @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
                             }

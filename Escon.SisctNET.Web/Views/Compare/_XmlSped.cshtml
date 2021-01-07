@@ -24,27 +24,55 @@
 
         @foreach (var nota in ViewBag.Notas)
         {
-            <tr style="border: 1px solid;">
-                <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
-                <td style="border: 1px solid;">@nota[1]["mod"]</td>
-                <td style="border: 1px solid;">@nota[1]["tpNF"]</td>
-                <td style="border: 1px solid;">@nota[2]["UF"]</td>
-                <td style="border: 1px solid;">@nota[1]["nNF"]</td>
-                @if (nota[2].ContainsKey("CNPJ"))
-                {
-                    <td style="border: 1px solid;">@nota[2]["CNPJ"]</td>
-                }
-                else
-                {
-                    <td style="border: 1px solid;">@nota[2]["CPF"]</td>
-                }
+            @if (Convert.ToDateTime(nota[1]["dhEmi"]).Month == ViewBag.MonthNumber)
+            {
+                <tr>
+                    <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
+                    <td style="border: 1px solid;">@nota[1]["mod"]</td>
+                    <td style="border: 1px solid;">@nota[1]["tpNF"]</td>
+                    <td style="border: 1px solid;">@nota[2]["UF"]</td>
+                    <td style="border: 1px solid;">@nota[1]["nNF"]</td>
+                    @if (nota[2].ContainsKey("CNPJ"))
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CNPJ"]</td>
+                    }
+                    else
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CPF"]</td>
+                    }
 
-                <td style="border: 1px solid;">@nota[2]["xNome"]</td>
+                    <td style="border: 1px solid;">@nota[2]["xNome"]</td>
 
-                <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(nota[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                    <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(nota[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
 
-                <td style="border: 1px solid;">@nota[0]["chave"]</td>
-            </tr>
+                    <td style="border: 1px solid;">@nota[0]["chave"]</td>
+                </tr>
+            }
+            else
+            {
+                <tr style="border-left:5px solid; border-color:red;">
+                    <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
+                    <td style="border: 1px solid;">@nota[1]["mod"]</td>
+                    <td style="border: 1px solid;">@nota[1]["tpNF"]</td>
+                    <td style="border: 1px solid;">@nota[2]["UF"]</td>
+                    <td style="border: 1px solid;">@nota[1]["nNF"]</td>
+                    @if (nota[2].ContainsKey("CNPJ"))
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CNPJ"]</td>
+                    }
+                    else
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CPF"]</td>
+                    }
+
+                    <td style="border: 1px solid;">@nota[2]["xNome"]</td>
+
+                    <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(nota[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+
+                    <td style="border: 1px solid;">@nota[0]["chave"]</td>
+                </tr>
+            }
+
         }
     </tbody>
 </table>

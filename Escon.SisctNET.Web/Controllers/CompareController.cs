@@ -44,10 +44,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var company = _companyService.FindById(Convert.ToInt32(id), null);
 
+                var importPeriod = new Period.Month();
+
                 ViewBag.Opcao = opcao.ToString();
                 ViewBag.Ordem = ordem.ToString();
-                ViewBag.Document = company.Document;
-                ViewBag.SocialName = company.SocialName; 
+                ViewBag.Company = company;
+                ViewBag.MonthNumber = importPeriod.NumberMonth(month);
 
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
