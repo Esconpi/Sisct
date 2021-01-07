@@ -49,7 +49,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Opcao = opcao.ToString();
                 ViewBag.Ordem = ordem.ToString();
                 ViewBag.Company = company;
-                ViewBag.MonthNumber = importPeriod.NumberMonth(month);
+                ViewBag.NumberMonth = importPeriod.NumberMonth(month);
 
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);

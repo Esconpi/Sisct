@@ -24,7 +24,7 @@
 
         @foreach (var nota in ViewBag.Notas)
         {
-            @if (Convert.ToDateTime(nota[1]["dhEmi"]).Month == ViewBag.MonthNumber)
+            @if (Convert.ToDateTime(nota[1]["dhEmi"]).Month == ViewBag.NumberMonth)
             {
                 <tr>
                     <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
