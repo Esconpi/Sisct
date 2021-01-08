@@ -485,7 +485,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
-
+                                    
                                     try
                                     {
                                         prod.Cprod = det["cProd"];

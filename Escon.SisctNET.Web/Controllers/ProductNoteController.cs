@@ -895,7 +895,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
 
-                var imp = _taxService.FindByMonth(id, month, year);
+                var imp = _taxService.FindByMonth(id, month, year, "Icms");
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
                 var impProdutor = _taxProducerService.FindByTaxs(id, month, year);
 

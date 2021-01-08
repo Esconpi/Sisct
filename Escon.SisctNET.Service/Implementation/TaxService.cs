@@ -43,6 +43,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByMonth(company, mes, ano, log);
         }
 
+        public Tax FindByMonth(int company, string mes, string ano, string type, Log log = null)
+        {
+            return _repository.FindByMonth(company, mes, ano, type, log);
+        }
+
         public Tax Update(Tax entity, Log log)
         {
             return _repository.Update(entity, log);

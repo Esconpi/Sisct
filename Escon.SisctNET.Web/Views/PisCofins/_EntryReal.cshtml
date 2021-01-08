@@ -15,6 +15,7 @@
                 COMPRAS DE MERCADORIAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.Compra))
             </td>
         </tr>
         <tr>
@@ -22,6 +23,7 @@
                 (-) DEVOLUÇÕES DE COMPRAS DE MERCADORIAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DevolucaoCompra))
             </td>
         </tr>
         <tr>
@@ -29,6 +31,7 @@
                 (-) COMPRAS DE TRATORES E IMPLEMENNTOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.CompraTI))
             </td>
         </tr>
         <tr>
@@ -36,6 +39,7 @@
                 (+) ENERGIA ELETRICA R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.Energia))
             </td>
         </tr>
         <tr>
@@ -79,6 +83,27 @@
             </th>
             <th style="text-align:right;border:1px solid;">
             </th>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="4">COFINS</th>
+            <th style="text-align:center;border:1px solid;" colspan="4">PIS S/FATURAMENTO</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @ViewBag.Company.PercentualCofins %</td>
+            <td style="text-align:center;border:1px solid;">RETIDO S/ NF</td>
+            <td style="text-align:center;border:1px solid;">CREDOR DO PERÍODO ANTERIOR</td>
+            <th style="text-align:center;border:1px solid;">TOTAL CRÉDITO</th>
+            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @ViewBag.Company.PercentualPis %</td>
+            <td style="text-align:center;border:1px solid;">RETIDO S/ NF</td>
+            <td style="text-align:center;border:1px solid;">CREDOR DO PERÍODO ANTERIOR</td>
+            <th style="text-align:center;border:1px solid;">TOTAL CRÉDITO</th>
         </tr>
     </tbody>
 </table>

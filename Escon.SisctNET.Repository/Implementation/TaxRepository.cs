@@ -20,5 +20,20 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public Tax FindByMonth(int company, string mes, string ano, string type, Log log = null)
+        {
+            Tax rst = null;
+            if (type.Equals("Icms"))
+            {
+                rst = _context.Taxes.Where(_ => _.CompanyId.Equals(company) && _.MesRef.Equals(mes) && _.AnoRef.Equals(ano) && _.Icms.Equals(true)).FirstOrDefault();
+            }
+            else if (type.Equals("PisCofins"))
+            {
+                rst = _context.Taxes.Where(_ => _.CompanyId.Equals(company) && _.MesRef.Equals(mes) && _.AnoRef.Equals(ano) && _.PisCofins.Equals(true)).FirstOrDefault();
+            }
+            AddLog(log);
+            return rst;
+        }
     }
 }

@@ -15,6 +15,7 @@
                 VENDAS DE MERCADORIAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.Venda))
             </td>
         </tr>
         <tr>
@@ -22,6 +23,7 @@
                 (-) DEVOLUÇÕES DE VENDAS DE MERCADORIAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DevolucaoVenda))
             </td>
         </tr>
         <tr>
@@ -29,6 +31,7 @@
                 (-) VENDAS DE TRATORES E IMPLEMENNTOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.VendaTI))
             </td>
         </tr>
         <tr>
@@ -79,6 +82,24 @@
             </th>
             <th style="text-align:right;border:1px solid;">
             </th>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="2">APURAÇÂO REC. FINANCEIRA</th>
+            <th style="text-align:center;border:1px solid;">COFINS</th>
+            <th style="text-align:center;border:1px solid;">PIS S/ FATURAMENTO</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;">COFINS @ViewBag.Company.PercentualCofinsRF %</th>
+            <th style="text-align:center;border:1px solid;">PIS @ViewBag.Company.PercentualPisRF %</th>
+            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualCofins %</th>
+            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualPis %</th>
         </tr>
     </tbody>
 </table>

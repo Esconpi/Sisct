@@ -1067,6 +1067,16 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.CountingTypeId == 1)
                     {
                         //  Empresa Lucro Real
+
+                        var imp = _taxService.FindByMonth(id, month, year, "PisCofins");
+
+                        if (imp == null)
+                        {
+                            ViewBag.Erro = 3;
+                            return View();
+                        }
+
+                        ViewBag.Imposto = imp;
                     }
                     else if(comp.CountingTypeId == 2)
                     {
@@ -1087,14 +1097,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (trimestre == "Nenhum")
                         {
-                            var imp = _taxService.FindByMonth(id, month, year);
+                            var imp = _taxService.FindByMonth(id, month, year, "PisCofins");
 
                             if (imp == null)
                             {
                                 ViewBag.Erro = 3;
                                 return View();
                             }
-
+                              
                             decimal receitaPetroleo = Convert.ToDecimal(imp.Receita1), receitaComercio = Convert.ToDecimal(imp.Receita2), receitaTransporte = Convert.ToDecimal(imp.Receita3),
                                 receitaServico = Convert.ToDecimal(imp.Receita4), receitaMono = Convert.ToDecimal(imp.ReceitaMono),
                                 devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida),

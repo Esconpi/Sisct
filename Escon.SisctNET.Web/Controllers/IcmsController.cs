@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Opcao = opcao;
                 ViewBag.Arquivo = arquivo;
 
-                var imp = _taxService.FindByMonth(id, month, year);
+                var imp = _taxService.FindByMonth(id, month, year, "Icms");
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
 
                 var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();

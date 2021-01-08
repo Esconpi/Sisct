@@ -1,3 +1,70 @@
 ﻿@await Html.PartialAsync("_EntryReal", new ViewDataDictionary(ViewData))
 
 @await Html.PartialAsync("_ExitReal", new ViewDataDictionary(ViewData))
+
+<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="2">APURAÇÃO COFINS S/FAT.</th>
+            <th style="text-align:center;border:1px solid;" colspan="2">APURAÇÃO PIS S/FAT.</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="2">DÉBITO COFINS</th>
+            <th style="text-align:center;border:1px solid;" colspan="2">DÉBITO PIS</th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">VALOR DOS DÉBITOS</td>
+            <td style="text-align:right;border:1px solid;" width="20%"></td>
+            <td style="text-align:right;border:1px solid;">VALOR DOS DÉBITOS</td>
+            <td style="text-align:right;border:1px solid;" width="20%"></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">(+) OUTROS DÉBITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+            <td style="text-align:right;border:1px solid;">(+) OUTROS DÉBITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+        </tr>
+        <tr>
+            <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
+            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
+            <th style="text-align:right;border:1px solid;"></th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="2">CRÉDITO COFINS</th>
+            <th style="text-align:center;border:1px solid;" colspan="2">CRÉDITO PIS</th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">VALOR DOS CRÉDITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+            <td style="text-align:right;border:1px solid;">VALOR DOS CRÉDITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">(+) OUTROS CRÉDITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+            <td style="text-align:right;border:1px solid;">(+) OUTROS CRÉDITOS</td>
+            <td style="text-align:right;border:1px solid;"></td>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">(+) CRÉDITOS ESTOQUE</td>
+            <td style="text-align:right;border:1px solid;"></td>
+            <td style="text-align:right;border:1px solid;">(+) CRÉDITOS ESTOQUE</td>
+            <td style="text-align:right;border:1px solid;"></td>
+        </tr>
+        <tr>
+            <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
+            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
+            <th style="text-align:right;border:1px solid;"></th>
+        </tr>
+        <tr>
+            <th style="text-align:right;border:1px solid;">COFINS A RECOLHER OU A TRANSPORTAR</th>
+            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">PIS A RECOLHER OU A TRANSPORTAR</th>
+            <th style="text-align:right;border:1px solid;"></th>
+        </tr>
+    </tbody>
+</table>

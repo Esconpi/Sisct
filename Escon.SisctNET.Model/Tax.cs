@@ -106,6 +106,9 @@ namespace Escon.SisctNET.Model
 
         public decimal? SaidaPortInterestadual2 { get; set; }
 
+        public bool Icms { get; set; }
+
+        public bool PisCofins { get; set; }
 
         //  PIS e COFINS
         public decimal? PisRetido { get; set; }

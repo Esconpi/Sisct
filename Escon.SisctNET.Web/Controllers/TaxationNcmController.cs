@@ -213,7 +213,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 _service.Create(monoAdd, null);
-                //_service.Update(monoUpdate, null);
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
