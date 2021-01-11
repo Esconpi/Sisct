@@ -2182,12 +2182,31 @@ namespace Escon.SisctNET.Web.Sped
 
                                 if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
                                 {
-                                    var code = ncmsTaxation.Where(_ => _.CodeProduct.Equals(linha[3]) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                    Model.TaxationNcm ehMono = null;
+
+                                    var prod = linha[2];
+
+                                    foreach (var n in ncmsTaxation)
+                                    {
+                                        int qtd = n.CodeProduct.Length;
+
+                                        string code = prod.Substring(prod.Length - qtd);
+
+                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                        if(ehMono != null)
+                                        {
+                                            break;
+                                        }
+
+                                    }
+                                  
 
                                     if ((cfopsCompra.Contains(linhaTemp[11]) || cfopsBonifi.Contains(linhaTemp[11]) || cfopsCompraST.Contains(linhaTemp[11])
                                         || cfopsTransf.Contains(linhaTemp[11]) || cfopsTransfST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
                                     {
-                                        if (!codeProdMono.Contains(linha[3]) && !ncmMono.Contains(linha[8]))
+                                      
+                                        if (ehMono == null)
                                         {
                                             // Compra Normal
                                             compras += Convert.ToDecimal(linhaTemp[7]);
@@ -2196,7 +2215,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                     if (cfopsDevo.Contains(linhaTemp[11]) && !linhaTemp[7].Equals(""))
                                     {
-                                        if (!codeProdMono.Contains(linha[3]) && !ncmMono.Contains(linha[8]))
+                                        if (ehMono == null)
                                         {
                                             // Devolução Normal
                                             devolucoes += Convert.ToDecimal(linhaTemp[7]);
@@ -2248,8 +2267,6 @@ namespace Escon.SisctNET.Web.Sped
             var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
-            List<string> codeProdMono = new List<string>();
-            List<string> ncmMono = new List<string>();
 
             decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
@@ -2282,8 +2299,6 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
                                     ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
-                                    codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                                    ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
                                 }
 
                                 if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
@@ -2311,7 +2326,26 @@ namespace Escon.SisctNET.Web.Sped
                                             devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
                                         }
 
-                                        if (!codeProdMono.Contains(linha[3]) && !ncmMono.Contains(linha[8]))
+                                        Model.TaxationNcm ehMono = null;
+
+                                        var prod = linha[2];
+
+                                        foreach (var n in ncmsTaxation)
+                                        {
+                                            int qtd = n.CodeProduct.Length;
+
+                                            string code = prod.Substring(prod.Length - qtd);
+
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                            if (ehMono != null)
+                                            {
+                                                break;
+                                            }
+
+                                        }
+
+                                        if (ehMono == null)
                                         {
                                             // Devolução Normal
                                             devolucaoNormal += Convert.ToDecimal(linhaTemp[7]);

@@ -1077,6 +1077,39 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         ViewBag.Imposto = imp;
+
+                        //  Entrada
+                        decimal totalCompra = Convert.ToDecimal(imp.Compra) - Convert.ToDecimal(imp.DevolucaoCompra) - Convert.ToDecimal(imp.CompraTI) +
+                                              Convert.ToDecimal(imp.Energia) + Convert.ToDecimal(imp.AluguelPredio) + Convert.ToDecimal(imp.AluguelME) +
+                                              Convert.ToDecimal(imp.DespesasF) + Convert.ToDecimal(imp.DespesasME) + Convert.ToDecimal(imp.DespesasA),
+                                cofinsEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualCofins) / 100, 2),
+                                totalCofinsEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + Convert.ToDecimal(imp.SaldoCredorCofins),
+                                pisEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualPis) / 100, 2),
+                                totalPisEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + Convert.ToDecimal(imp.SaldoCredorPis);
+
+                        ViewBag.TotalCompra = totalCompra;
+                        ViewBag.CofinsEntrada = cofinsEntrada;
+                        ViewBag.TotalCofinsEntrada = totalCofinsEntrada;
+                        ViewBag.PisEntrada = pisEntrada;
+                        ViewBag.TotalPisEntrada = totalPisEntrada;
+
+                        //  Saida
+                        decimal totalVendaLiquida = Convert.ToDecimal(imp.Venda) - Convert.ToDecimal(imp.DevolucaoVenda) - Convert.ToDecimal(imp.VendaTI),
+                               totalVenda = totalVendaLiquida + Convert.ToDecimal(imp.PrestacaoServico) + Convert.ToDecimal(imp.ReceitaFinanceira) +
+                                            Convert.ToDecimal(imp.Capital) + Convert.ToDecimal(imp.ReceitaAluguel) + Convert.ToDecimal(imp.Juros),
+                               cofinsSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualCofinsRF) / 100, 2),
+                               cofinsSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualCofins) / 100) + cofinsSaidaRF, 2),
+                               pisSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualPisRF) / 100, 2),
+                               pisSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualPis) / 100) + pisSaidaRF, 2);
+
+
+                        ViewBag.TotalVendaLiquida = totalVendaLiquida;
+                        ViewBag.TotalVenda = totalVenda;
+                        ViewBag.CofinsSaidaRF = cofinsSaidaRF;
+                        ViewBag.CofinsSaida = cofinsSaida;
+                        ViewBag.PisSaidaRF = pisSaidaRF;
+                        ViewBag.PisSaida = pisSaida;
+
                     }
                     else if(comp.CountingTypeId == 2)
                     {

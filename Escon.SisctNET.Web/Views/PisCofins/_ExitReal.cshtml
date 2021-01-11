@@ -39,6 +39,7 @@
                 (=) VENDAS LÍQUIDAS R$
             </th>
             <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalVendaLiquida))
             </th>
         </tr>
         <tr>
@@ -46,6 +47,7 @@
                 (+) PRESTAÇÃO DE SERVIÇOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.PrestacaoServico))
             </td>
         </tr>
         <tr>
@@ -53,6 +55,7 @@
                 (+) OUTRAS RECEITAS - RECEITAS FINANCEIRAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.ReceitaFinanceira))
             </td>
         </tr>
         <tr>
@@ -60,6 +63,7 @@
                 (+) OUTRAS RECEITAS - GANHO DE CAPITAL R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.Capital))
             </td>
         </tr>
         <tr>
@@ -67,6 +71,7 @@
                 (+) OUTRAS RECEITAS - RECEITAS DE ALUGUEL R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.ReceitaAluguel))
             </td>
         </tr>
         <tr>
@@ -74,6 +79,7 @@
                 (+) OUTRAS RECEITAS - JURAS S/CAPITAL PRÓPRIO R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.Juros))
             </td>
         </tr>
         <tr>
@@ -81,6 +87,7 @@
                 (=) TOTAL R$
             </th>
             <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalVenda))
             </th>
         </tr>
     </tbody>
@@ -100,6 +107,20 @@
             <th style="text-align:center;border:1px solid;">PIS @ViewBag.Company.PercentualPisRF %</th>
             <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualCofins %</th>
             <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualPis %</th>
+        </tr>
+        <tr>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsSaidaRF))
+            </th>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisSaidaRF))
+            </th>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsSaida))
+            </th>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisSaida))
+            </th>
         </tr>
     </tbody>
 </table>

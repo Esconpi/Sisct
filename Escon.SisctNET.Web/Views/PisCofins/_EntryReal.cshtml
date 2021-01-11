@@ -47,6 +47,7 @@
                 (+) ALUGUEL - PRÉDIOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.AluguelPredio))
             </td>
         </tr>
         <tr>
@@ -54,6 +55,7 @@
                 (+) ALUGUEL - MAQUINAS E EQUIPAMENTOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.AluguelME))
             </td>
         </tr>
         <tr>
@@ -61,6 +63,7 @@
                 (+) DESPESA - FINANCEIRAS/EMP. E FINANCIAMENTOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DespesasF))
             </td>
         </tr>
         <tr>
@@ -68,6 +71,7 @@
                 (+) DESPESA - DEPRECIACÃO DE MAQ. E EQUIPAMENTOS R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DespesasME))
             </td>
         </tr>
         <tr>
@@ -75,6 +79,7 @@
                 (+) DESPESA - DESPESA/DEPRECIACÃO/AMORTIZAÇÃO R$
             </td>
             <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DespesasA))
             </td>
         </tr>
         <tr>
@@ -82,6 +87,7 @@
                 (=) TOTAL R$
             </th>
             <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalCompra))
             </th>
         </tr>
     </tbody>
@@ -104,6 +110,32 @@
             <td style="text-align:center;border:1px solid;">RETIDO S/ NF</td>
             <td style="text-align:center;border:1px solid;">CREDOR DO PERÍODO ANTERIOR</td>
             <th style="text-align:center;border:1px solid;">TOTAL CRÉDITO</th>
+        </tr>
+        <tr>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsEntrada))
+            </td>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.CofinsRetido))
+            </td>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.SaldoCredorCofins))
+            </td>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalCofinsEntrada))
+            </th>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisEntrada))
+            </td>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.PisRetido))
+            </td>
+            <td style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.SaldoCredorPis))
+            </td>
+            <th style="text-align:right;border:1px solid;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.TotalPisEntrada))
+            </th>
         </tr>
     </tbody>
 </table>
