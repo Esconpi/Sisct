@@ -2061,7 +2061,7 @@ namespace Escon.SisctNET.Web.Sped
         }
 
         public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi, 
-                                    List<string> cfopsCompraST, List<string> cfopsTransf,List<string> cfopsTransfST)
+                                    List<string> cfopsCompraST, List<string> cfopsTransf,List<string> cfopsTransfST, List<string> cfopsDevoST)
         {
             decimal totalDeCredito = 0;
 
@@ -2085,7 +2085,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) || 
                         cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
-                        || cfopsTransfST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
+                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
                         cfop = true;
@@ -2141,11 +2141,9 @@ namespace Escon.SisctNET.Web.Sped
         {
             List<decimal> entradas = new List<decimal>();
 
-            decimal compras = 0, devolucoes = 0;
+            decimal compra = 0, devolucoe = 0;
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
-            List<string> codeProdMono = new List<string>();
-            List<string> ncmMono = new List<string>();
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -2176,8 +2174,6 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     DateTime dataNota =  Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
                                     ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
-                                    codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                                    ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
                                 }
 
                                 if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
@@ -2209,7 +2205,7 @@ namespace Escon.SisctNET.Web.Sped
                                         if (ehMono == null)
                                         {
                                             // Compra Normal
-                                            compras += Convert.ToDecimal(linhaTemp[7]);
+                                            compra += Convert.ToDecimal(linhaTemp[7]);
                                         }
                                     }
 
@@ -2218,7 +2214,7 @@ namespace Escon.SisctNET.Web.Sped
                                         if (ehMono == null)
                                         {
                                             // Devolução Normal
-                                            devolucoes += Convert.ToDecimal(linhaTemp[7]);
+                                            devolucoe += Convert.ToDecimal(linhaTemp[7]);
                                         }
                                         
                                     }
@@ -2246,8 +2242,8 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
 
-            entradas.Add(compras);
-            entradas.Add(devolucoes);
+            entradas.Add(compra);
+            entradas.Add(devolucoe);
 
             return entradas;
         }

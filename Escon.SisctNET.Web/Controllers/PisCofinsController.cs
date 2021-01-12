@@ -73,7 +73,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);
-                var import = new Period.Trimestre();
+                var importTrimestre = new Period.Trimestre();
+                var importMes = new Period.Month();
                 var importDir = new Diretorio.Import();
 
                 string directoryNfeExit = "";
@@ -92,16 +93,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month);
 
-                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                //  Saida
                 var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+
+                //  Transferencia
                 var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
                 if (type.Equals("resumoCfop"))
                 {
@@ -783,7 +782,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BasePIS = basePis;
                     ViewBag.ValorPIS = valorPis;
                     ViewBag.BaseCOFINS = baseCofins;
-                    ViewBag.ValorCofins = valorCofins;
+                    ViewBag.ValorCOFINS = valorCofins;
                 }
                 else if (type.Equals("resumoProdCfopNcmCstMono"))
                 {
@@ -795,9 +794,9 @@ namespace Escon.SisctNET.Web.Controllers
                     List<string> ncmMono = new List<string>();
 
                     cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
-                    cfopsVenda.AddRange(cfopsBoniVenda);
 
                     notes = importXml.Nfe(directoryNfeExit, cfopsVenda);
 
@@ -1078,20 +1077,44 @@ namespace Escon.SisctNET.Web.Controllers
 
                         ViewBag.Imposto = imp;
 
+
+                        var mesAtual = importMes.NumberMonth(month);
+                        var mesAnterior = importMes.NameMonthPrevious(mesAtual);
+                        decimal saldoCredorCofins = 0, saldoCredorPis = 0;
+
+                        string ano = year;
+
+                        if (mesAtual.Equals(1))
+                        {
+                            ano = (Convert.ToInt32(year) - 1).ToString();
+                        }
+
+                        var creditLast = _taxService.FindByMonth(id, mesAnterior, ano, "PisCofins");
+
+                        if (creditLast != null)
+                        {
+                            saldoCredorCofins = Convert.ToDecimal(creditLast.SaldoCredorCofins);
+                            saldoCredorPis = Convert.ToDecimal(creditLast.SaldoCredorPis);
+                        }
+
                         //  Entrada
                         decimal totalCompra = Convert.ToDecimal(imp.Compra) - Convert.ToDecimal(imp.DevolucaoCompra) - Convert.ToDecimal(imp.CompraTI) +
                                               Convert.ToDecimal(imp.Energia) + Convert.ToDecimal(imp.AluguelPredio) + Convert.ToDecimal(imp.AluguelME) +
                                               Convert.ToDecimal(imp.DespesasF) + Convert.ToDecimal(imp.DespesasME) + Convert.ToDecimal(imp.DespesasA),
                                 cofinsEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualCofins) / 100, 2),
-                                totalCofinsEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + Convert.ToDecimal(imp.SaldoCredorCofins),
+                                totalCofinsEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + saldoCredorCofins,
+                                cofinsCredito = totalCofinsEntrada,
                                 pisEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualPis) / 100, 2),
-                                totalPisEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + Convert.ToDecimal(imp.SaldoCredorPis);
+                                totalPisEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + saldoCredorPis,
+                                pisCredito = totalPisEntrada;
 
                         ViewBag.TotalCompra = totalCompra;
                         ViewBag.CofinsEntrada = cofinsEntrada;
                         ViewBag.TotalCofinsEntrada = totalCofinsEntrada;
+                        ViewBag.CofinsCredito = cofinsCredito;
                         ViewBag.PisEntrada = pisEntrada;
                         ViewBag.TotalPisEntrada = totalPisEntrada;
+                        ViewBag.PisCredito = pisCredito;
 
                         //  Saida
                         decimal totalVendaLiquida = Convert.ToDecimal(imp.Venda) - Convert.ToDecimal(imp.DevolucaoVenda) - Convert.ToDecimal(imp.VendaTI),
@@ -1099,16 +1122,47 @@ namespace Escon.SisctNET.Web.Controllers
                                             Convert.ToDecimal(imp.Capital) + Convert.ToDecimal(imp.ReceitaAluguel) + Convert.ToDecimal(imp.Juros),
                                cofinsSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualCofinsRF) / 100, 2),
                                cofinsSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualCofins) / 100) + cofinsSaidaRF, 2),
+                               cofinsDebito = cofinsSaida,
                                pisSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualPisRF) / 100, 2),
-                               pisSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualPis) / 100) + pisSaidaRF, 2);
+                               pisSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualPis) / 100) + pisSaidaRF, 2),
+                               pisDebito = pisSaida;
 
 
                         ViewBag.TotalVendaLiquida = totalVendaLiquida;
                         ViewBag.TotalVenda = totalVenda;
                         ViewBag.CofinsSaidaRF = cofinsSaidaRF;
                         ViewBag.CofinsSaida = cofinsSaida;
+                        ViewBag.CofinsDebito = cofinsDebito;
                         ViewBag.PisSaidaRF = pisSaidaRF;
                         ViewBag.PisSaida = pisSaida;
+                        ViewBag.PisDebito = pisDebito;
+
+
+                        //  Apuração PIS/COFINS
+                        decimal cofinsRecolher = 0, pisRecolher = 0;
+
+                        if(cofinsDebito - cofinsCredito < 0)
+                        {
+                            imp.SaldoCredorCofins = cofinsCredito - cofinsDebito;
+                        }
+                        else
+                        {
+                            cofinsRecolher = cofinsDebito - cofinsCredito;
+                        }
+
+                        if (pisDebito - pisCredito < 0)
+                        {
+                            imp.SaldoCredorPis = pisCredito - pisDebito;
+                        }
+                        else
+                        {
+                            pisRecolher = pisDebito - pisCredito;
+                        }
+
+                        ViewBag.CofinsRecolher = cofinsRecolher;
+                        ViewBag.PisRecolher = pisRecolher;
+
+                        imp.Updated = DateTime.Now;
 
                     }
                     else if(comp.CountingTypeId == 2)
@@ -1251,7 +1305,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else
                         {
-                            var mesesTrimestre = import.Months(trimestre);
+                            var mesesTrimestre = importTrimestre.Months(trimestre);
 
                             List<List<string>> impostosTrimestre = new List<List<string>>();
                             List<List<string>> impostosBimestre = new List<List<string>>();

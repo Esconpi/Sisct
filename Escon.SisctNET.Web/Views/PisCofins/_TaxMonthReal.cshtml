@@ -28,9 +28,9 @@
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsDebito))</th>
             <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisDebito))</th>
         </tr>
         <tr>
             <th style="text-align:center;border:1px solid;" colspan="2">CRÉDITO COFINS</th>
@@ -56,15 +56,15 @@
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsCredito))</th>
             <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisCredito))</th>
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">COFINS A RECOLHER OU A TRANSPORTAR</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsRecolher))</th>
             <th style="text-align:right;border:1px solid;">PIS A RECOLHER OU A TRANSPORTAR</th>
-            <th style="text-align:right;border:1px solid;"></th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisRecolher))</th>
         </tr>
     </tbody>
 </table>

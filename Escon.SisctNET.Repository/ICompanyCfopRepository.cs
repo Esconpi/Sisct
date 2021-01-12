@@ -13,9 +13,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.CompanyCfop> FindByCfopDevoCompra(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopDevoVenda(string company, Log log = null);
-
-        List<Model.CompanyCfop> FindByCfopVenda(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoCompraST(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopVendaST(string company, Log log = null);
 
@@ -23,13 +21,19 @@ namespace Escon.SisctNET.Repository
 
         List<Model.CompanyCfop> FindByCfopCompraST(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopTransferencia(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopTransferenciaST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoVenda(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopDevoVendaST(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopVenda(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopTransferencia(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopTransferenciaST(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null);
 

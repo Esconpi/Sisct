@@ -564,16 +564,23 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                //  Entrada
                 var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsDevoCompraST = _companyCfopService.FindByCfopDevoCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+
+                //  Saida
                 var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+
+                //  Transferencia
                 var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
                 if (imposto.Equals("icms"))
                 {
@@ -585,7 +592,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             foreach (var cc in caminhos)
                             {
-                                credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST);
+                                credito = importSped.SpedCredito(cc, cfopsDevoVenda, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST, cfopsDevoVendaST);
                             }
 
                             if (imp != null)
@@ -1165,7 +1172,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][j].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsDevoVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                        if (cfopsDevoVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(exitNotes[i][j]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -2089,7 +2096,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (exitNotes[i][k].ContainsKey("CFOP"))
                                             {
                                                 cfop = false;
-                                                if (cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]))
+                                                if (cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) || cfopsDevoCompraST.Contains(exitNotes[i][k]["CFOP"]))
                                                 {
                                                     cfop = true;
                                                 }
@@ -2262,7 +2269,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     cfop = false;
                                                     if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) ||
-                                                        cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]))
+                                                        cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) || cfopsDevoCompraST.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2691,6 +2698,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         InternasDeselencadas = 0, InterestadualDeselencadas = 0, InternasDeselencadasPortaria = 0, InterestadualDeselencadasPortaria = 0,
                                         suspensao = 0, vendasClienteCredenciado = 0, vendas = 0;
 
+                                    //  Vendas
                                     for (int i = exitNotes.Count - 1; i >= 0; i--)
                                     {
                                         if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document) || exitNotes[i][1]["finNFe"] == "4")
@@ -3419,7 +3427,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
 
                                     bool cfop = false;
-
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
