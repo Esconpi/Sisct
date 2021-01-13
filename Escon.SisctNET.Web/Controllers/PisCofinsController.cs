@@ -1102,18 +1102,18 @@ namespace Escon.SisctNET.Web.Controllers
                                               Convert.ToDecimal(imp.Energia) + Convert.ToDecimal(imp.AluguelPredio) + Convert.ToDecimal(imp.AluguelME) +
                                               Convert.ToDecimal(imp.DespesasF) + Convert.ToDecimal(imp.DespesasME) + Convert.ToDecimal(imp.DespesasA),
                                 cofinsEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualCofins) / 100, 2),
-                                totalCofinsEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + saldoCredorCofins,
-                                cofinsCredito = totalCofinsEntrada,
+                                cofinsTotalEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + saldoCredorCofins,
+                                cofinsCredito = cofinsTotalEntrada,
                                 pisEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualPis) / 100, 2),
-                                totalPisEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + saldoCredorPis,
-                                pisCredito = totalPisEntrada;
+                                pisTotalEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + saldoCredorPis,
+                                pisCredito = pisTotalEntrada;
 
                         ViewBag.TotalCompra = totalCompra;
                         ViewBag.CofinsEntrada = cofinsEntrada;
-                        ViewBag.TotalCofinsEntrada = totalCofinsEntrada;
+                        ViewBag.CofinsTotalEntrada = cofinsTotalEntrada;
                         ViewBag.CofinsCredito = cofinsCredito;
                         ViewBag.PisEntrada = pisEntrada;
-                        ViewBag.TotalPisEntrada = totalPisEntrada;
+                        ViewBag.PisTotalEntrada = pisTotalEntrada;
                         ViewBag.PisCredito = pisCredito;
 
                         //  Saida

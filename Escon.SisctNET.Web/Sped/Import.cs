@@ -2141,7 +2141,7 @@ namespace Escon.SisctNET.Web.Sped
         {
             List<decimal> entradas = new List<decimal>();
 
-            decimal compra = 0, devolucoe = 0;
+            decimal compra = 0, devolucao = 0;
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
 
@@ -2214,7 +2214,7 @@ namespace Escon.SisctNET.Web.Sped
                                         if (ehMono == null)
                                         {
                                             // Devolução Normal
-                                            devolucoe += Convert.ToDecimal(linhaTemp[7]);
+                                            devolucao += Convert.ToDecimal(linhaTemp[7]);
                                         }
                                         
                                     }
@@ -2243,7 +2243,7 @@ namespace Escon.SisctNET.Web.Sped
             }
 
             entradas.Add(compra);
-            entradas.Add(devolucoe);
+            entradas.Add(devolucao);
 
             return entradas;
         }

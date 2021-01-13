@@ -3697,6 +3697,11 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.IcnsAnexo = Math.Round(saldoDevedor - valorFecop, 2);
                             ViewBag.FecopAnexo = Math.Round(valorFecop, 2);
                         }
+                        else
+                        {
+                            ViewBag.IcnsAnexo = 0;
+                            ViewBag.FecopAnexo = 0;
+                        }
                     }
 
 

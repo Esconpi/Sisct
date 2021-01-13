@@ -485,6 +485,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                         icmsApu = calculation.icmsApurado(dif, baseCalc);
                                     }
+                                    else if(taxedtype.Type == "Isento")
+                                    {
+                                        baseCalc = baseDeCalc;
+                                    }
+                                    else if (taxedtype.Type == "NT")
+                                    {
+                                        baseCalc = baseDeCalc;
+                                    }
                                     
                                     try
                                     {

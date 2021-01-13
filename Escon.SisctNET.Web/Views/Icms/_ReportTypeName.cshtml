@@ -2,6 +2,22 @@
 {
     <strong>Resumo CFOP</strong>
 }
+else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
+{
+    <strong>Resumo CFOP Anexo Analítico</strong>
+}
+else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
+{
+    <strong>Resumo CFOP Fora do Anexo Analítico</strong>
+}
+else if (ViewBag.Type == "resumoCfopCst")
+{
+    <strong>Resumo CFOP/CST</strong>
+}
+else if (ViewBag.Type == "resumoPorCfop")
+{
+    <strong>Resumo por CFOP - @ViewBag.Code</strong>
+}
 else if (ViewBag.Type == "venda")
 {
     <strong>Relatório de Penalidade</strong>
@@ -18,10 +34,7 @@ else if (ViewBag.Type == "incentivo")
 {
     <strong>Apuração Icms</strong>
 }
-else if (ViewBag.Type == "resumoPorCfop")
-{
-    <strong>Resumo por CFOP - @ViewBag.Code</strong>
-}
+
 else if (ViewBag.Type == "suspensao")
 {
     <div>
@@ -40,10 +53,7 @@ else if (ViewBag.Type == "anexoMedicamento")
 {
     <strong> ANEXO CLIX</strong>
 }
-else if (ViewBag.Type == "foraIncentivo")
-{
-    <strong>Resumo CFOP Fora do Anexo</strong>
-}
+
 else if (ViewBag.Type == "produtoST")
 {
     <strong>Produtos ST com Base de Cálculo</strong>
@@ -52,10 +62,7 @@ else if (ViewBag.Type == "tributacaoDiveregente")
 {
     <strong>Tributação Divergente (ICMS)</strong>
 }
-else if (ViewBag.Type == "resumoCfopCst")
-{
-    <strong>Resumo CFOP/CST</strong>
-}
+
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {
