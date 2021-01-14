@@ -903,12 +903,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.AgrupadoA) ||
                     type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
-                {
+                {                    
 
-                    if(prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                    if (!type.Equals(Model.Type.Nota))
                     {
-                        ViewBag.Erro = 4;
-                        return View(null);
+                        if (prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                        {
+                            ViewBag.Erro = 4;
+                            return View(null);
+                        }
                     }
 
                     if (type.Equals(Model.Type.Nota))
@@ -919,7 +922,20 @@ namespace Escon.SisctNET.Web.Controllers
                         notesI = notes.Where(_ => _.Iest != "");
                         icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                         icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
-                        products = _service.FindByProductsType(notes, typeTaxation);
+                        products = _service.FindByProductsType(notes, typeTaxation)
+                            .OrderBy(_ => _.Note.Iest)
+                            .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
+                            .ToList(); 
+
+                        prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
+
+                        ViewBag.NotaNumber = nota;
+
+                        if (prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                        {
+                            ViewBag.Erro = 4;
+                            return View(null);
+                        }
                     }
 
                     if (type.Equals(Model.Type.AgrupadoA))
@@ -927,19 +943,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.NotasTaxation = notasTaxation;
                         ViewBag.Products = products;
                     }
-
-                    if (type.Equals(Model.Type.ProdutoI))
-                    {
-                        products = products.Where(_ => _.Incentivo.Equals(true)).ToList();
-                    }
-
-                    if (type.Equals(Model.Type.ProdutoNI))
-                    {
-                        products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
-                    }
-
-                    ViewBag.Registro = products.Count();
-                    decimal totalFecop = Convert.ToDecimal(products.Select(_ => _.TotalFecop).Sum());
 
                     if (type.Equals(Model.Type.AgrupadoS))
                     {
@@ -1000,6 +1003,21 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.NotasTaxation = notasAgrup;
                         ViewBag.Registro = notasAgrup.Count();
                     }
+                   
+                    if (type.Equals(Model.Type.ProdutoI))
+                    {
+                        products = products.Where(_ => _.Incentivo.Equals(true)).ToList();
+                    }
+
+                    if (type.Equals(Model.Type.ProdutoNI))
+                    {
+                        products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
+                    }
+
+                    ViewBag.Registro = products.Count();
+                    decimal totalFecop = Convert.ToDecimal(products.Select(_ => _.TotalFecop).Sum());
+
+                   
 
                     ViewBag.Notes = notes;
 

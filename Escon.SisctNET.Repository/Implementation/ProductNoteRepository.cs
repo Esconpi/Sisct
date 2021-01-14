@@ -107,6 +107,11 @@ namespace Escon.SisctNET.Repository.Implementation
                     var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)));
                     products.AddRange(rst);
                 }
+                else if (taxationType.Equals(Model.TypeTaxation.NT))
+                {
+                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(9)));
+                    products.AddRange(rst);
+                }
             }
             AddLog(log);
             return products;

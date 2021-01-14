@@ -32,8 +32,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Consumo")] CO = 4,
         [Display(Name = "Consumo para Revenda")] COR = 5,
         [Display(Name = "Imobilizado")] IM = 6,
-        [Display(Name = "Isento")] Isento = 7
-        
+        [Display(Name = "Isento")] Isento = 7,
+        [Display(Name = "Não Tributado")] NT = 8
+
     }
 
     public enum Type

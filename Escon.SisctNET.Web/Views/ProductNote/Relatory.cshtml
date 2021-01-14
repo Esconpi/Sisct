@@ -139,7 +139,7 @@
 
                         @await Html.PartialAsync("_SummaryProducts", new ViewDataDictionary(ViewData))
 
-                        if (ViewBag.TypeTaxation != "Isento")
+                        if (ViewBag.TypeTaxation != "Isento" && ViewBag.TypeTaxation != "NT")
                         {
                             <!-- Resumo Imposto -->
 

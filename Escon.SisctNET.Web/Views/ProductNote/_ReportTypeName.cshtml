@@ -1,6 +1,5 @@
 ﻿<br />
 
-
 @if (ViewBag.Type == "AgrupadoA")
 {
     <strong>Agrupado - Analítico &nbsp;</strong>
@@ -21,6 +20,11 @@
 @if (ViewBag.Type == "IcmsProdutor")
 {
     <strong>Icms Produtor Rural</strong>
+}
+
+@if (ViewBag.Type == "Nota")
+{
+    <strong>Nota: @ViewBag.NotaNumber &nbsp;</strong>
 }
 
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
@@ -52,6 +56,10 @@
     else if (ViewBag.TypeTaxation == "AT")
     {
         <strong>Antecipação Total</strong>
+    }
+    else if (ViewBag.TypeTaxation == "NT")
+    {
+        <strong>Não Tributado</strong>
     }
 }
 

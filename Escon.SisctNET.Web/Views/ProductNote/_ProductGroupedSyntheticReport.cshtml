@@ -38,43 +38,45 @@
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]))</td>
                 <td>@ViewBag.NotasTaxation[i][6]</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][7]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][7]) +
-                                            Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][9]))</td>
-                @if (ViewBag.TypeTaxation == "ST")
-                {
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][10]))</td>
-                }
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][11]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][12]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][14]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][20]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][15]))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][16]))</td>
-            </tr>
-        </tbody>
-    }
+                <td>
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]) + Convert.ToDecimal(ViewBag.NotasTaxation[i][7]) +
+                                        Convert.ToDecimal(ViewBag.NotasTaxation[i][8]))
+            </td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][9]))</td>
+            @if (ViewBag.TypeTaxation == "ST")
+            {
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][10]))</td>
+            }
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][11]))</td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][12]))</td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][14]))</td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][20]))</td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][15]))</td>
+            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][16]))</td>
+        </tr>
+    </tbody>
+}
 }
 else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
     ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM")
 {
-<thead>
-    <tr style="border:1px solid;">
-        <th></th>
-        <th>Nota</th>
-        <th>Fornecedor</th>
-        <th>UF</th>
-        <th>Dia/Mês</th>
-        <th>V. Nota</th>
-        <th>V. Produtos</th>
-        <th>Frete Nº</th>
-        <th>V. Frete</th>
-        <th>BC ICMS</th>
-        <th>ICMS ST NFe</th>
-        <th>ICMS Apurado</th>
+    <thead>
+        <tr style="border:1px solid;">
+            <th></th>
+            <th>Nota</th>
+            <th>Fornecedor</th>
+            <th>UF</th>
+            <th>Dia/Mês</th>
+            <th>V. Nota</th>
+            <th>V. Produtos</th>
+            <th>Frete Nº</th>
+            <th>V. Frete</th>
+            <th>BC ICMS</th>
+            <th>ICMS ST NFe</th>
+            <th>ICMS Apurado</th>
 
-    </tr>
-</thead>
+        </tr>
+    </thead>
 
     @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
     {
@@ -103,4 +105,42 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
         </tbody>
     }
 
+}
+else if (ViewBag.TypeTaxation == "Isento" || ViewBag.TypeTaxation == "NT")
+{
+    <thead>
+        <tr style="border:1px solid;">
+            <th></th>
+            <th>Nota</th>
+            <th>Fornecedor</th>
+            <th>UF</th>
+            <th>Dia/Mês</th>
+            <th>V. Nota</th>
+            <th>V. Produtos</th>
+
+
+        </tr>
+    </thead>
+
+    @for (int i = 0; i < ViewBag.NotasTaxation.Count; i++)
+    {
+        <tbody style="border:1px solid;">
+            <tr style="font-size:11px; border:1px solid;">
+                @if (ViewBag.NotasTaxation[i][21] == "")
+                {
+                    <td><strong>S</strong></td>
+                }
+                else
+                {
+                    <td><strong>I</strong></td>
+                }
+                <td>@ViewBag.NotasTaxation[i][0]</td>
+                <td>@ViewBag.NotasTaxation[i][1]</td>
+                <td>@ViewBag.NotasTaxation[i][19]</td>
+                <td>@ViewBag.NotasTaxation[i][2]</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][3]))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.NotasTaxation[i][4]))</td>
+            </tr>
+        </tbody>
+    }
 }

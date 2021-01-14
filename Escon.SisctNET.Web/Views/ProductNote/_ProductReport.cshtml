@@ -135,14 +135,14 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
             }
         </tbody>
 }
-else if (ViewBag.TypeTaxation == "Isento")
+else if (ViewBag.TypeTaxation == "Isento" || ViewBag.TypeTaxation == "NT")
 {
     <thead style="font-size:12px;">
         <tr>
-            <th>Nota</th>
-            <th>Produtos</th>
-            <th>NCM</th>
-            <th>Valor dos produtos</th>
+            <th style="text-align:center;">Nota</th>
+            <th style="text-align:center;">Produto</th>
+            <th style="text-align:center;">NCM</th>
+            <th style="text-align:center;">Valor Produto</th>
         </tr>
     </thead>
     <tbody style="font-size:12px;">
@@ -151,8 +151,8 @@ else if (ViewBag.TypeTaxation == "Isento")
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
                 <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
-                <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
+                <td style="text-align:center;">@Html.DisplayFor(modelItem => item.Ncm)</td>
+                <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
             </tr>
         }
 

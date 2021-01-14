@@ -67,7 +67,7 @@
                     else if (ViewBag.Type == "resumoCfopCst")
                     {
                         <!-- Resumo CFOP/CST -->
-                        
+
                         @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoCfopMono")
@@ -84,18 +84,20 @@
                     }
                     else if (ViewBag.Type == "resumoProdCfopNcmCstMono")
                     {
-                        <!-- Resumo Produto/NCM/CST -->
+                        <!-- Resumo Produto/NCM/CST Monofásico -->
 
                         @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoNcmMono")
                     {
-                        <!-- Resumo NCM -->
+                        <!-- Resumo NCM Monofásico -->
 
                         @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "imposto")
                     {
+                        <!--Apuração Imposto Federal-->
+
                         @if (ViewBag.Company.CountingTypeId == 1)
                         {
                             <!-- Empresa Lucro Real -->
@@ -109,7 +111,7 @@
                             @if (ViewBag.Trimestre == "Nenhum")
                             {
                                 <!-- Imposto Mês -->
-                                
+
                                 @await Html.PartialAsync("_TaxMonthPresumido", new ViewDataDictionary(ViewData))
                             }
                             else

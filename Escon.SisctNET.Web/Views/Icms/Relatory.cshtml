@@ -63,7 +63,7 @@
                 }
                 else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
                 {
-                    <!-- Resumo CFOP Fora do Anexo -->
+                    <!-- Resumo CFOP Fora do Anexo Anilítico -->
 
                     @await Html.PartialAsync("_SummaryCfopAnalyticalFAttachment", new ViewDataDictionary(ViewData))
                 }
@@ -93,7 +93,7 @@
                 }
                 else if (ViewBag.Type == "suspensao")
                 {
-                    <!-- Notas Durante Suspensão-->
+                    <!-- Resumo Notas no Periodo de Suspensão da Empresa -->
 
                     @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
                 }
@@ -176,7 +176,7 @@
                     }
                     else
                     {
-                        <!-- Relatório ICMS Sobre Compras-->
+                        <!-- Relatório ICMS Sobre Saida-->
 
                         if (ViewBag.Company.AnnexId != 3)
                         {
