@@ -3712,12 +3712,12 @@ namespace Escon.SisctNET.Web.Controllers
                             totalDarFecop += Math.Round(valorFecop, 2);
                             totalDarIcms += Math.Round(saldoDevedor - valorFecop, 2);
 
-                            ViewBag.IcnsAnexo = Math.Round(saldoDevedor - valorFecop, 2);
+                            ViewBag.IcmsAnexo = Math.Round(saldoDevedor - valorFecop, 2);
                             ViewBag.FecopAnexo = Math.Round(valorFecop, 2);
                         }
                         else
                         {
-                            ViewBag.IcnsAnexo = 0;
+                            ViewBag.IcmsAnexo = 0;
                             ViewBag.FecopAnexo = 0;
                         }
                     }
