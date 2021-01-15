@@ -2,65 +2,81 @@
 {
     <strong>Resumo CFOP</strong>
 }
+else if (ViewBag.Type == "resumoCfopAnexo")
+{
+    <strong>Resumo CFOP Anexo</strong>
+}
 else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
 {
     <strong>Resumo CFOP Anexo Analítico</strong>
+}
+else if (ViewBag.Type == "resumoCfopAnexoDC")
+{
+    <strong>Resumo CFOP Anexo Débito/Crédito</strong>
+}
+else if (ViewBag.Type == "resumoCfopForaAnexo")
+{
+    <strong>Resumo CFOP Fora do Anexo</strong>
 }
 else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
 {
     <strong>Resumo CFOP Fora do Anexo Analítico</strong>
 }
+else if (ViewBag.Type == "resumoCfopForaAnexoDC")
+{
+    <strong>Resumo CFOP Fora do Anexo Débito/Crédito</strong>
+}
 else if (ViewBag.Type == "resumoCfopCst")
 {
-    <strong>Resumo CFOP/CST</strong>
+    <strong> Resumo CFOP / CST </strong>
 }
 else if (ViewBag.Type == "resumoPorCfop")
 {
-    <strong>Resumo por CFOP - @ViewBag.Code</strong>
+    <strong> Resumo por CFOP -@ViewBag.Code </strong>
 }
 else if (ViewBag.Type == "venda")
 {
-    <strong>Relatório de Penalidade</strong>
+    <strong> Relatório de Penalidade</strong>
 }
 else if (ViewBag.Type == "anexo")
 {
-    <strong>Venda @ViewBag.Anexo</strong>
+    <strong> Venda @ViewBag.Anexo </strong>
 }
 else if (ViewBag.Type == "foraAnexo")
 {
-    <strong>Venda Fora Anexo</strong>
+    <strong> Venda Fora Anexo</strong>
 }
 else if (ViewBag.Type == "incentivo")
 {
-    <strong>Apuração Icms</strong>
+    <strong> Apuração Icms </strong>
 }
 
 else if (ViewBag.Type == "suspensao")
 {
     <div>
-        <strong>Suspensão: </strong> <br />
+        <strong> Suspensão: </strong> <br />
         @foreach (var p in ViewBag.Periodos)
         {
-            <p>@Convert.ToDateTime(p[1]).ToString("dd/MM/yyyy hh:mm:ss") à @Convert.ToDateTime(p[2]).ToString("dd/MM/yyyy hh:mm:ss")</p>
+            <p> @Convert.ToDateTime(p[1]).ToString("dd/MM/yyyy hh:mm:ss") à @Convert.ToDateTime(p[2]).ToString("dd/MM/yyyy hh:mm:ss") </p>
         }
     </div>
 }
 else if (ViewBag.Type == "anexoAutoPecas")
 {
-    <strong> ANEXO CCCXVI</strong>
+    <strong> ANEXO CCCXVI </strong>
 }
 else if (ViewBag.Type == "anexoMedicamento")
 {
-    <strong> ANEXO CLIX</strong>
+    <strong> ANEXO CLIX </strong>
 }
 
 else if (ViewBag.Type == "produtoST")
 {
-    <strong>Produtos ST com Base de Cálculo</strong>
+    <strong> Produtos ST com Base de Cálculo </strong>
 }
 else if (ViewBag.Type == "tributacaoDiveregente")
 {
-    <strong>Tributação Divergente (ICMS)</strong>
+    <strong> Tributação Divergente(ICMS) </strong>
 }
 
 

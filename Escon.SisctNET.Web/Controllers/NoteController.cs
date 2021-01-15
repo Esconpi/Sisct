@@ -58,14 +58,16 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
 
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
-                var result = _service.FindByNotes(id, year, month).OrderBy(_ => _.Status).ThenBy(_ => _.View).ToList();
-                ViewBag.Count = result.Count();
+                var result = _service.FindByNotes(id, year, month)
+                    .OrderBy(_ => _.Status)
+                    .ThenBy(_ => _.View)
+                    .ToList();
                 return View(result);
             }
             catch (Exception ex)
@@ -103,7 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> notas = new  List<Note>();
 
-                notes = importXml.Nfe(directoryNfe, directotyCte);
+                notes = importXml.NFeAll(directoryNfe, directotyCte);
 
                 var taxationCompany = _taxationService.FindByCompany(id);
                 var ncmConvenio = _ncmConvenioService.FindAll(null);
@@ -413,7 +415,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Freterateado = frete_prod;
                                         prod.NoteId = nota.Id;
                                         prod.Nitem = det["nItem"];
-                                        prod.Orig = Convert.ToInt32(det["orig"]);
+                                        prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
                                         prod.Incentivo = incentivo;
                                         prod.Status = false;
                                         prod.Created = DateTime.Now;
@@ -538,7 +540,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.TaxationTypeId = taxed.TaxationTypeId;
                                         prod.NoteId = nota.Id;
                                         prod.Nitem = det["nItem"];
-                                        prod.Orig = Convert.ToInt32(det["orig"]);
+                                        prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
                                         prod.Incentivo = incentivo;
                                         prod.Produto = "Normal";
                                         prod.Status = true;

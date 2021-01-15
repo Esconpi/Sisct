@@ -142,15 +142,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (option.Equals("all"))
                 {
-                    sped = importSped.SpedAll(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                    sped = importSped.NFeAll(caminhoDestinoArquivoOriginalUpload, directoryNfe);
                 }
                 else if (option.Equals("entry"))
                 {
-                    sped = importSped.SpedEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
+                    sped = importSped.NFeEntry(caminhoDestinoArquivoOriginalUpload, directoryNfe);
                 }
                 else if (option.Equals("entryOriginal"))
                 {
-                    sped = importSped.SpedEntry(caminhoDestinoArquivoOriginalUpload);
+                    sped = importSped.NFeEntry(caminhoDestinoArquivoOriginalUpload);
                 }
                 
 

@@ -82,10 +82,10 @@ namespace Escon.SisctNET.Web.Controllers
                         directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(comp, confDBSisctNfe.Value, year, month);
                     }
 
-                    notesValidas = importXml.NfeResume(directoryValida);
-                    notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                    notesValidas = importXml.NFeResumeEmit(directoryValida);
+                    notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
                     notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                    notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                    notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
                     notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
 
                     for (int i = notesValidas.Count - 1; i >= 0; i--)
@@ -480,7 +480,7 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
 
-                    var sped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, "1");
+                    var sped = importSped.NfeType(caminhoDestinoArquivoOriginalSped, "1");
 
                     foreach (var note in sped)
                     {
@@ -587,7 +587,7 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
 
-                    var sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped, "1");
+                    var sped = importSped.CTeType(caminhoDestinoArquivoOriginalSped, "1");
                 }
 
                 List<List<int>> nfe55Fora = new List<List<int>>();

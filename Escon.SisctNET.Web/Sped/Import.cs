@@ -28,7 +28,48 @@ namespace Escon.SisctNET.Web.Sped
 
         public Import() { }
 
-        public List<string> SpedAll(string directorySped, string directoryNfe)
+
+        // NFe
+
+        public List<List<string>> NFeAll(string directorySped)
+        {
+            List<List<string>> spedNfe = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100")
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
+
+        public List<string> NFeAll(string directorySped, string directoryNfe)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); 
 
@@ -45,7 +86,7 @@ namespace Escon.SisctNET.Web.Sped
 
             var importXml = new Xml.Import(_companyCfopService);
 
-            notes = importXml.Nfe(directoryNfe);
+            notes = importXml.NFeAll(directoryNfe);
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -1003,7 +1044,7 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public List<string> SpedEntry(string directorySped, string directoryNfe)
+        public List<string> NFeEntry(string directorySped, string directoryNfe)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); 
 
@@ -1020,7 +1061,7 @@ namespace Escon.SisctNET.Web.Sped
 
             var importXml = new Xml.Import(_companyCfopService);
 
-            notes = importXml.Nfe(directoryNfe);
+            notes = importXml.NFeAll(directoryNfe);
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -1957,7 +1998,7 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public List<string> SpedEntry(string directorySped)
+        public List<string> NFeEntry(string directorySped)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
@@ -2060,84 +2101,9 @@ namespace Escon.SisctNET.Web.Sped
             return sped;
         }
 
-        public decimal SpedCredito(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi, 
-                                    List<string> cfopsCompraST, List<string> cfopsTransf,List<string> cfopsTransfST, List<string> cfopsDevoST)
-        {
-            decimal totalDeCredito = 0;
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line, tipo = "";
-
-            try
-            {
-
-                bool fob = false, cfop = false;
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-
-                    if (linha[1].Equals("C100"))
-                    {
-                        tipo = linha[2];
-                        cfop = false;
-                    }
-
-                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) || 
-                        cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
-                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
-                    {
-                        totalDeCredito += Convert.ToDecimal(linha[7]);
-                        cfop = true;
-
-                    }
-
-                    if (linha[1].Equals("C191") && cfop == true && tipo == "0")
-                    {
-                        totalDeCredito += Convert.ToDecimal(linha[2]);
-                    }
-
-                    if (linha[1].Equals("D100"))
-                    {
-                        tipo = linha[2];
-                    }
-
-                    if (tipo == "0")
-                    {
-                        if (linha[1].Equals("D100") && linha[17].Equals("1"))
-                        {
-                            fob = true;
-                        }
-                        else if (linha[1].Equals("D100") && !linha[17].Equals("1"))
-                        {
-                            fob = false;
-                        }
-
-                        if (fob.Equals(true) && cfopsCompra.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
-                        {
-                            totalDeCredito += Convert.ToDecimal(linha[7]);
-                        }
-
-                    }
-                    
-
-                }
-
-            }
-
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return totalDeCredito;
-        } 
-
-        public List<decimal> SpedEntrada(string directorySped, List<string> cfopsCompra,List<string> cfopsBonifi,List<string> cfopsCompraST,
-                                    List<string> cfopsTransf,List<string> cfopsTransfST, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
+        public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
+                                  List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevo, List<string> cfopsDevoST,
+                                  List<Model.TaxationNcm> taxationNcms)
         {
             List<decimal> entradas = new List<decimal>();
 
@@ -2172,7 +2138,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                 if (linhaTemp[1].Equals("C100") && tipo == "0")
                                 {
-                                    DateTime dataNota =  Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
+                                    DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
                                     ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                                 }
 
@@ -2190,18 +2156,18 @@ namespace Escon.SisctNET.Web.Sped
 
                                         ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
 
-                                        if(ehMono != null)
+                                        if (ehMono != null)
                                         {
                                             break;
                                         }
 
                                     }
-                                  
+
 
                                     if ((cfopsCompra.Contains(linhaTemp[11]) || cfopsBonifi.Contains(linhaTemp[11]) || cfopsCompraST.Contains(linhaTemp[11])
                                         || cfopsTransf.Contains(linhaTemp[11]) || cfopsTransfST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
                                     {
-                                      
+
                                         if (ehMono == null)
                                         {
                                             // Compra Normal
@@ -2209,14 +2175,14 @@ namespace Escon.SisctNET.Web.Sped
                                         }
                                     }
 
-                                    if (cfopsDevo.Contains(linhaTemp[11]) && !linhaTemp[7].Equals(""))
+                                    if ((cfopsDevo.Contains(linhaTemp[11]) || cfopsDevoST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
                                     {
                                         if (ehMono == null)
                                         {
                                             // Devolução Normal
                                             devolucao += Convert.ToDecimal(linhaTemp[7]);
                                         }
-                                        
+
                                     }
                                 }
                             }
@@ -2248,178 +2214,7 @@ namespace Escon.SisctNET.Web.Sped
             return entradas;
         }
 
-        public List<decimal> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms)
-        {
-            List<decimal> Devolucoes = new List<decimal>();
-
-            var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
-            var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
-            var codeProd3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
-            var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
-
-            var ncm1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
-            var ncm2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
-            var ncm3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
-            var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
-
-            List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
-
-            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-
-                    if (linha[1].Equals("0200"))
-                    {
-                        StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-                        string lineTemp, tipo = "";
-                        try
-                        {
-                            while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
-                            {
-                                string[] linhaTemp = lineTemp.Split('|');
-
-                                if (linhaTemp[1].Equals("C100"))
-                                {
-                                    tipo = linhaTemp[2];
-                                }
-
-                                if (linhaTemp[1].Equals("C100") && tipo == "0")
-                                {
-                                    DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
-                                    ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
-                                }
-
-                                if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
-                                {
-                                    if (cfopsDevo.Contains(linhaTemp[11]) && !linhaTemp[7].Equals(""))
-                                    {
-                                        if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
-                                        {
-                                            // Devolução Pretoleo
-                                            devolucaoPetroleo += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
-                                        {
-                                            // Devolução Comercio
-                                            devolucaoComercio += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
-                                        {
-                                            // Devolução Transporte
-                                            devolucaoTransporte += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
-                                        {
-                                            // Devolução Serviço
-                                            devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-
-                                        Model.TaxationNcm ehMono = null;
-
-                                        var prod = linha[2];
-
-                                        foreach (var n in ncmsTaxation)
-                                        {
-                                            int qtd = n.CodeProduct.Length;
-
-                                            string code = prod.Substring(prod.Length - qtd);
-
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
-
-                                            if (ehMono != null)
-                                            {
-                                                break;
-                                            }
-
-                                        }
-
-                                        if (ehMono == null)
-                                        {
-                                            // Devolução Normal
-                                            devolucaoNormal += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.Out.WriteLine(ex.Message);
-                        }
-                        finally
-                        {
-                            archiveSpedTemp.Close();
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-
-            Devolucoes.Add(devolucaoPetroleo);
-            Devolucoes.Add(devolucaoComercio);
-            Devolucoes.Add(devolucaoTransporte);
-            Devolucoes.Add(devolucaoServico);
-            Devolucoes.Add(devolucaoNormal);
-
-            return Devolucoes;
-        }
-
-        public List<List<string>> SpedNfe(string directorySped)
-        {
-            List<List<string>> spedNfe = new List<List<string>>();
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-                    //if (linha[1] == "C100" && (linha[2] == "1" || linha[2] == "0"))
-                    if (linha[1] == "C100")
-                    {
-                        List<string> sped = new List<string>();
-                        sped.Add(linha[9]);
-                        sped.Add(linha[5]);
-                        sped.Add(linha[8]);
-                        sped.Add(linha[12]);
-                        sped.Add(linha[3]);
-                        sped.Add(linha[2]);
-                        spedNfe.Add(sped);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return spedNfe;
-        }
-
-        public List<List<string>> SpedNfeSaida(string directorySped)
+        public List<List<string>> NFeExit(string directorySped)
         {
             List<List<string>> spedNf = new List<List<string>>();
 
@@ -2455,7 +2250,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedNf;
         }
 
-        public List<List<string>> SpedNfeSaidaNormal(string directorySped)
+        public List<List<string>> NFeExitNormal(string directorySped)
         {
             List<List<string>> spedNf = new List<List<string>>();
 
@@ -2491,7 +2286,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedNf;
         }
         
-        public List<List<string>> SpedNfeSaidaCancelada(string directorySped, string modelo)
+        public List<List<string>> NFeExitCancelada(string directorySped, string modelo)
         {
             List<List<string>> spedNf = new List<List<string>>();
 
@@ -2568,38 +2363,7 @@ namespace Escon.SisctNET.Web.Sped
 
         }
 
-        public List<string> SpedCte(string directorySped)
-        {
-            List<string> sped = new List<string>();
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-                    if (linha[1] == "D100")
-                    {
-                        sped.Add(linha[10]);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return sped;
-        }
-
-        public List<List<string>> SpedNfe(string directorySped, string tipo)
+        public List<List<string>> NfeType(string directorySped, string tipo)
         {
             List<List<string>> spedNfe = new List<List<string>>();
 
@@ -2638,7 +2402,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedNfe;
         }
 
-        public List<List<string>> SpedNfe(string directorySped, string tipo, string emissao)
+        public List<List<string>> NfeTypeEmission(string directorySped, string tipo, string emissao)
         {
             List<List<string>> spedNfe = new List<List<string>>();
 
@@ -2677,43 +2441,8 @@ namespace Escon.SisctNET.Web.Sped
             return spedNfe;
         }
 
-        public List<List<string>> SpedCte(string directorySped, string tipo)
-        {
-            List<List<string>> spedNfe = new List<List<string>>();
 
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-                    if (linha[1] == "D100" && linha[2].Equals(tipo))
-                    {
-                        List<string> sped = new List<string>();
-                        sped.Add(linha[9]);
-                        sped.Add(linha[10]);
-                        sped.Add(linha[11]);
-                        sped.Add(linha[15]);
-                        spedNfe.Add(sped);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return spedNfe;
-        }
-
-        public List<List<List<string>>> SpedInterna(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
+        public List<List<List<string>>> SpedInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
                                                     List<string> cfopsTransf, List<string> cfopsDevo, List<string> ncms)
         {
             List<List<List<string>>> spedInterna = new List<List<List<string>>>();
@@ -2865,7 +2594,140 @@ namespace Escon.SisctNET.Web.Sped
             return spedInterna;
         }
 
-        public List<List<string>> SpedDevolucao(string directorySped, List<string> cfopsDevo, List<string> ncms)
+
+        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms)
+        {
+            List<decimal> Devolucoes = new List<decimal>();
+
+            var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
+            var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+            var codeProd3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
+            var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
+
+            var ncm1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
+            var ncm2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+            var ncm3 = taxationNcms.Where(_ => _.TypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
+            var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
+
+            List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
+
+            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+                        string lineTemp, tipo = "";
+                        try
+                        {
+                            while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
+                            {
+                                string[] linhaTemp = lineTemp.Split('|');
+
+                                if (linhaTemp[1].Equals("C100"))
+                                {
+                                    tipo = linhaTemp[2];
+                                }
+
+                                if (linhaTemp[1].Equals("C100") && tipo == "0")
+                                {
+                                    DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
+                                    ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
+                                }
+
+                                if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
+                                {
+                                    if ((cfopsDevo.Contains(linhaTemp[11]) || cfopsDevoST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
+                                    {
+                                        if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
+                                        {
+                                            // Devolução Pretoleo
+                                            devolucaoPetroleo += Convert.ToDecimal(linhaTemp[7]);
+                                        }
+                                        else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
+                                        {
+                                            // Devolução Comercio
+                                            devolucaoComercio += Convert.ToDecimal(linhaTemp[7]);
+                                        }
+                                        else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
+                                        {
+                                            // Devolução Transporte
+                                            devolucaoTransporte += Convert.ToDecimal(linhaTemp[7]);
+                                        }
+                                        else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
+                                        {
+                                            // Devolução Serviço
+                                            devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
+                                        }
+
+                                        Model.TaxationNcm ehMono = null;
+
+                                        var prod = linha[2];
+
+                                        foreach (var n in ncmsTaxation)
+                                        {
+                                            int qtd = n.CodeProduct.Length;
+
+                                            string code = prod.Substring(prod.Length - qtd);
+
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                            if (ehMono != null)
+                                            {
+                                                break;
+                                            }
+
+                                        }
+
+                                        if (ehMono == null)
+                                        {
+                                            // Devolução Normal
+                                            devolucaoNormal += Convert.ToDecimal(linhaTemp[7]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.Out.WriteLine(ex.Message);
+                        }
+                        finally
+                        {
+                            archiveSpedTemp.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            Devolucoes.Add(devolucaoPetroleo);
+            Devolucoes.Add(devolucaoComercio);
+            Devolucoes.Add(devolucaoTransporte);
+            Devolucoes.Add(devolucaoServico);
+            Devolucoes.Add(devolucaoNormal);
+
+            return Devolucoes;
+        }
+
+        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<string> ncms)
         {
             List<List<string>> spedDevo = new List<List<string>>();
 
@@ -2920,7 +2782,7 @@ namespace Escon.SisctNET.Web.Sped
                                     }
 
                                     if (linhaTemp[1].Equals("C170") && tipo == "0" && !linhaTemp[13].Equals("") && !linhaTemp[14].Equals("") && !linhaTemp[15].Equals("") &&
-                                        cfopsDevo.Contains(linhaTemp[11]))
+                                        (cfopsDevo.Contains(linhaTemp[11]) || cfopsDevoST.Contains(linhaTemp[11])))
                                     {
                                         if (linha[2].Equals(linhaTemp[3]))
                                         {
@@ -2973,5 +2835,154 @@ namespace Escon.SisctNET.Web.Sped
 
             return spedDevo;
         }
+
+        public decimal NFeCredit(string directorySped, List<string> cfopsDevo, List<string> cfopsCompra, List<string> cfopsBonifi,
+                            List<string> cfopsCompraST, List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevoST)
+        {
+            decimal totalDeCredito = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line, tipo = "", emissao = "";
+
+            try
+            {
+
+                bool fob = false, cfop = false;
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipo = linha[2];
+                        emissao = linha[3];
+                        cfop = false;
+                    }
+
+                    if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) ||
+                        cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
+                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0" && (tipo == "0" && emissao == "0"))
+                    {
+                        totalDeCredito += Convert.ToDecimal(linha[7]);
+                        cfop = true;
+
+                    }
+
+                    if (linha[1].Equals("C191") && cfop == true && tipo == "0")
+                    {
+                        totalDeCredito += Convert.ToDecimal(linha[2]);
+                    }
+
+                    if (linha[1].Equals("D100"))
+                    {
+                        tipo = linha[2];
+                    }
+
+                    if (tipo == "0")
+                    {
+                        if (linha[1].Equals("D100") && linha[17].Equals("1"))
+                        {
+                            fob = true;
+                        }
+                        else if (linha[1].Equals("D100") && !linha[17].Equals("1"))
+                        {
+                            fob = false;
+                        }
+
+                        if (fob.Equals(true) && cfopsCompra.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
+                        {
+                            totalDeCredito += Convert.ToDecimal(linha[7]);
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return totalDeCredito;
+        }
+
+
+
+        // CTe
+
+        public List<string> CTeAll(string directorySped)
+        {
+            List<string> sped = new List<string>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "D100")
+                    {
+                        sped.Add(linha[10]);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return sped;
+        }
+
+        public List<List<string>> CTeType(string directorySped, string tipo)
+        {
+            List<List<string>> spedNfe = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "D100" && linha[2].Equals(tipo))
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[10]);
+                        sped.Add(linha[11]);
+                        sped.Add(linha[15]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
+
     }
 }

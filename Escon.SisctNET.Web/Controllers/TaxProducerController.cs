@@ -116,8 +116,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                 List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();        
                 
-                exitNotes = importXml.Nfe(directoryNfeExit);
-                entryNotes = importXml.Nfe(directoryNfeEntry);
+                exitNotes = importXml.NFeAll(directoryNfeExit);
+                entryNotes = importXml.NFeAll(directoryNfeEntry);
 
                 var clientes = _clientService.FindByCompany(companyid);
                 var providers = _providerService.FindByCompany(companyid);

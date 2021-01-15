@@ -251,8 +251,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vicms),
                                 icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vicms);
 
-                        var entradasInterna = importSped.SpedInterna(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncms);
-                        var devolucoesInterestadual = importSped.SpedDevolucao(caminhoDestinoArquivoOriginal, cfopsDevoVenda, ncms);
+                        var entradasInterna = importSped.SpedInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncms);
+                        var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncms);
 
                         if (imp != null)
                         {
@@ -355,7 +355,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (comp.AnnexId.Equals(1))
                     {
-                        exitNotes = importXml.Nfe(directoryNfeExit);
+                        exitNotes = importXml.NFeAll(directoryNfeExit);
 
                         decimal baseCalcVendaInterestadual4 = 0, baseCalcVendaInterestadual7 = 0, baseCalcVendaInterestadual12 = 0,
                            icmsVendaInterestadual4 = 0, icmsVendaInterestadual7 = 0, icmsVendaInterestadual12 = 0,

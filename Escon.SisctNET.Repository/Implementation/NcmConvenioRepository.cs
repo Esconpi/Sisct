@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 int contaChar = n.Length;
                 string substring = "";
-                if (contaChar < 8)
+                if (contaChar < 8 && n.Length > contaChar)
                 {
                     substring = ncm.Substring(0, contaChar);
                 }

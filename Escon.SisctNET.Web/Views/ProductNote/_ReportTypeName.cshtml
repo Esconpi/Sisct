@@ -2,11 +2,11 @@
 
 @if (ViewBag.Type == "AgrupadoA")
 {
-    <strong>Agrupado - Analítico &nbsp;</strong>
+    <strong>Agrupado Analítico -&nbsp;</strong>
 }
 @if (ViewBag.Type == "AgrupadoS")
 {
-    <strong>Agrupado - Sintético &nbsp;</strong>
+    <strong>Agrupado Sintético -&nbsp;</strong>
 }
 @if (ViewBag.Type == "Geral")
 {
@@ -14,7 +14,7 @@
 }
 @if (ViewBag.Type == "IcmsST")
 {
-    <strong>Notas com Icms ST de Empresas sem IE &nbsp;</strong>
+    <strong>Notas com Icms ST de Empresas sem IE -&nbsp;</strong>
 }
 
 @if (ViewBag.Type == "IcmsProdutor")
@@ -24,7 +24,7 @@
 
 @if (ViewBag.Type == "Nota")
 {
-    <strong>Nota: @ViewBag.NotaNumber &nbsp;</strong>
+    <strong>Nota: @ViewBag.NotaNumber -&nbsp;</strong>
 }
 
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
@@ -66,12 +66,12 @@
 
 @if (ViewBag.Type == "ProdutoI")
 {
-    <strong>&nbsp;Produto Incentivado</strong>
+    <strong>&nbsp;- Produto Incentivado</strong>
 }
 
 @if (ViewBag.Type == "ProdutoNI")
 {
-    <strong>&nbsp;Produto Não Incentivado</strong>
+    <strong>&nbsp;- Produto Não Incentivado</strong>
 }
 
 

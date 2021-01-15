@@ -169,17 +169,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (ordem.Equals(Model.OrdemCancellation.VerificarSefaz))
                 {
-                    notesValidas = importXml.NfeResume(directoryValida);
-                    notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                    notesValidas = importXml.NFeResumeEmit(directoryValida);
+                    notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
                     notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                    notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                    notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
                     notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
                 }
                 else if (ordem.Equals(Model.OrdemCancellation.VerificarEmpresa))
                 {
-                    notesValidas = importXml.NfeResume(directoryValida);
-                    spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "55");
-                    spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
+                    notesValidas = importXml.NFeResumeEmit(directoryValida);
+                    spedNFeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "55");
+                    spedNFCeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "65");
                 }
                 else
                 {
@@ -192,7 +192,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             notesNFeCanceladasEventoTemp = importEvento.Nfe(dirtoriosNFe[i]);
                             notesNFeCanceladasEvento.AddRange(notesNFeCanceladasEventoTemp);
-                            notesNFeCanceladasTemp = importXml.Nfe(dirtoriosNFe[i]);
+                            notesNFeCanceladasTemp = importXml.NFeAll(dirtoriosNFe[i]);
                             notesNFeCanceladas.AddRange(notesNFeCanceladasTemp);
                            
                         }
@@ -202,7 +202,7 @@ namespace Escon.SisctNET.Web.Controllers
                             List<List<Dictionary<string, string>>> notesNFCeCanceladasTemp = new List<List<Dictionary<string, string>>>();
                             List<List<Dictionary<string, string>>> notesNFCeCanceladasEventoTemp = new List<List<Dictionary<string, string>>>();
                            
-                            notesNFCeCanceladasTemp = importXml.Nfe(dirtoriosNFCe[i]);
+                            notesNFCeCanceladasTemp = importXml.NFeAll(dirtoriosNFCe[i]);
                             notesNFCeCanceladas.AddRange(notesNFCeCanceladasTemp);
                             notesNFCeCanceladasEventoTemp = importEvento.Nfe(dirtoriosNFCe[i]);
                             notesNFCeCanceladasEvento.AddRange(notesNFCeCanceladasEventoTemp);
@@ -210,9 +210,9 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        notesNFeCanceladas = importXml.Nfe(directoryNFeCancelada);
+                        notesNFeCanceladas = importXml.NFeAll(directoryNFeCancelada);
                         notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                        notesNFCeCanceladas = importXml.Nfe(directoryNFCeCancelada);
+                        notesNFCeCanceladas = importXml.NFeAll(directoryNFCeCancelada);
                         notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
                     }
                 }
@@ -222,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (ordem.Equals(Model.OrdemCancellation.VerificarSefaz))
                 {
-                    notasCanceladas = importXml.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
+                    notasCanceladas = importXml.NFeCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
                     eventos = importEvento.MoveCanceladaSefaz(directoryValida, notesNFeCanceladas, notesNFeCanceladasEvento, notesNFCeCanceladas, notesNFCeCanceladasEvento);
 
                     if (!Directory.Exists(directoryNFeCancelada))
@@ -304,7 +304,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (ordem.Equals(Model.OrdemCancellation.VerificarEmpresa))
                 {
-                    notasCanceladas = importXml.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
+                    notasCanceladas = importXml.NFeCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
                     eventos = importEvento.MoveCanceladaEmpresa(directoryValida, spedNFeCancelada, spedNFCeCancelada);
 
                     if (!Directory.Exists(directoryNFeCancelada))

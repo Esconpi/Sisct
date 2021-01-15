@@ -140,25 +140,25 @@ namespace Escon.SisctNET.Web.Controllers
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
                         spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
-                        notesValidas = importXml.NfeResume(directoryValida);
+                        notesValidas = importXml.NFeResumeEmit(directoryValida);
                     }
                     else
                     {
                         if (ident.Equals("0"))
                         {
-                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped);
+                            spedNormal = importSped.NFeAll(caminhoDestinoArquivoOriginalSped);
                         }
                         else if (ident.Equals("1"))
                         {
-                            spedNormal = importSped.SpedNfeSaidaNormal(caminhoDestinoArquivoOriginalSped);
-                            spedNFeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped,"55");
-                            spedNFCeCancelada = importSped.SpedNfeSaidaCancelada(caminhoDestinoArquivoOriginalSped, "65");
+                            spedNormal = importSped.NFeExitNormal(caminhoDestinoArquivoOriginalSped);
+                            spedNFeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped,"55");
+                            spedNFCeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "65");
                         }
 
-                        notesValidas = importXml.NfeResume(directoryValida);
-                        notesNFeCanceladas = importXml.NfeResume(directoryNFeCancelada);
+                        notesValidas = importXml.NFeResumeEmit(directoryValida);
+                        notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
                         notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
-                        notesNFCeCanceladas = importXml.NfeResume(directoryNFCeCancelada);
+                        notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
                         notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
                     }
 
@@ -288,7 +288,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         if (ident.Equals("0"))
                         {
-                            spedNormal = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident, "1");
+                            spedNormal = importSped.NfeTypeEmission(caminhoDestinoArquivoOriginalSped, ident, "1");
                         }
 
                         qtdValida += spedNormal.Count();
@@ -612,9 +612,9 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
                     List<string> sped = new List<string>();
 
-                    ctes = importXml.Cte(directoryCte);
+                    ctes = importXml.CTeAll(directoryCte);
 
-                    sped = importSped.SpedCte(caminhoDestinoArquivoOriginalSped);
+                    sped = importSped.CTeAll(caminhoDestinoArquivoOriginalSped);
 
                     List<List<Dictionary<string, string>>> ctes_nao_encontrados = new List<List<Dictionary<string, string>>>();
 
@@ -690,7 +690,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
-                        var notesSped = importSped.SpedNfe(caminhoDestinoArquivoOriginalSped, ident);
+                        var notesSped = importSped.NfeType(caminhoDestinoArquivoOriginalSped, ident);
                         var notesPlanilha = importExcel.Notes(caminhoDestinoArquivoOriginalExcel);
                         
                         foreach (var nPlanilha in notesPlanilha)

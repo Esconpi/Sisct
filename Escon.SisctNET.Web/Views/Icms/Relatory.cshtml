@@ -55,17 +55,41 @@
                     }
 
                 }
+                else if (ViewBag.Type == "resumoCfopAnexo")
+                {
+                    <!-- Resumo CFOP Anexo -->
+
+                    @await Html.PartialAsync("_SummaryCfopAttachment", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
                 {
                     <!-- Resumo CFOP Anexo Anilítico -->
 
                     @await Html.PartialAsync("_SummaryCfopAnalyticalAttachment", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "resumoCfopAnexoDC")
+                {
+                    <!-- Resumo CFOP Anexo Débito e  Crédito -->
+
+                    @await Html.PartialAsync("_SummaryCfopAttachmentDC", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "resumoCfopForaAnexo")
+                {
+                    <!-- Resumo CFOP Fora do Anexo -->
+
+                    @await Html.PartialAsync("_SummaryCfopFAttachment", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
                 {
                     <!-- Resumo CFOP Fora do Anexo Anilítico -->
 
                     @await Html.PartialAsync("_SummaryCfopAnalyticalFAttachment", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "resumoCfopForaAnexoDC")
+                {
+                    <!-- Resumo CFOP Fora do Anexo Débito e Crédito -->
+
+                    @await Html.PartialAsync("_SummaryCfopFAttachmentDC", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "resumoCfopCst")
                 {

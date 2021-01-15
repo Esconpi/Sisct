@@ -110,7 +110,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> cfops = new List<List<string>>();
 
-                    notes = importXml.Nfe(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -429,7 +429,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> cfops = new List<List<string>>();
 
-                    notes = importXml.Nfe(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -553,7 +553,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var prodAll = ncms.Select(_ => _.CodeProduct).ToList();
                     var ncmsAll = ncms.Select(_ => _.Ncm.Code).ToList();
 
-                    notes = importXml.Nfe(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -684,7 +684,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal totalNota = 0, valorContabil = 0, basePis = 0, valorPis = 0, baseCofins = 0, valorCofins = 0;
                     ViewBag.Code = cfop.Code;
 
-                    notes = importXml.NfeExit(directoryNfeExit, cfop.Code);
+                    notes = importXml.NFeAllCFOP(directoryNfeExit, cfop.Code);
 
                     List<List<string>> resumoNote = new List<List<string>>();
 
@@ -805,7 +805,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.Nfe(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
 
                     var ncms = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
@@ -947,7 +947,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ncmsMonofasico = _service.FindAll(null).Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
 
-                    notes = importXml.Nfe(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
                     decimal valorProduto = 0, valorPis = 0, valorCofins = 0;
 

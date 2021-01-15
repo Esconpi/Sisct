@@ -1,0 +1,108 @@
+﻿<table class="table" style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;" colspan="9">ENTRADA</th>
+        </tr>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;" colspan="4">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Base de Cálculo Icms
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Fecop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.CfopAnexoEntry.Count; i++)
+        {
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.CfopAnexoEntry[i][0]
+                </td>
+                <td style="border:1px solid; padding-left:1%;" colspan="4">
+                    @ViewBag.CfopAnexoEntry[i][1]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoEntry[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoEntry[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoEntry[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoEntry[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table" style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;" colspan="9">SAÍDA</th>
+        </tr>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                CFOP
+            </th>
+            <th style="border:1px solid; text-align:center;" colspan="4">
+                Descrição
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Contábil
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Base de Cálculo Icms
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Icms
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Fecop
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < ViewBag.CfopAnexoExit.Count; i++)
+        {
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @ViewBag.CfopAnexoExit[i][0]
+                </td>
+                <td style="border:1px solid; padding-left:1%;" colspan="4">
+                    @ViewBag.CfopAnexoExit[i][1]
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoExit[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoExit[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoExit[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CfopAnexoExit[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
