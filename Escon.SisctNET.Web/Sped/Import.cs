@@ -2441,7 +2441,6 @@ namespace Escon.SisctNET.Web.Sped
             return spedNfe;
         }
 
-
         public List<List<List<string>>> SpedInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
                                                     List<string> cfopsTransf, List<string> cfopsDevo, List<string> ncms)
         {
@@ -2593,7 +2592,6 @@ namespace Escon.SisctNET.Web.Sped
 
             return spedInterna;
         }
-
 
         public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms)
         {
@@ -2843,7 +2841,7 @@ namespace Escon.SisctNET.Web.Sped
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
-            string line, tipo = "", emissao = "";
+            string line, tipo = "";
 
             try
             {
@@ -2856,17 +2854,15 @@ namespace Escon.SisctNET.Web.Sped
                     if (linha[1].Equals("C100"))
                     {
                         tipo = linha[2];
-                        emissao = linha[3];
                         cfop = false;
                     }
 
                     if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) ||
                         cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
-                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0" && (tipo == "0" && emissao == "0"))
+                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
                         cfop = true;
-
                     }
 
                     if (linha[1].Equals("C191") && cfop == true && tipo == "0")
@@ -2912,7 +2908,6 @@ namespace Escon.SisctNET.Web.Sped
             }
             return totalDeCredito;
         }
-
 
 
         // CTe

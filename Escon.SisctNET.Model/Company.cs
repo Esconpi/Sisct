@@ -80,6 +80,19 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Fecop %")]
         public decimal? Fecop { get; set; }
 
+        public decimal? Faturamento { get; set; }
+
+        [Display(Name = "Capítulo")]
+        [ForeignKey("Chapter")]
+        public int? ChapterId { get; set; }
+
+        private Chapter chapter;
+        public Chapter Chapter
+        {
+            get => LazyLoader.Load(this, ref chapter);
+            set => chapter = value;
+        }
+
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
         public int? AnnexId { get; set; }

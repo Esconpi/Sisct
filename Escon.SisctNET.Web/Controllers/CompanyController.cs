@@ -23,6 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IAnnexService _annexService;
         private readonly ICountingTypeService _countingTypeService;
         private readonly ICfopService _cfopService;
+        private readonly IChapterService _chapterService;
         private readonly ISectionService _sectionService;
         private readonly IEmailResponsibleService _emailResponsibleService;
 
@@ -37,6 +38,7 @@ namespace Escon.SisctNET.Web.Controllers
             IAnnexService annexService,
             ICountingTypeService countingTypeService,
             ICfopService cfopService,
+            IChapterService chapterService,
             ISectionService sectionService,
             IEmailResponsibleService emailResponsibleService,
             IFunctionalityService functionalityService,
@@ -54,6 +56,7 @@ namespace Escon.SisctNET.Web.Controllers
             _annexService = annexService;
             _countingTypeService = countingTypeService;
             _cfopService = cfopService;
+            _chapterService = chapterService;
             _sectionService = sectionService;
             _emailResponsibleService = emailResponsibleService;
         }
@@ -175,7 +178,13 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 entity.Created = DateTime.Now;
-                entity.Updated = entity.Created; 
+                entity.Updated = entity.Created;
+
+                if (entity.SocialName == null)
+                    entity.SocialName = "";
+
+                if(entity.FantasyName == null)
+                    entity.FantasyName = "";
 
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -237,6 +246,12 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Phone = entity.Phone;
                 rst.Updated = DateTime.Now;
 
+                if (rst.SocialName == null)
+                    rst.SocialName = "";
+
+                if (rst.FantasyName == null)
+                    rst.FantasyName = "";
+
                 var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
@@ -257,7 +272,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Id = result.Id;
 
                 List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
                 foreach (var annex in list_annex)
@@ -268,6 +282,15 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
 
+                List<Chapter> list_chapters = _chapterService.FindAll(null);
+                foreach (var chapter in list_chapters)
+                {
+                    chapter.Name = chapter.Name + " - " + chapter.Description;
+                }
+                list_chapters.Insert(0, new Chapter() { Name = "Nenhuma capítulo selecionado", Id = 0 });
+                SelectList chapters = new SelectList(list_chapters, "Id", "Name", null);
+                ViewBag.ChapterId = chapters;
+
                 List<Section> list_sections = _sectionService.FindAll(null);
                 foreach (var section in list_sections)
                 {
@@ -277,15 +300,15 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList sections = new SelectList(list_sections, "Id", "Name", null);
                 ViewBag.SectionId = sections;
 
+
                 if(result.AnnexId == null)
-                {
                     result.AnnexId = 0;
-                }
-                
+
+                if (result.ChapterId == null)
+                    result.ChapterId = 0;
+
                 if(result.SectionId == null)
-                {
                     result.SectionId = 0;
-                }
 
                 return View(result);
             }
@@ -329,6 +352,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
                 rst.IcmsAliqM25 = entity.IcmsAliqM25;
+                rst.SectionId = entity.ChapterId.Equals(0) ? null : entity.ChapterId;
                 rst.SectionId = entity.SectionId.Equals(0) ? null : entity.SectionId;
                 rst.AliqInterna = entity.AliqInterna;
                 rst.IncIInterna = entity.IncIInterna;
@@ -337,6 +361,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IncIIInterestadual = entity.IncIIInterestadual;
                 rst.VendaArt781 = entity.VendaArt781;
                 rst.VendaArt781Excedente = entity.VendaArt781Excedente;
+                rst.Faturamento = entity.Faturamento;
                 rst.Updated = DateTime.Now;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
