@@ -1285,7 +1285,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFinalFecopCalculadaIE = Math.Round(totalfecop1IE + totalfecop2IE, 2);
                         ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
 
-                        //Relatorio das empresas incentivadas
+                        //  Relatorio das empresas incentivadas
                         if (comp.Incentive == true && comp.AnnexId != null && typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             var productsAll = _service.FindByProductsType(notes, typeTaxation);
@@ -1923,7 +1923,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal baseCalcNcm = totalNcm - totalDevoAnexo;
 
                                 //Anexo II
-                                if (baseCalcNcm < limiteNcm)
+                                if (baseCalcNcm < limiteNcm && comp.AnnexId.Equals(1))
                                 {
                                     excedenteNcm = limiteNcm - baseCalcNcm;
                                     impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100, 2);
@@ -2718,7 +2718,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal baseCalcNcm = totalNcm - totalDevoAnexo;
 
                             //Anexo II
-                            if (baseCalcNcm < limiteNcm)
+                            if (baseCalcNcm < limiteNcm && comp.AnnexId.Equals(1))
                             {
                                 excedenteNcm = limiteNcm - baseCalcNcm;
                                 impostoNcm = (excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100;

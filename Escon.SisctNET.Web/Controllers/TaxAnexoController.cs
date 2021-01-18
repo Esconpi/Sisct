@@ -251,7 +251,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vicms),
                                 icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vicms);
 
-                        var entradasInterna = importSped.SpedInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncms);
+                        var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncms);
                         var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncms);
 
                         if (imp != null)

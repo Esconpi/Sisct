@@ -14,7 +14,7 @@
                 @Html.LabelFor(model => model.TipoApuracao, "Incentivo", htmlAttributes: new { @class = "control-label col-md-12" })
                 <div class="checkbox">
                     <label>
-                        @Html.CheckBoxFor(model => model.TipoApuracao, new { @id = "tipoApu", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+                        @Html.CheckBoxFor(model => model.TipoApuracao, new { @id = "TipoApuracao", @data_off = "Saída", @data_on = "Entrada", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
                     </label>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 @Html.LabelFor(model => model.TypeCompany, "Tipo", htmlAttributes: new { @class = "control-label col-md-12" })
                 <div class="checkbox">
                     <label>
-                        @Html.CheckBoxFor(model => model.TypeCompany, new { @id = "tipoCompany", @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @data_offstyle = "warning", @readonly = "true" })
+                        @Html.CheckBoxFor(model => model.TypeCompany, new { @id = "TypeCompany", @data_off = "Indústria", @data_on = "Produto", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @data_offstyle = "warning", @readonly = "true" })
                     </label>
                 </div>
             </div>
@@ -44,34 +44,34 @@
                 <label class="control-label">Icms %</label>
                 <input class="form-control money" name="Icms" value="@Model.Icms" />
             </div>
-            @if (Model.TipoApuracao == true)
+            @if (Model.TipoApuracao == false && (Model.AnnexId == null || Model.AnnexId == 0))
             {
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <label class="control-label">Icms Aliq. Superior 25 %</label>
-                    <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25" disabled />
+                    <label class="control-label">Icms Aliq. Superior 25  %</label>
+                    <input class="form-control money" name="IcmsAliqM25" id="IcmsAliqM25" value="@Model.IcmsAliqM25" />
                 </div>
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label class="control-label">Icms P/ Não Contribuinte %</label>
-                    <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte" disabled />
+                    <input class="form-control money" name="IcmsNContribuinte" id="IcmsNContribuinte" value="@Model.IcmsNContribuinte" />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label class="control-label">Icms P/ Não Contribuinte Fora do Estado %</label>
-                    <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora" disabled />
+                    <input class="form-control money" name="IcmsNContribuinteFora" id="IcmsNContribuinteFora" value="@Model.IcmsNContribuinteFora" />
                 </div>
             }
             else
             {
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <label class="control-label">Icms Aliq. Superior 25  %</label>
-                    <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25" />
+                    <label class="control-label">Icms Aliq. Superior 25 %</label>
+                    <input class="form-control money" name="IcmsAliqM25" id="IcmsAliqM25" value="@Model.IcmsAliqM25" disabled />
                 </div>
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label class="control-label">Icms P/ Não Contribuinte %</label>
-                    <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte" />
+                    <input class="form-control money" name="IcmsNContribuinte" id="IcmsNContribuinte" value="@Model.IcmsNContribuinte" disabled />
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label class="control-label">Icms P/ Não Contribuinte Fora do Estado %</label>
-                    <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora" />
+                    <input class="form-control money" name="IcmsNContribuinteFora" id="IcmsNContribuinteFora" value="@Model.IcmsNContribuinteFora" disabled />
                 </div>
             }
 
@@ -79,11 +79,11 @@
         <div class="row">
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label asp-for="Funef" class="control-label" style="font-size:10px;"></label>
-                <input class="form-control money" value="@Model.Funef" name="funef" />
+                <input class="form-control money" value="@Model.Funef" name="Funef" />
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label asp-for="Fecop" class="control-label" style="font-size:10px;"></label>
-                <input class="form-control money" value="@Model.Fecop" name="fecop" />
+                <input class="form-control money" value="@Model.Fecop" name="Fecop" />
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -93,11 +93,25 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.Transferencia" name="Transferencia" />
+                @if (Model.ChapterId == 4)
+                {
+                    <input class="form-control money" value="@Model.Transferencia" name="Transferencia" id="Transferencia"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.Transferencia" name="Transferencia" id="Transferencia" disabled/>
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.TransferenciaExcedente" name="TransferenciaExcedente" />
+                @if (Model.ChapterId == 4)
+                {
+                    <input class="form-control money" value="@Model.TransferenciaExcedente" name="TransferenciaExcedente" id="TransferenciaExcedente"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.TransferenciaExcedente" name="TransferenciaExcedente" id="TransferenciaExcedente" disabled/>
+                }
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -107,11 +121,25 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.TransferenciaInter" name="transferenciaInter" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.TransferenciaInter" name="TransferenciaInter" id="TransferenciaInter" />
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.TransferenciaInter" name="TransferenciaInter" id="TransferenciaInter" disabled/>
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="TransferenciaInterExcedente" id="TransferenciaInterExcedente"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="TransferenciaInterExcedente" id="TransferenciaInterExcedente" disabled/>
+                }
             </div>
 
         </div>
@@ -119,11 +147,19 @@
         <div class="row">
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label asp-for="Cotac" class="control-label" style="font-size:10px;"></label>
-                <input class="form-control money" value="@Model.Cotac" name="cotac" />
+                @if (Model.TipoApuracao == false)
+                {
+                    <input class="form-control money" value="@Model.Cotac" name="Cotac" id="Cotac" />
+
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.Cotac" name="Cotac" id="Cotac" disabled/>
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label asp-for="Suspension" class="control-label" style="font-size:10px;"></label>
-                <input class="form-control money" value="@Model.Suspension" name="suspension" />
+                <input class="form-control money" value="@Model.Suspension" name="Suspension" />
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -131,11 +167,25 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContribuinte" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaContribuinte" name="VendaContribuinte" id="VendaContribuinte"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaContribuinte" name="VendaContribuinte" id="VendaContribuinte"  disabled/>
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="VendaContribuinteExcedente" id="VendaContribuinteExcedente"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="VendaContribuinteExcedente" id="VendaContribuinteExcedente" disabled/>
+                }
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -143,11 +193,25 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.VendaCpf" name="vendaCpf" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaCpf" name="VendaCpf" id="VendaCpf" />
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaCpf" name="VendaCpf" id="VendaCpf" disabled />
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfExcedente" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaCpfExcedente" name="VendaCpfExcedente"  id="VendaCpfExcedente"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaCpfExcedente" name="VendaCpfExcedente" id="VendaCpfExcedente" disabled />
+                }
             </div>
         </div>
         <div class="row">
@@ -175,11 +239,25 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.VendaMGrupo" name="vendaMGrupo" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaMGrupo" name="VendaMGrupo" id="VendaMGrupo" />
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaMGrupo" name="VendaMGrupo" id="VendaMGrupo" disabled/>
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="vendaMGrupoExcedente" />
+                @if (Model.TipoApuracao == true)
+                {
+                    <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="VendaMGrupoExcedente" id="VendaMGrupoExcedente"/>
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="VendaMGrupoExcedente" id="VendaMGrupoExcedente" disabled />
+                }
             </div>
 
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -188,11 +266,26 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                <input class="form-control money" value="@Model.VendaAnexo" name="vendaAnexo" />
+                @if (Model.TipoApuracao == true && Model.ChapterId != 4)
+                {
+                    <input class="form-control money" value="@Model.VendaAnexo" name="VendaAnexo" id="VendaAnexo" />
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaAnexo" name="VendaAnexo" id="VendaAnexo" disabled />
+                }
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaAnexoExcedente" name="vendaAnexoExcedente" />
+                @if (Model.TipoApuracao == true && Model.ChapterId != 4)
+                {
+                    <input class="form-control money" value="@Model.VendaAnexoExcedente" name="VendaAnexoExcedente" id="VendaAnexoExcedente"/>
+
+                }
+                else
+                {
+                    <input class="form-control money" value="@Model.VendaAnexoExcedente" name="VendaAnexoExcedente" id="VendaAnexoExcedente" disabled/>
+                }
             </div>
         </div>
         <div class="row">
@@ -203,7 +296,7 @@
                     <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna" />
                 </div>
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="IncIInterestadual" class="control-label"></label><br /> <span>Elencadas</span>
+                    <label asp-for="IncIInterestadual" class="control-label" style="font-size:10px;"></label><br /> <span style="font-size:10px;">Elencadas</span>
                     <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" />
                 </div>
             }
@@ -337,27 +430,55 @@
         }
     });
 
-    $("#tipoApu").on("change", function () {
+    $("#TipoApuracao").on("change", function () {
         if ($(this).prop('checked')) {
-            $('#icmsAliqM25').prop('disabled', true);
-            $('#icmsNContri').prop('disabled', true);
-            $('#icmsNContriFora').prop('disabled', true);
-            $('#tipoCompany').prop('disabled', true);
+            $('#IcmsAliqM25').prop('disabled', true);
+            $('#IcmsNContribuinte').prop('disabled', true);
+            $('#IcmsNContribuinteFora').prop('disabled', true);
+            $('#TypeCompany').prop('disabled', true);
+            $('#Cotac').prop('disabled', true);
+            $("#Transferencia").prop("disabled", true);
+            $("#TransferenciaExcedente").prop("disabled", true);
+            $('#TransferenciaInter').prop('disabled', false);
+            $('#TransferenciaInterExcedente').prop('disabled', false);
+            $('#VendaContribuinte').prop('disabled', false);
+            $('#VendaContribuinteExcedente').prop('disabled', false);
+            $('#VendaCpf').prop('disabled', false);
+            $('#VendaCpfExcedente').prop('disabled', false);
+            $('#VendaMGrupo').prop('disabled', false);
+            $('#VendaMGrupoExcedente').prop('disabled', false);
+            $("#VendaAnexo").prop("disabled", false);
+            $("#VendaAnexoExcedente").prop("disabled", false);
         } else {
-            $('#icmsAliqM25').prop('disabled', false);
-            $('#icmsNContri').prop('disabled', false);
-            $('#icmsNContriFora').prop('disabled', false);
-            $('#tipoCompany').prop('disabled', false);
+            $('#IcmsAliqM25').prop('disabled', false);
+            $('#IcmsNContribuinte').prop('disabled', false);
+            $('#IcmsNContribuinteFora').prop('disabled', false);
+            $('#TypeCompany').prop('disabled', false);
+            $('#Cotac').prop('disabled', false);
+            $("#Transferencia").prop("disabled", true);
+            $("#TransferenciaExcedente").prop("disabled", true);
+            $('#TransferenciaInter').prop('disabled', true);
+            $('#TransferenciaInterExcedente').prop('disabled', true);
+            $('#VendaContribuinte').prop('disabled', true);
+            $('#VendaContribuinteExcedente').prop('disabled', true);
+            $('#VendaCpf').prop('disabled', true);
+            $('#VendaCpfExcedente').prop('disabled', true);
+            $('#VendaMGrupo').prop('disabled', true);
+            $('#VendaMGrupoExcedente').prop('disabled', true);
+            $("#VendaAnexo").prop("disabled", true);
+            $("#VendaAnexoExcedente").prop("disabled", true);
         }
 
     });
 
-    $(".textformartmask").on("input", function () {
-        $(this).val($(this).val().toUpperCase());
-    });
+    
+    
 
     $("#annex").on("change", function () {
         if ($(this).val() == "3") {
+            $('#IcmsAliqM25').prop('disabled', true);
+            $('#IcmsNContribuinte').prop('disabled', true);
+            $('#IcmsNContribuinteFora').prop('disabled', true);
             $("#AliqInterna").prop("disabled", false);
             $("#IncIInterna").prop("disabled", false);
             $("#IncIInterestadual").prop("disabled", false);
@@ -367,6 +488,9 @@
             $("#VendaArt781Excedente").prop("disabled", false);
         }
         else {
+            $('#IcmsAliqM25').prop('disabled', false);
+            $('#IcmsNContribuinte').prop('disabled', false);
+            $('#IcmsNContribuinteFora').prop('disabled', false);
             $("#AliqInterna").prop("disabled", true);
             $("#IncIInterna").prop("disabled", true);
             $("#IncIInterestadual").prop("disabled", true);
@@ -377,4 +501,24 @@
         }
     });
 
+    $("#chapter").on("change", function () {
+        if ($(this).val() == "4") {
+            $("#Transferencia").prop("disabled", false);
+            $("#TransferenciaExcedente").prop("disabled", false);
+            $("#VendaAnexo").prop("disabled", true);
+            $("#VendaAnexoExcedente").prop("disabled", true);
+            $("#Faturamento").prop("disabled", false);
+        }
+        else {
+            $("#Transferencia").prop("disabled", true);
+            $("#TransferenciaExcedente").prop("disabled", true);
+            $("#VendaAnexo").prop("disabled", false);
+            $("#VendaAnexoExcedente").prop("disabled", false);
+            $("#Faturamento").prop("disabled", true);
+        }
+    });
+
+    $(".textformartmask").on("input", function () {
+        $(this).val($(this).val().toUpperCase());
+    });
 </script>

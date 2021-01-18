@@ -80,7 +80,7 @@
 
                                 @if (Model.TipoApuracao == true)
                                 {
-                                    <option value="venda">Icms Excedente</option>
+                                    <option value="icmsExcedente">Icms Excedente</option>
                                 }
                                 else
                                 {
@@ -154,7 +154,7 @@
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
         }
-        else if (tipo == "anexoAutoPecas" || tipo == "incentivo" || tipo == "venda") {
+        else if (tipo == "anexoAutoPecas" || tipo == "incentivo" || tipo == "icmsExcedente") {
             document.getElementById("cfopid").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = true;

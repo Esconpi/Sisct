@@ -2441,7 +2441,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedNfe;
         }
 
-        public List<List<List<string>>> SpedInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
+        public List<List<List<string>>> NFeInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
                                                     List<string> cfopsTransf, List<string> cfopsDevo, List<string> ncms)
         {
             List<List<List<string>>> spedInterna = new List<List<List<string>>>();

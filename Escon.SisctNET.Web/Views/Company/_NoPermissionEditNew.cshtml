@@ -6,11 +6,11 @@
                 <label asp-for="AnnexId" class="control-label"></label>
                 @if (Model.AnnexId != null && Model.AnnexId != 0)
                 {
-                    <input class="form-control" name="AnnexId" value="@Model.Annex.Description" disabled />
+                    <input class="form-control" value="@Model.Annex.Description" disabled />
                 }
                 else
                 {
-                    <input class="form-control" name="AnnexId" disabled />
+                    <input class="form-control" disabled />
                 }
             </div>
             <div class="form-group col-lg-2 col-md-2 col-xs-12">
@@ -30,173 +30,210 @@
                 </div>
             </div>
         </div>
+         <div class="row">
+            <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                <label asp-for="ChapterId" class="control-label"></label>
+                @if (Model.ChapterId != null && Model.ChapterId != 0)
+                {
+                    <input class="form-control" value="@Model.Chapter.Name" disabled />
+                }
+                else
+                {
+
+                    <input class="form-control" disabled />
+                }
+            </div>
+        </div>
         <div class="row">
             <div class="form-group col-lg-12 col-md-12 col-xs-12">
                 <label asp-for="SectionId" class="control-label"></label>
                 @if (Model.SectionId != null && Model.SectionId != 0)
                 {
-                    <input class="form-control" name="SectionId" value="@Model.Section.Name" disabled />
+                    <input class="form-control" value="@Model.Section.Name" disabled />
                 }
                 else
                 {
 
-                    <input class="form-control" name="SectionId" disabled />
+                    <input class="form-control" disabled />
                 }
             </div>
         </div>
         <div class="row ">
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
                 <label class="control-label">Icms %</label>
-                <input class="form-control money" name="Icms" value="@Model.Icms" disabled />
+                <input class="form-control money" value="@Model.Icms" disabled />
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <label class="control-label">Icms Aliq. Superior 25 %</label>
-                <input class="form-control money" name="IcmsAliqM25" id="icmsAliqM25" value="@Model.IcmsAliqM25" disabled />
+                <input class="form-control money" value="@Model.IcmsAliqM25" disabled />
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <label class="control-label">Icms P/ Não Contribuinte %</label>
-                <input class="form-control money" name="IcmsNContribuinte" id="icmsNContri" value="@Model.IcmsNContribuinte" disabled />
+                <input class="form-control money" value="@Model.IcmsNContribuinte" disabled />
             </div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label class="control-label">Icms P/ Não Contribuinte Fora do Estado %</label>
-                <input class="form-control money" name="IcmsNContribuinteFora" id="icmsNContriFora" value="@Model.IcmsNContribuinteFora" disabled />
+                <input class="form-control money" value="@Model.IcmsNContribuinteFora" disabled />
             </div>
 
         </div>
         <div class="row">
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="Funef" class="control-label"></label>
-                <input class="form-control money" value="@Model.Funef" name="funef" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label asp-for="Funef" class="control-label" style="font-size:10px;"></label>
+                <input class="form-control money" value="@Model.Funef" disabled />
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="Fecop" class="control-label"></label>
-                <input class="form-control money" value="@Model.Fecop" name="fecop" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label asp-for="Fecop" class="control-label" style="font-size:10px;"></label>
+                <input class="form-control money" value="@Model.Fecop" disabled />
             </div>
 
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
                 <div>
-                    <strong>Transferência Interestadual Entrada</strong>
+                    <strong style="font-size:10px;">Transferência</strong>
                 </div>
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.TransferenciaInter" name="transferenciaInter" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.Transferencia" disabled />
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.TransferenciaInterExcedente" name="transferenciaInterExcedente" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.TransferenciaExcedente" disabled />
+            </div>
+
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                <br />
+                <div>
+                    <strong style="font-size:10px;">Transferência Interestadual Entrada</strong>
+                </div>
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.TransferenciaInter" disabled />
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.TransferenciaInterExcedente" disabled />
             </div>
         </div>
 
         <div class="row">
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="Cotac" class="control-label"></label>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label asp-for="Cotac" class="control-label" style="font-size:10px;"></label>
                 <input class="form-control money" value="@Model.Cotac" name="cotac" disabled />
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="Suspension" class="control-label"></label>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label asp-for="Suspension" class="control-label" style="font-size:10px;"></label>
                 <input class="form-control money" value="@Model.Suspension" name="suspension" disabled />
             </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
-                <strong>Venda p/ Contribuinte</strong>
+                <strong style="font-size:10px;">Venda p/ Contribuinte</strong>
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.VendaContribuinte" name="vendaContribuinte" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.VendaContribuinte" disabled />
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="vendaContribuinteExcedente" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.VendaContribuinteExcedente" disabled />
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                <br />
+                <strong style="font-size:10px;">Venda p/ CPF/Não Contribuinte</strong>
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.VendaCpf" disabled />
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.VendaCpfExcedente" disabled />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label asp-for="AliqInterna" class="control-label" style="font-size:10px;"></label>
+                <input class="form-control money" value="@Model.AliqInterna" disabled />
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                <br />
+                <strong style="font-size:10px;">Venda p/ Mesmo Grupo</strong>
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.VendaMGrupo" disabled />
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.VendaMGrupoExcedente" disabled />
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                <br />
+                <strong style="font-size:10px;">Venda do Anexo</strong>
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.VendaAnexo" disabled />
+            </div>
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.VendaAnexoExcedente" disabled />
             </div>
         </div>
         <div class="row">
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="AliqInterna" class="control-label"></label>
-                <input class="form-control money" value="@Model.AliqInterna" name="AliqInterna" id="AliqInterna" disabled />
+                <label asp-for="IncIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="font-size:10px;">Elencadas</span>
+                <input class="form-control money" value="@Model.IncIInterna" disabled />
             </div>
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                <label asp-for="IncIInterestadual" class="control-label" style="font-size:10px;"></label><br /> <span style="font-size:10px;">Elencadas</span>
+                <input class="form-control money" value="@Model.IncIInterestadual" disabled />
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
 
             </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
-                <strong>Venda p/ CPF/Não Contribuinte</strong>
+                <br />
+                <strong style="font-size:10px;">Venda p/ Cliente Credenciado no Art. 781</strong>
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.VendaCpf" name="vendaCpf" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <br />
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.VendaArt781" disabled />
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaCpfExcedente" name="vendaCpfExcedente" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <br />
+                <label class="control-label" style="font-size:10px;">Excedente %</label>
+                <input class="form-control money" value="@Model.VendaArt781Excedente" disabled />
             </div>
-            <div class="col-lg-2 col-md-6 col-xs-12">
-
-            </div>
-
         </div>
         <div class="row">
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IncIInterna" class="control-label"></label> <br /> <span>Elencadas</span>
-                <input class="form-control money" value="@Model.IncIInterna" name="IncIInterna" id="IncIInterna" disabled />
+                <label asp-for="IncIIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="color:red; font-size:10px;">Daselencadas</span>
+                <input class="form-control money" value="@Model.IncIIInterna" disabled />
             </div>
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IncIInterestadual" class="control-label"></label> <br /> <span>Elencadas</span>
-                <input class="form-control money" value="@Model.IncIInterestadual" name="IncIInterestadual" id="IncIInterestadual" disabled />
+                <label asp-for="IncIIInterestadual" class="control-label" style="font-size:10px;"></label> <br /> <span style="color:red; font-size:10px;">Daselencadas</span>
+                <input class="form-control money" value="@Model.IncIIInterestadual" disabled />
             </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <br />
-                <strong>Venda p/ Mesmo Grupo</strong>
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.VendaMGrupo" name="vendaMGrupo" disabled />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaMGrupoExcedente" name="vendaMGrupoExcedente" disabled />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IncIIInterna" class="control-label"></label> <br /> <span style="color:red;">Daselencadas</span>
-                <input class="form-control money" value="@Model.IncIIInterna" name="IncIIInterna" id="IncIIInterna" disabled />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IncIIInterestadual" class="control-label"></label> <br /> <span style="color:red;">Daselencadas</span>
-                <input class="form-control money" value="@Model.IncIIInterestadual" name="IncIIInterestadual" id="IncIIInterestadual" disabled />
-            </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <br />
-                <strong>Venda do Anexo</strong>
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.VendaAnexo" name="vendaAnexo" disabled />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaAnexoExcedente" name="vendaAnexoExcedente" disabled />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
 
             </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
-                <strong>Venda p/ Cliente Credenciado no Art. 781</strong>
+                <br />
+                <strong style="font-size:10px;">Faturamento (Permanência no Incetivo)</strong>
             </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Limite %</label>
-                <input class="form-control money" value="@Model.VendaArt781" name="VendaArt781" disabled />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label class="control-label">Excedente %</label>
-                <input class="form-control money" value="@Model.VendaArt781Excedente" name="VendaArt781Excedente" disabled />
+            <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                <br />
+                <label class="control-label" style="font-size:10px;">Limite %</label>
+                <input class="form-control money" value="@Model.Faturamento" disabled />
             </div>
         </div>
 

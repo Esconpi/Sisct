@@ -352,7 +352,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
                 rst.IcmsAliqM25 = entity.IcmsAliqM25;
-                rst.SectionId = entity.ChapterId.Equals(0) ? null : entity.ChapterId;
+                rst.ChapterId = entity.ChapterId.Equals(0) ? null : entity.ChapterId;
                 rst.SectionId = entity.SectionId.Equals(0) ? null : entity.SectionId;
                 rst.AliqInterna = entity.AliqInterna;
                 rst.IncIInterna = entity.IncIInterna;

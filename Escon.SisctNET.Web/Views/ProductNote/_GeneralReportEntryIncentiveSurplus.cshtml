@@ -24,10 +24,10 @@
                 Venda
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.TotalVenda) 
+                @string.Format("{0:N}", ViewBag.TotalVenda)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.TotalDevo) 
+                @string.Format("{0:N}", ViewBag.TotalDevo)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.BaseCalc)
@@ -39,13 +39,13 @@
                 Vendas P/ Contribuintes
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.Contribuinte) 
+                @string.Format("{0:N}", ViewBag.Contribuinte)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.TotalDevoContrib) 
+                @string.Format("{0:N}", ViewBag.TotalDevoContrib)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.BaseCalcContrib) 
+                @string.Format("{0:N}", ViewBag.BaseCalcContrib)
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.PercentualVendaContribuinte) %
@@ -56,10 +56,10 @@
                 Vendas P/ Não Contribuintes
             </th>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.NContribuinte) 
+                @string.Format("{0:N}", ViewBag.NContribuinte)
             </td>
             <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.TotalDevoNContrib) 
+                @string.Format("{0:N}", ViewBag.TotalDevoNContrib)
             </td>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.BaseCalcNContrib)
@@ -68,23 +68,27 @@
                 @string.Format("{0:N}", ViewBag.PercentualVendaNContribuinte)  %
             </th>
         </tr>
-        <tr>
-            <th style="border: 1px solid; text-align:center;">
-                Vendas do Anexo II
-            </th>
-            <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.VendaAnexo) 
-            </td>
-            <td style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.TotalDevoAnexo)
-            </td>
-            <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.BaseCalcAnexo)
-            </th>
-            <th style="text-align:right; padding-right:1%; border:1px solid;">
-                @string.Format("{0:N}", ViewBag.PercentualVendaAnexo) %
-            </th>
-        </tr>
+        @if (ViewBag.Company.AnnexId == 1)
+        {
+            <tr>
+                <th style="border: 1px solid; text-align:center;">
+                    Vendas do Anexo II
+                </th>
+                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                    @string.Format("{0:N}", ViewBag.VendaAnexo)
+                </td>
+                <td style="text-align:right; padding-right:1%; border:1px solid;">
+                    @string.Format("{0:N}", ViewBag.TotalDevoAnexo)
+                </td>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                    @string.Format("{0:N}", ViewBag.BaseCalcAnexo)
+                </th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">
+                    @string.Format("{0:N}", ViewBag.PercentualVendaAnexo) %
+                </th>
+            </tr>
+        }
+
         <tr>
             <th style="border: 1px solid; text-align:center;">
                 Vendas P/ mesmo grupo maior que @string.Format("{0:N}", ViewBag.PercentualCNPJ) %
@@ -212,18 +216,22 @@
             <th></th>
             <th style="width:100px;">Total</th>
         </tr>
-        <tr>
-            <th>Venda Conforme Anexo II</th>
-            <td>@string.Format("{0:N}", ViewBag.LimiteAnexo) </td>
-            <th style="font-size:17px; text-align:center">-</th>
-            <td>@string.Format("{0:N}", ViewBag.BaseCalcAnexo)</td>
-            <th style="font-size:17px; text-align:center">=</th>
-            <td>@string.Format("{0:N}", ViewBag.ExcedenteAnexo) </td>
-            <th style="text-align:center">x</th>
-            <td>@string.Format("{0:N}", ViewBag.PercentualExcedenteAnexo) </td>
-            <th style="font-size:17px; text-align:center">=</th>
-            <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteAnexo) </td>
-        </tr>
+        @if (ViewBag.Company.AnnexId == 1)
+        {
+            <tr>
+                <th>Venda Conforme Anexo II</th>
+                <td>@string.Format("{0:N}", ViewBag.LimiteAnexo) </td>
+                <th style="font-size:17px; text-align:center">-</th>
+                <td>@string.Format("{0:N}", ViewBag.BaseCalcAnexo)</td>
+                <th style="font-size:17px; text-align:center">=</th>
+                <td>@string.Format("{0:N}", ViewBag.ExcedenteAnexo) </td>
+                <th style="text-align:center">x</th>
+                <td>@string.Format("{0:N}", ViewBag.PercentualExcedenteAnexo) </td>
+                <th style="font-size:17px; text-align:center">=</th>
+                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteAnexo) </td>
+            </tr>
+        }
+
         <tr>
             <th style="width:200px;">&nbsp;</th>
             <th style="width:120px;">&nbsp;</th>

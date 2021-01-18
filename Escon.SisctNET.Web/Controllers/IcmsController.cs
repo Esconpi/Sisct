@@ -98,7 +98,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
-                ViewBag.Company = comp;
+
 
                 var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
@@ -123,6 +123,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
+                ViewBag.Company = comp;
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;
                 ViewBag.Arquivo = arquivo;
@@ -2981,7 +2982,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Divergentes = divergentes.OrderBy(_ => _[0]).ThenBy(_ => _[5]).ToList();
                 }
-                else if (type.Equals("venda"))
+                else if (type.Equals("icmsExcedente"))
                 {
                     //  Imposto ICMS Excedente
 
@@ -3039,7 +3040,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseCalcNcm = totalNcm - totalDevoAnexo;
 
                     //Anexo II
-                    if (baseCalcNcm < limiteNcm)
+                    if (baseCalcNcm < limiteNcm && comp.AnnexId.Equals(1))
                     {
                         excedenteNcm = limiteNcm - baseCalcNcm;
                         impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100,2);
