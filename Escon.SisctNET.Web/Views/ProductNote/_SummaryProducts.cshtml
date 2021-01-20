@@ -1,5 +1,5 @@
 ﻿<table class="table" style="font-size:8px; border:2px solid;">
-    @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST")
+    @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST" && ViewBag.Type != "IcmsProdutor")
     {
         @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
         {
@@ -27,7 +27,7 @@
                     <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
-                    <td>@string.Format("{0:N}", ViewBag.TotalBcICMS)</td>
+                    <td>@string.Format("{0:N}", ViewBag.TotalBCICMS)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalBCR)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalAC)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalICMSNfeCte)</td>
