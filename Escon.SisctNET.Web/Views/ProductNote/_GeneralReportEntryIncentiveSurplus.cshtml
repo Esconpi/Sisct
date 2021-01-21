@@ -117,8 +117,8 @@
             <tr style="border: 1px solid;">
                 <th style="border: 1px solid; text-align:center;">CNPJ</th>
                 <th style="border: 1px solid; text-align:center;">Cliente</th>
-                <th style="border: 1px solid;">Base de Cálculo</th>
-                <th style="border: 1px solid;">Percentual (%)</th>
+                <th style="border: 1px solid; text-align:center;">Base de Cálculo</th>
+                <th style="border: 1px solid; text-align:center;">Percentual (%)</th>
             </tr>
         </thead>
         <tbody>
@@ -128,8 +128,8 @@
                 <tr>
                     <td>@item[0]</td>
                     <td>@item[1]</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item[3])) %</td>
+                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
+                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[3])) %</td>
                 </tr>
             }
 
@@ -138,7 +138,7 @@
 }
 
 <div style="border:2px solid; text-align:center; page-break-before: always;">
-    <strong>ICMS Excedente</strong>
+    <strong>ICMS EXCEDENTE</strong>
 </div>
 <table class="table" style="font-size: 12px; border:2px solid;">
     <thead>
@@ -192,32 +192,36 @@
             <th style="font-size:17px; text-align:center">=</th>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteNContribuinte) </td>
         </tr>
-        <tr>
-            <th style="width:200px;">&nbsp;</th>
-            <th style="width:120px;">&nbsp;</th>
-            <th>&nbsp;</th>
-            <th style="width:120px;">&nbsp;</th>
-            <th></th>
-            <th style="width:100px;">&nbsp;</th>
-            <th>&nbsp;</th>
-            <th style="width:100px;">&nbsp;</th>
-            <th></th>
-            <th style="width:100px;">&nbsp;</th>
-        </tr>
-        <tr>
-            <th style="width:200px;"></th>
-            <th style="width:120px;">Limite (MÍNIMO)</th>
-            <th></th>
-            <th style="width:120px;">Vendas</th>
-            <th></th>
-            <th style="width:100px;">Excedente</th>
-            <th></th>
-            <th style="width:100px;">Adicional</th>
-            <th></th>
-            <th style="width:100px;">Total</th>
-        </tr>
+
+
         @if (ViewBag.Company.AnnexId == 1)
         {
+            <tr>
+                <th style="width:200px;">&nbsp;</th>
+                <th style="width:120px;">&nbsp;</th>
+                <th>&nbsp;</th>
+                <th style="width:120px;">&nbsp;</th>
+                <th></th>
+                <th style="width:100px;">&nbsp;</th>
+                <th>&nbsp;</th>
+                <th style="width:100px;">&nbsp;</th>
+                <th></th>
+                <th style="width:100px;">&nbsp;</th>
+            </tr>
+
+            <tr>
+                <th style="width:200px;"></th>
+                <th style="width:120px;">Limite (MÍNIMO)</th>
+                <th></th>
+                <th style="width:120px;">Vendas</th>
+                <th></th>
+                <th style="width:100px;">Excedente</th>
+                <th></th>
+                <th style="width:100px;">Adicional</th>
+                <th></th>
+                <th style="width:100px;">Total</th>
+            </tr>
+
             <tr>
                 <th>Venda Conforme Anexo II</th>
                 <td>@string.Format("{0:N}", ViewBag.LimiteAnexo) </td>

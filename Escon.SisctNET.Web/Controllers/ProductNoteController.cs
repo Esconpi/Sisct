@@ -889,7 +889,6 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal icmsStnoteSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()),
                         icmsStnoteIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum());
 
-
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
@@ -955,7 +954,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Voutro).Sum() -
                                                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum() +
                                                               products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum()),
-                                    Vipi = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vipi).Sum()),
                                     freteTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Freterateado).Sum()),
                                     vDesc = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vdesc).Sum()),
                                     bcIcms = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Valoragregado).Sum()),
@@ -967,7 +965,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     icms = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsST).Sum()),
                                     icmsTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.TotalICMS).Sum()),
                                     fecopTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.TotalFecop).Sum()),
-                                    vFrete = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vfrete).Sum()),
                                     icmsApurado = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsApurado).Sum()),
                                     fecopST = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpST).Sum()) +
                                               Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpSTRet).Sum());
@@ -978,7 +975,6 @@ namespace Escon.SisctNET.Web.Controllers
                             notesAgrup.Add(notasTaxation[i].Dhemi.ToString("dd/MM"));
                             notesAgrup.Add(notasTaxation[i].Vnf.ToString());
                             notesAgrup.Add(vProdTotal.ToString());
-                            notesAgrup.Add(Vipi.ToString());
                             notesAgrup.Add(notasTaxation[i].Nct.ToString());
                             notesAgrup.Add(freteTotal.ToString());
                             notesAgrup.Add(vDesc.ToString());
@@ -990,7 +986,6 @@ namespace Escon.SisctNET.Web.Controllers
                             notesAgrup.Add(icms.ToString());
                             notesAgrup.Add(icmsTotal.ToString());
                             notesAgrup.Add(fecopTotal.ToString());
-                            notesAgrup.Add(vFrete.ToString());
                             notesAgrup.Add(icmsApurado.ToString());
                             notesAgrup.Add(notasTaxation[i].Uf);
                             notesAgrup.Add(fecopST.ToString());
@@ -1155,7 +1150,7 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
                         totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
-                        // Valores da fecop
+                        // Valores da Fecop
                         decimal difvalor1IE = valorbase1IE - valorNfe1NormalIE - valorNfe1RetIE - gnrePagaFecop1IE - totalFecop1FreteIE - totalFecop2FreteIE,
                                 difvalor1SIE = valorbase1SIE - valorNfe1NormalSIE - valorNfe1RetSIE - gnrePagaFecop1SIE + totalFecop1FreteIE + totalFecop2FreteIE,
                                 difvalor2IE = valorbase2IE - valorNfe2NormalIE - valorNfe2RetIE - gnrePagaFecop2IE - totalFecop2FreteIE,
@@ -1163,7 +1158,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 diftotalIE = difvalor1IE + difvalor2IE, diftotalSIE = difvalor1SIE + difvalor2SIE, totalfecop1IE = difvalor1IE - base1fecopIE,
                                 totalfecop1SIE = difvalor1SIE - base1fecopSIE,totalfecop2IE = difvalor2IE - base2fecopIE, totalfecop2SIE = difvalor2SIE - base2fecopSIE;
 
-                        //  Relatorio das empresas incentivadas
+                        //  Relatorio das Empresas Incentivadas
                         if (comp.Incentive == true && comp.AnnexId != null && typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             var productsAll = _service.FindByProductsType(notes, typeTaxation);
@@ -1766,21 +1761,23 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                                 //Total Icms
-                                ViewBag.TotalIcms = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo, 2);
+                                ViewBag.TotalIcmsExcedente = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo, 2);
 
                                 totalDarIcms += Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao, 2);
                             }
                         }
 
 
-                        // Resumo dos Impostos
+                        //      Resumo dos Impostos
+                        
+                        //  ICMS
                         ViewBag.TotalICMSPautaSIE = totalIcmsPautaSIE;
                         ViewBag.TotalICMSMvaSIE = totalIcmsMvaSIE;
                         ViewBag.TotalICMSPautaIE = totalIcmsPautaIE;
                         ViewBag.TotalICMSMvaIE = totalIcmsMvaIE;
                         ViewBag.TotalICMSSTNota = totalIcmsIE - (totalIcmsPautaSIE + totalIcmsPautaIE);
 
-
+                        //  FECOP
                         ViewBag.Base1SIE = base1SIE;
                         ViewBag.Base1IE = base1IE;
                         ViewBag.Base2IE = base2IE;
@@ -1838,6 +1835,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
 
 
+                        //  Valores total DAR
                         ViewBag.TotalDarSTCO = totalDarSTCO;
                         ViewBag.TotalDarFecop = totalDarFecop;
                         ViewBag.TotalDarFunef = totalDarFunef;
@@ -1941,7 +1939,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFecop = totalFecop;
 
 
-                    // Resumo dos Impostos
+                    //      Resumo dos Impostos
+
+                    //  ICMS
                     ViewBag.TotalICMSIE = totalIcmsIE;
                     ViewBag.TotalICMSSIE = totalIcmsSIE;
                     ViewBag.TotalIcmsFreteIE = totalIcmsFreteIE;
@@ -2310,7 +2310,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
                                 decimal totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
 
-                                totalDarFecop += Math.Round(fecopInternaElencada, 2);
                                 impostoIcms += Math.Round(totalIcmsInternaElencada, 2);
                                 impostoFecop += Math.Round(fecopInternaElencada, 2);
 
@@ -2321,7 +2320,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
                                 decimal totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
 
-                                totalDarFecop += fecopInterestadualElencada;
                                 impostoIcms += totalIcmsInterestadualElencada;
                                 impostoFecop += fecopInterestadualElencada;
 
@@ -2333,7 +2331,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
                                 decimal totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
 
-                                totalDarFecop += fecopInternaDeselencada;
                                 impostoIcms += totalIcmsInternaDeselencada;
                                 impostoFecop += fecopInternaDeselencada;
 
@@ -2344,7 +2341,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
                                 decimal totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
 
-                                totalDarFecop += fecopInterestadualDeselencada;
                                 impostoIcms += totalIcmsInterestadualDeselencada;
                                 impostoFecop += fecopInterestadualDeselencada;
 
@@ -2630,8 +2626,8 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalSuspensao = valorSuspensao;
 
 
-                            //Total Icms
-                            ViewBag.TotalIcms = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo, 2);
+                            //Total Icms Excedente
+                            ViewBag.TotalIcmsExcedente = Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo, 2);
 
                             totalDarIcms += Math.Round(impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao, 2);
                         }
