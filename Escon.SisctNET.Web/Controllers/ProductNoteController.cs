@@ -257,7 +257,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 int taxationType = Convert.ToInt32(entity.TaxationTypeId);
 
-                decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta;
+                decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta, inciso = entity.Inciso;
                 decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, dif = 0,valorFecop = 0;
 
                 if (bcr != null)
@@ -274,8 +274,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var taxedtype = _taxationTypeService.FindById(taxationType, GetLog(OccorenceLog.Read));
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
-
-
 
                 if (entity.Pautado == true)
                 {
@@ -458,12 +456,14 @@ namespace Escon.SisctNET.Web.Controllers
                     */
 
                     prod.TaxationTypeId = taxationType;
-                    prod.Updated = DateTime.Now;
                     prod.Status = true;
                     prod.Vbasecalc = baseCalc;
                     prod.Incentivo = true;
                     prod.DateStart = dateStart;
                     prod.Produto = "Especial";
+                    prod.Inciso = inciso;
+                    prod.Updated = DateTime.Now;
+
 
                     updateProducts.Add(prod);
                 }
@@ -581,7 +581,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         prod.TaxationTypeId = taxationType;
-                        prod.Updated = DateTime.Now;
                         prod.Status = true;
                         prod.Vbasecalc = baseCalc;
                         prod.ProductId = null;
@@ -589,6 +588,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Product2Id = null;
                         prod.Pautado = false;
                         prod.DateStart = dateStart;
+                        prod.Inciso = inciso;
 
                         if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
                         {
@@ -597,6 +597,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
+                        prod.Updated = DateTime.Now;
 
                         updateProducts.Add(prod);
                     }
@@ -710,15 +711,14 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             item.TaxationTypeId = taxationType;
-                            item.Updated = DateTime.Now;
                             item.Status = true;
                             item.Vbasecalc = baseCalc;
-
                             item.ProductId = null;
                             item.Product1Id = null;
                             item.Product2Id = null;
                             item.Pautado = false;
                             item.DateStart = dateStart;
+                            item.Inciso = inciso;
 
                             if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
                             {
@@ -727,6 +727,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             item.Qpauta = null;
                             item.Produto = "Normal";
+                            item.Updated = DateTime.Now;
+
 
                             updateProducts.Add(item);
                         }
@@ -761,7 +763,7 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.Code = code;
                     taxation.Cest = prod.Cest;
                     taxation.AliqInterna = aliqInterna;
-                    taxation.Inciso = entity.Inciso;
+                    taxation.Inciso = inciso;
                     taxation.Diferencial = dif;
                     taxation.MVA = mva;
                     taxation.BCR = bcr;

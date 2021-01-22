@@ -422,6 +422,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
                                         prod.Incentivo = incentivo;
                                         prod.Status = false;
+                                        prod.Pautado = false;
+                                        prod.Inciso = null;
                                         prod.Created = DateTime.Now;
                                         prod.Updated = DateTime.Now;
 
@@ -530,10 +532,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.VfcpSTRet = vFCPSTRet;
                                         prod.IcmsCTe = freteIcms;
                                         prod.Freterateado = frete_prod;
-                                        prod.AliqInterna = taxed.AliqInterna;
-                                        prod.Mva = taxed.MVA;
-                                        prod.BCR = taxed.BCR;
-                                        prod.Fecop = taxed.Fecop;
                                         prod.Valoragregado = valorAgreg;
                                         prod.ValorBCR = valorbcr;
                                         prod.ValorAC = valorAgreAliqInt;
@@ -541,7 +539,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.TotalFecop = valorFecop;
                                         prod.Diferencial = dif;
                                         prod.IcmsApurado = icmsApu;
-                                        prod.TaxationTypeId = taxed.TaxationTypeId;
                                         prod.NoteId = nota.Id;
                                         prod.Nitem = det["nItem"];
                                         prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
@@ -549,7 +546,13 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Produto = "Normal";
                                         prod.Status = true;
                                         prod.Pautado = false;
+                                        prod.TaxationTypeId = taxed.TaxationTypeId;
+                                        prod.AliqInterna = taxed.AliqInterna;
+                                        prod.Mva = taxed.MVA;
+                                        prod.BCR = taxed.BCR;
+                                        prod.Fecop = taxed.Fecop;
                                         prod.DateStart = Convert.ToDateTime(taxed.DateStart);
+                                        prod.Inciso = taxed.Inciso;
                                         prod.Created = DateTime.Now;
                                         prod.Updated = DateTime.Now;
 
@@ -576,7 +579,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
                     addProduct.Clear();
-                    //var productsTaxation = _itemService.FindByTaxation(nota.Id);
 
                     if (tributada == true)
                     {

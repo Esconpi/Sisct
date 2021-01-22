@@ -95,7 +95,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code);
+            var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -104,18 +104,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
                 
-                List<Model.Taxation> taxationTemp = new List<Model.Taxation>();
-                taxationAll.ToList().ForEach(s =>
-                {
-                    s.Ncm.Code = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Code);
-                    s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
-                    s.TaxationType.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.TaxationType.Description);
-                    s.Uf = s.Uf;
-                    taxationTemp.Add(s);
-                });
-
-                var ids = taxationTemp.Where(c =>
+                var ids = taxationAll.Where(c =>
                     c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.TaxationType.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Uf.Contains(filter, StringComparison.OrdinalIgnoreCase)
                     )

@@ -638,15 +638,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Company> companyTemp = new List<Company>();
-                companies.ToList().ForEach(s =>
-                {
-                    //s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
-                    //s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
-                    companyTemp.Add(s);
-                });
-
-                var ids = companyTemp.Where(c =>
+                var ids = companies.Where(c =>
                     c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
@@ -709,15 +701,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Company> companyTemp = new List<Company>();
-                companies.ToList().ForEach(s =>
-                {
-                    //s.SocialName = Helpers.CharacterEspecials.RemoveDiacritics(s.SocialName);
-                    //s.FantasyName = Helpers.CharacterEspecials.RemoveDiacritics(s.FantasyName);
-                    companyTemp.Add(s);
-                });
-
-                var ids = companyTemp.Where(c =>
+                var ids = companies.Where(c =>
                     c.FantasyName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Document.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
