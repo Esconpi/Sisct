@@ -374,6 +374,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(nota.Company.AnnexId), NCM);
                                 }
+                                else if (nota.Company.Incentive && nota.Company.ChapterId.Equals(4))
+                                {
+                                    incentivo = true;
+                                }
 
                                 Model.ProductNote prod = new Model.ProductNote();
 
@@ -526,7 +530,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.VfcpSTRet = vFCPSTRet;
                                         prod.IcmsCTe = freteIcms;
                                         prod.Freterateado = frete_prod;
-                                        prod.Aliqinterna = taxed.AliqInterna;
+                                        prod.AliqInterna = taxed.AliqInterna;
                                         prod.Mva = taxed.MVA;
                                         prod.BCR = taxed.BCR;
                                         prod.Fecop = taxed.Fecop;

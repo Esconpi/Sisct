@@ -147,8 +147,8 @@
                         }
                     }
 
-                    @if (ViewBag.Company.Incentive == true && ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Company.AnnexId != null &&
-                      ViewBag.Type != "ProdutoFP")
+                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) && ViewBag.Type != "ProdutoNI" && 
+                         ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoFP")
                     {
                         <!-- Resumo Imposto Incentivo -->
 

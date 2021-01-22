@@ -80,7 +80,7 @@ namespace Escon.SisctNET.Model
         public decimal? Fecop { get; set; }
 
         [Display(Name = "Aliquota Interna")]
-        public decimal? Aliqinterna { get; set; }
+        public decimal? AliqInterna { get; set; }
 
         [Display(Name = "MVA")]
         public decimal? Mva { get; set; }
@@ -207,5 +207,7 @@ namespace Escon.SisctNET.Model
         public DateTime ? DateStart { get; set; }
 
         public string Produto { get; set; }
+
+        public decimal? Inciso { get; set; }
     }
 }

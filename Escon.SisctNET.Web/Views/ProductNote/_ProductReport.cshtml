@@ -60,7 +60,7 @@
                     <td>@Html.DisplayFor(modelItem => item.BCR)</td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
                 }
-                <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe) + Convert.ToDecimal(item.Vicms))</td>                
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
@@ -125,7 +125,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                 Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi) + 
                                                 Convert.ToDecimal(item.Freterateado))</td>
-                    <td>@Html.DisplayFor(modelItem => item.Aliqinterna)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
                     <td>@Html.DisplayFor(modelItem => item.Picms)</td>
                     <td>@Html.DisplayFor(modelItem => item.Diferencial)</td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
