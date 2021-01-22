@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (ViewBag.Anexo != 3)
+            @if (ViewBag.Company.AnnexId != 3 && ViewBag.Company.ChapterId != 4)
             {
                 <tr>
                     <th>
@@ -23,7 +23,32 @@
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </th>
+                    <td style="text-align:center"> ---- </td>
+                </tr>
+            }
+            @if (ViewBag.Company.ChapterId == 4)
+            {
+                <tr>
+                    <th>
+                        Base de Cálculo Regime @ViewBag.PercentualCaputI %
+                    </th>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputI) </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                </tr>
+                <tr>
+                    <th>
+                        Base de Cálculo Regime @ViewBag.PercentualCaputII %
+                    </th>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputII) </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
                 </tr>
             }
             <tr>
@@ -42,13 +67,17 @@
 </div>
 
 <div style="width: 100%; overflow: hidden; font-size:12px;">
-    @if (ViewBag.Anexo == 3)
+    @if (ViewBag.Company.AnnexId == 3)
     {
         @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
 
         <div style="width: 100%; font-size:12px; padding-top:10px;">
             @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
         </div>
+    }
+    else if (ViewBag.Company.ChapterId == 4)
+    {
+        @await Html.PartialAsync("_MotorcycleAutoParts", new ViewDataDictionary(ViewData))
     }
     else
     {
