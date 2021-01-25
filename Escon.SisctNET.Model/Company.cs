@@ -38,6 +38,74 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Código")]
         public string Code { get; set; }
 
+        [Display(Name = "Capítulo")]
+        [ForeignKey("Chapter")]
+        public int? ChapterId { get; set; }
+
+        private Chapter chapter;
+        public Chapter Chapter
+        {
+            get => LazyLoader.Load(this, ref chapter);
+            set => chapter = value;
+        }
+
+        [Display(Name = "Anexo")]
+        [ForeignKey("Annex")]
+        public int? AnnexId { get; set; }
+
+        private Annex annex;
+        public Annex Annex
+        {
+            get => LazyLoader.Load(this, ref annex);
+            set => annex = value;
+        }
+
+        [Display(Name = "Tipo")]
+        [ForeignKey("CountingType")]
+        public int? CountingTypeId { get; set; }
+
+        private CountingType countingType;
+        public CountingType CountingType
+        {
+            get => LazyLoader.Load(this, ref countingType);
+            set => countingType = value;
+        }
+
+        [Display(Name = "UF")]
+        [ForeignKey("State")]
+        public int? StateId { get; set; }
+
+        private State state;
+        public State State
+        {
+            get => LazyLoader.Load(this, ref state);
+            set => state = value;
+        }
+
+        [Display(Name = "Inscrição Estadual")]
+        public string Ie { get; set; }
+
+        [Display(Name = "Logradouro")]
+        public string Logradouro { get; set; }
+
+        [Display(Name = "Número")]
+        public string Number { get; set; }
+
+        [Display(Name = "Complemento")]
+        public string Complement { get; set; }
+
+        [Display(Name = "Bairro")]
+        public string District { get; set; }
+
+        [Display(Name = "Cep")]
+        public string Cep { get; set; }
+
+        [Display(Name = "Cidade")]
+        public string City { get; set; }
+
+        [Display(Name = "Telefone")]
+        public string Phone { get; set; }
+
         [Display(Name = "ICMS %")]
         public decimal? Icms { get; set; }
 
@@ -82,39 +150,6 @@ namespace Escon.SisctNET.Model
 
         public decimal? Faturamento { get; set; }
 
-        [Display(Name = "Capítulo")]
-        [ForeignKey("Chapter")]
-        public int? ChapterId { get; set; }
-
-        private Chapter chapter;
-        public Chapter Chapter
-        {
-            get => LazyLoader.Load(this, ref chapter);
-            set => chapter = value;
-        }
-
-        [Display(Name = "Anexo")]
-        [ForeignKey("Annex")]
-        public int? AnnexId { get; set; }
-
-        private Annex annex;
-        public Annex Annex
-        {
-            get => LazyLoader.Load(this, ref annex);
-            set => annex = value;
-        }
-
-        [Display(Name = "Tipo")]
-        [ForeignKey("CountingType")]
-        public int? CountingTypeId { get; set; }
-
-        private CountingType countingType;
-        public CountingType CountingType
-        {
-            get => LazyLoader.Load(this, ref countingType);
-            set => countingType = value;
-        }
-
         [Display(Name = "Icms p/ Não Contribuinte %")]
         public decimal? IcmsNContribuinte { get; set; }
 
@@ -126,33 +161,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Icms Aliq. SUperior a 25 %")]
         public decimal? IcmsAliqM25 { get; set; }
-
-        [Display(Name = "UF")]
-        public string Uf { get; set; }
-
-        [Display(Name = "Inscrição Estadual")]
-        public string Ie { get; set; }
-
-        [Display(Name = "Logradouro")]
-        public string Logradouro { get; set; }
-
-        [Display(Name = "Número")]
-        public string Number { get; set; }
-
-        [Display(Name = "Complemento")]
-        public string Complement { get; set; }
-
-        [Display(Name = "Bairro")]
-        public string District { get; set; }
-
-        [Display(Name = "Cep")]
-        public string Cep { get; set; }
-
-        [Display(Name = "Cidade")]
-        public string City { get; set; }
-
-        [Display(Name = "Telefone")]
-        public string Phone { get; set; }
 
         [Display(Name = "Seção")]
         [ForeignKey("Section")]

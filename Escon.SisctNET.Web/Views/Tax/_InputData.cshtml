@@ -1,16 +1,28 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
-<tr>
-    <th style="text-align:center;border:1px solid;" colspan="5">
-        VENDAS
-    </th>
-    <th style="text-align:center;border:1px solid;" colspan="5">
-        DEVOLUÇÕES
-    </th>
-    <th style="text-align:center;border:1px solid;" rowspan="2">
-        SUSPENSÂO
-    </th>
-</tr>
+
+@if (ViewBag.Company.AnnexId == 1)
+{
+    <tr>
+        <th style="text-align:center;border:1px solid;" colspan="5">
+            VENDAS
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="5">
+            DEVOLUÇÕES
+        </th>
+    </tr>
+}
+else
+{
+    <tr>
+        <th style="text-align:center;border:1px solid;" colspan="4">
+            VENDAS
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="4">
+            DEVOLUÇÕES
+        </th>
+    </tr>
+}
 
 <tr>
     <th style="text-align:center;border:1px solid;">
@@ -22,11 +34,14 @@
     <th style="text-align:center;border:1px solid;">
         P/ NÃO CONTRIBUINTE
     </th>
+    @if (ViewBag.Company.AnnexId == 1)
+    {
+        <th style="text-align:center;border:1px solid;">
+            DO ANEXO II
+        </th>
+    }
     <th style="text-align:center;border:1px solid;">
-        DO ANEXO
-    </th>
-    <th style="text-align:center;border:1px solid;">
-        P/ GRUPO MAIOR QUE @ViewBag.Comp.VendaMGrupo %
+        P/ GRUPO MAIOR QUE @ViewBag.Company.VendaMGrupo %
     </th>
     <th style="text-align:center;border:1px solid;">
         TOTAL
@@ -37,11 +52,14 @@
     <th style="text-align:center;border:1px solid;">
         P/ NÃO CONTRIBUINTE
     </th>
+    @if (ViewBag.Company.AnnexId == 1)
+    {
+        <th style="text-align:center;border:1px solid;">
+            DO ANEXO II
+        </th>
+    }
     <th style="text-align:center;border:1px solid;">
-        DO ANEXO
-    </th>
-    <th style="text-align:center;border:1px solid;">
-        P/ GRUPO MAIOR QUE @ViewBag.Comp.VendaMGrupo %
+        P/ GRUPO MAIOR QUE @ViewBag.Company.VendaMGrupo %
     </th>
 
 </tr>
@@ -65,12 +83,15 @@
             @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinte))
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNcm))
-        }
-    </td>
+    @if (ViewBag.Company.AnnexId == 1)
+    {
+        <td style="text-align:right;border:1px solid;padding-right:1%;">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNcm))
+            }
+        </td>
+    }
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
@@ -95,22 +116,113 @@
             @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNcm))
-        }
-    </td>
+    @if (ViewBag.Company.AnnexId == 1)
+    {
+        <td style="text-align:right;border:1px solid;padding-right:1%;">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNcm))
+            }
+        </td>
+    }
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
             @string.Format("{0:N}", ViewBag.DevolucoesGrupo)
         }
     </td>
-    <td style="text-align:right;border:1px solid;padding-right:1%;">
-        @if (Model != null)
-        {
-            @string.Format("{0:N}", Convert.ToDecimal(Model.Suspensao))
-        }
-    </td>
 </tr>
+
+@if (ViewBag.Company.AnnexId == 1)
+{
+    <tr>
+        <th style="text-align:center;border:1px solid;" colspan="3">
+            TRANSFERÊNCIA ENTRADA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="3">
+            TRANSFERÊNCIA INTERESTADUAL
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            TRANSFERÊNCIA SAIDA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            SUSPENSÃO
+        </th>
+    </tr>
+}
+else
+{
+    <tr>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            TRANSFERÊNCIA ENTRADA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            TRANSFERÊNCIA INTERESTADUAL
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            TRANSFERÊNCIA SAIDA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            SUSPENSÃO
+        </th>
+    </tr>
+}
+
+@if (ViewBag.Company.AnnexId == 1)
+{
+    <tr>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="3">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaEntrada))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="3">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaInter))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaSaida))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.Suspensao))
+            }
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaEntrada))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaInter))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaSaida))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.Suspensao))
+            }
+        </td>
+    </tr>
+}

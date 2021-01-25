@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using Escon.SisctNET.Model;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -12,11 +13,6 @@ namespace Escon.SisctNET.Service.Implementation
         public StateService(IStateRepository repository)
         {
             _repository = repository;
-        }
-
-        public void Create(List<State> states, Log log = null)
-        {
-            _repository.Create(states);         
         }
 
         public State Create(State entity, Log log)
@@ -42,16 +38,6 @@ namespace Escon.SisctNET.Service.Implementation
         public State FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
-        }
-
-        public State FindByUf(string uf, Log log = null)
-        {
-            return _repository.FindByUf(uf);
-        }
-
-        public State FindByUf(List<State> states, DateTime data, string ufOrigem, string ufDestino, Log log = null)
-        {
-            return _repository.FindByUf(states, data, ufOrigem, ufDestino, log);
         }
 
         public State Update(State entity, Log log)

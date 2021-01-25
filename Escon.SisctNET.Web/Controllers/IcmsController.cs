@@ -2995,25 +2995,27 @@ namespace Escon.SisctNET.Web.Controllers
                     var grupos = _grupoService.FindByGrupos(imp.Id);
 
 
-                    decimal totalVendas = Convert.ToDecimal(imp.Vendas), totalNcm = Convert.ToDecimal(imp.VendasNcm), totalTranferencias = Convert.ToDecimal(imp.Transferencia),
-                         totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoNContribuinte = Convert.ToDecimal(imp.DevolucaoNContribuinte),
-                         totalDevoContribuinte = totalDevo - totalDevoNContribuinte,totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao),
-                         totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter);
+                    decimal totalNcm = Convert.ToDecimal(imp.VendasNcm), totalTranferenciaEntrada = Convert.ToDecimal(imp.TransferenciaEntrada),
+                            totalTranferenciaSaida = Convert.ToDecimal(imp.TransferenciaSaida), totalVendas = Convert.ToDecimal(imp.Vendas) + totalTranferenciaSaida,
+                            totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm),
+                            totalDevoNContribuinte = Convert.ToDecimal(imp.DevolucaoNContribuinte), totalDevoContribuinte = totalDevo - totalDevoNContribuinte,
+                            totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter),
+                            totalNcontribuinte = Convert.ToDecimal(imp.VendasNContribuinte), baseCalc = totalVendas - totalDevo,
+                            totalContribuinte = totalVendas - totalNcontribuinte, baseCalcContribuinte = totalContribuinte - totalDevoContribuinte,
+                            baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte, totalSaida = baseCalc + totalTranferenciaEntrada,
+                            limiteContribuinte = (baseCalc * (Convert.ToDecimal(comp.VendaContribuinte))) / 100,
+                            limiteNContribuinte = (baseCalc * (Convert.ToDecimal(comp.VendaCpf))) / 100,
+                            limiteNcm = (baseCalc * Convert.ToDecimal(comp.VendaAnexo)) / 100,
+                            limiteGrupo = (totalSaida * Convert.ToDecimal(comp.VendaMGrupo)) / 100,
+                            limiteTransferenciaInter = (totalTranferenciaEntrada * Convert.ToDecimal(comp.TransferenciaInter)) / 100;
 
 
-                    decimal totalNcontribuinte = Convert.ToDecimal(imp.VendasNContribuinte), baseCalc = totalVendas - totalDevo, totalContribuinte = totalVendas - totalNcontribuinte,
-                    baseCalcContribuinte = totalContribuinte - totalDevoContribuinte,baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte, totalSaida = baseCalc + totalTranferencias;
+                    decimal limiteTransferencia = (baseCalc * Convert.ToDecimal(comp.Transferencia)) / 100,
+                            impostoContribuinte = 0, excedenteContribuinte = 0, impostoNContribuinte = 0, excedenteNContribuinte = 0,
+                            excedenteNcm = 0, impostoNcm = 0, excedenteTranf = 0, excedenteTranfInter = 0, impostoTransfInter = 0, impostoTransf = 0;
 
-                    decimal limiteNContribuinte = (baseCalc * (Convert.ToDecimal(comp.VendaCpf))) / 100,
-                    limiteNcm = (baseCalc * Convert.ToDecimal(comp.VendaAnexo)) / 100,
-                    limiteGrupo = (totalSaida * Convert.ToDecimal(comp.VendaMGrupo)) / 100,
-                    limiteTransferencia = (totalTranferencias * Convert.ToDecimal(comp.Transferencia)) / 100;
 
-                    decimal impostoNContribuinte = 0, excedenteNContribuinte = 0, excedenteNcm = 0, impostoNcm = 0, excedenteTranfInter = 0, impostoTransfInter = 0;
-
-                    totalVendas = totalVendas + totalTranferencias;
-
-                    //CNPJ
+                    //  CNPJ
                     List<List<string>> gruposExecentes = new List<List<string>>();
                     decimal totalVendaGrupo = Convert.ToDecimal(grupos.Sum(_ => _.Vendas)),
                         totalDevoGrupo = Convert.ToDecimal(grupos.Sum(_ => _.Devolucao)),
@@ -3039,50 +3041,54 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal baseCalcNcm = totalNcm - totalDevoAnexo;
 
-                    //Anexo II
-                    if (baseCalcNcm < limiteNcm && comp.AnnexId.Equals(1))
+                    //  Anexo II
+                    if (baseCalcNcm < limiteNcm && comp.AnnexId == 1)
                     {
                         excedenteNcm = limiteNcm - baseCalcNcm;
                         impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100,2);
                     }
 
-                    //Não Contribuinte
-                    if (baseCalcNContribuinte > limiteNContribuinte && limiteNContribuinte > 0)
+                    //  Contribuinte
+                    if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == 4)
+                    {
+                        excedenteContribuinte = baseCalcContribuinte - limiteContribuinte;
+                        impostoContribuinte = Math.Round((excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100, 2);
+                    }
+
+                    //  Não Contribuinte
+                    if (baseCalcNContribuinte > limiteNContribuinte && comp.ChapterId != 4)
                     {
                         excedenteNContribuinte = baseCalcNContribuinte - limiteNContribuinte;
                         impostoNContribuinte = Math.Round((excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100,2);
                     }
 
-                    // Transferência inter
-                    if (limiteTransferencia < totalTranferenciaInter)
+                    //  Transferência
+                    if(totalTranferenciaSaida > limiteTransferencia && comp.ChapterId == 4)
                     {
-                        excedenteTranfInter = totalTranferenciaInter - limiteTransferencia;
+                        excedenteTranf = totalTranferenciaSaida - limiteTransferencia;
+                        impostoTransf = Math.Round((excedenteTranf * Convert.ToDecimal(comp.TransferenciaExcedente)) / 100, 2);
+                    }
+
+                    //  Transferência inter
+                    if (totalTranferenciaInter > limiteTransferenciaInter && limiteTransferenciaInter > 0)
+                    {
+                        excedenteTranfInter = totalTranferenciaInter - limiteTransferenciaInter;
                         impostoTransfInter = Math.Round((excedenteTranfInter * Convert.ToDecimal(comp.TransferenciaInterExcedente)) / 100,2);
                     }
 
-                    // Suspensão
+                    //  Suspensão
                     decimal valorSuspensao = Math.Round((totalVendasSuspensao * Convert.ToDecimal(comp.Suspension)) / 100,2);
 
-                    // Percentuais
+                    //  Percentuais
                     decimal percentualVendaContribuinte = (baseCalcContribuinte * 100) / baseCalc;
                     decimal percentualVendaNContribuinte = (baseCalcNContribuinte * 100) / baseCalc;
                     decimal percentualVendaAnexo = (baseCalcNcm * 100) / baseCalc;
                     decimal percentualGrupo = (baseCalcGrupo * 100) / baseCalc;
 
-                    //Geral
-                    ViewBag.Contribuinte = totalContribuinte;
-                    ViewBag.NContribuinte = totalNcontribuinte;
+                    //  Geral
                     ViewBag.TotalVenda = totalVendas;
-                    ViewBag.VendaAnexo = totalNcm;
-                    ViewBag.TotalTransferencia = totalTranferenciaInter;
                     ViewBag.TotalDevo = totalDevo;
                     ViewBag.BaseCalc = baseCalc;
-                    ViewBag.TotalDevoAnexo = totalDevoAnexo;
-                    ViewBag.BaseCalcAnexo = baseCalcNcm;
-                    ViewBag.TotalDevoContrib = totalDevoContribuinte;
-                    ViewBag.BaseCalcContrib = baseCalcContribuinte;
-                    ViewBag.TotalDevoNContrib = totalDevoNContribuinte;
-                    ViewBag.BaseCalcNContrib = baseCalcNContribuinte;
 
                     // Percentuais
                     ViewBag.PercentualVendaContribuinte = percentualVendaContribuinte;
@@ -3090,43 +3096,58 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualVendaAnexo = percentualVendaAnexo;
                     ViewBag.PercentualVendaGrupo = percentualGrupo;
 
-                    //CNPJ
-                    ViewBag.PercentualCNPJ = Convert.ToDecimal(comp.VendaMGrupo);
+                    //  CNPJ
                     ViewBag.TotalVendaGrupo = totalVendaGrupo;
                     ViewBag.TotalDevoGrupo = totalDevoGrupo;
                     ViewBag.TotalBaseCalcuGrupo = baseCalcGrupo;
                     ViewBag.ExcedenteGrupo = totalExcedente;
                     ViewBag.TotalExcedenteGrupo = totalImpostoGrupo;
                     ViewBag.LimiteGrupo = limiteGrupo;
-                    ViewBag.PercentualExcedenteGrupo = Convert.ToDecimal(comp.VendaMGrupoExcedente);
                     ViewBag.Grupo = gruposExecentes;
 
-                    //Anexo II
+                    //  Anexo II
+                    ViewBag.VendaAnexo = totalNcm;
+                    ViewBag.TotalDevoAnexo = totalDevoAnexo;
+                    ViewBag.BaseCalcAnexo = baseCalcNcm;
                     ViewBag.LimiteAnexo = limiteNcm;
                     ViewBag.ExcedenteAnexo = excedenteNcm;
-                    ViewBag.PercentualExcedenteAnexo = Convert.ToDecimal(comp.VendaAnexoExcedente);
                     ViewBag.TotalExcedenteAnexo = impostoNcm;
 
-                    //Não Contribuinte
+                    //  Contribuinte
+                    ViewBag.Contribuinte = totalContribuinte;
+                    ViewBag.TotalDevoContribuite = totalDevoContribuinte;
+                    ViewBag.BaseCalcContribuinte = baseCalcContribuinte;
+                    ViewBag.LimiteContribuinte = limiteContribuinte;
+                    ViewBag.ExcedenteContribuinte = excedenteContribuinte;
+                    ViewBag.TotalExcedenteContribuinte = impostoContribuinte;
+
+                    //  Não Contribuinte
+                    ViewBag.NContribuinte = totalNcontribuinte;
+                    ViewBag.TotalDevoNContribuinte = totalDevoNContribuinte;
+                    ViewBag.BaseCalcNContribuinte = baseCalcNContribuinte;
                     ViewBag.LimiteNContribuinte = limiteNContribuinte;
                     ViewBag.ExcedenteNContribuinte = excedenteNContribuinte;
-                    ViewBag.PercentualExcedenteNContribuinte = Convert.ToDecimal(comp.VendaCpfExcedente);
                     ViewBag.TotalExcedenteNContribuinte = impostoNContribuinte;
 
-                    //Tranferência
+                    //  Tranferência
+                    ViewBag.TotalTransferencia = totalTranferenciaSaida;
                     ViewBag.LimiteTransferencia = limiteTransferencia;
-                    ViewBag.ExcedenteTransferencia = excedenteTranfInter;
-                    ViewBag.PercentaulTransferencia = Convert.ToDecimal(comp.TransferenciaInterExcedente);
-                    ViewBag.TotalExcedenteTransferencia = impostoTransfInter;
+                    ViewBag.ExcedenteTransferencia = excedenteTranf;
+                    ViewBag.TotalExcedenteTransferencia = impostoTransf;
 
-                    // Suspensão
+                    //  Tranferência Interestadual
+                    ViewBag.TotalTransferenciaInter = totalTranferenciaInter;
+                    ViewBag.LimiteTransferenciaInter = limiteTransferenciaInter;
+                    ViewBag.ExcedenteTransferenciaInter = excedenteTranfInter;
+                    ViewBag.TotalExcedenteTransferenciaInter = impostoTransfInter;
+
+                    //  Suspensão
                     ViewBag.BaseCalcSuspensao = totalVendasSuspensao;
-                    ViewBag.PercentaulSuspensao = Convert.ToDecimal(comp.Suspension);
                     ViewBag.TotalSuspensao = valorSuspensao;
 
 
-                    //Total Icms
-                    ViewBag.TotalIcms = impostoNcm + impostoNContribuinte + impostoTransfInter + totalImpostoGrupo + valorSuspensao;
+                    //  Total Icms
+                    ViewBag.TotalIcms = impostoNcm + impostoContribuinte + impostoNContribuinte + impostoTransf + impostoTransfInter + totalImpostoGrupo + valorSuspensao;
 
 
                     //Dar
@@ -3303,7 +3324,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalGeralVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento;
                             ViewBag.TotalGeralIcmsIncentivo = totalIcmsGeralIncentivo;
                             ViewBag.TotalGeralVendasIncentivo = totalGeralVendasIncentivo;
-                            ViewBag.Uf = comp.Uf;
+                            ViewBag.Uf = comp.State.UF;
 
                         }
                         else

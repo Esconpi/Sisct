@@ -26,6 +26,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IChapterService _chapterService;
         private readonly ISectionService _sectionService;
         private readonly IEmailResponsibleService _emailResponsibleService;
+        private readonly IStateService _stateService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -41,6 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
             IChapterService chapterService,
             ISectionService sectionService,
             IEmailResponsibleService emailResponsibleService,
+            IStateService stateService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -59,6 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
             _chapterService = chapterService;
             _sectionService = sectionService;
             _emailResponsibleService = emailResponsibleService;
+            _stateService = stateService;
         }
 
         [HttpGet]
@@ -68,8 +71,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+
+                var states = _stateService.FindAll(null);
                
-                var empFortes = _fortesEnterpriseService.GetCompanies(confDbFortes.Value);
+                var empFortes = _fortesEnterpriseService.GetCompanies(states, confDbFortes.Value);
 
                 List<Company> addCompany = new List<Company>();
                 List<Company> updateCompany = new List<Company>();
@@ -100,7 +105,7 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Complement = emp.Complement;
                         company.District = emp.District;
                         company.Cep = emp.Cep;
-                        company.Uf = emp.Uf;
+                        company.StateId = emp.StateId;
                         company.City = emp.City;
                         company.Phone = emp.Phone;
                         company.Updated = DateTime.Now;
@@ -159,6 +164,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                SelectList states = new SelectList(list_states, "Id", "UF", null);
+                ViewBag.StateId = states;
                 return View();
             }
             catch(Exception ex)
@@ -207,6 +215,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
+                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                SelectList states = new SelectList(list_states, "Id", "UF", null);
+                ViewBag.StateId = states;
+
                 return View(result);
             }
             catch (Exception ex)
@@ -235,13 +247,13 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Code = entity.Code;
                 rst.Document = entity.Document;
                 rst.Ie = entity.Ie;
-                rst.Uf = entity.Uf;
+                rst.StateId = entity.StateId;
                 rst.Logradouro = entity.Logradouro;
                 rst.Number = entity.Number;
                 rst.Complement = entity.Complement;
                 rst.District = entity.District;
                 rst.Cep = entity.Cep;
-                rst.Uf = entity.Uf;
+                rst.StateId = entity.StateId;
                 rst.City = entity.City;
                 rst.Phone = entity.Phone;
                 rst.Updated = DateTime.Now;

@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<TaxationType> Taxationtypes { get; set; }
 
-        public DbSet<State> States { get; set; }
+        public DbSet<Aliquot> Aliquots { get; set; }
 
         public DbSet<ProductNote> ProductNotes { get; set; }
 
@@ -118,5 +118,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<TaxProducer> TaxProducers { get; set; }
 
         public DbSet<Provider> Providers { get; set; }
+
+        public DbSet<State> States { get; set; }
     }
 }

@@ -44,7 +44,9 @@ namespace Escon.SisctNET.Model
 
         public decimal? TransferenciaInter { get; set; }
 
-        public decimal? Transferencia { get; set; }
+        public decimal? TransferenciaEntrada { get; set; }
+
+        public decimal? TransferenciaSaida { get; set; }
 
         public decimal? Suspensao { get; set; }
 

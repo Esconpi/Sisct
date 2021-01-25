@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Escon.SisctNET.Fortes.Implementation
 {
@@ -22,7 +23,7 @@ namespace Escon.SisctNET.Fortes.Implementation
          * AdesaoFilialReinf, BloqueioESocial, ReintegradoReinf, DataReintegracaoReinf, ADESAOMANUAL
          */
 
-        public List<Company> GetCompanies(string connectionString)
+        public List<Company> GetCompanies(List<Model.State> states, string connectionString)
         {
             List<Company> companies = new List<Company>();
 
@@ -45,7 +46,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 c.Code = _SqlDataReader["Codigo"].ToString();
      
                                 List<Company> establishments = new List<Company>();
-                                establishments = GetEstablishment(c.Code, connectionString);
+                                establishments = GetEstablishment(c.Code, states, connectionString);
 
                                 if (!string.IsNullOrEmpty(_SqlDataReader["CNPJBase"].ToString()))
                                 {
@@ -59,8 +60,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Status = true;
                                         company.Created = DateTime.Now;
                                         company.Updated = company.Created;
-                                        company.SocialName = _SqlDataReader["RazaoSocial"].ToString();
-                                        company.FantasyName = _SqlDataReader["NmFantasia"].ToString();
+                                        company.SocialName = _SqlDataReader["RazaoSocial"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
+                                        company.FantasyName = _SqlDataReader["NmFantasia"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
                                         company.Code = _SqlDataReader["Codigo"].ToString();
                                         string seqCnpj = establishment.Document;
                                         string digit = DigitCnpj(cnpj + seqCnpj);
@@ -71,7 +72,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Complement = establishment.Complement;
                                         company.District = establishment.District;
                                         company.Cep = establishment.Cep;
-                                        company.Uf = establishment.Uf;
+                                        company.StateId = establishment.StateId;
                                         company.City = establishment.City;
                                         company.Phone = establishment.Phone;
                                         companies.Add(company);
@@ -88,8 +89,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Status = true;
                                         company.Created = DateTime.Now;
                                         company.Updated = company.Created;
-                                        company.SocialName = _SqlDataReader["RazaoSocial"].ToString();
-                                        company.FantasyName = _SqlDataReader["NmFantasia"].ToString();
+                                        company.SocialName = _SqlDataReader["RazaoSocial"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
+                                        company.FantasyName = _SqlDataReader["NmFantasia"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
                                         company.Code = _SqlDataReader["Codigo"].ToString();
                                         company.Document = _SqlDataReader["CPF"].ToString();
                                         company.Ie = establishment.Ie;
@@ -98,7 +99,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Complement = establishment.Complement;
                                         company.District = establishment.District;
                                         company.Cep = establishment.Cep;
-                                        company.Uf = establishment.Uf;
+                                        company.StateId = establishment.StateId;
                                         company.City = establishment.City;
                                         company.Phone = establishment.Phone;
                                         companies.Add(company);
@@ -134,7 +135,7 @@ namespace Escon.SisctNET.Fortes.Implementation
          * Combustiveis, SUFRAMA, EST_CODIGO_CONTABIL, PrestadorServSaude, CNES, VeiculosUsados, ESOCIAL, SociedUniprofissional, CEI, CAD_ITR
          */
         
-        public List<Company> GetEstablishment(string codeEmp, string connectionString)
+        public List<Company> GetEstablishment(string codeEmp, List<Model.State> states, string connectionString)
         {
             List<Company> establishments = new List<Company>();
             try
@@ -160,7 +161,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 establishment.Complement = reader["EndComplemento"].ToString();
                                 establishment.District = reader["Bairro"].ToString();
                                 establishment.Cep = reader["CEP"].ToString();
-                                establishment.Uf = reader["MUN_UFD_Sigla"].ToString();
+                                establishment.StateId = states.Where(_ => _.UF.Equals(reader["MUN_UFD_Sigla"].ToString())).Select(_ => _.Id).FirstOrDefault();
                                 establishment.Phone = "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
                                 establishment.City = GetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString);
                                 establishments.Add(establishment);

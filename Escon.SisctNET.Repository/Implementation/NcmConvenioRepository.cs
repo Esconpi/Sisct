@@ -32,12 +32,12 @@ namespace Escon.SisctNET.Repository.Implementation
         public bool FindByNcmAnnex(List<NcmConvenio> ncms, int Annex, string ncm, Log log = null)
         {
             var ncmsAll = ncms.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
-            bool NcmIncentivo = false;
+            bool ncmIncentivo = false;
             foreach (var n in ncmsAll)
             {
                 int contaChar = n.Length;
                 string substring = "";
-                if (contaChar < 8 && n.Length > contaChar)
+                if (contaChar < 8 && ncm.Length > contaChar)
                 {
                     substring = ncm.Substring(0, contaChar);
                 }
@@ -46,13 +46,13 @@ namespace Escon.SisctNET.Repository.Implementation
                     substring = ncm;
                 }
 
-                if (n.Equals(substring) && !contaChar.Equals(0))
+                if (n.Equals(substring))
                 {
-                    NcmIncentivo = true;
+                    ncmIncentivo = true;
                     break;
                 }
             }
-            return NcmIncentivo;
+            return ncmIncentivo;
         }
     }
 }

@@ -121,7 +121,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationTypeRepository, TaxationTypeRepository>();
             services.AddScoped<IProductNoteRepository, ProductNoteRepository>();
             services.AddScoped<ITaxationRepository, TaxationRepository>();
-            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<IAliquotRepository, AliquotRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<ICompanyCfopRepository, CompanyCfopRepository>();
@@ -156,6 +156,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ICsosnRepository, CsosnRepository>();
             services.AddScoped<IProviderRepository, ProviderRepository>();
             services.AddScoped<ITaxProducerRepository, TaxProducerRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -175,7 +176,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationTypeService, TaxationTypeService>();
             services.AddScoped<IProductNoteService, ProductNoteService>();
             services.AddScoped<ITaxationService, TaxationService>();
-            services.AddScoped<IStateService, StateService>();
+            services.AddScoped<IAliquotService, AliquotService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IAuthentication, Authentication>();
             services.AddScoped<ICompanyCfopService, CompanyCfopService>();
@@ -211,6 +212,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ICsosnService, CsosnService>();
             services.AddScoped<IProviderService, ProviderService>();
             services.AddScoped<ITaxProducerService, TaxProducerService>();
+            services.AddScoped<IStateService, StateService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();

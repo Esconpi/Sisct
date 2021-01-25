@@ -1,18 +1,17 @@
-﻿
-@model IEnumerable<Escon.SisctNET.Model.State>
+﻿@model IEnumerable<Escon.SisctNET.Model.Aliquot>
 
-    @{
-        ViewData["Title"] = "Index";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title"><strong>Estado</strong></h3>
+            <h3 class="box-title"><strong>Aliquota Estado</strong></h3>
 
             <div class="btn-group pull-right">
                 <a asp-action="Create" class="btn btn-primary">
                     <i class="fa fa-plus"></i>
-                    Novo Estado
+                    Nova Aliquota
                 </a>
             </div>
 
@@ -24,13 +23,20 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Code)
+                                @Html.DisplayNameFor(model => model.StateOrigemId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                @Html.DisplayNameFor(model => model.StateDestinoId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UF)
+                                @Html.DisplayNameFor(model => model.Aliquota)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateStart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateEnd)
                             </th>
                             <th></th>
                         </tr>
@@ -40,13 +46,19 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
+                                    @item.StateOrigem.UF
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
+                                    @item.StateDestino.UF
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.UF)
+                                    @Html.DisplayFor(modelItem => item.Aliquota)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateStart)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateEnd)
                                 </td>
                                 <td>
                                     @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })

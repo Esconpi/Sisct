@@ -74,7 +74,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3).ToString().Replace(".", ",");
                 ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4).ToString().Replace(".", ",");
 
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
 
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
@@ -623,7 +623,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var contribuintes = _clientService.FindByContribuinte(companyid, "all");
                             var contribuintesRaiz = _clientService.FindByContribuinte(companyid, "raiz");
 
-                            decimal totalVendas = 0, totalNcm = 0, totalTranferencias = 0, baseCalc = 0, totalDevo = 0,
+                            decimal totalVendas = 0, totalNcm = 0, totalTranferenciaEntrada = 0, totalTranferenciaSaida = 0, baseCalc = 0, totalDevo = 0,
                                 totalDevoAnexo = 0, totalDevoContribuinte = 0, totalVendasSuspensao = 0, totalTranferenciaInter = 0;
                             int contContribuintes = contribuintes.Count();
                             int contContribuintesRaiz = contribuintesRaiz.Count() + 1;
@@ -686,7 +686,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                             }
-                                            totalTranferencias += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                            totalTranferenciaEntrada += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                         }
                                         if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vFrete"))
                                         {
@@ -694,7 +694,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                             }
-                                            totalTranferencias += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                            totalTranferenciaEntrada += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                         }
                                         if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vDesc"))
                                         {
@@ -702,7 +702,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 totalTranferenciaInter -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                             }
-                                            totalTranferencias -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                            totalTranferenciaEntrada -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                         }
                                         if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vOutro"))
                                         {
@@ -710,7 +710,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                             }
-                                            totalTranferencias += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                            totalTranferenciaEntrada += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                         }
                                         if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("vSeg"))
                                         {
@@ -718,7 +718,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 totalTranferenciaInter += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                             }
-                                            totalTranferencias += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                            totalTranferenciaEntrada += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                         }
                                     }
                                 }
@@ -1051,75 +1051,50 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            totalTranferencias += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            totalTranferenciaSaida += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
-                                            }
-                                         
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
-                                            {
-                                                totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                             }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            totalTranferencias += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                            totalTranferenciaSaida += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
 
                                             }
-
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
-                                            {
-                                                totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            totalTranferencias -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                            totalTranferenciaSaida -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
 
                                             }
-
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
-                                            {
-                                                totalTranferenciaInter -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            totalTranferencias += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                            totalTranferenciaSaida += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
 
                                             }
-                                           
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
-                                            {
-                                                totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
-                                            }
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][j].ContainsKey("cProd"))
                                         {
-                                            totalTranferencias += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                            totalTranferenciaSaida += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
                                             {
                                                 resumoAllCnpjRaiz[posClienteRaiz, 1] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
 
-                                            }
-                                           
-                                            if (exitNotes[i][1]["idDest"].Equals("2"))
-                                            {
-                                                totalTranferenciaInter += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                             }
                                         }
                                     }
@@ -1486,8 +1461,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-                            baseCalc = totalVendas - totalDevo + totalTranferencias;
-                            totalVendas += totalTranferencias;
+                            baseCalc = totalVendas - totalDevo + totalTranferenciaSaida;
+                            totalVendas += totalTranferenciaSaida;
 
                             decimal totalNcontribuinte = Convert.ToDecimal(resumoCnpjRaiz[contContribuintesRaiz - 1, 1]),
                                     totalContribuinte = totalVendas - totalNcontribuinte,
@@ -1502,7 +1477,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 imp.VendasNContribuinte = totalNcontribuinte;
                                 imp.VendasNcm = totalNcm;
                                 imp.TransferenciaInter = totalTranferenciaInter;
-                                imp.Transferencia = totalTranferencias;
+                                imp.TransferenciaEntrada = totalTranferenciaEntrada;
+                                imp.TransferenciaSaida = totalTranferenciaSaida;
                                 imp.Devolucao = totalDevo;
                                 imp.DevolucaoNContribuinte = totalDevoNContribuinte;
                                 imp.DevolucaoNcm = totalDevoAnexo;
@@ -1607,7 +1583,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 tax.VendasNContribuinte = totalNcontribuinte;
                                 tax.VendasNcm = totalNcm;
                                 tax.TransferenciaInter = totalTranferenciaInter;
-                                tax.Transferencia = totalTranferencias;
+                                tax.TransferenciaEntrada = totalTranferenciaEntrada;
+                                tax.TransferenciaSaida = totalTranferenciaSaida;
                                 tax.Devolucao = totalDevo;
                                 tax.DevolucaoNContribuinte = totalDevoNContribuinte;
                                 tax.DevolucaoNcm = totalDevoAnexo;

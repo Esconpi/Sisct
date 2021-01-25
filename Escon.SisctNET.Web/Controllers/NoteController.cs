@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IConfigurationService _configurationService;
-        private readonly IStateService _stateService;
+        private readonly IAliquotService _aliquotService;
         private readonly INcmConvenioService _ncmConvenioService;
 
         public NoteController(
@@ -30,7 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationTypeService taxationTypeService,
             IFunctionalityService functionalityService,
             IConfigurationService configurationService,
-            IStateService stateService,
+            IAliquotService aliquotService,
             INcmConvenioService ncmConvenioService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
@@ -41,7 +41,7 @@ namespace Escon.SisctNET.Web.Controllers
             _itemService = itemService;
             _product = productService;
             _taxationService = taxationService;
-            _stateService = stateService;
+            _aliquotService = aliquotService;
             _taxationTypeService = taxationTypeService;
             _ncmConvenioService = ncmConvenioService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
@@ -109,8 +109,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var taxationCompany = _taxationService.FindByCompany(id);
                 var ncmConvenio = _ncmConvenioService.FindAll(null);
-                var states = _stateService.FindAll(null);
-                
+                var aliquotas = _aliquotService.FindAll(null);
+
                 Dictionary<string, string> det = new Dictionary<string, string>();
                 
                 for (int i = notes.Count - 1; i >= 0; i--)
@@ -361,7 +361,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (!number.Equals("4.00"))
                                 {
-                                    var state = _stateService.FindByUf(states, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                                    var state = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
                                     number = state.Aliquota.ToString();
                                 }
 
@@ -370,14 +370,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 bool incentivo = false;
 
-                                if (nota.Company.Incentive && (!nota.Company.AnnexId.Equals(2) && nota.Company.AnnexId != null))
+                                if (comp.Incentive && comp.AnnexId == 1)
                                 {
-                                    incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(nota.Company.AnnexId), NCM);
+                                    incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(comp.AnnexId), NCM);
                                 }
-                                else if (nota.Company.Incentive && nota.Company.ChapterId.Equals(4))
+                                
+                                if (nota.Company.Incentive && nota.Company.ChapterId.Equals(4))
                                 {
                                     incentivo = true;
-                                }
+                                }                                  
 
                                 Model.ProductNote prod = new Model.ProductNote();
 
@@ -484,7 +485,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     else if (taxedtype.Type == "Normal")
                                     {
 
-                                        var aliq_simples = _stateService.FindByUf(notes[i][2]["UF"]);
+                                        var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                         baseCalc = baseDeCalc;
                                         if (number != "4.00")
                                         {

@@ -16,18 +16,18 @@
             <br />
             <br />
 
-            @if (ViewBag.Comp.CountingTypeId == 2)
+            @if (ViewBag.Company.CountingTypeId == 2)
             {
                 <a asp-action="Reduction" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
             }
-            else if (ViewBag.Comp.CountingTypeId == 1)
+            else if (ViewBag.Company.CountingTypeId == 1)
             {
                 <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
             }
             <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
             @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
-                SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Comp.CountingTypeId == 2)
+                SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
             {
                 <br />
                 <br />
@@ -37,7 +37,7 @@
         </div>
 
         <div style="width:100%; text-align:center;padding-top:100px;">
-            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
         </div>
 
         <br />
@@ -64,7 +64,7 @@
             <nr></nr>
 
             <!-- IMPOSTO ICMS DE EMPRESA INCENTIVADA -->
-            @if (ViewBag.Comp.Incentive == true)
+            @if (ViewBag.Company.Incentive == true)
             {
                 <div style="text-align:center">
                     <strong>ICMS</strong>
@@ -80,17 +80,17 @@
 
                     <tbody>
 
-                        @if (ViewBag.Comp.TipoApuracao.Equals(true))
+                        @if (ViewBag.Company.TipoApuracao.Equals(true))
                         {
                             <!-- EMPRESA INCENTIVO ENTRADA -->
                             @await Html.PartialAsync("_InputData", Model, new ViewDataDictionary(ViewData))
                         }
-                        else if(ViewBag.Comp.TipoApuracao.Equals(false))
+                        else if(ViewBag.Company.TipoApuracao.Equals(false))
                         {
                             <!-- EMPRESA INCENTIVO SAÍDA -->
-                            @if (ViewBag.Comp.AnnexId != 3)
+                            @if (ViewBag.Company.AnnexId != 3)
                             {
-                                @if (ViewBag.Comp.TypeCompany.Equals(true))
+                                @if (ViewBag.Company.TypeCompany.Equals(true))
                                 {
                                     @await Html.PartialAsync("_ProductData", Model, new ViewDataDictionary(ViewData))
                                 }
@@ -99,10 +99,10 @@
                                     @await Html.PartialAsync("_IndustryData", Model, new ViewDataDictionary(ViewData))
                                 }
                             }
-                            else if (ViewBag.Comp.AnnexId.Equals(3))
+                            else if (ViewBag.Company.AnnexId.Equals(3))
                             {
                                 <!-- EMPRESA DE MEDICAMENTO -->
-                                @if (ViewBag.Comp.SectionId.Equals(2))
+                                @if (ViewBag.Company.SectionId.Equals(2))
                                 {
                                     @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
                                 }
@@ -121,21 +121,21 @@
                 <strong>PIS/COFINS</strong>
             </div>
 
-            @if (ViewBag.Comp.CountingTypeId == 1)
+            @if (ViewBag.Company.CountingTypeId == 1)
             {
                 <!-- EMPRESA LUCRO REAL -->
 
                 @await Html.PartialAsync("_ReceitaDataReal", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataReal", Model, new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Comp.CountingTypeId == 2)
+            else if (ViewBag.Company.CountingTypeId == 2)
             {
                 <!-- EMPRESA LUCRO PRESUMIDO -->
 
                 @await Html.PartialAsync("_ReceitaDataPresumido", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataPresumido", Model, new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Comp.CountingTypeId == 3)
+            else if (ViewBag.Company.CountingTypeId == 3)
             {
                 <!-- EMPRESA DO SIMPLES -->
             }
