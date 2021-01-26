@@ -37,11 +37,6 @@
                         <input asp-for="Cest" class="form-control" readonly />
                         <span asp-validation-for="Cest" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                        <label asp-for="CstId" class="control-label"></label>
-                        <select asp-items="@ViewBag.CstID" class="form-control selectoption" name="CstId" id="CstId"></select>
-                        <span asp-validation-for="CstId" class="text-danger"></span>
-                    </div>
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Produto</label>
                         @if (Model.Company.Incentive.Equals(true) && Model.Company.TipoApuracao.Equals(false))
@@ -97,6 +92,54 @@
                                 </select>
                             }
                         }
+                        else if (Model.Company.Incentive.Equals(true) && Model.Company.ChapterId == 4)
+                        {
+                            @if (Model.TypeTaxation == "Incentivado/Regime")
+                            {
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                    <option value="Incentivado/Regime" selected>Incentivado/Regime</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="ST">ST</option>
+                                    <option value="Isento">Isento</option>
+                                </select>
+                            }
+                            else if (Model.TypeTaxation == "Normal")
+                            {
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                    <option value="Incentivado/Regime">Incentivado/Regime</option>
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="ST">ST</option>
+                                    <option value="Isento">Isento</option>
+                                </select>
+                            }
+                            else if (Model.TypeTaxation == "ST")
+                            {
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                    <option value="Incentivado/Regime">Incentivado/Regime</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="ST" selected>ST</option>
+                                    <option value="Isento">Isento</option>
+                                </select>
+                            }
+                            else if (Model.TypeTaxation == "Isento")
+                            {
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                    <option value="Incentivado/Regime">Incentivado/Regime</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="ST">ST</option>
+                                    <option value="Isento" selected>Isento</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                    <option value="Incentivado/Regime">Incentivado/Regime</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="ST">ST</option>
+                                    <option value="Isento">Isento</option>
+                                </select>
+                            }
+                        }
                         else
                         {
                             @if (Model.TypeTaxation == "Normal")
@@ -136,13 +179,16 @@
                     </div>
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Tributar</label>
-                        <select class="form-control selectoption" name="type">
+                        <select class="form-control selectoption" name="type" id="type">
                             <option value="1" selected>Por Código</option>
                             <option value="2">Por Ncm</option>
                             <option value="3">Todos</option>
                         </select>
                     </div>
-
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">NCM Raiz</label>
+                        <input name="NcmRaiz" class="form-control" id="NcmRaiz" maxlength="8" disabled />
+                    </div>
 
                 </div>
 
@@ -187,7 +233,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Tributar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                 </div>
             </form>
         </div>
@@ -197,18 +243,19 @@
 
 <script type="text/javascript">
 
-    var cst = @Model.CstId
-    $("#CstId").children('option').each(function () {
-        if ($(this).val() == cst) {
-            $(this).attr('selected', true);
-        }
-    });
-
     $("#taxation").on("change", function () {
         if ($(this).val() === 'Incentivado/Normal' || $(this).val() === 'Incentivado/ST') {
             $("#percentual").prop("disabled", false);
         } else {
             $("#percentual").prop("disabled", true);
+        }
+    });
+
+    $("#type").on("change", function () {
+        if ($(this).val() === '2') {
+            $("#NcmRaiz").prop("disabled", false);
+        } else {
+            $("#NcmRaiz").prop("disabled", true);
         }
     });
 

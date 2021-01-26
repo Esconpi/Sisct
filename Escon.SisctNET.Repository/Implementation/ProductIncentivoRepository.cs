@@ -106,6 +106,33 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<ProductIncentivo> FindByProducts(List<ProductIncentivo> productIncentivos, string ncmRaiz, Log log = null)
+        {
+            List<ProductIncentivo> products = new List<ProductIncentivo>();
+            ncmRaiz = ncmRaiz.Replace(".", "");
+
+            int contaChar = ncmRaiz.Length;
+            foreach (var n in productIncentivos)
+            {
+                string substring = "";
+                if (contaChar < 8 && n.Ncm.Length > contaChar)
+                {
+                    substring = n.Ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = n.Ncm;
+                }
+
+                if (ncmRaiz.Equals(substring))
+                {
+                    products.Add(n);
+                }
+            }
+
+            return products;
+        }
+
         public void Update(List<ProductIncentivo> productIncentivos, Log log = null)
         {
             foreach (var p in productIncentivos)

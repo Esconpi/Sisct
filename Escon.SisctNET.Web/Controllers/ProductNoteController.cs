@@ -1147,7 +1147,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalfecop1SIE = difvalor1SIE - base1fecopSIE,totalfecop2IE = difvalor2IE - base2fecopIE, totalfecop2SIE = difvalor2SIE - base2fecopSIE;
 
                         //  Relatorio das Empresas Incentivadas
-                        if (comp.Incentive == true && (comp.AnnexId != null || comp.ChapterId == 4) && typeTaxation.Equals(Model.TypeTaxation.ST))
+                        if (comp.Incentive && (comp.AnnexId != null || comp.ChapterId == 4) && typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             var productsAll = _service.FindByProductsType(notes, typeTaxation);
 
@@ -1600,9 +1600,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-                            if (!comp.AnnexId.Equals(3) && !comp.ChapterId.Equals(4))
+                            if (comp.AnnexId.Equals(1) && !comp.ChapterId.Equals(4))
                             {
 
+                                baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
+                                                productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
+                                                productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (comp.Icms / 100)), 2);
+
+                                totalDarIcms += Math.Round(impostoIcms, 2);
+                            }
+
+                            if (!comp.AnnexId.Equals(3) && !comp.AnnexId.Equals(1) && !comp.ChapterId.Equals(4))
+                            {
                                 baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
                                                 productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
                                                 productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
@@ -1654,7 +1664,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                                 decimal totalVendas = Convert.ToDecimal(imp.Vendas), totalNcm = Convert.ToDecimal(imp.VendasNcm), totalTranferencias = Convert.ToDecimal(imp.TransferenciaEntrada),
-                                        totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoContribuinte = 0,
+                                        totalDevo = Convert.ToDecimal(imp.DevolucaoVendas), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoContribuinte = 0,
                                         totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter),
                                         totalNcontribuinte = Convert.ToDecimal(imp.VendasNContribuinte), baseCalc = totalVendas - totalDevo, totalContribuinte = totalVendas - totalNcontribuinte,
                                         baseCalcContribuinte = totalContribuinte - totalDevoContribuinte, totalDevoNContribuinte = totalDevo - totalDevoContribuinte,
@@ -2089,7 +2099,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     //Incentivo
-                    if (comp.Incentive == true && (!comp.AnnexId.Equals(null) || comp.ChapterId.Equals(4)))
+                    if (comp.Incentive && (!comp.AnnexId.Equals(null) || comp.ChapterId.Equals(4)))
                     {
                         //Produtos não incentivados
                         var productsNormal = _service.FindByNormal(notes);
@@ -2239,13 +2249,12 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.ImpostoIcmsCaputII = impostoIcmsCaputII;
                         }
                         
-                        if (!comp.AnnexId.Equals(3) && !comp.ChapterId.Equals(4))
+                        if (comp.AnnexId.Equals(1) && !comp.ChapterId.Equals(4))
                         {
                             baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
                             productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
                             productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
                             impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
-                            impostoFecop = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Fecop) / 100));
 
                         }
                         
@@ -2415,6 +2424,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                         }
 
+                        if (!comp.AnnexId.Equals(3) && !comp.AnnexId.Equals(1) && !comp.Chapter.Equals(4))
+                        {
+                            baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
+                            productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
+                            productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                            impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
+                            impostoFecop = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Fecop) / 100));
+                        }
+                        
                         totalDarFecop += Math.Round(impostoFecop, 2);
                         totalApuradoFecop += Math.Round(impostoFecop, 2);
 
@@ -2457,7 +2475,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             decimal totalVendas = Convert.ToDecimal(imp.Vendas), totalNcm = Convert.ToDecimal(imp.VendasNcm), totalTranferencias = Convert.ToDecimal(imp.TransferenciaEntrada),
-                                 totalDevo = Convert.ToDecimal(imp.Devolucao), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoNContribuinte = Convert.ToDecimal(imp.DevolucaoNContribuinte),
+                                 totalDevo = Convert.ToDecimal(imp.DevolucaoVendas), totalDevoAnexo = Convert.ToDecimal(imp.DevolucaoNcm), totalDevoNContribuinte = Convert.ToDecimal(imp.DevolucaoNContribuinte),
                                  totalDevoContribuinte = totalDevo - totalDevoNContribuinte, totalVendasSuspensao = Convert.ToDecimal(imp.Suspensao), 
                                  totalTranferenciaInter = Convert.ToDecimal(imp.TransferenciaInter);
 
@@ -2595,7 +2613,8 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                     }
-                    else if (comp.Incentive == true && comp.AnnexId.Equals(null))
+                    
+                    if (comp.Incentive && comp.AnnexId.Equals(null))
                     {
                         if (imp == null)
                         {
@@ -2605,7 +2624,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         var grupos = _grupoService.FindByGrupos(imp.Id);
 
-                        if (comp.TypeCompany.Equals(true))
+                        if (comp.TypeCompany)
                         {
                             decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito);
 

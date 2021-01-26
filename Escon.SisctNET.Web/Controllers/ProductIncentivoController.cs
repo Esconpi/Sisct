@@ -228,6 +228,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(companyId, null);
 
+                var ncmRaiz = Request.Form["NcmRaiz"].ToString().Replace(".","");
+
+                List<Model.ProductIncentivo> updateProducts = new List<Model.ProductIncentivo>();
+
                 if (Request.Form["type"].ToString() == "1")
                 {
                     prod.TypeTaxation = entity.TypeTaxation;
@@ -250,35 +254,67 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         prod.Percentual = entity.Percentual;
                     }
-                    
-                    _service.Update(prod, null);
+
+                    updateProducts.Add(prod);
                 }
                 else if(Request.Form["type"].ToString() == "2")
                 {
-                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Ncm.Equals(prod.Ncm)).ToList();
-
-                    foreach (var p in products)
+                    if (ncmRaiz == "")
                     {
-                        p.TypeTaxation = entity.TypeTaxation;
-                        p.Bcr = entity.Bcr;
-                        p.PercentualBcr = entity.PercentualBcr;
-                        p.DateStart = entity.DateStart;
-                        if (entity.CstId.Equals(0))
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
+
+                        foreach (var p in products)
                         {
-                            p.CstId = null;
-                        }
-                        else
-                        {
-                            p.CstId = entity.CstId;
-                        }
-                        p.Active = true;
-                        p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
-                        {
-                            p.Percentual =  entity.Percentual;
+                            p.TypeTaxation = entity.TypeTaxation;
+                            p.Bcr = entity.Bcr;
+                            p.PercentualBcr = entity.PercentualBcr;
+                            p.DateStart = entity.DateStart;
+                            if (entity.CstId.Equals(0))
+                            {
+                                p.CstId = null;
+                            }
+                            else
+                            {
+                                p.CstId = entity.CstId;
+                            }
+                            p.Active = true;
+                            p.Updated = DateTime.Now;
+                            if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
+                            {
+                                p.Percentual = entity.Percentual;
+                                p.DateStart = entity.DateStart;
+                            }
+                            updateProducts.Add(p);
                         }
 
-                        _service.Update(p, null);
+                    }
+                    else
+                    {
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
+                        products = _service.FindByProducts(products, ncmRaiz);
+                        foreach (var p in products)
+                        {
+                            p.TypeTaxation = entity.TypeTaxation;
+                            p.Bcr = entity.Bcr;
+                            p.PercentualBcr = entity.PercentualBcr;
+                            p.DateStart = entity.DateStart;
+                            if (entity.CstId.Equals(0))
+                            {
+                                p.CstId = null;
+                            }
+                            else
+                            {
+                                p.CstId = entity.CstId;
+                            }
+                            p.Active = true;
+                            p.Updated = DateTime.Now;
+                            if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
+                            {
+                                p.Percentual = entity.Percentual;
+                                p.DateStart = entity.DateStart;
+                            }
+                            updateProducts.Add(p);
+                        }
                     }
                 }
                 else if (Request.Form["type"].ToString() == "3")
@@ -306,9 +342,11 @@ namespace Escon.SisctNET.Web.Controllers
                             p.Percentual = entity.Percentual;
                         }
 
-                        _service.Update(p, null);
+                        updateProducts.Add(p);
                     }
                 }
+
+                _service.Update(updateProducts, null);
 
                 return RedirectToAction("IndexAll", new { id = companyId });
             }
@@ -376,6 +414,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(prod.CompanyId, null);
 
+                var ncmRaiz = Request.Form["NcmRaiz"].ToString().Replace(".", "");
+
                 List<Model.ProductIncentivo> updateProducts = new List<Model.ProductIncentivo>();
 
                 if (Request.Form["type"].ToString() == "1")
@@ -403,31 +443,62 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Request.Form["type"].ToString() == "2")
                 {
-                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) &&
-                    _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
-
-                    foreach (var p in products)
+                    if(ncmRaiz == "")
                     {
-                        p.TypeTaxation = entity.TypeTaxation;
-                        p.Bcr = entity.Bcr;
-                        p.PercentualBcr = entity.PercentualBcr;
-                        p.DateStart = entity.DateStart;
-                        if (entity.CstId.Equals(0))
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
+
+                        foreach (var p in products)
                         {
-                            p.CstId = null;
-                        }
-                        else
-                        {
-                            p.CstId = entity.CstId;
-                        }
-                        p.Active = true;
-                        p.Updated = DateTime.Now;
-                        if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
-                        {
-                            p.Percentual = entity.Percentual;
+                            p.TypeTaxation = entity.TypeTaxation;
+                            p.Bcr = entity.Bcr;
+                            p.PercentualBcr = entity.PercentualBcr;
                             p.DateStart = entity.DateStart;
+                            if (entity.CstId.Equals(0))
+                            {
+                                p.CstId = null;
+                            }
+                            else
+                            {
+                                p.CstId = entity.CstId;
+                            }
+                            p.Active = true;
+                            p.Updated = DateTime.Now;
+                            if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
+                            {
+                                p.Percentual = entity.Percentual;
+                                p.DateStart = entity.DateStart;
+                            }
+                            updateProducts.Add(p);
                         }
-                        updateProducts.Add(p);
+
+                    }
+                    else
+                    {
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
+                        products = _service.FindByProducts(products, ncmRaiz);
+                        foreach (var p in products)
+                        {
+                            p.TypeTaxation = entity.TypeTaxation;
+                            p.Bcr = entity.Bcr;
+                            p.PercentualBcr = entity.PercentualBcr;
+                            p.DateStart = entity.DateStart;
+                            if (entity.CstId.Equals(0))
+                            {
+                                p.CstId = null;
+                            }
+                            else
+                            {
+                                p.CstId = entity.CstId;
+                            }
+                            p.Active = true;
+                            p.Updated = DateTime.Now;
+                            if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
+                            {
+                                p.Percentual = entity.Percentual;
+                                p.DateStart = entity.DateStart;
+                            }
+                            updateProducts.Add(p);
+                        }
                     }
                 }
                 else if (Request.Form["type"].ToString() == "3")

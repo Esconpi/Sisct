@@ -12,6 +12,7 @@ namespace Escon.SisctNET.Web.Sped
     {
         private readonly ICompanyCfopService _companyCfopService;
         private readonly ITaxationNcmService _taxationNcmService;
+        private readonly INcmConvenioService _ncmConvenioService;
 
         public Import(ICompanyCfopService companyCfopService)
         {
@@ -20,10 +21,20 @@ namespace Escon.SisctNET.Web.Sped
 
         public Import(
             ICompanyCfopService companyCfopService,
-            ITaxationNcmService taxationNcmService)
+            ITaxationNcmService taxationNcmService
+            )
         {
             _companyCfopService = companyCfopService;
             _taxationNcmService = taxationNcmService;
+        }
+
+        public Import(
+            ICompanyCfopService companyCfopService,
+            INcmConvenioService ncmConvenioService
+            )
+        {
+            _companyCfopService = companyCfopService;
+            _ncmConvenioService = ncmConvenioService;
         }
 
         public Import() { }
@@ -2442,7 +2453,7 @@ namespace Escon.SisctNET.Web.Sped
         }
 
         public List<List<List<string>>> NFeInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi,
-                                                    List<string> cfopsTransf, List<string> cfopsDevo, List<string> ncms)
+                                                    List<string> cfopsTransf, List<string> cfopsDevo, List<Model.NcmConvenio> ncmConvenio)
         {
             List<List<List<string>>> spedInterna = new List<List<List<string>>>();
 
@@ -2461,18 +2472,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = false;
-
-                        for (int j = 0; j < ncms.Count(); j++)
-                        {
-                            int tamanho = ncms[j].Length;
-
-                            if (ncms[j].Equals(linha[8].Substring(0, tamanho)))
-                            {
-                                ncm = true;
-                                break;
-                            }
-                        }
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
 
                         if (ncm == false)
                         {
@@ -2725,7 +2725,7 @@ namespace Escon.SisctNET.Web.Sped
             return Devolucoes;
         }
 
-        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<string> ncms)
+        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.NcmConvenio> ncmConvenio)
         {
             List<List<string>> spedDevo = new List<List<string>>();
 
@@ -2750,18 +2750,8 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = false;
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
 
-                        for (int j = 0; j < ncms.Count(); j++)
-                        {
-                            int tamanho = ncms[j].Length;
-
-                            if (ncms[j].Equals(linha[8].Substring(0, tamanho)))
-                            {
-                                ncm = true;
-                                break;
-                            }
-                        }
 
                         if (ncm == false)
                         {

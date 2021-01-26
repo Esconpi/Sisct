@@ -1,7 +1,7 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
 
-@if (ViewBag.Company.AnnexId == 1)
+@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
 {
     <tr>
         <th style="text-align:center;border:1px solid;" colspan="5">
@@ -40,6 +40,12 @@ else
             DO ANEXO II
         </th>
     }
+    @if (ViewBag.Company.ChapterId == 4)
+    {
+        <th style="text-align:center;border:1px solid;">
+            DO INCISO I e II
+        </th>
+    }
     <th style="text-align:center;border:1px solid;">
         P/ GRUPO MAIOR QUE @ViewBag.Company.VendaMGrupo %
     </th>
@@ -56,6 +62,12 @@ else
     {
         <th style="text-align:center;border:1px solid;">
             DO ANEXO II
+        </th>
+    }
+    @if (ViewBag.Company.ChapterId == 4)
+    {
+        <th style="text-align:center;border:1px solid;">
+            DO INCISO I e II
         </th>
     }
     <th style="text-align:center;border:1px solid;">
@@ -83,7 +95,7 @@ else
             @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinte))
         }
     </td>
-    @if (ViewBag.Company.AnnexId == 1)
+    @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
     {
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @if (Model != null)
@@ -101,13 +113,13 @@ else
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @string.Format("{0:N}", Convert.ToDecimal(Model.Devolucao))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoVendas))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
         @if (Model != null)
         {
-            @string.Format("{0:N}", Convert.ToDecimal(Model.Devolucao) - Convert.ToDecimal(Model.DevolucaoNContribuinte))
+            @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoVendas) - Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
     <td style="text-align:right;border:1px solid;padding-right:1%;">
@@ -116,7 +128,7 @@ else
             @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
-    @if (ViewBag.Company.AnnexId == 1)
+    @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
     {
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @if (Model != null)
@@ -133,7 +145,7 @@ else
     </td>
 </tr>
 
-@if (ViewBag.Company.AnnexId == 1)
+@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
 {
     <tr>
         <th style="text-align:center;border:1px solid;" colspan="3">
@@ -168,7 +180,7 @@ else
     </tr>
 }
 
-@if (ViewBag.Company.AnnexId == 1)
+@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
 {
     <tr>
         <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="3">

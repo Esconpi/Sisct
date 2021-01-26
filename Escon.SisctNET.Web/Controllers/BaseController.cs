@@ -120,5 +120,22 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault() == null)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }

@@ -76,6 +76,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByProducts(id, year, month, log);
         }
 
+        public List<ProductIncentivo> FindByProducts(List<ProductIncentivo> productIncentivos, string ncmRaiz, Log log = null)
+        {
+            return _repository.FindByProducts(productIncentivos, ncmRaiz, log);
+        }
+
         public ProductIncentivo Update(ProductIncentivo entity, Log log)
         {
             return _repository.Update(entity, log);

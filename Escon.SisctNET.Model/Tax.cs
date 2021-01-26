@@ -30,13 +30,17 @@ namespace Escon.SisctNET.Model
         public string AnoRef { get; set; }
 
         //  ICMS
+        public decimal? Compras { get; set; }
+
+        public decimal? DevolucaoCompras { get; set; }
+
         public decimal? Vendas { get; set; }
 
         public decimal? VendasNcm { get; set; }
 
         public decimal? VendasNContribuinte { get; set; }
 
-        public decimal? Devolucao { get; set; }
+        public decimal? DevolucaoVendas { get; set; }
 
         public decimal? DevolucaoNcm { get; set; }
 

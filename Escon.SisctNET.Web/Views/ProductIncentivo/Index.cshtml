@@ -55,7 +55,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4><strong>Detalhe da Tributação</strong></h4>
             </div>
             <div class="modal-body">
 
@@ -114,7 +113,13 @@
                 {
                     "mData": "active",
                     "mRender": function (data, type, row) {
-                        return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                        if (data == true) {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                        }
+                        else {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+
+                        }
                     }
                 },
                 { "data": "tipoTaxation" },

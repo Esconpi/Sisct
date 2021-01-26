@@ -43,20 +43,34 @@
 </div>
 
 
-    @if (ViewBag.Company.AnnexId == 3)
+@if (ViewBag.Company.AnnexId == 3 && ViewBag.Company.ChapterId != 4)
+{
+    @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
+
+    <div style="width: 100%; font-size:12px; padding-top:10px;">
+        @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
+    </div>
+
+}
+else
+{
+    @if (ViewBag.Company.AnnexId == 1)
     {
-        @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
-        
-        <div style="width: 100%; font-size:12px; padding-top:10px;">
-            @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
-        </div>
-        
+        @await Html.PartialAsync("_AutoParts", new ViewDataDictionary(ViewData))
+    }
+    else if (ViewBag.Company.ChapterId == 4)
+    {
+        @await Html.PartialAsync("_MotorcycleAutoParts", new ViewDataDictionary(ViewData))
     }
     else
     {
-        @await Html.PartialAsync("_AutoParts", new ViewDataDictionary(ViewData))
-        @await Html.PartialAsync("_GeneralReportEntryIncentiveSurplus", new ViewDataDictionary(ViewData))
+        @await Html.PartialAsync("_Wholesaler", new ViewDataDictionary(ViewData))
     }
+
+    @await Html.PartialAsync("_GeneralReportEntryIncentiveSurplus", new ViewDataDictionary(ViewData))
+
+}
+
 
 <div style="width:100%;">
     <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
@@ -99,11 +113,15 @@
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
                 <td style="text-align:center">@ViewBag.DarIcms</td>
             </tr>
-            <tr>
-                <th style="text-align:center">Fecop Incentivo</th>
-                <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
-                <td style="text-align:center">@ViewBag.DarFecop</td>
-            </tr>
+            @if (ViewBag.Company.AnnexId != 1)
+            {
+                <tr>
+                    <th style="text-align:center">Fecop Incentivo</th>
+                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
+                    <td style="text-align:center">@ViewBag.DarFecop</td>
+                </tr>
+            }
+
 
             @if (ViewBag.Company.AnnexId == 1 && ViewBag.Type == "Geral")
             {

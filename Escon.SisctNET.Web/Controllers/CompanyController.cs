@@ -374,6 +374,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.VendaArt781 = entity.VendaArt781;
                 rst.VendaArt781Excedente = entity.VendaArt781Excedente;
                 rst.Faturamento = entity.Faturamento;
+                rst.FaturamentoExcedente = entity.FaturamentoExcedente;
                 rst.Updated = DateTime.Now;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 

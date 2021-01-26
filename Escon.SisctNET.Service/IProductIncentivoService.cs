@@ -18,6 +18,8 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductIncentivo> FindByDate(List<ProductIncentivo> productIncentivos, DateTime date, Model.Log log = null);
 
+        List<Model.ProductIncentivo> FindByProducts(List<Model.ProductIncentivo> productIncentivos, string ncmRaiz, Model.Log log = null);
+
         void Create(List<Model.ProductIncentivo> productIncentivos, Model.Log log = null);
 
         void Update(List<Model.ProductIncentivo> productIncentivos, Model.Log log = null);

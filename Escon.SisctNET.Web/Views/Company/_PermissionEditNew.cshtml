@@ -387,6 +387,11 @@
                     <label class="control-label" style="font-size:10px;">Limite %</label>
                     <input class="form-control money" value="@Model.Faturamento" name="Faturamento" id="Faturamento" />
                 </div>
+                <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                    <br />
+                    <label class="control-label" style="font-size:10px;">Excedente %</label>
+                    <input class="form-control money" value="@Model.FaturamentoExcedente" name="FaturamentoExcedente" id="FaturamentoExcedente" />
+                </div>
             }
             else
             {
@@ -394,6 +399,11 @@
                     <br />
                     <label class="control-label" style="font-size:10px;">Limite %</label>
                     <input class="form-control money" value="@Model.Faturamento" name="Faturamento" id="Faturamento" disabled />
+                </div>
+                <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                    <br />
+                    <label class="control-label" style="font-size:10px;">Excedente %</label>
+                    <input class="form-control money" value="@Model.FaturamentoExcedente" name="FaturamentoExcedente" id="FaturamentoExcedente" disabled />
                 </div>
             }
         </div>
@@ -403,7 +413,7 @@
         </div>
 
         <div class="form-group col-lg-12 col-md-12 col-xs-12">
-            <input type="submit" value="Alterar" class="btn btn-success pull-right" />
+            <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
         </div>
     </form>
 </div>
@@ -508,6 +518,7 @@
             $("#VendaAnexo").prop("disabled", true);
             $("#VendaAnexoExcedente").prop("disabled", true);
             $("#Faturamento").prop("disabled", false);
+            $("#FaturamentoExcedente").prop("disabled", false);
         }
         else {
             $("#Transferencia").prop("disabled", true);
@@ -515,6 +526,7 @@
             $("#VendaAnexo").prop("disabled", false);
             $("#VendaAnexoExcedente").prop("disabled", false);
             $("#Faturamento").prop("disabled", true);
+            $("#FaturamentoExcedente").prop("disabled", true);
         }
     });
 

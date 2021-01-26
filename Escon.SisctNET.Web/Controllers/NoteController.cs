@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                 notes = importXml.NFeAll(directoryNfe, directotyCte);
 
                 var taxationCompany = _taxationService.FindByCompany(id);
-                var ncmConvenio = _ncmConvenioService.FindAll(null);
+                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
                 var aliquotas = _aliquotService.FindAll(null);
 
                 Dictionary<string, string> det = new Dictionary<string, string>();
@@ -361,8 +361,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (!number.Equals("4.00"))
                                 {
-                                    var state = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
-                                    number = state.Aliquota.ToString();
+                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                                    number = aliquot.Aliquota.ToString();
                                 }
 
                                 var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
@@ -370,12 +370,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 bool incentivo = false;
 
-                                if (comp.Incentive && comp.AnnexId == 1)
+                                if (comp.Incentive && comp.AnnexId.Equals(1))
                                 {
-                                    incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, Convert.ToInt32(comp.AnnexId), NCM);
+                                    incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
                                 }
                                 
-                                if (nota.Company.Incentive && nota.Company.ChapterId.Equals(4))
+                                if (comp.Incentive && comp.ChapterId.Equals(4))
                                 {
                                     incentivo = true;
                                 }                                  

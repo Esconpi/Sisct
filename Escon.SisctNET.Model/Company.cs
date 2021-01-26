@@ -150,6 +150,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? Faturamento { get; set; }
 
+        public decimal? FaturamentoExcedente { get; set; }
+
         [Display(Name = "Icms p/ Não Contribuinte %")]
         public decimal? IcmsNContribuinte { get; set; }
 

@@ -9,6 +9,6 @@ namespace Escon.SisctNET.Service
 
         List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null);
 
-        bool FindByNcmAnnex(List<NcmConvenio> ncms, int Annex, string ncm, Model.Log log = null);
+        bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, Model.Log log = null);
     }
 }
