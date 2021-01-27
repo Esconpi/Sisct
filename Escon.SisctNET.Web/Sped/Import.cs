@@ -2113,8 +2113,8 @@ namespace Escon.SisctNET.Web.Sped
         }
 
         public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
-                                  List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevo, List<string> cfopsDevoST,
-                                  List<Model.TaxationNcm> taxationNcms)
+                                      List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevo, List<string> cfopsDevoST,
+                                      List<Model.TaxationNcm> taxationNcms)
         {
             List<decimal> entradas = new List<decimal>();
 
@@ -2221,6 +2221,65 @@ namespace Escon.SisctNET.Web.Sped
 
             entradas.Add(compra);
             entradas.Add(devolucao);
+
+            return entradas;
+        }
+
+        public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
+                                      List<string> cfopsTransf, List<string> cfopsTransfST, Model.Company company)
+        {
+            List<decimal> entradas = new List<decimal>();
+
+            decimal compra = 0, transferencia = 0, transferenciaInter = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+
+            string line, tipo = "", chave = "";
+
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipo = linha[2];
+                        chave = linha[9];
+                        var t = chave.Substring(0, 2);
+                    }
+
+                    if (linha[1].Equals("C170") && tipo == "0")
+                    {
+                        if ((cfopsCompra.Contains(linha[11]) || cfopsBonifi.Contains(linha[11]) || cfopsCompraST.Contains(linha[11])) && !linha[7].Equals(""))
+                        {
+                            compra += Convert.ToDecimal(linha[7]);
+                        }
+
+                        if ((cfopsTransf.Contains(linha[11]) || cfopsTransfST.Contains(linha[11])) && !linha[7].Equals(""))
+                        {
+                            transferencia += Convert.ToDecimal(linha[7]);
+
+                            if(!Convert.ToInt32(chave.Substring(0,2)).Equals(company.State.Code))
+                                transferenciaInter += Convert.ToDecimal(linha[7]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            entradas.Add(compra);
+            entradas.Add(transferencia);
+            entradas.Add(transferenciaInter);
 
             return entradas;
         }

@@ -79,7 +79,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Uf")]
         public string Uf { get; set; }
 
-        public decimal? Inciso { get; set; }
+        public decimal? PercentualInciso { get; set; }
 
     }
 }

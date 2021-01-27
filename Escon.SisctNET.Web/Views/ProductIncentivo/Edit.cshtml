@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Produto</label>
-                        @if (Model.Company.Incentive.Equals(true) && Model.Company.TipoApuracao.Equals(false))
+                        @if (Model.Company.Incentive && !Model.Company.TipoApuracao)
                         {
                             @if (Model.TypeTaxation == "Incentivado/Normal")
                             {
@@ -92,7 +92,7 @@
                                 </select>
                             }
                         }
-                        else if (Model.Company.Incentive.Equals(true) && Model.Company.ChapterId == 4)
+                        else if (Model.Company.Incentive && Model.Company.ChapterId == 4)
                         {
                             @if (Model.TypeTaxation == "Incentivado/Regime")
                             {
@@ -193,18 +193,18 @@
                 </div>
                 
                 <div class="row">
-                    @if (Model.Company.TypeCompany == true)
+                    @if (Model.Company.TypeCompany)
                     {
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Percentual" class="control-label"></label>
-                            <input name="percentual" class="form-control money" value="@Model.Percentual" readonly />
+                            <input name="Percentual" class="form-control money" value="@Model.Percentual" readonly />
                         </div>
                     }
                     else
                     {
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="Percentual" class="control-label"></label>
-                            <input name="percentual" id="percentual" value="@Model.Percentual" class="form-control money">
+                            <input name="Percentual" id="Percentual" value="@Model.Percentual" class="form-control money">
                         </div>
                     }
                     <div class="form-group col-lg-1 col-md-6 col-xs-12" id="checkbox">
@@ -225,7 +225,24 @@
                         {
                             <input name="PercentualBcr" id="PercentualBcr" value="@Model.PercentualBcr" class="form-control money">
                         }
-
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="PercentualInciso" class="control-label">Inciso %</label>
+                        @if (Model.Company.Incentive && Model.Company.ChapterId == 4)
+                        {
+                            @if (Model.TypeTaxation == "Incentivado/Regime")
+                            {
+                                <input name="PercentualInciso" id="PercentualInciso" value="@Model.PercentualInciso" class="form-control money">
+                            }
+                            else
+                            {
+                                <input name="PercentualInciso" id="PercentualInciso" value="@Model.PercentualInciso" class="form-control money" disabled>
+                            }
+                        }
+                        else
+                        {
+                            <input name="PercentualInciso" id="PercentualInciso" value="@Model.PercentualInciso" class="form-control money" disabled>
+                        }
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>
@@ -245,9 +262,15 @@
 <script type="text/javascript">
     $("#taxation").on("change", function () {
         if ($(this).val() === 'Incentivado/Normal' || $(this).val() === 'Incentivado/ST') {
-            $("#percentual").prop("disabled", false);
+            $("#Percentual").prop("disabled", false);
         } else {
-            $("#percentual").prop("disabled", true);
+            $("#Percentual").prop("disabled", true);
+        }
+
+        if ($(this).val() === 'Incentivado/Regime') {
+            $("#PercentualInciso").prop("disabled", false);
+        } else {
+            $("#PercentualInciso").prop("disabled", true);
         }
     });
 

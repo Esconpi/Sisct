@@ -148,11 +148,14 @@ else
 @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
 {
     <tr>
-        <th style="text-align:center;border:1px solid;" colspan="3">
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            ENTRADA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
             TRANSFERÊNCIA ENTRADA
         </th>
-        <th style="text-align:center;border:1px solid;" colspan="3">
-            TRANSFERÊNCIA INTERESTADUAL
+        <th style="text-align:center;border:1px solid;" colspan="2">
+            TRANSFERÊNCIA ENTRADA INTERESTADUAL
         </th>
         <th style="text-align:center;border:1px solid;" colspan="2">
             TRANSFERÊNCIA SAIDA
@@ -166,10 +169,13 @@ else
 {
     <tr>
         <th style="text-align:center;border:1px solid;" colspan="2">
+            ENTRADA
+        </th>
+        <th style="text-align:center;border:1px solid;" colspan="2">
             TRANSFERÊNCIA ENTRADA
         </th>
         <th style="text-align:center;border:1px solid;" colspan="2">
-            TRANSFERÊNCIA INTERESTADUAL
+            TRANSFERÊNCIA ENTRADA INTERESTADUAL
         </th>
         <th style="text-align:center;border:1px solid;" colspan="2">
             TRANSFERÊNCIA SAIDA
@@ -183,13 +189,19 @@ else
 @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
 {
     <tr>
-        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="3">
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.Compras))
+            }
+        </td>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
             @if (Model != null)
             {
                 @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaEntrada))
             }
         </td>
-        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="3">
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
             @if (Model != null)
             {
                 @string.Format("{0:N}", Convert.ToDecimal(Model.TransferenciaInter))
@@ -212,6 +224,12 @@ else
 else
 {
     <tr>
+        <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
+            @if (Model != null)
+            {
+                @string.Format("{0:N}", Convert.ToDecimal(Model.Compras))
+            }
+        </td>
         <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">
             @if (Model != null)
             {

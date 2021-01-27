@@ -36,11 +36,19 @@ namespace Escon.SisctNET.Model
 
         public decimal? Vendas { get; set; }
 
+        public decimal? VendasIncisoI { get; set; }
+
+        public decimal? VendasIncisoII { get; set; }
+
         public decimal? VendasNcm { get; set; }
 
         public decimal? VendasNContribuinte { get; set; }
 
         public decimal? DevolucaoVendas { get; set; }
+
+        public decimal? DevolucaoVendasIncisoI { get; set; }
+
+        public decimal? DevolucaoVendasIncisoII { get; set; }
 
         public decimal? DevolucaoNcm { get; set; }
 

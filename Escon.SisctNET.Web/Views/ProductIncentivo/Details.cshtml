@@ -27,15 +27,6 @@
             @Html.DisplayFor(model => model.Cest)
         </dd>
         <dt>
-            Cst
-        </dt>
-        <dd>
-            @if (Model.CstId != null)
-            {
-                @Html.DisplayFor(model => model.Cst.Code)
-            }
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.TypeTaxation)
         </dt>
         <dd>
@@ -53,6 +44,15 @@
         <dd>
             @Html.DisplayFor(model => model.PercentualBcr)
         </dd>
+        @if (Model.Company.ChapterId == 4)
+        {
+            <dt>
+                Inciso %
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PercentualInciso)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.DateStart)
         </dt>

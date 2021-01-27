@@ -424,7 +424,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.Incentivo = incentivo;
                                         prod.Status = false;
                                         prod.Pautado = false;
-                                        prod.Inciso = null;
+                                        prod.PercentualInciso = null;
                                         prod.Created = DateTime.Now;
                                         prod.Updated = DateTime.Now;
 
@@ -553,7 +553,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         prod.BCR = taxed.BCR;
                                         prod.Fecop = taxed.Fecop;
                                         prod.DateStart = Convert.ToDateTime(taxed.DateStart);
-                                        prod.Inciso = taxed.Inciso;
+                                        prod.PercentualInciso = taxed.PercentualInciso;
                                         prod.Created = DateTime.Now;
                                         prod.Updated = DateTime.Now;
 

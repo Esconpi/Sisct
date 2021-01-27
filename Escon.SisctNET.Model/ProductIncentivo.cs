@@ -72,5 +72,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "BCR %")]
         public decimal? PercentualBcr { get; set; }
+
+        public decimal? PercentualInciso { get; set; }
     }
 }

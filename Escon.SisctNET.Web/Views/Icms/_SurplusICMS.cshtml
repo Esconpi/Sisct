@@ -70,8 +70,45 @@
         </tr>
         @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
         {
+            @if (ViewBag.Company.ChapterId == 4)
+            {
+                <tr>
+                    <th style="border: 1px solid; text-align:center;">
+                        Vendas do Inciso I
+                    </th>
+                    <td style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.VendasIncisoI)
+                    </td>
+                    <td style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.TotalDevoIncisoI)
+                    </td>
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.BaseCalcIncisoI)
+                    </th>
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.PercentualVendaIncisoI) %
+                    </th>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid; text-align:center;">
+                        Vendas do Inciso II
+                    </th>
+                    <td style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.VendasIncisoII)
+                    </td>
+                    <td style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.TotalDevoIncisoII)
+                    </td>
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.BaseCalcIncisoII)
+                    </th>
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">
+                        @string.Format("{0:N}", ViewBag.PercentualVendaIncisoII) %
+                    </th>
+                </tr>
+            }
             <tr>
-                @if(ViewBag.Company.ChapterId == 4)
+                @if (ViewBag.Company.ChapterId == 4)
                 {
                     <th style="border: 1px solid; text-align:center;">
                         Vendas do Inciso I e II
@@ -83,7 +120,7 @@
                         Vendas do Anexo II
                     </th>
                 }
-                
+
                 <td style="text-align:right; padding-right:1%; border:1px solid;">
                     @string.Format("{0:N}", ViewBag.VendaNcm)
                 </td>
@@ -148,7 +185,7 @@
 }
 
 
-<table class="table" style="font-size: 12px; page-break-before: always;">
+<table class="table" style="font-size: 11px; page-break-before: always;">
     <thead>
         <tr>
             <th>
@@ -183,7 +220,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>ICMS Excedente Grupo</th>
+                            <th>ICMS Excedente Grupo (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaMGrupo)) %)</th>
                             <td>
                                 @string.Format("{0:N}", ViewBag.TotalBaseCalcuGrupo)
                             </td>
@@ -199,7 +236,7 @@
                         @if (ViewBag.Company.ChapterId == 4)
                         {
                             <tr>
-                                <th>Transferência (Saída)</th>
+                                <th>Transferência - Saída (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Transferencia)) %)</th>
                                 <td>@string.Format("{0:N}", ViewBag.TotalTransferencia)</td>
                                 <th style="font-size:17px">-</th>
                                 <td>@string.Format("{0:N}", ViewBag.LimiteTransferencia)</td>
@@ -212,7 +249,7 @@
                             </tr>
                         }
                         <tr>
-                            <th>Transferência Interestadual (Entrada)</th>
+                            <th>Transferência Interestadual - Entrada (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.TransferenciaInter)) %)</th>
                             <td>@string.Format("{0:N}", ViewBag.TotalTransferenciaInter)</td>
                             <th style="font-size:17px">-</th>
                             <td>@string.Format("{0:N}", ViewBag.LimiteTransferenciaInter)</td>
@@ -226,7 +263,7 @@
                         @if (ViewBag.Company.ChapterId != 4)
                         {
                             <tr>
-                                <th>ICMS Excedente P/ Não Contribuinte</th>
+                                <th>ICMS Excedente P/ Não Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaCpf)) %)</th>
                                 <td>@string.Format("{0:N}", ViewBag.BaseCalcNContribuinte)</td>
                                 <th style="font-size:17px">-</th>
                                 <td>@string.Format("{0:N}", ViewBag.LimiteNContribuinte)</td>
@@ -267,7 +304,7 @@
                             @if (ViewBag.Company.AnnexId == 1)
                             {
                                 <tr>
-                                    <th>Venda Conforme Anexo II</th>
+                                    <th>Venda Conforme Anexo II (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %)</th>
                                     <td> @string.Format("{0:N}", ViewBag.LimiteNcm)</td>
                                     <th style="font-size:17px">-</th>
                                     <td>@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>
@@ -283,7 +320,7 @@
                             @if (ViewBag.Company.ChapterId == 4)
                             {
                                 <tr>
-                                    <th>ICMS Excedente P/ Contribuinte</th>
+                                    <th>ICMS Excedente P/ Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %)</th>
                                     <td> @string.Format("{0:N}", ViewBag.LimiteContribuinte)</td>
                                     <th style="font-size:17px">-</th>
                                     <td>@string.Format("{0:N}", ViewBag.BaseCalcContribuinte)</td>
@@ -295,7 +332,7 @@
                                     <td>@string.Format("{0:N}", ViewBag.TotalExcedenteContribuinte)</td>
                                 </tr>
                                 <tr>
-                                    <th>Venda Conforme Inciso I e II</th>
+                                    <th>Venda Conforme Inciso I e II <br /> (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Faturamento)) %)</th>
                                     <td> @string.Format("{0:N}", ViewBag.LimiteNcm)</td>
                                     <th style="font-size:17px">-</th>
                                     <td>@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>

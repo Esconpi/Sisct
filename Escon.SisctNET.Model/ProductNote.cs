@@ -208,6 +208,6 @@ namespace Escon.SisctNET.Model
 
         public string Produto { get; set; }
 
-        public decimal? Inciso { get; set; }
+        public decimal? PercentualInciso { get; set; }
     }
 }
