@@ -248,18 +248,6 @@
                                 <td>@string.Format("{0:N}", ViewBag.TotalExcedenteTransferencia)</td>
                             </tr>
                         }
-                        <tr>
-                            <th>Transferência Interestadual - Entrada (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.TransferenciaInter)) %)</th>
-                            <td>@string.Format("{0:N}", ViewBag.TotalTransferenciaInter)</td>
-                            <th style="font-size:17px">-</th>
-                            <td>@string.Format("{0:N}", ViewBag.LimiteTransferenciaInter)</td>
-                            <th style="font-size:17px">=</th>
-                            <td>@string.Format("{0:N}", ViewBag.ExcedenteTransferenciaInter)</td>
-                            <th>x</th>
-                            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.TransferenciaInterExcedente)) %</td>
-                            <th style="font-size:17px">=</th>
-                            <td>@string.Format("{0:N}", ViewBag.TotalExcedenteTransferenciaInter)</td>
-                        </tr>
                         @if (ViewBag.Company.ChapterId != 4)
                         {
                             <tr>
@@ -277,6 +265,40 @@
                         }
                     </tbody>
 
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:200px;"></th>
+                            <th style="width:120px;">Compras</th>
+                            <th></th>
+                            <th style="width:120px;">Limite (MÁXIMO)</th>
+                            <th></th>
+                            <th style="width:100px;">Excedente</th>
+                            <th></th>
+                            <th style="width:100px;">Adicional</th>
+                            <th></th>
+                            <th style="width:100px;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Transferência Interestadual - Entrada (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.TransferenciaInter)) %)</th>
+                            <td>@string.Format("{0:N}", ViewBag.TotalTransferenciaInter)</td>
+                            <th style="font-size:17px">-</th>
+                            <td>@string.Format("{0:N}", ViewBag.LimiteTransferenciaInter)</td>
+                            <th style="font-size:17px">=</th>
+                            <td>@string.Format("{0:N}", ViewBag.ExcedenteTransferenciaInter)</td>
+                            <th>x</th>
+                            <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.TransferenciaInterExcedente)) %</td>
+                            <th style="font-size:17px">=</th>
+                            <td>@string.Format("{0:N}", ViewBag.TotalExcedenteTransferenciaInter)</td>
+                        </tr>
+                    </tbody>
                 </table>
             </td>
         </tr>
