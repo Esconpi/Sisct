@@ -988,14 +988,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                    
                     if (type.Equals(Model.Type.ProdutoI))
-                    {
                         products = products.Where(_ => _.Incentivo.Equals(true)).ToList();
-                    }
 
                     if (type.Equals(Model.Type.ProdutoNI))
-                    {
                         products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
-                    }
 
                     int registro = products.Count();
                     decimal vProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
@@ -1035,14 +1031,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (Convert.ToDecimal(prod.AliqInterna) > 0)
                                 {
                                     decimal valorAgreg = 0;
+
                                     if (prod.Mva != null)
-                                    {
                                         valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
-                                    }
+
                                     if (prod.BCR != null)
-                                    {
                                         valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
-                                    }
+
                                     if (prod.Fecop != null)
                                     {
                                         if (Convert.ToDecimal(prod.Fecop).Equals(1))
@@ -1170,14 +1165,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (Convert.ToDecimal(prod.AliqInterna) > 0)
                                     {
                                         decimal valorAgreg = 0;
+
                                         if (prod.Mva != null)
-                                        {
                                             valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
-                                        }
                                         if (prod.BCR != null)
-                                        {
                                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
-                                        }
+
                                         if (prod.Fecop != null)
                                         {
                                             if (Convert.ToDecimal(prod.Fecop).Equals(1))
@@ -1223,14 +1216,10 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
                             if (valorDiefSIE - totalIcmsPagoSIE > 0)
-                            {
                                 totalDarSTCO += Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
-                            }
 
                             if (valorDiefIE - totalIcmsPagoIE > 0)
-                            {
                                 totalDarSTCO += Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
-                            }
 
                             base1SIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                             base1SIE += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -1310,15 +1299,11 @@ namespace Escon.SisctNET.Web.Controllers
                             totalfecop2IE = difvalor2IE - base2fecopIE;
                             totalfecop2SIE = difvalor2SIE - base2fecopSIE;
 
-                            if ((totalfecop1SIE + totalfecop2SIE) > 0)
-                            {
+                            if (totalfecop1SIE + totalfecop2SIE > 0)
                                 totalDarFecop += Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
-                            }
 
-                            if ((totalfecop1IE + totalfecop2IE) > 0)
-                            {
+                            if (totalfecop1IE + totalfecop2IE > 0)
                                 totalDarFecop += Math.Round(totalfecop1IE + totalfecop2IE, 2);
-                            }
 
                             //Produto incentivados
                             var productsIncentivado = productsAll.Where(_ => _.Incentivo.Equals(true)).ToList();
@@ -1634,9 +1619,8 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.Funef = comp.Funef;
                           
                             if (basefunef > 0)
-                            {
                                 taxaFunef = Convert.ToDecimal(basefunef * (Convert.ToDecimal(comp.Funef) / 100));
-                            }
+
                             ViewBag.TaxaFunef = taxaFunef;
 
                             totalDarFunef += Math.Round(taxaFunef, 2);
@@ -1644,13 +1628,9 @@ namespace Escon.SisctNET.Web.Controllers
                             totalImpostoIncentivo = impostoIcms + impostoFecop + taxaFunef;
 
                             if (typeTaxation.Equals(Model.TypeTaxation.ST) && !type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI))
-                            {
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo + (valorDiefSIE - totalIcmsPagoSIE) + (totalfecop1SIE + totalfecop2SIE);
-                            }
                             else if (typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.ProdutoI))
-                            {
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
-                            }
 
                             if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != 3 || comp.ChapterId == 4))
                             {
@@ -1929,12 +1909,8 @@ namespace Escon.SisctNET.Web.Controllers
                             foreach (var prod in products)
                             {
                                 if (!prod.Note.Iest.Equals(""))
-                                {
                                     if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                    {
                                         totalIcmsFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
-                                    }
-                                }
                             }
 
                             totalIcmsIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsApurado).Sum());
@@ -2066,23 +2042,15 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 decimal valorAgreg = 0;
                                 if (prod.Mva != null)
-                                {
                                     valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
-                                }
                                 if (prod.BCR != null)
-                                {
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
-                                }
                                 if (prod.Fecop != null)
                                 {
                                     if (Convert.ToDecimal(prod.Fecop).Equals(1))
-                                    {
                                         totalFecop1FreteSTIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                    }
                                     else
-                                    {
                                         totalFecop2FreteSTIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                    }
 
                                 }
 
@@ -2161,23 +2129,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     decimal valorAgreg = 0;
                                     if (prod.Mva != null)
-                                    {
                                         valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
-                                    }
                                     if (prod.BCR != null)
-                                    {
                                         valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
-                                    }
                                     if (prod.Fecop != null)
                                     {
                                         if (Convert.ToDecimal(prod.Fecop).Equals(1))
-                                        {
                                             totalFecop1FreteSTIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                        }
                                         else
-                                        {
                                             totalFecop2FreteSTIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                        }
 
                                     }
 
@@ -2503,9 +2463,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal taxaFunef = 0;
 
                         if (basefunef > 0)
-                        {
                             taxaFunef = Convert.ToDecimal(basefunef * (Convert.ToDecimal(comp.Funef) / 100));
-                        }
 
                         ViewBag.TaxaFunef = taxaFunef;
 
@@ -3007,48 +2965,32 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     if (Convert.ToDecimal(totalDiefSTSIE) > 0)
-                    {
                         totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefSTSIE), 2);
-                    }
 
                     if (Convert.ToDecimal(totalDiefSTIE) > 0)
-                    {
                         totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefSTIE), 2);
-                    }
 
                     totalRecolhidoST += Math.Round(Convert.ToDecimal(icmsSTPagoSIE + icmsSTPagoIE), 2);
 
                     if (Convert.ToDecimal(totalDiefSTSIE - icmsSTPagoSIE) > 0)
-                    {
                         totalDarST += Math.Round(Convert.ToDecimal(totalDiefSTSIE - icmsSTPagoSIE), 2);
-                    }
 
                     if (Convert.ToDecimal(totalDiefSTIE - icmsSTPagoIE) > 0)
-                    {
                         totalDarST += Math.Round(Convert.ToDecimal(totalDiefSTIE - icmsSTPagoIE), 2);
-                    }
 
                     if (totalfecopDiefSTSIE > 0)
-                    {
                         totalApuradoFecop += Math.Round(totalfecopDiefSTSIE, 2);
-                    }
 
                     if (totalfecopDiefSTIE > 0)
-                    {
                         totalApuradoFecop += Math.Round(totalfecopDiefSTIE, 2);
-                    }
 
                     totalRecolhidoFecop += Math.Round(Convert.ToDecimal(icmsFecop1STSIE + icmsFecop2STSIE + icmsFecop1STIE + icmsFecop2STIE));
 
                     if (Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)) > 0)
-                    {
                         totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefSTSIE - (icmsFecop1STSIE + icmsFecop2STSIE)), 2);
-                    }
 
                     if (Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)) > 0)
-                    {
                         totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE)), 2);
-                    }
 
                     // Antecipação Parcial
                     decimal totalFreteAPIE = 0;
@@ -3056,12 +2998,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(1))
-                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                            {
                                 totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
-                            }
-                        }
                     }
 
                     ViewBag.TotalFreteAPIE = totalFreteAPIE;
@@ -3110,26 +3048,18 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarAPIE = icmsAPagarAPIE;
 
                     if (Convert.ToDecimal(totalDiefAPSIE) > 0)
-                    {
                         totalApuradoAP += Math.Round(Convert.ToDecimal(totalDiefAPSIE), 2);
-                    }
 
                     if (Convert.ToDecimal(totalDiefAPIE) > 0)
-                    {
                         totalApuradoAP += Math.Round(Convert.ToDecimal(totalDiefAPIE), 2);
-                    }
 
                     totalRecolhidoAP += Math.Round(icmsAPnotaSIE + icmsAPnotaIE, 2);
 
                     if (icmsAPagarAPSIE > 0)
-                    {
                         totalDarAp += Math.Round(icmsAPagarAPSIE, 2);
-                    }
 
                     if (icmsAPagarAPIE > 0)
-                    {
                         totalDarAp += Math.Round(icmsAPagarAPIE, 2);
-                    }
 
                     // Consumo
                     decimal totalFreteCOIE = 0;
@@ -3137,12 +3067,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(2))
-                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                            {
                                 totalFreteCOIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
-                            }
-                        }
                     }
 
                     ViewBag.TotalFreteCOIE = totalFreteCOIE;
@@ -3191,40 +3117,28 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarCOIE = icmsAPagarCOIE;
 
                     if (totalDiefCOSIE > 0)
-                    {
                         totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCOSIE), 2);
-                    }
 
                     if (totalDiefCOIE > 0)
-                    {
                         totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCOIE), 2);
-                    }
 
                     totalRecolhidoCO += Math.Round(icmsCOnotaSIE + icmsCOnotaIE, 2);
 
                     if (icmsAPagarCOSIE > 0)
-                    {
                         totalDarCO += Math.Round(icmsAPagarCOSIE, 2);
-                    }
 
                     if (icmsAPagarCOIE > 0)
-                    {
                         totalDarCO += Math.Round(icmsAPagarCOIE, 2);
-                    }
 
 
-                    // Consumo para Revenda
-                    decimal totalFreteCORIE = 0;
+                        // Consumo para Revenda
+                        decimal totalFreteCORIE = 0;
 
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(4))
-                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                            {
                                 totalFreteCORIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
-                            }
-                        }
                     }
 
                     ViewBag.TotalFreteCORIE = totalFreteCORIE;
@@ -3259,24 +3173,16 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarCORIE = icmsAPagarCORIE;
 
                     if (totalDiefCORSIE > 0)
-                    {
                         totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCORSIE), 2);
-                    }
 
                     if (totalDiefCORIE > 0)
-                    {
                         totalApuradoCO += Math.Round(Convert.ToDecimal(totalDiefCORIE), 2);
-                    }
 
                     if (icmsAPagarCORSIE > 0)
-                    {
                         totalDarCO += Math.Round(icmsAPagarCORSIE, 2);
-                    }
 
                     if (icmsAPagarCORIE > 0)
-                    {
                         totalDarCO += Math.Round(icmsAPagarCORIE, 2);
-                    }
 
                     // Imobilizado
                     decimal totalFreteIMIE = 0;
@@ -3284,12 +3190,8 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(3))
-                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                            {
                                 totalFreteIMIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
-                            }
-                        }
                     }
 
                     ViewBag.TotalFreteIMIE = totalFreteIMIE;
@@ -3338,45 +3240,22 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsAPagarIMIE = icmsAPagarIMIE;
 
                     if (Convert.ToDecimal(totalDiefIMSIE) > 0)
-                    {
                         totalApuradoIM += Math.Round(Convert.ToDecimal(totalDiefIMSIE), 2);
-                    }
 
                     if (Convert.ToDecimal(totaDiefIMIE) > 0)
-                    {
                         totalApuradoIM += Math.Round(Convert.ToDecimal(totaDiefIMIE), 2);
-                    }
 
                     totalRecolhidoIM += Math.Round(icmsIMnotaSIE + icmsIMnotaIE, 2);
 
                     if (icmsAPagarIMSIE > 0)
-                    {
                         totalDarIm += Math.Round(icmsAPagarIMSIE, 2);
-                    }
 
                     if (icmsAPagarIMIE > 0)
-                    {
                         totalDarIm += Math.Round(icmsAPagarIMIE, 2);
-                    }
 
 
                     // Antecipação Total
-                    decimal totalFreteATIE = 0;
-
-                    foreach (var prod in products)
-                    {
-                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(8))
-                        {
-                            if (Convert.ToDecimal(prod.AliqInterna) > 0)
-                            {
-                                totalFreteATIE += Convert.ToDecimal((prod.Freterateado * prod.AliqInterna) / 100);
-                            }
-                        }
-                    }
-
-
-                    ViewBag.TotalFreteATIE = totalFreteATIE;
-
+    
                     decimal totalIcmsFreteATIE = 0, totalFecop1FreteATIE = 0, totalFecop2FreteATIE = 0;
 
                     foreach (var prod in products)
@@ -3387,23 +3266,15 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 decimal valorAgreg = 0;
                                 if (prod.Mva != null)
-                                {
                                     valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
-                                }
                                 if (prod.BCR != null)
-                                {
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
-                                }
                                 if (prod.Fecop != null)
                                 {
                                     if (Convert.ToDecimal(prod.Fecop).Equals(1))
-                                    {
                                         totalFecop1FreteATIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                    }
                                     else
-                                    {
                                         totalFecop2FreteATIE += calculation.valorFecop(Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                    }
 
                                 }
 
@@ -3419,7 +3290,7 @@ namespace Escon.SisctNET.Web.Controllers
                              icmsStATSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.IcmsST).Sum()), 2),
                              totalApuradoATIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2),
                              totalApuradoATSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(8)).Select(_ => _.TotalICMS).Sum()), 2),
-                             totalDiefATSIE = (totalApuradoATSIE + totalFreteATIE),
+                             totalDiefATSIE = (totalApuradoATSIE + totalIcmsFreteATIE),
                              totalDiefATIE = totalApuradoATIE;
 
                     ViewBag.TotatlApuradoATIE = totalApuradoATIE;
@@ -3495,48 +3366,32 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFinalFecopCalculadaATSIE = Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE));
 
                     if (totalDiefATSIE > 0)
-                    {
                         totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefATSIE), 2);
-                    }
 
                     if (totalDiefATIE > 0)
-                    {
                         totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefATIE), 2);
-                    }
 
                     totalRecolhidoST += Math.Round(Convert.ToDecimal(icmsStATSIE + icmsStATIE), 2);
 
                     if (icmsAPagarATSIE > 0)
-                    {
                         totalDarST += Math.Round(icmsAPagarATSIE, 2);
-                    }
 
                     if (icmsAPagarATIE > 0)
-                    {
                         totalDarST += Math.Round(icmsAPagarATIE, 2);
-                    }
 
                     if (totalfecopDiefATSIE > 0)
-                    {
                         totalApuradoFecop += Math.Round(totalfecopDiefATSIE, 2);
-                    }
 
                     if (totalfecopDiefATIE > 0)
-                    {
                         totalApuradoFecop += Math.Round(totalfecopDiefATIE, 2);
-                    }
 
                     totalRecolhidoFecop += Math.Round(Convert.ToDecimal(icmsFecop1ATSIE + icmsFecop2ATSIE + icmsFecop1ATIE + icmsFecop2ATIE), 2);
 
                     if (Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE)) > 0)
-                    {
                         totalDarFecop += Math.Round(Convert.ToDecimal(totalfecopDiefATSIE - (icmsFecop1ATSIE + icmsFecop2ATSIE)), 2);
-                    }
 
                     if (Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE)) > 0)
-                    {
                         totalDarFecop += Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE));
-                    }
 
                     //  ANEXO CCCXVI
                     if (comp.Incentive.Equals(true) && Convert.ToInt32(comp.AnnexId) == 1)
@@ -3554,16 +3409,12 @@ namespace Escon.SisctNET.Web.Controllers
                         string ano = year;
 
                         if (mesAtual.Equals(1))
-                        {
                             ano = (Convert.ToInt32(year) - 1).ToString();
-                        }
 
                         var creditLast = _creditBalanceService.FindByLastMonth(id, mesAnterior, ano);
 
                         if (creditLast != null)
-                        {
                             saldoCredorAnterior = Convert.ToDecimal(creditLast.Saldo);
-                        }
 
                         var vendas = _vendaAnexoService.FindByVendasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                         var devoFornecedors = _devoFornecedorService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
@@ -3592,15 +3443,10 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal icmsAPAPagar = 0;
 
                         if (icmsAPagarAPSIE > 0)
-                        {
                             icmsAPAPagar += icmsAPagarAPSIE;
 
-                        }
-
                         if (icmsAPagarAPIE > 0)
-                        {
                             icmsAPAPagar += icmsAPagarAPIE;
-                        }
 
                         // Saldo Devedor
                         decimal saldoDevedor = icmsTotalD - icmsTotalA - icmsAPAPagar - saldoCredorAnterior;
@@ -3731,9 +3577,7 @@ namespace Escon.SisctNET.Web.Controllers
                     for (int i = 0; i < fornecedores.Count(); i++)
                     {
                         if (Convert.ToDecimal(fornecedores[i][4]) > 0 || Convert.ToDecimal(fornecedores[i][7]) > 0)
-                        {
                             fornecedoresFinal.Add(fornecedores[i]);
-                        }
                     }
                     ViewBag.Fornecedores = fornecedoresFinal;
                     ViewBag.IcmsStTotal = icmsStTotal;
