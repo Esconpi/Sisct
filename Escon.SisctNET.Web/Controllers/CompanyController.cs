@@ -103,6 +103,7 @@ namespace Escon.SisctNET.Web.Controllers
                         company.FantasyName = emp.FantasyName;
                         company.Document = emp.Document;
                         company.Ie = emp.Ie;
+                        company.IM = emp.IM;
                         company.Logradouro = emp.Logradouro;
                         company.Number = emp.Number;
                         company.Complement = emp.Complement;
@@ -263,6 +264,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Code = entity.Code;
                 rst.Document = entity.Document;
                 rst.Ie = entity.Ie;
+                rst.IM = entity.IM;
                 rst.Logradouro = entity.Logradouro;
                 rst.Number = entity.Number;
                 rst.Complement = entity.Complement;

@@ -67,6 +67,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         string digit = DigitCnpj(cnpj + seqCnpj);
                                         company.Document = cnpj + seqCnpj + digit;
                                         company.Ie = establishment.Ie;
+                                        company.IM = establishment.IM;
                                         company.Logradouro = establishment.Logradouro;
                                         company.Number = establishment.Number;
                                         company.Complement = establishment.Complement;
@@ -93,6 +94,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Code = _SqlDataReader["Codigo"].ToString();
                                         company.Document = _SqlDataReader["CPF"].ToString();
                                         company.Ie = establishment.Ie;
+                                        company.IM = establishment.IM;
                                         company.Logradouro = establishment.Logradouro;
                                         company.Number = establishment.Number;
                                         company.Complement = establishment.Complement;
@@ -154,6 +156,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 Company establishment = new Company();
                                 establishment.Document = reader["SeqCNPJ"].ToString();
                                 establishment.Ie = reader["IE"].ToString();
+                                establishment.IM = reader["IM"].ToString();
                                 establishment.Logradouro = reader["EndLogradouro"].ToString();
                                 establishment.Number = reader["EndNumero"].ToString();
                                 establishment.Complement = reader["EndComplemento"].ToString();

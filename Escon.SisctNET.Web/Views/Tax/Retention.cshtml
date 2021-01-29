@@ -16,58 +16,116 @@
 
                 @if (Model.CountingTypeId.Equals(1))
                 {
-                    <div class="row">
-                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                            <label class="control-label">PIS Retido</label>
-                            <input class="form-control money" name="PisRetido">
+                    @if (ViewBag.Tax == null)
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label class="control-label">PIS Retido</label>
+                                <input class="form-control money" name="PisRetido" />
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label class="control-label">COFINS Retido</label>
+                                <input class="form-control money" name="CofinsRetido">
+                            </div>
                         </div>
-                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                            <label class="control-label">COFINS Retido</label>
-                            <input class="form-control money" name="CofinsRetido">
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label class="control-label">PIS Retido</label>
+                                <input class="form-control money" name="PisRetido" value="@ViewBag.Tax.PisRetido">
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                                <label class="control-label">COFINS Retido</label>
+                                <input class="form-control money" name="CofinsRetido" value="@ViewBag.Tax.CofinsRetido">
+                            </div>
                         </div>
-                    </div>
+                    }
+
                 }
                 else if (Model.CountingTypeId.Equals(2))
                 {
-                    <div class="row">
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label class="control-label">PIS Retido</label>
-                            <input class="form-control money" name="PisRetido">
-                        </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label class="control-label">COFINS Retido</label>
-                            <input class="form-control money" name="CofinsRetido">
-                        </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label class="control-label">CSLL Retido</label>
-                            <input class="form-control money" name="CsllRetido">
-                        </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                            <label class="control-label">CSLL Fonte</label>
-                            <input class="form-control money" name="CsllFonte">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label class="control-label">IRPJ Retido</label>
-                            <input class="form-control money" name="IrpjRetido">
+                    @if (ViewBag.Tax == null)
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">PIS Retido</label>
+                                <input class="form-control money" name="PisRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">COFINS Retido</label>
+                                <input class="form-control money" name="CofinsRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">CSLL Retido</label>
+                                <input class="form-control money" name="CsllRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">CSLL Fonte</label>
+                                <input class="form-control money" name="CsllFonte">
+                            </div>
                         </div>
 
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label class="control-label">IRPJ Fonte Serviços</label>
-                            <input class="form-control money" name="IrpjFonteServico">
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Retido</label>
+                                <input class="form-control money" name="IrpjRetido">
+                            </div>
+
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Fonte Serviços</label>
+                                <input class="form-control money" name="IrpjFonteServico">
+                            </div>
+
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Fonte Aplicações Financeiras</label>
+                                <input class="form-control money" name="IrpjFonteFinanceira">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">PIS Retido</label>
+                                <input class="form-control money" name="PisRetido" value="@ViewBag.Tax.PisRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">COFINS Retido</label>
+                                <input class="form-control money" name="CofinsRetido" value="@ViewBag.Tax.CofinsRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">CSLL Retido</label>
+                                <input class="form-control money" name="CsllRetido" value="@ViewBag.Tax.CsllRetido">
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                                <label class="control-label">CSLL Fonte</label>
+                                <input class="form-control money" name="CsllFonte" value="@ViewBag.Tax.CsllFonte">
+                            </div>
                         </div>
 
-                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                            <label class="control-label">IRPJ Fonte Aplicações Financeiras</label>
-                            <input class="form-control money" name="IrpjFonteFinanceira">
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Retido</label>
+                                <input class="form-control money" name="IrpjRetido" value="@ViewBag.Tax.IrpjRetido">
+                            </div>
+
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Fonte Serviços</label>
+                                <input class="form-control money" name="IrpjFonteServico" value="@ViewBag.Tax.IrpjFonteServico">
+                            </div>
+
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                                <label class="control-label">IRPJ Fonte Aplicações Financeiras</label>
+                                <input class="form-control money" name="IrpjFonteFinanceira" value="@ViewBag.Tax.IrpjFonteFinanceira">
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                 </div>
             </form>
         </div>

@@ -117,6 +117,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
                 return View(comp);
             }
             catch (Exception ex)
@@ -181,6 +183,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
                 return View(comp);
             }
             catch (Exception ex)
@@ -247,6 +251,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
                 return View(comp);
             }
             catch (Exception ex)
@@ -314,6 +320,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
                 return View(comp);
             }
             catch (Exception ex)

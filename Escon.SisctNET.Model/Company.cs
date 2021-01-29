@@ -86,6 +86,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Inscrição Estadual")]
         public string Ie { get; set; }
 
+        [Display(Name = "Inscrição Municipal")]
+        public string IM { get; set; }
+
         [Display(Name = "Logradouro")]
         public string Logradouro { get; set; }
 

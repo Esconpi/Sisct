@@ -13,38 +13,77 @@
         <div class="col-lg-12">
             <form asp-controller="Tax" asp-action="Despesa" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Energia Elétrica</label>
-                        <input class="form-control money" name="Energia">
+                @if (ViewBag.Tax == null)
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Energia Elétrica</label>
+                            <input class="form-control money" name="Energia">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Aluguel Prédio</label>
+                            <input class="form-control money" name="AluguelPredio">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Aluguel Máquinas e Equipamentos</label>
+                            <input class="form-control money" name="AluguelME">
+                        </div>
                     </div>
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Aluguel Prédio</label>
-                        <input class="form-control money" name="AluguelPredio">
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Financeiras/Emp. e Financiamentos</label>
+                            <input class="form-control money" name="DespesasF">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Depreciação de Maq. e Equipamentos</label>
+                            <input class="form-control money" name="DespesasME">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Despesas/Depreciação/Amortização</label>
+                            <input class="form-control money" name="DespesasA">
+                        </div>
                     </div>
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Aluguel Máquinas e Equipamentos</label>
-                        <input class="form-control money" name="AluguelME">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Financeiras/Emp. e Financiamentos</label>
-                        <input class="form-control money" name="DespesasF">
-                    </div>
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Depreciação de Maq. e Equipamentos</label>
-                        <input class="form-control money" name="DespesasME">
-                    </div>
-                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                        <label class="control-label">Despesas/Depreciação/Amortização</label>
-                        <input class="form-control money" name="DespesasA">
-                    </div>
-                </div>
 
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
-                </div>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Adicionar" class="btn btn-success pull-right" />
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Energia Elétrica</label>
+                            <input class="form-control money" name="Energia" value="@ViewBag.Tax.Energia">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Aluguel Prédio</label>
+                            <input class="form-control money" name="AluguelPredio" value="@ViewBag.Tax.AluguelPredio">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Aluguel Máquinas e Equipamentos</label>
+                            <input class="form-control money" name="AluguelME" value="@ViewBag.Tax.AluguelME">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Financeiras/Emp. e Financiamentos</label>
+                            <input class="form-control money" name="DespesasF" value="@ViewBag.Tax.DespesasF">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Depreciação de Maq. e Equipamentos</label>
+                            <input class="form-control money" name="DespesasME" value="@ViewBag.Tax.DespesasME">
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                            <label class="control-label">Despesas/Depreciação/Amortização</label>
+                            <input class="form-control money" name="DespesasA" value="@ViewBag.Tax.DespesasA">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                    </div>
+                }
+
             </form>
         </div>
 
