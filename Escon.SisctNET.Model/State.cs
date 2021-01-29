@@ -8,7 +8,7 @@ namespace Escon.SisctNET.Model
     {
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Código")]
-        public int Code { get; set; }
+        public string Code { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Nome")]

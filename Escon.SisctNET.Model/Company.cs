@@ -71,15 +71,16 @@ namespace Escon.SisctNET.Model
             set => countingType = value;
         }
 
-        [Display(Name = "UF")]
-        [ForeignKey("State")]
-        public int? StateId { get; set; }
+        [Required(ErrorMessage = "Obrigatório!")]
+        [Display(Name = "Cidade")]
+        [ForeignKey("County")]
+        public int? CountyId { get; set; }
 
-        private State state;
-        public State State
+        private County county;
+        public County County
         {
-            get => LazyLoader.Load(this, ref state);
-            set => state = value;
+            get => LazyLoader.Load(this, ref county);
+            set => county = value;
         }
 
         [Display(Name = "Inscrição Estadual")]
@@ -99,9 +100,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cep")]
         public string Cep { get; set; }
-
-        [Display(Name = "Cidade")]
-        public string City { get; set; }
 
         [Display(Name = "Telefone")]
         public string Phone { get; set; }

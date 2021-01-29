@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -33,8 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
-                return View(result);
+                return View(null);
             }
             catch (Exception ex)
             {
@@ -52,7 +52,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
                 SelectList states = new SelectList(list_states, "Id", "Name", null);
                 ViewBag.StateOrigemId = states;
 
@@ -107,7 +112,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
                 SelectList states = new SelectList(list_states, "Id", "Name", null);
                 ViewBag.StateOrigemId = states;
 
@@ -160,6 +170,68 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
+        }
+
+        public IActionResult GetAll(int draw, int start)
+        {
+
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var aliquorAll = _service.FindAll(null);
+
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Model.Aliquot> aliquots = new List<Model.Aliquot>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Model.Aliquot> aliquotTemp = new List<Model.Aliquot>();
+                aliquorAll.ToList().ForEach(s =>
+                {
+                    aliquotTemp.Add(s);
+                });
+
+                var ids = aliquotTemp.Where(c =>
+                    c.StateOrigem.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.StateDestino.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) 
+                    )
+                .Select(s => s.Id).ToList();
+
+                aliquots = aliquorAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var aliquot = from r in aliquots
+                             where ids.ToArray().Contains(r.Id)
+                             select new
+                             {
+                                 Id = r.Id.ToString(),
+                                 StateOrigem = r.StateOrigem.Name + "-" + r.StateOrigem.UF,
+                                 StateDestino = r.StateDestino.Name + "-" + r.StateDestino.UF,
+                                 Aliquota = r.Aliquota,
+                                 Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                 Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                             };
+
+                return Ok(new { draw = draw, recordsTotal = aliquots.Count(), recordsFiltered = aliquots.Count(), data = aliquot.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+                var aliquot = from r in aliquorAll
+                             select new
+                             {
+                                 Id = r.Id.ToString(),
+                                 StateOrigem = r.StateOrigem.Name + "-" + r.StateOrigem.UF,
+                                 StateDestino = r.StateDestino.Name + "-" + r.StateDestino.UF,
+                                 Aliquota = r.Aliquota,
+                                 Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                 Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                             };
+                return Ok(new { draw = draw, recordsTotal = aliquorAll.Count(), recordsFiltered = aliquorAll.Count(), data = aliquot.Skip(start).Take(lenght) });
+            }
+
         }
     }
 }

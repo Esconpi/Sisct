@@ -2262,7 +2262,7 @@ namespace Escon.SisctNET.Web.Sped
                         {
                             transferencia += Convert.ToDecimal(linha[7]);
 
-                            if(!Convert.ToInt32(chave.Substring(0,2)).Equals(company.State.Code))
+                            if(!chave.Substring(0,2).Equals(company.County.State.Code))
                                 transferenciaInter += Convert.ToDecimal(linha[7]);
                         }
                     }

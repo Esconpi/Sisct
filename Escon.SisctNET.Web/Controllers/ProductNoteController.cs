@@ -2825,7 +2825,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalGeralVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento;
                             ViewBag.TotalGeralIcmsIncentivo = totalIcmsGeralIncentivo;
                             ViewBag.TotalGeralVendasIncentivo = totalGeralVendasIncentivo;
-                            ViewBag.Uf = comp.State.UF;
+                            ViewBag.Uf = comp.County.State.UF;
 
                         }
                         else

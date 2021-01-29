@@ -4,6 +4,6 @@ namespace Escon.SisctNET.Fortes
 {
     public interface IEnterpriseService
     {
-        List<Model.Company> GetCompanies(List<Model.State> states, string connectionString);
+        List<Model.Company> GetCompanies(List<Model.County> counties, string connectionString);
     }
 }

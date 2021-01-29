@@ -27,6 +27,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ISectionService _sectionService;
         private readonly IEmailResponsibleService _emailResponsibleService;
         private readonly IStateService _stateService;
+        private readonly ICountyService _countyService;
 
         public CompanyController(
             Fortes.IEnterpriseService fortesEnterpriseService,
@@ -43,6 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
             ISectionService sectionService,
             IEmailResponsibleService emailResponsibleService,
             IStateService stateService,
+            ICountyService countyService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
@@ -62,6 +64,7 @@ namespace Escon.SisctNET.Web.Controllers
             _sectionService = sectionService;
             _emailResponsibleService = emailResponsibleService;
             _stateService = stateService;
+            _countyService = countyService;
         }
 
         [HttpGet]
@@ -72,9 +75,9 @@ namespace Escon.SisctNET.Web.Controllers
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
-                var states = _stateService.FindAll(null);
+                var counties = _countyService.FindAll(null);
                
-                var empFortes = _fortesEnterpriseService.GetCompanies(states, confDbFortes.Value);
+                var empFortes = _fortesEnterpriseService.GetCompanies(counties, confDbFortes.Value);
 
                 List<Company> addCompany = new List<Company>();
                 List<Company> updateCompany = new List<Company>();
@@ -105,8 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Complement = emp.Complement;
                         company.District = emp.District;
                         company.Cep = emp.Cep;
-                        company.StateId = emp.StateId;
-                        company.City = emp.City;
+                        company.CountyId = emp.CountyId;
                         company.Phone = emp.Phone;
                         company.Updated = DateTime.Now;
                         updateCompany.Add(company);
@@ -164,9 +166,16 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
-                SelectList states = new SelectList(list_states, "Id", "UF", null);
-                ViewBag.StateId = states;
+                var list_city = _countyService.FindAll(null).Where(_ => !_.State.UF.Equals("EXT")).OrderBy(_ => _.State.UF).ThenBy(_ => _.Name).ToList();
+
+                foreach (var c in list_city)
+                {
+                    c.Name = c.Name + " - " + c.State.UF;
+                }
+
+                SelectList citys = new SelectList(list_city, "Id", "Name", null);
+                ViewBag.CountyId = citys;
+
                 return View();
             }
             catch(Exception ex)
@@ -215,9 +224,16 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
-                SelectList states = new SelectList(list_states, "Id", "UF", null);
-                ViewBag.StateId = states;
+                var list_city = _countyService.FindAll(null).Where(_ => !_.State.UF.Equals("EXT")).OrderBy(_ => _.State.UF).ThenBy(_ => _.Name).ToList();
+
+                foreach (var c in list_city)
+                {
+                    c.Name = c.Name + " - " + c.State.UF;
+                }
+
+                SelectList citys = new SelectList(list_city, "Id", "Name", null);
+                ViewBag.CountyId = citys;
+
 
                 return View(result);
             }
@@ -247,22 +263,22 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.Code = entity.Code;
                 rst.Document = entity.Document;
                 rst.Ie = entity.Ie;
-                rst.StateId = entity.StateId;
                 rst.Logradouro = entity.Logradouro;
                 rst.Number = entity.Number;
                 rst.Complement = entity.Complement;
                 rst.District = entity.District;
                 rst.Cep = entity.Cep;
-                rst.StateId = entity.StateId;
-                rst.City = entity.City;
+                rst.CountyId = entity.CountyId;
                 rst.Phone = entity.Phone;
-                rst.Updated = DateTime.Now;
 
-                if (rst.SocialName == null)
+                if (entity.SocialName == null)
                     rst.SocialName = "";
 
-                if (rst.FantasyName == null)
+                if (entity.FantasyName == null)
                     rst.FantasyName = "";
+
+                rst.Updated = DateTime.Now;
+
 
                 var result = _service.Update(rst, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");

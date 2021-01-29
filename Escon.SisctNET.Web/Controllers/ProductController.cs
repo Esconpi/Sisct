@@ -402,7 +402,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 products = productsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
 
-                var ncm = from r in products
+                var product = from r in products
                           where ids.ToArray().Contains(r.Id)
                           select new
                           {
@@ -417,7 +417,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                           };
 
-                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = ncm.Skip(start).Take(lenght) });
+                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = product.Skip(start).Take(lenght) });
 
             }
             else
