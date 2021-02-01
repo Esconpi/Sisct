@@ -383,18 +383,14 @@ namespace Escon.SisctNET.Web.Controllers
                                     cfop = false;
 
                                     if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][j]["CFOP"]))
-                                    {
                                         cfop = true;
-                                    }
                                 }
 
                                 if (exitNotes[i][j].ContainsKey("NCM"))
-                                {
-                                    ncm =  _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"]);
-                                }
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"]);
 
                                 if (exitNotes[i][j].ContainsKey("pICMS") && !exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") &&
-                                    exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false && cfop == true)
+                                    exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && !ncm && cfop)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -444,7 +440,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 if (exitNotes[i][j].ContainsKey("pICMS") && exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") && 
-                                    exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && ncm == false && cfop == true)
+                                    exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && !ncm && cfop)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -516,6 +512,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (devoFornecedorInterna[j][1].Equals(exitNotes[i][k]["pICMS"]))
                                             {
                                                 pos = j;
+                                                break;
                                             }
                                         }
 

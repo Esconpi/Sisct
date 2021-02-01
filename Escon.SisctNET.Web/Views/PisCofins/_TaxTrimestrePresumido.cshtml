@@ -24,28 +24,28 @@
 
         <tr>
             <th style="text-align:center;border:1px solid;">
-                COMBUSTÍVEL @ViewBag.PercentualPetroleo %
+                COMBUSTÍVEL @string.Format("{0:N}", ViewBag.Company.IRPJ1) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                COMÉRCIO @ViewBag.PercentualComercio %
+                COMÉRCIO @string.Format("{0:N}", ViewBag.Company.IRPJ2) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                TRASNPORTE @ViewBag.PercentualTransporte %
+                TRASNPORTE @string.Format("{0:N}", ViewBag.Company.IRPJ3) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                SERVIÇO @ViewBag.PercentualServico %
+                SERVIÇO @string.Format("{0:N}", ViewBag.Company.IRPJ4) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                COMBUSTÍVEL @ViewBag.PercentualPetroleo %
+                COMBUSTÍVEL @string.Format("{0:N}", ViewBag.Company.IRPJ1) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                COMÉRCIO @ViewBag.PercentualComercio %
+                COMÉRCIO @string.Format("{0:N}", ViewBag.Company.IRPJ2) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                TRASNPORTE @ViewBag.PercentualTransporte %
+                TRASNPORTE @string.Format("{0:N}", ViewBag.Company.IRPJ3) %
             </th>
             <th style="text-align:center;border:1px solid;">
-                SERVIÇO @ViewBag.PercentualServico %
+                SERVIÇO @string.Format("{0:N}", ViewBag.Company.IRPJ4) %
             </th>
         </tr>
         @foreach (var item in ViewBag.Impostos)
@@ -179,7 +179,7 @@
                 PAGO
             </td>
             <th style="text-align:center;border:1px solid;">
-                @ViewBag.PercentualCPRB %
+                @string.Format("{0:N}", ViewBag.Company.CPRB) %
             </th>
         </tr>
         @foreach (var item in ViewBag.Impostos)

@@ -160,23 +160,15 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal percentualIcms = 0, baseCalc = 0;
 
                             if (clientTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
-                            }
 
                             if (providerTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
-                            }
 
                             if (Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]) == 0)
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
-                            }
                             else
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
-                            }
 
                             decimal icms = baseCalc * percentualIcms / 100;
 
@@ -202,23 +194,15 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal percentualIcms = 0, baseCalc = 0;
 
                         if (clientTemp != null)
-                        {
                             percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
-                        }
 
                         if (providerTemp != null)
-                        {
                             percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
-                        }
 
                         if (Convert.ToDecimal(entryNotes[i][entryNotes[i].Count() - 1]["vBC"]) == 0)
-                        {
                             baseCalc = Convert.ToDecimal(entryNotes[i][entryNotes[i].Count() - 1]["vNF"]);
-                        }
                         else
-                        {
                             baseCalc = Convert.ToDecimal(entryNotes[i][entryNotes[i].Count() - 1]["vBC"]);
-                        }
 
                         decimal icms = baseCalc * percentualIcms / 100;
 
@@ -262,23 +246,15 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal percentualIcms = 0, baseCalc = 0;
 
                             if (clientTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
-                            }
 
                             if (providerTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
-                            }
 
                             if (Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]) == 0)
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
-                            }
                             else
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
-                            }
 
                             decimal icms = baseCalc * percentualIcms / 100;
 
@@ -312,23 +288,15 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal percentualIcms = 0, baseCalc = 0;
 
                             if (clientTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(clientTemp.Percentual);
-                            }
 
                             if (providerTemp != null)
-                            {
                                 percentualIcms = Convert.ToDecimal(providerTemp.Percentual);
-                            }
 
                             if (Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]) == 0)
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vNF"]);
-                            }
                             else
-                            {
                                 baseCalc = Convert.ToDecimal(exitNotes[i][exitNotes[i].Count() - 1]["vBC"]);
-                            }
 
                             decimal icms = baseCalc * percentualIcms / 100;
 

@@ -1064,18 +1064,6 @@ namespace Escon.SisctNET.Web.Controllers
                     else if(comp.CountingTypeId == 2)
                     {
                         //  Empresa Lucro Presumido
-
-                        ViewBag.PercentualPetroleo = Convert.ToDecimal(comp.IRPJ1);
-                        ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2);
-                        ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3);
-                        ViewBag.PercentualServico = Convert.ToDecimal(comp.IRPJ4);
-                        ViewBag.PercentualCsll1 = Convert.ToDecimal(comp.CSLL1);
-                        ViewBag.PercentualCsll2 = Convert.ToDecimal(comp.CSLL2);
-                        ViewBag.PercentualCPRB = Convert.ToDecimal(comp.CPRB);
-                        ViewBag.PercentualIrpjNormal = Convert.ToDecimal(comp.PercentualIRPJ);
-                        ViewBag.PercentualCsllNormal = Convert.ToDecimal(comp.PercentualCSLL);
-                        ViewBag.PercentualAdicionalIrpj = Convert.ToDecimal(comp.AdicionalIRPJ);
-
                         var basePisCofins = _baseService.FindByName("Irpj");
 
                         if (trimestre == "Nenhum")
@@ -1098,49 +1086,49 @@ namespace Escon.SisctNET.Web.Controllers
                                 reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
 
-                            decimal baseCalcAntesMono = receitaComercio + receitaServico + receitaPetroleo + receitaTransporte;
-                            decimal devolucaoNormal = (devolucaoPetroleo + devolucaoComercio + devolucaoTransporte + devolucaoServico) - devolucaoMono;
-                            decimal baseCalcPisCofins = baseCalcAntesMono - receitaMono - devolucaoNormal - reducaoIcms;
+                            decimal baseCalcAntesMono = receitaComercio + receitaServico + receitaPetroleo + receitaTransporte,
+                                    devolucaoNormal = (devolucaoPetroleo + devolucaoComercio + devolucaoTransporte + devolucaoServico) - devolucaoMono,
+                                    baseCalcPisCofins = baseCalcAntesMono - receitaMono - devolucaoNormal - reducaoIcms;
 
                             //PIS
-                            decimal pisApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualPis)) / 100;
-                            decimal pisRetido = Convert.ToDecimal(imp.PisRetido);
-                            decimal pisAPagar = pisApurado - pisRetido;
+                            decimal pisApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualPis)) / 100,
+                                    pisRetido = Convert.ToDecimal(imp.PisRetido),
+                                    pisAPagar = pisApurado - pisRetido;
 
                             //COFINS
-                            decimal cofinsApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualCofins)) / 100;
-                            decimal cofinsRetido = Convert.ToDecimal(imp.CofinsRetido);
-                            decimal cofinsAPagar = cofinsApurado - cofinsRetido;
+                            decimal cofinsApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualCofins)) / 100,
+                                    cofinsRetido = Convert.ToDecimal(imp.CofinsRetido),
+                                    cofinsAPagar = cofinsApurado - cofinsRetido;
 
                             // CSLL E IRPJ
-                            decimal baseCalcCsllIrpjPetroleo = receitaPetroleo - devolucaoPetroleo;
-                            decimal baseCalcCsllIrpjComercio = receitaComercio - devolucaoComercio;
-                            decimal baseCalcCsllIrpjTransporte = receitaTransporte - devolucaoTransporte;
-                            decimal baseCalcCsllIrpjServico = receitaServico - devolucaoServico;
+                            decimal baseCalcCsllIrpjPetroleo = receitaPetroleo - devolucaoPetroleo,
+                                    baseCalcCsllIrpjComercio = receitaComercio - devolucaoComercio,
+                                    baseCalcCsllIrpjTransporte = receitaTransporte - devolucaoTransporte,
+                                    baseCalcCsllIrpjServico = receitaServico - devolucaoServico;
 
                             //CSLL
-                            decimal percentualCsll1 = Convert.ToDecimal(comp.CSLL1);
-                            decimal percentualCsll2 = Convert.ToDecimal(comp.CSLL2);
-                            decimal csll1 = (baseCalcCsllIrpjPetroleo * percentualCsll1 / 100);
-                            decimal csll2 = (baseCalcCsllIrpjComercio * percentualCsll1 / 100);
-                            decimal csll3 = (baseCalcCsllIrpjTransporte * percentualCsll1 / 100);
-                            decimal csll4 = (baseCalcCsllIrpjServico * percentualCsll2 / 100);
-                            decimal csllApurado = (csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL) / 100;
-                            decimal csllRetido = Convert.ToDecimal(imp.CsllRetido);
-                            decimal csllAPagar = csllApurado - csllRetido;
+                            decimal percentualCsll1 = Convert.ToDecimal(comp.CSLL1),
+                                    percentualCsll2 = Convert.ToDecimal(comp.CSLL2),
+                                    csll1 = (baseCalcCsllIrpjPetroleo * percentualCsll1 / 100),
+                                    csll2 = (baseCalcCsllIrpjComercio * percentualCsll1 / 100),
+                                    csll3 = (baseCalcCsllIrpjTransporte * percentualCsll1 / 100),
+                                    csll4 = (baseCalcCsllIrpjServico * percentualCsll2 / 100),
+                                    csllApurado = (csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL) / 100,
+                                    csllRetido = Convert.ToDecimal(imp.CsllRetido),
+                                    csllAPagar = csllApurado - csllRetido;
 
                             //IRPJ
-                            decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1);
-                            decimal percentualIrpj2 = Convert.ToDecimal(comp.IRPJ2);
-                            decimal percentualIrpj3 = Convert.ToDecimal(comp.IRPJ3);
-                            decimal percentualIrpj4 = Convert.ToDecimal(comp.IRPJ4);
-                            decimal irp1 = (baseCalcCsllIrpjPetroleo * percentualIrpj1 / 100);
-                            decimal irp2 = (baseCalcCsllIrpjComercio * percentualIrpj2 / 100);
-                            decimal irp3 = (baseCalcCsllIrpjTransporte * percentualIrpj3 / 100);
-                            decimal irp4 = (baseCalcCsllIrpjServico * percentualIrpj4 / 100);
-                            decimal irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100;
-                            decimal irpjRetido = Convert.ToDecimal(imp.IrpjRetido);
-                            decimal irpjAPagar = irpjApurado - irpjRetido;
+                            decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1),
+                                    percentualIrpj2 = Convert.ToDecimal(comp.IRPJ2),
+                                    percentualIrpj3 = Convert.ToDecimal(comp.IRPJ3),
+                                    percentualIrpj4 = Convert.ToDecimal(comp.IRPJ4),
+                                    irp1 = (baseCalcCsllIrpjPetroleo * percentualIrpj1 / 100),
+                                    irp2 = (baseCalcCsllIrpjComercio * percentualIrpj2 / 100),
+                                    irp3 = (baseCalcCsllIrpjTransporte * percentualIrpj3 / 100),
+                                    irp4 = (baseCalcCsllIrpjServico * percentualIrpj4 / 100),
+                                    irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100,
+                                    irpjRetido = Convert.ToDecimal(imp.IrpjRetido),
+                                    irpjAPagar = irpjApurado - irpjRetido;
 
                             //CPRB
                             decimal cprbAPagar = (baseCalcAntesMono * Convert.ToDecimal(comp.CPRB)) / 100;
@@ -1224,57 +1212,42 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (imp == null) continue;
 
-                                decimal receita1 = Convert.ToDecimal(imp.Receita1);
-                                decimal receita2 = Convert.ToDecimal(imp.Receita2);
-                                decimal receita3 = Convert.ToDecimal(imp.Receita3);
-                                decimal receita4 = Convert.ToDecimal(imp.Receita4);
-                                decimal receita = receita1 + receita2 + receita3 + receita4;
-                                decimal devolucao1 = (Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida));
-                                decimal devolucao2 = (Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida));
-                                decimal devolucao3 = (Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida));
-                                decimal devolucao4 = (Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida));
-                                decimal devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4;
-                                decimal devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida);
-                                decimal reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
+                                decimal receita1 = Convert.ToDecimal(imp.Receita1), receita2 = Convert.ToDecimal(imp.Receita2),
+                                        receita3 = Convert.ToDecimal(imp.Receita3), receita4 = Convert.ToDecimal(imp.Receita4),
+                                        receita = receita1 + receita2 + receita3 + receita4,
+                                        devolucao1 = (Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida)),
+                                        devolucao2 = (Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida)),   
+                                        devolucao3 = (Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida)),   
+                                        devolucao4 = (Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida)),   
+                                        devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4,
+                                        devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada) + Convert.ToDecimal(imp.DevolucaoNormalSaida),
+                                        reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
                                 // PIS E COFINS
-                                decimal baseCalcPisCofins = receita - Convert.ToDecimal(imp.ReceitaMono) - devolucaoNormal - reducaoIcms;
-                                decimal pisApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualPis)) / 100;
-                                decimal pisRetido = Convert.ToDecimal(imp.PisRetido);
-                                decimal pisAPagar = pisApurado - pisRetido;
-                                decimal cofinsApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualCofins)) / 100;
-                                decimal cofinsRetido = Convert.ToDecimal(imp.CofinsRetido);
-                                decimal cofinsAPagar = cofinsApurado - cofinsRetido;
+                                decimal baseCalcPisCofins = receita - Convert.ToDecimal(imp.ReceitaMono) - devolucaoNormal - reducaoIcms,
+                                        pisApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualPis)) / 100,
+                                        pisRetido = Convert.ToDecimal(imp.PisRetido), pisAPagar = pisApurado - pisRetido,
+                                        cofinsApurado = (baseCalcPisCofins * Convert.ToDecimal(comp.PercentualCofins)) / 100,
+                                        cofinsRetido = Convert.ToDecimal(imp.CofinsRetido), cofinsAPagar = cofinsApurado - cofinsRetido;
 
                                 // CSLL E IRPJ
-                                decimal baseCalcCsllIrpj1 = receita1 - devolucao1;
-                                decimal baseCalcCsllIrpj2 = receita2 - devolucao2;
-                                decimal baseCalcCsllIrpj3 = receita3 - devolucao3;
-                                decimal baseCalcCsllIrpj4 = receita4 - devolucao4;
+                                decimal baseCalcCsllIrpj1 = receita1 - devolucao1, baseCalcCsllIrpj2 = receita2 - devolucao2,
+                                        baseCalcCsllIrpj3 = receita3 - devolucao3, baseCalcCsllIrpj4 = receita4 - devolucao4;
 
                                 //CSLL
-                                decimal percentualCsll1 = Convert.ToDecimal(comp.CSLL1);
-                                decimal percentualCsll2 = Convert.ToDecimal(comp.CSLL2);
-                                decimal csll1 = (baseCalcCsllIrpj1 * percentualCsll1 / 100);
-                                decimal csll2 = (baseCalcCsllIrpj2 * percentualCsll1 / 100);
-                                decimal csll3 = (baseCalcCsllIrpj3 * percentualCsll1 / 100);
-                                decimal csll4 = (baseCalcCsllIrpj4 * percentualCsll2 / 100);
-                                decimal csllApurado = ((csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL)) / 100;
-                                decimal csllRetido = Convert.ToDecimal(imp.CsllRetido);
-                                decimal csllPago = Convert.ToDecimal(imp.CsllPago);
+                                decimal percentualCsll1 = Convert.ToDecimal(comp.CSLL1), percentualCsll2 = Convert.ToDecimal(comp.CSLL2),
+                                        csll1 = (baseCalcCsllIrpj1 * percentualCsll1 / 100), csll2 = (baseCalcCsllIrpj2 * percentualCsll1 / 100),
+                                        csll3 = (baseCalcCsllIrpj3 * percentualCsll1 / 100), csll4 = (baseCalcCsllIrpj4 * percentualCsll2 / 100),
+                                        csllApurado = ((csll1 + csll2 + csll3 + csll4) * Convert.ToDecimal(comp.PercentualCSLL)) / 100,
+                                        csllRetido = Convert.ToDecimal(imp.CsllRetido), csllPago = Convert.ToDecimal(imp.CsllPago);
 
                                 //IRPJ
-                                decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1);
-                                decimal percentualIrpj2 = Convert.ToDecimal(comp.IRPJ2);
-                                decimal percentualIrpj3 = Convert.ToDecimal(comp.IRPJ3);
-                                decimal percentualIrpj4 = Convert.ToDecimal(comp.IRPJ4);
-                                decimal irp1 = (baseCalcCsllIrpj1 * percentualIrpj1 / 100);
-                                decimal irp2 = (baseCalcCsllIrpj2 * percentualIrpj2 / 100);
-                                decimal irp3 = (baseCalcCsllIrpj3 * percentualIrpj3 / 100);
-                                decimal irp4 = (baseCalcCsllIrpj4 * percentualIrpj4 / 100);
-                                decimal irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100;
-                                decimal irpjRetido = Convert.ToDecimal(imp.IrpjRetido);
-                                decimal irpjPago = Convert.ToDecimal(imp.IrpjPago);
+                                decimal percentualIrpj1 = Convert.ToDecimal(comp.IRPJ1), percentualIrpj2 = Convert.ToDecimal(comp.IRPJ2),
+                                        percentualIrpj3 = Convert.ToDecimal(comp.IRPJ3), percentualIrpj4 = Convert.ToDecimal(comp.IRPJ4),
+                                        irp1 = (baseCalcCsllIrpj1 * percentualIrpj1 / 100), irp2 = (baseCalcCsllIrpj2 * percentualIrpj2 / 100),
+                                        irp3 = (baseCalcCsllIrpj3 * percentualIrpj3 / 100), irp4 = (baseCalcCsllIrpj4 * percentualIrpj4 / 100),
+                                        irpjApurado = ((irp1 + irp2 + irp3 + irp4) * Convert.ToDecimal(comp.PercentualIRPJ)) / 100,
+                                        irpjRetido = Convert.ToDecimal(imp.IrpjRetido), irpjPago = Convert.ToDecimal(imp.IrpjPago);
 
                                 //CPRB
                                 decimal cprbAPagar = (baseCalcPisCofins * Convert.ToDecimal(comp.CPRB)) / 100;
@@ -1372,25 +1345,21 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             // IRPJ
-                            decimal irpjSubTotal = irpj1Total + irpj2Total + irpj3Total + irpj4Total;
-                            decimal baseCalcIrpjNormal = irpjSubTotal + capitalIM + bonificacao + receitaAF;
-                            decimal irpjNormal = baseCalcIrpjNormal * Convert.ToDecimal(comp.PercentualIRPJ) / 100;
-                            decimal baseCalcAdcionalIrpj = 0;
-                            decimal limite = Convert.ToDecimal(basePisCofins.Value);
-                            decimal difImposto = baseCalcIrpjNormal - limite;
+                            decimal irpjSubTotal = irpj1Total + irpj2Total + irpj3Total + irpj4Total,
+                                    baseCalcIrpjNormal = irpjSubTotal + capitalIM + bonificacao + receitaAF,
+                                    irpjNormal = baseCalcIrpjNormal * Convert.ToDecimal(comp.PercentualIRPJ) / 100,
+                                    baseCalcAdcionalIrpj = 0, limite = Convert.ToDecimal(basePisCofins.Value),
+                                    difImposto = baseCalcIrpjNormal - limite;
 
                             if (difImposto > 0)
                                 baseCalcAdcionalIrpj = difImposto;
 
-                            decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 100;
-                            decimal totalIrpj = irpjNormal + adicionalIrpj;
-                            decimal irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal - irpjPagoTotal;
+                            decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 10,
+                                    totalIrpj = irpjNormal + adicionalIrpj, irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal - irpjPagoTotal;
 
                             // CSLL
-                            decimal csllTotal = csll1Total + csll2Total + csll3Total + csll4Total;
-                            decimal baseCalcCsll = csllTotal + capitalIM + bonificacao + receitaAF;
-                            decimal csllNormal = baseCalcCsll * Convert.ToDecimal(comp.PercentualCSLL) / 100;
-                            decimal csllAPagar = csllNormal - csllFonte - csllRetidoTotal - csllPagoTotal;
+                            decimal csllTotal = csll1Total + csll2Total + csll3Total + csll4Total, baseCalcCsll = csllTotal + capitalIM + bonificacao + receitaAF,
+                                    csllNormal = baseCalcCsll * Convert.ToDecimal(comp.PercentualCSLL) / 100, csllAPagar = csllNormal - csllFonte - csllRetidoTotal - csllPagoTotal;
 
                             ViewBag.Impostos = impostosTrimestre;
                             ViewBag.ReceitaPetroleo = receitaPetroleo;
