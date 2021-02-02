@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICfopTypeService cfopTypeService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
-            : base(functionalityService, "CompanyCfop")
+            : base(functionalityService, "Cfop")
         {
             _service = service;
             _cfopService = cfopService;
@@ -34,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int companyId)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -110,7 +110,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -130,7 +130,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try

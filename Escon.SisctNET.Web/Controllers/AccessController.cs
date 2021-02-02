@@ -27,14 +27,14 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int profileId)
         {
 
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
                 var result = _service.FindByProfileId(profileId);
                 var profile = _profileService.FindById(profileId, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Name = profile.Name;
+                ViewBag.Profile = profile;
                 return View(result);
 
             }
@@ -48,7 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try

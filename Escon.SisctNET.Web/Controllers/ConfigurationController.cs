@@ -8,7 +8,10 @@ namespace Escon.SisctNET.Web.Controllers
     public class ConfigurationController : ControllerBaseSisctNET
     {
         Service.IConfigurationService _service;
-        public ConfigurationController(Service.IConfigurationService service, Service.IFunctionalityService functionalityService, IHttpContextAccessor httpContextAccessor)
+        public ConfigurationController(
+            Service.IConfigurationService service,
+            Service.IFunctionalityService functionalityService, 
+            IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Configuration")
         {
             _service = service;
@@ -18,7 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -36,7 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -52,7 +55,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Create(Model.Configuration entity)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -72,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -89,7 +92,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.Configuration entity)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -109,7 +112,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -126,7 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault() == null)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
