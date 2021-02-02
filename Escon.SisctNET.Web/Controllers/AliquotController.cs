@@ -28,9 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -46,9 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -75,9 +71,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create(Model.Aliquot entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -106,9 +100,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -136,9 +128,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Aliquot entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -158,9 +148,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Delete(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));

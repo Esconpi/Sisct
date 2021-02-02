@@ -36,9 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -61,9 +59,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -80,9 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import(string type)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

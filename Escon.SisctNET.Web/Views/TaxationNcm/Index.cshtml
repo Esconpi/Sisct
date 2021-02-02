@@ -36,6 +36,9 @@
                             @Html.DisplayNameFor(model => model.Ncm.Description)
                         </th>
                         <th>
+                            Tributado
+                        </th>
+                        <th>
                             Tipo Tributação
                         </th>
                         <th></th>
@@ -110,6 +113,18 @@
                     { "data": "codeProd" },
                     { "data": "code" },
                     { "data": "description" },
+                    {
+                        "mData": "status",
+                        "mRender": function (data, type, row) {
+                            if (data == true) {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                            }
+                            else {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+
+                            }
+                        }
+                    },
                     {
                         "mData": "type",
                         "mRender": function (data, type, row) {

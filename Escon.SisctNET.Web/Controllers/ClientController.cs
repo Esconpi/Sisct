@@ -39,9 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult IndexAll(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -60,9 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -79,9 +75,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id,string year,string month, string type) 
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -212,9 +207,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -233,9 +226,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -253,9 +244,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -280,9 +269,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Client(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -300,9 +287,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Client(int id, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -325,6 +310,9 @@ namespace Escon.SisctNET.Web.Controllers
         
         public IActionResult Contribuinte(int id)
         {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault() == null)
+                return Unauthorized();
+
             try
             {
                 var comp = _companyService.FindById(id, null);

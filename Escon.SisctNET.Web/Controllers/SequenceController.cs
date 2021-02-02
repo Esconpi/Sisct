@@ -28,10 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public async Task<IActionResult> Index(Model.Archive archive,IFormFile arquivo)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {

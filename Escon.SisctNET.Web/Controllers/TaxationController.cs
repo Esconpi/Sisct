@@ -29,9 +29,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -54,9 +52,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Delete(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -74,9 +71,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Details(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -90,8 +86,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 

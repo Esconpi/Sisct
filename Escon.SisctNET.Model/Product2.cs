@@ -22,6 +22,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Unidade")]
         public string Unity { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Preço")]
         public decimal? Price { get; set; }
 

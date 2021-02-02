@@ -51,9 +51,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -80,9 +79,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 int id = SessionManager.GetCompanyIdInSession();
@@ -610,9 +608,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -629,9 +626,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Note entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -669,9 +665,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Audita()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
 
@@ -701,9 +696,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Delete()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 int id = SessionManager.GetCompanyIdInSession();
@@ -743,9 +737,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult DeleteNote(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -774,9 +766,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateView(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));

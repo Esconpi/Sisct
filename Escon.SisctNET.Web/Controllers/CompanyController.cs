@@ -70,6 +70,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sincronize()
         {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
+                return Unauthorized();
+
             try
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
@@ -131,9 +134,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -161,9 +163,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -189,9 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create(Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -217,9 +215,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -248,9 +244,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -295,9 +289,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult EditNew(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -352,9 +344,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult EditNew(int id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -408,9 +398,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Delete(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -427,9 +415,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateActive([FromBody] Model.UpdateActive updateActive)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -449,9 +435,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateIncentive([FromBody] Model.UpdateIncentive updateIncentive)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -471,9 +455,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateStatus([FromBody] Model.UpdateStatus updateStatus)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -492,10 +474,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Compare(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 ViewBag.Ident = SessionManager.GetTipoInSession();
@@ -512,9 +492,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Tax(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -531,9 +510,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Tax(int id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -589,9 +567,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateCountingType([FromBody] Model.UpdateCountingType updateCountingType)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var entity = _service.FindById(updateCountingType.CompanyId, GetLog(Model.OccorenceLog.Read));
@@ -617,10 +594,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetResponsibleByCompanyId(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             var draw = Request.Query["draw"].ToString();
 
@@ -631,10 +605,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult PostResponsibleByCompanyId([FromBody] EmailResponsible responsible)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             responsible.Created = DateTime.Now;
             responsible.Updated = DateTime.Now;
             _emailResponsibleService.Create(responsible, GetLog(OccorenceLog.Create));
@@ -644,10 +616,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpDelete]
         public IActionResult DeleteResponsibleByCompanyId(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             _emailResponsibleService.Delete(id, GetLog(OccorenceLog.Delete));
             return Ok(new { code = "200", message = "ok" });

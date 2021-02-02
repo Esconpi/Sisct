@@ -129,10 +129,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index(int noteId)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -155,10 +153,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Product(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var product = _service.FindById(id, GetLog(OccorenceLog.Read));
@@ -245,10 +242,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Product(int id, Model.ProductNote entity)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -813,9 +808,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Delete(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -833,10 +826,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Relatory(int id, string year, string month, Model.TypeTaxation typeTaxation, Model.Type type, string nota)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {

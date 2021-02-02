@@ -33,10 +33,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult IndexAll(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -56,10 +54,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Import(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -75,10 +71,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Import(int id, string year, string month, string type)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -167,10 +161,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Details(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -186,10 +178,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
 
             try
             {
@@ -210,10 +200,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var prod = _service.FindById(id, null);
@@ -324,10 +313,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int companyId, string year, string month)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 SessionManager.SetCompanyIdInSession(companyId);
@@ -344,10 +332,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Product(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var prod = _service.FindById(id, null);
@@ -363,10 +350,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Product(int id, string year, string month, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var prod = _service.FindById(id, null);
@@ -474,10 +460,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, null);
@@ -498,10 +483,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, null);
@@ -541,10 +525,9 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Lista(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _companyService.FindById(id, null);
@@ -558,10 +541,9 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Listagem(int id, string tipo)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 List<ProductIncentivo> products = new List<ProductIncentivo>();
@@ -599,10 +581,9 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
+            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault() == null)
                 return Unauthorized();
-            }
+
             try
             {
                 var product = _service.FindById(id, null);
@@ -618,8 +599,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAllCompany(int draw, int start)
         {
-
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 

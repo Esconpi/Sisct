@@ -85,6 +85,7 @@ namespace Escon.SisctNET.Model
 
         public string Type { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Tipo Ncm")]
         [ForeignKey("TypeNcm")]
         public int TypeNcmId { get; set; }

@@ -35,9 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Sincronize(int companyId)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -57,7 +55,6 @@ namespace Escon.SisctNET.Web.Controllers
                         cc.Created = DateTime.Now;
                         cc.Updated = DateTime.Now;
                         addCompanyCfop.Add(cc);
-                        //var result = _service.Create(entity:companyCfop, GetLog(Model.OccorenceLog.Create));
                     }
                 }
                 _service.Create(addCompanyCfop, GetLog(OccorenceLog.Create));
@@ -73,9 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -116,9 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -138,9 +131,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("CompanyCfop")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

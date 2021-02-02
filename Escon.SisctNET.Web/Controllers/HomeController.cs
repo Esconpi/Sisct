@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Web.Controllers
             IHostingEnvironment env,
             Service.IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "Home")
+            : base(functionalityService, "Company")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
@@ -39,10 +39,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindByCompanies();
@@ -59,10 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sped(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
@@ -78,10 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Sped(int id,string month, string year,string option, IFormFile arquivo)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
@@ -185,10 +177,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Download(int id, string year, string month)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
@@ -213,7 +202,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public FileResult DownloadSped(int id, string year, string month)
         {
-
             var comp = _service.FindById(id, null);
 
             var nomeArquivo = comp.Document + year + month + ".txt";
@@ -230,10 +218,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Icms(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -249,10 +235,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Taxation(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -268,10 +252,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Relatory(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault() == null)
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -289,10 +271,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetResponsibleByCompanyId(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             var draw = Request.Query["draw"].ToString();
 
@@ -303,10 +282,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult PostResponsibleByCompanyId([FromBody] EmailResponsible responsible)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             responsible.Created = DateTime.Now;
             responsible.Updated = DateTime.Now;
             _emailResponsibleService.Create(responsible, GetLog(OccorenceLog.Create));
@@ -316,10 +293,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpDelete]
         public IActionResult DeleteResponsibleByCompanyId(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             _emailResponsibleService.Delete(id, GetLog(OccorenceLog.Delete));
             return Ok(new { code = "200", message = "ok" });

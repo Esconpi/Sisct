@@ -11,15 +11,18 @@ namespace Escon.SisctNET.Model
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Seção")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Descrição")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Capítulo")]
         [ForeignKey("Chapter")]
-        public int ? ChapterId { get; set; }
+        public int ChapterId { get; set; }
 
         private Chapter chapter;
         public Chapter Chapter

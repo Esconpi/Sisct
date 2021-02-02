@@ -30,7 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICfopService cfopService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
-            : base(functionalityService, "NoteExit")
+            : base(functionalityService, "Company")
         {
             _service = service;
             _companyService = companyService;
@@ -45,10 +45,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Relatory(int companyId, string year, string month,string trimestre, string type, int cfopid, string arquivo)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {

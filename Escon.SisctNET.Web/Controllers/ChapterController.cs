@@ -23,9 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -43,9 +41,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -62,9 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create(Model.Chapter entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -84,9 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -103,9 +95,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Chapter entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

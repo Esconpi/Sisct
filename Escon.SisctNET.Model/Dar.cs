@@ -6,9 +6,11 @@ namespace Escon.SisctNET.Model
     [Table("dar")]
     public class Dar : EntityBase
     {
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Código")]
         public string Code { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Descrição")]
         public string Description { get; set; }
 

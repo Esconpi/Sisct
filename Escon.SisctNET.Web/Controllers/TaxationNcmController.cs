@@ -52,9 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -71,9 +69,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import(int companyid, string year, string month,string arquivo,string option)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
@@ -94,31 +91,22 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfe = "";
 
                 if (arquivo.Equals("xmlE"))
-                {
                     directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
-                }
                 else
-                {
                     directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
-                }
 
                 var importXml = new Xml.Import();
                 List<List<string>> ncms = new List<List<string>>();
                 ncms = importXml.FindByNcms(directoryNfe);
 
                 List<TaxationNcm> monoAdd = new List<TaxationNcm>();
-                List<TaxationNcm> monoUpdate = new List<TaxationNcm>();
 
                 string arqui = "";
 
                 if (arquivo.Equals("xmlE"))
-                {
                     arqui = "XML EMPRESA";
-                }
                 else
-                {
                     arqui = "XML SEFAZ";
-                }
 
                 for (int i = 0; i < ncms.Count(); i++)
                 {
@@ -199,17 +187,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.Ncm = ncms[i][1];
                         return View(comp);
                     }
-
-                    if (taxationTemp != null)
-                    {
-                        taxationTemp.CodeProduct = ncms[i][0];
-                        taxationTemp.Product = ncms[i][2];
-                        taxationTemp.Arquivo = arqui;
-                        taxationTemp.NcmId = ncmTemp.Id;
-                        taxationTemp.Updated = DateTime.Now;
-
-                        monoUpdate.Add(taxationTemp);
-                    }
                 }
 
                 _service.Create(monoAdd, null);
@@ -227,9 +204,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _companyService.FindById(id, null);
@@ -248,9 +224,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult IndexAll(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var comp = _companyService.FindById(id, null);
@@ -268,9 +243,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Ncm(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
@@ -322,9 +296,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Ncm(int id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var rst = _service.FindById(id, null);
@@ -417,9 +390,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try {
 
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
@@ -469,9 +441,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
 
@@ -565,9 +536,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
@@ -615,9 +585,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var rst = _service.FindById(id, null);
@@ -661,9 +630,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Compare()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -679,9 +646,7 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Relatory(DateTime inicio, DateTime fim, IFormFile arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -925,9 +890,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Lista(int companyid)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -945,9 +908,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Details(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -965,7 +926,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code).ToList();
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Status).ThenBy(_ => _.Ncm.Code).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -998,6 +959,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
                               Type = r.Type,
+                              Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
                           };
@@ -1017,6 +979,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
                               Type = r.Type,
+                              Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
@@ -1026,13 +989,11 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAllCompany(int draw, int start)
         {
-
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
             var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(), SessionManager.GetYearInSession(), SessionManager.GetMonthInSession())
-                .OrderBy(_ => _.Ncm.Code).ToList();
+                .OrderBy(_ => _.Status).ThenBy(_ => _.Ncm.Code).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -1064,7 +1025,8 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
-                              Type = r.Type
+                              Type = r.Type,
+                              Status = r.Status
                           };
 
                 return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
@@ -1081,7 +1043,8 @@ namespace Escon.SisctNET.Web.Controllers
                               CodeProd = r.CodeProduct,
                               Code = r.Ncm.Code,
                               Description = r.Ncm.Description,
-                              Type = r.Type
+                              Type = r.Type,
+                              Status = r.Status
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
             }

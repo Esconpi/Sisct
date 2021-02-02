@@ -61,9 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id,string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -110,9 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Receita()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -131,9 +127,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Receita(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -176,9 +170,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Despesa()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -197,9 +189,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Despesa(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -244,9 +234,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Retention()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -265,9 +253,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Retention(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -313,9 +299,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Reduction()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -334,9 +318,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Reduction(Model.Tax entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -377,9 +359,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Pag()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -399,9 +379,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Pag(string mesRef, Model.Tax entity) 
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -441,9 +419,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -460,9 +436,7 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Import(string imposto,string type, List<IFormFile> arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

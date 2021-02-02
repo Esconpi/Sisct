@@ -25,6 +25,7 @@ namespace Escon.SisctNET.Model
             set => attachment = value;
         }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Item")]
         public string Item { get; set; }
 

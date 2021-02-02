@@ -11,6 +11,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Cfop")]
         public string Code { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Descrição")]
         public string Description { get; set; }
     }

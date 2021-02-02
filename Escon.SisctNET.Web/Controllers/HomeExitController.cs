@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "HomeExit")
+            : base(functionalityService, "Company")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
@@ -32,10 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Index()
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
@@ -51,10 +47,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult PisCofins(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
@@ -76,10 +69,8 @@ namespace Escon.SisctNET.Web.Controllers
        
         public IActionResult Import(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -94,10 +85,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Sincronize(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -113,10 +102,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Icms(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -139,10 +126,8 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Sequence(int id)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -156,11 +141,8 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult CompareCancellation(int id)
         {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));

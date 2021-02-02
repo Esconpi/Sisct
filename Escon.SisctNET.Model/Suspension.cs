@@ -21,9 +21,11 @@ namespace Escon.SisctNET.Model
             set => company = value;
         }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Suspensão")]
         public DateTime DateStart { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Reativação")]
         public DateTime DateEnd { get; set; }
     }

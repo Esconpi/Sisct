@@ -196,35 +196,22 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ch
 }
 
 
-@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("HomeExit")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Home")).FirstOrDefault().Active)
-{
-    <li class="treeview menu-open">
-        <a href="#">
-            <i class="fa fa-calendar-check-o"></i> <span>SisCT</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu" style="display:block;">
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresa</a></li>
-            }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Home")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","Home")"><i class="fa fa-circle-o"></i>Entrada</a></li>
-            }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("HomeExit")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","HomeExit")"><i class="fa fa-circle-o"></i>Saída</a></li>
-            }
-        </ul>
-    </li>
-}
+<li class="treeview menu-open">
+    <a href="#">
+        <i class="fa fa-calendar-check-o"></i> <span>SisCT</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu" style="display:block;">
+        @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
+        {
+            <li><a href="@Url.Action("Index","Company")"><i class="fa fa-circle-o"></i>Empresa</a></li>
+        }
+        <li><a href="@Url.Action("Index","Home")"><i class="fa fa-circle-o"></i>Entrada</a></li>
+        <li><a href="@Url.Action("Index","HomeExit")"><i class="fa fa-circle-o"></i>Saída</a></li>
+    </ul>
+</li>
 
 <li class="treeview menu">
     <a href="#">

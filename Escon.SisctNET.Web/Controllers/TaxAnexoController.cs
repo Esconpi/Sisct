@@ -60,9 +60,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index(int id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -108,10 +106,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
-
             try
             {
                 var company = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
@@ -128,9 +123,7 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Import(string type, IFormFile arquivo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

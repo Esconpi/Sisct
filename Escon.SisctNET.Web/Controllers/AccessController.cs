@@ -28,9 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
 
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -51,9 +49,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Access")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {

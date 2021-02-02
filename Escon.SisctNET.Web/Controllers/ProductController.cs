@@ -36,9 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
 
             try
             {
@@ -55,9 +53,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -84,9 +81,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Create(Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
@@ -110,9 +106,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -146,9 +141,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Edit(int id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -170,9 +164,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
@@ -206,9 +199,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Atualize(int id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 var result = _service.FindById(id, null);
@@ -244,9 +236,8 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
@@ -269,9 +260,8 @@ namespace Escon.SisctNET.Web.Controllers
         public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)
         {
             if (SessionManager.GetAccessesInSession() == null || SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault() == null)
-            {
                 return Unauthorized();
-            }
+
             try
             {
                 if (arquivo == null || arquivo.Length == 0)

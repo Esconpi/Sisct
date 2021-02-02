@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
             IDevoFornecedorService devoFornecedorService,
             IVendaAnexoService vendaAnexoService,
             IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "NoteExit")
+            : base(functionalityService, "Company")
         {
             _companyService = companyService;
             _configurationService = configurationService;
@@ -85,10 +85,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Relatory(int companyId, string year, string month, string type, int cfopid, string opcao, string arquivo)
         {
-            if (SessionManager.GetLoginInSession().Equals(null))
-            {
-                return Unauthorized();
-            }
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {

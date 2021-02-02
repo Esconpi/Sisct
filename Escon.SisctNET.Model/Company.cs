@@ -31,6 +31,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Nome Fantasia")]
         public string FantasyName { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Cnpj/CPF")]
         public string Document { get; set; }
 
