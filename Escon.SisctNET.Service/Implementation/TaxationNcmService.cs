@@ -64,6 +64,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompany(company, year, month, log);
         }
 
+        public List<TaxationNcm> FindByCompany(Log log = null)
+        {
+            return _repository.FindByCompany(log);
+        }
+
         public TaxationNcm FindById(int id, Log log)
         {
             return _repository.FindById(id, log);

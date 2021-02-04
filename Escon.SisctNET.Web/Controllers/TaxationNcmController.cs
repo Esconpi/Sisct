@@ -201,16 +201,16 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(int companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var comp = _companyService.FindById(id, null);
-                ViewBag.Comp = comp;
-                SessionManager.SetCompanyIdInSession(id);
+                var comp = _companyService.FindById(companyId, null);
+                ViewBag.Company = comp;
+                SessionManager.SetCompanyIdInSession(companyId);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
                 return View(null);
@@ -229,7 +229,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
             }
@@ -378,7 +378,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Update(tributacoes, null);
 
-                return RedirectToAction("Index" , new {id = rst.CompanyId, year = rst.Year, month = rst.Month});
+                return RedirectToAction("Index" , new { companyId = rst.CompanyId, year = rst.Year, month = rst.Month});
             }
             catch (Exception ex)
             {
@@ -652,7 +652,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
 
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 ViewBag.Inicio = inicio;
                 ViewBag.Fim = fim;
 
@@ -887,7 +887,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Lista(int companyid)
+        public IActionResult Lista()
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -895,8 +895,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
-                ViewBag.Comp = comp;
-                var result = _service.FindByCompany(companyid).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ToList();
+                ViewBag.Company = comp;
+                var result = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ToList();
                 return View(result);
             }
             catch (Exception ex)
@@ -938,7 +938,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ncmsAll.ToList().ForEach(s =>
                 {
                     s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
-                    s.Ncm.Code = s.Ncm.Code;
                     ncmTemp.Add(s);
                 });
 
@@ -955,9 +954,8 @@ namespace Escon.SisctNET.Web.Controllers
                           select new
                           {
                               Id = r.Id.ToString(),
-                              CodeProd = r.CodeProduct,
-                              Code = r.Ncm.Code,
-                              Description = r.Ncm.Description,
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
                               Type = r.Type,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
@@ -975,9 +973,8 @@ namespace Escon.SisctNET.Web.Controllers
                           select new
                           {
                               Id = r.Id.ToString(),
-                              CodeProd = r.CodeProduct,
-                              Code = r.Ncm.Code,
-                              Description = r.Ncm.Description,
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
                               Type = r.Type,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
@@ -1005,7 +1002,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ncmsAll.ToList().ForEach(s =>
                 {
                     s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
-                    s.Ncm.Code = s.Ncm.Code;
                     ncmTemp.Add(s);
                 });
 
@@ -1022,9 +1018,8 @@ namespace Escon.SisctNET.Web.Controllers
                           select new
                           {
                               Id = r.Id.ToString(),
-                              CodeProd = r.CodeProduct,
-                              Code = r.Ncm.Code,
-                              Description = r.Ncm.Description,
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
                               Type = r.Type,
                               Status = r.Status
                           };
@@ -1040,9 +1035,8 @@ namespace Escon.SisctNET.Web.Controllers
                           select new
                           {
                               Id = r.Id.ToString(),
-                              CodeProd = r.CodeProduct,
-                              Code = r.Ncm.Code,
-                              Description = r.Ncm.Description,
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
                               Type = r.Type,
                               Status = r.Status
                           };

@@ -244,6 +244,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? PercentualCofinsCredito { get; set; }
 
+        public bool Taxation { get; set; }
+
         public virtual IList<EmailResponsible> EmaiResponsibles { get; set; }
     }
 }

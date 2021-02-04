@@ -173,7 +173,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ncmsAll.ToList().ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
-                    s.Code = s.Code;
                     ncmTemp.Add(s);
                 });
 

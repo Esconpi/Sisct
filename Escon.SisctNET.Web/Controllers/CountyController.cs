@@ -169,6 +169,7 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.County> countyTemp = new List<Model.County>();
                 countyAll.ToList().ForEach(s =>
                 {
+                    s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
                     countyTemp.Add(s);
                 });
 

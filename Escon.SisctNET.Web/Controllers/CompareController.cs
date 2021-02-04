@@ -94,7 +94,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-
                 if (opcao.Equals(Model.Opcao.NFe))
                 {
                     List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();

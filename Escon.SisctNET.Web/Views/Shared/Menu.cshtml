@@ -42,15 +42,12 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ba
 }
 
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Csosn")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Csosn")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -158,10 +155,10 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Pr
 }
 
 
-@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Section")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault().Active)
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Section")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Chapter")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -181,12 +178,12 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ch
                 <li><a href="@Url.Action("Index","Section")"><i class="fa fa-circle-o"></i>Seção</a></li>
             }
 
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Annex")).FirstOrDefault().Active)
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Annex")"><i class="fa fa-circle-o"></i>Anexo</a></li>
             }
 
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NcmConvenio")).FirstOrDefault().Active)
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
             }

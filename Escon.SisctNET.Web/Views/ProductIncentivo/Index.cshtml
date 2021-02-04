@@ -9,6 +9,15 @@
     <div class="box-header">
         <a asp-action="IndexAll" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produto</strong></h3>
+        <div style="width:100%; text-align:center;">
+            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
+        </div>
+
+        <br />
+
+        <div style="width:100%; text-align:right; padding-right:1%;">
+            <strong>@SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
+        </div>
     </div>
     <div class="box-body">
         <div style="width:100%; padding:20px;">
@@ -18,17 +27,13 @@
                     <tr>
 
                         <th>
-                            @Html.DisplayNameFor(model => model.Code)
-                        </th>
-
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
+                            Produto
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Ncm)
+                            NCM
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Cest)
+                            CEST
                         </th>
                         <th>
                             Tributado
@@ -106,9 +111,8 @@
             "initComplete": function (settings, json) {
             },
             "columns": [
-                { "data": "code" },
-                { "data": "name" },
-                { "data": "nncm" },
+                { "data": "product" },
+                { "data": "ncm" },
                 { "data": "ccest" },
                 {
                     "mData": "active",

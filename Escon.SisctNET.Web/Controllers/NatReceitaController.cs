@@ -155,13 +155,12 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.NatReceita> natReceitasTemp = new List<Model.NatReceita>();
                 natReceitaAll.ToList().ForEach(s =>
                 {
-                    s.CodigoAC = s.CodigoAC;
-                    s.Code = s.Code;
-                    s.Cst.Code = s.Cst.Code;
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
                     natReceitasTemp.Add(s);
                 });
 
                 var ids = natReceitasTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.CodigoAC.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Cst.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))

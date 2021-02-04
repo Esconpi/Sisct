@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductIncentivo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "IndexAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="box box-primary">
@@ -11,12 +11,8 @@
             <strong>Produto</strong>
         </h3>
         <div class="btn-group pull-right">
-            @Html.ActionLink("Relação de Produtos", "Lista", new { id = SessionManager.GetCompanyIdInSession()}, new { @class = "btn btn-primary" })
-
-            <a href="#" id=@SessionManager.GetCompanyIdInSession() class="btn btn-primary showImport">
-                <i class="fa fa-cloud-upload"></i>
-                Importar
-            </a>
+            <a asp-action="Lista" size="large" class="btn btn-primary fa fa-file pull-left"> Relação de Produtos</a>
+            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
         </div>
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
@@ -30,17 +26,13 @@
                     <tr>
 
                         <th>
-                            @Html.DisplayNameFor(model => model.Code)
-                        </th>
-
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
+                            Produto
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Ncm)
+                            NCM
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Cest)
+                            CEST
                         </th>
                         <th>
                             Tributado
@@ -58,7 +50,7 @@
     </div>
     <div class="box-footer"></div>
 </div>
-<div class="modal modal-primary fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-default fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -132,9 +124,8 @@
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
-                    { "data": "code" },
-                    { "data": "name" },
-                    { "data": "nncm" },
+                    { "data": "product" },
+                    { "data": "ncm" },
                     { "data": "ccest" },
                     {
                         "mData": "active",
@@ -212,9 +203,8 @@ else
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
-                    { "data": "code" },
-                    { "data": "name" },
-                    { "data": "nncm" },
+                    { "data": "product" },
+                    { "data": "ncm" },
                     { "data": "ccest" },
                     {
                         "mData": "active",

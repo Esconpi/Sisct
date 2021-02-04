@@ -38,10 +38,7 @@
                             @Html.DisplayNameFor(model => model.GroupId)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Code)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
+                            Produto
                         </th>
                         <th width="10%">
                             @Html.DisplayNameFor(model => model.Price)
@@ -97,9 +94,8 @@
             "initComplete": function (settings, json) {
             },
             "columns": [
-                { "data": "groupName" },
-                { "data": "code" },
-                { "data": "description" },
+                { "data": "group" },
+                { "data": "product" },
                 {
                     "mData": "price",
                     "mRender": function (data, type, row) {

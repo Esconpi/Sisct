@@ -2691,9 +2691,7 @@ namespace Escon.SisctNET.Web.Sped
                                 string[] linhaTemp = lineTemp.Split('|');
 
                                 if (linhaTemp[1].Equals("C100"))
-                                {
                                     tipo = linhaTemp[2];
-                                }
 
                                 if (linhaTemp[1].Equals("C100") && tipo == "0")
                                 {
@@ -2824,9 +2822,7 @@ namespace Escon.SisctNET.Web.Sped
                                     string[] linhaTemp = lineTemp.Split('|');
 
                                     if (linhaTemp[1].Equals("C100"))
-                                    {
                                         tipo = linhaTemp[2];
-                                    }
 
                                     if (linhaTemp[1].Equals("C170") && tipo == "0" && !linhaTemp[13].Equals("") && !linhaTemp[14].Equals("") && !linhaTemp[15].Equals("") &&
                                         (cfopsDevo.Contains(linhaTemp[11]) || cfopsDevoST.Contains(linhaTemp[11])))
@@ -2915,30 +2911,20 @@ namespace Escon.SisctNET.Web.Sped
                     }
 
                     if (linha[1].Equals("C191") && cfop == true && tipo == "0")
-                    {
                         totalDeCredito += Convert.ToDecimal(linha[2]);
-                    }
 
                     if (linha[1].Equals("D100"))
-                    {
                         tipo = linha[2];
-                    }
 
                     if (tipo == "0")
                     {
                         if (linha[1].Equals("D100") && linha[17].Equals("1"))
-                        {
                             fob = true;
-                        }
                         else if (linha[1].Equals("D100") && !linha[17].Equals("1"))
-                        {
                             fob = false;
-                        }
 
                         if (fob.Equals(true) && cfopsCompra.Contains(linha[3]) && linha[1].Equals("D190") && linha[7] != "")
-                        {
                             totalDeCredito += Convert.ToDecimal(linha[7]);
-                        }
 
                     }
 
@@ -2975,9 +2961,7 @@ namespace Escon.SisctNET.Web.Sped
                 {
                     string[] linha = line.Split('|');
                     if (linha[1] == "D100")
-                    {
                         sped.Add(linha[10]);
-                    }
                 }
 
             }

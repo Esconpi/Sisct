@@ -97,6 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if(company == null)
                     {
+                        emp.Sped = true;
                         addCompany.Add(emp);
                     }
                     else
@@ -193,16 +194,18 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
 
                 if (entity.SocialName == null)
                     entity.SocialName = "";
 
-                if(entity.FantasyName == null)
+                if (entity.FantasyName == null)
                     entity.FantasyName = "";
 
-                var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                entity.Sped = true;
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -548,6 +551,7 @@ namespace Escon.SisctNET.Web.Controllers
                     c.PercentualCofins = entity.PercentualCofins;
                     c.PercentualPis = entity.PercentualPis;
                     c.Sped = entity.Sped;
+                    c.Taxation = entity.Taxation;
                     c.Updated = DateTime.Now;
 
                     comps.Add(c);

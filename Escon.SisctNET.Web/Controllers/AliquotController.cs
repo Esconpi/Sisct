@@ -179,10 +179,14 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.Aliquot> aliquotTemp = new List<Model.Aliquot>();
                 aliquorAll.ToList().ForEach(s =>
                 {
+                    s.StateOrigem.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.StateOrigem.Name);
+                    s.StateDestino.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.StateDestino.Name);
                     aliquotTemp.Add(s);
                 });
 
                 var ids = aliquotTemp.Where(c =>
+                    c.StateOrigem.UF.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.StateOrigem.UF.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.StateOrigem.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.StateDestino.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) 
                     )

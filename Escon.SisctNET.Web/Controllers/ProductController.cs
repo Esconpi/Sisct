@@ -374,12 +374,6 @@ namespace Escon.SisctNET.Web.Controllers
                 productsAll.ToList().ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
-                    s.Code = s.Code;
-                    s.Price = s.Price;
-                    s.Group.Description = s.Group.Description;
-                    s.Unity = s.Unity;
-                    s.DateStart = s.DateStart;
-                    s.DateEnd = s.DateEnd;
                     productTemp.Add(s);
                 });
 
@@ -397,9 +391,8 @@ namespace Escon.SisctNET.Web.Controllers
                           select new
                           {
                               Id = r.Id.ToString(),
-                              Code = r.Code,
-                              Description = r.Description,
-                              GroupName = r.Group.Item + " - " + r.Group.Description,
+                              Product = r.Code + " - " + r.Description,
+                              Group = r.Group.Item + " - " + r.Group.Description,
                               Price = r.Price,
                               Unity = r.Unity,
                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
@@ -417,9 +410,8 @@ namespace Escon.SisctNET.Web.Controllers
                               select new
                               {
                                   Id = r.Id.ToString(),
-                                  Code = r.Code,
-                                  Description = r.Description,
-                                  GroupName = r.Group.Item + " - " + r.Group.Description,
+                                  Product = r.Code + " - " + r.Description,
+                                  Group = r.Group.Item + " - " + r.Group.Description,
                                   Price = r.Price,
                                   Unity = r.Unity,
                                   Inicio = r.DateStart.ToString("dd/MM/yyyy"),

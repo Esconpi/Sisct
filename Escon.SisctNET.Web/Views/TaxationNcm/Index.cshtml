@@ -11,7 +11,7 @@
         <h3 class="box-title"><strong>Ncm</strong></h3>
 
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
         </div>
 
         <br />
@@ -30,10 +30,7 @@
                             Produto
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Ncm.Code)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Ncm.Description)
+                            NCM
                         </th>
                         <th>
                             Tributado
@@ -110,9 +107,8 @@
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
-                    { "data": "codeProd" },
-                    { "data": "code" },
-                    { "data": "description" },
+                    { "data": "product" },
+                    { "data": "ncm" },
                     {
                         "mData": "status",
                         "mRender": function (data, type, row) {

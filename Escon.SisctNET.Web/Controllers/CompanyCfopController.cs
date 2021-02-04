@@ -176,7 +176,6 @@ namespace Escon.SisctNET.Web.Controllers
                 cfopsAll.ToList().ForEach(s =>
                 {
                     s.Cfop.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Cfop.Description);
-                    s.Cfop.Code = s.Cfop.Code;
                     cfopTemp.Add(s);
                 });
 

@@ -346,9 +346,6 @@ namespace Escon.SisctNET.Web.Controllers
                 providerssAll.ToList().ForEach(s =>
                 {
                     s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
-                    s.Document = s.Document;
-                    s.Ie = s.Ie;
-                    s.TypeClientId = s.TypeClientId;
                     providerTemp.Add(s);
                 });
 
@@ -413,9 +410,6 @@ namespace Escon.SisctNET.Web.Controllers
                 providersAll.ToList().ForEach(s =>
                 {
                     s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
-                    s.Document = s.Document;
-                    s.Ie = s.Ie;
-                    s.TypeClientId = s.TypeClientId;
                     providerTemp.Add(s);
                 });
 

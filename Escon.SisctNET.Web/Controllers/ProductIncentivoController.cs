@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICstService cstService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
-            : base(functionalityService, "ProductIncentivo")
+            : base(functionalityService, "ProductNote")
         {
             _service = service;
             _companyService = companyService;
@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult IndexAll(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -52,14 +52,14 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Import(int id)
+        public IActionResult Import()
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var result = _companyService.FindById(id, null);
+                var result = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return PartialView(result);
             }
             catch (Exception ex)
@@ -69,14 +69,14 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(int id, string year, string month, string type)
+        public IActionResult Import(int companyid, string year, string month, string arquivo)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var comp = _companyService.FindById(id, null);
+                var comp = _companyService.FindById(companyid, null);
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
 
                 var importXml = new Xml.Import();
@@ -84,7 +84,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfe = "",arqui = "";
 
-                if (type.Equals("xmlE"))
+                if (arquivo.Equals("xmlE"))
                 {
                     directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
                     arqui = "XML EMPRESA";
@@ -136,7 +136,7 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Cest = cest;
                         product.TypeTaxation = "";
                         product.Active = false;
-                        product.CompanyId = id;
+                        product.CompanyId = companyid;
                         product.Month = month;
                         product.Year = year;
                         product.Arquivo = arqui;
@@ -151,7 +151,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                return RedirectToAction("Index", new { companyId = id, year = year, month = month });
+                return RedirectToAction("Index", new { companyId = companyid, year = year, month = month });
             }
             catch (Exception ex)
             {
@@ -161,7 +161,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Details(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -178,7 +178,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -200,7 +200,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -313,11 +313,13 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Index(int companyId, string year, string month)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
+                var comp = _companyService.FindById(companyId, null);
+                ViewBag.Company = comp;
                 SessionManager.SetCompanyIdInSession(companyId);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
@@ -332,7 +334,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Product(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -350,7 +352,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Product(int id, string year, string month, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -448,7 +450,9 @@ namespace Escon.SisctNET.Web.Controllers
                         updateProducts.Add(p);
                     }
                 }
+                
                 _service.Update(updateProducts);
+                
                 return RedirectToAction("Index", new { companyId = companyId, year = year, month = month });
             }
             catch (Exception ex)
@@ -460,7 +464,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpGet]
         public IActionResult Atualize(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -483,7 +487,7 @@ namespace Escon.SisctNET.Web.Controllers
         [HttpPost]
         public IActionResult Atualize(int id, Model.ProductIncentivo entity)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -523,14 +527,14 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Lista(int id)
+        public IActionResult Lista()
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var result = _companyService.FindById(id, null);
+                var result = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(result);
             }
             catch (Exception ex)
@@ -539,35 +543,37 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Listagem(int id, string tipo)
+        public IActionResult Listagem(string tipo)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
+                int companyid = SessionManager.GetCompanyIdInSession();
+
                 List<ProductIncentivo> products = new List<ProductIncentivo>();
                 if (tipo.Equals("Incentivado/Normal"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado/Normal")).ToList();
+                    products = _service.FindByAllProducts(companyid).Where(_ => _.TypeTaxation.Equals("Incentivado/Normal")).ToList();
                 }
                 else if (tipo.Equals("Incentivado/ST"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Incentivado/ST")).ToList();
+                    products = _service.FindByAllProducts(companyid).Where(_ => _.TypeTaxation.Equals("Incentivado/ST")).ToList();
                 }
                 else if (tipo.Equals("ST"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("ST")).ToList();
+                    products = _service.FindByAllProducts(companyid).Where(_ => _.TypeTaxation.Equals("ST")).ToList();
                 }
                 else if (tipo.Equals("Isento"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Isento")).ToList();
+                    products = _service.FindByAllProducts(companyid).Where(_ => _.TypeTaxation.Equals("Isento")).ToList();
                 }
                 else if (tipo.Equals("Normal"))
                 {
-                    products = _service.FindByAllProducts(id).Where(_ => _.TypeTaxation.Equals("Normal")).ToList();
+                    products = _service.FindByAllProducts(companyid).Where(_ => _.TypeTaxation.Equals("Normal")).ToList();
                 }
-                var comp = _companyService.FindById(id, null);
+                var comp = _companyService.FindById(companyid, null);
    
                 ViewBag.Tipo = tipo;
                 ViewBag.Comp = comp;
@@ -581,7 +587,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductIncentivo")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
@@ -613,13 +619,7 @@ namespace Escon.SisctNET.Web.Controllers
                 List<ProductIncentivo> productTemp = new List<ProductIncentivo>();
                 produtosAll.ToList().ForEach(s =>
                 {
-                    s.Code = s.Code;
                     s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
-                    s.Ncm = s.Ncm;
-                    s.Active = s.Active;
-                    s.TypeTaxation = s.TypeTaxation;
-                    s.DateStart = s.DateStart;
-                    s.DateEnd = s.DateEnd;
                     productTemp.Add(s);
                 });
 
@@ -636,9 +636,8 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Code,
-                               Name = r.Name,
-                               Nncm = r.Ncm,
+                               Product = r.Code + " - " + r.Name,
+                               Ncm = r.Ncm,
                                Ccest = r.Cest,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation, 
@@ -658,9 +657,8 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Code,
-                               Name = r.Name,
-                               Nncm = r.Ncm,
+                               Product = r.Code + " - " + r.Name,
+                               Ncm = r.Ncm,
                                Ccest = r.Cest,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation,
@@ -691,13 +689,7 @@ namespace Escon.SisctNET.Web.Controllers
                 List<ProductIncentivo> productTemp = new List<ProductIncentivo>();
                 produtosAll.ToList().ForEach(s =>
                 {
-                    s.Code = s.Code;
                     s.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.Name);
-                    s.Ncm = s.Ncm;
-                    s.Active = s.Active;
-                    s.TypeTaxation = s.TypeTaxation;
-                    s.DateStart = s.DateStart;
-                    s.DateEnd = s.DateEnd;
                     productTemp.Add(s);
                 });
 
@@ -714,9 +706,8 @@ namespace Escon.SisctNET.Web.Controllers
                               select new
                               {
                                   Id = r.Id.ToString(),
-                                  Code = r.Code,
-                                  Name = r.Name,
-                                  Nncm = r.Ncm,
+                                  Product = r.Code + " - " + r.Name,
+                                  Ncm = r.Ncm,
                                   Ccest = r.Cest,
                                   Active = r.Active,
                                   TipoTaxation = r.TypeTaxation,
@@ -736,9 +727,8 @@ namespace Escon.SisctNET.Web.Controllers
                               select new
                               {
                                   Id = r.Id.ToString(),
-                                  Code = r.Code,
-                                  Name = r.Name,
-                                  Nncm = r.Ncm,
+                                  Product = r.Code + " - " + r.Name,
+                                  Ncm = r.Ncm,
                                   Ccest = r.Cest,
                                   Active = r.Active,
                                   TipoTaxation = r.TypeTaxation,

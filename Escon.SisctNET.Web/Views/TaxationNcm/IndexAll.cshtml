@@ -10,14 +10,14 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Ncm</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Lista" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-file pull-left"> Monofásico</a>
-            <a asp-action="Compare" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-copy pull-left"> Compara</a>
-            <a asp-action="Import" asp-route-companyid="@SessionManager.GetCompanyIdInSession()" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
+            <a asp-action="Lista" size="large" class="btn btn-primary fa fa-file pull-left"> Monofásico</a>
+            <a asp-action="Compare" size="large" class="btn btn-primary fa fa-copy pull-left"> Compara</a>
+            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
         </div>
         <br />
         <br />
         <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
         </div>
     </div>
     <div class="box-body">
@@ -30,10 +30,7 @@
                             Produto
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Ncm.Code)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Ncm.Description)
+                            NCM
                         </th>
                         <th>Tributado</th>
                         <th>
@@ -108,9 +105,8 @@
             "initComplete": function (settings, json) {
             },
             "columns": [
-                { "data": "codeProd" },
-                { "data": "code" },
-                { "data": "description" },
+                { "data": "product" },
+                { "data": "ncm" },
                 {
                     "mData": "status",
                     "mRender": function (data, type, row) {
