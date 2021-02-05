@@ -62,6 +62,10 @@
             {
                 <p style="text-align:center;color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
             }
+            else if (ViewBag.Erro == 5)
+            {
+                <p style="text-align:center;color:red;"><strong>HÁ NOTA NÃO IMPORTADA</strong></p>
+            }
             else
             {
 
@@ -74,43 +78,43 @@
                 else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" ||
                          ViewBag.Type == "ProdutoFP" || ViewBag.Type == "IcmsProdutor")
                 {
-                        <table class="table" style="font-size:8px; border: 2px solid;">
-                            @if (ViewBag.Type == "GNRE")
-                            {
-                                <!-- Relatório GNRE -->
+                    <table class="table" style="font-size:8px; border: 2px solid;">
+                        @if (ViewBag.Type == "GNRE")
+                        {
+                            <!-- Relatório GNRE -->
 
-                                @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
-                            }
-                            else if (ViewBag.Type == "IcmsST")
-                            {
-                                <!-- Relatório Produtos Substituição Tributária -->
+                            @await Html.PartialAsync("_GnreReport", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "IcmsST")
+                        {
+                            <!-- Relatório Produtos Substituição Tributária -->
 
-                                @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
-                            }
-                            else if (ViewBag.Type == "ProdutoFI")
-                            {
-                                <!-- Relatório Produtos Fora do Incentivo -->
+                            @await Html.PartialAsync("_IcmsSt", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoFI")
+                        {
+                            <!-- Relatório Produtos Fora do Incentivo -->
 
-                                @await Html.PartialAsync("_ProductFIncentivoReport", new ViewDataDictionary(ViewData))
-                            }
-                            else if (ViewBag.Type == "ProdutoFP")
-                            {
-                                <!-- Relatório Produtos Fora da Pauta -->
+                            @await Html.PartialAsync("_ProductFIncentivoReport", new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoFP")
+                        {
+                            <!-- Relatório Produtos Fora da Pauta -->
 
-                                @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
-                            }
-                            else if (ViewBag.Type == "IcmsProdutor")
-                            {
-                                <!-- Relatório ICMS Produtor Rural -->
+                            @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "IcmsProdutor")
+                        {
+                            <!-- Relatório ICMS Produtor Rural -->
 
-                                @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
-                            }
-                        </table>
+                            @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
+                        }
+                    </table>
                 }
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota" ||
-                      ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
+                     ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
@@ -147,8 +151,8 @@
                         }
                     }
 
-                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) && ViewBag.Type != "ProdutoNI" && 
-                         ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoFP")
+                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) && ViewBag.Type != "ProdutoNI" &&
+                        ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoFP")
                     {
                         <!-- Resumo Imposto Incentivo -->
 

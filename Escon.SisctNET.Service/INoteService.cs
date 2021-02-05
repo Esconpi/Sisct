@@ -17,5 +17,7 @@ namespace Escon.SisctNET.Service
 
         List<Model.Note> FindByUf(int companyId, string year, string month, string uf, Model.Log log = null);
 
+        List<Model.Note> FindByCompany(int companyId, Model.Log log = null);
+
     }
 }

@@ -103,10 +103,10 @@
     </thead>
     <tbody>
         <tr>
-            <th style="text-align:center;border:1px solid;">COFINS @ViewBag.Company.PercentualCofinsRF %</th>
-            <th style="text-align:center;border:1px solid;">PIS @ViewBag.Company.PercentualPisRF %</th>
-            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualCofins %</th>
-            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @ViewBag.Company.PercentualPis %</th>
+            <th style="text-align:center;border:1px solid;">COFINS @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualCofinsRF)) %</th>
+            <th style="text-align:center;border:1px solid;">PIS @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualPisRF)) %</th>
+            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualCofins)) %</th>
+            <th style="text-align:center;border:1px solid;">S/FAT. (DÉBITO) @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualPis)) %</th>
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">

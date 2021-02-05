@@ -2114,7 +2114,7 @@ namespace Escon.SisctNET.Web.Sped
 
         public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
                                       List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevo, List<string> cfopsDevoST,
-                                      List<Model.TaxationNcm> taxationNcms)
+                                      List<Model.TaxationNcm> taxationNcms, Model.Company company)
         {
             List<decimal> entradas = new List<decimal>();
 
@@ -2157,23 +2157,30 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     Model.TaxationNcm ehMono = null;
 
-                                    var prod = linha[2];
-
-                                    foreach (var n in ncmsTaxation)
+                                    if (company.Taxation)
                                     {
-                                        int qtd = n.CodeProduct.Length;
-
-                                        string code = prod.Substring(prod.Length - qtd);
-
-                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
-
-                                        if (ehMono != null)
+                                        // Tributação Individual
+                                        var prod = linha[2];
+                                        foreach (var n in ncmsTaxation)
                                         {
-                                            break;
+                                            int qtd = n.CodeProduct.Length;
+
+                                            string code = prod.Substring(prod.Length - qtd);
+
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                            if (ehMono != null)
+                                            {
+                                                break;
+                                            }
+
                                         }
-
                                     }
-
+                                    else
+                                    {
+                                        // Tributação Geral
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                    }
 
                                     if ((cfopsCompra.Contains(linhaTemp[11]) || cfopsBonifi.Contains(linhaTemp[11]) || cfopsCompraST.Contains(linhaTemp[11])
                                         || cfopsTransf.Contains(linhaTemp[11]) || cfopsTransfST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
@@ -2652,7 +2659,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedInterna;
         }
 
-        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms)
+        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms, Model.Company company)
         {
             List<decimal> Devolucoes = new List<decimal>();
 
@@ -2703,44 +2710,72 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     if ((cfopsDevo.Contains(linhaTemp[11]) || cfopsDevoST.Contains(linhaTemp[11])) && !linhaTemp[7].Equals(""))
                                     {
-                                        if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
-                                        {
-                                            // Devolução Pretoleo
-                                            devolucaoPetroleo += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
-                                        {
-                                            // Devolução Comercio
-                                            devolucaoComercio += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
-                                        {
-                                            // Devolução Transporte
-                                            devolucaoTransporte += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-                                        else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
-                                        {
-                                            // Devolução Serviço
-                                            devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
-                                        }
-
                                         Model.TaxationNcm ehMono = null;
 
-                                        var prod = linha[2];
-
-                                        foreach (var n in ncmsTaxation)
+                                        if (company.Taxation)
                                         {
-                                            int qtd = n.CodeProduct.Length;
-
-                                            string code = prod.Substring(prod.Length - qtd);
-
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
-
-                                            if (ehMono != null)
+                                            if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
                                             {
-                                                break;
+                                                // Devolução Pretoleo
+                                                devolucaoPetroleo += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
+                                            {
+                                                // Devolução Comercio
+                                                devolucaoComercio += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
+                                            {
+                                                // Devolução Transporte
+                                                devolucaoTransporte += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
+                                            {
+                                                // Devolução Serviço
+                                                devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
                                             }
 
+                                            var prod = linha[2];
+
+                                            foreach (var n in ncmsTaxation)
+                                            {
+                                                int qtd = n.CodeProduct.Length;
+
+                                                string code = prod.Substring(prod.Length - qtd);
+
+                                                ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                                if (ehMono != null)
+                                                {
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (ncm1.Contains(linha[8]))
+                                            {
+                                                // Devolução Pretoleo
+                                                devolucaoPetroleo += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if (ncm2.Contains(linha[8]))
+                                            {
+                                                // Devolução Comercio
+                                                devolucaoComercio += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if ( ncm3.Contains(linha[8]))
+                                            {
+                                                // Devolução Transporte
+                                                devolucaoTransporte += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+                                            else if (ncm4.Contains(linha[8]))
+                                            {
+                                                // Devolução Serviço
+                                                devolucaoServico += Convert.ToDecimal(linhaTemp[7]);
+                                            }
+
+                                            ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
                                         }
 
                                         if (ehMono == null)

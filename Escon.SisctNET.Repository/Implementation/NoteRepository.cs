@@ -32,6 +32,14 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public List<Note> FindByCompany(int companyId, Log log = null)
+        {
+            var rst = _context.Notes.Where(_ => _.CompanyId.Equals(companyId)).ToList();
+            AddLog(log);
+            return rst;
+        }
+
         public Note FindByNote(string chave, Log log = null)
         {
             var rst = _context.Notes.Where(_ => _.Chave.Equals(chave)).FirstOrDefault();

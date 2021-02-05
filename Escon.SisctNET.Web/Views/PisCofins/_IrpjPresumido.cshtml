@@ -11,7 +11,7 @@
             <tbody>
                 <tr>
                     <th style="text-align:center;border:1px solid;text-align:right;">
-                        COMBUSTÍVEL @string.Format("{0:N}", ViewBag.Company.IRPJ1)  %
+                        COMBUSTÍVEL @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.IRPJ1))  %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.Irpj1)
@@ -19,7 +19,7 @@
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid;text-align:right;">
-                        COMÉRCIO @string.Format("{0:N}", ViewBag.Company.IRPJ2) %
+                        COMÉRCIO @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.IRPJ2)) %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.Irpj2)
@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid;text-align:right;">
-                        TRASNPORTE @string.Format("{0:N}", ViewBag.Company.IRPJ3) %
+                        TRASNPORTE @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.IRPJ3)) %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.Irpj3)
@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid; text-align:right;">
-                        SERVIÇO @string.Format("{0:N}", ViewBag.Company.IRPJ4) %
+                        SERVIÇO @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.IRPJ4)) %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.Irpj4)
@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
-                        IRPJ Normal @string.Format("{0:N}", ViewBag.Company.PercentualIRPJ) %
+                        IRPJ Normal @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualIRPJ)) %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.IrpjNormal)
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <th style="text-align:center;border:1px solid; text-align:right; text-transform:uppercase;">
-                        Adicional IRPJ @string.Format("{0:N}", ViewBag.Company.AdicionalIRPJ) %
+                        Adicional IRPJ @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.AdicionalIRPJ)) %
                     </th>
                     <td style="text-align:right;border:1px solid; padding-right:1%;">
                         @string.Format("{0:N}", ViewBag.AdicionalIrpj)

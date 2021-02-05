@@ -113,8 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Ncm.Code,
-                               Description = r.Ncm.Description,
+                               Ncm = r.Ncm.Description,
                                Cest = r.Cest,
                                Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
@@ -133,8 +132,7 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
-                               Code = r.Ncm.Code,
-                               Description = r.Ncm.Description,
+                               Ncm = r.Ncm.Description,
                                Cest = r.Cest,
                                Taxation = r.TaxationType.Description,
                                Picms = r.Picms,

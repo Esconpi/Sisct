@@ -123,7 +123,7 @@ namespace Escon.SisctNET.Web.Controllers
                         notes.RemoveAt(i);
                         continue;
                     }
-                    else if (notes[i][1]["idDest"] == "1" && comp.Status == true)
+                    else if (notes[i][1]["idDest"] == "1" && comp.Status)
                     {
                         if (notes[i][2]["UF"] == notes[i][3]["UF"])
                         {

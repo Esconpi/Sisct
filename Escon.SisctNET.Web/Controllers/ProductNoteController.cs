@@ -162,13 +162,23 @@ namespace Escon.SisctNET.Web.Controllers
                 var ncm = _ncmService.FindByCode(product.Ncm);
 
 
-                if (ncm == null)
-                {
-                    ViewBag.Erro = 1;
-                    return View(product);
-                }
+                string description = "";
 
-                ViewBag.DescriptionNCM = ncm.Description;
+                if(product.Ncm.Length == 8)
+                {
+                    if (ncm == null)
+                    {
+                        ViewBag.Erro = 1;
+                        return View(product);
+                    }
+                    description = ncm.Description;
+                }
+                else
+                {
+                    description = "Sem NCM";
+                }
+                              
+                ViewBag.DescriptionNCM = description;
 
                 List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
 
@@ -764,7 +774,7 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.BCR = bcr;
                     taxation.Fecop = fecop;
                     taxation.TaxationTypeId = taxationType;
-                    taxation.NcmId = ncm.Id;
+                    taxation.NcmId = ncm != null ? ncm.Id : 16427;
                     taxation.Picms = prod.Picms;
                     taxation.Uf = prod.Note.Uf;
                     taxation.DateStart = dateStart;
@@ -791,6 +801,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     nota.Status = status;
+                    nota.Updated = DateTime.Now;
 
                     updateNote.Add(nota);
                 }
@@ -836,8 +847,54 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
 
                 var calculation = new Calculation();
+                var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
 
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                ViewBag.Company = comp;
+                ViewBag.TypeTaxation = typeTaxation.ToString();
+                ViewBag.Type = type.ToString();
+                ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
+                
+                var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+
+                string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
+
+                List<List<Dictionary<string, string>>> notesEntry = new List<List<Dictionary<string, string>>>();
+
+                if(!type.Equals(Model.Type.IcmsProdutor))
+                    notesEntry = importXml.NFeAll(directoryNfe);
+
+                for (int i = notesEntry.Count - 1; i >= 0; i--)
+                {
+                    if (notesEntry[i][1]["finNFe"] == "4")
+                    {
+                        notesEntry.RemoveAt(i);
+                        continue;
+                    }
+                    else if (!notesEntry[i][3]["CNPJ"].Equals(comp.Document))
+                    {
+                        notesEntry.RemoveAt(i);
+                        continue;
+                    }
+                    else if (notesEntry[i][1]["idDest"] == "1" && comp.Status)
+                    {
+                        if (notesEntry[i][2]["UF"] == notesEntry[i][3]["UF"])
+                        {
+                            notesEntry.RemoveAt(i);
+                            continue;
+                        }
+                    }
+
+                    var notaImport = _noteService.FindByNote(notesEntry[i][0]["chave"]);
+
+                    if(notaImport == null)
+                    {
+                        ViewBag.Erro = 5;
+                        return View(null);
+                    }
+                }
 
                 var notes = _noteService.FindByNotes(id, year, month);
 
@@ -866,11 +923,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 decimal icmsStnoteSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()),
                         icmsStnoteIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum());
-
-                ViewBag.Company = comp;
-                ViewBag.TypeTaxation = typeTaxation.ToString();
-                ViewBag.Type = type.ToString();
-                ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
 
                 var imp = _taxService.FindByMonth(id, month, year, "Icms");
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
@@ -1622,7 +1674,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.ProdutoI))
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
-                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != 3 || comp.ChapterId == 4))
+                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != 3 || comp.ChapterId == 4) && !type.Equals(Model.Type.Nota))
                             {
                                 if (imp == null)
                                 {

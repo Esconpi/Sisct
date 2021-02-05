@@ -23,10 +23,7 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.NcmId)
-                        </th>
-                        <th>
-                            Descrição
+                            NCM
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Cest)
@@ -105,8 +102,7 @@
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
-                    { "data": "code" },
-                    { "data": "description" },
+                    { "data": "ncm" },
                     { "data": "cest" },
                     { "data": "taxation" },
                     { "data": "picms" },

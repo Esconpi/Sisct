@@ -43,6 +43,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompany(company);
         }
 
+        public List<Note> FindByCompany(int companyId, Log log = null)
+        {
+            return _repository.FindByCompany(companyId, log);
+        }
+
         public Note FindById(int id, Log log)
         {
             return _repository.FindById(id, log);

@@ -102,11 +102,11 @@
     </thead>
     <tbody>
         <tr>
-            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @ViewBag.Company.PercentualCofins %</td>
+            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualCofins)) %</td>
             <td style="text-align:center;border:1px solid;">RETIDO S/ NF</td>
             <td style="text-align:center;border:1px solid;">CREDOR DO PERÍODO ANTERIOR</td>
             <th style="text-align:center;border:1px solid;">TOTAL CRÉDITO</th>
-            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @ViewBag.Company.PercentualPis %</td>
+            <td style="text-align:center;border:1px solid;">S/ FAT. (CRÉDITO) @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualPis)) %</td>
             <td style="text-align:center;border:1px solid;">RETIDO S/ NF</td>
             <td style="text-align:center;border:1px solid;">CREDOR DO PERÍODO ANTERIOR</td>
             <th style="text-align:center;border:1px solid;">TOTAL CRÉDITO</th>
