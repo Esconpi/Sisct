@@ -26,9 +26,12 @@
             <table class="table table-striped table-bordered" id="tblNcm" style="width:100%">
                 <thead>
                     <tr>
-                        <th>
-                            Produto
-                        </th>
+                        @if (ViewBag.Company.Taxation)
+                        {
+                            <th>
+                                Produto
+                            </th>
+                        }
                         <th>
                             NCM
                         </th>
@@ -67,7 +70,10 @@
     </div>
 </div>
 
-<script type="text/javascript">
+@if (ViewBag.Company.Taxation)
+{
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#tblNcm').DataTable({
                 searchDelay: 300,
@@ -138,11 +144,94 @@
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> "+
-                                    "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
+                            return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> " +
+                                "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
                         }
                     }
                 ]
             });
         });
-</script>
+    </script>
+}
+else
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblNcm').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                    $('.showDetails').click(function () {
+                        $.get('/TaxationNcm/Details/' + $(this).attr('id'), function (html) {
+                            $('#formShow .modal-body').empty();
+                            $('#formShow .modal-body').append($(html));
+                            $('#formShow').modal('show');
+                        });
+
+                    });
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
+                "ajax": "/TaxationNcm/GetAllCompany",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "ncm" },
+                    {
+                        "mData": "status",
+                        "mRender": function (data, type, row) {
+                            if (data == true) {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+                            }
+                            else {
+                                return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' disabled = 'true' id='" + row.id + "' />";
+
+                            }
+                        }
+                    },
+                    {
+                        "mData": "type",
+                        "mRender": function (data, type, row) {
+                            if (data == "Nenhum") {
+                                return "<div style='color:red'>Nenhum</div>"
+                            }
+                            else if (data == "Monofásico") {
+                                return "<div style='color:green'>Monofásico</div>"
+                            }
+                            else if (data == "Normal") {
+                                return "<div style='color:blue'>Normal</div>"
+                            }
+                        }
+                    },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> " +
+                                "<a href='/TaxationNcm/Ncm/" + data + "' class = 'fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Tributar Ncm' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

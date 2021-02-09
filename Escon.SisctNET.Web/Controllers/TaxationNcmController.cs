@@ -25,11 +25,11 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IHostingEnvironment _appEnvironment;
 
         public TaxationNcmController(
+            ITaxationNcmService service,
             INcmService ncmService,
             IConfigurationService configurationService,
             ICompanyService companyService,
             ICstService cstService,
-            ITaxationNcmService service,
             ITypeNcmService typeNcmService,
             INatReceitaService natReceitaService,
             IHostingEnvironment env,
@@ -37,11 +37,11 @@ namespace Escon.SisctNET.Web.Controllers
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "TaxationNcm")
         {
+            _service = service;
             _ncmService = ncmService;
             _configurationService = configurationService;
             _companyService = companyService;
             _cstService = cstService;
-            _service = service;
             _typeNcmService = typeNcmService;
             _natReceitaService = natReceitaService;
             _appEnvironment = env;
@@ -75,8 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
-                var taxatioNcmsAll = _service.FindByCompany(comp.Document);
-                var ncmsAll = _ncmService.FindAll(null);                
+                          
 
                 if (comp.CountingTypeId == null)
                 {
@@ -99,6 +98,15 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> ncms = new List<List<string>>();
                 ncms = importXml.FindByNcms(directoryNfe);
 
+                List<TaxationNcm> ncmsCompany = new List<TaxationNcm>();
+
+                 if (comp.Taxation)
+                    ncmsCompany = _service.FindByCompany(comp.Document);
+                else
+                    ncmsCompany = _service.FindByGeneral();
+
+                var ncmsAll = _ncmService.FindAll(null);
+
                 List<TaxationNcm> monoAdd = new List<TaxationNcm>();
 
                 string arqui = "";
@@ -110,7 +118,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                    var taxationTemp = taxatioNcmsAll.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    TaxationNcm taxationTemp = new TaxationNcm();
+
+                    if(comp.Taxation)
+                        taxationTemp = ncmsCompany.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    else
+                        taxationTemp = ncmsCompany.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
@@ -129,7 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             // Tributção por NCM 
 
-                            var taxationNcmTemp = taxatioNcmsAll.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).ToList();
+                            var taxationNcmTemp = ncmsCompany.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).ToList();
 
                             if (taxationNcmTemp.Count() > 0)
                             {
@@ -627,6 +640,22 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult Details(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var rst = _service.FindById(id, null);
+                return PartialView(rst);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult Compare()
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
@@ -898,22 +927,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Company = comp;
                 var result = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ToList();
                 return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        public IActionResult Details(int id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-                var rst = _service.FindById(id, null);
-                return PartialView(rst);
             }
             catch (Exception ex)
             {

@@ -3039,7 +3039,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if(comp.Taxation)
                         ncmsCompany = _taxationNcmService.FindByCompany(comp.Document);
                     else
-                        ncmsCompany = _taxationNcmService.FindByCompany();
+                        ncmsCompany = _taxationNcmService.FindByGeneral();
 
                     if (type.Equals("sped") && comp.Sped)
                     {

@@ -20,7 +20,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.TaxationNcm> FindByCompany(int company, string year, string month, Model.Log log = null);
 
-        List<Model.TaxationNcm> FindByCompany(Model.Log log = null);
+        List<Model.TaxationNcm> FindByGeneral(Model.Log log = null);
 
         void Create(List<Model.TaxationNcm> taxationNcms, Model.Log log = null);
 

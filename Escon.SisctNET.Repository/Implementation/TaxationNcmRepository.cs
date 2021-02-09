@@ -99,7 +99,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<TaxationNcm> FindByCompany(Log log = null)
+        public List<TaxationNcm> FindByGeneral(Log log = null)
         {
             var rst = _context.TaxationNcms.Where(_ => !_.Company.Taxation).ToList();
             AddLog(log);
