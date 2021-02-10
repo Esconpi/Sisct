@@ -368,7 +368,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 bool incentivo = false;
 
-                                if (comp.Incentive && comp.AnnexId.Equals(1))
+                                if (comp.Incentive && (comp.AnnexId.Equals(1) || comp.AnnexId.Equals(3)))
                                 {
                                     incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
                                 }

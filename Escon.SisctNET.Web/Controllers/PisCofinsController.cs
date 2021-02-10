@@ -537,6 +537,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     vProd = 0;
                                     vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                    status = true;
                                 }
 
                                 if (notes[i][j].ContainsKey("vFrete"))
