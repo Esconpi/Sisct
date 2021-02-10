@@ -13,12 +13,13 @@
         </div>
 
         <div style="text-align:center;">
-            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>
         <div style="width:100%; overflow:hidden; padding:20px;">
             <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
             <div style="float:right;">
-                <strong>Periodo:</strong> 
+                <strong>Periodo:</strong>
                 @if (ViewBag.Period == "periodo")
                 {
                     @ViewBag.Inicio<span>/</span>@SessionManager.GetYearInSession() <span>à</span> @ViewBag.Fim<span>/</span>@SessionManager.GetYearInSession()

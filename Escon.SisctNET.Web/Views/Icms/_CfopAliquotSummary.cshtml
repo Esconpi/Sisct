@@ -11,13 +11,16 @@
                 Valor Contábil
             </th>
             <th style="border:1px solid; text-align:center;">
-                CST/CSOSN
-            </th>
-            <th style="border:1px solid; text-align:center;">
                 BC ICMS
             </th>
             <th style="border:1px solid; text-align:center;">
+                Aliq. ICMS
+            </th>
+            <th style="border:1px solid; text-align:center;">
                 Valor ICMS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Aliq. FECOP
             </th>
             <th style="border:1px solid; text-align:center;">
                 Valor FECOP
@@ -35,11 +38,14 @@
                     @cfop[1]
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </td>
+                <th style="border:1px solid; text-align:right; padding-right:1%;">
+                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
+                </th>
+                <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
-                <th style="border:1px solid; padding-left:1%;">
-                    @cfop[2]
-                </th>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
@@ -50,7 +56,6 @@
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
             </tr>
-
         }
     </tbody>
 </table>

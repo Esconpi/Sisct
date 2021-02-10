@@ -65,7 +65,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Comp = company;
+                ViewBag.Company = company;
 
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);

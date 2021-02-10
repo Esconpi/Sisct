@@ -44,7 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var company = _companyService.FindById(Convert.ToInt32(id), null);
 
                 ViewBag.Ordem = ordem.ToString();
-                ViewBag.Comp = company;
+                ViewBag.Company = company;
                 ViewBag.Period = period;
                 ViewBag.Inicio = inicio;
                 ViewBag.Fim = fim;

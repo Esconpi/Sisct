@@ -44,7 +44,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id,GetLog(Model.OccorenceLog.Read));
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
             }
@@ -214,6 +214,8 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetCompanyIdInSession(companyId);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
+                var comp = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                ViewBag.Company = comp;
                 return View(null);
             }
             catch(Exception ex)
@@ -316,7 +318,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 var clients = _service.FindByCompany(id).Where(_ => _.TypeClientId.Equals(1)).ToList();
                 return View(clients);
             }

@@ -348,7 +348,6 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Type = Request.Form["type"].ToString();
 
                     tributacoes.Add(rst);
-                    //_service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 }
                 else if(Request.Form["opcao"].ToString() == "2")
@@ -385,7 +384,6 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Type = Request.Form["type"].ToString();
 
                         tributacoes.Add(n);
-                        //_service.Update(n, null);
                     }
                 }
 
@@ -495,7 +493,6 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Type = Request.Form["type"].ToString();
 
                     tributacoes.Add(rst);
-                    //_service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
                 }
                 else if (Request.Form["opcao"].ToString() == "2")
@@ -532,7 +529,6 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Type = Request.Form["type"].ToString();
 
                         tributacoes.Add(n);
-                        //_service.Update(n, null);
                     }
                 }
 
@@ -925,8 +921,18 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
                 ViewBag.Company = comp;
-                var result = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ToList();
-                return View(result);
+                List<Model.TaxationNcm> taxationNcms = new List<TaxationNcm>();
+
+                taxationNcms = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ThenBy(_ => _.Ncm.Code).ToList();
+
+                if (!comp.Taxation)
+                {
+                    var ncms = taxationNcms.Select(_ => _.Ncm).Distinct().OrderBy(_ => _.Code).ToList();
+                    ViewBag.Ncms = ncms;
+                    taxationNcms = null;
+                }
+                
+                return View(taxationNcms);
             }
             catch (Exception ex)
             {

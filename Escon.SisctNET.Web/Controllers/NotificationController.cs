@@ -32,8 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 SessionManager.SetCompanyIdInSession(id);
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Document = company.Document;
-                ViewBag.Name = company.SocialName;
+                ViewBag.Company = company;
                 return View(null);
             }
             catch (Exception ex)

@@ -14,8 +14,9 @@
             <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
         </div>
 
-        <div style="width:100%; text-align:center;padding-top:10px;">
-            <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+        <div style="width:100%; text-align:center; padding-top:10px;">
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>
 
         <div style="width:100%; text-align:right; padding-right:1%;">

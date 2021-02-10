@@ -43,9 +43,10 @@
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="resumoCfop" selected>Resumo CFOP</option>
                             <option value="resumoCfopCst">Resumo CFOP/CST</option>
+                            <option value="resumoCfopAliq">Resumo CFOP/Aliquota</option>
                             @if (Model.Incentive == true)
                             {
-                                @if (Model.AnnexId == 1)
+                                @if (Model.AnnexId == 1 || Model.AnnexId == 3)
                                 {
                                     <option value="resumoCfopAnexo">Resumo CFOP Anexo</option>
                                     <option value="resumoCfopAnexoAnalitico">Resumo CFOP Anexo Analítico</option>

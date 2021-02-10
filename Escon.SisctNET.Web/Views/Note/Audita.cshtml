@@ -15,8 +15,9 @@
 
             </div>
 
-            <div style="text-align:center;">
-                <strong>@ViewBag.Comp.SocialName - @ViewBag.Comp.Document</strong>
+            <div style="width:100%; text-align:center;">
+                <strong>@ViewBag.Company.SocialName</strong> <br />
+                <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
             </div>
 
             <div style="width:100%; overflow:hidden; padding:20px;">
@@ -56,7 +57,8 @@
                             <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
                             <td>@Html.DisplayFor(modelItem => item.Vprod)</td>
                             <td>@Html.DisplayFor(modelItem => item.Ncm)</td>
-                        </tr> 
+                        </tr>
+
                     }
 
                 </tbody>

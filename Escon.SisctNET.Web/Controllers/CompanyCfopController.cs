@@ -76,8 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 ViewBag.Id = id;
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Document = company.Document;
-                ViewBag.Name = company.SocialName;
+                ViewBag.Company = company;
 
                 var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
 

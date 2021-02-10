@@ -17,7 +17,8 @@
             </div>
 
             <div style="text-align:center;">
-                <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
+                <strong>@ViewBag.Company.SocialName</strong> <br />
+                <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
             </div>
 
             <div style="width:100%; overflow:hidden; padding:10px;">
@@ -69,6 +70,12 @@
                         <!-- Resumo CFOP/CST -->
 
                         @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoCfopAliq")
+                    {
+                        <!-- Resumo CFOP/Aliquota -->
+
+                        @await Html.PartialAsync("_CfopAliquotSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoCfopMono")
                     {

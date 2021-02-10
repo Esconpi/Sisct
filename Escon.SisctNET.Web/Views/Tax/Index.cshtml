@@ -27,7 +27,7 @@
             <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
 
             @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
-                SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
+               SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
             {
                 <br />
                 <br />
@@ -37,14 +37,15 @@
         </div>
 
         <div style="width:100%; text-align:center;padding-top:100px;">
-            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>
 
         <br />
         <br />
 
         <div style="width:100%; text-align:left; padding-left:1%;">
-            <strong>Arquivo: </strong> 
+            <strong>Arquivo: </strong>
             @if (Model != null)
             {
                 @Model.Arquivo

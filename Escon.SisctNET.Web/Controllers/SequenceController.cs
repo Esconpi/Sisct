@@ -39,8 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(Convert.ToInt32(id), null);
 
                 ViewBag.Archive = archive.ToString();
-                ViewBag.Document = comp.Document;
-                ViewBag.SocialName = comp.SocialName;
+                ViewBag.Company = comp;
 
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);

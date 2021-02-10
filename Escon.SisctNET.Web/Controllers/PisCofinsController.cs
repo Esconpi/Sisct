@@ -451,11 +451,157 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
 
-                            if (notes[i][j].ContainsKey("CSTC") && notes[i][j].ContainsKey("pPIS"))
+                            if (notes[i][j].ContainsKey("CSTC") && notes[i][j].ContainsKey("pCOFINS"))
                             {
                                 cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                                 cfops[pos][8] = (Convert.ToDecimal(cfops[pos][8]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
 
+                            }
+                        }
+
+                    }
+
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
+                else if (type.Equals("resumoCfopAliq"))
+                {
+                    //  Resumo CFOP/Aliquota
+
+                    List<List<string>> cfops = new List<List<string>>();
+
+                    notes = importXml.NFeAll(directoryNfeExit);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string cfop = "", pPIS = "0", pCOFINS = "0";
+                        decimal vProd = 0, vBCP = 0, vPIS = 0, vBCC = 0, vCOFINS = 0;
+                        int pos = -1;
+                        bool status = false;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
+                            {
+                                if (status)
+                                {
+                                    for (int e = 0; e < cfops.Count(); e++)
+                                    {
+                                        if (cfops[e][0].Equals(cfop) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pPIS)) && Convert.ToDecimal(cfops[e][7]).Equals(Convert.ToDecimal(pCOFINS)))
+                                        {
+                                            pos = e;
+                                            break;
+                                        }
+                                    }
+
+                                    if (pos < 0)
+                                    {
+                                        var cfp = _cfopService.FindByCode(cfop);
+                                        List<string> cc = new List<string>();
+                                        cc.Add(cfop);
+                                        cc.Add(cfp.Description);
+                                        cc.Add(vProd.ToString());
+                                        cc.Add(vBCP.ToString());
+                                        cc.Add(pPIS);
+                                        cc.Add(vPIS.ToString());
+                                        cc.Add(vBCC.ToString());
+                                        cc.Add(pCOFINS);
+                                        cc.Add(vCOFINS.ToString());
+                                        cfops.Add(cc);
+                                    }
+                                    else
+                                    {
+                                        cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
+                                        cfops[pos][3] = (Convert.ToDecimal(cfops[pos][3]) + vBCP).ToString();
+                                        cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + vPIS).ToString();
+                                        cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + vBCC).ToString();
+                                        cfops[pos][8] = (Convert.ToDecimal(cfops[pos][8]) + vCOFINS).ToString();
+                                    }
+                                }
+
+                                pos = -1;
+                                status = false;
+                                cfop = notes[i][j]["CFOP"];
+                                vBCP = 0;
+                                vPIS = 0;
+                                vBCC = 0;
+                                vCOFINS = 0;
+
+                                if (notes[i][j].ContainsKey("vProd"))
+                                {
+                                    vProd = 0;
+                                    vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vFrete"]);
+
+                                if (notes[i][j].ContainsKey("vDesc"))
+                                    vProd -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+
+                                if (notes[i][j].ContainsKey("vOutro"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vOutro"]);
+
+                                if (notes[i][j].ContainsKey("vSeg"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP"))
+                            {
+                                vBCP = Convert.ToDecimal(notes[i][j]["vBC"]);
+                                pPIS = notes[i][j]["pPIS"];
+                                vPIS = Convert.ToDecimal(notes[i][j]["vPIS"]);
+                                status = true;
+                            }
+
+                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC"))
+                            {
+                                vBCC = Convert.ToDecimal(notes[i][j]["vBC"]);
+                                pCOFINS = notes[i][j]["pCOFINS"];
+                                vCOFINS = Convert.ToDecimal(notes[i][j]["vCOFINS"]);
+                                status = true;
+                            }
+
+                            if (notes[i][j].ContainsKey("vNF"))
+                            {
+                                for (int e = 0; e < cfops.Count(); e++)
+                                {
+                                    if (cfops[e][0].Equals(cfop) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pPIS)) && Convert.ToDecimal(cfops[e][7]).Equals(Convert.ToDecimal(pCOFINS)))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = _cfopService.FindByCode(cfop);
+                                    List<string> cc = new List<string>();
+                                    cc.Add(cfop);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(vProd.ToString());
+                                    cc.Add(vBCP.ToString());
+                                    cc.Add(pPIS);
+                                    cc.Add(vPIS.ToString());
+                                    cc.Add(vBCC.ToString());
+                                    cc.Add(pCOFINS);
+                                    cc.Add(vCOFINS.ToString());
+                                    cfops.Add(cc);
+                                }
+                                else
+                                {
+                                    cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
+                                    cfops[pos][3] = (Convert.ToDecimal(cfops[pos][3]) + vBCP).ToString();
+                                    cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + vPIS).ToString();
+                                    cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + vBCC).ToString();
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][8]) + vCOFINS).ToString();
+                                }
                             }
                         }
 

@@ -9,10 +9,11 @@
     <div class="box-header">
         <a asp-action="IndexAll" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produto</strong></h3>
-        <div style="width:100%; text-align:center;">
-            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
-        </div>
 
+        <div style="width:100%; text-align:center;">
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+        </div>
         <br />
 
         <div style="width:100%; text-align:right; padding-right:1%;">

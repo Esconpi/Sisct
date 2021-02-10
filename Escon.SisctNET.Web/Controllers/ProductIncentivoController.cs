@@ -39,7 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 SessionManager.SetCompanyIdInSession(id);
 
                 return View(null);

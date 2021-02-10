@@ -41,7 +41,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _companyService.FindById(id, null);
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 var rst = _service.FindByTaxs(id, month, year).OrderBy(_ => Convert.ToInt32(_.Nnf)).ToList();
 
                 SessionManager.SetCompanyIdInSession(id);

@@ -16,8 +16,8 @@
             <td>@item[1]</td>
             <td>@item[2]</td>
             <td>@item[3]</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[4]))</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[5]))</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[5].Replace(".", ",")))</td>
         </tr>
     }
 </tbody>

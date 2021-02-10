@@ -15,7 +15,8 @@
         </div>
 
         <div style="text-align:center;">
-            <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>
         <div style="width:100%; padding:20px;">
             <div style="float:left;"><strong>Ncm Monofásico</strong></div>
@@ -27,44 +28,47 @@
             <table class="table" style="border:1px solid;">
                 <thead>
                     <tr style="border:1px solid;">
-                        <th style="border:1px solid; text-align:center;">
-                            Produto
-                        </th>
-                        <th style="border:1px solid; text-align:center;" width="35%">
-                            Descrição
-                        </th>
+                        @if (ViewBag.Company.Taxation)
+                        {
+                            <th style="border:1px solid; text-align:center;">
+                                Produto
+                            </th>
+                        }
                         <th style="border:1px solid; text-align:center;">
                             Ncm
-                        </th>
-                        <th style="border:1px solid; text-align:center;" width="50%">
-                            Descrição
                         </th>
                     </tr>
                 </thead>
                 <tbody style="font-size:10px;">
-                    @foreach (var item in Model)
+                    @if (ViewBag.Company.Taxation)
                     {
-                        <tr style="border:1px solid;">
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.CodeProduct
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Product
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Ncm.Code
-                            </td>
-                            <td style="border:1px solid; padding-left:1%;">
-                                @item.Ncm.Description
-                            </td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item.CodeProduct - @item.Product
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item.Ncm.Description
+                                </td>
+                            </tr>
+                        }
                     }
+                    else
+                    {
+                        @foreach (var item in ViewBag.Ncms)
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @item.Description
+                                </td>
+                            </tr>
+                        }
+                    }
+
                 </tbody>
             </table>
         </div>
     </div>
     <div class="box-footer"></div>
 </div>
-
-
-

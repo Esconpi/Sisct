@@ -10,16 +10,16 @@
     </tr>
 </thead>
 <tbody style="font-size:11px;">
-    @for (int i = 0; i < @ViewBag.Fornecedores.Count; i++)
+    @foreach (var item in ViewBag.Fornecedores)
     {
         <tr>
-            <td>@ViewBag.Fornecedores[i][1]</td>
-            <td>@ViewBag.Fornecedores[i][2]</td>
-            <td>@ViewBag.Fornecedores[i][3]</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Fornecedores[i][4]))</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Fornecedores[i][7]))</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Fornecedores[i][5]))</td>
-            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Fornecedores[i][8]))</td>
+            <td>@item[1]</td>
+            <td>@item[2]</td>
+            <td>@item[3]</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[7].Replace(".", ",")))</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[5].Replace(".", ",")))</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[8].Replace(".", ",")))</td>
         </tr>
     }
 </tbody>

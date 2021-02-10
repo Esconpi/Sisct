@@ -2,56 +2,73 @@
 {
     <strong>Resumo CFOP</strong>
 }
-else if (ViewBag.Type == "resumoCfopAnexo")
+
+@if (ViewBag.Type == "resumoCfopAnexo")
 {
     <strong>Resumo CFOP Anexo</strong>
 }
-else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
+
+@if (ViewBag.Type == "resumoCfopAnexoAnalitico")
 {
     <strong>Resumo CFOP Anexo Analítico</strong>
 }
-else if (ViewBag.Type == "resumoCfopAnexoDC")
+
+@if (ViewBag.Type == "resumoCfopAnexoDC")
 {
     <strong>Resumo CFOP Anexo Débito/Crédito</strong>
 }
-else if (ViewBag.Type == "resumoCfopForaAnexo")
+
+@if (ViewBag.Type == "resumoCfopForaAnexo")
 {
     <strong>Resumo CFOP Fora do Anexo</strong>
 }
-else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
+
+@if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
 {
     <strong>Resumo CFOP Fora do Anexo Analítico</strong>
 }
-else if (ViewBag.Type == "resumoCfopForaAnexoDC")
+
+@if (ViewBag.Type == "resumoCfopForaAnexoDC")
 {
     <strong>Resumo CFOP Fora do Anexo Débito/Crédito</strong>
 }
-else if (ViewBag.Type == "resumoCfopCst")
+
+@if (ViewBag.Type == "resumoCfopCst")
 {
-    <strong> Resumo CFOP / CST </strong>
+    <strong> Resumo CFOP/CST </strong>
 }
-else if (ViewBag.Type == "resumoPorCfop")
+
+@if (ViewBag.Type == "resumoCfopAliq")
+{
+    <strong> Resumo CFOP/Aliquota </strong>
+}
+
+@if (ViewBag.Type == "resumoPorCfop")
 {
     <strong> Resumo por CFOP -@ViewBag.Code </strong>
 }
-else if (ViewBag.Type == "icmsExcedente")
+
+@if (ViewBag.Type == "icmsExcedente")
 {
     <strong> Relatório de Penalidade</strong>
 }
-else if (ViewBag.Type == "anexo")
+
+@if (ViewBag.Type == "anexo")
 {
     <strong> Venda @ViewBag.Anexo </strong>
 }
-else if (ViewBag.Type == "foraAnexo")
+
+@if (ViewBag.Type == "foraAnexo")
 {
     <strong> Venda Fora Anexo</strong>
 }
-else if (ViewBag.Type == "incentivo")
+
+@if (ViewBag.Type == "incentivo")
 {
     <strong> Apuração Icms </strong>
 }
 
-else if (ViewBag.Type == "suspensao")
+@if (ViewBag.Type == "suspensao")
 {
     <div>
         <strong> Suspensão: </strong> <br />
@@ -61,20 +78,23 @@ else if (ViewBag.Type == "suspensao")
         }
     </div>
 }
-else if (ViewBag.Type == "anexoAutoPecas")
+
+@if (ViewBag.Type == "anexoAutoPecas")
 {
     <strong> ANEXO CCCXVI </strong>
 }
-else if (ViewBag.Type == "anexoMedicamento")
+
+@if (ViewBag.Type == "anexoMedicamento")
 {
     <strong> ANEXO CLIX </strong>
 }
 
-else if (ViewBag.Type == "produtoST")
+@if (ViewBag.Type == "produtoST")
 {
     <strong> Produtos ST com Base de Cálculo </strong>
 }
-else if (ViewBag.Type == "tributacaoDiveregente")
+
+@if (ViewBag.Type == "tributacaoDiveregente")
 {
     <strong> Tributação Divergente(ICMS) </strong>
 }

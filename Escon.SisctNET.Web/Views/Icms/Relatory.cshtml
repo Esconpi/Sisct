@@ -18,7 +18,8 @@
             @if (ViewBag.Type != "anexoMedicamento" && ViewBag.Type != "anexoAutoPecas")
             {
                 <div style="text-align:center;">
-                    <strong>@ViewBag.Company.SocialName - @ViewBag.Company.Document</strong>
+                    <strong>@ViewBag.Company.SocialName</strong> <br />
+                    <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
                 </div>
 
                 <div style="width:100%; overflow:hidden; padding:20px;">
@@ -55,6 +56,24 @@
                     }
 
                 }
+                else if (ViewBag.Type == "resumoCfopCst")
+                {
+                    <!-- Resumo CFOP/CST -->
+
+                    @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "resumoCfopAliq")
+                {
+                    <!-- Resumo CFOP/Aliquota -->
+
+                    @await Html.PartialAsync("_CfopAliquotSummary", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "resumoPorCfop")
+                {
+                    <!-- Resumo Por CFOP -->
+
+                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "resumoCfopAnexo")
                 {
                     <!-- Resumo CFOP Anexo -->
@@ -90,18 +109,6 @@
                     <!-- Resumo CFOP Fora do Anexo Débito e Crédito -->
 
                     @await Html.PartialAsync("_SummaryCfopFAttachmentDC", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopCst")
-                {
-                    <!-- Resumo CFOP/CST -->
-
-                    @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoPorCfop")
-                {
-                    <!-- Resumo Por CFOP -->
-
-                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "anexo")
                 {
