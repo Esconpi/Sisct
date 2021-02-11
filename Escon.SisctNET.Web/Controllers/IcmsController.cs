@@ -655,6 +655,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 vBC = 0;
                                 vICMS = 0;
                                 vFCP = 0;
+                                pICMS = "0";
+                                pFCP = "0";
 
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
                                 {

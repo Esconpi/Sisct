@@ -3051,7 +3051,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //  Empresa do Simples
 
-
                         foreach (var cc in caminhos)
                         {
                             if (comp.CountingTypeId.Equals(1))
@@ -3077,8 +3076,6 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 // Empresa do Simples
                             }
-
-                            
                         }
 
 

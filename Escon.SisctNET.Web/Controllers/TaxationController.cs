@@ -35,8 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindByCompany(id);
                 var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-                ViewBag.Company = company.SocialName;
-                ViewBag.Document = company.Document;
+                ViewBag.Company = company;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
 

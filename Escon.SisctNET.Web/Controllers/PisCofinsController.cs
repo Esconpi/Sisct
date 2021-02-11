@@ -532,6 +532,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 vPIS = 0;
                                 vBCC = 0;
                                 vCOFINS = 0;
+                                pPIS = "0";
+                                pCOFINS = "0";
 
                                 if (notes[i][j].ContainsKey("vProd"))
                                 {

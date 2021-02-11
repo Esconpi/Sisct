@@ -176,8 +176,8 @@
                 <tr>
                     <td>@item[0]</td>
                     <td>@item[1]</td>
-                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
-                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[3])) %</td>
+                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[2].Replace(".",",")))</td>
+                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item[3].Replace(".", ","))) %</td>
                 </tr>
             }
 
@@ -215,7 +215,7 @@
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteGrupo)</td>
             <th style="text-align:center">x</th>
             <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaMGrupoExcedente)) %</td>
-            <th style="font-size:17px; text-align:center" ">=</th>
+            <th style="font-size:17px; text-align:center">=</th>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteGrupo)</td>
         </tr>
         @if (ViewBag.Company.ChapterId == 4)
@@ -313,54 +313,50 @@
                 <th style="width:100px;">Total</th>
             </tr>
 
-            <tr>
-                @if (ViewBag.Company.AnnexId == 1)
-                {
-                    <tr>
-                        <th>Venda Conforme Anexo II (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %)</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteNcm)</td>
-                        <th style="font-size:17px;text-align:center">-</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteNcm)</td>
-                        <th style="text-align:center">x</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexoExcedente)) %</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td>@string.Format("{0:N}", ViewBag.TotalExcedenteNcm)</td>
-                    </tr>
-                }
-
-                @if (ViewBag.Company.ChapterId == 4)
-                {
-                    <tr>
-                        <th>ICMS Excedente P/ Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %)</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteContribuinte)</td>
-                        <th style="font-size:17px;text-align:center">-</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcContribuinte)</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteContribuinte)</td>
-                        <th style="text-align:center">x</th>
-                        <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinteExcedente)) %</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteContribuinte)</td>
-                    </tr>
-                    <tr>
-                        <th>Venda Conforme Inciso I e II <br /> (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Faturamento)) %)</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteNcm)</td>
-                        <th style="font-size:17px;text-align:center">-</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteNcm)</td>
-                        <th style="text-align:center">x</th>
-                        <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.FaturamentoExcedente)) %</td>
-                        <th style="font-size:17px;text-align:center">=</th>
-                        <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteNcm)</td>
-                    </tr>
-                }
-
-
+            @if (ViewBag.Company.AnnexId == 1)
+            {
+                <tr>
+                    <th>Venda Conforme Anexo II (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %)</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteNcm)</td>
+                    <th style="font-size:17px;text-align:center">-</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteNcm)</td>
+                    <th style="text-align:center">x</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexoExcedente)) %</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td>@string.Format("{0:N}", ViewBag.TotalExcedenteNcm)</td>
                 </tr>
             }
+
+            @if (ViewBag.Company.ChapterId == 4)
+            {
+                <tr>
+                    <th>ICMS Excedente P/ Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %)</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteContribuinte)</td>
+                    <th style="font-size:17px;text-align:center">-</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcContribuinte)</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteContribuinte)</td>
+                    <th style="text-align:center">x</th>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinteExcedente)) %</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteContribuinte)</td>
+                </tr>
+                <tr>
+                    <th>Venda Conforme Inciso I e II <br /> (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Faturamento)) %)</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteNcm)</td>
+                    <th style="font-size:17px;text-align:center">-</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcNcm)</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.ExcedenteNcm)</td>
+                    <th style="text-align:center">x</th>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.FaturamentoExcedente)) %</td>
+                    <th style="font-size:17px;text-align:center">=</th>
+                    <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalExcedenteNcm)</td>
+                </tr>
+            }
+        }
 
         <tr>
             <th style="width:200px;">&nbsp;</th>

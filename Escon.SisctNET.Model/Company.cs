@@ -32,7 +32,7 @@ namespace Escon.SisctNET.Model
         public string FantasyName { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
-        [Display(Name = "Cnpj/CPF")]
+        [Display(Name = "CNPJ/CPF")]
         public string Document { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
