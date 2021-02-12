@@ -481,7 +481,22 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.Ident = SessionManager.GetTipoInSession();
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Listing(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
                 var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
                 return View(result);
             }

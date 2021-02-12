@@ -23,7 +23,7 @@
                 <form asp-action="Index" asp-controller="Compare" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-                    <input type="hidden" name="ident" value="@ViewBag.Ident" />
+                    <input type="hidden" name="ident" value="@SessionManager.GetTipoInSession()"/>
 
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">

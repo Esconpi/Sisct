@@ -2135,7 +2135,7 @@ namespace Escon.SisctNET.Web.Sped
                     if (linha[1].Equals("0200"))
                     {
                         StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-                        string lineTemp, tipo = "";
+                        string lineTemp, tipoOperacao = "";
                         try
                         {
                             while ((lineTemp = archiveSpedTemp.ReadLine()) != null)
@@ -2144,16 +2144,16 @@ namespace Escon.SisctNET.Web.Sped
 
                                 if (linhaTemp[1].Equals("C100"))
                                 {
-                                    tipo = linhaTemp[2];
+                                    tipoOperacao = linhaTemp[2];
                                 }
 
-                                if (linhaTemp[1].Equals("C100") && tipo == "0")
+                                if (linhaTemp[1].Equals("C100") && tipoOperacao == "0")
                                 {
                                     DateTime dataNota = Convert.ToDateTime(linhaTemp[10].Substring(0, 2) + "/" + linhaTemp[10].Substring(2, 2) + "/" + linhaTemp[10].Substring(4, 4));
                                     ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                                 }
 
-                                if (linhaTemp[1].Equals("C170") && tipo == "0" && linhaTemp[3].Equals(linha[2]))
+                                if (linhaTemp[1].Equals("C170") && tipoOperacao == "0" && linhaTemp[3].Equals(linha[2]))
                                 {
                                     Model.TaxationNcm ehMono = null;
 
@@ -2242,7 +2242,7 @@ namespace Escon.SisctNET.Web.Sped
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
 
-            string line, tipo = "", chave = "";
+            string line, tipoOperacao = "", chave = "";
 
 
             try
@@ -2253,12 +2253,12 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("C100"))
                     {
-                        tipo = linha[2];
+                        tipoOperacao = linha[2];
                         chave = linha[9];
                         var t = chave.Substring(0, 2);
                     }
 
-                    if (linha[1].Equals("C170") && tipo == "0")
+                    if (linha[1].Equals("C170") && tipoOperacao == "0")
                     {
                         if ((cfopsCompra.Contains(linha[11]) || cfopsBonifi.Contains(linha[11]) || cfopsCompraST.Contains(linha[11])) && !linha[7].Equals(""))
                         {
@@ -2540,7 +2540,7 @@ namespace Escon.SisctNET.Web.Sped
                     {
                         bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
 
-                        if (ncm == false)
+                        if (!ncm)
                         {
                             StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
                             string lineTemp, tipo = "";
@@ -2638,8 +2638,6 @@ namespace Escon.SisctNET.Web.Sped
                                 archiveSpedTemp.Close();
                             }
                         }
-
-                       
                     }
                 }
 
@@ -2844,8 +2842,7 @@ namespace Escon.SisctNET.Web.Sped
                     {
                         bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
 
-
-                        if (ncm == false)
+                        if (!ncm)
                         {
                             StreamReader archiveSpedTemp = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
                             string lineTemp, tipo = "";
@@ -2868,7 +2865,6 @@ namespace Escon.SisctNET.Web.Sped
 
                                             if (inicio != 1)
                                             {
-
                                                 if (Convert.ToDecimal(linhaTemp[14]).Equals(4))
                                                 {
                                                     spedDevo[0][0] = (Convert.ToDecimal(spedDevo[0][0]) + Convert.ToDecimal(linhaTemp[13])).ToString();
@@ -2921,7 +2917,7 @@ namespace Escon.SisctNET.Web.Sped
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
-            string line, tipo = "";
+            string line, tipoOperacao = "";
 
             try
             {
@@ -2933,25 +2929,25 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("C100"))
                     {
-                        tipo = linha[2];
+                        tipoOperacao = linha[2];
                         cfop = false;
                     }
 
                     if (linha[1].Equals("C190") && (cfopsCompra.Contains(linha[3]) || cfopsDevo.Contains(linha[3]) ||
                         cfopsBonifi.Contains(linha[3]) || cfopsCompraST.Contains(linha[3]) || cfopsTransf.Contains(linha[3])
-                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipo == "0")
+                        || cfopsTransfST.Contains(linha[3]) || cfopsDevoST.Contains(linha[3])) && !linha[7].Equals("") && tipoOperacao == "0")
                     {
                         totalDeCredito += Convert.ToDecimal(linha[7]);
                         cfop = true;
                     }
 
-                    if (linha[1].Equals("C191") && cfop == true && tipo == "0")
+                    if (linha[1].Equals("C191") && cfop == true && tipoOperacao == "0")
                         totalDeCredito += Convert.ToDecimal(linha[2]);
 
                     if (linha[1].Equals("D100"))
-                        tipo = linha[2];
+                        tipoOperacao = linha[2];
 
-                    if (tipo == "0")
+                    if (tipoOperacao == "0")
                     {
                         if (linha[1].Equals("D100") && linha[17].Equals("1"))
                             fob = true;
@@ -2979,6 +2975,279 @@ namespace Escon.SisctNET.Web.Sped
             return totalDeCredito;
         }
 
+        public List<List<string>> NfeProduct(string directorySped, List<Model.Cfop> cfops)
+        {
+            List<List<string>> products = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+            string tipoOperacao = "", CFOP = "", cProd = "", xProd = "", pICMS = "0", pFCP = "0";
+            decimal vProd = 0, vBC = 0, vICMS = 0, vFCP = 0;
+            bool status = false;
+            int pos = -1;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipoOperacao = linha[2];
+                        if (tipoOperacao.Equals(0) && status)
+                        {
+                            for (int e = 0; e < products.Count(); e++)
+                            {
+                                if (products[e][0].Equals(CFOP) && products[e][2].Equals(cProd) && Convert.ToDecimal(products[e][6]).Equals(Convert.ToDecimal(pICMS)) &&
+                                    Convert.ToDecimal(products[e][8]).Equals(Convert.ToDecimal(pFCP)))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                var cfp = cfops.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                List<string> cc = new List<string>();
+                                cc.Add(CFOP);
+                                cc.Add(cfp.Description);
+                                cc.Add(cProd);
+                                cc.Add(xProd);
+                                cc.Add(vProd.ToString());
+                                cc.Add(vBC.ToString());
+                                cc.Add(pICMS);
+                                cc.Add(vICMS.ToString());
+                                cc.Add(pFCP);
+                                cc.Add(vFCP.ToString());
+                                products.Add(cc);
+                            }
+                            else
+                            {
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + vBC).ToString();
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + vICMS).ToString();
+                                products[pos][9] = (Convert.ToDecimal(products[pos][9]) + vFCP).ToString();
+                            }
+                        }
+                        
+                        status = false;
+                        pICMS = "0";
+                        pFCP = "0";
+                        pos = -1;
+                    }
+
+
+                    if(linha[1].Equals("C170") && tipoOperacao.Equals("0"))
+                    {
+                        if (status)
+                        {
+                            for (int e = 0; e < products.Count(); e++)
+                            {
+                                if (products[e][0].Equals(CFOP) && products[e][2].Equals(cProd) && Convert.ToDecimal(products[e][6]).Equals(Convert.ToDecimal(pICMS)) &&
+                                    Convert.ToDecimal(products[e][8]).Equals(Convert.ToDecimal(pFCP)))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                var cfp = cfops.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                List<string> cc = new List<string>();
+                                cc.Add(CFOP);
+                                cc.Add(cfp.Description);
+                                cc.Add(cProd);
+                                cc.Add(xProd);
+                                cc.Add(vProd.ToString());
+                                cc.Add(vBC.ToString());
+                                cc.Add(pICMS);
+                                cc.Add(vICMS.ToString());
+                                cc.Add(pFCP);
+                                cc.Add(vFCP.ToString());
+                                products.Add(cc);
+                            }
+                            else
+                            {
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + vBC).ToString();
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + vICMS).ToString();
+                                products[pos][9] = (Convert.ToDecimal(products[pos][9]) + vFCP).ToString();
+                            }
+                        }
+
+                        CFOP = linha[11];
+                        cProd = linha[3];
+                        xProd = linha[4];
+
+                        if (linha[7] != "")
+                            vProd = Convert.ToDecimal(linha[7]);
+
+                        if (linha[13] != "")
+                            vBC = Convert.ToDecimal(linha[13]);
+
+                        if (linha[14] != "")
+                            pICMS = linha[14];
+
+                        if (linha[15] != "")
+                            vICMS = Convert.ToDecimal(linha[15]);
+
+                        status = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return products;
+        }
+
+        public List<List<string>> NfeProduct(string directorySped, List<Model.Cfop> cfops, decimal percentualIcms)
+        {
+            List<List<string>> products = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+            string tipoOperacao = "", CFOP = "", cProd = "", xProd = "", pICMS = "0", pFCP = "0";
+            decimal vProd = 0, vBC = 0, vICMS = 0, vFCP = 0;
+            bool status = false;
+            int pos = -1;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("C100"))
+                    {
+                        tipoOperacao = linha[2];
+                        if (tipoOperacao.Equals(0) && status && Convert.ToDecimal(pICMS).Equals(percentualIcms))
+                        {
+                            for (int e = 0; e < products.Count(); e++)
+                            {
+                                if (products[e][0].Equals(CFOP) && products[e][2].Equals(cProd) && Convert.ToDecimal(products[e][6]).Equals(Convert.ToDecimal(pICMS)) &&
+                                    Convert.ToDecimal(products[e][8]).Equals(Convert.ToDecimal(pFCP)))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                var cfp = cfops.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                List<string> cc = new List<string>();
+                                cc.Add(CFOP);
+                                cc.Add(cfp.Description);
+                                cc.Add(cProd);
+                                cc.Add(xProd);
+                                cc.Add(vProd.ToString());
+                                cc.Add(vBC.ToString());
+                                cc.Add(pICMS);
+                                cc.Add(vICMS.ToString());
+                                cc.Add(pFCP);
+                                cc.Add(vFCP.ToString());
+                                products.Add(cc);
+                            }
+                            else
+                            {
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + vBC).ToString();
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + vICMS).ToString();
+                                products[pos][9] = (Convert.ToDecimal(products[pos][9]) + vFCP).ToString();
+                            }
+                        }
+
+                        status = false;
+                        pICMS = "0";
+                        pFCP = "0";
+                        pos = -1;
+                    }
+
+
+                    if (linha[1].Equals("C170") && tipoOperacao.Equals("0"))
+                    {
+                        if (status && Convert.ToDecimal(pICMS).Equals(percentualIcms))
+                        {
+                            for (int e = 0; e < products.Count(); e++)
+                            {
+                                if (products[e][0].Equals(CFOP) && products[e][2].Equals(cProd) && Convert.ToDecimal(products[e][6]).Equals(Convert.ToDecimal(pICMS)) &&
+                                    Convert.ToDecimal(products[e][8]).Equals(Convert.ToDecimal(pFCP)))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                var cfp = cfops.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                List<string> cc = new List<string>();
+                                cc.Add(CFOP);
+                                cc.Add(cfp.Description);
+                                cc.Add(cProd);
+                                cc.Add(xProd);
+                                cc.Add(vProd.ToString());
+                                cc.Add(vBC.ToString());
+                                cc.Add(pICMS);
+                                cc.Add(vICMS.ToString());
+                                cc.Add(pFCP);
+                                cc.Add(vFCP.ToString());
+                                products.Add(cc);
+                            }
+                            else
+                            {
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + vBC).ToString();
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + vICMS).ToString();
+                                products[pos][9] = (Convert.ToDecimal(products[pos][9]) + vFCP).ToString();
+                            }
+                        }
+
+                        CFOP = linha[11];
+                        cProd = linha[3];
+                        xProd = linha[4];
+
+                        if (linha[7] != "")
+                            vProd = Convert.ToDecimal(linha[7]);
+
+                        if (linha[13] != "")
+                            vBC = Convert.ToDecimal(linha[13]);
+
+                        if (linha[14] != "")
+                            pICMS = linha[14];
+
+                        if (linha[15] != "")
+                            vICMS = Convert.ToDecimal(linha[15]);
+
+                        status = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return products;
+        }
 
         // CTe
 

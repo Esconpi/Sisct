@@ -1,4 +1,14 @@
-﻿@if (ViewBag.Opcao == "NFe")
+﻿@if (SessionManager.GetTipoInSession() == 0)
+{
+    <h5><b>Entrada</b></h5>
+}
+else
+{
+    <h4><b>Saída</b></h4>
+}
+
+
+@if (ViewBag.Opcao == "NFe")
 {
     <b>NFe </b>
 }

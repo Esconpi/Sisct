@@ -605,7 +605,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        string cfop = "", pICMS = "0", pFCP = "0";
+                        string CFOP = "", pICMS = "0", pFCP = "0";
                         decimal vProd = 0, vBC = 0, vICMS = 0, vFCP = 0;
                         int pos = -1;
                         bool status = false;
@@ -619,7 +619,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     for (int e = 0; e < cfops.Count(); e++)
                                     {
-                                        if (cfops[e][0].Equals(cfop) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pICMS)) && Convert.ToDecimal(cfops[e][6]).Equals(Convert.ToDecimal(pFCP)))
+                                        if (cfops[e][0].Equals(CFOP) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pICMS)) && Convert.ToDecimal(cfops[e][6]).Equals(Convert.ToDecimal(pFCP)))
                                         {
                                             pos = e;
                                             break;
@@ -628,9 +628,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (pos < 0)
                                     {
-                                        var cfp = _cfopService.FindByCode(cfop);
+                                        var cfp = _cfopService.FindByCode(CFOP);
                                         List<string> cc = new List<string>();
-                                        cc.Add(cfop);
+                                        cc.Add(CFOP);
                                         cc.Add(cfp.Description);
                                         cc.Add(vProd.ToString());
                                         cc.Add(vBC.ToString());
@@ -651,7 +651,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 pos = -1;
                                 status = false;
-                                cfop = notes[i][j]["CFOP"];
+                                CFOP = notes[i][j]["CFOP"];
                                 vBC = 0;
                                 vICMS = 0;
                                 vFCP = 0;
@@ -678,14 +678,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
                             }
 
-
                             if (notes[i][j].ContainsKey("vBC") && notes[i][j].ContainsKey("orig"))
                             {
                                 vBC = Convert.ToDecimal(notes[i][j]["vBC"]);
                                 status = true;
                             }
-                                
-
+                               
                             if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                             {
                                 pICMS = notes[i][j]["pICMS"];
@@ -693,7 +691,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 status = true;
                             }
                                 
-
                             if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("orig"))
                             {
                                 pFCP = notes[i][j]["pFCP"];
@@ -705,7 +702,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(cfop) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pICMS)) && Convert.ToDecimal(cfops[e][6]).Equals(Convert.ToDecimal(pFCP)))
+                                    if (cfops[e][0].Equals(CFOP) && Convert.ToDecimal(cfops[e][4]).Equals(Convert.ToDecimal(pICMS)) && Convert.ToDecimal(cfops[e][6]).Equals(Convert.ToDecimal(pFCP)))
                                     {
                                         pos = e;
                                         break;
@@ -714,9 +711,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (pos < 0)
                                 {
-                                    var cfp = _cfopService.FindByCode(cfop);
+                                    var cfp = _cfopService.FindByCode(CFOP);
                                     List<string> cc = new List<string>();
-                                    cc.Add(cfop);
+                                    cc.Add(CFOP);
                                     cc.Add(cfp.Description);
                                     cc.Add(vProd.ToString());
                                     cc.Add(vBC.ToString());

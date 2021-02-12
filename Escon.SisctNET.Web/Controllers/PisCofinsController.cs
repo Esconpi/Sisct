@@ -372,7 +372,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        string cfop = "", cstP = "";
+                        string CFOP = "", cstP = "";
                         decimal vProd = 0, basePis = 0, vPis = 0;
                         int pos = -1;
 
@@ -382,7 +382,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
                             {
                                 pos = -1;
-                                cfop = notes[i][j]["CFOP"];
+                                CFOP = notes[i][j]["CFOP"];
 
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
                                 {
@@ -422,7 +422,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(cfop) && cfops[e][2].Equals(cstP) && cfops[e][3].Equals(notes[i][j]["CSTC"]))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(cstP) && cfops[e][3].Equals(notes[i][j]["CSTC"]))
                                     {
                                         pos = e;
                                         break;
@@ -431,9 +431,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (pos < 0)
                                 {
-                                    var cfp = _cfopService.FindByCode(cfop);
+                                    var cfp = _cfopService.FindByCode(CFOP);
                                     List<string> cc = new List<string>();
-                                    cc.Add(cfop);
+                                    cc.Add(CFOP);
                                     cc.Add(cfp.Description);
                                     cc.Add(cstP);
                                     cc.Add(notes[i][j]["CSTC"]);

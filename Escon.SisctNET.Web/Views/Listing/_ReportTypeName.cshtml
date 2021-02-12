@@ -1,0 +1,34 @@
+﻿@if (SessionManager.GetTipoInSession() == 0)
+{
+    <h5><b>Entrada</b></h5>
+}
+else
+{
+    <h4><b>Saída</b></h4>
+}
+
+<b>Listagem de Produtos por Aliquota</b>
+
+@if (ViewBag.Archive == "xmlS")
+{
+    <b>(XML SEFAZ)</b>
+}
+else if (ViewBag.Archive == "xmlE")
+{
+    <b>(XML EMPRESA)</b>
+}
+
+<br />
+
+@if (ViewBag.AliquotIcms != "")
+{
+    @if (ViewBag.AliquotFecop == "")
+    {
+        <b>ICMS - @string.Format("{0:N}", ViewBag.AliquotIcms) % </b>
+    }
+    else
+    {
+        <b>ICMS - @string.Format("{0:N}", ViewBag.AliquotIcms) % FECOP - @string.Format("{0:N}", ViewBag.AliquotFecop) %</b>
+    }
+
+}

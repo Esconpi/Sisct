@@ -790,17 +790,17 @@ namespace Escon.SisctNET.Web.Controllers
                                 for (int j = 0; j < exitNotes[i].Count(); j++)
                                 {
 
-                                    if (exitNotes[i][j].ContainsKey("CFOP") && exitNotes[i][1]["tpNF"] != "1")
+                                    if (exitNotes[i][j].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsDevoCompra.Contains(exitNotes[i][j]["CFOP"]) || cfopsDevoCompraST.Contains(exitNotes[i][j]["CFOP"]))
+                                        if (cfopsDevoCompra.Contains(exitNotes[i][j]["CFOP"]) || cfopsDevoCompraST.Contains(exitNotes[i][j]["CFOP"]) && exitNotes[i][1]["tpNF"] != "1")
                                         {
                                             cfop = true;
                                         }
 
                                     }
 
-                                    if (cfop && exitNotes[i][1]["tpNF"] != "1")
+                                    if (cfop)
                                     {
                                         if (exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][j].ContainsKey("cProd"))
                                             totalDevoCompra += Convert.ToDecimal(exitNotes[i][j]["vProd"]);

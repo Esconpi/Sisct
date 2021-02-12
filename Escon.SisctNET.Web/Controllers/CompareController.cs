@@ -26,7 +26,6 @@ namespace Escon.SisctNET.Web.Controllers
             _appEnvironment = env;
         }
 
-        [HttpPost]
         public async Task<IActionResult> Index(Model.Opcao opcao, Model.Ordem ordem, IFormFile arquivoSped, IFormFile arquivoExcel)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();

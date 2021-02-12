@@ -338,11 +338,80 @@ namespace Escon.SisctNET.Web.Controllers
                             taxAnexo.IcmsCompra7 = icmsCompraInterestadual7;
                             taxAnexo.IcmsCompra12 = icmsCompraInterestadual12;
 
+                            taxAnexo.BaseDevoCliente4 = Convert.ToDecimal(devolucoesInterestadual[0][0]);
+                            taxAnexo.BaseDevoCliente12 = Convert.ToDecimal(devolucoesInterestadual[1][0]);
+                            taxAnexo.IcmsDevoCliente4 = Convert.ToDecimal(devolucoesInterestadual[0][1]);
+                            taxAnexo.IcmsDevoCliente12 = Convert.ToDecimal(devolucoesInterestadual[1][1]);
+
                             _service.Create(taxAnexo, null);
 
-                            imp = _service.FindByMonth(companyid, month, year);
-                        }
+                            //imp = _service.FindByMonth(companyid, month, year);
 
+                            var compras = _compraAnexoService.FindByComprasTax(imp.Id);
+                            var devoClientes = _devoClienteService.FindByDevoTax(imp.Id);
+
+                            List<Model.CompraAnexo> compraAnexosAdd = new List<Model.CompraAnexo>();
+                            List<Model.CompraAnexo> compraAnexosUpdate = new List<Model.CompraAnexo>();
+
+                            foreach (var entrada in entradasInterna[0])
+                            {
+                                var cc = compras.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(entrada[1]))).FirstOrDefault();
+
+                                if (cc == null)
+                                {
+                                    Model.CompraAnexo compra = new Model.CompraAnexo();
+                                    compra.TaxAnexoId = imp.Id;
+                                    compra.Base = Convert.ToDecimal(entrada[0]);
+                                    compra.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    compra.Icms = Convert.ToDecimal(entrada[2]);
+                                    compra.Created = DateTime.Now;
+                                    compra.Updated = compra.Created;
+                                    compraAnexosAdd.Add(compra);
+                                }
+                                else
+                                {
+                                    cc.Base = Convert.ToDecimal(entrada[0]);
+                                    cc.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    cc.Icms = Convert.ToDecimal(entrada[2]);
+                                    cc.Updated = DateTime.Now;
+                                    compraAnexosUpdate.Add(cc);
+                                }
+                            }
+
+                            _compraAnexoService.Create(compraAnexosAdd);
+                            _compraAnexoService.Update(compraAnexosUpdate);
+
+                            List<Model.DevoCliente> devoClientesAdd = new List<Model.DevoCliente>();
+                            List<Model.DevoCliente> devoClientesUpdate = new List<Model.DevoCliente>();
+
+                            foreach (var entrada in entradasInterna[1])
+                            {
+                                var dd = devoClientes.Where(_ => _.Aliquota.Equals(Convert.ToDecimal(entrada[1]))).FirstOrDefault();
+
+                                if (dd == null)
+                                {
+                                    Model.DevoCliente devoCliente = new Model.DevoCliente();
+                                    devoCliente.TaxAnexoId = imp.Id;
+                                    devoCliente.Base = Convert.ToDecimal(entrada[0]);
+                                    devoCliente.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    devoCliente.Icms = Convert.ToDecimal(entrada[2]);
+                                    devoCliente.Created = DateTime.Now;
+                                    devoCliente.Updated = devoCliente.Created;
+                                    devoClientesAdd.Add(devoCliente);
+                                }
+                                else
+                                {
+                                    dd.Base = Convert.ToDecimal(entrada[0]);
+                                    dd.Aliquota = Convert.ToDecimal(entrada[1]);
+                                    dd.Icms = Convert.ToDecimal(entrada[2]);
+                                    dd.Updated = DateTime.Now;
+                                    devoClientesUpdate.Add(dd);
+                                }
+                            }
+
+                            _devoClienteService.Create(devoClientesAdd);
+                            _devoClienteService.Update(devoClientesUpdate);
+                        }
                     }
                 }
                 else
@@ -494,9 +563,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 continue;
                             }
 
+                            bool ncm = false;
+
                             for (int k = 0; k < exitNotes[i].Count(); k++)
                             {
-                                if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig"))
+                                if (exitNotes[i][k].ContainsKey("NCM"))
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"]);
+
+                                if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -545,7 +619,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig"))
+                                if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -592,7 +666,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
                                 }
-
                             }
                         }
 

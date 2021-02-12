@@ -8,14 +8,6 @@
             <form asp-controller="Client" asp-action="Atualize" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-
-                <div class="form-group col-lg-4 col-md-12 col-xs-12">
-                    <label class="control-label">Arquivo</label>
-                    <select name="type" class="form-control selectoption">
-                        <option value="xmlS" selected>XML SEFAZ</option>
-                        <option value="xmlE">XML EMPRESA</option>
-                    </select>
-                </div>
                 <div class="form-group col-lg-2 col-md-4 col-xs-12">
                     <label class="control-label">Ano</label>
                     <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
@@ -35,6 +27,13 @@
                         <option value="Outubro">Outubro</option>
                         <option value="Novembro">Novembro</option>
                         <option value="Dezembro">Dezembro</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-4 col-md-12 col-xs-12">
+                    <label class="control-label">Arquivo</label>
+                    <select name="archive" class="form-control selectoption">
+                        <option value="xmlS" selected>XML SEFAZ</option>
+                        <option value="xmlE">XML EMPRESA</option>
                     </select>
                 </div>
                 <br />

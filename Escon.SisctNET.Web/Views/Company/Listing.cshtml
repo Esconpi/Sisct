@@ -1,0 +1,102 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Listing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        @if (SessionManager.GetTipoInSession() == 0)
+        {
+            <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        }
+        else
+        {
+            <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        }
+
+        <h3 class="box-title"> <strong>Listagem de Produtos:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-action="Index" asp-controller="Listing" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
+                <input type="hidden" name="ident" value="@SessionManager.GetTipoInSession()" />
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Ano</label>
+                        <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">Mês</label>
+                        <select name="month" class="form-control selectoption">
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
+                    </div>
+
+                    @if (SessionManager.GetTipoInSession().Equals(1))
+                    {
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label class="control-label">Aliquota Icms</label>
+                            <input type="text" class="form-control money" name="aliquotIcms" id="aliquotIcms"/>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label class="control-label">Aliquota Fecop</label>
+                            <input type="text" class="form-control money" name="aliquotFecop" id="aliquotFecop"/>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                            <label class="control-label">Arquivo</label>
+                            <select name="archive" class="form-control selectoption">
+                                <option value="xmlS" selected>XML SEFAZ</option>
+                                <option value="xmlE">XML EMPRESA</option>
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label class="control-label">Aliquota Icms</label>
+                            <input type="text" class="form-control money" name="aliquotIcms" id="aliquotIcms"/>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                            <label class="control-label">Aliquota Fecop</label>
+                            <input type="text" class="form-control money" name="aliquotFecop" id="aliquotFecop"/>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="row">
+                    @if (SessionManager.GetTipoInSession().Equals(0))
+                    {
+                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                            <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
+                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
+                        </div>
+                    }
+                </div>
+
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Listar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

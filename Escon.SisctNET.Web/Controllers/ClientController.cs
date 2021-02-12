@@ -72,7 +72,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id,string year,string month, string type) 
+        public IActionResult Atualize(int id,string year,string month, string archive) 
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -81,25 +81,25 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
 
-                var confDBSisctNfeSaida = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
 
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
 
-                string directoryNfeSaida = "";
+                string directoryNfe = "";
 
-                if (type.Equals("xmlE"))
+                if (archive.Equals("xmlE"))
                 {
-                    directoryNfeSaida = importDir.SaidaEmpresa(comp, confDBSisctNfeSaida.Value, year, month);
+                    directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
                 }
                 else
                 {
-                    directoryNfeSaida = importDir.SaidaSefaz(comp, confDBSisctNfeSaida.Value, year, month);
+                    directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
                 }
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = importXml.Client(directoryNfeSaida);
+                dets = importXml.Client(directoryNfe);
 
                 int tipoCliente = 1;
 
