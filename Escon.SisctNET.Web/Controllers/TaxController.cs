@@ -3027,7 +3027,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
-
                     }
                 }
                 else if (imposto.Equals("pisCofins"))

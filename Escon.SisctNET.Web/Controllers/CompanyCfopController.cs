@@ -40,11 +40,12 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var cfops = _cfopService.FindAll(GetLog(Model.OccorenceLog.Read));
+                var cfopsCompany = _service.FindByCompany(companyId);
 
                 List<CompanyCfop> addCompanyCfop = new List<CompanyCfop>();
                 foreach (var cfop in cfops)
                 {
-                    var companyCfop = _service.FindByCompanyCfop(companyId, cfop.Id);
+                    var companyCfop = cfopsCompany.Where(_ => _.CfopId.Equals(Convert.ToInt32(cfop.Id))).FirstOrDefault();
                     if (companyCfop == null)
                     {
                         CompanyCfop cc = new CompanyCfop();

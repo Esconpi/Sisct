@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
 
-                ViewBag.Comp = comp; 
+                ViewBag.Company = comp; 
 
                 string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
                 string directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
@@ -196,125 +196,95 @@ namespace Escon.SisctNET.Web.Controllers
                     for (int j = 0; j < notes[i].Count; j++)
                     {
                         if (notes[i][j].ContainsKey("nItem"))
-                        {
                             det.Add("nItem", notes[i][j]["nItem"]);
-                        }
+
                         if (notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("cProd", notes[i][j]["cProd"]);
-                        }
+
                         if (notes[i][j].ContainsKey("xProd"))
-                        {
                             det.Add("xProd", notes[i][j]["xProd"]);
-                        }
+
                         if (notes[i][j].ContainsKey("NCM"))
-                        {
                             det.Add("NCM", notes[i][j]["NCM"]);
-                        }
+
                         if (notes[i][j].ContainsKey("CEST"))
-                        {
                             det.Add("CEST", notes[i][j]["CEST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("CFOP"))
-                        {
                             det.Add("CFOP", notes[i][j]["CFOP"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("vProd", notes[i][j]["vProd"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("vFrete", notes[i][j]["vFrete"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("vDesc", notes[i][j]["vDesc"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("vOutro", notes[i][j]["vOutro"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                        {
                             det.Add("vSeg", notes[i][j]["vSeg"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vUnCom"))
-                        {
                             det.Add("vUnCom", notes[i][j]["vUnCom"]);
-                        }
+
                         if (notes[i][j].ContainsKey("uCom"))
-                        {
                             det.Add("uCom", notes[i][j]["uCom"]);
-                        }
+
                         if (notes[i][j].ContainsKey("qCom"))
-                        {
                             det.Add("qCom", notes[i][j]["qCom"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vICMS") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vICMS", notes[i][j]["vICMS"]);
-                        }
+
                         if (notes[i][j].ContainsKey("orig"))
-                        {
                             det.Add("orig", notes[i][j]["orig"]);
-                        }
+
                         if (notes[i][j].ContainsKey("pICMS"))
-                        {
                             det.Add("pICMS", notes[i][j]["pICMS"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vIPI") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vIPI", notes[i][j]["vIPI"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vICMSST", notes[i][j]["vICMSST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vBCST") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vBCST", notes[i][j]["vBCST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vBCFCPST") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vBCFCPST", notes[i][j]["vBCFCPST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("pFCPST") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("pFCPST", notes[i][j]["pFCPST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vFCPST", notes[i][j]["vFCPST"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vBCFCPSTRet") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vBCFCPSTRet", notes[i][j]["vBCFCPSTRet"]);
-                        }
+
                         if (notes[i][j].ContainsKey("pFCPSTRet") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("pFCPSTRet", notes[i][j]["pFCPSTRet"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vFCPSTRet") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vFCPSTRet", notes[i][j]["vFCPSTRet"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vPIS") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vPIS", notes[i][j]["vPIS"]);
-                        }
+
                         if (notes[i][j].ContainsKey("vCOFINS") && notes[i][j].ContainsKey("CST"))
-                        {
                             det.Add("vCOFINS", notes[i][j]["vCOFINS"]);
-                        }
+
                         if (notes[i][j].ContainsKey("frete_prod"))
-                        {
                             det.Add("frete_prod", notes[i][j]["frete_prod"]);
-                        }
+
                         if (notes[i][j].ContainsKey("frete_icms"))
-                        {
                             det.Add("frete_icms", notes[i][j]["frete_icms"]);
-                        }
+
                         if (notes[i][j].ContainsKey("baseCalc"))
                         {
                             det.Add("baseCalc", notes[i][j]["baseCalc"]);
@@ -353,9 +323,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 string number = pICMSFormat.ToString();
 
                                 if (!number.Contains("."))
-                                {
                                     number += ".00";
-                                }
 
                                 if (!number.Equals("4.00"))
                                 {
@@ -369,14 +337,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 bool incentivo = false;
 
                                 if (comp.Incentive && (comp.AnnexId.Equals(1) || comp.AnnexId.Equals(3)))
-                                {
                                     incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
-                                }
-                                
+
                                 if (comp.Incentive && comp.ChapterId.Equals(4))
-                                {
                                     incentivo = true;
-                                }                                  
 
                                 Model.ProductNote prod = new Model.ProductNote();
 
@@ -589,14 +553,10 @@ namespace Escon.SisctNET.Web.Controllers
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 if (notas.Count > 0)
-                {
                     return View(notas);
-                }
                 else
-                {
                     return RedirectToAction("Index", new { id = id, year = year, month = month });
-                }
-              
+
             }
             catch (Exception ex)
             {
@@ -652,7 +612,7 @@ namespace Escon.SisctNET.Web.Controllers
                 note.Frete = entity.Frete;
                 note.GnreFecop = entity.GnreFecop;
 
-                var result = _service.Update(note, GetLog(Model.OccorenceLog.Update));
+                _service.Update(note, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });
             }
 
@@ -682,7 +642,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
 
                 ViewBag.Registro = products.Count();
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 return View(products);
 
             }

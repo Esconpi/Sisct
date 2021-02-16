@@ -32,15 +32,12 @@ namespace Escon.SisctNET.Web.Controllers
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<IActionResult> Index(string archive, IFormFile arquivoSped)
+        public async Task<IActionResult> Index(int id, string year, string month, string archive, IFormFile arquivoSped)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
-                var year = Request.Form["year"].ToString();
-                var id = Convert.ToInt32(Request.Form["id"]);
-                var month = Request.Form["month"].ToString();
                 var ident = Request.Form["ident"].ToString();
                 var aliquotIcms = Request.Form["aliquotIcms"].ToString();
                 var aliquotFecop = Request.Form["aliquotFecop"].ToString();
@@ -65,10 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     string filedirSped = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
 
-                    if (!Directory.Exists(filedirSped))
-                    {
-                        Directory.CreateDirectory(filedirSped);
-                    }
+                    if (!Directory.Exists(filedirSped)) Directory.CreateDirectory(filedirSped);
 
                     string nomeArquivoSped = company.Document + "Empresa";
 
@@ -105,13 +99,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     string directoryNfe = "";
                     if (archive.Equals("xmlE"))
-                    {
                         directoryNfe = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
-                    }
                     else
-                    {
                         directoryNfe = importDir.SaidaSefaz(company, confDBSisctNfe.Value, year, month);
-                    }
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 

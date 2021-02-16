@@ -52,6 +52,8 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> dest = new Dictionary<string, string>();
                         List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+
+                        string cStat = "100";
                         using (XmlReader reader = XmlReader.Create(sr))
                         {
                             int nItem = 1;
@@ -248,82 +250,19 @@ namespace Escon.SisctNET.Web.Xml
                                             }
                                             nota.Add(total);
                                             break;
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
 
-                        if (nota.Count() > 0)
-                        {
-                            notes.Add(nota);
-                        }
-
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return notes;
-        }
-
-        public List<List<Dictionary<string, string>>> NFeResumeDest(string directoryNfe)
-        {
-            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
-
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "dest":
-                                            Dictionary<string, string> dest = new Dictionary<string, string>();
+                                        case "infProt":
                                             reader.Read();
-                                            while (reader.Name.ToString() != "dest")
+                                            while (reader.Name.ToString() != "infProt")
                                             {
-                                                if (reader.Name.ToString() != "enderDest")
+                                                if (reader.Name.ToString() == "cStat")
                                                 {
-                                                    dest.Add(reader.Name, reader.ReadString());
+                                                    cStat = reader.ReadString();
                                                 }
                                                 reader.Read();
                                             }
-                                            nota.Add(dest);
                                             break;
-                                        case "ICMSTot":
-                                            Dictionary<string, string> total = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
-                                            {
-                                                total.Add(reader.Name, reader.ReadString());
 
-                                                reader.Read();
-
-                                            }
-                                            nota.Add(total);
-                                            break;
                                     }
                                 }
                             }
@@ -331,10 +270,8 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if (nota.Count() > 0)
-                        {
+                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
                             notes.Add(nota);
-                        }
 
                     }
                 }
@@ -365,8 +302,10 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> ide = new Dictionary<string, string>();
                         Dictionary<string, string> emit = new Dictionary<string, string>();
                         Dictionary<string, string> dest = new Dictionary<string, string>();
+                        Dictionary<string, string> infProt = new Dictionary<string, string>();
 
                         List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
+
                         StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(arq))
                         {
@@ -430,6 +369,20 @@ namespace Escon.SisctNET.Web.Xml
                                             }
                                             note.Add(total);
                                             break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    infProt.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(infProt);
+                                            break;
+
                                     }
                                 }
                             }
@@ -438,9 +391,7 @@ namespace Escon.SisctNET.Web.Xml
                         }
 
                         if (note.Count > 0)
-                        {
                             notes.Add(note);
-                        }
 
                     }
                 }
@@ -471,6 +422,8 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> dest = new Dictionary<string, string>();
 
                         List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+                        string cStat = "100";
+
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
                         {
@@ -539,6 +492,18 @@ namespace Escon.SisctNET.Web.Xml
 
                                             }
                                             nota.Add(total);
+                                            break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() == "cStat")
+                                                {
+                                                    cStat = reader.ReadString();
+                                                }
+                                                reader.Read();
+                                            }
                                             break;
                                     }
                                 }
@@ -801,11 +766,9 @@ namespace Escon.SisctNET.Web.Xml
                             sr2.Close();
                         }
 
-                        if (nota.Count() > 0)
-                        {
+                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
                             notes.Add(nota);
-                        }
-                        
+
                     }
                 }
             }
@@ -836,7 +799,10 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> ide = new Dictionary<string, string>();
                         Dictionary<string, string> emit = new Dictionary<string, string>();
                         Dictionary<string, string> dest = new Dictionary<string, string>();
+
                         List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+                        string cStat = "100";
+
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
                         {
@@ -1057,6 +1023,18 @@ namespace Escon.SisctNET.Web.Xml
                                             }
                                             nota.Add(total);
                                             break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() == "cStat")
+                                                {
+                                                    cStat = reader.ReadString();
+                                                }
+                                                reader.Read();
+                                            }
+                                            break;
                                     }
                                 }
                             }
@@ -1064,7 +1042,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if (nota.Count() > 0)
+                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
                         {
                             notes.Add(nota);
                         }
@@ -1103,6 +1081,8 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> emit = new Dictionary<string, string>();
                         Dictionary<string, string> dest = new Dictionary<string, string>();
                         List<Dictionary<string, string>> nota = new List<Dictionary<string, string>>();
+                        string cStat = "100";
+
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
                         {
@@ -1323,6 +1303,18 @@ namespace Escon.SisctNET.Web.Xml
                                             }
                                             nota.Add(total);
                                             break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() == "cStat")
+                                                {
+                                                    cStat = reader.ReadString();
+                                                }
+                                                reader.Read();
+                                            }
+                                            break;
                                     }
                                 }
                             }
@@ -1330,7 +1322,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if(nota.Count() > 0)
+                        if(nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
                         {
                             notes.Add(nota);
                         }

@@ -27,21 +27,18 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(Model.OrdemCancellation ordem, IFormFile arquivoSped)
+        public async Task<IActionResult> Index(int id, string year, string month, Model.OrdemCancellation ordem, IFormFile arquivoSped)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
                 
-                var id = Request.Form["id"];
-                var month = Request.Form["month"];
-                var year = Request.Form["year"];
                 var period = Request.Form["period"];
                 var inicio = Request.Form["inicio"];
                 var fim = Request.Form["fim"];
 
-                var company = _companyService.FindById(Convert.ToInt32(id), null);
+                var company = _companyService.FindById(id, null);
 
                 ViewBag.Ordem = ordem.ToString();
                 ViewBag.Company = company;

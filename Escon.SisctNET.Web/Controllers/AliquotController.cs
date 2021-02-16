@@ -48,7 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
                 foreach (var s in list_states)
                 {
                     s.Name = s.Name + " - " + s.UF;
@@ -104,7 +104,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
                 foreach (var s in list_states)
                 {
                     s.Name = s.Name + " - " + s.UF;

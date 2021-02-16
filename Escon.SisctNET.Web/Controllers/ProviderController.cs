@@ -93,9 +93,7 @@ namespace Escon.SisctNET.Web.Controllers
                 int tipoCliente = 1;
 
                 if (Convert.ToInt32(comp.AnnexId).Equals(3))
-                {
                     tipoCliente = 2;
-                }
 
                 List<Model.Provider> addProviders = new List<Model.Provider>();
 

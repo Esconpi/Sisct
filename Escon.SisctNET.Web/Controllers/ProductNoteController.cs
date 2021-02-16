@@ -266,9 +266,7 @@ namespace Escon.SisctNET.Web.Controllers
                 decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, dif = 0,valorFecop = 0;
 
                 if (bcr != null)
-                {
                     bcr = Convert.ToDecimal(bcr);
-                }
 
                 DateTime dateStart = Convert.ToDateTime(entity.DateStart);
 
@@ -390,14 +388,9 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal total = Convert.ToDecimal(entity.TotalICMS) + valorFecop;
 
                         if (totalIcms > totalIcmsPauta)
-                        {
                             prod.TotalICMS = totalIcms;
-                        }
                         else
-                        {
                             prod.TotalICMS = totalIcmsPauta;
-
-                        }
 
                     }
 
@@ -408,9 +401,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.ProductId = product.Id;
 
                         if (product.Group.Active.Equals(true))
-                        {
                             prod.Incentivo = true;
-                        }
                     }
 
                     if (product1 != null)
@@ -418,9 +409,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Product1Id = product1.Id;
 
                         if (product1.Group.Active.Equals(true))
-                        {
                             prod.Incentivo = true;
-                        }
                     }
 
                     if (product2 != null)
@@ -428,9 +417,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Product2Id = product2.Id;
 
                         if (product2.Group.Active.Equals(true))
-                        {
                             prod.Incentivo = true;
-                        }
                     }
 
                     /*
@@ -511,7 +498,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 prod.ValorBCR = null;
                                 prod.BCR = null;
                             }
-
 
                             if (fecop != null)
                             {
@@ -596,9 +582,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.PercentualInciso = inciso;
 
                         if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
-                        {
                             prod.Incentivo = false;
-                        }
 
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
@@ -726,9 +710,7 @@ namespace Escon.SisctNET.Web.Controllers
                             item.PercentualInciso = inciso;
 
                             if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
-                            {
                                 item.Incentivo = false;
-                            }
 
                             item.Qpauta = null;
                             item.Produto = "Normal";

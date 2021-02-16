@@ -26,19 +26,15 @@ namespace Escon.SisctNET.Web.Controllers
             _appEnvironment = env;
         }
 
-        public async Task<IActionResult> Index(Model.Opcao opcao, Model.Ordem ordem, IFormFile arquivoSped, IFormFile arquivoExcel)
+        public async Task<IActionResult> Index(int id, string year, string month, Model.Opcao opcao, Model.Ordem ordem, IFormFile arquivoSped, IFormFile arquivoExcel)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
             try
             {
-                
-                var year = Request.Form["year"];
-                var id = Request.Form["id"];
-                var month = Request.Form["month"];
                 var ident = Request.Form["ident"];
 
-                var company = _companyService.FindById(Convert.ToInt32(id), null);
+                var company = _companyService.FindById(id, null);
 
                 var importPeriod = new Period.Month();
 
@@ -172,6 +168,7 @@ namespace Escon.SisctNET.Web.Controllers
                         qtdValida += notesValidas.Count();
                         qtdInvalida += (notesNFeCanceladas.Count() + notesNFeCanceladasEvento.Count() + notesNFCeCanceladas.Count() + notesNFCeCanceladasEvento.Count());
 
+                        //  NFe e NFCe
                         foreach (var note in notesValidas)
                         {
                             string nota_xml = note[0]["chave"];
@@ -184,12 +181,32 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
+
+                            foreach (var nota_sped in spedNFeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+
+                            foreach (var nota_sped in spedNFCeCancelada)
+                            {
+                                if (nota_xml.Equals(nota_sped[0]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+
                             if (nota_encontrada.Equals(false))
                             {
                                 notasValidas.Add(note);
                             }
                         }
 
+                        //  NFe
                         foreach (var note in notesNFeCanceladas)
                         {
                             string nota_xml = note[0]["chave"];
@@ -202,6 +219,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -224,6 +242,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -234,6 +253,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        //  NFCe
                         foreach (var note in notesNFCeCanceladas)
                         {
                             string nota_xml = note[0]["chave"];
@@ -246,6 +266,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -268,6 +289,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -289,6 +311,7 @@ namespace Escon.SisctNET.Web.Controllers
                         qtdValida += spedNormal.Count();
                         qtdInvalida += (spedNFeCancelada.Count() + spedNFCeCancelada.Count());
 
+                        //  NFe e NFCe
                         foreach (var note in spedNormal)
                         {
                             bool nota_encontrada = false;
@@ -309,6 +332,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        //  NFe
                         foreach (var note in spedNFeCancelada)
                         {
                             bool nota_encontrada = false;
@@ -394,6 +418,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        //  NFCe
                         foreach (var note in spedNFCeCancelada)
                         {
                             bool nota_encontrada = false;
@@ -532,7 +557,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
-
                         }
                         ViewBag.Valores = registros;
                     }

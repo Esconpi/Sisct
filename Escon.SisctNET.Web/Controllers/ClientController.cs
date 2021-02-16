@@ -89,13 +89,9 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfe = "";
 
                 if (archive.Equals("xmlE"))
-                {
                     directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
-                }
                 else
-                {
                     directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
-                }
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
@@ -103,9 +99,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 int tipoCliente = 1;
 
-                if(Convert.ToInt32(comp.AnnexId).Equals(3)){
+                if(Convert.ToInt32(comp.AnnexId).Equals(3))
                     tipoCliente = 2;
-                }
 
                 List<Model.Client> addClientes = new List<Model.Client>();
 
