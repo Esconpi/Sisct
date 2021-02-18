@@ -73,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(string type)
+        public IActionResult Import(string archive)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -96,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
                 string directoryNfeExit = "", arqui = "";
                 string directoryNfeEntry = importDir.Entrada(comp,NfeEntry.Value,year,month);
 
-                if (type.Equals("xmlE"))
+                if (archive.Equals("xmlE"))
                 {
                     directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
                     arqui = "XML EMPRESA";

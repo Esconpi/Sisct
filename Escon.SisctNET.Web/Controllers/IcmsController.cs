@@ -748,9 +748,9 @@ namespace Escon.SisctNET.Web.Controllers
                     opcao = "saida";
 
                     if (opcao.Equals("saida"))
-                        notes = importXml.NFeAll(directoryNfeExit, cfop.Code);
+                        notes = importXml.NFeAllCFOP(directoryNfeExit, cfop.Code);
                     else
-                        notes = importXml.NFeAll(directoryNfeEntry, cfop.Code);
+                        notes = importXml.NFeAllCFOP(directoryNfeEntry, cfop.Code);
 
 
                     List<List<string>> resumoNote = new List<List<string>>();

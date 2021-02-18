@@ -209,9 +209,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
 
                     if (!Directory.Exists(filedir))
-                    {
                         Directory.CreateDirectory(filedir);
-                    }
 
                     string caminho_WebRoot = _appEnvironment.WebRootPath;
                     string caminhoDestinoArquivo = caminho_WebRoot + "\\Uploads\\Speds\\";
@@ -223,9 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivo);
 
                     if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
-                    {
                         System.IO.File.Delete(caminhoDestinoArquivoOriginal);
-                    }
 
                     var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
 

@@ -285,126 +285,6 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<List<Dictionary<string, string>>> NFeResumeEmit(string directoryNfe)
-        {
-            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    if (new FileInfo(archivesNfes[i]).Length != 0)
-                    {
-                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
-                        Dictionary<string, string> ide = new Dictionary<string, string>();
-                        Dictionary<string, string> emit = new Dictionary<string, string>();
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-                        Dictionary<string, string> infProt = new Dictionary<string, string>();
-
-                        List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
-
-                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(arq))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "infNFe":
-                                            while (reader.MoveToNextAttribute())
-                                            {
-                                                if (reader.Name == "Id")
-                                                {
-                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
-                                                }
-                                            }
-                                            note.Add(infNFe);
-                                            break;
-
-
-                                        case "ide":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ide" && reader.Name != "NFref")
-                                            {
-                                                if (reader.Name.ToString() == "dhEmi")
-                                                {
-                                                    string data = Convert.ToDateTime(reader.ReadString().Substring(0, 10)).ToString("dd/MM/yyyy");
-                                                    ide.Add(reader.Name, data);
-                                                }
-                                                else
-                                                {
-                                                    ide.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(ide);
-                                            break;
-
-
-                                        case "emit":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "emit")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    emit.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(emit);
-                                            break;
-
-                                        case "ICMSTot":
-                                            Dictionary<string, string> total = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
-                                            {
-                                                total.Add(reader.Name, reader.ReadString());
-                                                reader.Read();
-                                            }
-                                            note.Add(total);
-                                            break;
-
-                                        case "infProt":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "infProt")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    infProt.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(infProt);
-                                            break;
-
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            arq.Close();
-                        }
-
-                        if (note.Count > 0)
-                            notes.Add(note);
-
-                    }
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            return notes;
-        }
-
         public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe, string directotyCte)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
@@ -574,22 +454,17 @@ namespace Escon.SisctNET.Web.Xml
                                                 for (int j = 0; j < item.Count; j++)
                                                 {
                                                     if (item[j].ContainsKey("vCarga"))
-                                                    {
                                                         valor_carga = Convert.ToDecimal(item[j]["vCarga"]);
-                                                    }
+
                                                     if (item[j].ContainsKey("vTPrest"))
-                                                    {
                                                         valor_prestado = Convert.ToDecimal(item[j]["vTPrest"]);
-                                                    }
+
                                                     if (item[j].ContainsKey("vICMS"))
-                                                    {
                                                         total_icms_frete = Convert.ToDecimal(item[j]["vICMS"]);
 
-                                                    }
                                                     if (item[j].ContainsKey("nCT"))
-                                                    {
                                                         nCT_temp = item[j]["nCT"];
-                                                    }
+
                                                     if (item[j].ContainsKey("chave"))
                                                     {
                                                         if (item[j]["chave"] == nota[0]["chave"])
@@ -604,10 +479,8 @@ namespace Escon.SisctNET.Web.Xml
                                             }
 
 
-                                            decimal proporcao_prod = 0;
-                                            decimal frete_prod = 0;
-                                            decimal proporcao_icms = 0;
-                                            decimal frete_icmsprod = 0;
+                                            decimal proporcao_prod = 0, frete_prod = 0, proporcao_icms = 0, frete_icmsprod = 0;
+
                                             if (frete_nota > 0)
                                             {
                                                 proporcao_prod = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
@@ -622,43 +495,29 @@ namespace Escon.SisctNET.Web.Xml
 
 
                                             if (prod.ContainsKey("vProd"))
-                                            {
                                                 base_calc = Convert.ToDecimal(prod["vProd"]);
-                                            }
 
                                             if (prod.ContainsKey("vOutro"))
-                                            {
                                                 base_calc += Convert.ToDecimal(prod["vOutro"]);
-                                            }
 
                                             if (prod.ContainsKey("vFrete"))
-                                            {
                                                 base_calc += Convert.ToDecimal(prod["vFrete"]);
-                                            }
 
                                             if (prod.ContainsKey("vSeg"))
-                                            {
                                                 base_calc += Convert.ToDecimal(prod["vSeg"]);
-                                            }
 
                                             if (prod.ContainsKey("vDesc"))
-                                            {
                                                 base_calc -= Convert.ToDecimal(prod["vDesc"]);
-                                            }
 
                                             base_calc += frete_prod;
-                                            string CEST = "";
-                                            string NCM = "";
+
+                                            string CEST = "", NCM = "";
 
                                             if (prod.ContainsKey("NCM"))
-                                            {
                                                 NCM = prod["NCM"];
-                                            }
 
                                             if (prod.ContainsKey("CEST"))
-                                            {
                                                 CEST = prod["CEST"];
-                                            }
 
                                             prod.Add("frete_prod", frete_prod.ToString());
                                             prod.Add("frete_icms", frete_icmsprod.ToString());
@@ -1167,14 +1026,10 @@ namespace Escon.SisctNET.Web.Xml
                                             }
 
                                             if (!prod["CFOP"].Equals(codeCfop))
-                                            {
                                                 cfop = false;
-                                            }
 
-                                            if (cfop == true)
-                                            {
+                                            if (cfop)
                                                 nota.Add(prod);
-                                            }
 
                                             break;
 
@@ -1208,10 +1063,9 @@ namespace Escon.SisctNET.Web.Xml
                                                 }
                                                 reader.Read();
                                             }
-                                            if (cfop == true)
-                                            {
+
+                                            if (cfop)
                                                 nota.Add(icms);
-                                            }
 
                                             break;
 
@@ -1234,10 +1088,9 @@ namespace Escon.SisctNET.Web.Xml
                                                 }
                                                 reader.Read();
                                             }
-                                            if (cfop == true)
-                                            {
+
+                                            if (cfop)
                                                 nota.Add(ipi);
-                                            }
 
                                             break;
 
@@ -1259,10 +1112,9 @@ namespace Escon.SisctNET.Web.Xml
                                                 }
                                                 reader.Read();
                                             }
-                                            if (cfop == true)
-                                            {
+
+                                            if (cfop)
                                                 nota.Add(pis);
-                                            }
 
                                             break;
 
@@ -1284,10 +1136,9 @@ namespace Escon.SisctNET.Web.Xml
                                                 }
                                                 reader.Read();
                                             }
-                                            if (cfop == true)
-                                            {
+
+                                            if (cfop)
                                                 nota.Add(cofins);
-                                            }
 
                                             break;
 
@@ -1336,6 +1187,126 @@ namespace Escon.SisctNET.Web.Xml
                 Console.Out.WriteLine(ex.Message);
             }
 
+            return notes;
+        }
+
+        public List<List<Dictionary<string, string>>> NFeResumeEmit(string directoryNfe)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    if (new FileInfo(archivesNfes[i]).Length != 0)
+                    {
+                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        Dictionary<string, string> infProt = new Dictionary<string, string>();
+
+                        List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
+
+                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(arq))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            note.Add(infNFe);
+                                            break;
+
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ide" && reader.Name != "NFref")
+                                            {
+                                                if (reader.Name.ToString() == "dhEmi")
+                                                {
+                                                    string data = Convert.ToDateTime(reader.ReadString().Substring(0, 10)).ToString("dd/MM/yyyy");
+                                                    ide.Add(reader.Name, data);
+                                                }
+                                                else
+                                                {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(ide);
+                                            break;
+
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(emit);
+                                            break;
+
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+                                                reader.Read();
+                                            }
+                                            note.Add(total);
+                                            break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    infProt.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(infProt);
+                                            break;
+
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            arq.Close();
+                        }
+
+                        if (note.Count > 0)
+                            notes.Add(note);
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
             return notes;
         }
 

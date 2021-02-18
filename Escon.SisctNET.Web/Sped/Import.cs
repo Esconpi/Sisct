@@ -2291,42 +2291,6 @@ namespace Escon.SisctNET.Web.Sped
             return entradas;
         }
 
-        public List<List<string>> NFeExit(string directorySped)
-        {
-            List<List<string>> spedNf = new List<List<string>>();
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-                    if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")))
-                    {
-                        List<string> sped = new List<string>();
-                        sped.Add(linha[9]);
-                        sped.Add(linha[5]);
-                        sped.Add(linha[8]);
-                        sped.Add(linha[12]);
-                        spedNf.Add(sped);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return spedNf;
-        }
-
         public List<List<string>> NFeExitNormal(string directorySped)
         {
             List<List<string>> spedNf = new List<List<string>>();
@@ -2362,8 +2326,8 @@ namespace Escon.SisctNET.Web.Sped
             }
             return spedNf;
         }
-        
-        public List<List<string>> NFeExitCancelada(string directorySped, string modelo)
+     
+        public List<List<string>> NFeExitCanceled(string directorySped, string modelo)
         {
             List<List<string>> spedNf = new List<List<string>>();
 
@@ -2744,9 +2708,7 @@ namespace Escon.SisctNET.Web.Sped
                                                 ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
 
                                                 if (ehMono != null)
-                                                {
                                                     break;
-                                                }
 
                                             }
                                         }

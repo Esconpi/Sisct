@@ -66,6 +66,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
+                entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
@@ -79,12 +81,70 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Suspension")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Model.Suspension entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Suspension")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
+                entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
+                entity.CompanyId = rst.CompanyId;
+                entity.Created = rst.Created;
+                entity.Updated = DateTime.Now;
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Suspension")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+      
         public IActionResult GetAll(int draw, int start)
         {
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var suspensionsAll = _service.FindAll(null).Where(_ => _.CompanyId.Equals(SessionManager.GetCompanyIdInSession())).OrderByDescending(_ => _.Id).ToList();
+            var suspensionsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderByDescending(_ => _.Id).ToList();
 
 
             var suspension = from r in suspensionsAll

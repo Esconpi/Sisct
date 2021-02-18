@@ -142,8 +142,8 @@ namespace Escon.SisctNET.Web.Controllers
                         else if (ident.Equals("1"))
                         {
                             spedNormal = importSped.NFeExitNormal(caminhoDestinoArquivoOriginalSped);
-                            spedNFeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped,"55");
-                            spedNFCeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "65");
+                            spedNFeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped,"55");
+                            spedNFCeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped, "65");
                         }
 
                         notesValidas = importXml.NFeResumeEmit(directoryValida);

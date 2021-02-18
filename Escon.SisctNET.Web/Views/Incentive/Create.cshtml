@@ -1,4 +1,4 @@
-﻿@model Escon.SisctNET.Model.Suspension
+﻿@model Escon.SisctNET.Model.Incentive
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
     <div class="box-header">
         <a asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
-            <strong>Nova Suspensão</strong>
+            <strong>Novo Incentivo</strong>
         </h3>
 
     </div>
@@ -21,18 +21,18 @@
                 <div class="row">
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label asp-for="DateStart" class="control-label"></label>
-                        <input type="text" name="DateStart" class="form-control dateformatmask" required/>
+                        <input type="text" name="DateStart" class="form-control dateformatmask" required min="14" />
                     </div>
 
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label asp-for="DateEnd" class="control-label"></label>
-                        <input type="text" name="DateEnd" class="form-control dateformatmask" required/>
+                        <input type="text" name="DateEnd" class="form-control dateformatmask" required />
                     </div>
                 </div>
 
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right"/>
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
                 </div>
 
             </form>

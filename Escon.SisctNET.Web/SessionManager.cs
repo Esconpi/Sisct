@@ -53,6 +53,16 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<Access>>("AccessesSisctNET");
         }
 
+        public static void SetIncitiveInSession(List<Model.Incentive> incentives)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<Model.Incentive>>("IncitiveSisctNET", incentives);
+        }
+
+        public static List<Model.Incentive> GetIncitiveInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<Model.Incentive>>("IncitiveSisctNET");
+        }
+
         public static void SetCompanyIdInSession(int companyId)
         {
             _httpContextAccessor.HttpContext.Session.Set<int>("CompanyIdSisctNET", companyId);
@@ -112,6 +122,25 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<decimal>>("ValuesSisctNET");
         }
 
+        public static void SetMin(int tipo)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("MinSisctNET", tipo);
+        }
+
+        public static int GetMin()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("MinSisctNET");
+        }
+
+        public static void SetMax(int tipo)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<int>("MaxSisctNET", tipo);
+        }
+
+        public static int GetMax()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<int>("MaxSisctNET");
+        }
 
     }
 

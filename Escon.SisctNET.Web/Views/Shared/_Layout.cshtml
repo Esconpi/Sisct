@@ -62,11 +62,40 @@
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
+
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning">@SessionManager.GetIncitiveInSession().Count</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">Você tem @SessionManager.GetIncitiveInSession().Count notificação</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Min">
+                                                <i class="fa fa-warning text-yellow"></i>  @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count
+                                                Empresa com menos de @SessionManager.GetMin() dias <br /> pra renovar o incentivo
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Max">
+                                                <i class="fa fa-warning text-red"></i> @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count
+                                                Empresa com menos de @SessionManager.GetMax() dias <br /> pra renovar o incentivo
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <img src="~/img/ico_profile.png" class="user-image" alt="User Image">
                                 <span class="hidden-xs">@SessionManager.GetPersonInSession().FirstName</span>
                             </a>
@@ -74,29 +103,23 @@
                                 <!-- User image -->
                                 <li class="user-header">
                                     <img src="~/img/ico_profile.png" class="img-circle" alt="User Image">
-
                                     <p>
-                                        @SessionManager.GetPersonInSession().FirstName
-                                        <small>@SessionManager.GetPersonInSession().Email</small>
+                                        @SessionManager.GetPersonInSession().FirstName - @SessionManager.GetPersonInSession().Profile.Name
+                                        <small>Membro desde @SessionManager.GetPersonInSession().Created.ToString("dd MMMM yyyy")</small>
                                     </p>
                                 </li>
-
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-right">
+                                    <div class="pull-left">
                                         <a href="#" id=@SessionManager.GetPersonInSession().Id class="showProfile btn btn-default btn-flat">
                                             Perfil
                                         </a>
                                     </div>
-
+                                    <div class="pull-right">
+                                        <a asp-controller="Authentication" asp-action="Logout" title="Sair" class="btn btn-default btn-flat"><i class="fa fa-power-off"> Sair</i></a>
+                                    </div>
                                 </li>
-
                             </ul>
-                        </li>
-
-                        <!-- Control Sidebar Toggle Button -->
-                        <li>
-                            <a class="btn editProfile" asp-controller="Authentication" asp-action="Logout" title="Sair"><i class="fa fa-power-off"> Sair</i></a>
                         </li>
                     </ul>
                 </div>

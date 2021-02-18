@@ -526,9 +526,7 @@ namespace Escon.SisctNET.Web.Controllers
                         string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivo);
 
                         if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
-                        {
                             System.IO.File.Delete(caminhoDestinoArquivoOriginal);
-                        }
 
                         var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
 
@@ -1761,6 +1759,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (!comp.AnnexId.Equals(3))
                             {
+                                //  Incentivo de Produtos e Indústria
                                 var prodsAll = _productIncentivoService.FindByAllProducts(companyid);
                                 List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
                                 List<string> codeProdIncentivado = new List<string>();
@@ -1775,6 +1774,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (comp.TypeCompany.Equals(true))
                                 {
+
+                                    //  Incentivo Produtos
 
                                     List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -1872,7 +1873,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (exitNotes[i][k].ContainsKey("CFOP"))
                                                 {
                                                     cfop = false;
-                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]))
+                                                    if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) ||
+                                                        cfopsTransf.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2047,7 +2049,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (exitNotes[i][k].ContainsKey("CFOP"))
                                             {
                                                 cfop = false;
-                                                if (cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]))
+                                                if (cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][k]["CFOP"]))
                                                 {
                                                     cfop = true;
                                                 }
@@ -2298,6 +2300,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else
                                 {
+                                    //  Incentivo Indústria
+
                                     List<List<string>> percentuaisIncentivado = new List<List<string>>();
                                     List<List<string>> percentuaisNIncentivado = new List<List<string>>();
 
@@ -2348,7 +2352,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                     if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) ||
                                                         cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) ||
-                                                        cfopsDevoCompraST.Contains(exitNotes[i][k]["CFOP"]))
+                                                        cfopsDevoCompraST.Contains(exitNotes[i][k]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][k]["CFOP"]) ||
+                                                        cfopsTransfST.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2769,6 +2774,8 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else if (comp.AnnexId.Equals(3))
                             {
+                                //  Incentivo de Medicamentos
+
                                 var clientesAll = _clientService.FindByCompany(companyid);
                                 var nContribuintes = clientesAll.Where(_ => _.TypeClientId.Equals(2)).Select(_ => _.Document).ToList();
                                 var suspensions = _suspensionService.FindByCompany(companyid);

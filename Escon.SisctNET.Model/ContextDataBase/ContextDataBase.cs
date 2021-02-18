@@ -122,5 +122,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<State> States { get; set; }
 
         public DbSet<County> Counties { get; set; }
+
+        public DbSet<Incentive> Incentives { get; set; }
     }
 }

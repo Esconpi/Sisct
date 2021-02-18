@@ -172,8 +172,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (ordem.Equals(Model.OrdemCancellation.VerificarEmpresa))
                 {
                     notesValidas = importXml.NFeResumeEmit(directoryValida);
-                    spedNFeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "55");
-                    spedNFCeCancelada = importSped.NFeExitCancelada(caminhoDestinoArquivoOriginalSped, "65");
+                    spedNFeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped, "55");
+                    spedNFCeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped, "65");
                 }
                 else
                 {

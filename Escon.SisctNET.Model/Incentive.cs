@@ -15,13 +15,15 @@ namespace Escon.SisctNET.Model
         public virtual Company Company { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
-        [DataType(DataType.Date)]
         [Display(Name = "Data Inicio")]
         public DateTime DateStart { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Data Fim")]
-        [DataType(DataType.Date)]
-        public DateTime? DateEnd { get; set; }
+        public DateTime DateEnd { get; set; }
+
+        [Display(Name = "Ativo")]
+        public bool Active { get; set; }
 
     }
 }
