@@ -20,7 +20,7 @@
             <p style="text-align:center;color:red;"><strong>HÁ FORNECEDOR NÃO IMPORTADO SAÍDA</strong></p>
         }
 
-        <div class="col-lg-12">
+        <div class="col-lg-12" id="hidden">
             <form asp-controller="TaxProducer" asp-action="Import" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
@@ -35,14 +35,20 @@
                     </div>
                     <br />
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                        <input type="submit" value="Importar" class="btn btn-success pull-left" />
+                        <input type="submit" value="Importar" class="btn btn-success pull-left" onclick="show()"/>
                     </div>
                 </div>
-
-               
             </form>
         </div>
-
+        <div style="text-align:center; display:none;" id="carregamento">
+            <img src="~/img/carregando.gif" />
+        </div>
     </div>
 </div>
 
+<script>
+    function show() {
+        document.getElementById('carregamento').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
+    }
+</script>

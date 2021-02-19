@@ -28,7 +28,7 @@
             <p style="text-align:center;color:red;"><strong>HÁ NCM NÃO TRIBUTADO</strong></p>
         }
 
-        <div class="col-lg-12">
+        <div class="col-lg-12" id="hidden">
             <form asp-controller="Tax" asp-action="Import" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
@@ -59,16 +59,17 @@
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Importar" class="btn btn-success pull-right" id="ativa" disabled="disabled" />
+                    <input type="submit" value="Importar" class="btn btn-success pull-right" id="ativa" disabled="disabled" onclick="show()"/>
                 </div>
             </form>
         </div>
-
+        <div style="text-align:center; display:none;" id="carregamento">
+            <img src="~/img/carregando.gif" />
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
-
     function ativar_button() {
         var tipo = document.getElementById("status").value;
         if (tipo == "nenhum") {
@@ -83,5 +84,9 @@
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = true;
         }
+    }
+    function show() {
+        document.getElementById('carregamento').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
     }
 </script>

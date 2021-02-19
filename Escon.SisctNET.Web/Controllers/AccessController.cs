@@ -65,6 +65,5 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
     }
 }

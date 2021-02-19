@@ -68,13 +68,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var incentive = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Active.Equals(true)).FirstOrDefault();
 
-                if(incentive != null)
-                {
-                    incentive.Active = false;
-                    incentive.Updated = DateTime.Now;
-                    _service.Update(incentive, null);
-                }
-
                 entity.Active = true;
                 entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
@@ -82,6 +75,13 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
                 _service.Create(entity, null);
+
+                if (incentive != null)
+                {
+                    incentive.Active = false;
+                    incentive.Updated = DateTime.Now;
+                    _service.Update(incentive, null);
+                }
 
                 var configMin = _configurationService.FindByName("DiasAvisoMínimoIncentivo");
                 var incentives = _service.FindByPeriod(Convert.ToInt32(configMin.Value));
@@ -167,16 +167,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var companies = _companyService.FindByCompanies(null);
-                var incentives = _service.FindByPeriod(SessionManager.GetMin());
-                if (value == "Min")
-                    incentives = incentives.Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList();
-                else
-                    incentives = incentives.Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList();
-
                 ViewBag.Value = value;
-                ViewBag.Incentives = incentives;
-                ViewBag.Companies = companies;
                 return View();
             }
             catch(Exception ex)

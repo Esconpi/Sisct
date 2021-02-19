@@ -19,11 +19,11 @@
             <h3 class="box-title"> <strong>Compara:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
         </div>
         <div class="box-body">
-            <div class="col-lg-12">
+            <div class="col-lg-12" id="hidden">
                 <form asp-action="Index" asp-controller="Compare" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-                    <input type="hidden" name="ident" value="@SessionManager.GetTipoInSession()"/>
+                    <input type="hidden" name="ident" value="@SessionManager.GetTipoInSession()" />
 
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                            <label class="control-label" >Opção</label>
+                            <label class="control-label">Opção</label>
                             <select name="opcao" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Opcao>()" id="opcao" onchange="ativar_button()"></select>
                         </div>
 
@@ -59,28 +59,27 @@
                         </div>
                     </div>
 
-                  
-                    <div class="row"> 
+
+                    <div class="row">
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required/>
+                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label"><strong>Selecione o arquivo Excel</strong></label>
-                            <input type="file" class="form-control" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel" required disabled/>
+                            <input type="file" class="form-control" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel" required disabled />
                         </div>
                     </div>
-                    
 
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                        <input type="submit" value="Compara" class="btn btn-success pull-right" />
+                        <input type="submit" value="Compara" class="btn btn-success pull-right" onclick="show()"/>
                     </div>
-
-
                 </form>
             </div>
+            <div style="text-align:center; display:none;" id="carregamento">
+                <img src="~/img/carregando.gif" />
+            </div>
         </div>
-
     </div>
 <script>
     function ativar_button() {
@@ -92,6 +91,10 @@
         else {
             document.getElementById("arquivoExcel").disabled = false;
         }
+    }
+    function show() {
+        document.getElementById('carregamento').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
     }
 </script>
 

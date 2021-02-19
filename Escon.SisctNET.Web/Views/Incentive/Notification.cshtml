@@ -46,40 +46,68 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    @foreach (var incentive in ViewBag.Incentives)
+                    @if (ViewBag.Value == "Min")
                     {
-                        <tr style="border:1px solid;">
-                            @foreach (var company in ViewBag.Companies)
-                            {
-                                if (incentive.CompanyId == company.Id)
-                                {
-                                    <td style="border:1px solid; padding-left:1%;">
+                        @foreach (var incentive in SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList())
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;">
 
-                                        @company.Code
-                                    </td>
-                                    <td style="border:1px solid; padding-left:1%;">
-                                        @company.SocialName
-                                    </td>
-                                    <td style="border:1px solid; padding-left:1%;">
-                                        @company.FantasyName
-                                    </td>
-                                    <td style="border:1px solid; padding-left:1%;">
-                                        @company.Document
-                                    </td>
-                                }
-                            }
-                            <td style="border:1px solid; padding-left:1%;">
-                                @incentive.DateEnd.ToString("dd/MM/yyyy")
-                            </td>
-                        </tr>
+                                    @incentive.Company.Code
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.SocialName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.FantasyName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.Document
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.DateEnd.ToString("dd/MM/yyyy hh:mm:ss")
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var incentive in SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList())
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;">
+
+                                    @incentive.Company.Code
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.SocialName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.FantasyName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.Document
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.DateEnd.ToString("dd/MM/yyyy hh:mm:ss")
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
             <div class="col-lg-12">
                 <h6>
                     <strong>
-                        @ViewBag.Incentives.Count registro(s)
+                        @if (ViewBag.Value == "Min")
+                        {
+                            @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count()
+                        }
+                        else
+                        {
+                            @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count()
+                        }
+                        registro(s)
                     </strong>
                 </h6>
             </div>

@@ -15,7 +15,7 @@
     </div>
     <hr />
     <div class="box-body">
-        <div class="col-md-12">
+        <div class="col-md-12" id="hidden">
             <form asp-action="Import" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -27,24 +27,30 @@
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Inicio do Ato</label>
-                        <input type="date" class="form-control" name="inicioATo" required/>
+                        <input type="date" class="form-control" name="inicioATo" required />
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                        <input type="file" class="form-control" name="arquivo" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required/>
+                        <input type="file" class="form-control" name="arquivo" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Importar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Importar" class="btn btn-success pull-right" onclick="show()" />
                 </div>
-
             </form>
         </div>
-    </div>
-    <div class="box-footer">
-
+        <div style="text-align:center; display:none;" id="carregamento">
+            <img src="~/img/carregando.gif" />
+        </div>
     </div>
 </div>
+
+<script>
+    function show() {
+        document.getElementById('carregamento').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
+    }
+</script>

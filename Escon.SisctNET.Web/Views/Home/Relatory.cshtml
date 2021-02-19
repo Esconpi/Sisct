@@ -11,7 +11,7 @@
 
     </div>
     <div class="box-body">
-        <div class="col-lg-12">
+        <div class="col-lg-12" id="hidden">
             <form asp-controller="ProductNote" asp-action="Relatory" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
@@ -39,11 +39,11 @@
                     </div>
                     <div class="form-group col-lg-7 col-md-7 col-xs-12">
                         <label class="control-label">Tipo de Tributação</label>
-                        <select name="typeTaxation" class="form-control selectoption"  asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.TypeTaxation>()"></select>
+                        <select name="typeTaxation" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.TypeTaxation>()"></select>
                     </div>
                 </div>
                 <div class="row">
-                    
+
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label">Tipo</label>
                         <select name="type" id="type" class="form-control selectoption" asp-items="Html.GetEnumSelectList<Escon.SisctNET.Model.Type>()" onchange="ativar_button()"></select>
@@ -51,30 +51,35 @@
 
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label">Nota</label>
-                        <input type="text" id="caixa_num_nota" name="nota" class="form-control" placeholder="Nota" disabled />
+                        <input type="text" id="nota" name="nota" class="form-control" placeholder="Nota" disabled />
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Gerar" class="btn btn-success pull-right"/>
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" />
                 </div>
             </form>
+        </div>
+        <div style="text-align:center; display:none;" id="carregamento">
+            <img src="~/img/carregando.gif" />
         </div>
     </div>
 </div>
 
 
 <script>
-
     function ativar_button() {
         var tipo = document.getElementById("type").value;
         if (tipo == "6") {
-            document.getElementById("caixa_num_nota").disabled = false;
+            document.getElementById("nota").disabled = false;
         }
         else {
-            document.getElementById("caixa_num_nota").disabled = true;
+            document.getElementById("nota").disabled = true;
         }
     }
-
+    function show() {
+        document.getElementById('carregamento').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
+    }
 </script>
 

@@ -78,13 +78,13 @@
                                     <ul class="menu">
                                         <li>
                                             <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Min">
-                                                <i class="fa fa-warning text-yellow"></i>  @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count
+                                                <i class="fa fa-warning text-yellow"></i>  @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count()
                                                 Empresa com menos de @SessionManager.GetMin() dias <br /> pra renovar o incentivo
                                             </a>
                                         </li>
                                         <li>
                                             <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Max">
-                                                <i class="fa fa-warning text-red"></i> @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count
+                                                <i class="fa fa-warning text-red"></i> @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count()
                                                 Empresa com menos de @SessionManager.GetMax() dias <br /> pra renovar o incentivo
                                             </a>
                                         </li>
@@ -124,7 +124,6 @@
                     </ul>
                 </div>
             </nav>
-
         </header>
 
         <aside class="main-sidebar">
@@ -158,7 +157,10 @@
         </div>
 
         <footer class="main-footer">
-            <strong>Copyright ©  2019-@DateTime.Now.ToString("yyyy") <a href="https://www.esconpi.com.br">Escon</a>.</strong> All rights reserved.
+            <div class="pull-right hidden-xs">
+                <b>Versão</b> 2.4.13
+            </div>
+            <strong>Copyright ©  2019-@DateTime.Now.ToString("yyyy") <a href="https://www.esconpi.com.br">Escon</a>.</strong> Todos os direitos reservados.
         </footer>
     </div>
 

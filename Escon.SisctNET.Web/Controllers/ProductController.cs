@@ -85,6 +85,15 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                var item = _service.FindByProduct(entity.Code,entity.GroupId);
+
+                if (item != null)
+                {
+                    item.Updated = DateTime.Now;
+                    item.DateEnd = entity.DateStart.AddDays(-1);
+                    _service.Update(item, null);
+                }
+
                 var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = DateTime.Now;

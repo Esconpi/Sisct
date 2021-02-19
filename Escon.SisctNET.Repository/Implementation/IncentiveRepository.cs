@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Incentive> FindByPeriod(int days, Log log = null)
         {
-            var rst = _context.Incentives.Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= days && _.Active.Equals(true)).ToList();
+            var rst = _context.Incentives
+                .Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= days && _.Active.Equals(true))
+                .Include(c => c.Company)
+                .ToList();
             AddLog(log);
             return rst;
         }

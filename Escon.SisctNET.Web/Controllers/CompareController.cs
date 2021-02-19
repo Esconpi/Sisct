@@ -61,9 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string filedirSped = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Speds");
 
                     if (!Directory.Exists(filedirSped))
-                    {
                         Directory.CreateDirectory(filedirSped);
-                    }
 
                     string nomeArquivoSped = company.Document + "Empresa";
 
@@ -78,15 +76,13 @@ namespace Escon.SisctNET.Web.Controllers
                     caminhoDestinoArquivoOriginalSped = caminhoDestinoArquivoSped + nomeArquivoSped;
 
                     string[] paths_upload_sped = Directory.GetFiles(caminhoDestinoArquivoSped);
+
                     if (System.IO.File.Exists(caminhoDestinoArquivoOriginalSped))
-                    {
                         System.IO.File.Delete(caminhoDestinoArquivoOriginalSped);
 
-                    }
                     var streamSped = new FileStream(caminhoDestinoArquivoOriginalSped, FileMode.Create);
                     await arquivoSped.CopyToAsync(streamSped);
                     streamSped.Close();
-
                 }
 
                 if (opcao.Equals(Model.Opcao.NFe))
@@ -201,9 +197,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             if (nota_encontrada.Equals(false))
-                            {
                                 notasValidas.Add(note);
-                            }
                         }
 
                         //  NFe
@@ -304,9 +298,7 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
                     {
                         if (ident.Equals("0"))
-                        {
                             spedNormal = importSped.NfeTypeEmission(caminhoDestinoArquivoOriginalSped, ident, "1");
-                        }
 
                         qtdValida += spedNormal.Count();
                         qtdInvalida += (spedNFeCancelada.Count() + spedNFCeCancelada.Count());
@@ -325,11 +317,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
-                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+
                             if (nota_encontrada.Equals(false))
-                            {
                                 notas_sped.Add(note);
-                            }
                         }
 
                         //  NFe
@@ -346,7 +336,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
-                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -378,7 +368,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
-                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+
                             if (nota_encontrada.Equals(false))
                             {
                                 for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
@@ -432,7 +422,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
-                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+
                             if (nota_encontrada.Equals(false))
                             {
                                 List<string> n = new List<string>();
@@ -464,7 +454,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
                             }
-                            string cnpj_chave = !note[0].Length.Equals(0) ? note[0].Substring(6, 14) : "";
+
                             if (nota_encontrada.Equals(false))
                             {
                                 for (int i = notasInvalidas.Count() - 1; i >= 0; i--)
@@ -618,13 +608,9 @@ namespace Escon.SisctNET.Web.Controllers
                         var confDBSisctCte = _configurationService.FindByName("CTe Saida");
 
                         if (ordem.Equals(Model.Ordem.XmlEmpresa))
-                        {
                             directoryCte = importDir.SaidaEmpresa(company, confDBSisctCte.Value, year, month);
-                        }
                         else
-                        {
                             directoryCte = importDir.SaidaSefaz(company, confDBSisctCte.Value, year, month);
-                        }
                     }
                     
 
@@ -657,9 +643,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
 
                                     if (cte_encontrado == false)
-                                    {
                                         ctes_nao_encontrados.Add(cte);
-                                    }
                                 }
                             }
                         }
@@ -683,9 +667,7 @@ namespace Escon.SisctNET.Web.Controllers
                     string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Malha");
 
                     if (!Directory.Exists(filedirExcel))
-                    {
                         Directory.CreateDirectory(filedirExcel);
-                    }
 
                     string nomeArquivoExcel = company.Document + "Sefaz";
 
@@ -696,11 +678,10 @@ namespace Escon.SisctNET.Web.Controllers
                     string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
 
                     string[] paths_upload_excel = Directory.GetFiles(caminhoDestinoArquivoExcel);
+
                     if (System.IO.File.Exists(caminhoDestinoArquivoOriginalExcel))
-                    {
                         System.IO.File.Delete(caminhoDestinoArquivoOriginalExcel);
 
-                    }
                     var streamExcel = new FileStream(caminhoDestinoArquivoOriginalExcel, FileMode.Create);
                     await arquivoExcel.CopyToAsync(streamExcel);
                     streamExcel.Close();
@@ -725,12 +706,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            string cnpj_chave = nPlanilha[5].Length >= 14 ? nPlanilha[5].Substring(6, 14) : "";
                             if (nota_encontrada.Equals(false) && nPlanilha[5].Length.Equals(44))
-                            {
                                 notasExcel.Add(nPlanilha);
-                            }
-
                         }
                     }
                         
