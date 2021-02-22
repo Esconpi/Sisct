@@ -576,7 +576,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(companyid, null);
    
                 ViewBag.Tipo = tipo;
-                ViewBag.Comp = comp;
+                ViewBag.Company = comp;
                 return PartialView(products);
             }
             catch (Exception ex)

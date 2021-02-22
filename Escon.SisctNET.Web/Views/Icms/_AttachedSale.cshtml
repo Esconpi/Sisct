@@ -7,7 +7,6 @@
             <th style="border:1px solid; text-align:center;">
                 Ncm
             </th>
-            <th style="border:1px solid; text-align:center;">Descrição</th>
             <th style="border:1px solid; text-align:center;">
                 Valor
             </th>
@@ -17,21 +16,18 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < ViewBag.ResumoNcm.Count; i++)
+        @foreach (var ncm in ViewBag.ResumoNcm)
         {
             <tr>
-                <td style="border:1px solid">@ViewBag.ResumoNcm[i][0]</td>
-                <td style="border:1px solid">@ViewBag.ResumoNcm[i][1]</td>
-                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ResumoNcm[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
-                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.ResumoNcm[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
+                <td style="border:1px solid">@ncm[0] - @ncm[1]</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ncm[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ncm[3].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
             </tr>
         }
-    </tbody>
-    <tfoot>
         <tr>
-            <th style="border:1px solid; text-align:center;" colspan="2">Total</th>
+            <th style="border:1px solid; text-align:center;">Total</th>
             <th style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.TotalNcm)</th>
             <th style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.PercentualTotal) %</th>
         </tr>
-    </tfoot>
+    </tbody>
 </table>

@@ -2138,17 +2138,16 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                if (!ncm.Equals(""))
+                                if (!ncmTemp.Equals(""))
                                 {
                                     if (pos < 0)
                                     {
-                                        var nn = ncmsAll.Where(_ => _.Code.Equals(ncm)).FirstOrDefault();
+                                        var nn = ncmsAll.Where(_ => _.Code.Equals(ncmTemp)).FirstOrDefault();
                                         ncmForaAnexo.Add(ncmTemp);
                                         ncmForaAnexo.Add("0");
                                         ncmForaAnexo.Add("0");
                                         ncmForaAnexo.Add(nn.Description);
                                         ncmsForaAnexo.Add(ncmForaAnexo);
-                                        var x = ncmsForaAnexo.IndexOf(ncmForaAnexo);
                                         pos = ncmsForaAnexo.Count() - 1;
                                     }
                                     if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))

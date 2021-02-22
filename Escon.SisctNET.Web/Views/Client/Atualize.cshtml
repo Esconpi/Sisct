@@ -1,10 +1,10 @@
 ﻿@model Escon.SisctNET.Model.Company
 
-<div>
+<div id="hidden">
     <h4><strong>Atualizar Clientes:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
     <hr />
     <div class="row">
-        <div class="col-lg-12" id="hidden">
+        <div class="col-lg-12">
             <form asp-controller="Client" asp-action="Atualize" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
@@ -42,10 +42,11 @@
                 </div>
             </form>
         </div>
-        <div style="text-align:center; display:none;" id="carregamento">
-            <img src="~/img/carregando.gif" />
-        </div>
     </div>
+</div>
+
+<div style="text-align:center; display:none;" id="carregamento">
+    <img src="~/img/carregando.gif" />
 </div>
 
 <script>

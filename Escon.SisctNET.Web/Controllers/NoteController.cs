@@ -59,6 +59,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Company = comp;
 
+                SessionManager.SetShow(true);
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
@@ -556,6 +557,7 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(notas);
                 else
                     return RedirectToAction("Index", new { id = id, year = year, month = month });
+                    
 
             }
             catch (Exception ex)

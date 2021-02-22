@@ -6,11 +6,11 @@
 }
 
 <div class="box box-primary">
-    <div class="box-header">
+    <div class="box-header" id="hiddenHeader">
         <a asp-controller="Tax" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"> <strong>Importar Dados Icms Produtor Rural:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
     </div>
-    <div class="box-body">
+    <div class="box-body" id="hiddenBody">
         @if (ViewBag.Erro == 1)
         {
             <p style="text-align:center;color:red;"><strong>HÁ FORNECEDOR NÃO IMPORTADO ENTRADA</strong></p>
@@ -20,7 +20,7 @@
             <p style="text-align:center;color:red;"><strong>HÁ FORNECEDOR NÃO IMPORTADO SAÍDA</strong></p>
         }
 
-        <div class="col-lg-12" id="hidden">
+        <div class="col-lg-12">
             <form asp-controller="TaxProducer" asp-action="Import" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
@@ -35,20 +35,21 @@
                     </div>
                     <br />
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                        <input type="submit" value="Importar" class="btn btn-success pull-left" onclick="show()"/>
+                        <input type="submit" value="Importar" class="btn btn-success pull-left" onclick="show()" />
                     </div>
                 </div>
             </form>
         </div>
-        <div style="text-align:center; display:none;" id="carregamento">
-            <img src="~/img/carregando.gif" />
-        </div>
+    </div>
+    <div style="text-align:center; display:none;" id="carregamento">
+        <img src="~/img/carregando.gif" />
     </div>
 </div>
 
 <script>
     function show() {
         document.getElementById('carregamento').style.display = 'block';
-        document.getElementById('hidden').style.display = 'none';
+        document.getElementById('hiddenHeader').style.display = 'none';
+        document.getElementById('hiddenBody').style.display = 'none';
     }
 </script>

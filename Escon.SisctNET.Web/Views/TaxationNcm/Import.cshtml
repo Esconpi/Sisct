@@ -5,12 +5,12 @@
 }
 
 <div class="box box-primary">
-    <div class="box-header">
+    <div class="box-header" id="hiddenHeader">
         <a asp-controller="TaxationNcm" asp-action="IndexAll" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"> <strong>Importar Ncm:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
 
     </div>
-    <div class="box-body">
+    <div class="box-body" id="hiddenBody">
         @if (ViewBag.Erro == 1)
         {
             <p style="text-align:center;color:red;"><strong>ESCOLHA O TIPO DA EMPRESA</strong></p>
@@ -19,7 +19,7 @@
         {
             <p style="text-align:center;color:red;"><strong>O NCM @ViewBag.Ncm NÃO ESTAR CADASTRADO NA TABELA GERAL DO NCM</strong></p>
         }
-        <div class="col-lg-12" id="hidden">
+        <div class="col-lg-12">
             <form asp-controller="TaxationNcm" asp-action="Import" method="post">
                 <input type="hidden" name="companyid" value="@Html.DisplayFor(model => model.Id)" />
 
@@ -62,19 +62,20 @@
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" onclick="show()"  />
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" onclick="show()" />
                 </div>
             </form>
         </div>
-        <div style="text-align:center; display:none;" id="carregamento">
-            <img src="~/img/carregando.gif" />
-        </div>
+    </div>
+    <div style="text-align:center; display:none;" id="carregamento">
+        <img src="~/img/carregando.gif" />
     </div>
 </div>
 
 <script>
     function show() {
         document.getElementById('carregamento').style.display = 'block';
-        document.getElementById('hidden').style.display = 'none';
+        document.getElementById('hiddenHeader').style.display = 'none';
+        document.getElementById('hiddenBody').style.display = 'none';
     }
 </script>
