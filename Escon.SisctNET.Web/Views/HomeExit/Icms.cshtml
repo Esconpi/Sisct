@@ -44,6 +44,7 @@
                             <option value="resumoCfop" selected>Resumo CFOP</option>
                             <option value="resumoCfopCst">Resumo CFOP/CST</option>
                             <option value="resumoCfopAliq">Resumo CFOP/Aliquota</option>
+                            <option value="resumoCfopIcmsIcmsST">Resumo CFOP ICMS/ICMS ST</option>
                             @if (Model.Incentive == true)
                             {
                                 @if (Model.AnnexId == 1 || Model.AnnexId == 3)
@@ -126,7 +127,37 @@
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label">CFOP</label>
-                        <select asp-items="@ViewBag.CfopId" class="form-control selectoption" id="cfopid" name="cfopid" disabled="disabled" onchange="ativar_button()"></select>
+                        <select asp-items="@ViewBag.CfopId" class="form-control selectoption" id="cfopId" name="cfopId" disabled="disabled" onchange="ativar_button()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label">CST</label>
+                        <select asp-items="@ViewBag.CstId" class="form-control selectoption" id="cstId" name="cstId" disabled="disabled" onchange="ativar_button()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label">Csosn</label>
+                        <select asp-items="@ViewBag.CsosnId" class="form-control selectoption" id="csosnId" name="csosnId" disabled="disabled" onchange="ativar_button()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">UF</label>
+                        <select asp-items="@ViewBag.StateId" class="form-control selectoption" id="stateId" name="stateId" disabled="disabled" onchange="ativar_button()"></select>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">Icms %</label>
+                        <input type="text" name="icms" id="icms" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">Icms ST %</label>
+                        <input type="text" name="icmsST" id="icmsST" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <label class="control-label">MVA %</label>
+                        <input type="text" name="mva" id="mva" class="form-control" disabled />
                     </div>
                 </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
@@ -144,26 +175,67 @@
     function ativar_button() {
         var tipo = document.getElementById("status").value;
         if (tipo == "incentivo") {
-            document.getElementById("cfopid").disabled = true;
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = true;
         } else if (tipo == "resumoCfop") {
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
-            document.getElementById("cfopid").disabled = true;
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
         }
         else if (tipo == "resumoPorCfop") {
-            document.getElementById("cfopid").disabled = false;
+            document.getElementById("cfopId").disabled = false;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
         }
         else if (tipo == "anexoAutoPecas" || tipo == "incentivo" || tipo == "icmsExcedente") {
-            document.getElementById("cfopid").disabled = true;
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = true;
         }
+        else if (tipo == "resumoCfopIcmsIcmsST") {
+            document.getElementById("cfopId").disabled = false;
+            document.getElementById("stateId").disabled = false;
+            document.getElementById("cstId").disabled = false;
+            document.getElementById("csosnId").disabled = false;
+            document.getElementById("icms").disabled = false;
+            document.getElementById("icmsST").disabled = false;
+            document.getElementById("mva").disabled = false;
+            //document.getElementById("opcao").disabled = false;
+            document.getElementById("arquivo").disabled = false;
+        }
         else {
-            document.getElementById("cfopid").disabled = true;
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = false;
         }

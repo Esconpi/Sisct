@@ -43,9 +43,21 @@
     <strong> Resumo CFOP/Aliquota </strong>
 }
 
+@if (ViewBag.Type == "resumoCfopIcmsIcmsST")
+{
+    <strong> Resumo CFOP ICMS/ICMS ST </strong>
+}
+
 @if (ViewBag.Type == "resumoPorCfop")
 {
-    <strong> Resumo por CFOP - @ViewBag.Code </strong>
+    @if (ViewBag.Erro == 1)
+    {
+        <b>Nenhum CFOP selecionado</b>
+    }
+    else
+    {
+        <strong> Resumo por CFOP: @ViewBag.Cfop.Code -  @ViewBag.Cfop.Description</strong>
+    }
 }
 
 @if (ViewBag.Type == "icmsExcedente")

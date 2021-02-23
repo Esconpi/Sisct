@@ -25,38 +25,37 @@
         </tr>
     </thead>
     <tbody style="border:1px solid;">
-        @for (int i = 0; i < ViewBag.Cfop.Count; i++)
+        @foreach (var note in ViewBag.Notes)
         {
-            @if (Convert.ToDecimal(ViewBag.Cfop[i][2]) > 0)
+            @if (Convert.ToDecimal(note[2]) > 0)
             {
                 <tr style="border:1px solid;">
                     <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                        @ViewBag.Cfop[i][1]
+                        @note[1]
                     </td>
                     <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                        @Convert.ToDateTime(ViewBag.Cfop[i][7]).ToString("dd/MM/yyyy hh:mm:ss")
+                        @Convert.ToDateTime(note[7]).ToString("dd/MM/yyyy hh:mm:ss")
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        @string.Format("{0:N}", Convert.ToDecimal(note[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        @string.Format("{0:N}", Convert.ToDecimal(note[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        @string.Format("{0:N}", Convert.ToDecimal(note[3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        @string.Format("{0:N}", Convert.ToDecimal(note[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                     <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Cfop[i][5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        @string.Format("{0:N}", Convert.ToDecimal(note[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                     </td>
                 </tr>
 
             }
         }
-    </tbody>
-    <tbody style="border:1px solid;">
+
         <tr style="border:1px solid;">
             <td style="border:1px solid; padding-left:1%; padding-right:1%; text-align:center;" colspan="2">
                 <b>Total</b>

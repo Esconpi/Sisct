@@ -38,6 +38,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public List<Cst> FindByIdent(bool identicador, Log log = null)
+        {
+            return _repository.FindByIdent(identicador, log);
+        }
+
         public Cst Update(Cst entity, Log log)
         {
             return _repository.Update(entity, log);

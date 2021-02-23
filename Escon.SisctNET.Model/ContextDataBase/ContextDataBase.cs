@@ -113,6 +113,8 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<NatReceita> NatReceitas { get; set; }
 
+        public DbSet<Cst> Csts { get; set; }
+
         public DbSet<Csosn> Csosns { get; set; }
 
         public DbSet<TaxProducer> TaxProducers { get; set; }

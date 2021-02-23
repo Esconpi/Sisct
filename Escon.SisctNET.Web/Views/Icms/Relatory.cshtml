@@ -72,7 +72,17 @@
                 {
                     <!-- Resumo Por CFOP -->
 
-                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                    @if (ViewBag.Erro != 1)
+                    {
+                        @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                    }
+
+                }
+                else if (ViewBag.Type == "resumoCfopIcmsIcmsST")
+                {
+                    <!-- Reusmo CFOP ICMS/ICMS ST -->
+
+                    @await Html.PartialAsync("_SummaryCfopIcmsIcmsST", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "resumoCfopAnexo")
                 {

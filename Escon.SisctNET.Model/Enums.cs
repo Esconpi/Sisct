@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "VERIFICAR NOTAS CANCELADAS SEFAZ")] VerificarSefaz = 1,
         [Display(Name = "VERIFICAR NOTAS CANCELADAS EMPRESA")] VerificarEmpresa = 2,
         [Display(Name = "NOTAS CANCELADAS SEFAZ")] NotasSefaz = 3,
-        [Display(Name = "NOTAS CANCELADAS EMPRESA")] NotasEmpresa = 4,
+        [Display(Name = "NOTAS CANCELADAS EMPRESA")] NotasEmpresa = 4
     }
 
     public enum Archive
