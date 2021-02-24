@@ -1901,7 +1901,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             }
 
-                                            if (exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop)
+                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("orig") && cfop)
                                             {
                                                 decimal aliquota = 0;
                                                 if (exitNotes[i][k].ContainsKey("pICMS"))
@@ -1984,7 +1984,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 aliquota = 0;
                                             }
 
-                                            if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop)
+                                            if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("orig") && cfop)
                                                 debitosIcms += Convert.ToDecimal(exitNotes[i][k]["vFCP"]);
                                         }
 
@@ -2187,7 +2187,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             }
 
-                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop)
+                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("orig") && cfop)
                                                 debitosIcms += Convert.ToDecimal(exitNotes[i][k]["vICMS"]);
                                         }
                                     }
@@ -2391,7 +2391,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             }
 
-                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                            if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
                                             {
                                                 if (status == 1)
                                                 {
@@ -2515,7 +2515,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                             }
 
-                                            if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
+                                            if (exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("orig") && cfop == true)
                                             {
                                                 if (status == 1)
                                                 {

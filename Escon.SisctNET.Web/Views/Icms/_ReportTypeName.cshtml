@@ -48,6 +48,11 @@
     <strong> Resumo CFOP ICMS/ICMS ST </strong>
 }
 
+@if (ViewBag.Type == "resumoCfopIcmsIcmsSTAnalitico")
+{
+    <strong> Resumo CFOP ICMS/ICMS ST Analítico </strong>
+}
+
 @if (ViewBag.Type == "resumoPorCfop")
 {
     @if (ViewBag.Erro == 1)
@@ -121,6 +126,125 @@
     else if (ViewBag.Arquivo == "xmlE")
     {
         <b>(XML EMPRESA)</b>
+    }
+}
+
+@if (ViewBag.Type == "resumoCfopIcmsIcmsST" || ViewBag.Type == "resumoCfopIcmsIcmsSTAnalitico")
+{
+    @if (ViewBag.CfopId != 0 && ViewBag.CfopId != null)
+    {
+        <br />
+        <b>CFOP</b>
+        if (ViewBag.Cst != 0 && ViewBag.Cst != null)
+        {
+            <b>/CST</b>
+        }
+        else if (ViewBag.Csosn != 0 && ViewBag.Csosn != null)
+        {
+            <b>/CSOSN</b>
+        }
+        else if (ViewBag.State != 0 && ViewBag.State != null)
+        {
+            <b>/UF</b>
+        }
+        else if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
+        {
+            <b>/ICMS (%)</b>
+        }
+        else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+        {
+            <b>/ICMS ST (%)</b>
+        }
+        else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.Cst != 0 && ViewBag.Cst != null)
+    {
+        <br />
+        <b>CST</b>
+        if (ViewBag.State != 0 && ViewBag.State != null)
+        {
+            <b>/UF</b>
+        }
+        else if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
+        {
+            <b>/ICMS (%)</b>
+        }
+        else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+        {
+            <b>/ICMS ST (%)</b>
+        }
+        else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.Csosn != 0 && ViewBag.Csosn != null)
+    {
+        <br />
+        <b>CSOSN</b>
+        if (ViewBag.State != 0 && ViewBag.State != null)
+        {
+            <b>/UF</b>
+        }
+        else if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
+        {
+            <b>/ICMS (%)</b>
+        }
+        else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+        {
+            <b>/ICMS ST (%)</b>
+        }
+        else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.State != 0 && ViewBag.State != null)
+    {
+        <br />
+        <b>UF</b>
+        if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
+        {
+            <b>/ICMS (%)</b>
+        }
+        else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+        {
+            <b>/ICMS ST (%)</b>
+        }
+        else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
+    {
+        <br />
+        <b>ICMS (%)</b>
+        if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+        {
+            <b>/ICMS ST (%)</b>
+        }
+        else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
+    {
+        <br />
+        <b>ICMS ST (%)</b>
+        if (ViewBag.Mva != "" && ViewBag.Mva != null)
+        {
+            <b>/MVA (%)</b>
+        }
+    }
+    else if (ViewBag.Mva != "" && ViewBag.Mva != null)
+    {
+        <br />
+        <b>MVA (%)</b>
     }
 }
 

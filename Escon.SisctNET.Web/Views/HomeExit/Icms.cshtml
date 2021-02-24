@@ -45,6 +45,8 @@
                             <option value="resumoCfopCst">Resumo CFOP/CST</option>
                             <option value="resumoCfopAliq">Resumo CFOP/Aliquota</option>
                             <option value="resumoCfopIcmsIcmsST">Resumo CFOP ICMS/ICMS ST</option>
+                            <option value="resumoCfopIcmsIcmsSTAnalitico">Resumo CFOP ICMS/ICMS ST Analítico</option>
+
                             @if (Model.Incentive == true)
                             {
                                 @if (Model.AnnexId == 1 || Model.AnnexId == 3)
@@ -71,7 +73,9 @@
                             }
 
                             <option value="produtoST">Produtos ST com Base de Cálculo</option>
-                            <option value="tributacaoDiveregente">Tributação Divergente</option>
+                            <!--
+                                <option value="tributacaoDiveregente">Tributação Divergente</option>
+                            -->
 
                             @if (Model.Incentive == true)
                             {
@@ -144,7 +148,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                        <label class="control-label">UF</label>
+                        <label class="control-label">UF Destino</label>
                         <select asp-items="@ViewBag.StateId" class="form-control selectoption" id="stateId" name="stateId" disabled="disabled" onchange="ativar_button()"></select>
                     </div>
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -225,6 +229,17 @@
             document.getElementById("icms").disabled = false;
             document.getElementById("icmsST").disabled = false;
             document.getElementById("mva").disabled = false;
+            //document.getElementById("opcao").disabled = false;
+            document.getElementById("arquivo").disabled = false;
+        }
+        else if (tipo == "resumoCfopIcmsIcmsSTAnalitico") {
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("stateId").disabled = false;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
         }
