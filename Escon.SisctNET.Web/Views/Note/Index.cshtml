@@ -18,7 +18,7 @@
             <!--
                 <a href="#" onclick="show()" class="btn btn-primary fa  fa-cloud-upload pull-left"> Importar</a>
             -->
-            
+
 
             @Html.ActionLink(" Importar", "Import", new { }, new { onclick = "return confirm('Os arquivos NFes e CTes estão na pasta ?');", @class = "btn btn-primary fa  fa-cloud-upload pull-left" })
 
@@ -278,7 +278,7 @@
             localStorage.setItem("modal", false);
         });
     })
-    /*
+    
     function show() {
         var result = confirm('Os arquivos NFes e CTes estão na pasta ?');
         if (result) {
@@ -289,5 +289,5 @@
                 url: "/Note/Import",
             });
         }
-    }*/
+    }
 </script>
