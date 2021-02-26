@@ -12,14 +12,10 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
 
-        private Company company;
-        public Company Company
-        {
-            get => LazyLoader.Load(this, ref company);
-            set => company = value;
-        }
+        public virtual Company Company { get; set; }
+
 
         [Display(Name = "Chave")]
         public string Chave { get; set; }

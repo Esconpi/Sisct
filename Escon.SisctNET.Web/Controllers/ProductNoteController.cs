@@ -746,7 +746,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     Model.Taxation taxation = new Model.Taxation();
 
-                    taxation.CompanyId = prod.Note.CompanyId;
+                    taxation.CompanyId = Convert.ToInt32(prod.Note.CompanyId);
                     taxation.Code = code;
                     taxation.Cest = prod.Cest;
                     taxation.AliqInterna = aliqInterna;

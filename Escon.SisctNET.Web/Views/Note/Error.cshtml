@@ -8,12 +8,17 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        @if (ViewBag.Erro != 1)
-        {
-            <a asp-controller="Note" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="Note" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
 
+        @if (ViewBag.Erro == 1)
+        {
+            <h3 class="box-title"><strong>Erro de Codificação</strong></h3>
+        }
+        else if (ViewBag.Erro != 1)
+        {
             <h3 class="box-title"><strong>Notas Importadas em Outro Mês</strong></h3>
         }
+
 
         <div style="width: 100%; text-align: center; padding-top:10px;">
             <strong>@ViewBag.Company.SocialName</strong> <br />

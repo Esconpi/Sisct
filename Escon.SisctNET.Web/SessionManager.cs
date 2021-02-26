@@ -63,6 +63,16 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<Model.Incentive>>("IncitiveSisctNET");
         }
 
+        public static void SetNotesInSession(List<Model.Note> notes)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<Model.Note>>("NoteSisctNET", notes);
+        }
+
+        public static List<Model.Note> GetNotesInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<Model.Note>>("NoteSisctNET");
+        }
+
         public static void SetCompanyIdInSession(int companyId)
         {
             _httpContextAccessor.HttpContext.Session.Set<int>("CompanyIdSisctNET", companyId);

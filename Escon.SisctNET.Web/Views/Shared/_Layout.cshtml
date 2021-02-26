@@ -40,6 +40,7 @@
     <script src="~/js/chart.js/dist/Chart.min.js"></script>
     <script src="~/js/chart.js/dist/Chart.js"></script>
     <script src="~/js/loader.js"></script>
+    <script src="~/js/notify/bootstrap-notify.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
 
@@ -67,30 +68,7 @@
                     <ul class="nav navbar-nav">
                         <!-- Notifications: style can be found in dropdown.less -->
                         <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning">@SessionManager.GetIncitiveInSession().Count</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">Você tem @SessionManager.GetIncitiveInSession().Count notificação</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li>
-                                            <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Min">
-                                                <i class="fa fa-warning text-yellow"></i>  @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count()
-                                                Empresa com menos de @SessionManager.GetMin() dias <br /> pra renovar o incentivo
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Max">
-                                                <i class="fa fa-warning text-red"></i> @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count()
-                                                Empresa com menos de @SessionManager.GetMax() dias <br /> pra renovar o incentivo
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            @await Html.PartialAsync("Notification", new ViewDataDictionary(ViewData))
                         </li>
 
                         <!-- User Account: style can be found in dropdown.less -->
@@ -273,7 +251,6 @@
             });
 
         });
-
     </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 }
 
 <div class="box box-primary">
-    <div class="box-header">
+    <div class="box-header" id="hiddenHeader">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title">
             <strong>Importar Produtos</strong>
@@ -14,8 +14,8 @@
 
     </div>
     <hr />
-    <div class="box-body">
-        <div class="col-md-12" id="hidden">
+    <div class="box-body" id="hiddenBody">
+        <div class="col-md-12">
             <form asp-action="Import" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -42,15 +42,16 @@
                 </div>
             </form>
         </div>
-        <div style="text-align:center; display:none;" id="carregamento">
-            <img src="~/img/carregando.gif" />
-        </div>
+    </div>
+    <div style="text-align:center; display:none;" id="loading">
+        <img src="~/img/carregando.gif" />
     </div>
 </div>
 
 <script>
     function show() {
-        document.getElementById('carregamento').style.display = 'block';
-        document.getElementById('hidden').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('hiddenHeader').style.display = 'none';
+        document.getElementById('hiddenBody').style.display = 'none';
     }
 </script>
