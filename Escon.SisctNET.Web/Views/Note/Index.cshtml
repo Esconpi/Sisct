@@ -87,7 +87,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="font-size:11px;">
                     @foreach (var item in Model)
                     {
                         @if (ViewBag.Company.Status == true && item.IdDest == 1)
@@ -289,7 +289,7 @@
                     }
                 },
                 error: function (result) {
-                    console.log("erro");
+                    console.log("Erro");
                 }
             });
         }
@@ -305,12 +305,16 @@
             document.getElementById('hiddenHeader').style.display = 'none';
             document.getElementById('hiddenBody').style.display = 'none';
             $.ajax({
-                url: '/Note/Delete',
-
-            }).done(function (result) {
-                setTimeout(function () {
-                    window.location.reload(1);
-                }, 1000 * 3);
+                url: '@Url.Action("Delete", "Note")',
+                success: function (result) {
+                    console.log(result);
+                    setTimeout(function () {
+                        window.location.reload(1);
+                    }, 1000 * 1);
+                },
+                error: function (result) {
+                    console.log("Erro");
+                }
             });
         }
         else {

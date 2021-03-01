@@ -94,12 +94,15 @@
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                        <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required disabled />
+                         <div class="fileUploadInput">
+                            <input type="file" name="arquivoSped" id="arquivoSped" accept=".txt" onchange="ativar_button()"/>
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Compara" class="btn btn-success pull-right" onclick="show()" />
+                    <input type="submit" value="Compara" class="btn btn-success pull-right" onclick="show()" id="ativa"/>
                 </div>
             </form>
         </div>
@@ -115,11 +118,13 @@
 
         if (ordem == "2") {
             document.getElementById("arquivoSped").disabled = false;
+            document.getElementById("ativa").disabled = true;
             document.getElementById("period").disabled = true;
         }
         else if (ordem == "3" || ordem == "4") {
             document.getElementById("period").disabled = false;
             document.getElementById("arquivoSped").disabled = true;
+            document.getElementById("ativa").disabled = false;
 
             var period = document.getElementById("period").value;
 
@@ -137,7 +142,17 @@
         }
         else {
             document.getElementById("arquivoSped").disabled = true;
+            document.getElementById("ativa").disabled = false;
             document.getElementById("period").disabled = true;
+        }
+    }
+
+    function ativar_button() {
+        var arquivoSped = document.getElementById("arquivoSped").value;
+        if (arquivoSped == "") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
         }
     }
 

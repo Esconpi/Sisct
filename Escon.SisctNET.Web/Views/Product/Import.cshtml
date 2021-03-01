@@ -20,25 +20,30 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
-                    <div class="form-group col-lg-10 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-9 col-md-9 col-xs-12">
                         <label asp-for="GroupId" class="control-label"></label>
                         <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="group"></select>
                         <span asp-validation-for="GroupId" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label class="control-label">Inicio do Ato</label>
-                        <input type="date" class="form-control" name="inicioATo" required />
+                        <input type="date" class="form-control" name="inicioATo" id="inicioATo" onchange="ativar_button()"/>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                        <input type="file" class="form-control" name="arquivo" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="arquivo" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="ativar_button()"/>
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
+                   
                 </div>
+
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Importar" class="btn btn-success pull-right" onclick="show()" />
+                    <input type="submit" value="Importar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled/>
                 </div>
             </form>
         </div>
@@ -49,6 +54,18 @@
 </div>
 
 <script>
+    function ativar_button() {
+        var inicioATo = document.getElementById("inicioATo").value;
+        var arquivo = document.getElementById("arquivo").value;
+        console.log(inicioATo);
+        console.log(arquivo);
+        if (inicioATo == "" || arquivo == "") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
+
     function show() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('hiddenHeader').style.display = 'none';

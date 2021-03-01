@@ -63,16 +63,22 @@
                 <div class="row">
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                        <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivoSped" id="arquivoSped" accept=".txt" onchange="ativar_button()" />
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Excel</strong></label>
-                        <input type="file" class="form-control" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel" required disabled />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel" disabled onchange="ativar_button()">
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Compara" class="btn btn-success pull-right" onclick="show()" />
+                    <input type="submit" value="Compara" class="btn btn-success pull-right" onclick="show()"  id="ativa" disabled/>
                 </div>
             </form>
         </div>
@@ -85,12 +91,23 @@
 <script>
     function ativar_button() {
         var opcao = document.getElementById("opcao").value;
-
+        var arquivoSped = document.getElementById("arquivoSped").value;
         if (opcao == "1" || opcao == "2") {
             document.getElementById("arquivoExcel").disabled = true;
+            if (arquivoSped == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
         else {
             document.getElementById("arquivoExcel").disabled = false;
+            var arquivoExcel = document.getElementById("arquivoExcel").value;
+            if (arquivoSped == "" || arquivoExcel == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
     }
     function show() {

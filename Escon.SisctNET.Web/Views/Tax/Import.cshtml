@@ -54,12 +54,15 @@
                     </div>
                     <div class="form-group col-lg-6 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled multiple />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="file" accept=".txt" disabled multiple onchange="ativar_button()">
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Importar" class="btn btn-success pull-right" id="ativa" disabled="disabled" onclick="show()" />
+                    <input type="submit" value="Importar" class="btn btn-success pull-right" id="ativa" disabled onclick="show()" />
                 </div>
             </form>
         </div>
@@ -75,14 +78,22 @@
         if (tipo == "nenhum") {
             document.getElementById("ativa").disabled = true;
             document.getElementById("file").disabled = true;
+            document.getElementById("ativa").disabled = true;
         }
         else if (tipo == "sped") {
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = false;
+            var file = document.getElementById("file").value;
+            if (file == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
         else if (tipo == "xmlS" || tipo == "xmlE") {
             document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = true;
+            document.getElementById("ativa").disabled = false;
         }
     }
     function show() {

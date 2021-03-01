@@ -184,47 +184,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Delete()
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-                int id = SessionManager.GetCompanyIdInSession();
-                string year = SessionManager.GetYearInSession();
-                string month = SessionManager.GetMonthInSession();
-
-                var notes = _service.FindByNotes(id, year, month);
-
-                var products = _itemService.FindByProducts(notes);
-
-                List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
-                List<Model.Note> deleteNote = new List<Model.Note>();
-
-                foreach (var product in products)
-                {
-                    deleteProduct.Add(product);
-                    //_itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
-                }
-
-                foreach (var note in notes)
-                {
-                    deleteNote.Add(note);
-                    //_service.Delete(note.Id, GetLog(Model.OccorenceLog.Delete));
-                }
-
-                _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
-                _service.Delete(deleteNote, GetLog(OccorenceLog.Delete));
-                return RedirectToAction("Index", new { id = id, year = year, month = month });
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
         public IActionResult DeleteNote(int id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
@@ -768,5 +727,48 @@ namespace Escon.SisctNET.Web.Controllers
 
             return Json(result);
         }
+
+        public JsonResult Delete()
+        {
+
+            int id = SessionManager.GetCompanyIdInSession();
+            string year = SessionManager.GetYearInSession();
+            string month = SessionManager.GetMonthInSession();
+
+            var notes = _service.FindByNotes(id, year, month);
+
+            var products = _itemService.FindByProducts(notes);
+
+            List<Model.ProductNote> deleteProduct = new List<Model.ProductNote>();
+            List<Model.Note> deleteNote = new List<Model.Note>();
+
+            foreach (var product in products)
+            {
+                deleteProduct.Add(product);
+            }
+
+            foreach (var note in notes)
+            {
+                deleteNote.Add(note);
+            }
+
+            _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
+            _service.Delete(deleteNote, GetLog(OccorenceLog.Delete));
+
+            int erro = 0;
+            string url = "Index", chave = "Nenhuma";
+
+            var result = new
+            {
+                Controller = "Note",
+                URL = url,
+                Erro = erro,
+                Chave = chave,
+            };
+
+            return Json(result);
+
+        }
+
     }
 }

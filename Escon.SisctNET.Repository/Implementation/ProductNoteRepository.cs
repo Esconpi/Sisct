@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,10 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Cest.Equals(cest) && _.Pautado.Equals(false));
+                var rst = _context.ProductNotes
+                    .Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.NoteId.Equals(note.Id) && _.Cest.Equals(cest) && _.Pautado.Equals(false))
+                    .Include(c => c.Note.Company)
+                    .ToList();
                 products.AddRange(rst);                
             }
             AddLog(log);
@@ -35,7 +39,10 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 if (note.Cnpj.Equals(cnpj))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
             }
@@ -45,7 +52,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<ProductNote> FindByNote(int noteId, Log log)
         {
-            var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(noteId));
+            var rst = _context.ProductNotes
+                .Where(_ => _.NoteId.Equals(noteId))
+                .Include(c => c.Note.Company)
+                .ToList();
             AddLog(log);
             return rst.ToList();
         }
@@ -55,7 +65,10 @@ namespace Escon.SisctNET.Repository.Implementation
             List<ProductNote> products = new List<ProductNote>();
             foreach (var note in notes)
             {
-                var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
+                var rst = _context.ProductNotes
+                    .Where(_ => _.NoteId.Equals(note.Id))
+                    .Include(c => c.Note.Company)
+                    .ToList();
                 products.AddRange(rst);
             }
             AddLog(log);
@@ -69,47 +82,74 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 if (taxationType.Equals(Model.TypeTaxation.Nenhum))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 if (taxationType.Equals(Model.TypeTaxation.ST))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(5) || _.TaxationTypeId.Equals(6)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.AP))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(1)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.CO))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(2)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(2)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.COR))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(4)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(4)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.IM))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(3)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(3)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.Isento))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(7)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(7)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.AT))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(8)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.NT))
                 {
-                    var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(9)));
+                    var rst = _context.ProductNotes
+                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals(9)))
+                        .Include(c => c.Note.Company)
+                        .ToList();
                     products.AddRange(rst);
                 }
             }
@@ -154,14 +194,20 @@ namespace Escon.SisctNET.Repository.Implementation
         public List<ProductNote> FindByTaxation(int noteId, Log log = null)
         {
 
-            var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(noteId) && _.Status.Equals(false));
+            var rst = _context.ProductNotes
+                .Where(_ => _.NoteId.Equals(noteId) && _.Status.Equals(false))
+                .Include(c => c.Note.Company)
+                .ToList();
             AddLog(log);
             return rst.ToList();
         }
 
         public ProductNote FindByProduct(int noteId, string nItem, Log log = null)
         {
-            var rst = _context.ProductNotes.Where(_ => _.NoteId.Equals(noteId) && _.Nitem.Equals(nItem)).FirstOrDefault();
+            var rst = _context.ProductNotes
+                .Where(_ => _.NoteId.Equals(noteId) && _.Nitem.Equals(nItem))
+                .Include(c => c.Note.Company)
+                .FirstOrDefault();
             AddLog(log);
             return rst;
         }
@@ -174,8 +220,11 @@ namespace Escon.SisctNET.Repository.Implementation
             
             foreach (var note in notes)
             {
-                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest.Equals(1) &&
-                                                           Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1)).ToList();
+                result = _context.ProductNotes
+                    .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest.Equals(1) &&
+                                 Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1))
+                    .Include(c => c.Note.Company)
+                    .ToList();
             }
 
             return result;
@@ -189,8 +238,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var note in notes)
             {
-                result = _context.ProductNotes.Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest != 1 && 
-                                                          Array.Exists(cfopAtivo, e => e.Equals(_.Cfop))).ToList();
+                result = _context.ProductNotes
+                    .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest != 1 && 
+                                Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)))
+                    .Include(c => c.Note.Company)
+                    .ToList();
             }
 
             return result;
@@ -229,7 +281,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach(var note in notes)
             {
-                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == true).ToList();
+                var itens = _context.ProductNotes
+                    .Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == true)
+                    .Include(c => c.Note.Company)
+                    .ToList();
                 products.AddRange(itens);
             }
             return products;
@@ -241,60 +296,12 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var note in notes)
             {
-                var itens = _context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false && _.Status.Equals(true)).ToList();
+                var itens = _context.ProductNotes
+                    .Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false && _.Status.Equals(true))
+                    .Include(c => c.Note.Company)
+                    .ToList();
                 products.AddRange(itens);
             }
-            return products;
-        }
-
-        public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
-        {
-            List<Product> products = new List<Product>();
-
-            var productPauta = _context.Products;
-
-            foreach(var prod in productPauta)
-            {
-                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
-
-                if (dataInicial <= 0 && prod.DateEnd == null)
-                {
-                    products.Add(prod);
-                    continue;
-                }else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-            }
-
-            return products;
-        }
-
-        public List<Product1> FindAllInDate1(DateTime dateProd, Log log = null)
-        {
-            List<Product1> products = new List<Product1>();
-
-            var productPauta = _context.Product1s;
-
-            foreach (var prod in productPauta)
-            {
-                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
-
-                if (dataInicial <= 0 && prod.DateEnd == null)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-            }
-
             return products;
         }
 
@@ -331,30 +338,14 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<Product2> FindAllInDate2(DateTime dateProd, Log log = null)
+        public ProductNote FindByProduct(int id, Log log = null)
         {
-            List<Product2> products = new List<Product2>();
-
-            var productPauta = _context.Product2s;
-
-            foreach (var prod in productPauta)
-            {
-                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
-
-                if (dataInicial <= 0 && prod.DateEnd == null)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-            }
-
-            return products;
+            var rst = _context.ProductNotes
+              .Where(_ => _.Id.Equals(id))
+              .Include(c => c.Note.Company)
+              .FirstOrDefault();
+            AddLog(log);
+            return rst;
         }
     }
 }

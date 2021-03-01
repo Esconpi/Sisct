@@ -40,5 +40,6 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
 
+        Model.ProductNote FindByProduct(int id, Model.Log log = null);
     }
 }

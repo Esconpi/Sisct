@@ -26,7 +26,10 @@
                     </div>
                     <div class="form-group col-lg-9 col-md-6 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                        <input type="file" class="form-control" name="arquivo" id="file" accept=".txt" required disabled multiple />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="file" accept=".txt" disable multiple onchange="ativar_button()">
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                 </div>
 
@@ -49,8 +52,13 @@
             document.getElementById("file").disabled = true;
         }
         else if (tipo == "sped") {
-            document.getElementById("ativa").disabled = false;
             document.getElementById("file").disabled = false;
+            var file = document.getElementById("file").value;
+            if (file == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
         else if (tipo == "xmlS" || tipo == "xmlE") {
             document.getElementById("ativa").disabled = false;

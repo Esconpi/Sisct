@@ -37,7 +37,8 @@ namespace Escon.SisctNET.Repository
 
         List<Model.ProductNote> FindByIncentive(List<Model.Note> notes, Model.Log log = null);
 
-        List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);       
+        List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
 
+        Model.ProductNote FindByProduct(int id, Model.Log log = null);
     }
 }

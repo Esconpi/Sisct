@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -61,6 +62,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Product1 Update(Product1 entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Product1> FindAllInDate1(DateTime dateProd, Log log = null)
+        {
+            return _repository.FindAllInDate1(dateProd, log);
         }
     }
 }

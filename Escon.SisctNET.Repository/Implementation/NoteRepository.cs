@@ -27,16 +27,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public Note FindByCompany(string company, Log log = null)
-        {
-            var rst = _context.Notes
-                .Where(_ => _.Company.Document.Equals(company))
-                .Include(c => c.Company)
-                .FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
         public List<Note> FindByCompany(int companyId, Log log = null)
         {
             var rst = _context.Notes

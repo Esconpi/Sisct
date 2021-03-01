@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service
 {
@@ -15,5 +16,7 @@ namespace Escon.SisctNET.Service
         Model.Product2 FindByProduct(string code, int grupoId, Model.Log log = null);
 
         List<Model.Product2> FindByGroup(int groupid, Model.Log log = null);
+
+        List<Model.Product2> FindAllInDate2(DateTime dateProd, Model.Log log = null);
     }
 }

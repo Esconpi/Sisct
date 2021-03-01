@@ -47,12 +47,15 @@
 
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                        <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" required disabled />
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="arquivo" accept=".txt" onchange="ativar_button()" />
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Verificar" class="btn btn-success pull-right" onclick="show()" />
+                    <input type="submit" value="Verificar" class="btn btn-success pull-right" onclick="show()" id="ativa"/>
                 </div>
             </form>
         </div>
@@ -68,9 +71,16 @@
 
         if (archive == "1" || archive == "2") {
             document.getElementById("arquivo").disabled = true;
+            document.getElementById("ativa").disabled = false;
         }
         else {
             document.getElementById("arquivo").disabled = false;
+            var arquivo = document.getElementById("arquivo").value;
+            if (arquivo == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
     }
     function show() {

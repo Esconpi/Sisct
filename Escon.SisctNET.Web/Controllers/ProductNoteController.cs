@@ -22,6 +22,8 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IProductNoteService _service;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IProductService _productService;
+        private readonly IProduct1Service _product1Service;
+        private readonly IProduct2Service product2Service;
         private readonly INoteService _noteService;
         private readonly INcmService _ncmService;
         private readonly IAliquotService _aliquotService;
@@ -29,7 +31,6 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly IDarService _darService;
         private readonly IDarDocumentService _darDocumentService;
-        private readonly IProduct1Service _product1Service;
         private readonly IConfigurationService _configurationService;
         private readonly ICompanyCfopService _companyCfopService;
         private readonly ISuspensionService _suspensionService;
@@ -59,13 +60,14 @@ namespace Escon.SisctNET.Web.Controllers
             INoteService noteService,
             INcmService ncmService,
             IProductService productService,
+            IProduct1Service product1Service,
+            IProduct2Service product2Service,
             ITaxationTypeService taxationTypeService,
             IAliquotService aliquotService,
             ITaxationService taxationService,
             ICompanyService companyService,
             IDarService darService,
             IDarDocumentService darDocumentService,
-            IProduct1Service product1Service,
             ICompanyCfopService companyCfopService,
             ISuspensionService suspensionService,
             IClientService clientService,
@@ -74,7 +76,6 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxService taxService,
             IGrupoService grupoService,
             INotificationService notificationService,
-            IProduct2Service product2Service,
             IFunctionalityService functionalityService,
             IIntegrationWsDar integrationWsDar,
             IConfigurationService configurationService,
@@ -97,6 +98,8 @@ namespace Escon.SisctNET.Web.Controllers
             _ncmService = ncmService;
             _taxationTypeService = taxationTypeService;
             _productService = productService;
+            _product1Service = product1Service;
+            _product2Service = product2Service;
             _aliquotService = aliquotService;
             _taxationService = taxationService;
             _companyService = companyService;
@@ -158,9 +161,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var product = _service.FindById(id, GetLog(OccorenceLog.Read));
+                var product = _service.FindByProduct(id);
                 var ncm = _ncmService.FindByCode(product.Ncm);
-
 
                 string description = "";
 
@@ -202,7 +204,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") &&
                         Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product1> list_product1 = _productService.FindAllInDate1(product.Note.Dhemi);
+                    List<Product1> list_product1 = _product1Service.FindAllInDate1(product.Note.Dhemi);
                     foreach (var prod in list_product1)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -213,7 +215,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                 {
-                    List<Product2> list_product2 = _productService.FindAllInDate2(product.Note.Dhemi);
+                    List<Product2> list_product2 = _product2Service.FindAllInDate2(product.Note.Dhemi);
                     foreach (var prod in list_product2)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;

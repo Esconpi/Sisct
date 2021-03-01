@@ -9,8 +9,6 @@ namespace Escon.SisctNET.Service
 
         void Update(List<Model.Note> notes, Model.Log log = null);
 
-        Model.Note FindByCompany(string company, Model.Log log = null);
-
         Model.Note FindByNote(string chave, Model.Log log = null);
 
         List<Model.Note> FindByNotes(int id, string year, string month, Model.Log log = null);

@@ -82,3 +82,46 @@
 [data-notify="container"][class*="alert-pastel-"] > [data-notify="message"] {
     font-weight: 400;
 }
+
+
+.fileUploadInput {
+    display: grid;
+    grid-gap: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+
+.fileUploadInput input {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 34px;
+    border: 1px solid #d2d6de;
+}
+
+.fileUploadInput input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+    margin-left: 10px;
+    padding: 0;
+    height: 34px;
+    width: 0;
+}
+
+.fileUploadInput button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 34px;
+    height: 34px;
+    line-height: 0;
+    user-select: none;
+    color: white;
+    background-color: #3c8dbc;
+    font-weight: 800;
+}
+
+.fileUploadInput button svg {
+    width: auto;
+    height: 50%;
+}

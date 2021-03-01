@@ -80,20 +80,30 @@
 
                 </div>
 
-                <div class="row">
-                    @if (SessionManager.GetTipoInSession().Equals(0))
-                    {
+                @if (SessionManager.GetTipoInSession().Equals(0))
+                {
+                    <div class="row">
                         <div class="form-group col-lg-12 col-md-12 col-xs-12">
                             <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
-                            <input type="file" class="form-control" name="arquivoSped" id="arquivoSped" accept=".txt" required />
+                            <div class="fileUploadInput">
+                                <input type="file" name="arquivoSped" id="arquivoSped" accept=".txt" onchange="ativar_button()" />
+                                <button><i class="fa fa-cloud-upload"></i></button>
+                            </div>
                         </div>
-                    }
-                </div>
+                    </div>
 
 
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Listar" class="btn btn-success pull-right" onclick="show()" />
-                </div>
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Listar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled//>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <input type="submit" value="Listar" class="btn btn-success pull-right" onclick="show()" />
+                    </div>
+                }
+
             </form>
         </div>
     </div>
@@ -103,6 +113,14 @@
 </div>
 
 <script>
+    function ativar_button() {
+        var arquivoSped = document.getElementById("arquivoSped").value;
+        if (arquivoSped == "") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
     function show() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('hiddenHeader').style.display = 'none';

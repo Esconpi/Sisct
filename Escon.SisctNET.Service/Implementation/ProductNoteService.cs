@@ -129,5 +129,9 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Update(products, log);
         }
 
+        public ProductNote FindByProduct(int id, Log log = null)
+        {
+            return _repository.FindByProduct(id, log);
+        }
     }
 }
