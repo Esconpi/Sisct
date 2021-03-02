@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div style="width:100%; padding:20px;">
-                <table class="table table-striped table-bordered" id="tblIndex2" style="width:100%;">
+                <table class="table table-striped table-bordered display responsive nowrap" id="tblIndex2" style="width:100%;">
                     <thead>
                         <tr>
                             <th>
@@ -89,11 +89,18 @@
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
                             <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
+                            <th class="none">Aliquota Interestadual</th>
+                            <th class="none">Quantidade</th>
+                            <th class="none">Valor Unitário</th>
+                            <th class="none">Unidade</th>
+                            <th class="none">Valor ICMS</th>
+                            <th class="none">Valor IPI</th>
+                            <th class="none">ICMS ST</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody style="font-size:11px;">
+                    <tbody>
                         @foreach (var item in Model)
                         {
                             @if (item.Orig != 0)
@@ -131,6 +138,15 @@
                                     {
                                         <td></td>
                                     }
+
+                                    <td>@string.Format("{0:N}", item.Picms)</td>
+                                    <td>@string.Format("{0:N}", item.Qcom)</td>
+                                    <td>@string.Format("{0:C}", item.Vuncom)</td>
+                                    <td>@item.Ucom</td>
+                                    <td>@string.Format("{0:N}", item.Vicms)</td>
+                                    <td>@string.Format("{0:N}", item.Vipi)</td>
+                                    <td>@string.Format("{0:N}", item.IcmsST)</td>
+
 
                                     @if (item.Pautado.Equals(true))
                                     {
@@ -185,6 +201,15 @@
                                     {
                                         <td></td>
                                     }
+
+                                    <td>@string.Format("{0:N}", item.Picms)</td>
+                                    <td>@string.Format("{0:N}", item.Qcom)</td>
+                                    <td>@string.Format("{0:C}", item.Vuncom)</td>
+                                    <td>@item.Ucom</td>
+                                    <td>@string.Format("{0:N}", item.Vicms)</td>
+                                    <td>@string.Format("{0:N}", item.Vipi)</td>
+                                    <td>@string.Format("{0:N}", item.IcmsST)</td>
+                                    
                                     @if (item.Pautado.Equals(true))
                                     {
                                         <td>P</td>

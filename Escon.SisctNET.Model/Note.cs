@@ -38,7 +38,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "UF")]
         public string Uf { get; set; }
 
-        [Display(Name = "Insc.Est")]
+        [Display(Name = "Insc. Estadual")]
         public string Ie { get; set; }
 
         [Display(Name = "Nº Frete")]
@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Fornecedor")]
         public string Xnome { get; set; }
 
-        [Display(Name = "Insc.Est.ST")]
+        [Display(Name = "IE Substituto Tributário")]
         public string Iest { get; set;}
 
         [Display(Name = "Gnre Paga")]
@@ -105,10 +105,10 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Fecop pago (2%)")]
         public decimal? Fecop2 { get; set; }
 
-        [Display(Name = "Fecop Gnre paga 1%")]
+        [Display(Name = "Fecop Gnre paga (1%)")]
         public decimal? FecopGnre1 { get; set; }
 
-        [Display(Name = "Fecop Gnre paga 2%")]
+        [Display(Name = "Fecop Gnre paga (2%)")]
         public decimal? FecopGnre2 { get; set; }
 
         [Display(Name = "Gnre não Paga Fecop")]

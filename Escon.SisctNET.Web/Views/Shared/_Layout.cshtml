@@ -19,6 +19,9 @@
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/js/chart.js/dist/Chart.min.css" rel="stylesheet" />
     <link href="~/js/chart.js/dist/Chart.css" rel="stylesheet" />
+    <link href="~/js/datatables.net/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/js/datatables.net/responsive/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/SisCT.css" rel="stylesheet" />
 
     <script src="~/js/jquery/jquery.js"></script>
     <script src="~/js/jquery/jquery.min.js"></script>
@@ -41,90 +44,12 @@
     <script src="~/js/chart.js/dist/Chart.js"></script>
     <script src="~/js/loader.js"></script>
     <script src="~/js/notify/bootstrap-notify.js"></script>
+    <script src="~/js/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/datatables.net/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/datatables.net/responsive/js/dataTables.responsive.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Extended&display=swap" rel="stylesheet">
 
-    <style>
-        [data-notify="container"][class*="alert-pastel-"] {
-            background-color: rgb(255, 255, 238);
-            border-width: 0px;
-            border-left: 15px solid rgb(255, 240, 106);
-            border-radius: 0px;
-            box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3);
-            font-family: 'Old Standard TT', serif;
-            letter-spacing: 1px;
-        }
-
-        [data-notify="container"].alert-pastel-success {
-            border-left-color: springgreen;
-        }
-
-        [data-notify="container"].alert-pastel-warning {
-            border-left-color: yellow;
-        }
-
-        [data-notify="container"].alert-pastel-info {
-            border-left-color: Highlight;
-        }
-
-        [data-notify="container"].alert-pastel-danger {
-            border-left-color: rgb(255, 103, 76);
-        }
-
-        [data-notify="container"][class*="alert-pastel-"] > [data-notify="title"] {
-            color: rgb(80, 80, 57);
-            display: block;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        [data-notify="container"][class*="alert-pastel-"] > [data-notify="message"] {
-            font-weight: 400;
-        }
-
-
-        .fileUploadInput {
-            display: grid;
-            grid-gap: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-
-        .fileUploadInput input {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            height: 34px;
-            border: 1px solid #d2d6de;
-        }
-
-        .fileUploadInput input[type="file"]::-webkit-file-upload-button {
-            visibility: hidden;
-            margin-left: 10px;
-            padding: 0;
-            height: 34px;
-            width: 0;
-        }
-
-        .fileUploadInput button {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 34px;
-            height: 34px;
-            line-height: 0;
-            user-select: none;
-            color: white;
-            background-color: #3c8dbc;
-            font-weight: 800;
-        }
-
-        .fileUploadInput button svg {
-            width: auto;
-            height: 50%;
-        }
-    </style>
 
 </head>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">

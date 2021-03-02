@@ -1,7 +1,6 @@
 ﻿@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Profile")).FirstOrDefault().Active ||
 SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("User")).FirstOrDefault().Active ||
 SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Configuration")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active ||
 SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
@@ -27,12 +26,7 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ba
             {
                 <li><a href="@Url.Action("Index","Configuration")"><i class="fa fa-circle-o"></i>Configuração</a></li>
             }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
-            }
-
+           
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Base")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","Base")"><i class="fa fa-circle-o"></i>Base</a></li>
@@ -123,8 +117,9 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ba
 }
 
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault().Active ||
-SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Group")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -149,7 +144,10 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Pr
             {
                 <li><a href="@Url.Action("Index","Product")"><i class="fa fa-circle-o"></i>Produto</a></li>
             }
-
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Dar")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Dar")"><i class="fa fa-circle-o"></i>Dar</a></li>
+            }
         </ul>
     </li>
 }

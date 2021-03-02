@@ -3211,6 +3211,44 @@ namespace Escon.SisctNET.Web.Sped
             return products;
         }
 
+        public List<List<string>> NfeProduct(string directorySped)
+        {
+            List<List<string>> products = new List<List<string>>();
+
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        List<string> product = new List<string>();
+                        product.Add(linha[2]);
+                        product.Add(linha[3]);
+                        product.Add(linha[8]);
+                        products.Add(product);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return products;
+        }
+
         // CTe
 
         public List<string> CTeAll(string directorySped)
