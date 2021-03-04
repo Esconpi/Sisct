@@ -340,7 +340,64 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.ReducaoIcms = entity.ReducaoIcms;
+                    entity.Created = DateTime.Now;
+                    entity.Updated = entity.Created;
+
+                    _service.Create(entity, null);
+                }
+
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Loss()
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Loss(Model.Tax entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                int companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+                var imp = _service.FindByMonth(companyid, month, year);
+
+                if (imp != null)
+                {
+                    imp.Perda = entity.Perda;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, null);
+                }
+                else
+                {
+                    entity.CompanyId = companyid;
+                    entity.MesRef = month;
+                    entity.AnoRef = year;
                     entity.Created = DateTime.Now;
                     entity.Updated = entity.Created;
 

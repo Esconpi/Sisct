@@ -73,22 +73,22 @@
                 <table class="table table-striped table-bordered display responsive nowrap" id="tblIndex2" style="width:100%;">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="all">
                                 @Html.DisplayNameFor(model => model.Xprod)
                             </th>
-                            <th>
+                            <th class="all">
                                 @Html.DisplayNameFor(model => model.Ncm)
                             </th>
-                            <th>
+                            <th class="none">
                                 @Html.DisplayNameFor(model => model.Cest)
                             </th>
-                            <th>
+                            <th class="none">
                                 @Html.DisplayNameFor(model => model.Cfop)
                             </th>
-                            <th width="100px">
+                            <th width="100px" class="all">
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
-                            <th>@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
+                            <th class="all">@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
                             <th class="none">Aliquota Interestadual</th>
                             <th class="none">Quantidade</th>
                             <th class="none">Valor Unitário</th>
@@ -96,8 +96,8 @@
                             <th class="none">Valor ICMS</th>
                             <th class="none">Valor IPI</th>
                             <th class="none">ICMS ST</th>
-                            <th></th>
-                            <th></th>
+                            <th class="all"></th>
+                            <th class="all"></th>
                         </tr>
                     </thead>
                     <tbody>

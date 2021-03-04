@@ -1152,18 +1152,14 @@ namespace Escon.SisctNET.Web.Controllers
                                               Convert.ToDecimal(imp.Energia) + Convert.ToDecimal(imp.AluguelPredio) + Convert.ToDecimal(imp.AluguelME) +
                                               Convert.ToDecimal(imp.DespesasF) + Convert.ToDecimal(imp.DespesasME) + Convert.ToDecimal(imp.DespesasA),
                                 cofinsEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualCofins) / 100, 2),
-                                cofinsTotalEntrada = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + saldoCredorCofins,
-                                cofinsCredito = cofinsTotalEntrada,
+                                cofinsCredito = cofinsEntrada + Convert.ToDecimal(imp.CofinsRetido) + saldoCredorCofins,
                                 pisEntrada = Math.Round(totalCompra * Convert.ToDecimal(comp.PercentualPis) / 100, 2),
-                                pisTotalEntrada = pisEntrada + Convert.ToDecimal(imp.PisRetido) + saldoCredorPis,
-                                pisCredito = pisTotalEntrada;
+                                pisCredito = pisEntrada + Convert.ToDecimal(imp.PisRetido) + saldoCredorPis;
 
                         ViewBag.TotalCompra = totalCompra;
                         ViewBag.CofinsEntrada = cofinsEntrada;
-                        ViewBag.CofinsTotalEntrada = cofinsTotalEntrada;
                         ViewBag.CofinsCredito = cofinsCredito;
                         ViewBag.PisEntrada = pisEntrada;
-                        ViewBag.PisTotalEntrada = pisTotalEntrada;
                         ViewBag.PisCredito = pisCredito;
 
                         //  Saida
@@ -1171,37 +1167,45 @@ namespace Escon.SisctNET.Web.Controllers
                                totalVenda = totalVendaLiquida + Convert.ToDecimal(imp.PrestacaoServico) + Convert.ToDecimal(imp.ReceitaFinanceira) +
                                             Convert.ToDecimal(imp.Capital) + Convert.ToDecimal(imp.ReceitaAluguel) + Convert.ToDecimal(imp.Juros),
                                cofinsSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualCofinsRF) / 100, 2),
-                               cofinsSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualCofins) / 100) + cofinsSaidaRF, 2),
-                               cofinsDebito = cofinsSaida,
+                               cofinsDebito = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualCofins) / 100), 2),
                                pisSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualPisRF) / 100, 2),
-                               pisSaida = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualPis) / 100) + pisSaidaRF, 2),
-                               pisDebito = pisSaida;
+                               pisDebito = Math.Round((totalVenda * Convert.ToDecimal(comp.PercentualPis) / 100), 2),
+                               perda = Convert.ToDecimal(imp.Perda), cofinsPerda = perda * Convert.ToDecimal(comp.PercentualCofins) / 100,
+                               pisPerda = perda * Convert.ToDecimal(comp.PercentualPis) / 100;
 
 
                         ViewBag.TotalVendaLiquida = totalVendaLiquida;
                         ViewBag.TotalVenda = totalVenda;
                         ViewBag.CofinsSaidaRF = cofinsSaidaRF;
-                        ViewBag.CofinsSaida = cofinsSaida;
                         ViewBag.CofinsDebito = cofinsDebito;
+                        ViewBag.CofinsPerda = cofinsPerda;
                         ViewBag.PisSaidaRF = pisSaidaRF;
-                        ViewBag.PisSaida = pisSaida;
                         ViewBag.PisDebito = pisDebito;
-
+                        ViewBag.PisPerda = pisPerda;
+                        ViewBag.BasePerda = perda;
+                        
 
                         //  Apuração PIS/COFINS
-                        decimal cofinsRecolher = 0, pisRecolher = 0;
+                        decimal cofinsTotalCredito = cofinsCredito - cofinsPerda, cofinsTotalDebito = cofinsDebito + cofinsSaidaRF,
+                                pisTotalCredito = pisCredito - pisPerda, pisTotaDebito = pisDebito + pisSaidaRF,
+                                cofinsRecolher = 0, pisRecolher = 0;
 
-                        if(cofinsDebito - cofinsCredito < 0)
-                            imp.SaldoCredorCofins = cofinsCredito - cofinsDebito;
+                        if(cofinsTotalDebito - cofinsTotalCredito < 0)
+                            imp.SaldoCredorCofins = cofinsTotalCredito - cofinsTotalDebito;
                         else
-                            cofinsRecolher = cofinsDebito - cofinsCredito;
+                            cofinsRecolher = cofinsTotalDebito - cofinsTotalCredito;
 
-                        if (pisDebito - pisCredito < 0)
-                            imp.SaldoCredorPis = pisCredito - pisDebito;
+                        if (pisTotaDebito - pisTotalCredito < 0)
+                            imp.SaldoCredorPis = pisTotalCredito - pisTotaDebito;
                         else
-                            pisRecolher = pisDebito - pisCredito;
+                            pisRecolher = pisTotaDebito - pisTotalCredito;
 
+
+                        ViewBag.CofinsTotalCredito = cofinsTotalCredito;
+                        ViewBag.CofinsTotalDebito = cofinsTotalDebito;
                         ViewBag.CofinsRecolher = cofinsRecolher;
+                        ViewBag.PisTotalCredito = pisTotalCredito;
+                        ViewBag.PisTotalDebito = pisTotaDebito;
                         ViewBag.PisRecolher = pisRecolher;
 
                         imp.Updated = DateTime.Now;

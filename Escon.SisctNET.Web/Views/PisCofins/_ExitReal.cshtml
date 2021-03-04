@@ -98,7 +98,7 @@
         <tr>
             <th style="text-align:center;border:1px solid;" colspan="2">APURAÇÂO REC. FINANCEIRA</th>
             <th style="text-align:center;border:1px solid;">COFINS</th>
-            <th style="text-align:center;border:1px solid;">PIS S/ FATURAMENTO</th>
+            <th style="text-align:center;border:1px solid;">PIS</th>
         </tr>
     </thead>
     <tbody>
@@ -116,11 +116,31 @@
                 @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisSaidaRF))
             </th>
             <th style="text-align:right;border:1px solid;">
-                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsSaida))
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsDebito))
             </th>
             <th style="text-align:right;border:1px solid;">
-                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisSaida))
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisDebito))
             </th>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table" style="font-size:10px;">
+    <thead>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="4">APURAÇÂO PERDA</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;">(-) PERDAS (BASE DE CÁLCULO) R$</th>
+            <th style="text-align:center;border:1px solid;">COFINS @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualCofins)) %</th>
+            <th style="text-align:center;border:1px solid;">PIS @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.PercentualPis)) %</th>
+        </tr>
+        <tr>
+            <th style="text-align:center;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.BasePerda))</th>
+            <th style="text-align:center;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsPerda))</th>
+            <th style="text-align:center;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisPerda))</th>
         </tr>
     </tbody>
 </table>

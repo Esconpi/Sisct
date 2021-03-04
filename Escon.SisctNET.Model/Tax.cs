@@ -223,5 +223,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? Juros { get; set; }
 
+        public decimal? Perda { get; set; }
+
     }
 }

@@ -3211,7 +3211,7 @@ namespace Escon.SisctNET.Web.Sped
             return products;
         }
 
-        public List<List<string>> NfeProduct(string directorySped)
+        public List<List<string>> NfeNCM(string directorySped)
         {
             List<List<string>> products = new List<List<string>>();
 

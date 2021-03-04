@@ -11,29 +11,36 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Receita" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Receitas</a>
-            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+            <div class="btn-group pull-right">
+                <a asp-action="Receita" size="large" class="btn btn-primary fa fa-plus"> Outras Receitas</a>
+
+                @if (ViewBag.Company.CountingTypeId == 2)
+                {
+                    <a asp-action="Reduction" size="large" class="btn btn-primary fa fa-plus"> Reduções</a>
+                }
+                @if (ViewBag.Company.CountingTypeId == 1)
+                {
+                    <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus"> Outras Despesas</a>
+                }
+                <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus"> Retenções</a>
+            </div>
             <br />
             <br />
 
-            @if (ViewBag.Company.CountingTypeId == 2)
-            {
-                <a asp-action="Reduction" size="large" class="btn btn-primary fa fa-plus pull-right"> Reduções</a>
-            }
-            else if (ViewBag.Company.CountingTypeId == 1)
-            {
-                <a asp-action="Despesa" size="large" class="btn btn-primary fa fa-plus pull-left"> Outras Despesas</a>
-            }
-            <a asp-action="Retention" size="large" class="btn btn-primary fa fa-plus pull-right"> Retenções</a>
+            <div class="btn-group pull-right">
+                @if (ViewBag.Company.CountingTypeId == 1)
+                {
+                    <a asp-action="Loss" size="large" class="btn btn-primary fa fa-plus"> Perdas</a>
+                }
 
-            @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
-               SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
-            {
-                <br />
-                <br />
-                <a asp-action="Pag" size="large" class="btn btn-primary fa fa-plus pull-right"> Pagamentos</a>
-            }
+                @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
+                  SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
+                {
+                    <a asp-action="Pag" size="large" class="btn btn-primary fa fa-plus"> Pagamentos</a>
+                }
 
+                <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload"> Importar</a>
+            </div>
         </div>
 
         <div style="width:100%; text-align:center;padding-top:100px;">

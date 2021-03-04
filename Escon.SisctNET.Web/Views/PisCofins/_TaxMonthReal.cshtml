@@ -16,9 +16,9 @@
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;">VALOR DOS DÉBITOS</td>
-            <td style="text-align:right;border:1px solid;" width="20%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsSaida))</td>
+            <td style="text-align:right;border:1px solid;" width="20%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsDebito))</td>
             <td style="text-align:right;border:1px solid;">VALOR DOS DÉBITOS</td>
-            <td style="text-align:right;border:1px solid;" width="20%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisSaida))</td>
+            <td style="text-align:right;border:1px solid;" width="20%">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisDebito))</td>
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;">(+) OUTROS DÉBITOS</td>
@@ -28,9 +28,9 @@
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
-            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsDebito))</th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsTotalDebito))</th>
             <th style="text-align:right;border:1px solid;">(=) TOTAL DÉBITOS</th>
-            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisDebito))</th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisTotalDebito))</th>
         </tr>
         <tr>
             <th style="text-align:center;border:1px solid;" colspan="2">CRÉDITO COFINS</th>
@@ -38,9 +38,9 @@
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;">VALOR DOS CRÉDITOS</td>
-            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsTotalEntrada))</td>
+            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsCredito))</td>
             <td style="text-align:right;border:1px solid;">VALOR DOS CRÉDITOS</td>
-            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisTotalEntrada))</td>
+            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisCredito))</td>
         </tr>
         <tr>
             <td style="text-align:right;border:1px solid;">(+) OUTROS CRÉDITOS</td>
@@ -55,10 +55,16 @@
             <td style="text-align:right;border:1px solid;"></td>
         </tr>
         <tr>
+            <td style="text-align:right;border:1px solid;">(-) ESTORNO DE CRÉDITO</td>
+            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsPerda))</td>
+            <td style="text-align:right;border:1px solid;">(-) ESTORNO DE CRÉDITO</td>
+            <td style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisPerda))</td>
+        </tr>
+        <tr>
             <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
-            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsCredito))</th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.CofinsTotalCredito))</th>
             <th style="text-align:right;border:1px solid;">(=) TOTAL CRÉDITOS</th>
-            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisCredito))</th>
+            <th style="text-align:right;border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.PisTotalCredito))</th>
         </tr>
         <tr>
             <th style="text-align:right;border:1px solid;">COFINS A RECOLHER OU A TRANSPORTAR</th>
