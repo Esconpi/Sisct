@@ -11,10 +11,13 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Dados Anexo</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-right"> Importar</a>
+            <a asp-action="Import" size="large" class="btn btn-primary"> 
+                <i class="fa fa-cloud-upload"></i>
+                Importar
+            </a>
         </div>
 
-        <div style="width:100%; text-align:center; padding-top:10px;">
+        <div style="width:100%; text-align:center; padding-top:20px;">
             <strong>@ViewBag.Company.SocialName</strong> <br />
             <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>

@@ -10,7 +10,9 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Clientes</strong></h3>
         <div class="btn-group pull-right">
-            @Html.ActionLink("Relação de Contribuintes", "Contribuinte", new { id = SessionManager.GetCompanyIdInSession() }, new { @class = "btn btn-primary" })
+            <a asp-action="Contribuinte" asp-route-id="@SessionManager.GetCompanyIdInSession()" class="btn btn-primary">
+                Relação de Contribuintes
+            </a>
             <a href="#" id=@SessionManager.GetCompanyIdInSession() class="btn btn-primary showAtualize">
                 <i class="fa fa-refresh"></i>
                 Atualizar

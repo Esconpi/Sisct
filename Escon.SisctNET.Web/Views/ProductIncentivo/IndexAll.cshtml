@@ -11,11 +11,17 @@
             <strong>Produto</strong>
         </h3>
         <div class="btn-group pull-right">
-            <a asp-action="Lista" size="large" class="btn btn-primary fa fa-file pull-left"> Relação de Produtos</a>
-            <a asp-action="Import" size="large" class="btn btn-primary fa fa-cloud-upload pull-left"> Importar</a>
+            <a asp-action="Lista" size="large" class="btn btn-primary"> 
+                <i class="fa fa-file"></i>
+                Relação de Produtos
+            </a>
+            <a asp-action="Import" size="large" class="btn btn-primary"> 
+                <i class="fa fa-cloud-upload"></i>
+                Importar
+            </a>
         </div>
 
-        <div style="width:100%; text-align:center; padding-top:10px;">
+        <div style="width:100%; text-align:center; padding-top:20px;">
             <strong>@ViewBag.Company.SocialName</strong> <br />
             <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
         </div>

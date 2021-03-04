@@ -16,10 +16,10 @@
             <th style="text-align:center;border:1px solid;" width="80px" rowspan="2">
                 COFINS RETIDO
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px" colspan="2">
+            <th style="text-align:center;border:1px solid;" width="80px" colspan="3">
                 CSLL
             </th>
-            <th style="text-align:center;border:1px solid;" width="80px" colspan="3">
+            <th style="text-align:center;border:1px solid;" width="80px" colspan="4">
                 IRPJ
             </th>
         </tr>
@@ -31,6 +31,9 @@
                 FONTE
             </th>
             <th style="text-align:center;border:1px solid;">
+                PAGO
+            </th>
+            <th style="text-align:center;border:1px solid;">
                 RETIDO
             </th>
             <th style="text-align:center;border:1px solid;">
@@ -38,6 +41,9 @@
             </th>
             <th style="text-align:center;border:1px solid;">
                 FONTE APLIC. FINANÇEIRAS
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                PAGO
             </th>
         </tr>
         <tr>
@@ -68,6 +74,12 @@
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.CsllPago))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
                     @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjRetido))
                 }
             </td>
@@ -81,6 +93,12 @@
                 @if (Model != null)
                 {
                     @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjFonteFinanceira))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.IrpjPago))
                 }
             </td>
         </tr>
