@@ -259,7 +259,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var prod = _service.FindById(id, GetLog(OccorenceLog.Read));
+                var prod = _service.FindByProduct(id);
                 var calculation = new Taxation.Calculation();
 
                 int taxationType = Convert.ToInt32(entity.TaxationTypeId);
@@ -272,7 +272,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 DateTime dateStart = Convert.ToDateTime(entity.DateStart);
 
-                var notes = _noteService.FindByUf(prod.Note.Company.Id, prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
+                var notes = _noteService.FindByUf(Convert.ToInt32(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
 
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
 
