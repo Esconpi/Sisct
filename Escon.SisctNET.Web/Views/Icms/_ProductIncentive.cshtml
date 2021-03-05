@@ -113,7 +113,9 @@
             </tr>
             <tr>
                 <td style="font-size:11px;">Venda p/ Não Contribuintes Fora do Estado ST (R$)</td>
-                <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.VendaNContribuinteNIncentivoForaDoEstado)</td>
+                <td style="text-align:right; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.VendaNContribuinteNIncentivoForaDoEstado) + Convert.ToDecimal(ViewBag.VendaSTForaEstadoNContribuinte))
+                </td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>
                 <td style="text-align:right"></td>

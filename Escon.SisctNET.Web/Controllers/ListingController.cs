@@ -577,6 +577,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Archive = archive;
                 ViewBag.Products = products.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
 
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
                 return View();
             }
             catch(Exception ex)
