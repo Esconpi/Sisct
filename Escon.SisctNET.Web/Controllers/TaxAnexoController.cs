@@ -121,7 +121,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(string type, IFormFile arquivo)
+        public async Task<IActionResult> Import(string type, IFormFile arqchive)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -225,7 +225,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
 
-                    await arquivo.CopyToAsync(stream);
+                    await arqchive.CopyToAsync(stream);
 
                     stream.Close();
 

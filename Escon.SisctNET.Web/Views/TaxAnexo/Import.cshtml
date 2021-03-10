@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">
                         <label class="control-label">Tipo do Arquivo</label>
-                        <select name="archive" class="form-control selectoption" id="status" onchange="ativar_button()">
+                        <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
                             <option value="nenhum">Selecione um tipo de arquivo</option>
                             <option value="sped">SPED</option>
                             <option value="xmlS">XML SEFAZ</option>
@@ -27,7 +27,7 @@
                     <div class="form-group col-lg-9 col-md-6 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
                         <div class="fileUploadInput">
-                            <input type="file" name="arquivo" id="file" accept=".txt" disable multiple onchange="ativar_button()">
+                            <input type="file" name="arqchive" id="file" accept=".txt" disabled multiple onchange="ativar_button()">
                             <button><i class="fa fa-cloud-upload"></i></button>
                         </div>
                     </div>
