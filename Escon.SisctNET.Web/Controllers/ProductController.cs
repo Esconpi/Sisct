@@ -263,10 +263,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
-        }
+        }  
 
         [HttpPost]
-        public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)
+        public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)       
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -281,8 +281,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string filedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Atos");
 
-                if (!Directory.Exists(filedir))
-                    Directory.CreateDirectory(filedir);
+                if (!Directory.Exists(filedir)) Directory.CreateDirectory(filedir);
 
                 string nomeArquivo = "Ato";
 
@@ -295,8 +294,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string[] paths_upload_ato = Directory.GetFiles(caminhoDestinoArquivo);
 
-                if (System.IO.File.Exists(caminhoDestinoArquivoOriginal))
-                    System.IO.File.Delete(caminhoDestinoArquivoOriginal);
+                if (System.IO.File.Exists(caminhoDestinoArquivoOriginal)) System.IO.File.Delete(caminhoDestinoArquivoOriginal);
 
                 var stream = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
                 await arquivo.CopyToAsync(stream);
@@ -345,9 +343,9 @@ namespace Escon.SisctNET.Web.Controllers
                 return RedirectToAction("Index");
 
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException iEx)
             {
-                return BadRequest(new { erro = 500, message = ex.Message });
+                return BadRequest(new { erro = 500, message = iEx.Message });
             }
             catch (ArgumentException aEx)
             {
@@ -428,3 +426,4 @@ namespace Escon.SisctNET.Web.Controllers
         }
     }
 }
+   

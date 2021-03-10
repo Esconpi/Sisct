@@ -247,8 +247,6 @@ namespace Escon.SisctNET.Web.Controllers
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
 
-            ViewBag.Company = comp;
-
             string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
             string directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
 
@@ -337,9 +335,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                 {
                     if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
-                    {
                         notas.Add(notaImport);
-                    }
                 }
 
                 var nota = _service.FindByNote(notes[i][0]["chave"]);
@@ -571,9 +567,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseCalc = calculation.baseCalc(baseDeCalc, vDesc);
 
                                     if (taxed.MVA != null)
-                                    {
                                         valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
-                                    }
+
                                     if (taxed.BCR != null)
                                     {
                                         valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
@@ -595,9 +590,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
 
                                     if (valorbcr > 0)
-                                    {
                                         valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
-                                    }
 
                                     totalIcms = calculation.totalIcms(valorAgreAliqInt, valorIcms);
 
@@ -607,10 +600,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
+
                                     if (number != "4.00")
-                                    {
                                         pICMS = aliq_simples.Aliquota;
-                                    }
+
                                     dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
                                     icmsApu = calculation.icmsApurado(dif, baseCalc);
                                 }

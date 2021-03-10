@@ -75,8 +75,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
 
-                          
-
                 if (comp.CountingTypeId == null)
                 {
                     ViewBag.Erro = 1;
