@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,14 +7,11 @@ namespace Escon.SisctNET.Model
     [Table("note")]
     public class Note : EntityBase
     {
-        public ILazyLoader LazyLoader { get; set; }
-
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
         public Nullable<int> CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
-
 
         [Display(Name = "Chave")]
         public string Chave { get; set; }

@@ -329,7 +329,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession());
+            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ie).ToList();
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -393,8 +393,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(),SessionManager.GetYearInSession(),SessionManager.GetMonthInSession());
-
+            var clintesAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(),SessionManager.GetYearInSession(),SessionManager.GetMonthInSession()).OrderBy(_ => _.Ie).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

@@ -263,7 +263,7 @@ namespace Escon.SisctNET.Web.Controllers
             Dictionary<string, string> det = new Dictionary<string, string>();
 
             int erro = 0;
-            string url = "Index", chave = "Nenhuma";
+            string url = "Index", chave = "";
 
             for (int i = notes.Count - 1; i >= 0; i--)
             {
@@ -501,10 +501,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (taxed == null)
                             {
+                                tributada = false;
+
                                 try
                                 {
-                                    tributada = false;
-
                                     prod.Cprod = det["cProd"];
                                     prod.Ncm = NCM;
                                     prod.Cest = CEST;
@@ -695,7 +695,7 @@ namespace Escon.SisctNET.Web.Controllers
                 _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
                 addProduct.Clear();
 
-                if (tributada == true)
+                if (tributada == true && addProduct.Count() > 0)
                 {
                     nota.Status = true;
                     _service.Update(nota, GetLog(Model.OccorenceLog.Update));
