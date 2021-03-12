@@ -80,9 +80,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notesValidas = importXml.NFeResumeEmit(directoryValida);
                     notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
-                    notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
+                    notesNFeCanceladasEvento = importEvento.NFeCancelada(directoryNFeCancelada);
                     notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
-                    notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                    notesNFCeCanceladasEvento = importEvento.NFeCancelada(directoryNFCeCancelada);
 
                     for (int i = notesValidas.Count - 1; i >= 0; i--)
                     {
@@ -476,7 +476,7 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
 
-                    var sped = importSped.NfeType(caminhoDestinoArquivoOriginalSped, "1");
+                    var sped = importSped.NFeType(caminhoDestinoArquivoOriginalSped, "1");
 
                     foreach (var note in sped)
                     {

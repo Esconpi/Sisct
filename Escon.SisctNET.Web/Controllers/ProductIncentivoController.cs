@@ -97,7 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
 
-                products = importXml.Products(directoryNfe);
+                products = importXml.NFeProduct(directoryNfe);
 
                 var productsAll = _service.FindByAllProducts(comp.Document);
 

@@ -9,7 +9,7 @@ namespace Escon.SisctNET.Web.Evento
 {
     public class Import
     {
-        public List<List<Dictionary<string, string>>> Nfe(string directoryNfe)
+        public List<List<Dictionary<string, string>>> NFeCancelada(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -98,9 +98,9 @@ namespace Escon.SisctNET.Web.Evento
             return notes;
         }
 
-        public List<List<List<string>>> MoveCanceladaSefaz(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
-           List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
-           List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
+        public List<List<List<string>>> NFeCanceladaSefaz(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
+                                                          List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
+                                                          List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
         {
             List<List<List<string>>> notes = new List<List<List<string>>>();
             List<List<string>> notes55 = new List<List<string>>();
@@ -238,7 +238,7 @@ namespace Escon.SisctNET.Web.Evento
 
         }
 
-        public List<List<List<string>>> MoveCanceladaEmpresa(string directoryNfe, List<List<string>> spedNFeCancelada, List<List<string>> spedNFCeCancelada)
+        public List<List<List<string>>> NFeCanceladaEmpresa(string directoryNfe, List<List<string>> spedNFeCancelada, List<List<string>> spedNFCeCancelada)
         {
             List<List<List<string>>> notes = new List<List<List<string>>>();
 

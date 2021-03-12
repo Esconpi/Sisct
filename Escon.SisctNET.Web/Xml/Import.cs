@@ -30,6 +30,92 @@ namespace Escon.SisctNET.Web.Xml
 
         // NFe
 
+        public List<List<string>> NFeNCM(string directoryNfe)
+        {
+            List<List<string>> ncms = new List<List<string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+
+                                        case "prod":
+
+                                            List<string> prod = new List<string>();
+                                            reader.Read();
+                                            string ncm = "", code = "", produto = "";
+                                            bool status = false;
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "cProd")
+                                                {
+                                                    code = reader.ReadString();
+                                                }
+                                                if (reader.Name == "NCM")
+                                                {
+                                                    ncm = reader.ReadString();
+                                                }
+
+                                                if (reader.Name == "xProd")
+                                                {
+                                                    produto = reader.ReadString();
+                                                }
+
+                                                reader.Read();
+
+                                            }
+
+                                            for (int e = 0; e < ncms.Count(); e++)
+                                            {
+                                                if (ncms[e][0].Equals(code) && ncms[e][1].Equals(ncm))
+                                                {
+                                                    status = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (ncms.Count == 0 || status.Equals(false))
+                                            {
+                                                prod.Add(code);
+                                                prod.Add(ncm);
+                                                prod.Add(produto);
+                                                ncms.Add(prod);
+                                            }
+                                            break;
+
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return ncms;
+        }
+
         public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
@@ -287,6 +373,390 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
+        public List<List<Dictionary<string, string>>> NFeResumeEmit(string directoryNfe)
+        {
+            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    if (new FileInfo(archivesNfes[i]).Length != 0)
+                    {
+                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                        Dictionary<string, string> ide = new Dictionary<string, string>();
+                        Dictionary<string, string> emit = new Dictionary<string, string>();
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+                        Dictionary<string, string> infProt = new Dictionary<string, string>();
+
+                        List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
+
+                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(arq))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
+                                                }
+                                            }
+                                            note.Add(infNFe);
+                                            break;
+
+
+                                        case "ide":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ide" && reader.Name != "NFref")
+                                            {
+                                                if (reader.Name.ToString() == "dhEmi")
+                                                {
+                                                    string data = Convert.ToDateTime(reader.ReadString().Substring(0, 10)).ToString("dd/MM/yyyy");
+                                                    ide.Add(reader.Name, data);
+                                                }
+                                                else
+                                                {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(ide);
+                                            break;
+
+
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    emit.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(emit);
+                                            break;
+
+                                        case "ICMSTot":
+                                            Dictionary<string, string> total = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "ICMSTot")
+                                            {
+                                                total.Add(reader.Name, reader.ReadString());
+                                                reader.Read();
+                                            }
+                                            note.Add(total);
+                                            break;
+
+                                        case "infProt":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "infProt")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    infProt.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            note.Add(infProt);
+                                            break;
+
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            arq.Close();
+                        }
+
+                        if (note.Count > 0)
+                            notes.Add(note);
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            return notes;
+        }
+
+        public List<Dictionary<string, string>> NFeClient(string directoryNfe)
+        {
+            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "dest":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "dest")
+                                            {
+                                                if (reader.Name.ToString() != "enderDest")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            bool status = false;
+
+                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
+
+                                            for (int e = 0; e < dets.Count(); e++)
+                                            {
+                                                if (dets[e].ContainsKey("CNPJ"))
+                                                {
+                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (dets[e].ContainsKey("CPF"))
+                                                {
+                                                    if (dets[e]["CPF"].Equals(CPF))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                            if (dets.Count() == 0 || status == false)
+                                            {
+                                                dets.Add(dest);
+                                            }
+
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return dets;
+        }
+
+        public List<Dictionary<string, string>> NFeProvider(string directoryNfe)
+        {
+            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+                        Dictionary<string, string> dest = new Dictionary<string, string>();
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "emit":
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "emit")
+                                            {
+                                                if (reader.Name.ToString() != "enderEmit")
+                                                {
+                                                    dest.Add(reader.Name, reader.ReadString());
+                                                }
+                                                reader.Read();
+                                            }
+                                            bool status = false;
+
+                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
+                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
+
+                                            for (int e = 0; e < dets.Count(); e++)
+                                            {
+                                                if (dets[e].ContainsKey("CNPJ"))
+                                                {
+                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (dets[e].ContainsKey("CPF"))
+                                                {
+                                                    if (dets[e]["CPF"].Equals(CPF))
+                                                    {
+                                                        status = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                            if (dets.Count() == 0 || status == false)
+                                            {
+                                                dets.Add(dest);
+                                            }
+
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return dets;
+        }
+
+        public List<Dictionary<string, string>> NFeProduct(string directoryNfe)
+        {
+            List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
+                    {
+
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "prod":
+
+                                            Dictionary<string, string> prod = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name.ToString() != "prod")
+                                            {
+                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
+                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
+                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
+                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
+                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
+                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
+                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
+                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
+                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
+                                                    reader.Name == "nRECOPI")
+                                                {
+
+                                                    prod.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+
+                                            }
+
+                                            bool status = false;
+
+                                            string CEST = prod.ContainsKey("CEST") ? prod["CEST"] : "";
+
+                                            for (int e = 0; e < products.Count(); e++)
+                                            {
+                                                string cestTemp = products[e].ContainsKey("CEST") ? products[e]["CEST"] : "";
+
+                                                if (products[e]["cProd"].Equals(prod["cProd"]) && products[e]["NCM"].Equals(prod["NCM"]) && CEST.Equals(cestTemp))
+                                                {
+                                                    status = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (products.Count == 0 || status.Equals(false))
+                                            {
+                                                products.Add(prod);
+                                            }
+
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return products;
+        }
+       
         public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe, string directotyCte)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
@@ -925,7 +1395,7 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<List<Dictionary<string, string>>> NFeAllCFOP(string directoryNfe, string codeCfop)
+        public List<List<Dictionary<string, string>>> NFeCFOP(string directoryNfe, string codeCfop)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
             try
@@ -1199,129 +1669,9 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<List<Dictionary<string, string>>> NFeResumeEmit(string directoryNfe)
-        {
-            List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    if (new FileInfo(archivesNfes[i]).Length != 0)
-                    {
-                        Dictionary<string, string> infNFe = new Dictionary<string, string>();
-                        Dictionary<string, string> ide = new Dictionary<string, string>();
-                        Dictionary<string, string> emit = new Dictionary<string, string>();
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-                        Dictionary<string, string> infProt = new Dictionary<string, string>();
-
-                        List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
-
-                        StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(arq))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "infNFe":
-                                            while (reader.MoveToNextAttribute())
-                                            {
-                                                if (reader.Name == "Id")
-                                                {
-                                                    infNFe.Add("chave", reader.Value.Substring(3, 44));
-                                                }
-                                            }
-                                            note.Add(infNFe);
-                                            break;
-
-
-                                        case "ide":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ide" && reader.Name != "NFref")
-                                            {
-                                                if (reader.Name.ToString() == "dhEmi")
-                                                {
-                                                    string data = Convert.ToDateTime(reader.ReadString().Substring(0, 10)).ToString("dd/MM/yyyy");
-                                                    ide.Add(reader.Name, data);
-                                                }
-                                                else
-                                                {
-                                                    ide.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(ide);
-                                            break;
-
-
-                                        case "emit":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "emit")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    emit.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(emit);
-                                            break;
-
-                                        case "ICMSTot":
-                                            Dictionary<string, string> total = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
-                                            {
-                                                total.Add(reader.Name, reader.ReadString());
-                                                reader.Read();
-                                            }
-                                            note.Add(total);
-                                            break;
-
-                                        case "infProt":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "infProt")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    infProt.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            note.Add(infProt);
-                                            break;
-
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            arq.Close();
-                        }
-
-                        if (note.Count > 0)
-                            notes.Add(note);
-
-                    }
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            return notes;
-        }
-
         public List<List<List<string>>> NFeCanceladaSefaz(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
-         List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
-         List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
+                                                          List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
+                                                          List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
         {
             List<List<List<string>>> notes = new List<List<List<string>>>();
             List<List<string>> notes55 = new List<List<string>>();
@@ -1558,356 +1908,6 @@ namespace Escon.SisctNET.Web.Xml
 
             return notes;
         }
-       
-        public List<Dictionary<string, string>> Client(string directoryNfe)
-        {
-            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "dest":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "dest")
-                                            {
-                                                if (reader.Name.ToString() != "enderDest")
-                                                {
-                                                    dest.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            bool status = false;
-
-                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
-                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
-
-                                            for (int e = 0; e < dets.Count(); e++)
-                                            {
-                                                if (dets[e].ContainsKey("CNPJ"))
-                                                {
-                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
-                                                    {
-                                                        status = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                                if (dets[e].ContainsKey("CPF"))
-                                                {
-                                                    if (dets[e]["CPF"].Equals(CPF))
-                                                    {
-                                                        status = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                            }
-                                            if(dets.Count() == 0 || status == false)
-                                            {
-                                                dets.Add(dest);
-                                            }
-                                            
-                                            break;
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return dets;
-        }
-
-        public List<Dictionary<string, string>> Provider(string directoryNfe)
-        {
-            List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        Dictionary<string, string> dest = new Dictionary<string, string>();
-
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "emit":
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "emit")
-                                            {
-                                                if (reader.Name.ToString() != "enderEmit")
-                                                {
-                                                    dest.Add(reader.Name, reader.ReadString());
-                                                }
-                                                reader.Read();
-                                            }
-                                            bool status = false;
-
-                                            string CNPJ = dest.ContainsKey("CNPJ") ? dest["CNPJ"] : "";
-                                            string CPF = dest.ContainsKey("CPF") ? dest["CPF"] : "";
-
-                                            for (int e = 0; e < dets.Count(); e++)
-                                            {
-                                                if (dets[e].ContainsKey("CNPJ"))
-                                                {
-                                                    if (dets[e]["CNPJ"].Equals(CNPJ))
-                                                    {
-                                                        status = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                                if (dets[e].ContainsKey("CPF"))
-                                                {
-                                                    if (dets[e]["CPF"].Equals(CPF))
-                                                    {
-                                                        status = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                            }
-                                            if (dets.Count() == 0 || status == false)
-                                            {
-                                                dets.Add(dest);
-                                            }
-
-                                            break;
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return dets;
-        }
-
-        public List<List<string>> FindByNcms(string directoryNfe)
-        {
-            List<List<string>> ncms = new List<List<string>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-
-                                        case "prod":
-
-                                            List<string> prod = new List<string>();
-                                            reader.Read();
-                                            string ncm = "", code = "", produto = "";
-                                            bool status = false;
-                                            while (reader.Name.ToString() != "prod")
-                                            {
-                                                if (reader.Name == "cProd")
-                                                {
-                                                    code = reader.ReadString();
-                                                }
-                                                if (reader.Name == "NCM")
-                                                {
-                                                    ncm = reader.ReadString();
-                                                }
-
-                                                if(reader.Name == "xProd")
-                                                {
-                                                    produto = reader.ReadString();
-                                                }
-
-                                                reader.Read();
-
-                                            }
-
-                                            for (int e = 0; e < ncms.Count(); e++)
-                                            {
-                                                if (ncms[e][0].Equals(code) && ncms[e][1].Equals(ncm))
-                                                {
-                                                    status = true;
-                                                    break;
-                                                }
-                                            }
-
-                                            if (ncms.Count == 0 || status.Equals(false))
-                                            {
-                                                prod.Add(code);
-                                                prod.Add(ncm);
-                                                prod.Add(produto);
-                                                ncms.Add(prod);
-                                            }
-                                            break;
-
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return ncms;
-        }
-
-        public List<Dictionary<string, string>> Products(string directoryNfe)
-        {
-            List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
-            try
-            {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-
-                string[] archivesNfes = Directory.GetFiles(directoryNfe);
-
-
-                for (int i = 0; i < archivesNfes.Count(); i++)
-                {
-                    var arquivo = archivesNfes[i];
-
-                    if (new FileInfo(arquivo).Length != 0 && arquivo.Contains(".xml"))
-                    {
-
-                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
-                        using (XmlReader reader = XmlReader.Create(sr))
-                        {
-                            while (reader.Read())
-                            {
-                                if (reader.IsStartElement())
-                                {
-                                    switch (reader.Name)
-                                    {
-                                        case "prod":
-
-                                            Dictionary<string, string> prod = new Dictionary<string, string>();
-                                            reader.Read();
-                                            while (reader.Name.ToString() != "prod")
-                                            {
-                                                if (reader.Name == "cProd" || reader.Name == "cEAN" || reader.Name == "xProd" ||
-                                                    reader.Name == "NCM" || reader.Name == "CEST" || reader.Name == "indEscala" ||
-                                                    reader.Name == "CNPJFab" || reader.Name == "cBenef" || reader.Name == "EXTIPI" ||
-                                                    reader.Name == "CFOP" || reader.Name == "uCom" || reader.Name == "qCom" ||
-                                                    reader.Name == "vUnCom" || reader.Name == "vProd" || reader.Name == "cEANTrib" ||
-                                                    reader.Name == "uTrib" || reader.Name == "qTrib" || reader.Name == "vUnTrib" ||
-                                                    reader.Name == "vFrete" || reader.Name == "vSeg" || reader.Name == "vDesc" ||
-                                                    reader.Name == "vOutro" || reader.Name == "intTot" || reader.Name == "xPed" ||
-                                                    reader.Name == "nItemPed" || reader.Name == "vTotTrib" || reader.Name == "Nfci" ||
-                                                    reader.Name == "nRECOPI")
-                                                {
-
-                                                    prod.Add(reader.Name, reader.ReadString());
-                                                }
-
-                                                reader.Read();
-
-                                            }
-
-                                            bool status = false;
-
-                                            string CEST = prod.ContainsKey("CEST") ? prod["CEST"] : "";
-
-                                            for (int e = 0; e < products.Count(); e++)
-                                            {
-                                                string cestTemp = products[e].ContainsKey("CEST") ? products[e]["CEST"] : "";
-
-                                                if (products[e]["cProd"].Equals(prod["cProd"]) && products[e]["NCM"].Equals(prod["NCM"]) && CEST.Equals(cestTemp))
-                                                {
-                                                    status = true;
-                                                    break;
-                                                }
-                                            }
-
-                                            if (products.Count == 0 || status.Equals(false))
-                                            {
-                                                products.Add(prod);
-                                            }
-                                            
-                                            break;
-                                    }
-                                }
-                            }
-                            reader.Close();
-                            sr.Close();
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-
-            return products;
-        }     
 
 
         // CTe

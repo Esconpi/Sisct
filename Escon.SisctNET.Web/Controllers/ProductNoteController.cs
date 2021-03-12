@@ -757,7 +757,7 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.BCR = bcr;
                     taxation.Fecop = fecop;
                     taxation.TaxationTypeId = taxationType;
-                    taxation.NcmId = ncm != null ? ncm.Id : 16427;
+                    taxation.NcmId = ncm == null ? 16427 : ncm.Id;
                     taxation.Picms = prod.Picms;
                     taxation.Uf = prod.Note.Uf;
                     taxation.DateStart = dateStart;
@@ -779,14 +779,13 @@ namespace Escon.SisctNET.Web.Controllers
                     var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
 
                     if (productTaxation.Count == 0)
-                    {
                         status = true;
-                    }
 
                     nota.Status = status;
                     nota.Updated = DateTime.Now;
 
-                    updateNote.Add(nota);
+                    if(nota.Status)
+                        updateNote.Add(nota);
                 }
 
                 _noteService.Update(updateNote);

@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import();
                 List<List<string>> ncms = new List<List<string>>();
-                ncms = importXml.FindByNcms(directoryNfe);
+                ncms = importXml.NFeNCM(directoryNfe);
 
                 List<TaxationNcm> ncmsCompany = new List<TaxationNcm>();
 

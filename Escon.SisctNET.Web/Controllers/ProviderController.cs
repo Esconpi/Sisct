@@ -88,7 +88,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = importXml.Provider(directoryNfe);
+                dets = importXml.NFeProvider(directoryNfe);
 
                 int tipoCliente = 1;
 

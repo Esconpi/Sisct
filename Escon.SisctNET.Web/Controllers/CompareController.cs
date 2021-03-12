@@ -126,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
                     {
-                        spedNormal = importSped.SpedDif(caminhoDestinoArquivoOriginalSped);
+                        spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped);
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
                     }
                     else
@@ -144,9 +144,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
                         notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
-                        notesNFeCanceladasEvento = importEvento.Nfe(directoryNFeCancelada);
+                        notesNFeCanceladasEvento = importEvento.NFeCancelada(directoryNFeCancelada);
                         notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
-                        notesNFCeCanceladasEvento = importEvento.Nfe(directoryNFCeCancelada);
+                        notesNFCeCanceladasEvento = importEvento.NFeCancelada(directoryNFCeCancelada);
                     }
 
                     List<List<Dictionary<string, string>>> notasValidas = new List<List<Dictionary<string, string>>>();
@@ -298,7 +298,7 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
                     {
                         if (ident.Equals("0"))
-                            spedNormal = importSped.NfeTypeEmission(caminhoDestinoArquivoOriginalSped, ident, "1");
+                            spedNormal = importSped.NFeTypeEmission(caminhoDestinoArquivoOriginalSped, ident, "1");
 
                         qtdValida += spedNormal.Count();
                         qtdInvalida += (spedNFeCancelada.Count() + spedNFCeCancelada.Count());
@@ -690,7 +690,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
-                        var notesSped = importSped.NfeType(caminhoDestinoArquivoOriginalSped, ident);
+                        var notesSped = importSped.NFeType(caminhoDestinoArquivoOriginalSped, ident);
                         var notesPlanilha = importExcel.Notes(caminhoDestinoArquivoOriginalExcel);
                         
                         foreach (var nPlanilha in notesPlanilha)

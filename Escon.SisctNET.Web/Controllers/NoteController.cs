@@ -693,13 +693,14 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
-                addProduct.Clear();
 
                 if (tributada == true && addProduct.Count() > 0)
                 {
                     nota.Status = true;
                     _service.Update(nota, GetLog(Model.OccorenceLog.Update));
                 }
+
+                addProduct.Clear(); 
             }
 
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

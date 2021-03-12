@@ -95,7 +95,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
 
-                dets = importXml.Client(directoryNfe);
+                dets = importXml.NFeClient(directoryNfe);
 
                 int tipoCliente = 1;
 

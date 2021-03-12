@@ -765,9 +765,9 @@ namespace Escon.SisctNET.Web.Controllers
                     opcao = "saida";
 
                     if (opcao.Equals("saida"))
-                        notes = importXml.NFeAllCFOP(directoryNfeExit, cfop.Code);
+                        notes = importXml.NFeCFOP(directoryNfeExit, cfop.Code);
                     else
-                        notes = importXml.NFeAllCFOP(directoryNfeEntry, cfop.Code);
+                        notes = importXml.NFeCFOP(directoryNfeEntry, cfop.Code);
 
 
                     List<List<string>> resumoNote = new List<List<string>>();
@@ -1162,7 +1162,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             var cfop = cfopsAll.Where(_ => _.Id.Equals(cfopid)).FirstOrDefault();
 
-                            notes = importXml.NFeAllCFOP(directoryNfeExit, cfop.Code);
+                            notes = importXml.NFeCFOP(directoryNfeExit, cfop.Code);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {

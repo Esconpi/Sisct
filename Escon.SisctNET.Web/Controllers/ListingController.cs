@@ -86,11 +86,11 @@ namespace Escon.SisctNET.Web.Controllers
                     await arquivoSped.CopyToAsync(streamSped);
                     streamSped.Close();
                     if (aliquotIcms.Equals(""))
-                        products = importSped.NfeProduct(caminhoDestinoArquivoOriginalSped, cfops);
+                        products = importSped.NFeProduct(caminhoDestinoArquivoOriginalSped, cfops);
                     else
                     {
                         if(aliquotFecop.Equals(""))
-                            products = importSped.NfeProduct(caminhoDestinoArquivoOriginalSped, cfops, Convert.ToDecimal(aliquotIcms));
+                            products = importSped.NFeProduct(caminhoDestinoArquivoOriginalSped, cfops, Convert.ToDecimal(aliquotIcms));
                     }
                 }
                 else

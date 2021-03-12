@@ -743,7 +743,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal totalNota = 0, valorContabil = 0, basePis = 0, valorPis = 0, baseCofins = 0, valorCofins = 0;
                     ViewBag.Code = cfop.Code;
 
-                    notes = importXml.NFeAllCFOP(directoryNfeExit, cfop.Code);
+                    notes = importXml.NFeCFOP(directoryNfeExit, cfop.Code);
 
                     List<List<string>> resumoNote = new List<List<string>>();
 
