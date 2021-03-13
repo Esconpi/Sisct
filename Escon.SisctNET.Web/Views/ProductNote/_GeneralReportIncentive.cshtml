@@ -4,6 +4,10 @@
             <tr>
                 <th></th>
                 <th>Total da Base de Cálculo Incentivo</th>
+                @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+                {
+                    <th>Saldo Anexo CCCXVI</th>
+                }
                 <th>Total Icms Não Incentivado</th>
                 <th>Total Icms Incentivado</th>
                 <th>Total Fecop Não Incentivada</th>
@@ -19,6 +23,10 @@
                         Base de Cálculo Regime
                     </th>
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base)</td>
+                    @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+                    {
+                        <td style="text-align:center"> ---- </td>
+                    }
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
@@ -27,17 +35,21 @@
                 </tr>
             }
 
-            <tr>
-                <th>
-                    Imposto Normal
-                </th>
-                <td style="text-align:center"> ---- </td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal)</td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo) </td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
-                <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral) </th>
-            </tr>
+        <tr>
+            <th>
+                Imposto Normal
+            </th>
+            <td style="text-align:center"> ---- </td>
+            @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+            {
+                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsAnexoCCCXVI)</td>
+            }
+            <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal)</td>
+            <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo) </td>
+            <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
+            <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
+            <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral) </th>
+        </tr>
         </tbody>
     </table>
 </div>

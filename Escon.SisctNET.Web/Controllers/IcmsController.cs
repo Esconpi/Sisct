@@ -25858,7 +25858,7 @@ namespace Escon.SisctNET.Web.Controllers
                             limiteNContribuinte = (baseCalcVenda * (Convert.ToDecimal(comp.VendaCpf))) / 100,
                             limiteContribuinte = (baseCalcVenda * (Convert.ToDecimal(comp.VendaContribuinte))) / 100,
                             limiteTransferencia = (baseCalcVenda * Convert.ToDecimal(comp.Transferencia)) / 100,
-                            limiteTransferenciaInter = (baseCalcCompra * Convert.ToDecimal(comp.TransferenciaInter)) / 100;
+                            limiteTransferenciaInter = (totalTranferenciaEntrada * Convert.ToDecimal(comp.TransferenciaInter)) / 100;
 
                     if (comp.ChapterId == 4)
                         limiteNcm = (baseCalcVenda * Convert.ToDecimal(comp.Faturamento)) / 100;
@@ -26497,11 +26497,7 @@ namespace Escon.SisctNET.Web.Controllers
                              totalDiefAPSIE = Convert.ToDecimal((totalApuradoAPSIE + totalFreteAPIE) - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE),
                              totalDiefAPIE = Convert.ToDecimal(totalApuradoAPIE + gnreNPagaAPIE - icmsStAPIE - gnrePagaAPIE - totalFreteAPIE);
 
-                    int? qtdAPSIE = products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count(),
-                         qtdAPIE = products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Count();
 
-                    ViewBag.QtdAPSIE = qtdAPSIE;
-                    ViewBag.QtdAPIE = qtdAPIE;
                     ViewBag.TotatlApuradoAPIE = totalApuradoAPIE;
                     ViewBag.TotatlApuradoAPSIE = totalApuradoAPSIE;
                     ViewBag.TotalIcmsPagoAPIE = icmsStAPIE;
