@@ -17,8 +17,8 @@
         {
             <tr>
                 <td style="text-align:left">
-                    @ViewBag.DarIcms (Icms - Apuração Normal)
-                    <input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms" value="@ViewBag.TotalDarIcms" data-substituicao="0" />
+                    @ViewBag.DarIcms.Code (@ViewBag.DarIcms.Description)
+                    <input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms.Code" value="@ViewBag.TotalDarIcms" data-substituicao="0" />
                 </td>
 
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarIcms)</td>
@@ -28,13 +28,13 @@
         }
         else
         {
-            <input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms" value="0" data-substituicao="0" />
+            <input type="hidden" id="DarIcms" data-code="@ViewBag.DarIcms.Code" value="0" data-substituicao="0" />
         }
 
         <tr>
             <td style="text-align:left">
-                @ViewBag.DarSTCO (Icms - Imposto,Juros e Multas (Substituição))
-                <input type="hidden" id="DarST" data-code="@ViewBag.DarSTCO" value="@ViewBag.TotalDarST" data-substituicao="1" />
+                @ViewBag.DarSTCO.Code (@ViewBag.DarSTCO.Description (Substituição))
+                <input type="hidden" id="DarST" data-code="@ViewBag.DarSTCO.Code" value="@ViewBag.TotalDarST" data-substituicao="1" />
             </td>
 
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoST)</td>
@@ -43,8 +43,8 @@
         </tr>
         <tr>
             <td style="text-align:left">
-                @ViewBag.DarSTCO (Icms - Imposto,Juros e Multas (Consumo))
-                <input type="hidden" id="DarCO" data-code="@ViewBag.DarSTCO" value="@ViewBag.TotalDarCO" data-substituicao="0" />
+                @ViewBag.DarSTCO.Code (@ViewBag.DarSTCO.Description (Consumo))
+                <input type="hidden" id="DarCO" data-code="@ViewBag.DarSTCO.Code" value="@ViewBag.TotalDarCO" data-substituicao="0" />
             </td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoCO)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoCO)</td>
@@ -52,8 +52,8 @@
         </tr>
         <tr>
             <td style="text-align:left">
-                @ViewBag.DarAp (Icms - Antecipação Parcial)
-                <input type="hidden" id="DarAp" data-code="@ViewBag.DarAp" value="@ViewBag.TotalDarAp" data-substituicao="0" />
+                @ViewBag.DarAP.Code (@ViewBag.DarAP.Description)
+                <input type="hidden" id="DarAp" data-code="@ViewBag.DarAP.Code" value="@ViewBag.TotalDarAp" data-substituicao="0" />
             </td>
 
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoAP)</td>
@@ -62,8 +62,8 @@
         </tr>
         <tr>
             <td style="text-align:left">
-                @ViewBag.DarIm (Icms - Diferencial de Alíquota - Ativo Imobilizado)
-                <input type="hidden" id="DarIm" data-code="@ViewBag.DarIm" value="@ViewBag.TotalDarIm" data-substituicao="0" />
+                @ViewBag.DarIM.Code (@ViewBag.DarIM.Description)
+                <input type="hidden" id="DarIm" data-code="@ViewBag.DarIM.Code" value="@ViewBag.TotalDarIm" data-substituicao="0" />
             </td>
 
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoIM)</td>
@@ -72,8 +72,8 @@
         </tr>
         <tr>
             <td style="text-align:left">
-                @ViewBag.DarFecop (Icms  - Adicional Fecop)
-                <input type="hidden" id="DarFecop" data-code="@ViewBag.DarFecop" value="@ViewBag.TotalDarFecop" data-substituicao="0" />
+                @ViewBag.DarFecop.Code (@ViewBag.DarFecop.Description)
+                <input type="hidden" id="DarFecop" data-code="@ViewBag.DarFecop.Code" value="@ViewBag.TotalDarFecop" data-substituicao="0" />
             </td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalAPuradoFecop)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalRecolhidoFecop)</td>
@@ -83,8 +83,8 @@
         {
             <tr>
                 <td style="text-align:left">
-                    @ViewBag.DarCotac (Taxa - Administração Cotac)
-                    <input type="hidden" id="DarCotac" data-code="@ViewBag.DarCotac" value="@ViewBag.TotalDarCotac" data-substituicao="0" />
+                    @ViewBag.DarCotac.Code (@ViewBag.DarCotac.Description)
+                    <input type="hidden" id="DarCotac" data-code="@ViewBag.DarCotac.Code" value="@ViewBag.TotalDarCotac" data-substituicao="0" />
                 </td>
 
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarCotac) </td>
@@ -94,15 +94,15 @@
         }
         else
         {
-            <input type="hidden" id="DarCotac" data-code="@ViewBag.DarCotac" value="0" data-substituicao="0" />
+            <input type="hidden" id="DarCotac" data-code="@ViewBag.DarCotac.Code" value="0" data-substituicao="0" />
         }
 
         @if (ViewBag.Company.Incentive == true)
         {
             <tr>
                 <td style="text-align:left">
-                    @ViewBag.DarFunef (Taxa Funef)
-                    <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="@ViewBag.TotalDarFunef" data-substituicao="0" />
+                    @ViewBag.DarFunef.Code (@ViewBag.DarFunef.Description)
+                    <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef.Code" value="@ViewBag.TotalDarFunef" data-substituicao="0" />
                 </td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFunef)</td>
                 <td style="text-align:right; padding-right:1%;">0,00</td>
@@ -111,7 +111,7 @@
         }
         else
         {
-            <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef" value="0" data-substituicao="0" />
+            <input type="hidden" id="DarFunef" data-code="@ViewBag.DarFunef.Code" value="0" data-substituicao="0" />
         }
 
         

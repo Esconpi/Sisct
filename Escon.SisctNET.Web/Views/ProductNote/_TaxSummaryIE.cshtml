@@ -77,7 +77,7 @@
                         <br />
                         <table class="col-lg-12 col-md-12 col-sm-12">
                             <tr>
-                                <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right"><b>Código DAR-@ViewBag.DarSTCO</b></td>
+                                <td class="col-lg-12 col-md-12 col-sm-12" style="text-align:right"><b>Código DAR: @ViewBag.DarSTCO.Code (@ViewBag.DarSTCO.Description)</b></td>
                             </tr>
                         </table>
                     </td>
@@ -162,7 +162,7 @@
                         </table>
                         <table class="col-lg-12 col-md-12 col-sm-12">
                             <tr>
-                                <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR-@ViewBag.DarFecop</th>
+                                <th class="col-lg-12 col-md-12 col-sm-12" style="text-align:right;">Código DAR: @ViewBag.DarFecop.Code (@ViewBag.DarFecop.Description)</th>
                             </tr>
                         </table>
 
@@ -254,15 +254,15 @@
                                 <th style="text-align:right" width="500px">Código DAR</th>
                                 @if (ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR")
                                 {
-                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarSTCO</b></td>
+                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarSTCO.Code (@ViewBag.DarSTCO.Description)</b></td>
                                 }
                                 @if (ViewBag.TypeTaxation == "AP")
                                 {
-                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarAp</b></td>
+                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarAP.Code (@ViewBag.DarAP.Description)</b></td>
                                 }
                                 @if (ViewBag.TypeTaxation == "IM")
                                 {
-                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarIm</b></td>
+                                    <td style="text-align:right; padding-right:1%;" width="500px"><b>@ViewBag.DarIM.Code (@ViewBag.DarIM.Description)</b></td>
                                 }
                             </tr>
                         </table>

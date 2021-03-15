@@ -101,14 +101,14 @@ else
             <tr>
                 <th style="text-align:center">ICMS Incentivo</th>
                 <td style="text-align:right"> @string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
-                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td style="text-align:center">@ViewBag.DarIcms.Code</td>
             </tr>
             @if (ViewBag.Company.AnnexId != 3 && ViewBag.Type != "Nota")
             {
                 <tr>
                     <th style="text-align:center">ICMS Excedente</th>
                     <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalIcmsExcedente)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms</td>
+                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
                 </tr>
             }
 
@@ -117,7 +117,7 @@ else
                 <tr>
                     <th style="text-align:center">ICMS ANEXO CCCXVI</th>
                     <td style="text-align:right">@string.Format("{0:N}", ViewBag.IcmsAnexo)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms</td>
+                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
                 </tr>
             }
             @if (ViewBag.Type != "Nota")
@@ -125,7 +125,7 @@ else
                 <tr>
                     <th style="text-align:center">Adicional Suspensão</th>
                     <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms</td>
+                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
                 </tr>
             }
 
@@ -134,7 +134,7 @@ else
                 <tr>
                     <th style="text-align:center">Fecop Incentivo</th>
                     <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
-                    <td style="text-align:center">@ViewBag.DarFecop</td>
+                    <td style="text-align:center">@ViewBag.DarFecop.Code</td>
                 </tr>
             }
 
@@ -144,14 +144,14 @@ else
                 <tr>
                     <th style="text-align:center">Fecop ANEXO CCCXVI</th>
                     <td style="text-align:right">@string.Format("{0:N}", ViewBag.FecopAnexo)</td>
-                    <td style="text-align:center">@ViewBag.DarFecop</td>
+                    <td style="text-align:center">@ViewBag.DarFecop.Code</td>
                 </tr>
             }
 
             <tr>
                 <th style="text-align:center">Funef</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef)</td>
-                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td style="text-align:center">@ViewBag.DarFunef.Code</td>
             </tr>
         </tbody>
     </table>

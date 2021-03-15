@@ -14,29 +14,29 @@
         @if (ViewBag.Company.Incentive == true)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td>@ViewBag.DarIcms.Code (@ViewBag.DarIcms.Description)</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarIcms)</td>
             </tr>
         }
         <tr>
-            <td style="text-align:center">@ViewBag.DarSTCO</td>
+            <td>@ViewBag.DarSTCO.Code (@ViewBag.DarSTCO.Description (Substituição))</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarSTCO)</td>
         </tr>
         <tr>
-            <td style="text-align:center">@ViewBag.DarFecop</td>
+            <td>@ViewBag.DarFecop.Code @ViewBag.DarFecop.Description)</td>
             <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFecop)</td>
         </tr>
         @if (ViewBag.Company.Incentive == true && ViewBag.Company.AnnexId == null)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarCotac</td>
+                <td>@ViewBag.DarCotac.Code (@ViewBag.DarCotac.Description)</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarCotac)</td>
             </tr>
         }
         @if (ViewBag.Company.Incentive == true)
         {
             <tr>
-                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td>@ViewBag.DarFunef.Code (@ViewBag.DarFunef.Description)</td>
                 <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.TotalDarFunef)</td>
             </tr>
         }

@@ -35,7 +35,7 @@
                 <th></th>
                 <th style="text-align:center">Código DAR</th>
                 <th style="font-size:17px"></th>
-                <th style="text-align:center">@ViewBag.DarIcms</th>
+                <th style="text-align:center">@ViewBag.DarIcms.Code</th>
             </tr>
         </tbody>
     </table>
@@ -44,7 +44,7 @@
 
 <div style="width:100%; padding-top:10px;">
     <div style="width:100%; padding-top:10px; border:2px solid">
-        <div style="text-align:center"><strong>IMPOSTO</strong></div>
+        <div style="text-align:center"><strong>RESUMO DA APURAÇÂO</strong></div>
     </div>
     <table style="border:2px solid">
         <thead>
@@ -60,7 +60,7 @@
                     @string.Format("{0:N}", ViewBag.TotalDarIcms)
                 </td>
                 <td style="text-align: center;border: 1px solid ">
-                    @ViewBag.DarIcms
+                    @ViewBag.DarIcms.Code (@ViewBag.DarIcms.Description)
                 </td>
             </tr>
             <tr style="border:1px solid">
@@ -68,7 +68,7 @@
                     @string.Format("{0:N}", ViewBag.TotalDarFecop)
                 </td>
                 <td style="text-align: center;border: 1px solid ">
-                    @ViewBag.DarFecop
+                    @ViewBag.DarFecop.Code (@ViewBag.DarFecop.Description)
                 </td>
             </tr>
 

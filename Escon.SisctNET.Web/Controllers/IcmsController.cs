@@ -26009,13 +26009,6 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Total Icms
                     ViewBag.TotalIcms = impostoNcm + impostoContribuinte + impostoNContribuinte + impostoTransf + impostoTransfInter + impostoGrupo + valorSuspensao;
 
-
-                    //Dar
-                    var dars = _darService.FindAll(null);
-                    ViewBag.DarIcms = dars.Where(_ => _.Type.Equals("Icms")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarFunef = dars.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarCotac = dars.Where(_ => _.Type.Equals("Cotac")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarFecop = dars.Where(_ => _.Type.Equals("Fecop")).Select(_ => _.Code).FirstOrDefault();
                 }
                 else if (type.Equals("incentivo"))
                 {
@@ -26445,13 +26438,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalDarIcms = totalDarIcms;
 
                     }
-
-                    //Dar
-                    var dars = _darService.FindAll(null);
-                    ViewBag.DarIcms = dars.Where(_ => _.Type.Equals("Icms")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarFunef = dars.Where(_ => _.Type.Equals("Funef")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarCotac = dars.Where(_ => _.Type.Equals("Cotac")).Select(_ => _.Code).FirstOrDefault();
-                    ViewBag.DarFecop = dars.Where(_ => _.Type.Equals("Fecop")).Select(_ => _.Code).FirstOrDefault();
                 }
                 else if (type.Equals("anexoAutoPecas"))
                 {
@@ -26798,6 +26784,13 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualDaselencadaInterestadual = comp.IncIIInterestadual.ToString().Replace(".", ",");
 
                 }
+
+                //Dar
+                var dars = _darService.FindAll(null);
+                ViewBag.DarIcms = dars.Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
+                ViewBag.DarFunef = dars.Where(_ => _.Type.Equals("Funef")).FirstOrDefault();
+                ViewBag.DarCotac = dars.Where(_ => _.Type.Equals("Cotac")).FirstOrDefault();
+                ViewBag.DarFecop = dars.Where(_ => _.Type.Equals("Fecop")).FirstOrDefault();
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 

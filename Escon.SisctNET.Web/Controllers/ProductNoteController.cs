@@ -2682,8 +2682,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
                                             productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
                             impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (comp.Icms / 100)), 2);
-
-                            //totalDarIcms += Math.Round(impostoIcms, 2);
                         }
                        
                         if (!comp.AnnexId.Equals(3) && !comp.AnnexId.Equals(1) && !comp.ChapterId.Equals(4))
@@ -3830,52 +3828,42 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalc = baseCalc;
                     ViewBag.Icms = icms;
                 }
-                
-                //ViewBag.IcmsStNoteS = icmsStnoteSIE;
-                //ViewBag.IcmsStNoteI = icmsStnoteIE;
 
                 var dars = _darService.FindAll(GetLog(OccorenceLog.Read));
 
                 // Código DAR Fecop
                 var darFecop = dars.Where(_ => _.Type.Equals("Fecop"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 // Código DAR Substituição Tributária e Consumo
                 var darStCo = dars.Where(_ => _.Type.Equals("ST-CO"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 // Código DAR Icms Normal
                 var darIcms = dars.Where(_ => _.Type.Equals("Icms"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 // Código DAR Antecipação Parcial
                 var darAp = dars.Where(_ => _.Type.Equals("AP"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 // Código DAR Imobilizado
                 var darIm = dars.Where(_ => _.Type.Equals("IM"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 // Código DAR Funef
                 var darFunef = dars.Where(_ => _.Type.Equals("Funef"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
                 
                 // Código DAR Cotac
                 var darCotac = dars.Where(_ => _.Type.Equals("Cotac"))
-                    .Select(_ => _.Code)
                     .FirstOrDefault();
 
                 ViewBag.DarFecop = darFecop;
                 ViewBag.DarSTCO = darStCo;
                 ViewBag.DarIcms = darIcms;
-                ViewBag.DarAp = darAp;
-                ViewBag.DarIm = darIm;
+                ViewBag.DarAP = darAp;
+                ViewBag.DarIM = darIm;
                 ViewBag.DarFunef = darFunef;
                 ViewBag.DarCotac = darCotac;
 

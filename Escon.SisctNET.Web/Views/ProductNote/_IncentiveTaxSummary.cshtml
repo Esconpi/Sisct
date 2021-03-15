@@ -122,17 +122,17 @@
             <tr>
                 <th style="text-align:center">ICMS</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
-                <td style="text-align:center">@ViewBag.DarIcms</td>
+                <td style="text-align:center">@ViewBag.DarIcms.Code (@ViewBag.DarIcms.Description)</td>
             </tr>
             <tr>
                 <th style="text-align:center">Fecop</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
-                <td style="text-align:center">@ViewBag.DarFecop</td>
+                <td style="text-align:center">@ViewBag.DarFecop.Code (@ViewBag.DarFecop.Description)</td>
             </tr>
             <tr>
                 <th style="text-align:center">Funef</th>
                 <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef) </td>
-                <td style="text-align:center">@ViewBag.DarFunef</td>
+                <td style="text-align:center">@ViewBag.DarFunef.Code (@ViewBag.DarFunef.Description)</td>
             </tr>
             <tr style="border: 2px solid;">
                 <th style="text-align:center">Total</th>
