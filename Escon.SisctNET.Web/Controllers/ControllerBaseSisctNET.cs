@@ -21,8 +21,8 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 Created = DateTime.Now,
                 FunctionalityId = _functionalityService.FindByName(_functionalityName).Id,
-                Occurrenceid = (int)Model.OccorenceLog.Read,
-                PersonId = SessionManager.GetUserIdInSession()
+                Occurrenceid = (int)occorenceLog,
+                PersonId = SessionManager.GetPersonInSession().Id
             };
 
             return lg;

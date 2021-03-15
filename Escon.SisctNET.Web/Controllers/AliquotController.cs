@@ -167,7 +167,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var aliquorAll = _service.FindAll(null);
+            var aliquotAll = _service.FindAll(null);
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
@@ -177,7 +177,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
                 List<Model.Aliquot> aliquotTemp = new List<Model.Aliquot>();
-                aliquorAll.ToList().ForEach(s =>
+                aliquotAll.ToList().ForEach(s =>
                 {
                     s.StateOrigem.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.StateOrigem.Name);
                     s.StateDestino.Name = Helpers.CharacterEspecials.RemoveDiacritics(s.StateDestino.Name);
@@ -192,7 +192,7 @@ namespace Escon.SisctNET.Web.Controllers
                     )
                 .Select(s => s.Id).ToList();
 
-                aliquots = aliquorAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+                aliquots = aliquotAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
 
                 var aliquot = from r in aliquots
                              where ids.ToArray().Contains(r.Id)
@@ -212,7 +212,7 @@ namespace Escon.SisctNET.Web.Controllers
             else
             {
 
-                var aliquot = from r in aliquorAll
+                var aliquot = from r in aliquotAll
                              select new
                              {
                                  Id = r.Id.ToString(),
@@ -222,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
                                  Inicio = r.DateStart.ToString("dd/MM/yyyy"),
                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                              };
-                return Ok(new { draw = draw, recordsTotal = aliquorAll.Count(), recordsFiltered = aliquorAll.Count(), data = aliquot.Skip(start).Take(lenght) });
+                return Ok(new { draw = draw, recordsTotal = aliquotAll.Count(), recordsFiltered = aliquotAll.Count(), data = aliquot.Skip(start).Take(lenght) });
             }
 
         }

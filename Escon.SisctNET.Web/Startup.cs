@@ -159,6 +159,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<ICountyRepository, CountyRepository>();
             services.AddScoped<IIncentiveRepository, IncentiveRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -217,6 +218,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IStateService, StateService>();
             services.AddScoped<ICountyService, CountyService>();
             services.AddScoped<IIncentiveService, IncentiveService>();
+            services.AddScoped<ILogService, LogService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();

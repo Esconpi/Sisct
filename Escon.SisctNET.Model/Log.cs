@@ -13,6 +13,7 @@ namespace Escon.SisctNET.Model
         [Key]
         public int Id { get; set; }
 
+        [Display(Name = "Funcionalidade")]
         [ForeignKey("Functionality")]
         public int FunctionalityId { get; set; }
 
@@ -23,6 +24,7 @@ namespace Escon.SisctNET.Model
             set => functionality = value;
         }
 
+        [Display(Name = "Usuário")]
         [ForeignKey("Person")]
         public int PersonId { get; set; }
 
@@ -33,6 +35,7 @@ namespace Escon.SisctNET.Model
             set => person = value;
         }
 
+        [Display(Name = "Ocorrência")]
         [ForeignKey("Occurrence")]
         public int Occurrenceid { get; set; }
 
@@ -43,6 +46,7 @@ namespace Escon.SisctNET.Model
             set => occurrence = value;
         }
 
+        [Display(Name = "Data")]
         public DateTime Created { get; set; }
     }
 }
