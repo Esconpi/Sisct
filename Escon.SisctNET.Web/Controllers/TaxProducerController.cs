@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -351,8 +352,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Create(addProdutor);
-                _service.Update(updateProdutor);
+                _service.Create(addProdutor, GetLog(OccorenceLog.Create));
+                _service.Update(updateProdutor, GetLog(OccorenceLog.Update));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 

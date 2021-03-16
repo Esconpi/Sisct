@@ -723,7 +723,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateProducts);
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {

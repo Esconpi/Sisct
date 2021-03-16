@@ -147,7 +147,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Create(addProducts);
+                _service.Create(addProducts, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -300,7 +300,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateProducts, null);
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("IndexAll", new { id = companyId });
             }
@@ -451,7 +451,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
                 
-                _service.Update(updateProducts);
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
                 
                 return RedirectToAction("Index", new { companyId = companyId, year = year, month = month });
             }
@@ -500,7 +500,7 @@ namespace Escon.SisctNET.Web.Controllers
                 result.Bcr = entity.Bcr;
                 result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 result.Updated = DateTime.Now;
-                _service.Update(result, null);
+                _service.Update(result, GetLog(OccorenceLog.Update));
 
                 entity.Code = result.Code;
                 entity.Ncm = result.Ncm;
@@ -515,7 +515,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     entity.CstId = null;
                 }
-                _service.Create(entity, null);
+                _service.Create(entity, GetLog(OccorenceLog.Create));
 
 
                 return RedirectToAction("IndexAll", new { id = result.CompanyId });
@@ -594,7 +594,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var product = _service.FindById(id, null);
                 var comp = _companyService.FindById(product.CompanyId, null);
-                _service.Delete(id, null);
+                _service.Delete(id, GetLog(OccorenceLog.Delete));
                 return RedirectToAction("Index", new { id = comp.Id});
             }
             catch (Exception ex)

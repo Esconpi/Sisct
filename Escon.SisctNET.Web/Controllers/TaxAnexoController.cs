@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -258,7 +259,7 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.IcmsDevoCliente4 = Convert.ToDecimal(devolucoesInterestadual[0][1]);
                             imp.IcmsDevoCliente12 = Convert.ToDecimal(devolucoesInterestadual[1][1]);
 
-                            _service.Update(imp, null);
+                            _service.Update(imp, GetLog(OccorenceLog.Update));
 
                             var compras = _compraAnexoService.FindByComprasTax(imp.Id);
                             var devoClientes = _devoClienteService.FindByDevoTax(imp.Id);
@@ -291,8 +292,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _compraAnexoService.Create(compraAnexosAdd);
-                            _compraAnexoService.Update(compraAnexosUpdate);
+                            _compraAnexoService.Create(compraAnexosAdd, GetLog(OccorenceLog.Create));
+                            _compraAnexoService.Update(compraAnexosUpdate, GetLog(OccorenceLog.Update));
 
                             List<Model.DevoCliente> devoClientesAdd = new List<Model.DevoCliente>();
                             List<Model.DevoCliente> devoClientesUpdate = new List<Model.DevoCliente>();
@@ -322,8 +323,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _devoClienteService.Create(devoClientesAdd);
-                            _devoClienteService.Update(devoClientesUpdate);
+                            _devoClienteService.Create(devoClientesAdd, GetLog(OccorenceLog.Create));
+                            _devoClienteService.Update(devoClientesUpdate, GetLog(OccorenceLog.Update));
                         }
                         else
                         {
@@ -405,8 +406,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _devoClienteService.Create(devoClientesAdd);
-                            _devoClienteService.Update(devoClientesUpdate);
+                            _devoClienteService.Create(devoClientesAdd, GetLog(OccorenceLog.Create));
+                            _devoClienteService.Update(devoClientesUpdate, GetLog(OccorenceLog.Update));
                         }
                     }
                 }
@@ -682,7 +683,7 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.IcmsDevoFornecedor7 = icmsDevoFornecedorInterestadual7;
                             imp.IcmsDevoFornecedor12 = icmsDevoFornecedorInterestadual12;
 
-                            _service.Update(imp, null);
+                            _service.Update(imp, GetLog(OccorenceLog.Update));
 
                             var vendas = _vendaAnexoService.FindByVendasTax(imp.Id);
                             var devoFornecedors = _devoFornecedorService.FindByDevoTax(imp.Id);
@@ -719,8 +720,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _vendaAnexoService.Create(vendaAnexosAdd);
-                            _vendaAnexoService.Update(vendaAnexosUpdate);
+                            _vendaAnexoService.Create(vendaAnexosAdd, GetLog(OccorenceLog.Create));
+                            _vendaAnexoService.Update(vendaAnexosUpdate, GetLog(OccorenceLog.Update));
 
                             for (int i = 0; i < devoFornecedorInterna.Count(); i++)
                             {
@@ -747,8 +748,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _devoFornecedorService.Create(devoFornecedorsAdd);
-                            _devoFornecedorService.Update(devoFornecedorsUpdate);
+                            _devoFornecedorService.Create(devoFornecedorsAdd, GetLog(OccorenceLog.Create));
+                            _devoFornecedorService.Update(devoFornecedorsUpdate, GetLog(OccorenceLog.Update));
 
                         }
                         else
@@ -767,7 +768,7 @@ namespace Escon.SisctNET.Web.Controllers
                             taxAnexo.IcmsDevoFornecedor7 = icmsDevoFornecedorInterestadual7;
                             taxAnexo.IcmsDevoFornecedor12 = icmsDevoFornecedorInterestadual12;
 
-                            _service.Create(taxAnexo, null);
+                            _service.Create(taxAnexo, GetLog(OccorenceLog.Create));
 
                             imp = _service.FindByMonth(companyid, month, year);
 

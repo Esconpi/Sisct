@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -190,7 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _service.Create(addProviders);
+                _service.Create(addProviders, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 

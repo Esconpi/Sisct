@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +72,7 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
-                _service.Create(entity, null);
+                _service.Create(entity, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession()});
             }
@@ -144,7 +145,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var suspensionsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderByDescending(_ => _.Id).ToList();
+            var suspensionsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(), null).OrderByDescending(_ => _.Id).ToList();
 
 
             var suspension = from r in suspensionsAll

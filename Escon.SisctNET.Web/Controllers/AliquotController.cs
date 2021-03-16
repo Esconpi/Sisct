@@ -167,7 +167,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var aliquotAll = _service.FindAll(null);
+            var aliquotAll = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

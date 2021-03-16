@@ -200,7 +200,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Create(monoAdd, null);
+                _service.Create(monoAdd, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -385,7 +385,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(tributacoes, null);
+                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("Index" , new { companyId = rst.CompanyId, year = rst.Year, month = rst.Month});
             }
@@ -530,7 +530,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(tributacoes, null);
+                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId});
             }
             catch (Exception ex)
@@ -626,7 +626,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId });
-                //return View(rst);
             }
             catch (Exception ex)
             {

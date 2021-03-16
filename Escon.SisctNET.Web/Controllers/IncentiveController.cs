@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -74,13 +75,13 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
-                _service.Create(entity, null);
+                _service.Create(entity, GetLog(OccorenceLog.Create));
 
                 if (incentive != null)
                 {
                     incentive.Active = false;
                     incentive.Updated = DateTime.Now;
-                    _service.Update(incentive, null);
+                    _service.Update(incentive, GetLog(OccorenceLog.Update));
                 }
 
                 var configMin = _configurationService.FindByName("DiasAvisoMínimoIncentivo");

@@ -45,7 +45,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindByCompanies();
                 SessionManager.SetTipoInSession(1);
                 return View(null);
             }

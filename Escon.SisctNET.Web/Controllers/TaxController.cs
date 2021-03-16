@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
             
-                var result = _service.FindByMonth(id, month, year);
+                var result = _service.FindByMonth(id, month, year, GetLog(OccorenceLog.Read));
 
                 decimal vendasGrupo = 0, devolucaoGrupo = 0;
 
@@ -137,17 +137,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _service.FindByMonth(companyid, month, year);
 
-                if (imp != null)
-                {
-                    imp.Bonificacao = entity.Bonificacao;
-                    imp.CapitalIM = entity.CapitalIM;
-                    imp.ReceitaAF = entity.ReceitaAF;
-                    imp.OutrasReceitas = entity.OutrasReceitas;
-                    imp.Updated = DateTime.Now;
-
-                    _service.Update(imp, null);
-                }
-                else
+                if (imp == null)
                 {
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
@@ -155,7 +145,17 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.Created = DateTime.Now;
                     entity.Updated = entity.Created;
 
-                    _service.Create(entity, null);
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
+                {
+                    imp.Bonificacao = entity.Bonificacao;
+                    imp.CapitalIM = entity.CapitalIM;
+                    imp.ReceitaAF = entity.ReceitaAF;
+                    imp.OutrasReceitas = entity.OutrasReceitas;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -199,7 +199,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _service.FindByMonth(companyid, month, year);
 
-                if (imp != null)
+                if (imp == null)
+                {
+
+                    entity.CompanyId = companyid;
+                    entity.MesRef = month;
+                    entity.AnoRef = year;
+                    entity.Created = DateTime.Now;
+                    entity.Updated = entity.Created;
+
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
                 {
                     imp.Energia = entity.Energia;
                     imp.AluguelPredio = entity.AluguelPredio;
@@ -209,17 +220,7 @@ namespace Escon.SisctNET.Web.Controllers
                     imp.DespesasA = entity.DespesasA;
                     imp.Updated = DateTime.Now;
 
-                    _service.Update(imp, null);
-                }
-                else
-                {
-                    entity.CompanyId = companyid;
-                    entity.MesRef = month;
-                    entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
-
-                    _service.Create(entity, null);
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -263,7 +264,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _service.FindByMonth(companyid, month, year);
 
-                if (imp != null)
+                if (imp == null)
+                {
+                    entity.CompanyId = companyid;
+                    entity.MesRef = month;
+                    entity.AnoRef = year;
+                    entity.Created = DateTime.Now;
+                    entity.Updated = entity.Created;
+
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
                 {
                     imp.PisRetido = entity.PisRetido;
                     imp.CofinsRetido = entity.CofinsRetido;
@@ -274,17 +285,7 @@ namespace Escon.SisctNET.Web.Controllers
                     imp.IrpjFonteFinanceira = entity.IrpjFonteFinanceira;
                     imp.Updated = DateTime.Now;
 
-                    _service.Update(imp, null);
-                }
-                else
-                {
-                    entity.CompanyId = companyid;
-                    entity.MesRef = month;
-                    entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
-
-                    _service.Create(entity, null);
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -328,14 +329,7 @@ namespace Escon.SisctNET.Web.Controllers
                 string month = SessionManager.GetMonthInSession();
                 var imp = _service.FindByMonth(companyid, month, year);
 
-                if (imp != null)
-                {
-                    imp.ReducaoIcms = entity.ReducaoIcms;
-                    imp.Updated = DateTime.Now;
-
-                    _service.Update(imp, null);
-                }
-                else
+                if (imp == null)
                 {
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
@@ -343,7 +337,14 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.Created = DateTime.Now;
                     entity.Updated = entity.Created;
 
-                    _service.Create(entity, null);
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
+                {
+                    imp.ReducaoIcms = entity.ReducaoIcms;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -386,14 +387,7 @@ namespace Escon.SisctNET.Web.Controllers
                 string month = SessionManager.GetMonthInSession();
                 var imp = _service.FindByMonth(companyid, month, year);
 
-                if (imp != null)
-                {
-                    imp.Perda = entity.Perda;
-                    imp.Updated = DateTime.Now;
-
-                    _service.Update(imp, null);
-                }
-                else
+                if (imp == null)
                 {
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
@@ -401,7 +395,14 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.Created = DateTime.Now;
                     entity.Updated = entity.Created;
 
-                    _service.Create(entity, null);
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
+                {
+                    imp.Perda = entity.Perda;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -446,15 +447,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var imp = _service.FindByMonth(companyid, mesRef, year);
 
-                if (imp != null)
-                {
-                    imp.IrpjPago = entity.IrpjPago;
-                    imp.CsllPago = entity.CsllPago;
-                    imp.Updated = DateTime.Now;
-
-                    _service.Update(imp, null);
-                }
-                else
+                if (imp == null)
                 {
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
@@ -462,7 +455,15 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.Created = DateTime.Now;
                     entity.Updated = entity.Created;
 
-                    _service.Create(entity, null);
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
+                {
+                    imp.IrpjPago = entity.IrpjPago;
+                    imp.CsllPago = entity.CsllPago;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
 
                 return RedirectToAction("Index", new { id = companyid, year = year, month = month });
@@ -1729,8 +1730,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
-                                    _grupoService.Create(addGrupos, null);
-                                    _grupoService.Update(updateGrupos, null);
+                                    _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
+                                    _grupoService.Update(updateGrupos, GetLog(OccorenceLog.Update));
                                 }
                                 else
                                 {
@@ -1762,7 +1763,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         }
                                     }
-
+                                    _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
                                 }
                             }
                             else
@@ -1805,7 +1806,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         grupo.Updated = grupo.Created;
 
                                         addGrupos.Add(grupo);
-
                                     }
                                 }
                             }
@@ -2785,8 +2785,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                     addGrupos.Add(grupo);
                                                 }
                                             }
-                                            _grupoService.Create(addGrupos, null);
-                                            _grupoService.Update(updateGrupos, null);
+                                            _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
+                                            _grupoService.Update(updateGrupos, GetLog(OccorenceLog.Update));
                                         }
                                         else
                                         {
@@ -2804,6 +2804,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 grupo.Updated = grupo.Created;
                                                 addGrupos.Add(grupo);
                                             }
+                                            _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
                                         }
                                     }
                                     else
@@ -4038,18 +4039,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (imp != null)
                 {
-                    _service.Update(imp, null);
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
                 else
                 {
-                    _service.Create(tax, null);
+                    _service.Create(tax, GetLog(OccorenceLog.Create));
                     imp = _service.FindByMonth(companyid, month, year);
 
                     foreach(var g in addGrupos)
                     {
                         g.TaxId = imp.Id;
                     }
-                    _grupoService.Create(addGrupos, null);
+                    _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

@@ -186,7 +186,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _service.Create(addClientes);
+                _service.Create(addClientes, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
