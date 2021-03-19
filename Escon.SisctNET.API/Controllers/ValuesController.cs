@@ -11,7 +11,7 @@ namespace Escon.SisctNET.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "Equipe", "Escon - SisctNET", "Pedro" };
+            return new string[] { "Equipe", "Escon - SisCTNET", "Pedro" };
         }
 
         // GET api/values/5

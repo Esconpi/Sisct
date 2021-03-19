@@ -5,12 +5,22 @@ namespace Escon.SisctNET.Web.Taxation
     {
         // Cálculos Tributação dos produtos na entrada
 
-        public decimal baseCalc(decimal vBaseCalc, decimal vDesc)
+        public string Code(string document, string ncm, string uf, string aliquot)
+        {
+            return document + ncm + uf + aliquot;
+        }
+
+        public decimal BaseCalc(decimal vProd, decimal vFrete, decimal vSeg, decimal vOutro, decimal vDesc, decimal vIPI, decimal frete_prod)
+        {
+            return vProd + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;
+        }
+
+        public decimal BaseCalc(decimal vBaseCalc, decimal vDesc)
         {
             return vBaseCalc + vDesc;
         }
 
-        public decimal valorIcms(decimal icmsCTe , decimal vIcms)
+        public decimal ValorIcms(decimal icmsCTe , decimal vIcms)
         {
             return icmsCTe + vIcms;
         }
@@ -25,22 +35,22 @@ namespace Escon.SisctNET.Web.Taxation
             return (bcr / 100) * valorAgregado ;
         }
 
-        public decimal valorAgregadoAliqInt(decimal aliqInterna, decimal valorFecop,decimal valorAgregado)
+        public decimal ValorAgregadoAliqInt(decimal aliqInterna, decimal valorFecop,decimal valorAgregado)
         {
             return ((aliqInterna-valorFecop) / 100) * valorAgregado;
         }
 
-        public decimal valorFecop(decimal fecop, decimal valorAgregado)
+        public decimal ValorFecop(decimal fecop, decimal valorAgregado)
         {
             return (fecop / 100) * valorAgregado;
         }
 
-        public decimal diferencialAliq(decimal aliIntena, decimal aliquota)
+        public decimal DiferencialAliq(decimal aliIntena, decimal aliquota)
         {
             return aliIntena - aliquota;
         }
 
-        public decimal icmsApurado(decimal dif, decimal baseCalc)
+        public decimal IcmsApurado(decimal dif, decimal baseCalc)
         {
             return (dif / 100) * baseCalc;
         }
@@ -50,17 +60,17 @@ namespace Escon.SisctNET.Web.Taxation
             return baseCalc / quantParaCalc;
         }
 
-        public decimal valorAgregadoPautaAto(decimal qtd, decimal price)
+        public decimal ValorAgregadoPautaAto(decimal qtd, decimal price)
         {
             return qtd * price;
         }
 
-        public decimal totalIcms(decimal valorAgregadoAliqInt, decimal valorIcms)
+        public decimal TotalIcms(decimal valorAgregadoAliqInt, decimal valorIcms)
         {
             return valorAgregadoAliqInt - valorIcms;
         }
 
-        public decimal totalIcmsPauta(decimal icmsPauta, decimal valorFecop)
+        public decimal TotalIcmsPauta(decimal icmsPauta, decimal valorFecop)
         {
             return icmsPauta + valorFecop;
         }

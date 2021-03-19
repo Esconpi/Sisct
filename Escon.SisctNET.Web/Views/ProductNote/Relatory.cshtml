@@ -45,7 +45,7 @@
 
     <div class="box-body">
 
-        <div style="width:100%;padding:2px;">
+        <div style="width:100%;padding:2px;" id="mainTable">
 
             @if (ViewBag.Erro == 1)
             {
@@ -115,7 +115,7 @@
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota" ||
-                    ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
+                         ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
@@ -152,7 +152,7 @@
                         }
                     }
 
-                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) && 
+                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) &&
                          ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST")
                     {
                         <!-- Resumo Imposto Incentivo -->
@@ -178,9 +178,20 @@
 
     </div>
 
+
+
     @if (ViewBag.Erro != 1 && ViewBag.Erro != 2 && ViewBag.Erro != 4 && ViewBag.Erro != 5 && ViewBag.Erro != 6 && ViewBag.Type == "Geral")
     {
         <div class="box-footer no-print">
+            <div class=" pull-right">
+                <!--
+                    <a class="btn btn-primary" id="downloadLink" onclick="exportExcel(this)">Gerar Excel</a>
+                -->
+            </div>
+         
+            <br />
+            <br />
+
             <div class="barcode" style="font-size:15px;">
                 10540558000113
             </div>
@@ -190,32 +201,43 @@
             </div>
 
             @await Html.PartialAsync("_ButtonGenerateBillet", new ViewDataDictionary(ViewData))
-
         </div>
 
     }
 
 </div>
 
-@if (ViewBag.Erro != 1 && ViewBag.Erro != 2 && ViewBag.Erro != 4 && ViewBag.Erro != 5 && ViewBag.Erro != 6 && ViewBag.Type == "Geral")
-{
-    <br />
-    <br />
-    <div class="box box-warning no-print" style="margin:-10px;">
-        <div class="box-header">
-            <div class="box-title">
-                <i class="fa fa-list"></i>
-                DAR Gerados
+    @if (ViewBag.Erro != 1 && ViewBag.Erro != 2 && ViewBag.Erro != 4 && ViewBag.Erro != 5 && ViewBag.Erro != 6 && ViewBag.Type == "Geral")
+    {
+        <br />
+        <br />
+        <div class="box box-warning no-print" style="margin:-10px;">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa fa-list"></i>
+                    DAR Gerados
+                </div>
             </div>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="responseBarCodeGenerateBillet" style="padding:15px;">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="responseBarCodeGenerateBillet" style="padding:15px;">
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
+
+<script type="text/javascript">
+    function exportExcel(elem) {
+        var archive = "@ViewBag.Company.SocialName" + "-" + @ViewBag.Company.Document + ".xls";
+        var table = document.getElementById("mainTable");
+        var html = table.outerHTML;
+        var url = 'data:application/vnd.ms-excel,' + escape(html);
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", archive);
+            return false;
+        }
+</script>

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using Escon.SisctNET.Web.Taxation;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -246,6 +245,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
+            var calculation = new Taxation.Calculation();
 
             string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
             string directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
@@ -484,7 +484,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 number = aliquot.Aliquota.ToString();
                             }
 
-                            var code = comp.Document + NCM + notes[i][2]["UF"] + number.Replace(".", ",");
+                            var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], number.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                             bool incentivo = false;
@@ -497,7 +497,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             Model.ProductNote prod = new Model.ProductNote();
 
-                            decimal baseDeCalc = Convert.ToDecimal(det["vProd"]) + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;
+                            decimal baseDeCalc = calculation.BaseCalc(Convert.ToDecimal(det["vProd"]), vFrete, vSeg, vOutro, vDesc, vIPI, frete_prod);
 
                             if (taxed == null)
                             {
@@ -558,13 +558,12 @@ namespace Escon.SisctNET.Web.Controllers
                             {
 
                                 var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, GetLog(Model.OccorenceLog.Read));
-                                var calculation = new Calculation();
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
                                         valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
 
                                 if (taxedtype.Type == "ST")
                                 {
-                                    baseCalc = calculation.baseCalc(baseDeCalc, vDesc);
+                                    baseCalc = calculation.BaseCalc(baseDeCalc, vDesc);
 
                                     if (taxed.MVA != null)
                                         valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
@@ -580,19 +579,19 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (taxed.Fecop != null)
                                     {
                                         percentFecop = Convert.ToDecimal(taxed.Fecop);
-                                        valorFecop = calculation.valorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
+                                        valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                     }
                                     else
                                     {
-                                        valorFecop = calculation.valorFecop(0, valorAgreg);
+                                        valorFecop = calculation.ValorFecop(0, valorAgreg);
                                     }
 
-                                    valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
+                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
 
                                     if (valorbcr > 0)
-                                        valorAgreAliqInt = calculation.valorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
 
-                                    totalIcms = calculation.totalIcms(valorAgreAliqInt, valorIcms);
+                                    totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
 
                                 }
                                 else if (taxedtype.Type == "Normal")
@@ -604,8 +603,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (number != "4.00")
                                         pICMS = aliq_simples.Aliquota;
 
-                                    dif = calculation.diferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
-                                    icmsApu = calculation.icmsApurado(dif, baseCalc);
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
+                                    icmsApu = calculation.IcmsApurado(dif, baseCalc);
                                 }
                                 else if (taxedtype.Type == "Isento")
                                 {
@@ -679,7 +678,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     break;
                                 }
 
-
                                 det.Clear();
                             }
 
@@ -703,8 +701,6 @@ namespace Escon.SisctNET.Web.Controllers
                 addProduct.Clear(); 
             }
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-
             if (notas.Count() > 0 && erro == 0)
             {
                 url = "Error";
@@ -718,6 +714,8 @@ namespace Escon.SisctNET.Web.Controllers
                 Erro = erro,
                 Chave = chave,
             };
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
             return Json(result);
         }
