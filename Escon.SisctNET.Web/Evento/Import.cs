@@ -99,7 +99,8 @@ namespace Escon.SisctNET.Web.Evento
         }
 
         public List<List<List<string>>> NFeCanceladaSefaz(string directoryNfe, List<List<Dictionary<string, string>>> notesNFeCanceladas,
-                                                          List<List<Dictionary<string, string>>> notesNFeCanceladasEvento, List<List<Dictionary<string, string>>> notesNFCeCanceladas,
+                                                          List<List<Dictionary<string, string>>> notesNFeCanceladasEvento,
+                                                          List<List<Dictionary<string, string>>> notesNFCeCanceladas,
                                                           List<List<Dictionary<string, string>>> notesNFCeCanceladasEvento)
         {
             List<List<List<string>>> notes = new List<List<List<string>>>();

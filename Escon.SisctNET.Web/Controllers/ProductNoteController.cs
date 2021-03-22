@@ -325,7 +325,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal vAgre = calculation.ValorAgregadoPautaAto(Convert.ToDecimal(quantParaCalc), precoPauta);
 
                         // Segundo PP feito com os dados do produto
-                        decimal vAgre2 = calculation.valorAgregadoPautaProd(baseCalc, quantParaCalc);
+                        decimal vAgre2 = calculation.ValorAgregadoPautaProd(baseCalc, quantParaCalc);
 
                         if (vAgre2 > vAgre)
                         {
@@ -722,6 +722,27 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
+                List<Note> updateNote = new List<Note>();
+
+                foreach (var product in products)
+                {
+                    bool status = false;
+                    var nota = _noteService.FindById(Convert.ToInt32(product.NoteId), GetLog(OccorenceLog.Read));
+
+                    var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
+
+                    if (productTaxation.Count == 0)
+                        status = true;
+
+                    nota.Status = status;
+                    nota.Updated = DateTime.Now;
+
+                    if (nota.Status)
+                        updateNote.Add(nota);
+                }
+
+                _noteService.Update(updateNote);
+
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
                     string aliquot = prod.Picms.ToString();
@@ -766,28 +787,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
 
-                }
-
-                List<Note> updateNote = new List<Note>();
-
-                foreach (var product in products)
-                {
-                    bool status = false;
-                    var nota = _noteService.FindById(Convert.ToInt32(product.NoteId), GetLog(OccorenceLog.Read));
-
-                    var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
-
-                    if (productTaxation.Count == 0)
-                        status = true;
-
-                    nota.Status = status;
-                    nota.Updated = DateTime.Now;
-
-                    if(nota.Status)
-                        updateNote.Add(nota);
-                }
-
-                _noteService.Update(updateNote);
+                }       
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });
             }

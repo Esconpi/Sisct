@@ -121,7 +121,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                note.Updated = DateTime.Now;
                 note.IcmsAp = entity.IcmsAp;
                 note.IcmsSt = entity.IcmsSt;
                 note.IcmsCo = entity.IcmsCo;
@@ -141,6 +140,7 @@ namespace Escon.SisctNET.Web.Controllers
                 note.Desconto = entity.Desconto;
                 note.Frete = entity.Frete;
                 note.GnreFecop = entity.GnreFecop;
+                note.Updated = DateTime.Now;
 
                 _service.Update(note, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });

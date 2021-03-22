@@ -108,7 +108,8 @@ namespace Escon.SisctNET.Web.Sped
             return totalDeCredito;
         }
 
-        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms, Model.Company company)
+        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms, 
+                                           Model.Company company)
         {
             List<decimal> Devolucoes = new List<decimal>();
 
@@ -425,44 +426,6 @@ namespace Escon.SisctNET.Web.Sped
             entradas.Add(devolucao);
 
             return entradas;
-        }
-
-        public List<List<string>> NFeAll(string directorySped)
-        {
-            List<List<string>> spedNfe = new List<List<string>>();
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
-            string line;
-
-            try
-            {
-                while ((line = archiveSped.ReadLine()) != null)
-                {
-                    string[] linha = line.Split('|');
-                    if (linha[1] == "C100")
-                    {
-                        List<string> sped = new List<string>();
-                        sped.Add(linha[9]);
-                        sped.Add(linha[5]);
-                        sped.Add(linha[8]);
-                        sped.Add(linha[12]);
-                        sped.Add(linha[3]);
-                        sped.Add(linha[2]);
-                        spedNfe.Add(sped);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
-            }
-            return spedNfe;
         }
 
         public List<string> NFeEntry(string directorySped)
@@ -2498,7 +2461,45 @@ namespace Escon.SisctNET.Web.Sped
             SessionManager.SetProductsSped(productsAlteration);
             return sped;
         }
-      
+
+        public List<List<string>> NFeAll(string directorySped)
+        {
+            List<List<string>> spedNfe = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+                    if (linha[1] == "C100")
+                    {
+                        List<string> sped = new List<string>();
+                        sped.Add(linha[9]);
+                        sped.Add(linha[5]);
+                        sped.Add(linha[8]);
+                        sped.Add(linha[12]);
+                        sped.Add(linha[3]);
+                        sped.Add(linha[2]);
+                        spedNfe.Add(sped);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+            return spedNfe;
+        }
+
         public List<List<string>> NFeExitNormal(string directorySped)
         {
             List<List<string>> spedNf = new List<List<string>>();

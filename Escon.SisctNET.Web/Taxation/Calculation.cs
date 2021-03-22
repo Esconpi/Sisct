@@ -55,7 +55,7 @@ namespace Escon.SisctNET.Web.Taxation
             return (dif / 100) * baseCalc;
         }
 
-        public decimal valorAgregadoPautaProd(decimal baseCalc, decimal quantParaCalc)
+        public decimal ValorAgregadoPautaProd(decimal baseCalc, decimal quantParaCalc)
         {
             return baseCalc / quantParaCalc;
         }
