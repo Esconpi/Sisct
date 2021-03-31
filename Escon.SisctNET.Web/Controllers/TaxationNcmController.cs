@@ -103,6 +103,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else
                     ncmsCompany = _service.FindByGeneral();
 
+                //ncmsCompany = _service.FindByGeneral().Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
+
                 var ncmsAll = _ncmService.FindAll(null);
 
                 List<TaxationNcm> monoAdd = new List<TaxationNcm>();
@@ -204,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
-                return RedirectToAction("Index", new { id = companyid, year = year, month = month});
+                return RedirectToAction("Index", new { companyId = companyid, year = year, month = month});
             }
             catch(Exception ex)
             {

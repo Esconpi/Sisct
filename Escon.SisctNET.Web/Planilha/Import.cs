@@ -62,7 +62,7 @@ namespace Escon.SisctNET.Web.Planilha
                                 }
                             }
 
-                            if(product.Count() < 4)
+                            if (product.Count() < 4)
                             {
                                 throw new Exception();
                             }
@@ -82,7 +82,7 @@ namespace Escon.SisctNET.Web.Planilha
                     doc.Close();
                 }
             }
-            catch(IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException ex)
             {
                 throw new IndexOutOfRangeException("Arquivo Excel tem linha com menos de 4 colunas", ex);
             }
@@ -93,7 +93,7 @@ namespace Escon.SisctNET.Web.Planilha
 
             return products;
         }
-        
+
         public List<List<string>> Notes(string directoryPlanilha)
         {
             List<List<string>> notes = new List<List<string>>();
@@ -174,7 +174,7 @@ namespace Escon.SisctNET.Web.Planilha
             {
                 throw new ArgumentException("Arquivo Excel Corrompido", ex);
             }
-           
+
             return notes;
         }
 
@@ -245,12 +245,12 @@ namespace Escon.SisctNET.Web.Planilha
                                             achou = true;
                                             break;
                                         }
-                                            
+
                                     }
 
-                                    if(achou == false)
+                                    if (achou == false)
                                         ncms.Add(ncm);
-                                       
+
                                 }
 
                             }
@@ -272,9 +272,94 @@ namespace Escon.SisctNET.Web.Planilha
             {
                 throw new ArgumentException("Arquivo Excel Corrompido", ex);
             }
-           
+
             return ncms;
         }
 
+        public List<List<string>> Inventario(string directoryPlanilha)
+        {
+            List<List<string>> ncms = new List<List<string>>();
+
+            try
+            {
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+
+                try
+                {
+
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+
+                    foreach (Sheet thesheet in thesheetcollection)
+                    {
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
+                        {
+                            List<string> ncm = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
+                            {
+                                if (thecurrentcell.DataType != null)
+                                {
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
+                                    {
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                        {
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                ncm.Add(item.Text.Text);
+                                            }
+                                            else if (item.InnerText != null)
+                                            {
+                                                ncm.Add(item.InnerText);
+                                            }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                ncm.Add(item.InnerXml);
+                                            }
+                                        }
+                                    }
+                                    else if (thecurrentcell.CellValue != null)
+                                    {
+                                        ncm.Add(thecurrentcell.CellValue.Text);
+                                    }
+                                }
+                                else if (thecurrentcell.CellValue != null)
+                                {
+                                    ncm.Add(thecurrentcell.CellValue.Text);
+                                }
+                            }
+
+                            if (ncm.Count() >= 6)
+                            {
+                                if(!ncm[0].Equals("CÓDIGO"))
+                                    ncms.Add(ncm);
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
+            }
+
+            return ncms;
+        }
     }
 }

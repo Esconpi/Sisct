@@ -210,7 +210,7 @@ namespace Escon.SisctNET.Web.Controllers
             string caminhoDestinoArquivoOriginalDownload = caminhoDestinoArquivoDownload + nomeArquivo;
             string contentType = "application/text";
             byte[] fileBytes = System.IO.File.ReadAllBytes(caminhoDestinoArquivoOriginalDownload);
-            string fileName = "ESCON - Sped Fiscal " + comp.Document + " " + month + "/" + year + ".txt";
+            string fileName = "ESCON - Sped Fiscal " + comp.SocialName + " " + comp.Document + " " + month + "/" + year + ".txt";
 
             return File(fileBytes, contentType, fileName);
         }
