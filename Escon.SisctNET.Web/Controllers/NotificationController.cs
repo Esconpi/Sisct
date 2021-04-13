@@ -31,7 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 SessionManager.SetCompanyIdInSession(id);
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(id, null);
                 ViewBag.Company = company;
                 return View(null);
             }

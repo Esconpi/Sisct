@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindAll(null);
                 return View(null);
             }
             catch(Exception ex)
@@ -94,8 +94,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
+                List<Annex> list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
                     annex.Description = annex.Description + " - " + annex.Convenio;
@@ -119,10 +119,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
-                _service.Update(entity, GetLog(Model.OccorenceLog.Read));
+                _service.Update(entity, null);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

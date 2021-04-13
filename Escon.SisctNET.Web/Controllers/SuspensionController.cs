@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 SessionManager.SetCompanyIdInSession(id);
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(id, null);
                 ViewBag.Company = company;
                 return View(null);
             }
@@ -90,7 +90,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
                 return View(result);
             }
@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
                 entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
                 entity.CompanyId = rst.CompanyId;

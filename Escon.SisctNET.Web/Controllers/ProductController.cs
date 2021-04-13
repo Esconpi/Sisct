@@ -119,9 +119,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
-                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Group> lista_group = _groupService.FindAll(null);
 
                 foreach (var g in lista_group)
                 {
@@ -154,7 +154,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = result.Created;
                 entity.Updated = DateTime.Now;
@@ -177,9 +177,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
-                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Group> lista_group = _groupService.FindAll(null);
 
                 foreach (var g in lista_group)
                 {
@@ -249,7 +249,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Group> lista_group = _groupService.FindAll(null);
 
                 foreach (var g in lista_group)
                 {

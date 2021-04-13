@@ -53,7 +53,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(id, null);
 
                 ViewBag.Company = comp;
 
@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 ViewBag.Company = comp;
                 ViewBag.Erro = error;
                 ViewBag.Chave = chave;
@@ -102,7 +102,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -120,7 +120,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var note = _service.FindById(id, null);
                 note.IcmsAp = entity.IcmsAp;
                 note.IcmsSt = entity.IcmsSt;
                 note.IcmsCo = entity.IcmsCo;
@@ -239,9 +239,9 @@ namespace Escon.SisctNET.Web.Controllers
             string year = SessionManager.GetYearInSession();
             string month = SessionManager.GetMonthInSession();
 
-            var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
-            var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
-            var confDBSisctCte = _configurationService.FindByName("CTe", GetLog(Model.OccorenceLog.Read));
+            var comp = _companyService.FindById(id, null);
+            var confDBSisctNfe = _configurationService.FindByName("NFe", null);
+            var confDBSisctCte = _configurationService.FindByName("CTe", null);
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();

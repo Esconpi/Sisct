@@ -133,10 +133,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindByNote(noteId, GetLog(OccorenceLog.Read))
+                var result = _service.FindByNote(noteId, null)
                     .OrderBy(_ => _.Status)
                     .ToList();
-                var note = _noteService.FindById(noteId, GetLog(OccorenceLog.Read));
+                var note = _noteService.FindById(noteId, null);
 
                 ViewBag.Note = note;
 
@@ -178,7 +178,7 @@ namespace Escon.SisctNET.Web.Controllers
                               
                 ViewBag.DescriptionNCM = description;
 
-                List<TaxationType> list_taxation = _taxationTypeService.FindAll(GetLog(OccorenceLog.Read));
+                List<TaxationType> list_taxation = _taxationTypeService.FindAll(null);
 
                 list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
 
@@ -272,7 +272,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
 
-                var taxedtype = _taxationTypeService.FindById(taxationType, GetLog(OccorenceLog.Read));
+                var taxedtype = _taxationTypeService.FindById(taxationType, null);
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
@@ -831,14 +831,14 @@ namespace Escon.SisctNET.Web.Controllers
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
 
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(id, null);
 
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
                 
-                var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfe = _configurationService.FindByName("NFe", null);
 
                 string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
 

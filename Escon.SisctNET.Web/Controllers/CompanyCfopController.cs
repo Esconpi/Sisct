@@ -39,7 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var cfops = _cfopService.FindAll(GetLog(Model.OccorenceLog.Read));
+                var cfops = _cfopService.FindAll(null);
                 var cfopsCompany = _service.FindByCompany(companyId);
 
                 List<CompanyCfop> addCompanyCfop = new List<CompanyCfop>();
@@ -76,10 +76,10 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 ViewBag.Id = id;
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(id, null);
                 ViewBag.Company = company;
 
-                var cfopType = _cfopTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+                var cfopType = _cfopTypeService.FindAll(null);
 
                 List<CfopType> cfopsTypes = new List<CfopType>();
                 cfopsTypes.Insert(0, new CfopType() { Id = 0, Name = "Nenhum" });
@@ -115,7 +115,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateActive.Id, null);
                 entity.Active = updateActive.Active;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
@@ -137,7 +137,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 
                 
-                var entity = _service.FindById(updateCfopType.CompanyCfopId, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateCfopType.CompanyCfopId, null);
 
                 if (updateCfopType.CfopTypeId.Equals(0))
                 {

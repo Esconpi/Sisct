@@ -102,15 +102,15 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 opcao = "saida";
 
-                var comp = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(companyId, null);
 
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
 
-                var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var NfeEntry = _configurationService.FindByName("NFe", null);
 
-                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var NfeExit = _configurationService.FindByName("NFe Saida", null);
 
                 var importXml = new Xml.Import(_companyCfopService);
                 var importSped = new Sped.Import(_companyCfopService);

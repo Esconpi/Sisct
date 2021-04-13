@@ -90,7 +90,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var person = _service.FindById(id, null);
 
                 ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", person.Profile);
 
@@ -110,7 +110,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var _person = _service.FindById(id, null);
                 person.Created = _person.Created;
 
                 if (!string.IsNullOrEmpty(person.Password))
@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var person = _service.FindById(id, null);
                 return PartialView(person);
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var _person = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var _person = _service.FindById(id, null);
                 person.Created = _person.Created;
 
                 if (!string.IsNullOrEmpty(person.Password))
@@ -203,7 +203,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateActive.Id, null);
                 entity.Active = updateActive.Active;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));

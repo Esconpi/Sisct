@@ -75,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var confDbFortes = _configurationService.FindByName("DataBaseFortes", GetLog(Model.OccorenceLog.Read));
+                var confDbFortes = _configurationService.FindByName("DataBaseFortes", null);
                 var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
 
                 var counties = _countyService.FindAll(null);
@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var countingType = _countingTypeService.FindAll(GetLog(Model.OccorenceLog.Read));
+                var countingType = _countingTypeService.FindAll(null);
                 List<CountingType> countingTypes = new List<CountingType>();
                 countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
 
@@ -151,7 +151,6 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList countingsTypes = new SelectList(countingTypes, "Id", "Name", null);
                 ViewBag.ListTypes = countingsTypes;
 
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
                 return View(null);
             }
             catch (Exception ex)
@@ -222,7 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
                 var list_city = _countyService.FindAll(null).Where(_ => !_.State.UF.Equals("EXT")).OrderBy(_ => _.State.UF).ThenBy(_ => _.Name).ToList();
 
@@ -251,7 +250,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
 
                 rst.Active = entity.Active;
                 rst.Status = entity.Status;
@@ -296,9 +295,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
-                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Annex> list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
                     annex.Description = annex.Description + " - " + annex.Convenio;
@@ -351,7 +350,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
                 rst.TipoApuracao = entity.TipoApuracao;
                 rst.TypeCompany = entity.TypeCompany;
                 rst.AnnexId = entity.AnnexId.Equals(0) ? null : entity.AnnexId;
@@ -422,7 +421,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateActive.Id, null);
                 entity.Active = updateActive.Active;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
@@ -442,7 +441,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateIncentive.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateIncentive.Id, null);
                 entity.Incentive = updateIncentive.Incentive;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
@@ -462,7 +461,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateStatus.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateStatus.Id, null);
                 entity.Status = updateStatus.Status;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
@@ -481,7 +480,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -497,7 +496,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -514,7 +513,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -532,7 +531,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 var companies = _service.FindByCompanies(result.Document);
 
                 List<Model.Company> comps = new List<Company>();

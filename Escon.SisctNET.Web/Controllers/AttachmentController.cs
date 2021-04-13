@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindAll(null);
                 return View(result);
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
 
                 return View(result);
             }
@@ -101,7 +101,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 entity.Created = result.Created;
                 entity.Updated = DateTime.Now;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));

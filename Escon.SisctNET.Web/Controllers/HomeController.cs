@@ -60,7 +60,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _service.FindById(id, null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -78,9 +78,9 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 SessionManager.SetProductsSped(null);
 
-                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _service.FindById(id, null);
 
-                var Nfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var Nfe = _configurationService.FindByName("NFe", null);
 
                 var importSped = new Sped.Import();
                 var importDir = new Diretorio.Import();
@@ -180,7 +180,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _service.FindById(id, null);
                 ViewBag.Year = year;
                 ViewBag.Month = month;
                 List<List<string>> products = new List<List<string>>();
@@ -221,7 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return PartialView(result);
             }
             catch (Exception ex)
@@ -238,7 +238,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return PartialView(result);
             }
             catch (Exception ex)
@@ -255,7 +255,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 ViewBag.Incentive = result.Incentive;
                 ViewBag.TypeIncentive = result.TipoApuracao;
                 return View(result);

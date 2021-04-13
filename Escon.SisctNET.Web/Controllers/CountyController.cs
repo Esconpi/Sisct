@@ -103,7 +103,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList states = new SelectList(list_states, "Id", "Name", null);
                 ViewBag.StateId = states;
 
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -120,7 +120,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 result.Code = entity.Code;
                 result.Name = entity.Name;
                 result.StateId = entity.StateId;

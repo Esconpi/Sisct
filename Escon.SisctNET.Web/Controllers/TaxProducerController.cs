@@ -88,8 +88,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(companyid, null);
 
 
-                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var NfeExit = _configurationService.FindByName("NFe Saida", null);
+                var NfeEntry = _configurationService.FindByName("NFe", null);
 
                 var importDir = new Diretorio.Import();
                 var importXml = new Xml.Import();

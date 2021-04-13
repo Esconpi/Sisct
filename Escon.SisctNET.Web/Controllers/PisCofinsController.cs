@@ -65,8 +65,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 
-                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
-                var NfeEntry = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
+                var NfeExit = _configurationService.FindByName("NFe Saida", null);
+                var NfeEntry = _configurationService.FindByName("NFe", null);
 
                 var importXml = new Xml.Import(_companyCfopService, _service);
                 var importSped = new Sped.Import(_companyCfopService, _service);

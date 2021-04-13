@@ -65,7 +65,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(id, null);
                 ViewBag.Company = company;
 
                 SessionManager.SetCompanyIdInSession(id);
@@ -111,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(company);
 
             }
@@ -133,9 +133,9 @@ namespace Escon.SisctNET.Web.Controllers
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
-                var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(companyid, null);
 
-                var NfeExit = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var NfeExit = _configurationService.FindByName("NFe Saida", null);
 
                 var importDir = new Diretorio.Import();
 

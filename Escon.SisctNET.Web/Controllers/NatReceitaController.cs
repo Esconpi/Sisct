@@ -48,7 +48,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Cst> list_cst = _cstService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Cst> list_cst = _cstService.FindAll(null);
                 SelectList cst = new SelectList(list_cst, "Id", "Code", null);
                 ViewBag.CstId = cst;
 
@@ -88,11 +88,11 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Cst> list_cst = _cstService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Cst> list_cst = _cstService.FindAll(null);
                 SelectList cst = new SelectList(list_cst, "Id", "Code", null);
                 ViewBag.CstId = cst;
 
-                var result = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindById(id, null);
                 return View(result);
             }
             catch (Exception ex)
@@ -109,7 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
@@ -143,7 +143,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var natReceitaAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Cst.Code);
+            var natReceitaAll = _service.FindAll(null).OrderBy(_ => _.Cst.Code);
 
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))

@@ -56,7 +56,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(companyid, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(companyid, null);
 
                 if (comp.CountingTypeId == null)
                 {
@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
                     return View(comp);
                 }
 
-                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", GetLog(Model.OccorenceLog.Read));
+                var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
 
                 var importDir = new Diretorio.Import();
 
@@ -658,7 +658,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 return View(comp);
             }
             catch (Exception ex)
@@ -674,7 +674,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
 
                 ViewBag.Company = comp;
                 ViewBag.Inicio = inicio;
@@ -918,7 +918,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
                 ViewBag.Company = comp;
                 List<Model.TaxationNcm> taxationNcms = new List<TaxationNcm>();
 

@@ -42,7 +42,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(id, null);
                 ViewBag.Company = comp;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
@@ -61,7 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var result = _companyService.FindById(id, null);
                 return PartialView(result);
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var comp = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(id, null);
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe", GetLog(Model.OccorenceLog.Read));
 
@@ -214,7 +214,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetCompanyIdInSession(companyId);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
-                var comp = _companyService.FindById(companyId, GetLog(Model.OccorenceLog.Read));
+                var comp = _companyService.FindById(companyId, null);
                 ViewBag.Company = comp;
                 return View(null);
             }
@@ -232,7 +232,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+                ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(null), "Id", "Name", null);
                 var result = _service.FindById(id, null);
                 return View(result);
             }
@@ -275,7 +275,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+                ViewBag.TypeClientId = new SelectList(_typeClientService.FindAll(null), "Id", "Name", null);
                 var result = _service.FindById(id, null);
                 return View(result);
             }
