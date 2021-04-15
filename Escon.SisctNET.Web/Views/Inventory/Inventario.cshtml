@@ -1,7 +1,7 @@
 ﻿@model Escon.SisctNET.Model.Company
 
 @{
-    ViewData["Title"] = "SpedMono";
+    ViewData["Title"] = "Inventário";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <label class="control-label"><strong>Selecione o arquivo</strong></label>
-                        <input type="file" class="form-control" name="arquivo" id="arquivo" accept=".txt" onchange="ativar_button()" required />
+                        <input type="file" class="form-control" name="arquivo" id="arquivo" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="ativar_button()" required />
                     </div>
                 </div>
 

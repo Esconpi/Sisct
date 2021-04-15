@@ -48,6 +48,10 @@
                 {
                     @await Html.PartialAsync("_XmlSpedSisct", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Ordem == "DifereIcms")
+                {
+                    @await Html.PartialAsync("_CreditDifference", new ViewDataDictionary(ViewData))
+                }
             }
             else if (ViewBag.Opcao == "CTe")
             {

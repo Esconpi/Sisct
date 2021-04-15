@@ -12,11 +12,13 @@ else
 {
     <b>NFe </b>
 }
-else if (ViewBag.Opcao == "CTe")
+
+@if (ViewBag.Opcao == "CTe")
 {
     <b>CTe</b>
 }
-else if (ViewBag.Opcao == "Planilha")
+
+@if (ViewBag.Opcao == "Planilha")
 {
     <b>Planilha</b>
 }
@@ -25,31 +27,43 @@ else if (ViewBag.Opcao == "Planilha")
 {
     <b>(XML SEFAZ x SPED)</b>
 }
-else if (ViewBag.Ordem == "XmlEmpresa")
+
+@if (ViewBag.Ordem == "XmlEmpresa")
 {
     <b>(XML EMPRESA x SPED)</b>
 }
-else if (ViewBag.Ordem == "SpedXS")
+
+@if (ViewBag.Ordem == "SpedXS")
 {
     <b>(SPED x XML SEFAZ)</b>
 }
-else if (ViewBag.Ordem == "SpedXE")
+
+@if (ViewBag.Ordem == "SpedXE")
 {
     <b>(SPED x XML EMPRESA)</b>
 }
-else if (ViewBag.Ordem == "DifereValor")
+
+@if (ViewBag.Ordem == "DifereValor")
 {
     <b>(DIFERENÇA DE TOTAIS)</b>
 }
-else if (ViewBag.Ordem == "SisCTXS")
+
+@if (ViewBag.Ordem == "SisCTXS")
 {
     <b>(XML SEFAZ x SPED SisCT)</b>
 }
-else if (ViewBag.Ordem == "SisCTXS")
+
+@if (ViewBag.Ordem == "SisCTXS")
 {
     <b>(XML EMPRESA x SPED SisCT)</b>
 }
-else if (ViewBag.Ordem == "Malha")
+
+@if (ViewBag.Ordem == "Malha")
 {
     <b>(EXCEL MALHA x SPED)</b>
+}
+
+@if (ViewBag.Ordem == "DifereIcms")
+{
+    <b>(DIFERENÇA DE CRÈDITOS)</b>
 }

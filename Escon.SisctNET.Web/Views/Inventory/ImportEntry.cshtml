@@ -1,0 +1,27 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "ImportEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header" id="hiddenHeader">
+        <a asp-controller="Inventory" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"> <strong>Importar Dados Inventário:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+
+    </div>
+    <div class="box-body" id="hiddenBody">
+        <div class="col-lg-12">
+            <form asp-controller="Home" asp-action="Inventario" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
+            </form>
+        </div>
+    </div>
+    <div style="text-align:center; display:none;" id="loading">
+        <img src="~/img/carregando.gif" />
+    </div>
+</div>
+
+

@@ -69,8 +69,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "SPED x XML SEFAZ")] SpedXS = 5,
         [Display(Name = "SPED x XML EMPRESA")] SpedXE = 6,
         [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor = 7,
-        [Display(Name = "EXCEL MALHA x SPED")] Malha = 8
-        
+        [Display(Name = "DIFERENÇA DE CRÉDITOS")] DifereIcms = 8,
+        [Display(Name = "EXCEL MALHA x SPED")] Malha = 9,
+
     }
 
     public enum OrdemCancellation

@@ -92,12 +92,13 @@
                             <th class="none">Aliquota Interestadual</th>
                             <th class="none">Quantidade</th>
                             <th class="none">Valor Unitário</th>
+                            <th class="none">Desconto</th>
                             <th class="none">Unidade</th>
                             <th class="none">Valor ICMS</th>
                             <th class="none">Valor IPI</th>
                             <th class="none">ICMS ST</th>
                             <th class="all"></th>
-                            <th class="all"></th>
+                            <th class="all" style="30px;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,6 +143,7 @@
                                     <td>@string.Format("{0:N}", item.Picms)</td>
                                     <td>@string.Format("{0:N}", item.Qcom)</td>
                                     <td>@string.Format("{0:C}", item.Vuncom)</td>
+                                    <td>@string.Format("{0:C}", item.Vdesc)</td>
                                     <td>@item.Ucom</td>
                                     <td>@string.Format("{0:N}", item.Vicms)</td>
                                     <td>@string.Format("{0:N}", item.Vipi)</td>
@@ -205,6 +207,7 @@
                                     <td>@string.Format("{0:N}", item.Picms)</td>
                                     <td>@string.Format("{0:N}", item.Qcom)</td>
                                     <td>@string.Format("{0:C}", item.Vuncom)</td>
+                                    <td>@string.Format("{0:C}", item.Vdesc)</td>
                                     <td>@item.Ucom</td>
                                     <td>@string.Format("{0:N}", item.Vicms)</td>
                                     <td>@string.Format("{0:N}", item.Vipi)</td>

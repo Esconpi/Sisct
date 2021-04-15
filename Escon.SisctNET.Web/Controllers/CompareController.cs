@@ -124,7 +124,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                    
 
-                    if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))
+                    if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE) || 
+                        ordem.Equals(Model.Ordem.DifereIcms))
                     {
                         spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped);
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
@@ -503,12 +504,16 @@ namespace Escon.SisctNET.Web.Controllers
                             foreach (var notaXml in notesValidas)
                             {
                                 string nota_xml = notaXml[0]["chave"];
+
                                 if (linha[1].Equals(nota_xml))
                                 {
+
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalXml = notaXml[3]["vNF"];
                                     string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
+                                    string totalSped2 = linha[9].Equals("") ? "0" : linha[9].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
+                                    string totalDif2 = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped2)).ToString();
                                     string descXml = notaXml[3]["vDesc"];
                                     string descSped = linha[3].Equals("") ? "0" : linha[3].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
@@ -522,15 +527,23 @@ namespace Escon.SisctNET.Web.Controllers
                                     string freteSped = linha[4].Equals("") ? "0" : linha[4].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string freteDif = (Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped)).ToString();
 
-                                    if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
+                                    if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(totalDif2).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
                                         !Convert.ToDecimal(outDespDif).Equals(0) || !Convert.ToDecimal(segDif).Equals(0) ||
                                         !Convert.ToDecimal(freteDif).Equals(0))
                                     {
                                         Valores.Add(linha[0]);
                                         Valores.Add(fornecedor);
                                         Valores.Add(totalXml);
-                                        Valores.Add(totalSped);
-                                        Valores.Add(totalDif);
+                                        if (!Convert.ToDecimal(totalDif).Equals(0))
+                                        {
+                                            Valores.Add(totalSped);
+                                            Valores.Add(totalDif);
+                                        }
+                                        else
+                                        {
+                                            Valores.Add(totalSped2);
+                                            Valores.Add(totalDif2);
+                                        }
                                         Valores.Add(descXml);
                                         Valores.Add(descSped);
                                         Valores.Add(descDif);
@@ -584,7 +597,46 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalSped = valorTotalGeralSped;
                         ViewBag.TotalDif = valorTotaGeralXml - valorTotalGeralSped;
                     }
+                    else if (ordem.Equals(Model.Ordem.DifereIcms))
+                    {
+                        List<List<string>> registros = new List<List<string>>();
+                        foreach (var linha in spedNormal)
+                        {
+                            List<string> Valores = new List<string>();
+                            foreach (var notaXml in notesValidas)
+                            {
+                                string nota_xml = notaXml[0]["chave"];
 
+                                if(nota_xml == "22210307342785001282550010002771841166712104")
+                                {
+                                    var t = 0;
+                                }
+                                if (linha[1].Equals(nota_xml))
+                                {
+
+                                    string fornecedor = notaXml[2]["xNome"];
+                                    string totalNota = notaXml[3]["vNF"];
+
+                                    string icmsXml = notaXml[3]["vICMS"];
+                                    string icmsSped = linha[10].Equals("") ? "0" : linha[10].Replace('.', '*').Replace(',', '.').Replace('*', ',');
+                                    string icmsDif = (Convert.ToDecimal(icmsXml) - Convert.ToDecimal(icmsSped)).ToString();
+  
+
+                                    if (!Convert.ToDecimal(icmsDif).Equals(0))
+                                    {
+                                        Valores.Add(linha[0]);
+                                        Valores.Add(fornecedor);
+                                        Valores.Add(totalNota);
+                                        Valores.Add(icmsXml);
+                                        Valores.Add(icmsSped);
+                                        Valores.Add(icmsDif);
+                                        registros.Add(Valores);
+                                    }
+                                }
+                            }
+                        }
+                        ViewBag.Valores = registros;
+                    }
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
                     ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();

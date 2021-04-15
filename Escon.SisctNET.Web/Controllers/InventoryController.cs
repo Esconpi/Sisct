@@ -94,8 +94,11 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
                     return View(ViewData);
                 }
+                string nomeArquivo = comp.Document;
 
-                string nomeArquivo = comp.Document + ".txt";
+                if (arquivo.FileName.Contains(".xls") || arquivo.FileName.Contains(".xlsx"))
+                    nomeArquivo += ".xls";
+
                 string caminho_WebRoot = _appEnvironment.WebRootPath;
 
                 // Arquivo Planilha
@@ -258,6 +261,38 @@ namespace Escon.SisctNET.Web.Controllers
             string fileName = "ESCON - Sped Inventario " + comp.SocialName + " " + comp.Document + ".txt";
 
             return File(fileBytes, contentType, fileName);
+        }
+
+        [HttpGet]
+        public IActionResult ImportEntry(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
+                var comp = _service.FindById(id, null);
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { requestcode = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ImportExit(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
+                var comp = _service.FindById(id, null);
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { requestcode = 500, message = ex.Message });
+            }
         }
     }
 }

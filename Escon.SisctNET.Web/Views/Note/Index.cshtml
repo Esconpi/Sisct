@@ -101,7 +101,7 @@
                         <th style="text-align:center; width:20px;" class="all">
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
-                        <th style="width:20px;" class="all"></th>
+                        <th style="width:50px;" class="all"></th>
 
                     </tr>
                 </thead>
@@ -316,6 +316,9 @@
                 success: function (result) {
                     console.log(result);
                     if (result.url == "Index") {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('hiddenHeader').style.display = 'block';
+                        document.getElementById('hiddenBody').style.display = 'block';
                         setTimeout(function () {
                             window.location.reload(1);
                         }, 1000 * 1);
@@ -325,7 +328,8 @@
                     }
                 },
                 error: function (result) {
-                    console.log("Erro");
+                    console.log(result);
+                    alert("Erro inesperado!");
                 }
             });
         }
@@ -344,12 +348,16 @@
                 url: '@Url.Action("Delete", "Note")',
                 success: function (result) {
                     console.log(result);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('hiddenHeader').style.display = 'block';
+                    document.getElementById('hiddenBody').style.display = 'block';
                     setTimeout(function () {
                         window.location.reload(1);
                     }, 1000 * 1);
                 },
                 error: function (result) {
-                    console.log("Erro");
+                    console.log(result);
+                    alert("Erro inesperado!");
                 }
             });
         }

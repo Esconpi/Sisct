@@ -2561,6 +2561,8 @@ namespace Escon.SisctNET.Web.Sped
                         linhaSped.Add(linha[20]);
                         linhaSped.Add(linha[24]);
                         linhaSped.Add(linha[25]);
+                        linhaSped.Add(linha[16]);
+                        linhaSped.Add(linha[22]);
                         sped.Add(linhaSped);
                     }
                 }
