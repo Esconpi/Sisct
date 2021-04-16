@@ -15,6 +15,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Produto")]
         public string Xprod { get; set; }
 
+        [Display(Name = "CFOP")]
+        public string Cfop { get; set; }
+
         [Display(Name = "Valor")]
         public decimal Vprod { get; set; }
 
@@ -26,6 +29,17 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Número do Item")]
         public string Nitem { get; set; }
+
+        [Display(Name = "Nota")]
+        [ForeignKey("NoteInventoryExit")]
+        public int? NoteInventoryExitId { get; set; }
+
+        private NoteInventoryExit noteInventoryExit;
+        public NoteInventoryExit NoteInventoryExit
+        {
+            get => LazyLoader.Load(this, ref noteInventoryExit);
+            set => noteInventoryExit = value;
+        }
 
     }
 }

@@ -607,13 +607,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string nota_xml = notaXml[0]["chave"];
 
-                                if(nota_xml == "22210307342785001282550010002771841166712104")
-                                {
-                                    var t = 0;
-                                }
                                 if (linha[1].Equals(nota_xml))
                                 {
-
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalNota = notaXml[3]["vNF"];
 
@@ -637,6 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         ViewBag.Valores = registros;
                     }
+                    
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
                     ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();

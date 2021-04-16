@@ -286,18 +286,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                     {
-                        product = _productService.FindById(Convert.ToInt32(entity.ProductId), GetLog(OccorenceLog.Read));
+                        product = _productService.FindById(Convert.ToInt32(entity.ProductId), null);
                         precoPauta = Convert.ToDecimal(product.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && 
                             Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                     {
-                        product1 = _product1Service.FindById(Convert.ToInt32(entity.Product1Id), GetLog(OccorenceLog.Read));
+                        product1 = _product1Service.FindById(Convert.ToInt32(entity.Product1Id), null);
                         precoPauta = Convert.ToDecimal(product1.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                     {
-                        product2 = _product2Service.FindById(Convert.ToInt32(entity.Product2Id), GetLog(OccorenceLog.Read));
+                        product2 = _product2Service.FindById(Convert.ToInt32(entity.Product2Id), null);
                         precoPauta = Convert.ToDecimal(product2.Price);
                     }
 
@@ -3830,7 +3830,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Icms = icms;
                 }
 
-                var dars = _darService.FindAll(GetLog(OccorenceLog.Read));
+                var dars = _darService.FindAll(null);
 
                 // Código DAR Fecop
                 var darFecop = dars.Where(_ => _.Type.Equals("Fecop"))
