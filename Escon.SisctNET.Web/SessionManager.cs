@@ -152,16 +152,6 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<int>("MaxSisctNET");
         }
 
-        public static void SetShow(bool show)
-        {
-            _httpContextAccessor.HttpContext.Session.Set<bool>("ShowSisctNET", show);
-        }
-
-        public static bool GetShow()
-        {
-            return _httpContextAccessor.HttpContext.Session.Get<bool>("ShowSisctNET");
-        }
-
     }
 
 }

@@ -47,6 +47,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         public IActionResult Index(int id, string year, string month)
+
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -57,7 +58,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 ViewBag.Company = comp;
 
-                SessionManager.SetShow(true);
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);

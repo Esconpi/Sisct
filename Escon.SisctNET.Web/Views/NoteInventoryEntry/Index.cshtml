@@ -1,0 +1,213 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.Note>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="box box-primary">
+    <div class="box-header" id="hiddenHeader">
+        <a asp-controller="Home" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong> Notas</strong></h3>
+        <div class="btn-group pull-right">
+            <a asp-action="Audita" class="btn btn-primary">
+                <i class="fa  fa-spinner"></i>
+                Auditar
+            </a>
+
+            <a href="#" onclick="showImport()" class="btn btn-primary">
+                <i class="fa fa-cloud-upload"></i>
+                Importar
+            </a>
+
+            <a href="#" onclick="showDelete()" class="btn btn-primary">
+                <i class="fa fa-trash"></i>
+                Excluir
+            </a>
+        </div>
+
+        <div style="width: 100%; text-align: center; padding-top:20px;">
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+        </div>
+
+        <div class="btn-group pull-left" style="padding:20px;">
+            <div><strong>Código de Regime Tributário - CRT</strong></div>
+            <div>
+                <i class="fa fa-circle" style="color:red;"></i> Simples Nacional
+            </div>
+            <div>
+                <i class="fa fa-circle" style="color:blue;"></i> Simples Nacional -  excesso de sublimite de receita bruta
+            </div>
+            <div>
+                <i class="fa fa-circle" style="color:green;"></i> Regime Normal
+            </div>
+
+        </div>
+
+        <div class="btn-group pull-right" style="padding:20px;">
+            <div style="color:blueviolet;">
+                Notas com cfop interno para UF de fora
+            </div>
+        </div>
+    </div>
+    <div class="box-body" id="hiddenBody">
+        <div style="width:100%; overflow:hidden; padding:20px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+
+                        <b>Quantidades de Nota: @Model.Count()</b>
+
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
+                        <strong>Periodo: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession() </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%; padding:20px;">
+            <table class="table table-striped table-bordered display responsive nowrap" id="tblIndex2" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="none">
+                            @Html.DisplayNameFor(model => model.Chave)
+                        </th>
+                        <th width="100px" class="all">
+                            @Html.DisplayNameFor(model => model.Nnf)
+                        </th>
+                        <th class="desktop">
+                            @Html.DisplayNameFor(model => model.Dhemi)
+                        </th>
+                        <th class="none">
+                            @Html.DisplayNameFor(model => model.Uf)
+                        </th>
+                        <th class="none">
+                            @Html.DisplayNameFor(model => model.Cnpj)
+                        </th>
+                        <th class="none">
+                            @Html.DisplayNameFor(model => model.Ie)
+                        </th>
+                        <th class="none">
+                            @Html.DisplayNameFor(model => model.Iest)
+                        </th>
+                        <th width="40%" class="all">
+                            @Html.DisplayNameFor(model => model.Xnome)
+                        </th>
+                        <th width="110px" class="all">
+                            @Html.DisplayNameFor(model => model.Vnf)
+                        </th>
+                        <th style="text-align:center; width:20px;" class="all">
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th style="width:50px;" class="all"></th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="box-footer"></div>
+    <div style="text-align:center; display:none;" id="loading">
+        <img src="~/img/carregando.gif" />
+    </div>
+</div>
+
+<div class="modal modal-primary fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.showDetail').click(function () {
+            $.get('Edit/' + $(this).attr('id'), function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+
+        $('#formShow').on('shown.bs.modal', function () {
+            localStorage.setItem("modal", false);
+        });
+    })
+
+    function showImport() {
+        var result = confirm('Os arquivos NFes e CTes estão na pasta ?');
+        if (result) {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('hiddenHeader').style.display = 'none';
+            document.getElementById('hiddenBody').style.display = 'none';
+            $.ajax({
+                url: '@Url.Action("Import", "Note")',
+                success: function (result) {
+                    console.log(result);
+                    if (result.url == "Index") {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('hiddenHeader').style.display = 'block';
+                        document.getElementById('hiddenBody').style.display = 'block';
+                        setTimeout(function () {
+                            window.location.reload(1);
+                        }, 1000 * 1);
+                    }
+                    else {
+                        window.location.href = "/Note/Error?error=" + result.erro + "&chave=" + result.chave;
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("Erro SisCT!");
+                }
+            });
+        }
+        else {
+            alert('Importação Cancelada');
+        }
+    }
+
+    function showDelete() {
+        var result = confirm('Tem certeza que quer excluir as notas?');
+        if (result) {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('hiddenHeader').style.display = 'none';
+            document.getElementById('hiddenBody').style.display = 'none';
+            $.ajax({
+                url: '@Url.Action("Delete", "Note")',
+                success: function (result) {
+                    console.log(result);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('hiddenHeader').style.display = 'block';
+                    document.getElementById('hiddenBody').style.display = 'block';
+                    setTimeout(function () {
+                        window.location.reload(1);
+                    }, 1000 * 1);
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("Erro SisCT!");
+                }
+            });
+        }
+        else {
+            alert('Exclusão Cancelada');
+        }
+    }
+</script>
