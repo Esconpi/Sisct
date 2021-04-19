@@ -173,7 +173,7 @@
             document.getElementById('hiddenHeader').style.display = 'none';
             document.getElementById('hiddenBody').style.display = 'none';
             $.ajax({
-                url: '@Url.Action("Delete", "Note")',
+                url: '@Url.Action("Delete", "NoteInventoryEntry")',
                 success: function (result) {
                     console.log(result);
                     document.getElementById('loading').style.display = 'none';

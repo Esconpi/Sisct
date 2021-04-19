@@ -36,34 +36,16 @@
             </div>
         </div>
         <div style="width:100%; padding:20px;">
-            <table class="table table-striped table-bordered display responsive nowrap" id="tblIndex2" style="width:100%">
+            <table class="table table-striped table-bordered display responsive nowrap" id="tblNote" style="width:100%">
                 <thead>
                     <tr>
-                        <th class="none">
-                            @Html.DisplayNameFor(model => model.Chave)
-                        </th>
                         <th width="100px" class="all">
                             @Html.DisplayNameFor(model => model.Nnf)
-                        </th>
-                        <th class="desktop">
-                            @Html.DisplayNameFor(model => model.Dhemi)
-                        </th>
-                        <th class="none">
-                            @Html.DisplayNameFor(model => model.Uf)
-                        </th>
-                        <th class="none">
-                            @Html.DisplayNameFor(model => model.Cnpj)
-                        </th>
-                        <th class="none">
-                            @Html.DisplayNameFor(model => model.Ie)
-                        </th>
-                        <th class="none">
-                            @Html.DisplayNameFor(model => model.Iest)
                         </th>
                         <th width="40%" class="all">
                             @Html.DisplayNameFor(model => model.Xnome)
                         </th>
-                        <th width="110px" class="all">
+                        <th width="110px" class="all" style="text-align:center">
                             @Html.DisplayNameFor(model => model.Vnf)
                         </th>
                         <th style="width:50px;" class="all"></th>
@@ -100,6 +82,57 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        $('#tblNote').DataTable({
+            searchDelay: 300,
+            "fnDrawCallback": function (oSettings) {
+                $('.showDetail').off();
+                $('.showProduct').off();
+                $('[data-toggle="tooltip"]').tooltip();
+                $("input[type='checkbox']").bootstrapToggle();
+            },
+            "processing": true,
+            "ordering": false,
+            "serverSide": true,
+            "responsive": true,
+            "oLanguage": {
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                "sZeroRecords": "Nenhum registro disponível",
+                "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                "sInfoFiltered": "",
+                "sSearch": "Buscar",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+            "ajax": "/NoteInventoryEntry/GetAll",
+            "initComplete": function (settings, json) {
+            },
+            "columns": [
+                { "data": "nota" },
+                { "data": "fornecedor" },
+                {
+                    "mData": "valor",
+                    "mRender": function (data, type, row) {
+                        return "<span class = 'pull-right'>" + data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.') +"</span>"
+                    }
+                },
+                {
+                    "mData": "id",
+                    "mRender": function (data, type, row) {
+                        return "<a href='/ProductNoteInventoryEit/Index/" + data + "' class = 'glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Produtos' /> "
+
+                    }
+                }
+            ]
+        });
+    });
+
     function showImport() {
         var result = confirm('Os arquivos NFes e CTes estão na pasta ?');
         if (result) {
@@ -107,7 +140,7 @@
             document.getElementById('hiddenHeader').style.display = 'none';
             document.getElementById('hiddenBody').style.display = 'none';
             $.ajax({
-                url: '@Url.Action("Import", "Note")',
+                url: '@Url.Action("Import", "NoteInventoryExit")',
                 success: function (result) {
                     console.log(result);
                     if (result.url == "Index") {
@@ -119,7 +152,7 @@
                         }, 1000 * 1);
                     }
                     else {
-                        window.location.href = "/Note/Error?error=" + result.erro + "&chave=" + result.chave;
+                        window.location.href = "/NoteInventoryExit/Error?error=" + result.erro + "&chave=" + result.chave;
                     }
                 },
                 error: function (result) {
@@ -140,7 +173,7 @@
             document.getElementById('hiddenHeader').style.display = 'none';
             document.getElementById('hiddenBody').style.display = 'none';
             $.ajax({
-                url: '@Url.Action("Delete", "Note")',
+                url: '@Url.Action("Delete", "NoteInventoryExit")',
                 success: function (result) {
                     console.log(result);
                     document.getElementById('loading').style.display = 'none';

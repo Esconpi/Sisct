@@ -57,6 +57,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Views\ProductNoteInventoryExit\" />
     <Folder Include="wwwroot\Uploads\Atos\" />
     <Folder Include="wwwroot\Uploads\Speds\" />
   </ItemGroup>
