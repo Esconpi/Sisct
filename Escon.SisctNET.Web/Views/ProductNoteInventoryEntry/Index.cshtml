@@ -1,0 +1,175 @@
+﻿@model Escon.SisctNET.Model.NoteInventoryEntry
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="NoteInventoryEntry" asp-action="Index" asp-route-id="@Model.CompanyId" asp-route-year="@Model.AnoRef" asp-route-month="@Model.MesRef" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong>Produtos </strong></h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nota</th>
+                    <th>Data</th>
+                    <th>UF</th>
+                    <th>Fornecedor</th>
+                    <th>Valor total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Nnf</td>
+                    <td>@Model.Dhemi.ToString("dd/MM/yyyy")</td>
+                    <td>@Model.Uf</td>
+                    <td>@Model.Xnome</td>
+                    <td>@string.Format("{0:C}", Model.Vnf)</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:20px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+
+                        <b>Quantidades de Produto: @Model.productNoteInventoryEntries.Count()</b>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%; padding:20px;">
+            <table class="table table-striped table-bordered display responsive nowrap" id="tblIndex2" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th class="all">
+                            Produto
+                        </th>
+                        <th class="none">
+                            NCM
+                        </th>
+                        <th class="none">
+                            CEST
+                        </th>
+                        <th class="none">
+                            CFOP
+                        </th>
+                        <th class="all">
+                            Quantidade
+                        </th>
+                        <th class="all">
+                            Valor Unitário
+                        </th>
+                        <th class="none">
+                            (-) Desconto
+                        </th>
+                        <th class="none">
+                            (+) Frete
+                        </th>
+                        <th class="none">
+                            (+) Outros
+                        </th>
+                        <th class="none">
+                            (+) Seguro
+                        </th>
+                        <th class="none">
+                            (+) Frete CTe
+                        </th>
+                        <th class="none">
+                            (+) IPI
+                        </th>
+                        <th width="100px" class="all">
+                            Total
+                        </th>
+                        <th width="100px" class="all">
+                            B. Cálculo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.productNoteInventoryEntries)
+                    {
+ 
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Xprod)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ncm)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cest)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cfop)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:N}", item.Qcom)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vuncom)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vdesc)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vfrete)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Voutro)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vseg)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Freterateado)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vipi)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", item.Vprod)
+                        </td>
+                        <td style="text-align:center">
+                            @string.Format("{0:C}", Convert.ToDecimal(item.Vprod) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vfrete) + Convert.ToDecimal(item.Voutro) +
+                                           Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Freterateado) + Convert.ToDecimal(item.Vipi))
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="box-footer"></div>
+</div>
+<script>
+    $("#tblIndex").on("change", ".status", function(){
+            try {
+
+                    $.ajax({
+                    url: '@(Url.Action("UpdateView", "Note"))',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "Id": $(this).prop('id'), "Status": $(this).prop('checked') }),
+                    processData: false,
+                    success: function (data, textStatus, jQxhr) {
+
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                    });
+
+            } catch (e) {
+                console.log(e);
+            }
+        });
+</script>

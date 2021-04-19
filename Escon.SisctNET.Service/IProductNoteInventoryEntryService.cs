@@ -1,6 +1,11 @@
-﻿namespace Escon.SisctNET.Service
+﻿using System.Collections.Generic;
+
+namespace Escon.SisctNET.Service
 {
     public interface IProductNoteInventoryEntryService : IServiceBase<Model.ProductNoteInventoryEntry>
     {
+        void Create(List<Model.ProductNoteInventoryEntry> products, Model.Log log = null);
+
+        List<Model.ProductNoteInventoryEntry> FindByNote(int noteId, Model.Log log = null);
     }
 }

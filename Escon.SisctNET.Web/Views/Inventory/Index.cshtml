@@ -72,16 +72,16 @@
                 $('.showProduct').off();
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
-                $('.showImport').click(function () {
-                    $.get('Home/Icms/' + $(this).attr('id'), function (html) {
+                $('.showImportEntry').click(function () {
+                    $.get('Inventory/ImportEntry/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');
                     });
 
                 });
-                $('.showTaxation').click(function () {
-                    $.get('Home/Taxation/' + $(this).attr('id'), function (html) {
+                $('.showImportExit').click(function () {
+                    $.get('Inventory/ImportExit/' + $(this).attr('id'), function (html) {
                         $('#formShow .modal-body').empty();
                         $('#formShow .modal-body').append($(html));
                         $('#formShow').modal('show');
@@ -140,7 +140,9 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        return "<a href='/Inventory/Inventario/" + data + "' class = 'fa fa-file-word-o pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Sped' /> " 
+                        return "<a href='/Inventory/Inventario/" + data + "' class = 'fa fa-file-word-o pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Sped' /> " +
+                            "<a href='#" + data + "' class = 'showImportEntry fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green' data-toggle='tooltip' data-placement='top' title='Importar Notas de Entrada' id='" + row.id + "' /> " +
+                            "<a href='#" + data + "' class = 'showImportExit fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px; color:red' data-toggle='tooltip' data-placement='top' title='Importar Notas de Saída' id='" + row.id + "' /> "
 
                     }
                 }
@@ -149,3 +151,4 @@
     });
 
 </script>
+                                "

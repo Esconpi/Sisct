@@ -271,7 +271,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _service.FindById(id, null);
-                return View(comp);
+                return PartialView(comp);
             }
             catch (Exception ex)
             {
@@ -287,7 +287,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var comp = _service.FindById(id, null);
-                return View(comp);
+                return PartialView(comp);
             }
             catch (Exception ex)
             {

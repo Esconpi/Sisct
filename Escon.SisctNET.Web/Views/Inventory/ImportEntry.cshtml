@@ -1,10 +1,10 @@
 ﻿@model Escon.SisctNET.Model.Company
 <div>
-    <h4><strong>Notas Entrada:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
+    <h4><strong>Notas de Entrada:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
     <hr />
     <div class="row">
         <div class="col-lg-12">
-            <form action="Note/Index" method="get">
+            <form action="NoteInventoryEntry/Index" method="get">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
                 <div class="form-group col-lg-1 col-md-1 col-xs-12">
