@@ -161,8 +161,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IIncentiveRepository, IncentiveRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<INoteInventoryEntryRepository, NoteInventoryEntryRepository>();
-            services.AddScoped<INoteInventoryExitRepository, NoteInventoryExitRepository>();
-            services.AddScoped<IProductNoteInventoryEntryRepository, ProductNoteInventoryEntryRepository>();
+            services.AddScoped<IProductNoteInventoryExitRepository, ProductNoteInventoryExitRepository>();
             services.AddScoped<IProductNoteInventoryExitRepository, ProductNoteInventoryExitRepository>();
 
 
@@ -225,7 +224,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IIncentiveService, IncentiveService>();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<INoteInventoryEntryService, NoteInventoryEntryService>();
-            services.AddScoped<INoteInventoryExitService, NoteInventoryExitService>();
             services.AddScoped<IProductNoteInventoryEntryService, ProductNoteInventoryEntryService>();
             services.AddScoped<IProductNoteInventoryExitService, ProductNoteInventoryExitService>();
 

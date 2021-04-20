@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.NoteInventoryExit>
+﻿@model Escon.SisctNET.Model.Company
 
 @{
-    ViewData["Title"] = "Import";
+    ViewData["Title"] = "Error";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,8 +13,8 @@
         <h3 class="box-title"><strong>Erro de Codificação</strong></h3>
 
         <div style="width: 100%; text-align: center; padding-top:10px;">
-            <strong>@ViewBag.Company.SocialName</strong> <br />
-            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+            <strong>@Model.SocialName</strong> <br />
+            <b>CNPJ: </b>@Model.Document <b>Insc. Estadual: </b> @Model.Ie
         </div>
     </div>
     <div class="box-body">

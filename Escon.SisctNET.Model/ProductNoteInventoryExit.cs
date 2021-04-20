@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
     [Table("productnoteinventoryexit")]
-    public class ProductNoteInventoryExit : EntityBase
+    public class ProductNoteInventoryExit : NoteInventoryExit
     {
-        public ILazyLoader LazyLoader { get; set; }
 
         [Display(Name = "Código do Produto")]
         public string Cprod { get; set; }
@@ -54,20 +52,8 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Outras Despesas")]
         public decimal Voutro { get; set; }
 
-        [Display(Name = "Valor Frete")]
-        public decimal Freterateado { get; set; }
-
-
-        [Display(Name = "Nota")]
-        [ForeignKey("NoteInventoryExit")]
-        public int? NoteInventoryExitId { get; set; }
-
-        private NoteInventoryExit noteInventoryExit;
-        public NoteInventoryExit NoteInventoryExit
-        {
-            get => LazyLoader.Load(this, ref noteInventoryExit);
-            set => noteInventoryExit = value;
-        }
+        [Display(Name = "Total")]
+        public decimal Vbasecalc { get; set; }
 
     }
 }

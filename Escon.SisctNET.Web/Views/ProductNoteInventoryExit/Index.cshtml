@@ -1,5 +1,4 @@
-﻿@model Escon.SisctNET.Model.NoteInventoryExit
-
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNoteInventoryExit>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,29 +7,8 @@
 
 <div class="box box-primary">
     <div class="box-header">
-        <a asp-controller="NoteInventoryExit" asp-action="Index" asp-route-id="@Model.CompanyId" asp-route-year="@Model.AnoRef" asp-route-month="@Model.MesRef" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <a asp-controller="NoteInventoryExit" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Produtos </strong></h3>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nota</th>
-                    <th>Data</th>
-                    <th>UF</th>
-                    <th>Fornecedor</th>
-                    <th>Valor total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Model.Nnf</td>
-                    <td>@Model.Dhemi.ToString("dd/MM/yyyy")</td>
-                    <td>@Model.Uf</td>
-                    <td>@Model.Xnome</td>
-                    <td>@string.Format("{0:C}", Model.Vnf)</td>
-                </tr>
-            </tbody>
-        </table>
 
     </div>
     <div class="box-body">
@@ -39,7 +17,7 @@
                 <div class="col-lg-12">
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
 
-                        <b>Quantidades de Produto: @Model.productNoteInventoryExits.Count()</b>
+                        <b>Quantidades de Produto: @Model.Count()</b>
 
                     </div>
                 </div>
@@ -80,21 +58,18 @@
                             (+) Seguro
                         </th>
                         <th class="none">
-                            (+) Frete CTe
-                        </th>
-                        <th class="none">
                             (+) IPI
+                        </th>
+                        <th width="100px" class="all">
+                            V. Produto
                         </th>
                         <th width="100px" class="all">
                             Total
                         </th>
-                        <th width="100px" class="all">
-                            B. Cálculo
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.productNoteInventoryExits)
+                    @foreach (var item in Model)
                     {
 
                         <tr>
@@ -129,17 +104,13 @@
                                 @string.Format("{0:C}", item.Vseg)
                             </td>
                             <td style="text-align:center">
-                                @string.Format("{0:C}", item.Freterateado)
-                            </td>
-                            <td style="text-align:center">
                                 @string.Format("{0:C}", item.Vipi)
                             </td>
                             <td style="text-align:center">
                                 @string.Format("{0:C}", item.Vprod)
                             </td>
                             <td style="text-align:center">
-                                @string.Format("{0:C}", Convert.ToDecimal(item.Vprod) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vfrete) + Convert.ToDecimal(item.Voutro) +
-                                               Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Freterateado) + Convert.ToDecimal(item.Vipi))
+                                @string.Format("{0:C}", item.Vbasecalc)
                             </td>
                         </tr>
                     }

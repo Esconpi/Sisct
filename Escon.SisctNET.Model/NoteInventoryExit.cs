@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("noteinventoryexit")]
-    public class NoteInventoryExit: EntityBase
+    public class NoteInventoryExit : EntityBase
     {
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
@@ -54,6 +52,5 @@ namespace Escon.SisctNET.Model
         [Display(Name = "IE Substituto Tributário")]
         public string Iest { get; set; }
 
-        public List<Model.ProductNoteInventoryExit> productNoteInventoryExits { get; set; }
     }
 }

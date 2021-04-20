@@ -57,6 +57,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Valor Frete")]
         public decimal Freterateado { get; set; }
 
+        [Display(Name = "Total")]
+        public decimal Vbasecalc { get; set; }
+
         [Display(Name = "Nota")]
         [ForeignKey("NoteInventoryEntry")]
         public int? NoteInventoryEntryId { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.NoteInventoryExit>
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNoteInventoryExit>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,7 +11,7 @@
         <a asp-controller="Inventory" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Notas de Saída</strong></h3>
         <div class="btn-group pull-right">
-            <a href="#" onclick="showImport()" class="btn btn-primary">
+            <a href="#" class="btn btn-primary showImport">
                 <i class="fa fa-cloud-upload"></i>
                 Importar
             </a>
@@ -83,6 +83,14 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $('.showImport').click(function () {
+            $.get('/NoteInventoryExit/Import/', function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
         $('#tblNote').DataTable({
             searchDelay: 300,
             "fnDrawCallback": function (oSettings) {
@@ -110,7 +118,7 @@
                     "sLast": "Último"
                 }
             },
-            "ajax": "/NoteInventoryEntry/GetAll",
+            "ajax": "/NoteInventoryExit/GetAll",
             "initComplete": function (settings, json) {
             },
             "columns": [
@@ -125,7 +133,7 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        return "<a href='/ProductNoteInventoryEit/Index/" + data + "' class = 'glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Produtos' /> "
+                        return "<a href='/ProductNoteInventoryExit/Index/" + data + "' class = 'glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Produtos' /> "
 
                     }
                 }
@@ -133,37 +141,9 @@
         });
     });
 
-    function showImport() {
-        var result = confirm('Os arquivos NFes e CTes estão na pasta ?');
-        if (result) {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('hiddenHeader').style.display = 'none';
-            document.getElementById('hiddenBody').style.display = 'none';
-            $.ajax({
-                url: '@Url.Action("Import", "NoteInventoryExit")',
-                success: function (result) {
-                    console.log(result);
-                    if (result.url == "Index") {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('hiddenHeader').style.display = 'block';
-                        document.getElementById('hiddenBody').style.display = 'block';
-                        setTimeout(function () {
-                            window.location.reload(1);
-                        }, 1000 * 1);
-                    }
-                    else {
-                        window.location.href = "/NoteInventoryExit/Error?error=" + result.erro + "&chave=" + result.chave;
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("Erro SisCT!");
-                }
-            });
-        }
-        else {
-            alert('Importação Cancelada');
-        }
+     function showImport() {
+        document.getElementById('loadingImport').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
     }
 
     function showDelete() {

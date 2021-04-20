@@ -920,7 +920,10 @@ namespace Escon.SisctNET.Web.Xml
                                             string nCT_temp = "";
 
                                             List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
-                                            ctes = CTeAll(directotyCte, nota[3]["CNPJ"]);
+
+                                            if(directotyCte != "")
+                                                ctes = CTeAll(directotyCte, nota[3]["CNPJ"]);
+
                                             foreach (var item in ctes)
                                             {
                                                 for (int j = 0; j < item.Count; j++)

@@ -38,14 +38,24 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<ProductNoteInventoryExit> FindByCompany(int companyId, Log log = null)
+        {
+            return _repository.FindByCompany(companyId, log);
+        }
+
         public ProductNoteInventoryExit FindById(int id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<ProductNoteInventoryExit> FindByNote(int noteId, Log log = null)
+        public List<ProductNoteInventoryExit> FindByNote(string chave, Log log = null)
         {
-            return _repository.FindByNote(noteId, log);
+            return _repository.FindByNote(chave, log);
+        }
+
+        public List<ProductNoteInventoryExit> FindByNotes(int id, string year, string month, Log log = null)
+        {
+            return _repository.FindByNotes(id, year, month, log);
         }
 
         public ProductNoteInventoryExit Update(ProductNoteInventoryExit entity, Log log)
