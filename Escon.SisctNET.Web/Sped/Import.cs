@@ -2795,7 +2795,7 @@ namespace Escon.SisctNET.Web.Sped
                                 chave = note[9];
                                 nNF = note[8];
                                 vNF = note[12];
-                                dhemi = note[10];
+                                dhemi = note[10].Substring(0,2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4);
 
                                 foreach(var fornecedor in fornecdores)
                                 {
@@ -2814,6 +2814,7 @@ namespace Escon.SisctNET.Web.Sped
                                 if (linha[2].Equals(note[3]))
                                 {
                                     List<string> produto = new List<string>();
+
                                     produto.Add(chave);
                                     produto.Add(nNF);
                                     produto.Add(dhemi);
@@ -2823,16 +2824,17 @@ namespace Escon.SisctNET.Web.Sped
                                     produto.Add(uf);
                                     produto.Add(vNF);
 
+                                    produto.Add(linha[2]);
+                                    produto.Add(linha[3]);
+                                    produto.Add(linha[8]);
+                                    produto.Add(linha[13]);
+                                    produto.Add(note[11]);
                                     produto.Add(note[2]);
-                                    produto.Add(note[3]);
-                                    produto.Add(note[4]);
                                     produto.Add(note[5]);
                                     produto.Add(note[6]);
                                     produto.Add(note[7]);
                                     produto.Add(note[8]);
-                                    produto.Add(note[11]);
-                                    produto.Add(linha[8]);
-                                    produto.Add(linha[13]);
+                                    produto.Add(note[24]);
 
                                     produtos.Add(produto);
                                 }

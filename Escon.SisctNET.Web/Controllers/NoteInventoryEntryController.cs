@@ -128,7 +128,44 @@ namespace Escon.SisctNET.Web.Controllers
 
                 foreach(var produto in produtos)
                 {
+                    var productImport = produtosImportados.Where(_ => _.Chave.Equals(produto[0]) && _.Nitem.Equals(produto[8])).FirstOrDefault();
+                    var esxiteAdd = addProduct.Where(_ => _.Chave.Equals(produto[0]) && _.Nitem.Equals(produto[8])).FirstOrDefault();
 
+                    if(productImport == null && esxiteAdd == null)
+                    {
+                        Model.ProductNoteInventoryEntry prod = new Model.ProductNoteInventoryEntry();
+
+                        prod.CompanyId = id;
+                        prod.Chave = produto[0];
+                        prod.Nnf = produto[1];
+                        prod.Dhemi = Convert.ToDateTime(produto[2]);
+                        prod.Xnome = produto[3];
+                        prod.Cnpj = produto[4];
+                        prod.Ie = produto[5];
+                        prod.Uf = produto[6];
+                        prod.Vnf = Convert.ToDecimal(produto[7].Replace(",","."));
+                        prod.AnoRef = year;
+                        prod.MesRef = month;
+
+                        prod.Cprod = produto[8];
+                        prod.Xprod = produto[9];
+                        prod.Ncm = produto[10];
+                        prod.Cest = produto[11];
+                        prod.Cfop = produto[12];
+                        prod.Nitem = produto[13];
+                        prod.Qcom = Convert.ToDecimal(produto[14].Replace(",","."));
+                        prod.Ucom = produto[15];
+                        prod.Vprod = Convert.ToDecimal(produto[16].Replace(",", "."));
+                        prod.Vdesc = Convert.ToDecimal(produto[17].Replace(",", "."));
+                        prod.Vipi = Convert.ToDecimal(produto[18].Replace(",", "."));
+
+                        prod.Vuncom = Convert.ToDecimal(prod.Vprod) / Convert.ToDecimal(prod.Qcom);
+                        prod.Vbasecalc = prod.Vprod - prod.Vseg;
+                        prod.Created = DateTime.Now;
+                        prod.Updated = DateTime.Now;
+
+                        addProduct.Add(prod);
+                    }
                 }
 
                 _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
