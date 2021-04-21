@@ -2660,6 +2660,40 @@ namespace Escon.SisctNET.Web.Sped
             return products;
         }
 
+        public List<List<string>> NFe0150(string directorySped)
+        {
+            List<List<string>> produtos = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line;
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0150"))
+                        produtos.Add(linha.ToList());
+
+                    if (linha[1].Equals("E001") || linha[1].Equals("H001") || linha[1].Equals("0200"))
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return produtos;
+        }
+
         public List<List<string>> NFeExitCanceled(string directorySped, string modelo)
         {
             List<List<string>> spedNf = new List<List<string>>();
@@ -2735,6 +2769,96 @@ namespace Escon.SisctNET.Web.Sped
             return spedNfe;
         }
 
+        public List<List<string>> NFeProduct(string directorySped, List<Model.County> counties)
+        {
+            List<List<string>> produtos = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            var fornecdores = NFe0150(directorySped);
+            var notes = NFeC100C170(directorySped);
+
+            string line, chave = "", nNF = "", dhemi = "", vNF = "", xNome = "", cnpj = "", ie = "", uf = "";
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        foreach (var note in notes)
+                        {
+                            if (note[1].Equals("C100"))
+                            {
+                                chave = note[9];
+                                nNF = note[8];
+                                vNF = note[12];
+                                dhemi = note[10];
+
+                                foreach(var fornecedor in fornecdores)
+                                {
+                                    if (fornecedor[2].Equals(note[4])){
+                                        xNome = fornecedor[3];
+                                        cnpj = fornecedor[5];
+                                        ie = fornecedor[7];
+                                        uf = counties.Where(_ => _.Code.Equals(fornecedor[8])).FirstOrDefault().State.UF;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (note[1].Equals("C170"))
+                            {
+                                if (linha[2].Equals(note[3]))
+                                {
+                                    List<string> produto = new List<string>();
+                                    produto.Add(chave);
+                                    produto.Add(nNF);
+                                    produto.Add(dhemi);
+                                    produto.Add(xNome);
+                                    produto.Add(cnpj);
+                                    produto.Add(ie);
+                                    produto.Add(uf);
+                                    produto.Add(vNF);
+
+                                    produto.Add(note[2]);
+                                    produto.Add(note[3]);
+                                    produto.Add(note[4]);
+                                    produto.Add(note[5]);
+                                    produto.Add(note[6]);
+                                    produto.Add(note[7]);
+                                    produto.Add(note[8]);
+                                    produto.Add(note[11]);
+                                    produto.Add(linha[8]);
+                                    produto.Add(linha[13]);
+
+                                    produtos.Add(produto);
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    if (linha[1].Equals("E001") || linha[1].Equals("H001"))
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+
+            return produtos;
+        }
+       
         public List<List<string>> NFeProduct(string directorySped, List<Model.Cfop> cfops)
         {
             List<List<string>> products = new List<List<string>>();

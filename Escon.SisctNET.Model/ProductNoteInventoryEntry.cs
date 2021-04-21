@@ -5,9 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Escon.SisctNET.Model
 {
     [Table("productnoteinventoryentry")]
-    public class ProductNoteInventoryEntry : EntityBase
+    public class ProductNoteInventoryEntry : NoteBase
     {
-        public ILazyLoader LazyLoader { get; set; }
 
         [Display(Name = "Código do Produto")]
         public string Cprod { get; set; }
@@ -59,17 +58,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Total")]
         public decimal Vbasecalc { get; set; }
-
-        [Display(Name = "Nota")]
-        [ForeignKey("NoteInventoryEntry")]
-        public int? NoteInventoryEntryId { get; set; }
-
-        private NoteInventoryEntry noteInventoryEntry;
-        public NoteInventoryEntry NoteInventoryEntry
-        {
-            get => LazyLoader.Load(this, ref noteInventoryEntry);
-            set => noteInventoryEntry = value;
-        }
 
     }
 }

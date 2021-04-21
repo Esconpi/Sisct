@@ -16,10 +16,13 @@
                 Importar
             </a>
 
-            <a href="#" onclick="showDelete()" class="btn btn-primary">
-                <i class="fa fa-trash"></i>
-                Excluir
-            </a>
+            <!--
+                 <a href="#" onclick="showDelete()" class="btn btn-primary">
+                    <i class="fa fa-trash"></i>
+                    Excluir
+                </a>
+            -->
+
         </div>
 
         <div style="width: 100%; text-align: center; padding-top:20px;">
@@ -91,6 +94,7 @@
             });
 
         });
+
         $('#tblNote').DataTable({
             searchDelay: 300,
             "fnDrawCallback": function (oSettings) {
@@ -141,7 +145,7 @@
         });
     });
 
-     function showImport() {
+    function showImport() {
         document.getElementById('loadingImport').style.display = 'block';
         document.getElementById('hidden').style.display = 'none';
     }

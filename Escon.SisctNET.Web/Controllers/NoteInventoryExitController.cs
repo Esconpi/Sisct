@@ -267,8 +267,9 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0;
 
                             var productImport = produtosImportados.Where(_ => _.Chave.Equals(notes[i][0]["chave"])  && _.Nitem.Equals(nItem)).FirstOrDefault();
+                            var esxiteAdd = addProduct.Where(_ => _.Chave.Equals(notes[i][0]["chave"]) && _.Nitem.Equals(nItem)).FirstOrDefault();
 
-                            if (productImport == null)
+                            if (productImport == null && esxiteAdd == null)
                             {
 
                                 Model.ProductNoteInventoryExit prod = new Model.ProductNoteInventoryExit();

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.NoteInventoryEntry>
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNoteInventoryEntry>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,15 +11,18 @@
         <a asp-controller="Inventory" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong>Notas de Entrada</strong></h3>
         <div class="btn-group pull-right">
-            <a href="#" onclick="showImport()" class="btn btn-primary">
+            <a href="#" class="btn btn-primary showImport">
                 <i class="fa fa-cloud-upload"></i>
                 Importar
             </a>
 
-            <a href="#" onclick="showDelete()" class="btn btn-primary">
-                <i class="fa fa-trash"></i>
-                Excluir
-            </a>
+            <!--
+                 <a href="#" onclick="showDelete()" class="btn btn-primary">
+                    <i class="fa fa-trash"></i>
+                    Excluir
+                </a>
+            -->
+
         </div>
 
         <div style="width: 100%; text-align: center; padding-top:20px;">
@@ -61,7 +64,7 @@
     </div>
 </div>
 
-<div class="modal modal-primary fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-default fade in" id="formShow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -83,6 +86,15 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $('.showImport').click(function () {
+            $.get('/NoteInventoryEntry/Import/', function (html) {
+                $('#formShow .modal-body').empty();
+                $('#formShow .modal-body').append($(html));
+                $('#formShow').modal('show');
+            });
+
+        });
+
         $('#tblNote').DataTable({
             searchDelay: 300,
             "fnDrawCallback": function (oSettings) {
@@ -133,37 +145,19 @@
         });
     });
 
+    function ativar_button() {
+        var arquivo = document.getElementById("arquivo").value;
+        console.log(arquivo);
+        if (arquivo == "") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
+
     function showImport() {
-        var result = confirm('Os arquivos NFes e CTes estão na pasta ?');
-        if (result) {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('hiddenHeader').style.display = 'none';
-            document.getElementById('hiddenBody').style.display = 'none';
-            $.ajax({
-                url: '@Url.Action("Import", "NoteInventoryEntry")',
-                success: function (result) {
-                    console.log(result);
-                    if (result.url == "Index") {
-                        document.getElementById('loading').style.display = 'none';
-                        document.getElementById('hiddenHeader').style.display = 'block';
-                        document.getElementById('hiddenBody').style.display = 'block';
-                        setTimeout(function () {
-                            window.location.reload(1);
-                        }, 1000 * 1);
-                    }
-                    else {
-                        window.location.href = "/NoteInventoryEntry/Error?error=" + result.erro + "&chave=" + result.chave;
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("Erro SisCT!");
-                }
-            });
-        }
-        else {
-            alert('Importação Cancelada');
-        }
+        document.getElementById('loadingImport').style.display = 'block';
+        document.getElementById('hidden').style.display = 'none';
     }
 
     function showDelete() {

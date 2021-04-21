@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Escon.SisctNET.Model
 {
     [Table("productnoteinventoryexit")]
-    public class ProductNoteInventoryExit : NoteInventoryExit
+    public class ProductNoteInventoryExit : NoteBase
     {
 
         [Display(Name = "Código do Produto")]

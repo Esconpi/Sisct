@@ -27,9 +27,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var note = _service.FindByNote(id, null);
+                var products = _service.FindByNote(id, null);
 
-                return View(note);
+                return View(products);
 
             }
             catch (Exception ex)

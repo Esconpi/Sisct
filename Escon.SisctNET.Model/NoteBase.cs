@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    public class NoteInventoryExit : EntityBase
+    public class NoteBase : EntityBase
     {
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]

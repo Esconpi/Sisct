@@ -119,15 +119,23 @@ namespace Escon.SisctNET.Web.Controllers
                 for (int i = 0; i < ncms.Count(); i++)
                 {
                     TaxationNcm taxationTemp = new TaxationNcm();
-
-                    if(comp.Taxation)
-                        taxationTemp = ncmsCompany.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
-                    else
-                        taxationTemp = ncmsCompany.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    TaxationNcm existAdd = null;
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
-                    if (taxationTemp == null && ncmTemp != null) 
+                    if (comp.Taxation)
+                    {
+                        taxationTemp = ncmsCompany.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                    }
+                    else
+                    {
+                        taxationTemp = ncmsCompany.Where(_ => _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
+                        if(monoAdd.Count() > 0)
+                            existAdd = monoAdd.Where(_ => _.NcmId.Equals(ncmTemp.Id)).FirstOrDefault();
+
+                    }
+
+                    if (taxationTemp == null && ncmTemp != null && existAdd == null) 
                     {
                         TaxationNcm tributacao = new TaxationNcm();
                         

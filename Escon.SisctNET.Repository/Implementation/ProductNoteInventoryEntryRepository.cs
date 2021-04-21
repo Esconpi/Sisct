@@ -27,14 +27,45 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<ProductNoteInventoryEntry> FindByNote(int noteId, Log log = null)
+        public List<ProductNoteInventoryEntry> FindByCompany(int companyId, Log log = null)
         {
             var rst = _context.ProductNoteInventoryEntries
-                 .Where(_ => _.NoteInventoryEntryId.Equals(noteId))
-                 .Include(c => c.NoteInventoryEntry.Company)
-                 .ToList();
+              .Where(_ => _.CompanyId.Equals(companyId))
+              .Include(c => c.Company)
+              .ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<ProductNoteInventoryEntry> FindByNote(string chave, Log log = null)
+        {
+            var rst = _context.ProductNoteInventoryEntries
+               .Where(_ => _.Chave.Equals(chave))
+               .Include(c => c.Company)
+               .ToList();
             AddLog(log);
             return rst.ToList();
+        }
+
+        public List<ProductNoteInventoryEntry> FindByNotes(int id, string year, string month, Log log = null)
+        {
+            var rst = _context.ProductNoteInventoryEntries
+              .Where(_ => _.CompanyId.Equals(id) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
+              .Include(c => c.Company)
+              .ToList();
+
+            var chaves = rst.Select(s => s.Chave).Distinct().ToList();
+
+            List<ProductNoteInventoryEntry> notas = new List<ProductNoteInventoryEntry>();
+
+            foreach (var chave in chaves)
+            {
+                var nn = rst.Where(_ => _.Chave.Equals(chave)).FirstOrDefault();
+                notas.Add(nn);
+            }
+
+            AddLog(log);
+            return notas.ToList();
         }
     }
 }

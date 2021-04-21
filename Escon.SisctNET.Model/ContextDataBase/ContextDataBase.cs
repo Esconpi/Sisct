@@ -127,8 +127,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<Incentive> Incentives { get; set; }
 
-        public DbSet<NoteInventoryEntry> NoteInventoryEntries { get; set; }
-
         public DbSet<ProductNoteInventoryEntry> ProductNoteInventoryEntries { get; set; }
 
         public DbSet<ProductNoteInventoryExit> ProductNoteInventoryExits { get; set; }
