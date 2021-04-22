@@ -159,7 +159,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.Code).ToList();
+            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.Code).ToList();
 
 
 

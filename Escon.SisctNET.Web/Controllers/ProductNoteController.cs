@@ -804,7 +804,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var prod = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var prod = _service.FindById(id, null);
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });
@@ -4110,7 +4110,7 @@ namespace Escon.SisctNET.Web.Controllers
         {
             var messageResponse = new List<object>();
 
-            var dar = _darService.FindAll(GetLog(OccorenceLog.Read));
+            var dar = _darService.FindAll(null);
             var documents = await _darDocumentService.GetByCompanyAndPeriodReferenceAsync(companyId, periodReference, false);
             foreach (var dc in documents)
             {

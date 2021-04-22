@@ -143,7 +143,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Cnpj = produto[4];
                         prod.Ie = produto[5];
                         prod.Uf = produto[6];
-                        prod.Vnf = Convert.ToDecimal(produto[7].Replace(",","."));
+                        prod.Vnf = Convert.ToDecimal(produto[7]);
                         prod.AnoRef = year;
                         prod.MesRef = month;
 
@@ -153,11 +153,11 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Cest = produto[11];
                         prod.Cfop = produto[12];
                         prod.Nitem = produto[13];
-                        prod.Qcom = Convert.ToDecimal(produto[14].Replace(",","."));
+                        prod.Qcom = Convert.ToDecimal(produto[14]);
                         prod.Ucom = produto[15];
-                        prod.Vprod = Convert.ToDecimal(produto[16].Replace(",", "."));
-                        prod.Vdesc = Convert.ToDecimal(produto[17].Replace(",", "."));
-                        prod.Vipi = Convert.ToDecimal(produto[18].Replace(",", "."));
+                        prod.Vprod = Convert.ToDecimal(produto[16]);
+                        prod.Vdesc = Convert.ToDecimal(produto[17]);
+                        prod.Vipi = Convert.ToDecimal(produto[18]);
 
                         prod.Vuncom = Convert.ToDecimal(prod.Vprod) / Convert.ToDecimal(prod.Qcom);
                         prod.Vbasecalc = prod.Vprod - prod.Vseg;

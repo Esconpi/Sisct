@@ -219,7 +219,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var note = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var note = _service.FindById(id, null);
 
                 note.View = true;
 

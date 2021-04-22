@@ -2833,8 +2833,14 @@ namespace Escon.SisctNET.Web.Sped
                                     produto.Add(note[5]);
                                     produto.Add(note[6]);
                                     produto.Add(note[7]);
-                                    produto.Add(note[8]);
-                                    produto.Add(note[24]);
+                                    if(note[8] == "")
+                                        produto.Add("0");
+                                    else
+                                        produto.Add(note[8]);
+                                    if(note[24] == "")
+                                        produto.Add("0");
+                                    else
+                                        produto.Add(note[24]);
 
                                     produtos.Add(produto);
                                 }
