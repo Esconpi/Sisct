@@ -47,10 +47,10 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public List<ProductNoteInventoryEntry> FindByNotes(int id, string year, string month, Log log = null)
+        public List<ProductNoteInventoryEntry> FindByNotes(int companyId, string year, string month, Log log = null)
         {
             var rst = _context.ProductNoteInventoryEntries
-              .Where(_ => _.CompanyId.Equals(id) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
+              .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
               .Include(c => c.Company)
               .ToList();
 
@@ -66,6 +66,18 @@ namespace Escon.SisctNET.Repository.Implementation
 
             AddLog(log);
             return notas.ToList();
+        }
+
+        public List<ProductNoteInventoryEntry> FindByPeriod(int companyId, System.DateTime inicio, System.DateTime fim, Log log = null)
+        {
+            var rst = _context.ProductNoteInventoryEntries
+              .Where(_ => _.CompanyId.Equals(companyId) && _.Dhemi >= inicio && _.Dhemi < fim.AddDays(1))
+              .Include(c => c.Company)
+              .ToList();
+
+            AddLog(log);
+
+            return rst;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -53,9 +54,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNote(chave, log);
         }
 
-        public List<ProductNoteInventoryEntry> FindByNotes(int id, string year, string month, Log log = null)
+        public List<ProductNoteInventoryEntry> FindByNotes(int companyId, string year, string month, Log log = null)
         {
-            return _repository.FindByNotes(id, year, month, log);
+            return _repository.FindByNotes(companyId, year, month, log);
+        }
+
+        public List<ProductNoteInventoryEntry> FindByPeriod(int companyId, DateTime inicio, DateTime fim, Log log = null)
+        {
+            return _repository.FindByPeriod(companyId, inicio, fim, log);
         }
 
         public ProductNoteInventoryEntry Update(ProductNoteInventoryEntry entity, Log log)

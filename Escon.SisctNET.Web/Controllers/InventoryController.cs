@@ -294,5 +294,21 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { requestcode = 500, message = ex.Message });
             }
         }
+        
+        [HttpGet]
+        public IActionResult Relatory(int id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
+                var comp = _service.FindById(id, null);
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }

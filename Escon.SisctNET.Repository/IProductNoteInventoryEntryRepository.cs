@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Escon.SisctNET.Repository
 {
@@ -9,8 +10,10 @@ namespace Escon.SisctNET.Repository
 
         List<Model.ProductNoteInventoryEntry> FindByCompany(int companyId, Model.Log log = null);
 
-        List<Model.ProductNoteInventoryEntry> FindByNotes(int id, string year, string month, Model.Log log = null);
+        List<Model.ProductNoteInventoryEntry> FindByNotes(int companyId, string year, string month, Model.Log log = null);
 
         List<Model.ProductNoteInventoryEntry> FindByNote(string chave, Model.Log log = null);
+
+        List<Model.ProductNoteInventoryEntry> FindByPeriod(int companyId, DateTime inicio, DateTime fim, Model.Log log = null);
     }
 }

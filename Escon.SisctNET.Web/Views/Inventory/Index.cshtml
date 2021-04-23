@@ -140,9 +140,10 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                        return "<a href='/Inventory/Inventario/" + data + "' class = 'fa fa-file-word-o pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Sped' /> " +
+                        return "<a href='/Inventory/Inventario/" + data + "' class = 'fa fa-file-text pull-left' style = 'margin-left:10px; margin-bottom:10px; color:gray;' data-toggle='tooltip' data-placement='top' title='Gerar Sped' /> " +
                             "<a href='#" + data + "' class = 'showImportEntry fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green' data-toggle='tooltip' data-placement='top' title='Importar Notas de Entrada' id='" + row.id + "' /> " +
-                            "<a href='#" + data + "' class = 'showImportExit fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px; color:red' data-toggle='tooltip' data-placement='top' title='Importar Notas de Saída' id='" + row.id + "' /> "
+                            "<a href='#" + data + "' class = 'showImportExit fa fa-calculator pull-left' style = 'margin-left:10px; margin-bottom:10px; color:red' data-toggle='tooltip' data-placement='top' title='Importar Notas de Saída' id='" + row.id + "' /> " +
+                            "<a href='/Inventory/Relatory/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório' /> " 
 
                     }
                 }
