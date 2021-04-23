@@ -25,7 +25,7 @@ namespace Escon.SisctNET.Web.Controllers
             _productNoteInventoryExitService = productNoteInventoryExitService;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Relatory(int id, DateTime inicio, DateTime fim)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -33,6 +33,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _service.FindById(id, null);
                 ViewBag.Company = comp;
+
+                var entradas = _productNoteInventoryEntryService.FindByPeriod(id, inicio, fim);
+                var saidas = _productNoteInventoryExitService.FindByPeriod(id, inicio, fim);
+
                 return View();
             }
             catch (Exception ex)
