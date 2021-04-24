@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace Escon.SisctNET.Web.Controllers
             _productNoteInventoryExitService = productNoteInventoryExitService;
         }
 
-        public IActionResult Relatory(int id, DateTime inicio, DateTime fim)
+        public IActionResult Relatory(int id, string year, string inicio, string fim)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -34,8 +35,20 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _service.FindById(id, null);
                 ViewBag.Company = comp;
 
-                var entradas = _productNoteInventoryEntryService.FindByPeriod(id, inicio, fim);
-                var saidas = _productNoteInventoryExitService.FindByPeriod(id, inicio, fim);
+                var importPeriod = new Period.Month();
+
+                var entradas = _productNoteInventoryEntryService.FindByNotes(id, year);
+                var saidas = _productNoteInventoryExitService.FindByNotes(id, year);
+
+                var meses = importPeriod.Months(inicio, fim);
+
+                foreach(var mes in meses)
+                {
+                    for(int i = 1; i <= 31; i++)
+                    {
+
+                    }
+                }
 
                 return View();
             }

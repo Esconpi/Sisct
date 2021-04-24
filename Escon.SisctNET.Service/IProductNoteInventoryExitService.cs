@@ -14,5 +14,7 @@ namespace Escon.SisctNET.Service
         List<Model.ProductNoteInventoryExit> FindByNote(string chave, Model.Log log = null);
 
         List<Model.ProductNoteInventoryExit> FindByPeriod(int companyId, DateTime inicio, DateTime fim, Model.Log log = null);
+
+        List<Model.ProductNoteInventoryExit> FindByNotes(int companyId, string year, Model.Log log = null);
     }
 }

@@ -59,6 +59,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNotes(companyId, year, month, log);
         }
 
+        public List<ProductNoteInventoryEntry> FindByNotes(int companyId, string year, Log log = null)
+        {
+            return _repository.FindByNotes(companyId, year, log);
+        }
+
         public List<ProductNoteInventoryEntry> FindByPeriod(int companyId, DateTime inicio, DateTime fim, Log log = null)
         {
             return _repository.FindByPeriod(companyId, inicio, fim, log);

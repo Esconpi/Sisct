@@ -18,18 +18,48 @@
 
                 <div class="row">
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Ano</label>
+                        <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
+                    </div>
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label class="control-label">Início</label>
-                        <input type="date" name="inicio" id="inicio" class="form-control" onchange="ativar_button()"/>
+                        <select name="inicio" class="form-control selectoption">
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
                     </div>
 
-                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
                         <label class="control-label">Fim</label>
-                        <input type="date" name="fim" id="fim" class="form-control" onchange="ativar_button()"/>
+                        <select name="fim" class="form-control selectoption">
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled />
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()"/>
                 </div>
             </form>
         </div>
@@ -41,16 +71,6 @@
 </div>
 
 <script>
-    function ativar_button() {
-        var inicio = document.getElementById("inicio").value;
-        var fim = document.getElementById("fim").value;
-        if (inicio == "" || fim == "") {
-            document.getElementById("ativa").disabled = true;
-        } else {
-            document.getElementById("ativa").disabled = false;
-        }
-    }
-
     function show() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('hiddenHeader').style.display = 'none';

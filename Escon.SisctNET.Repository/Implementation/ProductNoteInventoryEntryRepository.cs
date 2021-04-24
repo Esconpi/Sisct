@@ -68,6 +68,18 @@ namespace Escon.SisctNET.Repository.Implementation
             return notas.ToList();
         }
 
+        public List<ProductNoteInventoryEntry> FindByNotes(int companyId, string year, Log log = null)
+        {
+            var rst = _context.ProductNoteInventoryEntries
+               .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year))
+               .Include(c => c.Company)
+               .ToList();
+
+            AddLog(log);
+
+            return rst;
+        }
+
         public List<ProductNoteInventoryEntry> FindByPeriod(int companyId, System.DateTime inicio, System.DateTime fim, Log log = null)
         {
             var rst = _context.ProductNoteInventoryEntries
