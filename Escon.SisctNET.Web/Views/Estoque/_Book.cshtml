@@ -1,1 +1,21 @@
-﻿
+﻿<thead>
+    <tr>
+        <th>Código</th>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>V. Unitário</th>
+        <th>V. Total</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var produto in ViewBag.Produtos)
+    {
+        <tr>
+            <td>@produto[0]</td>
+            <td>@produto[1]</td>
+            <td>@produto[5]</td>
+            <td>@produto[6]</td>
+            <td>@produto[7]</td>
+        </tr>
+    }
+</tbody>

@@ -1,1 +1,65 @@
-﻿
+﻿@foreach (var produto in ViewBag.Produtos)
+{
+    <thead>
+        <tr>
+            <th>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Produto</th>
+                            <th>Unidade</th>
+                            <th>NCM</th>
+                            <th>CEST</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="font-weight:normal;">
+                            <td>@produto[0]</td>
+                            <td>@produto[1]</td>
+                            <td>@produto[2]</td>
+                            <td>@produto[3]</td>
+                            <td>@produto[4]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Nº NFe</th>
+                            <th>Histórico</th>
+                            <th>Quantidade</th>
+                            <th>V. Unitário</th>
+                            <th>V. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Estoque)
+                        {
+                            @if (produto[0].Equals(item[1]))
+                            {
+                                <tr>
+                                    <td>@item[2]</td>
+                                    <td>@item[3]</td>
+                                    <td>@item[0]</td>
+                                    <td style="text-align:right">@item[4]</td>
+                                    <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(item[5]))</td>
+                                    <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(item[6]))</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </td>
+        </tr>
+    </tbody>
+
+}
