@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -46,6 +47,22 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult Relatory(int id, string year, string inicio, string fim, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
@@ -67,11 +84,119 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var meses = importPeriod.Months(inicio, fim);
 
-                foreach(var mes in meses)
+                if (type.Equals("historico"))
                 {
-                    for(int i = 1; i <= 31; i++)
-                    {
+                   
+                }
+                else if (type.Equals("livro"))
+                {
+                    List<List<string>> produtos = new List<List<string>>();
+                    List<List<string>> estoque = new List<List<string>>();
 
+                    var produtosTemp = entradas
+                                .Select(_ => _.Cprod)
+                                .Distinct()
+                                .ToList();
+
+                    produtosTemp.AddRange(saidas
+                               .Select(_ => _.Cprod)
+                               .Distinct()
+                               .ToList());
+
+                    produtosTemp = produtosTemp
+                                .Distinct()
+                                .ToList();
+
+                    foreach(var p in produtosTemp)
+                    {
+                        var ppEntrada = entradas.Where(_ => _.Cprod.Equals(p)).FirstOrDefault();
+
+                        if(ppEntrada == null)
+                        {
+                            var ppSaida = saidas.Where(_ => _.Cprod.Equals(p)).FirstOrDefault();
+
+                            List<string> produto = new List<string>();
+                            produto.Add(ppSaida.Cprod);
+                            produto.Add(ppSaida.Xprod);
+                            produto.Add(ppSaida.Ucom);
+                            produto.Add(ppSaida.Ncm);
+                            produto.Add(ppSaida.Cest);
+
+                            produtos.Add(produto);
+                        }
+                        else
+                        {
+                            List<string> produto = new List<string>();
+                            produto.Add(ppEntrada.Cprod);
+                            produto.Add(ppEntrada.Xprod);
+                            produto.Add(ppEntrada.Ucom);
+                            produto.Add(ppEntrada.Ncm);
+                            produto.Add(ppEntrada.Cest);
+
+                            produtos.Add(produto);
+                        }
+                    }
+
+                    foreach (var mes in meses)
+                    {
+                        for (int dia = 1; dia <= 31; dia++)
+                        {
+                            foreach (var produto in produtos)
+                            {
+                                decimal quantidade = 0, valor = 0, total = 0;
+
+                                var entradaDia = entradas
+                                .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                                .OrderBy(_ => _.Cprod)
+                                .ToList();
+
+                                foreach(var entrada in entradaDia)
+                                {
+                                    List<string> prod = new List<string>();
+
+                                    prod.Add("COMPRA");
+                                    prod.Add(entrada.Cprod);
+                                    prod.Add(entrada.Dhemi.ToString("dd/MM/yyyy"));
+                                    prod.Add(entrada.Nnf);
+                                    prod.Add(entrada.Qcom.ToString());
+                                    prod.Add(entrada.Vuncom.ToString());
+                                    prod.Add(entrada.Vbasecalc.ToString());
+
+                                    quantidade += Convert.ToDecimal(entrada.Qcom);
+                                    total += Convert.ToDecimal(entrada.Vbasecalc);
+                                    valor = Math.Round(total / quantidade, 2);
+                                    estoque.Add(prod);
+                                }
+
+                                var saidaDia = saidas
+                                    .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                                    .OrderBy(_ => _.Cprod)
+                                    .ToList();
+
+                                foreach (var saida in saidaDia)
+                                {
+                                    List<string> prod = new List<string>();
+
+                                    prod.Add("VENDA");
+                                    prod.Add(saida.Cprod);
+                                    prod.Add(saida.Dhemi.ToString("dd/MM/yyyy"));
+                                    prod.Add(saida.Nnf);
+                                    prod.Add(saida.Qcom.ToString());
+                                    prod.Add(saida.Vuncom.ToString());
+                                    prod.Add(saida.Vbasecalc.ToString());
+
+                                    quantidade -= Convert.ToDecimal(saida.Qcom);
+                                    total -= Convert.ToDecimal(saida.Vbasecalc);
+                                    valor = Math.Round(total / quantidade, 2);
+
+                                    estoque.Add(prod);
+                                }
+
+                                produto.Add(quantidade.ToString());
+                                produto.Add(valor.ToString());
+                                produto.Add(total.ToString());
+                            }
+                        }
                     }
                 }
 
