@@ -162,6 +162,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IProductNoteInventoryEntryRepository, ProductNoteInventoryEntryRepository>();
             services.AddScoped<IProductNoteInventoryExitRepository, ProductNoteInventoryExitRepository>();
+            services.AddScoped<IEstoqueRepository, EstoqueRepository>();
 
 
             services.AddScoped<IProfileService, ProfileService>();
@@ -224,6 +225,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<IProductNoteInventoryEntryService, ProductNoteInventoryEntryService>();
             services.AddScoped<IProductNoteInventoryExitService, ProductNoteInventoryExitService>();
+            services.AddScoped<IEstoqueService, EstoqueService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();

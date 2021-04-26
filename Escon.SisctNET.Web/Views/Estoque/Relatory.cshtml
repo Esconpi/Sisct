@@ -19,12 +19,32 @@
 
         <div style="width:100%; overflow:hidden; padding:20px;">
             <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
+            <div style="float:right;">
+                <strong>Periodo:</strong> 
+                @if(ViewBag.Inicio == ViewBag.Fim) { 
+                    @ViewBag.Inicio
+                }
+                else
+                {
+                    @ViewBag.Inicio  <span>à</span>  @ViewBag.Fim
+                }
+                - @SessionManager.GetYearInSession()
+                <br />
+                <strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
             <br />
         </div>
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-
+            @if (ViewBag.Tipo == "historico")
+            {
+                @await Html.PartialAsync("_Historic", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Tipo == "livro")
+            {
+                @await Html.PartialAsync("_Book", new ViewDataDictionary(ViewData))
+            }
         </div>
     </div>
     <div class="box-footer"></div>

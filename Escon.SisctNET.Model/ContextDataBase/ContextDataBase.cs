@@ -130,5 +130,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<ProductNoteInventoryEntry> ProductNoteInventoryEntries { get; set; }
 
         public DbSet<ProductNoteInventoryExit> ProductNoteInventoryExits { get; set; }
+
+        public DbSet<Estoque> Estoques { get; set; }
     }
 }

@@ -1,1 +1,9 @@
-﻿<strong>Teste</strong>
+﻿@if (ViewBag.Tipo == "historico")
+{
+    <b>Histórico Inventário</b>
+}
+
+@if (ViewBag.Tipo == "livro")
+{
+    <b>Livro Inventário</b>
+}
