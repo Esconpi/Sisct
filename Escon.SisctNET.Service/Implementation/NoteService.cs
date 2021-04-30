@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -38,12 +38,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Note> FindByCompany(int companyId, Log log = null)
+        public List<Note> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
         }
 
-        public Note FindById(int id, Log log)
+        public Note FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
@@ -53,12 +53,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNote(chave);
         }
 
-        public List<Note> FindByNotes(int id, string year, string month, Log log = null)
+        public List<Note> FindByNotes(long id, string year, string month, Log log = null)
         {
             return _repository.FindByNotes(id, year, month);
         }
 
-        public List<Note> FindByUf(int companyId, string year, string month, string uf, Log log = null)
+        public List<Note> FindByUf(long companyId, string year, string month, string uf, Log log = null)
         {
             return _repository.FindByUf(companyId, year, month, uf);
         }

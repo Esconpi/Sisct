@@ -7,7 +7,7 @@ namespace Escon.SisctNET.Model
     {
         [Key]
         [Display(Name = "Código")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Data Criação")]
         public DateTime Created { get; set; }

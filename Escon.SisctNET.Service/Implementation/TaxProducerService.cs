@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(taxProducers, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -39,12 +39,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public TaxProducer FindById(int id, Log log)
+        public TaxProducer FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<TaxProducer> FindByTaxs(int companyid, string month, string year, Log log = null)
+        public List<TaxProducer> FindByTaxs(long companyid, string month, string year, Log log = null)
         {
             return _repository.FindByTaxs(companyid, month, year, log);
         }

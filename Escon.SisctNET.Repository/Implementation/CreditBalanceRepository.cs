@@ -14,13 +14,13 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public CreditBalance FindByCurrentMonth(int companyid, string month, string year, Log log = null)
+        public CreditBalance FindByCurrentMonth(long companyid, string month, string year, Log log = null)
         {
             AddLog(log);
             return _context.CreditBalances.Where(_ => _.CompanyId.Equals(companyid) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).FirstOrDefault();
         }
 
-        public CreditBalance FindByLastMonth(int companyid, string month, string year, Log log = null)
+        public CreditBalance FindByLastMonth(long companyid, string month, string year, Log log = null)
         {
             AddLog(log);
             return _context.CreditBalances.Where(_ => _.CompanyId.Equals(companyid) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).FirstOrDefault();

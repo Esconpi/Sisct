@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(productIncentivos, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -41,7 +41,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<ProductIncentivo> FindByAllProducts(int company, Log log = null)
+        public List<ProductIncentivo> FindByAllProducts(long company, Log log = null)
         {
             return _repository.FindByAllProducts(company, log);
         }
@@ -51,7 +51,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByAllProducts(company, log);
         }
 
-        public List<ProductIncentivo> FindByDate(int company, DateTime date, Log log = null)
+        public List<ProductIncentivo> FindByDate(long company, DateTime date, Log log = null)
         {
             return _repository.FindByDate(company, date, log);
         }
@@ -61,17 +61,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDate(productIncentivos, date, log);
         }
 
-        public ProductIncentivo FindById(int id, Log log)
+        public ProductIncentivo FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public ProductIncentivo FindByProduct(int company, string code, string ncm,string cest, Log log = null)
+        public ProductIncentivo FindByProduct(long company, string code, string ncm,string cest, Log log = null)
         {
             return _repository.FindByProduct(company, code, ncm, cest, log);
         }
 
-        public List<ProductIncentivo> FindByProducts(int id, string year, string month, Log log = null)
+        public List<ProductIncentivo> FindByProducts(long id, string year, string month, Log log = null)
         {
             return _repository.FindByProducts(id, year, month, log);
         }

@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<ProductNoteInventoryExit> FindByCompany(int companyId, Log log = null)
+        public List<ProductNoteInventoryExit> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.ProductNoteInventoryExits
               .Where(_ => _.CompanyId.Equals(companyId))
@@ -47,7 +47,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public List<ProductNoteInventoryExit> FindByNotes(int companyId, string year, string month, Log log = null)
+        public List<ProductNoteInventoryExit> FindByNotes(long companyId, string year, string month, Log log = null)
         {
             var rst = _context.ProductNoteInventoryExits
                .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
@@ -67,7 +67,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return notas.ToList();
         }
 
-        public List<ProductNoteInventoryExit> FindByNotes(int companyId, string year, Log log = null)
+        public List<ProductNoteInventoryExit> FindByNotes(long companyId, string year, Log log = null)
         {
             var rst = _context.ProductNoteInventoryExits
                 .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year))
@@ -79,7 +79,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<ProductNoteInventoryExit> FindByPeriod(int companyId, System.DateTime inicio, System.DateTime fim, Log log = null)
+        public List<ProductNoteInventoryExit> FindByPeriod(long companyId, System.DateTime inicio, System.DateTime fim, Log log = null)
         {
             var rst = _context.ProductNoteInventoryExits
              .Where(_ => _.CompanyId.Equals(companyId) &&  _.Dhemi >= inicio && _.Dhemi < fim.AddDays(1))

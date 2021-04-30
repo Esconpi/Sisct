@@ -46,7 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(long id, string year, string month)
 
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
@@ -95,7 +95,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -113,7 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Note entity)
+        public IActionResult Edit(long id, Model.Note entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -160,7 +160,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
 
-                int id = SessionManager.GetCompanyIdInSession();
+                long id = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -183,14 +183,14 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult DeleteNote(int id)
+        public IActionResult DeleteNote(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                int company = SessionManager.GetCompanyIdInSession();
+                long company = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -212,7 +212,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult UpdateView(int id)
+        public IActionResult UpdateView(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -235,7 +235,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         public JsonResult Import()
         {
-            int id = SessionManager.GetCompanyIdInSession();
+            long id = SessionManager.GetCompanyIdInSession();
             string year = SessionManager.GetYearInSession();
             string month = SessionManager.GetMonthInSession();
 
@@ -257,7 +257,7 @@ namespace Escon.SisctNET.Web.Controllers
             notes = importXml.NFeAll(directoryNfe, directotyCte);
 
             var taxationCompany = _taxationService.FindByCompany(id);
-            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
             var aliquotas = _aliquotService.FindAll(null);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
@@ -723,7 +723,7 @@ namespace Escon.SisctNET.Web.Controllers
         public JsonResult Delete()
         {
 
-            int id = SessionManager.GetCompanyIdInSession();
+            long id = SessionManager.GetCompanyIdInSession();
             string year = SessionManager.GetYearInSession();
             string month = SessionManager.GetMonthInSession();
 

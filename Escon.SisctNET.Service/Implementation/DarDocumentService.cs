@@ -19,7 +19,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -34,20 +34,20 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public DarDocument FindById(int id, Log log)
+        public DarDocument FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public async Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyId) => await _repository.FindByPeriodReferenceAsync(periodReference, companyId);
+        public async Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, long? companyId) => await _repository.FindByPeriodReferenceAsync(periodReference, companyId);
 
-        public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId) =>
+        public async Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(long companyid, int period, long darId) =>
             await _repository.GetByCompanyAndPeriodReferenceAndDarAsync(companyid, period, darId);
 
-        public async Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled) =>
+        public async Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(long companyid, int period, bool canceled) =>
             await _repository.GetByCompanyAndPeriodReferenceAsync(companyid, period, canceled);
 
-        public async Task<List<DarDocument>> GetByCompanyIdAsync(int id) => await _repository.GetByCompanyIdAsync(id);
+        public async Task<List<DarDocument>> GetByCompanyIdAsync(long id) => await _repository.GetByCompanyIdAsync(id);
 
         public async Task<DarDocument> GetByControlNumberAsync(int controlNumber) => await _repository.GetByControlNumberAsync(controlNumber);
 
@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Service.Implementation
 
         public async Task<List<DarDocument>> ListFull() => await _repository.ListFull();
 
-        public async Task<List<DarDocument>> SearchAsync(bool? canceled, bool? paidout, int? period, int? darid, int? companyid) =>
+        public async Task<List<DarDocument>> SearchAsync(bool? canceled, bool? paidout, int? period, long? darid, long? companyid) =>
             await _repository.SearchAsync(canceled, paidout, period, darid, companyid);
 
         public DarDocument Update(DarDocument entity, Log log)

@@ -19,7 +19,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -34,17 +34,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<string> FindByAnnex(int annexId, Log log = null)
+        public List<string> FindByAnnex(long annexId, Log log = null)
         {
             return _repository.FindByAnnex(annexId, log);
         }
 
-        public NcmConvenio FindById(int id, Log log)
+        public NcmConvenio FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null)
+        public List<NcmConvenio> FindByNcmAnnex(long annexId, Log log = null)
         {
             return _repository.FindByNcmAnnex(annexId, log);
         }

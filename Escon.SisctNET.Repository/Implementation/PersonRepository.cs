@@ -16,7 +16,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Person> FindByProfileId(int profileId, Log log = null)
+        public List<Person> FindByProfileId(long profileId, Log log = null)
         {
             List<Person> result = _context.Persons.Where(_ => _.ProfileId.Equals(profileId)).ToList();
             AddLog(log);

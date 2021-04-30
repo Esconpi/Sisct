@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Repository
 {
@@ -10,6 +9,6 @@ namespace Escon.SisctNET.Repository
 
         void Update(List<Model.CompraAnexo> compraAnexos, Model.Log log = null);
 
-        List<Model.CompraAnexo> FindByComprasTax(int taxAnexo, Model.Log log = null);
+        List<Model.CompraAnexo> FindByComprasTax(long taxAnexo, Model.Log log = null);
     }
 }

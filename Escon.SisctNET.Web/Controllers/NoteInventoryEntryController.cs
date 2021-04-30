@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(long id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -85,11 +85,11 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int id = SessionManager.GetCompanyIdInSession();
+                long id = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
-                var company = _companyService.FindById(id, null);
+                var comp = _companyService.FindById(id, null);
                 var municipios = _countyService.FindAll(null);
 
                 var importSped = new Sped.Import();
@@ -99,7 +99,7 @@ namespace Escon.SisctNET.Web.Controllers
                 if (!Directory.Exists(filedirSped))
                     Directory.CreateDirectory(filedirSped);
 
-                string nomeArquivoSped = company.Document + "Empresa";
+                string nomeArquivoSped = comp.Document + "Empresa";
 
                 if (arquivo.FileName.Contains(".txt"))
                     nomeArquivoSped += ".txt";
@@ -124,6 +124,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.ProductNoteInventoryEntry> addProduct = new List<Model.ProductNoteInventoryEntry>();
 
+                Random rndNumero = new Random();
+
                 var produtos = importSped.NFeProduct(caminhoDestinoArquivoOriginalSped, municipios);
 
                 foreach(var produto in produtos)
@@ -133,8 +135,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if(productImport == null && esxiteAdd == null)
                     {
+                        int numeroNota = rndNumero.Next(1, 999);
+                        int numeroProduto = rndNumero.Next(1, 999);
+
                         Model.ProductNoteInventoryEntry prod = new Model.ProductNoteInventoryEntry();
 
+                        prod.Id = Convert.ToInt64(numeroNota.ToString() + numeroProduto.ToString() + produto[1] + produto[13]);
                         prod.CompanyId = id;
                         prod.Chave = produto[0];
                         prod.Nnf = produto[1];

@@ -66,7 +66,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(int companyid, string year, string month,string arquivo,string option)
+        public IActionResult Import(long companyid, string year, string month,string arquivo,string option)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -140,8 +140,8 @@ namespace Escon.SisctNET.Web.Controllers
                         TaxationNcm tributacao = new TaxationNcm();
                         
                         string type = "Normal", natReceita = "";
-                        int typeNcmId = 2;
-                        int? cstEntradaId = null, cstSaidaId = null;
+                        long typeNcmId = 2;
+                        long? cstEntradaId = null, cstSaidaId = null;
                         bool status = false;
                         decimal? pis = null, cofins = null;
                         DateTime? dateStart = null;
@@ -222,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Index(int companyId, string year, string month)
+        public IActionResult Index(long companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -242,7 +242,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }       
 
-        public IActionResult IndexAll(int id)
+        public IActionResult IndexAll(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -261,7 +261,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Ncm(int id)
+        public IActionResult Ncm(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -314,7 +314,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Ncm(int id, Model.TaxationNcm entity)
+        public IActionResult Ncm(long id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -406,7 +406,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -457,7 +457,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.TaxationNcm entity)
+        public IActionResult Edit(long id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -550,7 +550,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Atualize(int id)
+        public IActionResult Atualize(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -599,7 +599,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id, Model.TaxationNcm entity)
+        public IActionResult Atualize(long id, Model.TaxationNcm entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -643,7 +643,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();

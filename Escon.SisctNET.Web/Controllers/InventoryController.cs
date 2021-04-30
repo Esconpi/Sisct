@@ -46,7 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Inventario(int id)
+        public IActionResult Inventario(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -62,7 +62,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Inventario(int id, DateTime dateInicial, DateTime dateFinal, IFormFile arquivo)
+        public async Task<IActionResult> Inventario(long id, DateTime dateInicial, DateTime dateFinal, IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -232,7 +232,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Download(int id)
+        public IActionResult Download(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -247,7 +247,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public FileResult DownloadInventario(int id)
+        public FileResult DownloadInventario(long id)
         {
             var comp = _service.FindById(id, null);
 
@@ -264,7 +264,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ImportEntry(int id)
+        public IActionResult ImportEntry(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -280,7 +280,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ImportExit(int id)
+        public IActionResult ImportExit(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -296,7 +296,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
         
         [HttpGet]
-        public IActionResult Relatory(int id)
+        public IActionResult Relatory(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

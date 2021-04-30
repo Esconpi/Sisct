@@ -6,13 +6,13 @@ namespace Escon.SisctNET.Service
 {
     public interface IProductIncentivoService : IServiceBase<Model.ProductIncentivo>
     {
-        List<Model.ProductIncentivo> FindByProducts(int id, string year, string month, Model.Log log = null);
+        List<Model.ProductIncentivo> FindByProducts(long id, string year, string month, Model.Log log = null);
 
-        Model.ProductIncentivo FindByProduct(int company, string code, string ncm,string cest, Model.Log log = null);
+        Model.ProductIncentivo FindByProduct(long company, string code, string ncm,string cest, Model.Log log = null);
 
-        List<Model.ProductIncentivo> FindByAllProducts(int company, Model.Log log = null);
+        List<Model.ProductIncentivo> FindByAllProducts(long company, Model.Log log = null);
 
-        List<Model.ProductIncentivo> FindByDate(int company, DateTime date, Model.Log log = null);
+        List<Model.ProductIncentivo> FindByDate(long company, DateTime date, Model.Log log = null);
 
         List<Model.ProductIncentivo> FindByAllProducts(string company, Model.Log log = null);
 

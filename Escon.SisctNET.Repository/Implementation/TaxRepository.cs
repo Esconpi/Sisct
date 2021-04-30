@@ -14,14 +14,14 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Tax FindByMonth(int company, string mes, string ano, Log log = null)
+        public Tax FindByMonth(long company, string mes, string ano, Log log = null)
         {
             var rst = _context.Taxes.Where(_ => _.CompanyId.Equals(company) && _.MesRef.Equals(mes) && _.AnoRef.Equals(ano)).FirstOrDefault();
             AddLog(log);
             return rst;
         }
 
-        public Tax FindByMonth(int company, string mes, string ano, string type, Log log = null)
+        public Tax FindByMonth(long company, string mes, string ano, string type, Log log = null)
         {
             Tax rst = null;
             if (type.Equals("Icms"))

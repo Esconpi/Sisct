@@ -144,7 +144,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo de Uso")]
         [ForeignKey("TaxationType")]
-        public int? TaxationTypeId { get; set; }
+        public long? TaxationTypeId { get; set; }
 
         private TaxationType taxationType;
         public TaxationType TaxationType
@@ -155,7 +155,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Produto")]
         [ForeignKey("Product")]
-        public int? ProductId { get; set; }
+        public long? ProductId { get; set; }
 
         private Product product;
         public Product Product
@@ -166,7 +166,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Produto1")]
         [ForeignKey("Product1")]
-        public int? Product1Id { get; set; }
+        public long? Product1Id { get; set; }
 
         private Product1 product1;
         public Product1 Product1
@@ -177,7 +177,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Produto2")]
         [ForeignKey("Product2")]
-        public int? Product2Id { get; set; }
+        public long? Product2Id { get; set; }
 
         private Product2 product2;
         public Product2 Product2
@@ -188,7 +188,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Nota")]
         [ForeignKey("Note")]
-        public int? NoteId { get; set; }
+        public long? NoteId { get; set; }
 
         private Note note;
         public Note Note

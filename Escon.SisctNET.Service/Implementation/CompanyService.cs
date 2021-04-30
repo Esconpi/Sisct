@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(companies);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -49,7 +49,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDocument(document);
         }
 
-        public Company FindById(int id, Log log)
+        public Company FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

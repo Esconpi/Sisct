@@ -22,7 +22,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Capítulo")]
         [ForeignKey("Chapter")]
-        public int ChapterId { get; set; }
+        public long ChapterId { get; set; }
 
         private Chapter chapter;
         public Chapter Chapter

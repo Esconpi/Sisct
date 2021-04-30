@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Sped(int id)
+        public IActionResult Sped(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -70,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sped(int id,string month, string year,string option, IFormFile arquivo)
+        public async Task<IActionResult> Sped(long id,string month, string year,string option, IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -174,7 +174,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Download(int id, string year, string month)
+        public IActionResult Download(long id, string year, string month)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -199,7 +199,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public FileResult DownloadSped(int id, string year, string month)
+        public FileResult DownloadSped(long id, string year, string month)
         {
             var comp = _service.FindById(id, null);
 
@@ -215,7 +215,7 @@ namespace Escon.SisctNET.Web.Controllers
             return File(fileBytes, contentType, fileName);
         }
 
-        public IActionResult Icms(int id)
+        public IActionResult Icms(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -232,7 +232,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Taxation(int id)
+        public IActionResult Taxation(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -249,7 +249,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Relatory(int id)
+        public IActionResult Relatory(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -268,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetResponsibleByCompanyId(int id)
+        public async Task<IActionResult> GetResponsibleByCompanyId(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -290,7 +290,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteResponsibleByCompanyId(int id)
+        public IActionResult DeleteResponsibleByCompanyId(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

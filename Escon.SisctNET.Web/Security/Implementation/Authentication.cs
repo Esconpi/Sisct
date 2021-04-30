@@ -51,7 +51,7 @@ namespace Escon.SisctNET.Web.Security.Implementation
                 var handler = new JwtSecurityTokenHandler();
                 var token = CreateToken(identity, createDate, expirationDate, handler);
 
-                return SuccessObject(createDate, expirationDate, token, Convert.ToInt32(baseUser.Id), baseUser.Email);
+                return SuccessObject(createDate, expirationDate, token, Convert.ToInt64(baseUser.Id), baseUser.Email);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Escon.SisctNET.Web.Security.Implementation
             };
         }
 
-        private Model.ReponseAuthentication SuccessObject(DateTime createDate, DateTime expirationDate, string token, int id, string email)
+        private Model.ReponseAuthentication SuccessObject(DateTime createDate, DateTime expirationDate, string token, long id, string email)
         {
             return new ReponseAuthentication()
             {

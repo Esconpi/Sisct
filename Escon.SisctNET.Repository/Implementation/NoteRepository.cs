@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<Note> FindByCompany(int companyId, Log log = null)
+        public List<Note> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.Notes
                 .Where(_ => _.CompanyId.Equals(companyId))
@@ -47,7 +47,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<Note> FindByNotes(int id, string year, string month, Log log = null)
+        public List<Note> FindByNotes(long id, string year, string month, Log log = null)
         {
             var rst = _context.Notes
                 .Where(_ => _.CompanyId.Equals(id) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public List<Note> FindByUf(int companyId, string year, string month, string uf, Log log = null)
+        public List<Note> FindByUf(long companyId, string year, string month, string uf, Log log = null)
         {
             var rst = _context.Notes
                 .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month) && _.Uf.Equals(uf))

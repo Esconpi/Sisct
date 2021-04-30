@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Cst ")]
         [ForeignKey("Cst")]
-        public int CstId { get; set; }
+        public long CstId { get; set; }
 
         private Cst cst;
         public Cst Cst

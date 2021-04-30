@@ -5,6 +5,6 @@ namespace Escon.SisctNET.Repository
 {
     public interface IEmailResponsibleRepository : IRepository<Model.EmailResponsible>
     {
-        Task<List<Model.EmailResponsible>> GetByCompanyAsync(int companyId);
+        Task<List<Model.EmailResponsible>> GetByCompanyAsync(long companyId);
     }
 }

@@ -6,7 +6,7 @@ namespace Escon.SisctNET.Model
     public class EmailResponsible : EntityBase
     {
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         public string Email { get; set; }
 

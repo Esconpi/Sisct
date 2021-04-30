@@ -3,8 +3,8 @@ namespace Escon.SisctNET.Model
 {
     public class UpdateCfopType
     {
-        public int CompanyCfopId { get; set; }
+        public long CompanyCfopId { get; set; }
 
-        public int CfopTypeId { get; set; }
+        public long CfopTypeId { get; set; }
     }
 }

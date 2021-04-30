@@ -34,21 +34,21 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<Product2> FindByGroup(int groupid, Log log = null)
+        public List<Product2> FindByGroup(long groupid, Log log = null)
         {
             var rst = _context.Product2s.Where(_ => _.GroupId.Equals(groupid) && _.DateEnd == null).ToList();
             AddLog(log);
             return rst;
         }
 
-        public decimal FindByPrice(int id, Log log = null)
+        public decimal FindByPrice(long id, Log log = null)
         {
             decimal rst = Convert.ToDecimal(_context.Product2s.Where(_ => _.Id.Equals(id)).Select(_ => _.Price));
             AddLog(log);
             return rst;
         }
 
-        public Product2 FindByProduct(string code, int grupoId, Log log = null)
+        public Product2 FindByProduct(string code, long grupoId, Log log = null)
         {
             var rst = _context.Product2s.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);

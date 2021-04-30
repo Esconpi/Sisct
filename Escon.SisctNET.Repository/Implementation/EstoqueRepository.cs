@@ -17,7 +17,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Estoque> FindByCompany(int company, Log log = null)
+        public List<Estoque> FindByCompany(long company, Log log = null)
         {
             var rst = _context.Estoques.Where(_ => _.CompanyId.Equals(company)).ToList();
             AddLog(log);

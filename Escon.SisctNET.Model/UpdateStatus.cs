@@ -3,7 +3,7 @@ namespace Escon.SisctNET.Model
 {
     public class UpdateStatus
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public bool Status { get; set; }
     }

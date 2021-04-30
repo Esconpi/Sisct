@@ -9,6 +9,6 @@ namespace Escon.SisctNET.Service
 
         void Update(List<Model.Grupo> grupos, Model.Log log = null);
 
-        List<Model.Grupo> FindByGrupos(int taxid, Log log = null);
+        List<Model.Grupo> FindByGrupos(long taxid, Log log = null);
     }
 }

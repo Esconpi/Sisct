@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(clients, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -38,32 +38,32 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Client> FindByCompany(int companyId, Log log = null)
+        public List<Client> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
         }
 
-        public List<Client> FindByCompany(int companyId, string year, string month, Log log = null)
+        public List<Client> FindByCompany(long companyId, string year, string month, Log log = null)
         {
             return _repository.FindByCompany(companyId, year, month, log);
         }
 
-        public List<string> FindByContribuinte(int companyId, string type, Log log = null)
+        public List<string> FindByContribuinte(long companyId, string type, Log log = null)
         {
             return _repository.FindByContribuinte(companyId, type, log);
         }
 
-        public Client FindByDocument(int document, Log log = null)
+        public Client FindByDocument(string document, Log log = null)
         {
             return _repository.FindByDocument(document, log);
         }
 
-        public Client FindByDocumentCompany(int companyId, string document, Log log = null)
+        public Client FindByDocumentCompany(long companyId, string document, Log log = null)
         {
             return _repository.FindByDocumentCompany(companyId, document, log);
         }
 
-        public Client FindById(int id, Log log)
+        public Client FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

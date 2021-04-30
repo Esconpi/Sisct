@@ -19,7 +19,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -34,17 +34,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Notification FindByCurrentMonth(int companyid, string month, string year, Log log = null)
+        public Notification FindByCurrentMonth(long companyid, string month, string year, Log log = null)
         {
             return _repository.FindByCurrentMonth(companyid, month, year, log);
         }
 
-        public Notification FindById(int id, Log log)
+        public Notification FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<Notification> FindByYear(int companyid, string year, Log log = null)
+        public List<Notification> FindByYear(long companyid, string year, Log log = null)
         {
             return _repository.FindByYear(companyid, year, log);
         }

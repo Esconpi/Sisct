@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -24,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -39,32 +38,32 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Provider> FindByCompany(int companyId, Log log = null)
+        public List<Provider> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
         }
 
-        public List<Provider> FindByCompany(int companyId, string year, string month, Log log = null)
+        public List<Provider> FindByCompany(long companyId, string year, string month, Log log = null)
         {
             return _repository.FindByCompany(companyId, year, month, log);
         }
 
-        public List<string> FindByContribuinte(int companyId, string type, Log log = null)
+        public List<string> FindByContribuinte(long companyId, string type, Log log = null)
         {
             return _repository.FindByContribuinte(companyId, type, log);
         }
 
-        public Provider FindByDocument(int document, Log log = null)
+        public Provider FindByDocument(string document, Log log = null)
         {
             return _repository.FindByDocument(document, log);
         }
 
-        public Provider FindByDocumentCompany(int companyId, string document, Log log = null)
+        public Provider FindByDocumentCompany(long companyId, string document, Log log = null)
         {
             return _repository.FindByDocumentCompany(companyId, document, log);
         }
 
-        public Provider FindById(int id, Log log)
+        public Provider FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

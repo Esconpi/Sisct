@@ -70,7 +70,8 @@ namespace Escon.SisctNET.Web.Controllers
                 if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
                 bool? canceled = null, paidout = null;
-                int? darid = null, period = null, companyid = null;
+                long? darid = null, companyid = null;
+                int? period = null;
 
                 var sit = forms["Situation"].ToString();
                 var pa = forms["PaidOut"].ToString();
@@ -111,13 +112,13 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 if (!dar.Equals("0"))
-                    darid = Convert.ToInt32(dar);
+                    darid = Convert.ToInt64(dar);
 
                 if (!pe.Equals("0"))
                     period = Convert.ToInt32(pe);
 
                 if (!company.Equals("0"))
-                    companyid = Convert.ToInt32(company);
+                    companyid = Convert.ToInt64(company);
 
                 FillPeriodReference(null);
                 await FillDar();
@@ -156,10 +157,10 @@ namespace Escon.SisctNET.Web.Controllers
             var pe = forms["PeriodId"].ToString();
             var company = forms["CompanyId"].ToString();
 
-            int? companyid = null;
+            long? companyid = null;
 
             if (!company.Equals("0"))
-                companyid = Convert.ToInt32(company);
+                companyid = Convert.ToInt64(company);
 
             FillPeriodReference(pe);
             await FillCompany(company);
@@ -178,7 +179,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SendBillet(int id)
+        public async Task<IActionResult> SendBillet(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

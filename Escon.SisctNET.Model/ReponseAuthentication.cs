@@ -4,7 +4,7 @@ namespace Escon.SisctNET.Model
 {
     public class ReponseAuthentication
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Email { get; set; }
 

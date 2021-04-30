@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<DevoCliente> FindByDevoTax(int taxAnexo, Log log = null)
+        public List<DevoCliente> FindByDevoTax(long taxAnexo, Log log = null)
         {
             var rst = _context.DevoClientes.Where(_ => _.TaxAnexoId.Equals(taxAnexo)).ToList();
             AddLog(log);

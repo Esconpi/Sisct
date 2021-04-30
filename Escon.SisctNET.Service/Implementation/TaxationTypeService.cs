@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDescription(description);
         }
 
-        public TaxationType FindById(int id, Log log)
+        public TaxationType FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

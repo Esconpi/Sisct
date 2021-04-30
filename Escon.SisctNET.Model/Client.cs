@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
         [Required(ErrorMessage = "Obrigatório")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("TypeClient")]
-        public int ? TypeClientId { get; set; }
+        public long? TypeClientId { get; set; }
 
         private TypeClient typeClient;
         public TypeClient TypeClient

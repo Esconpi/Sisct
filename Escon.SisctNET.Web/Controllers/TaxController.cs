@@ -58,7 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Index(int id,string year, string month)
+        public IActionResult Index(long id,string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -131,7 +131,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -193,7 +193,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -258,7 +258,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -323,7 +323,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
 
                 string month = SessionManager.GetMonthInSession();
@@ -382,7 +382,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
                 var imp = _service.FindByMonth(companyid, month, year);
@@ -441,7 +441,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -498,7 +498,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -1328,7 +1328,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else
                             {
-                                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+                                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
 
                                 // Vendas 
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
@@ -2893,7 +2893,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         for (int j = 0; j < exitNotes[i].Count; j++)
                                         {
                                             if (exitNotes[i][j].ContainsKey("NCM"))
-                                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId), exitNotes[i][j]["NCM"].ToString());
+                                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId), exitNotes[i][j]["NCM"].ToString());
 
                                             if (exitNotes[i][j].ContainsKey("CFOP"))
                                             {

@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -33,22 +33,22 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Access> FindByFunctionalityId(int functionalityId, Log log = null)
+        public List<Access> FindByFunctionalityId(long functionalityId, Log log = null)
         {
             return _repository.FindByFunctionalityId(functionalityId, log);
         }
 
-        public List<Access> FindByProfileId(int profileId, Log log = null)
+        public List<Access> FindByProfileId(long profileId, Log log = null)
         {
             return _repository.FindByProfileId(profileId, log);
         }
 
-        public List<Access> FindByActive(int profileId, Log log = null)
+        public List<Access> FindByActive(long profileId, Log log = null)
         {
             return _repository.FindByActive(profileId, log);
         }
 
-        public Access FindById(int id, Log log)
+        public Access FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

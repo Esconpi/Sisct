@@ -112,7 +112,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -147,7 +147,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Product2 entity)
+        public IActionResult Edit(long id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -170,7 +170,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Atualize(int id)
+        public IActionResult Atualize(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -205,7 +205,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id, Model.Product2 entity)
+        public IActionResult Atualize(long id, Model.Product2 entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -266,7 +266,7 @@ namespace Escon.SisctNET.Web.Controllers
         }  
 
         [HttpPost]
-        public async Task<IActionResult> Import(int groupId, IFormFile arquivo, DateTime inicioATo)       
+        public async Task<IActionResult> Import(long groupId, IFormFile arquivo, DateTime inicioATo)       
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();

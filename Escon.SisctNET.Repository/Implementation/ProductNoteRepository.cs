@@ -50,7 +50,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public List<ProductNote> FindByNote(int noteId, Log log)
+        public List<ProductNote> FindByNote(long noteId, Log log)
         {
             var rst = _context.ProductNotes
                 .Where(_ => _.NoteId.Equals(noteId))
@@ -157,7 +157,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public decimal FindByTotal(List<int> notes, Log log = null)
+        public decimal FindByTotal(List<long> notes, Log log = null)
         {
             decimal total = 0;
             foreach (var item in notes)
@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return icmsTotalSt;
         }
 
-        public List<ProductNote> FindByTaxation(int noteId, Log log = null)
+        public List<ProductNote> FindByTaxation(long noteId, Log log = null)
         {
 
             var rst = _context.ProductNotes
@@ -202,7 +202,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public ProductNote FindByProduct(int noteId, string nItem, Log log = null)
+        public ProductNote FindByProduct(long noteId, string nItem, Log log = null)
         {
             var rst = _context.ProductNotes
                 .Where(_ => _.NoteId.Equals(noteId) && _.Nitem.Equals(nItem))
@@ -212,7 +212,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<ProductNote> FindByCfopNotesIn(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesIn(long companyId, List<Note> notes, Log log = null)
         {
             var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
 
@@ -230,7 +230,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<ProductNote> FindByCfopNotesOut(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesOut(long companyId, List<Note> notes, Log log = null)
         {
             var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
 
@@ -248,7 +248,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public bool FindByNcmAnnex(int Annex, string ncm, Log log = null)
+        public bool FindByNcmAnnex(long Annex, string ncm, Log log = null)
         {
             var ncms = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
             bool NcmIncentivo = false;
@@ -338,7 +338,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public ProductNote FindByProduct(int id, Log log = null)
+        public ProductNote FindByProduct(long id, Log log = null)
         {
             var rst = _context.ProductNotes
               .Where(_ => _.Id.Equals(id))

@@ -21,12 +21,12 @@ namespace Escon.SisctNET.Model
         public bool Canceled { get; set; }
 
         [ForeignKey("Dar")]
-        public int DarId { get; set; }
+        public long DarId { get; set; }
 
         public virtual Dar Dar { get; set; }
 
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
 

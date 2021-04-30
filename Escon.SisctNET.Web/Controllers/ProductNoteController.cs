@@ -126,7 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxProducerService = taxProducerService;
         }
 
-        public IActionResult Index(int noteId)
+        public IActionResult Index(long noteId)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -150,7 +150,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Product(int id)
+        public IActionResult Product(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -248,7 +248,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Product(int id, Model.ProductNote entity)
+        public IActionResult Product(long id, Model.ProductNote entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -258,7 +258,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var prod = _service.FindByProduct(id);
                 var calculation = new Taxation.Calculation();
 
-                int taxationType = Convert.ToInt32(entity.TaxationTypeId);
+                long taxationType = Convert.ToInt64(entity.TaxationTypeId);
 
                 decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta, inciso = entity.PercentualInciso;
                 decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, dif = 0,valorFecop = 0;
@@ -268,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 DateTime dateStart = Convert.ToDateTime(entity.DateStart);
 
-                var notes = _noteService.FindByUf(Convert.ToInt32(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
+                var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
 
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
 
@@ -286,18 +286,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                     {
-                        product = _productService.FindById(Convert.ToInt32(entity.ProductId), null);
+                        product = _productService.FindById(Convert.ToInt64(entity.ProductId), null);
                         precoPauta = Convert.ToDecimal(product.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && 
                             Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                     {
-                        product1 = _product1Service.FindById(Convert.ToInt32(entity.Product1Id), null);
+                        product1 = _product1Service.FindById(Convert.ToInt64(entity.Product1Id), null);
                         precoPauta = Convert.ToDecimal(product1.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                     {
-                        product2 = _product2Service.FindById(Convert.ToInt32(entity.Product2Id), null);
+                        product2 = _product2Service.FindById(Convert.ToInt64(entity.Product2Id), null);
                         precoPauta = Convert.ToDecimal(product2.Price);
                     }
 
@@ -727,9 +727,9 @@ namespace Escon.SisctNET.Web.Controllers
                 foreach (var product in products)
                 {
                     bool status = false;
-                    var nota = _noteService.FindById(Convert.ToInt32(product.NoteId), GetLog(OccorenceLog.Read));
+                    var nota = _noteService.FindById(Convert.ToInt64(product.NoteId), GetLog(OccorenceLog.Read));
 
-                    var productTaxation = _service.FindByTaxation(Convert.ToInt32(nota.Id));
+                    var productTaxation = _service.FindByTaxation(Convert.ToInt64(nota.Id));
 
                     if (productTaxation.Count == 0)
                         status = true;
@@ -767,7 +767,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     Model.Taxation taxation = new Model.Taxation();
 
-                    taxation.CompanyId = Convert.ToInt32(prod.Note.CompanyId);
+                    taxation.CompanyId = Convert.ToInt64(prod.Note.CompanyId);
                     taxation.Code = code;
                     taxation.Cest = prod.Cest;
                     taxation.AliqInterna = aliqInterna;
@@ -797,7 +797,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("ProductNote")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -816,7 +816,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Relatory(int id, string year, string month, Model.TypeTaxation typeTaxation, Model.Type type, string nota)
+        public IActionResult Relatory(long id, string year, string month, Model.TypeTaxation typeTaxation, Model.Type type, string nota)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -894,7 +894,7 @@ namespace Escon.SisctNET.Web.Controllers
                     .ToList();
 
                 var notas = products
-                    .Select(_ => Convert.ToInt32(_.NoteId))
+                    .Select(_ => Convert.ToInt64(_.NoteId))
                     .Distinct()
                     .ToList();
 
@@ -4026,7 +4026,7 @@ namespace Escon.SisctNET.Web.Controllers
                     .GetByCompanyAndPeriodReferenceAndDarAsync(
                         SessionManager.GetCompanyIdInSession(),
                         Convert.ToInt32(requestBarCode.PeriodoReferencia),
-                        Convert.ToInt32(dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id)
+                        Convert.ToInt64(dar.FirstOrDefault(x => x.Code.Equals(item.Key.RecipeCode)).Id)
                     );
 
                     //Caso exista o DAR e ele esteja pago, não será mais possível editar
@@ -4106,7 +4106,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDocumentsDar([FromQuery] int companyId, [FromQuery] int periodReference)
+        public async Task<IActionResult> GetDocumentsDar([FromQuery] long companyId, [FromQuery] int periodReference)
         {
             var messageResponse = new List<object>();
 

@@ -4,7 +4,7 @@ namespace Escon.SisctNET.Repository
 {
     public interface IIncentiveRepository : IRepository<Model.Incentive>
     {
-        List<Model.Incentive> FindByCompany(int company, Model.Log log = null);
+        List<Model.Incentive> FindByCompany(long company, Model.Log log = null);
 
         List<Model.Incentive> FindByPeriod(int days, Model.Log log = null);
     }

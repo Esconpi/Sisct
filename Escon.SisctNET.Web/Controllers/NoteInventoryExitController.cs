@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(long id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Note")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int id = SessionManager.GetCompanyIdInSession();
+                long id = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -125,7 +125,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var produtosImportados = _itemService.FindByCompany(id);
 
+
                 List<Model.ProductNoteInventoryExit> addProduct = new List<Model.ProductNoteInventoryExit>();
+
+                Random rndNumero = new Random();
 
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
@@ -145,6 +148,9 @@ namespace Escon.SisctNET.Web.Controllers
                     string IEST = notes[i][2].ContainsKey("IEST") ? notes[i][2]["IEST"] : "";
 
                     string cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
+
+                   
+                    int numeroNota = rndNumero.Next(1,999);
 
                     for (int j = 0; j < notes[i].Count; j++)
                     {
@@ -276,8 +282,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 decimal baseDeCalc = calculation.BaseCalc(Convert.ToDecimal(det["vProd"]), vFrete, vSeg, vOutro, vDesc, vIPI, 0);
 
+                                int numeroProduto = rndNumero.Next(1, 999);
+
                                 try
                                 {
+                                    prod.Id = Convert.ToInt64(numeroNota.ToString() + numeroProduto.ToString() + notes[i][1]["nNF"] + det["nItem"]);
                                     prod.CompanyId = id;
                                     prod.Chave = notes[i][0]["chave"];
                                     prod.Nnf = notes[i][1]["nNF"];
@@ -317,6 +326,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     erro = 1;
                                     chave = notes[i][0]["chave"];
+                                    det.Clear();
                                     break;
                                 }
 

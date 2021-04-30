@@ -40,7 +40,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo de Tributação")]
         [ForeignKey("TaxationType")]
-        public int  TaxationTypeId { get; set; }
+        public long TaxationTypeId { get; set; }
 
         private TaxationType taxationType;
         public TaxationType TaxationType
@@ -51,7 +51,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -63,7 +63,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "NCM")]
         [ForeignKey("Ncm")]
-        public int NcmId { get; set; }
+        public long NcmId { get; set; }
 
         private Ncm ncm;
         public Ncm Ncm

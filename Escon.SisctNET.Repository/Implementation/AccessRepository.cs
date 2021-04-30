@@ -17,14 +17,14 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Access> FindByFunctionalityId(int functionalityId, Log log = null)
+        public List<Access> FindByFunctionalityId(long functionalityId, Log log = null)
         {
             var result = _context.Accesses.Where(_ => _.FunctionalityId.Equals(functionalityId)).ToList();
             AddLog(log);
             return result;
         }
 
-        public List<Access> FindByProfileId(int profileId, Log log = null)
+        public List<Access> FindByProfileId(long profileId, Log log = null)
         {
             var result = _context.Accesses
                 .Where(_ => _.ProfileId.Equals(profileId))
@@ -35,7 +35,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<Access> FindByActive(int profileId, Log log = null)
+        public List<Access> FindByActive(long profileId, Log log = null)
         {
             var result = _context.Accesses.Where(_ => _.ProfileId.Equals(profileId) && _.Active.Equals(true)).ToList();
             AddLog(log);

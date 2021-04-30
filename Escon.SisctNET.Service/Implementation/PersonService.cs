@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -33,12 +33,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Person FindById(int id, Log log)
+        public Person FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<Person> FindByProfileId(int profileId, Log log = null)
+        public List<Person> FindByProfileId(long profileId, Log log = null)
         {
             return _repository.FindByProfileId(profileId, log);
         }

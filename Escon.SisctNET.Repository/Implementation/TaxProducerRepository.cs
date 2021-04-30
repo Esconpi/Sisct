@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<TaxProducer> FindByTaxs(int companyid, string month, string year, Log log = null)
+        public List<TaxProducer> FindByTaxs(long companyid, string month, string year, Log log = null)
         {
             var rst = _context.TaxProducers.Where(_ => _.CompanyId.Equals(companyid) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).ToList();
             AddLog(log);

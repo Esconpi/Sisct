@@ -34,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(long id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 

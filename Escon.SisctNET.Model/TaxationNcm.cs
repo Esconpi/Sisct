@@ -12,7 +12,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Ncm")]
         [ForeignKey("Ncm")]
-        public int NcmId { get; set; }
+        public long NcmId { get; set; }
 
         private Ncm ncm;
         public Ncm Ncm
@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -63,7 +63,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cst Entrada")]
         [ForeignKey("Cst")]
-        public int? CstEntradaId { get; set; }
+        public long? CstEntradaId { get; set; }
 
         private Cst cstEntrada;
         public Cst CstEntrada
@@ -74,7 +74,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cst Saida")]
         [ForeignKey("Cst")]
-        public int? CstSaidaId { get; set; }
+        public long? CstSaidaId { get; set; }
 
         private Cst cstSaida;
         public Cst CstSaida
@@ -88,7 +88,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Tipo Ncm")]
         [ForeignKey("TypeNcm")]
-        public int TypeNcmId { get; set; }
+        public long TypeNcmId { get; set; }
 
         private TypeNcm typeNcm;
         public TypeNcm TypeNcm

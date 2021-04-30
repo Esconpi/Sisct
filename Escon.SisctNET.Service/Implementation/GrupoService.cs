@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(grupos, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -38,12 +38,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<Grupo> FindByGrupos(int taxid, Log log = null)
+        public List<Grupo> FindByGrupos(long taxid, Log log = null)
         {
             return _repository.FindByGrupos(taxid, log);
         }
 
-        public Grupo FindById(int id, Log log)
+        public Grupo FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

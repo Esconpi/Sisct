@@ -13,9 +13,9 @@
         <tr>
             <td>@produto[0]</td>
             <td>@produto[1]</td>
-            <td>@produto[5]</td>
-            <td>@produto[6]</td>
-            <td>@produto[7]</td>
+            <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(produto[5]))</td>
+            <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(produto[6]))</td>
+            <td style="text-align:right">@string.Format("{0:N}", Convert.ToDecimal(produto[7]))</td>
         </tr>
     }
 </tbody>

@@ -93,8 +93,8 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(int companyId, string year, string month, string type, string opcao, string arquivo,
-                                      int cfopid ,int cstId, int csosnId, int stateId)
+        public IActionResult Relatory(long companyId, string year, string month, string type, string opcao, string arquivo,
+                                      long cfopid , long cstId, long csosnId, ulong stateId)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -142,7 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
                 var cfopsAll = _cfopService.FindAll(null);
                 var cstAll = _cstService.FindAll(null);
                 var csosnAll = _csosnService.FindAll(null);
@@ -25223,7 +25223,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
-                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
 
                     List<List<string>> ncmsForaAnexo = new List<List<string>>();
                     decimal totalVendas = 0;
@@ -26642,7 +26642,7 @@ namespace Escon.SisctNET.Web.Controllers
                         for (int j = 0; j < notes[i].Count; j++)
                         {
                             if (notes[i][j].ContainsKey("NCM"))
-                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId), notes[i][j]["NCM"].ToString());
+                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId), notes[i][j]["NCM"].ToString());
 
                             if (ncm)
                             {

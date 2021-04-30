@@ -56,7 +56,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult PisCofins(int id)
+        public IActionResult PisCofins(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
        
-        public IActionResult Import(int id)
+        public IActionResult Import(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Sincronize(int id)
+        public IActionResult Sincronize(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -111,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Icms(int id)
+        public IActionResult Icms(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -167,7 +167,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Sequence(int id)
+        public IActionResult Sequence(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -182,7 +182,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult CompareCancellation(int id)
+        public IActionResult CompareCancellation(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

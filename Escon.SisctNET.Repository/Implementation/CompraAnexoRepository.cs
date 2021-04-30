@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<CompraAnexo> FindByComprasTax(int taxAnexo, Log log = null)
+        public List<CompraAnexo> FindByComprasTax(long taxAnexo, Log log = null)
         {
             var rst = _context.CompraAnexos.Where(_ => _.TaxAnexoId.Equals(taxAnexo)).ToList();
             AddLog(log);

@@ -46,7 +46,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return entity;
         }
 
-        public void Delete(int id, Model.Log log)
+        public void Delete(long id, Model.Log log)
         {
             var rs = dataSet.SingleOrDefault(i => i.Id.Equals(id));
             if (rs != null)
@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return dataSet.GetPaged(page, countrow).Results.ToList();
         }
 
-        public T FindById(int id, Model.Log log)
+        public T FindById(long id, Model.Log log)
         {
             if (log != null)
                 AddLog(log);

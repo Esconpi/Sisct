@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(products, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -39,12 +39,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<ProductNoteInventoryExit> FindByCompany(int companyId, Log log = null)
+        public List<ProductNoteInventoryExit> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
         }
 
-        public ProductNoteInventoryExit FindById(int id, Log log)
+        public ProductNoteInventoryExit FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
@@ -54,17 +54,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNote(chave, log);
         }
 
-        public List<ProductNoteInventoryExit> FindByNotes(int companyId, string year, string month, Log log = null)
+        public List<ProductNoteInventoryExit> FindByNotes(long companyId, string year, string month, Log log = null)
         {
             return _repository.FindByNotes(companyId, year, month, log);
         }
 
-        public List<ProductNoteInventoryExit> FindByNotes(int companyId, string year, Log log = null)
+        public List<ProductNoteInventoryExit> FindByNotes(long companyId, string year, Log log = null)
         {
             return _repository.FindByNotes(companyId, year, log);
         }
 
-        public List<ProductNoteInventoryExit> FindByPeriod(int companyId, DateTime inicio, DateTime fim, Log log = null)
+        public List<ProductNoteInventoryExit> FindByPeriod(long companyId, DateTime inicio, DateTime fim, Log log = null)
         {
             return _repository.FindByPeriod(companyId, inicio, fim, log);
         }

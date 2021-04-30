@@ -16,7 +16,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório")]
         [Display(Name = "Anexo")]
         [ForeignKey("Attachment")]
-        public int AttachmentId { get; set; }
+        public long AttachmentId { get; set; }
 
         private Attachment attachment;
         public Attachment Attachment

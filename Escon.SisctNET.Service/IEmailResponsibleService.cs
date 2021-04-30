@@ -5,6 +5,6 @@ namespace Escon.SisctNET.Service
 {
     public interface IEmailResponsibleService : IServiceBase<Model.EmailResponsible>
     {
-        Task<List<Model.EmailResponsible>> GetByCompanyAsync(int companyId);
+        Task<List<Model.EmailResponsible>> GetByCompanyAsync(long companyId);
     }
 }

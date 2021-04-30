@@ -15,15 +15,15 @@ namespace Escon.SisctNET.Service.Implementation
 
         public EmailResponsible Create(EmailResponsible entity, Log log) => _repository.Create(entity, log);
 
-        public void Delete(int id, Log log) => _repository.Delete(id, log);
+        public void Delete(long id, Log log) => _repository.Delete(id, log);
 
         public List<EmailResponsible> FindAll(Log log) => _repository.FindAll(log);
 
         public List<EmailResponsible> FindAll(int page, int countrow, Log log) => _repository.FindAll(page, countrow, log);
 
-        public EmailResponsible FindById(int id, Log log) => _repository.FindById(id, log);
+        public EmailResponsible FindById(long id, Log log) => _repository.FindById(id, log);
 
-        public Task<List<EmailResponsible>> GetByCompanyAsync(int companyId) => _repository.GetByCompanyAsync(companyId);
+        public Task<List<EmailResponsible>> GetByCompanyAsync(long companyId) => _repository.GetByCompanyAsync(companyId);
 
         public EmailResponsible Update(EmailResponsible entity, Log log) => _repository.Update(entity, log);
     }

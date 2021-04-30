@@ -21,7 +21,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -39,7 +39,7 @@ namespace Escon.SisctNET.Service.Implementation
         public async Task<List<Dar>> FindAllAsync(Log log) => await _repository.FindAllAsync(log);
 
 
-        public Dar FindById(int id, Log log)
+        public Dar FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

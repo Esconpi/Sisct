@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(int companyId, string year, string month,string trimestre, string type, int cfopid, string arquivo)
+        public IActionResult Relatory(long companyId, string year, string month,string trimestre, string type, long cfopid, string arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(int id, string year, string month, Model.OrdemCancellation ordem, IFormFile arquivoSped)
+        public async Task<IActionResult> Index(long id, string year, string month, Model.OrdemCancellation ordem, IFormFile arquivoSped)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

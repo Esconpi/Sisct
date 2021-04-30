@@ -28,7 +28,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<ProductIncentivo> FindByAllProducts(int company, Log log = null)
+        public List<ProductIncentivo> FindByAllProducts(long company, Log log = null)
         {
             var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(company)).ToList();
             AddLog(log);
@@ -42,7 +42,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<ProductIncentivo> FindByDate(int company, DateTime date, Log log = null)
+        public List<ProductIncentivo> FindByDate(long company, DateTime date, Log log = null)
         {
             List<ProductIncentivo> products = new List<ProductIncentivo>();
 
@@ -92,14 +92,14 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public ProductIncentivo FindByProduct(int company, string code, string ncm, string cest, Log log)
+        public ProductIncentivo FindByProduct(long company, string code, string ncm, string cest, Log log)
         {
             var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(company) &&  _.Code.Equals(code) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest)).FirstOrDefault();
             AddLog(log);
             return result;
         }
 
-        public List<ProductIncentivo> FindByProducts(int id, string year, string month, Log log = null)
+        public List<ProductIncentivo> FindByProducts(long id, string year, string month, Log log = null)
         {
             var result = _context.ProductIncentivos.Where(_ => _.CompanyId.Equals(id) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
             AddLog(log);

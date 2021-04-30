@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(compraAnexos, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -38,12 +38,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public CompraAnexo FindById(int id, Log log)
+        public CompraAnexo FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<CompraAnexo> FindByComprasTax(int taxAnexo, Log log = null)
+        public List<CompraAnexo> FindByComprasTax(long taxAnexo, Log log = null)
         {
             return _repository.FindByComprasTax(taxAnexo, log);
         }

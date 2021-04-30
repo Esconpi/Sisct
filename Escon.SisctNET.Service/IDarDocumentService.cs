@@ -8,17 +8,17 @@ namespace Escon.SisctNET.Service
     {
         Task<List<DarDocument>> ListFull();
 
-        Task<List<DarDocument>> GetByCompanyIdAsync(int id);
+        Task<List<DarDocument>> GetByCompanyIdAsync(long id);
 
-        Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(int companyid, int period, int darId );
+        Task<DarDocument> GetByCompanyAndPeriodReferenceAndDarAsync(long companyid, int period, long darId );
 
-        Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(int companyid, int period, bool canceled);
+        Task<List<DarDocument>> GetByCompanyAndPeriodReferenceAsync(long companyid, int period, bool canceled);
 
         Task<List<int>> GetPeriodsReferenceAsync();
 
-        Task<List<DarDocument>> SearchAsync(bool? canceled, bool? paidout, int? period, int? darid, int? companyid);
+        Task<List<DarDocument>> SearchAsync(bool? canceled, bool? paidout, int? period, long? darid, long? companyid);
 
-        Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, int? companyId);
+        Task<List<DarDocumentCompany>> FindByPeriodReferenceAsync(int periodReference, long? companyId);
 
         Task<DarDocument> GetByControlNumberAsync(int controlNumber);
 

@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -44,22 +44,22 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByDescription(description, log);
         }
 
-        public List<Product2> FindByGroup(int groupid, Log log = null)
+        public List<Product2> FindByGroup(long groupid, Log log = null)
         {
             return _repository.FindByGroup(groupid, log);
         }
 
-        public Product2 FindById(int id, Log log)
+        public Product2 FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public decimal FindByPrice(int id, Log log = null)
+        public decimal FindByPrice(long id, Log log = null)
         {
             return _repository.FindByPrice(id, log);
         }
 
-        public Product2 FindByProduct(string code, int grupoId, Log log = null)
+        public Product2 FindByProduct(string code, long grupoId, Log log = null)
         {
             return _repository.FindByProduct(code, grupoId, log);
         }

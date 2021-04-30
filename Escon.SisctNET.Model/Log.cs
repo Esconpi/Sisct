@@ -11,11 +11,11 @@ namespace Escon.SisctNET.Model
         public ILazyLoader LazyLoader { get; set; }
 
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Display(Name = "Funcionalidade")]
         [ForeignKey("Functionality")]
-        public int FunctionalityId { get; set; }
+        public long FunctionalityId { get; set; }
 
         private Functionality functionality;
         public Functionality Functionality
@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Usuário")]
         [ForeignKey("Person")]
-        public int PersonId { get; set; }
+        public long PersonId { get; set; }
 
         private Person person;
         public Person Person
@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Ocorrência")]
         [ForeignKey("Occurrence")]
-        public int Occurrenceid { get; set; }
+        public long Occurrenceid { get; set; }
 
         private Occurrence occurrence;
         public Occurrence Occurrence

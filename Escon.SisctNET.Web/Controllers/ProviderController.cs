@@ -35,7 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult IndexAll(int id)
+        public IActionResult IndexAll(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -54,7 +54,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Atualize(int id)
+        public IActionResult Atualize(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -71,7 +71,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(int id, string year, string month)
+        public IActionResult Atualize(long id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -91,7 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 dets = importXml.NFeProvider(directoryNfe);
 
-                int tipoCliente = 1;
+                long tipoCliente = 1;
 
                 if (Convert.ToInt32(comp.AnnexId).Equals(3))
                     tipoCliente = 2;
@@ -204,7 +204,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int companyId, string year, string month)
+        public IActionResult Index(long companyId, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -225,7 +225,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -243,7 +243,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Client entity)
+        public IActionResult Edit(long id, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -268,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Provider(int id)
+        public IActionResult Provider(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -286,7 +286,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Provider(int id, Model.Client entity)
+        public IActionResult Provider(long id, Model.Client entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -310,7 +310,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Contribuinte(int id)
+        public IActionResult Contribuinte(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
                 return Unauthorized();

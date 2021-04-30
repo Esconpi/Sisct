@@ -4,6 +4,6 @@ namespace Escon.SisctNET.Repository
 {
     public interface ISuspensionRepository : IRepository<Model.Suspension>
     {
-        List<Model.Suspension> FindByCompany(int company, Model.Log log = null);
+        List<Model.Suspension> FindByCompany(long company, Model.Log log = null);
     }
 }

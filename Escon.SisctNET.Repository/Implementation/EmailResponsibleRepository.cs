@@ -17,7 +17,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public async Task<List<EmailResponsible>> GetByCompanyAsync(int companyId)
+        public async Task<List<EmailResponsible>> GetByCompanyAsync(long companyId)
         {
             var result = await _context.Set<EmailResponsible>().Where(x => x.CompanyId.Equals(companyId)).ToListAsync();
             return result;

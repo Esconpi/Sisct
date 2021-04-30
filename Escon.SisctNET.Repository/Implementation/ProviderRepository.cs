@@ -28,21 +28,21 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<Provider> FindByCompany(int companyId, Log log = null)
+        public List<Provider> FindByCompany(long companyId, Log log = null)
         {
             var result = _context.Providers.Where(_ => _.CompanyId.Equals(companyId)).ToList();
             AddLog(log);
             return result;
         }
 
-        public List<Provider> FindByCompany(int companyId, string year, string month, Log log = null)
+        public List<Provider> FindByCompany(long companyId, string year, string month, Log log = null)
         {
             var result = _context.Providers.Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month)).ToList();
             AddLog(log);
             return result;
         }
 
-        public List<string> FindByContribuinte(int companyId, string type, Log log = null)
+        public List<string> FindByContribuinte(long companyId, string type, Log log = null)
         {
             List<string> result = null;
             if (type == "all")
@@ -58,14 +58,14 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public Provider FindByDocument(int document, Log log = null)
+        public Provider FindByDocument(string document, Log log = null)
         {
             var result = _context.Providers.Where(_ => _.Document.Equals(document)).FirstOrDefault();
             AddLog(log);
             return result;
         }
 
-        public Provider FindByDocumentCompany(int companyId, string document, Log log = null)
+        public Provider FindByDocumentCompany(long companyId, string document, Log log = null)
         {
             var result = _context.Providers.Where(_ => _.CompanyId.Equals(companyId) && _.Document.Equals(document)).FirstOrDefault();
             AddLog(log);

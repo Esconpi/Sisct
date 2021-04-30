@@ -5,8 +5,8 @@ namespace Escon.SisctNET.Service
 {
     public interface INotificationService : IServiceBase<Notification>
     {
-        Notification FindByCurrentMonth(int companyid, string month, string year, Log log = null);
+        Notification FindByCurrentMonth(long companyid, string month, string year, Log log = null);
 
-        List<Notification> FindByYear(int companyid, string year, Log log = null);
+        List<Notification> FindByYear(long companyid, string year, Log log = null);
     }
 }

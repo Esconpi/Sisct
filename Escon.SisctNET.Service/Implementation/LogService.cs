@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -19,12 +18,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(log);
         }
 
-        public List<Log> FindFunctionality(int functionalityId, Log log)
+        public List<Log> FindFunctionality(long functionalityId, Log log)
         {
             return _repository.FindFunctionality(functionalityId, log);
         }
 
-        public List<Log> FindUser(int userId, Log log)
+        public List<Log> FindUser(long userId, Log log)
         {
             return _repository.FindUser(userId, log);
         }

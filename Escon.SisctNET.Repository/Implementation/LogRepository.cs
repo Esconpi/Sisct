@@ -26,12 +26,12 @@ namespace Escon.SisctNET.Repository.Implementation
             return dataSet.OrderByDescending(_ => _.Created).ToList();
         }
 
-        public List<Log> FindFunctionality(int functionalityId, Log log)
+        public List<Log> FindFunctionality(long functionalityId, Log log)
         {
             return dataSet.Where(_ => _.FunctionalityId.Equals(functionalityId)).OrderByDescending(_ => _.Created).ToList();
         }
 
-        public List<Log> FindUser(int userId, Log log)
+        public List<Log> FindUser(long userId, Log log)
         {
             return dataSet.Where(_ => _.PersonId.Equals(userId)).OrderByDescending(_ => _.Created).ToList();
         }

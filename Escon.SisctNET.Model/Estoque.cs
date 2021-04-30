@@ -9,10 +9,13 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
+        [Display(Name = "Código")]
+        public string Code { get; set; }
+
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -26,6 +29,21 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Ano")]
         public string AnoRef { get; set; }
+
+        [Display(Name = "Código do Produto")]
+        public string Cprod { get; set; }
+
+        [Display(Name = "Produto")]
+        public string Xprod { get; set; }
+
+        [Display(Name = "NCM")]
+        public string Ncm { get; set; }
+
+        [Display(Name = "CEST")]
+        public string Cest { get; set; }
+
+        [Display(Name = "Unidade")]
+        public string Ucom { get; set; }
 
         [Display(Name = "Quantidade")]
         public decimal Quantity { get; set; }

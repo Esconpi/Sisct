@@ -9,7 +9,7 @@ namespace Escon.SisctNET.Model
         public ILazyLoader LazyLoader { get; set; }
 
         [ForeignKey("TaxAnexo")]
-        public int TaxAnexoId { get; set; }
+        public long TaxAnexoId { get; set; }
 
         private TaxAnexo taxAnexo;
 

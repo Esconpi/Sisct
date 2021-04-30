@@ -2,7 +2,7 @@
 {
    public class UpdateIncentive
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public bool Incentive { get; set; }
 

@@ -36,7 +36,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var id = Request.Form["id"];
                 var month = Request.Form["month"];
 
-                var comp = _companyService.FindById(Convert.ToInt32(id), null);
+                var comp = _companyService.FindById(Convert.ToInt64(id), null);
 
                 ViewBag.Archive = archive.ToString();
                 ViewBag.Company = comp;

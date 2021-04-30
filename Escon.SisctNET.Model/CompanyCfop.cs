@@ -12,7 +12,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Cfop")]
         [ForeignKey("Cfop")]
-        public int CfopId { get; set; }
+        public long CfopId { get; set; }
 
         private Cfop cfop;
         public Cfop Cfop
@@ -38,7 +38,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("CfopType")]
-        public int ? CfopTypeId { get; set; }
+        public long? CfopTypeId { get; set; }
 
         private CfopType cfopType;
 

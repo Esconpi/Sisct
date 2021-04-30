@@ -125,14 +125,14 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<CompanyCfop> FindByCompany(int companyId, Log log = null)
+        public List<CompanyCfop> FindByCompany(long companyId, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId));
             AddLog(log);
             return result.ToList();
         }
 
-        public CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null)
+        public CompanyCfop FindByCompanyCfop(long companyId, ulong cfopId, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.CfopId.Equals(cfopId)).FirstOrDefault();
             AddLog(log);

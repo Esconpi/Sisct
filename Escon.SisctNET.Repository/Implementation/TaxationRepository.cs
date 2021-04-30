@@ -72,7 +72,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<Taxation> FindByCompany(int companyId, Log log = null)
+        public List<Taxation> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.Taxations
                 .Where(_ => _.CompanyId.Equals(companyId) && (Convert.ToDateTime(_.DateStart) < Convert.ToDateTime(_.DateEnd) || _.DateEnd.Equals(null)))

@@ -32,7 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Sincronize(int companyId)
+        public IActionResult Sincronize(long companyId)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -68,7 +68,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -135,20 +135,23 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                
-                
-                var entity = _service.FindById(updateCfopType.CompanyCfopId, null);
+                if(updateCfopType != null)
+                {
+                    var entity = _service.FindById(updateCfopType.CompanyCfopId, null);
 
-                if (updateCfopType.CfopTypeId.Equals(0))
-                {
-                    entity.CfopTypeId = null;
+                    if (updateCfopType.CfopTypeId.Equals(0))
+                    {
+                        entity.CfopTypeId = null;
+                    }
+                    else
+                    {
+                        entity.CfopTypeId = updateCfopType.CfopTypeId;
+                    }
+
+                    _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 }
-                else
-                {
-                    entity.CfopTypeId = updateCfopType.CfopTypeId;
-                }
-               
-                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                
+             
                 return Ok(new { requestcode = 200, message = "ok" });
             }
             catch (Exception ex)

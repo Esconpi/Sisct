@@ -15,7 +15,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Uf de Origem")]
         [ForeignKey("State")]
-        public int? StateOrigemId { get; set; }
+        public long? StateOrigemId { get; set; }
 
         private State stateOrigem;
         public State StateOrigem
@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Uf de Destino")]
         [ForeignKey("State")]
-        public int? StateDestinoId { get; set; }
+        public long? StateDestinoId { get; set; }
 
         private State stateDestino;
         public State StateDestino

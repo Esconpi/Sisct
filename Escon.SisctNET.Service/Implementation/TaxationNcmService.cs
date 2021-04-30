@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(taxationNcms, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -54,12 +54,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompany(company, log);
         }
 
-        public List<TaxationNcm> FindByCompany(int company, Log log = null)
+        public List<TaxationNcm> FindByCompany(long company, Log log = null)
         {
             return _repository.FindByCompany(company, log);
         }
 
-        public List<TaxationNcm> FindByCompany(int company, string year, string month, Log log = null)
+        public List<TaxationNcm> FindByCompany(long company, string year, string month, Log log = null)
         {
             return _repository.FindByCompany(company, year, month, log);
         }
@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByGeneral(log);
         }
 
-        public TaxationNcm FindById(int id, Log log)
+        public TaxationNcm FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
@@ -79,7 +79,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByPeriod(taxationNcms, inicio, fim, log);
         }
 
-        public List<TaxationNcm> FindMono(int typeCompany, Log log = null)
+        public List<TaxationNcm> FindMono(long typeCompany, Log log = null)
         {
             return _repository.FindMono(typeCompany, log);
         }

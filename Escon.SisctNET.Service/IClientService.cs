@@ -5,17 +5,17 @@ namespace Escon.SisctNET.Service
 {
     public interface IClientService : IServiceBase<Client>
     {
-        Client FindByDocument(int document, Model.Log log = null);
+        Client FindByDocument(string document, Model.Log log = null);
 
         Client FindByName(string name, Model.Log log = null);
 
-        List<Client> FindByCompany(int companyId, Model.Log log = null);
+        List<Client> FindByCompany(long companyId, Model.Log log = null);
 
-        List<Client> FindByCompany(int companyId, string year, string month, Model.Log log = null);
+        List<Client> FindByCompany(long companyId, string year, string month, Model.Log log = null);
 
-        Client FindByDocumentCompany(int companyId, string document, Model.Log log = null);
+        Client FindByDocumentCompany(long companyId, string document, Model.Log log = null);
 
-        List<string> FindByContribuinte(int companyId, string type, Model.Log log = null);
+        List<string> FindByContribuinte(long companyId, string type, Model.Log log = null);
 
         Client FindByRaiz(string raiz, Model.Log log = null);
 

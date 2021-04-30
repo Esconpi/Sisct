@@ -17,7 +17,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Incentive> FindByCompany(int company, Log log = null)
+        public List<Incentive> FindByCompany(long company, Log log = null)
         {
             var rst = _context.Incentives.Where(_ => _.CompanyId.Equals(company)).ToList();
             AddLog(log);

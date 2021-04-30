@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(vendaAnexos, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -38,12 +38,12 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public VendaAnexo FindById(int id, Log log)
+        public VendaAnexo FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public List<VendaAnexo> FindByVendasTax(int taxAnexo, Log log = null)
+        public List<VendaAnexo> FindByVendasTax(long taxAnexo, Log log = null)
         {
             return _repository.FindByVendasTax(taxAnexo, log);
         }

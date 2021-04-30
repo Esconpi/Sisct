@@ -6,7 +6,7 @@ namespace Escon.SisctNET.Service
     {
         T Create(T entity, Model.Log log);
 
-        T FindById(int id, Model.Log log);
+        T FindById(long id, Model.Log log);
 
         List<T> FindAll(Model.Log log);
 
@@ -14,6 +14,6 @@ namespace Escon.SisctNET.Service
 
         T Update(T entity, Model.Log log);
 
-        void Delete(int id, Model.Log log);
+        void Delete(long id, Model.Log log);
     }
 }

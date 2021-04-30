@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Imposto")]
         [ForeignKey("Tax")]
-        public int TaxId { get; set; }
+        public long TaxId { get; set; }
 
         private Tax tax;
 

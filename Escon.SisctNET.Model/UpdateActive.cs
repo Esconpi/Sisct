@@ -2,7 +2,7 @@
 {
     public class UpdateActive
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public bool Active { get; set; }
     }

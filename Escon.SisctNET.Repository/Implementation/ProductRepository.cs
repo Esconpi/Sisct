@@ -60,14 +60,14 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public decimal FindByPrice(int id, Log log = null)
+        public decimal FindByPrice(long id, Log log = null)
         {
             decimal rst = Convert.ToDecimal(_context.Products.Where(_ => _.Id.Equals(id)).Select(_ => _.Price));
             AddLog(log);
             return rst;
         }
 
-        public Product FindByProduct(string code, int grupoId, string description, Log log = null)
+        public Product FindByProduct(string code, long grupoId, string description, Log log = null)
         {
             var rst = _context.Products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.Description.Equals(description) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);

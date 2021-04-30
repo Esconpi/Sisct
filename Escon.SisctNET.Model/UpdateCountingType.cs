@@ -3,7 +3,7 @@ namespace Escon.SisctNET.Model
 {
     public class UpdateCountingType
     {
-        public int CompanyId { get; set; }
-        public int CountingTypeId { get; set; }
+        public long CompanyId { get; set; }
+        public long CountingTypeId { get; set; }
     }
 }

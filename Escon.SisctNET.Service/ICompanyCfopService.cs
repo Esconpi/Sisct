@@ -7,9 +7,9 @@ namespace Escon.SisctNET.Service
     {
         void Create(List<Model.CompanyCfop> cfopCompanies, Model.Log log = null);
 
-        Model.CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Model.Log log = null);
+        Model.CompanyCfop FindByCompanyCfop(long companyId, ulong cfopId, Model.Log log = null);
 
-        List<Model.CompanyCfop> FindByCompany(int companyId, Log log = null);
+        List<Model.CompanyCfop> FindByCompany(long companyId, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopDevoCompra(string company, Log log = null);
 

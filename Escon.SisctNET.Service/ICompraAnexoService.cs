@@ -8,6 +8,6 @@ namespace Escon.SisctNET.Service
 
         void Update(List<Model.CompraAnexo> compraAnexos, Model.Log log = null);
 
-        List<Model.CompraAnexo> FindByComprasTax(int taxAnexo, Model.Log log = null);
+        List<Model.CompraAnexo> FindByComprasTax(long taxAnexo, Model.Log log = null);
     }
 }

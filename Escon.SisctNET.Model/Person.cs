@@ -48,7 +48,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Perfil")]
         [ForeignKey("Profile")]
         [Required(ErrorMessage = "Obrigatório")]
-        public int ProfileId { get; set; }
+        public long ProfileId { get; set; }
 
         private Profile profile;
         public Profile Profile

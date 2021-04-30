@@ -32,15 +32,7 @@
             <div style="float:left;">@await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))</div>
             <div style="float:right;">
                 <strong>Periodo:</strong>
-                @if (ViewBag.Inicio == ViewBag.Fim)
-                {
-                    @ViewBag.Inicio
-                }
-                else
-                {
-                    @ViewBag.Inicio <span>à</span> @ViewBag.Fim
-                }
-                - @SessionManager.GetYearInSession()
+                 @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()
                 <br />
                 <strong>Data:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
             </div>
@@ -49,7 +41,7 @@
     </div>
     <div class="box-body">
         <div style="width:100%;font-size:11px; padding:20px;">
-            <table class="table" style="font-size:8px; border: 2px solid;">
+            <table class="table" style="border: 2px solid;">
                 @if (ViewBag.Tipo == "historico")
                 {
                     @await Html.PartialAsync("_Historic", new ViewDataDictionary(ViewData))

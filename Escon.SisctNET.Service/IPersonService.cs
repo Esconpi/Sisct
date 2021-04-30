@@ -4,6 +4,6 @@ namespace Escon.SisctNET.Service
 {
     public interface IPersonService : IServiceBase<Model.Person>
     {
-        List<Model.Person> FindByProfileId(int profileId, Model.Log log = null);
+        List<Model.Person> FindByProfileId(long profileId, Model.Log log = null);
     }
 }

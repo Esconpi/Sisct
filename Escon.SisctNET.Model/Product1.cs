@@ -37,7 +37,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório")]
         [Display(Name = "Grupo")]
         [ForeignKey("Group")]
-        public int GroupId { get; set; }
+        public long GroupId { get; set; }
 
         private Group group;
         public Group Group

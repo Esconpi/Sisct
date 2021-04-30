@@ -19,7 +19,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -34,7 +34,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public ProductNote FindById(int id, Log log)
+        public ProductNote FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
@@ -44,7 +44,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public List<ProductNote> FindByNote(int noteId, Log log = null)
+        public List<ProductNote> FindByNote(long noteId, Log log = null)
         {
             return _repository.FindByNote(noteId, log);
         }
@@ -69,7 +69,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCnpjCprod(notes, cnpj, cprod, ncm, cest, log);
         }
 
-        public decimal FindByTotal(List<int> notes, Log log = null)
+        public decimal FindByTotal(List<long> notes, Log log = null)
         {
             return _repository.FindByTotal(notes, log);
         }
@@ -79,27 +79,27 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindBySubscription(notes, taxationType, log);
         }
 
-        public List<ProductNote> FindByTaxation(int noteId, Log log = null)
+        public List<ProductNote> FindByTaxation(long noteId, Log log = null)
         {
             return _repository.FindByTaxation(noteId, log);
         }
 
-        public ProductNote FindByProduct(int noteId, string nItem, Log log = null)
+        public ProductNote FindByProduct(long noteId, string nItem, Log log = null)
         {
             return _repository.FindByProduct(noteId, nItem, log);
         }
 
-        public List<ProductNote> FindByCfopNotesIn(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesIn(long companyId, List<Note> notes, Log log = null)
         {
             return _repository.FindByCfopNotesIn(companyId, notes, log);
         }
 
-        public List<ProductNote> FindByCfopNotesOut(int companyId, List<Note> notes, Log log = null)
+        public List<ProductNote> FindByCfopNotesOut(long companyId, List<Note> notes, Log log = null)
         {
             return _repository.FindByCfopNotesOut(companyId, notes, log);
         }
 
-        public bool FindByNcmAnnex(int Annex, string ncm, Log log = null)
+        public bool FindByNcmAnnex(long Annex, string ncm, Log log = null)
         {
             return _repository.FindByNcmAnnex(Annex, ncm, log);
         }
@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Update(products, log);
         }
 
-        public ProductNote FindByProduct(int id, Log log = null)
+        public ProductNote FindByProduct(long id, Log log = null)
         {
             return _repository.FindByProduct(id, log);
         }

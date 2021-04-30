@@ -15,13 +15,13 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Notification FindByCurrentMonth(int companyid, string month, string year, Log log = null)
+        public Notification FindByCurrentMonth(long companyid, string month, string year, Log log = null)
         {
             AddLog(log);
             return _context.Notifications.Where(_ => _.CompanyId.Equals(companyid) && _.MesRef.Equals(month) && _.AnoRef.Equals(year)).FirstOrDefault();
         }
 
-        public List<Notification> FindByYear(int companyid, string year, Log log = null)
+        public List<Notification> FindByYear(long companyid, string year, Log log = null)
         {
             AddLog(log);
             return _context.Notifications.Where(_ => _.CompanyId.Equals(companyid) && _.AnoRef.Equals(year)).ToList();

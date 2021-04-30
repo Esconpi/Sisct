@@ -58,7 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
             _appEnvironment = env;
         }
 
-        public IActionResult Index(int id, string year, string month)
+        public IActionResult Index(long id, string year, string month)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                int companyid = SessionManager.GetCompanyIdInSession();
+                long companyid = SessionManager.GetCompanyIdInSession();
                 string year = SessionManager.GetYearInSession();
                 string month = SessionManager.GetMonthInSession();
 
@@ -177,7 +177,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
                 var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
 
-                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt32(comp.AnnexId));
+                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
 
                 var imp = _service.FindByMonth(companyid, month, year);
 

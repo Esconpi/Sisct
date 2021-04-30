@@ -30,7 +30,7 @@ namespace Escon.SisctNET.Web.Controllers
             _productNoteInventoryExitService = productNoteInventoryExitService;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -63,7 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        public IActionResult Relatory(int id, string year, string inicio, string fim, string type)
+        public IActionResult Relatory(long id, string year, string month, string type)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -71,18 +71,15 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
                 ViewBag.Company = comp;
-                ViewBag.Inicio = inicio;
-                ViewBag.Fim = fim;
                 ViewBag.Tipo = type;
 
+                SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
 
                 var importPeriod = new Period.Month();
 
-                var entradas = _productNoteInventoryEntryService.FindByNotes(id, year);
-                var saidas = _productNoteInventoryExitService.FindByNotes(id, year);
-
-                var meses = importPeriod.Months(inicio, fim);
+                var entradas = _productNoteInventoryEntryService.FindByNotes(id, year, month);
+                var saidas = _productNoteInventoryExitService.FindByNotes(id, year, month);
 
                 var produtosTemp = entradas
                               .Select(_ => _.Cprod)
@@ -133,75 +130,72 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    foreach (var mes in meses)
+                    for (int dia = 1; dia <= 31; dia++)
                     {
-                        for (int dia = 1; dia <= 31; dia++)
+                        foreach (var produto in produtos)
                         {
-                            foreach (var produto in produtos)
-                            {
-                                decimal quantidade = 0, valor = 0, total = 0;
+                            decimal quantidade = 0, valor = 0, total = 0;
 
-                                var entradaDia = entradas
-                                .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                            var entradaDia = entradas
+                            .Where(_ =>  Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                            .OrderBy(_ => _.Cprod)
+                            .ToList();
+
+                            foreach (var entrada in entradaDia)
+                            {
+                                List<string> prod = new List<string>();
+
+                                prod.Add("COMPRA");
+                                prod.Add(entrada.Cprod);
+                                prod.Add(entrada.Dhemi.ToString("dd/MM/yyyy"));
+                                prod.Add(entrada.Nnf);
+                                prod.Add(entrada.Qcom.ToString());
+                                prod.Add(entrada.Vuncom.ToString());
+                                prod.Add(entrada.Vbasecalc.ToString());
+
+                                quantidade += Convert.ToDecimal(entrada.Qcom);
+                                total += Convert.ToDecimal(entrada.Vbasecalc);
+                                valor = Math.Round(total / quantidade, 2);
+                                estoque.Add(prod);
+                            }
+
+                            var saidaDia = saidas
+                                .Where(_ => Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
                                 .OrderBy(_ => _.Cprod)
                                 .ToList();
 
-                                foreach (var entrada in entradaDia)
+                            foreach (var saida in saidaDia)
+                            {
+                                List<string> prod = new List<string>();
+
+                                prod.Add("VENDA");
+                                prod.Add(saida.Cprod);
+                                prod.Add(saida.Dhemi.ToString("dd/MM/yyyy"));
+                                prod.Add(saida.Nnf);
+                                prod.Add(saida.Qcom.ToString());
+                                prod.Add(saida.Vuncom.ToString());
+                                prod.Add(saida.Vbasecalc.ToString());
+
+
+                                if (quantidade - Convert.ToDecimal(saida.Qcom) <= 0)
                                 {
-                                    List<string> prod = new List<string>();
-
-                                    prod.Add("COMPRA");
-                                    prod.Add(entrada.Cprod);
-                                    prod.Add(entrada.Dhemi.ToString("dd/MM/yyyy"));
-                                    prod.Add(entrada.Nnf);
-                                    prod.Add(entrada.Qcom.ToString());
-                                    prod.Add(entrada.Vuncom.ToString());
-                                    prod.Add(entrada.Vbasecalc.ToString());
-
-                                    quantidade += Convert.ToDecimal(entrada.Qcom);
-                                    total += Convert.ToDecimal(entrada.Vbasecalc);
+                                    quantidade = 0;
+                                    total = 0;
+                                    valor = 0;
+                                }
+                                else
+                                {
+                                    quantidade -= Convert.ToDecimal(saida.Qcom);
+                                    total -= Convert.ToDecimal(saida.Vbasecalc);
                                     valor = Math.Round(total / quantidade, 2);
-                                    estoque.Add(prod);
                                 }
 
-                                var saidaDia = saidas
-                                    .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
-                                    .OrderBy(_ => _.Cprod)
-                                    .ToList();
-
-                                foreach (var saida in saidaDia)
-                                {
-                                    List<string> prod = new List<string>();
-
-                                    prod.Add("VENDA");
-                                    prod.Add(saida.Cprod);
-                                    prod.Add(saida.Dhemi.ToString("dd/MM/yyyy"));
-                                    prod.Add(saida.Nnf);
-                                    prod.Add(saida.Qcom.ToString());
-                                    prod.Add(saida.Vuncom.ToString());
-                                    prod.Add(saida.Vbasecalc.ToString());
-
-
-                                    if (quantidade - Convert.ToDecimal(saida.Qcom) <= 0)
-                                    {
-                                        quantidade = 0;
-                                        total = 0;
-                                        valor = 0;
-                                    }
-                                    else
-                                    {
-                                        quantidade -= Convert.ToDecimal(saida.Qcom);
-                                        total -= Convert.ToDecimal(saida.Vbasecalc);
-                                        valor = Math.Round(total / quantidade, 2);
-                                    }
-
-                                    estoque.Add(prod);
-                                }
-
-                                produto.Add(quantidade.ToString());
-                                produto.Add(valor.ToString());
-                                produto.Add(total.ToString());
+                                estoque.Add(prod);
                             }
+
+                            produto.Add(quantidade.ToString());
+                            produto.Add(valor.ToString());
+                            produto.Add(total.ToString());
                         }
                     }
 
@@ -241,57 +235,86 @@ namespace Escon.SisctNET.Web.Controllers
                             produtos.Add(produto);
                         }
                     }
-
-                    foreach (var mes in meses)
+                 
+                    foreach (var produto in produtos)
                     {
-                        for (int dia = 1; dia <= 31; dia++)
-                        {
-                            foreach (var produto in produtos)
-                            {
-                                decimal quantidade = 0, valor = 0, total = 0;
+                        // DESFAZER
+                        decimal quantidade = 1, total = Convert.ToDecimal(24.09), valor = total / quantidade;
 
-                                var entradaDia = entradas
-                                .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                        var primeiroDia = entradas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .FirstOrDefault();
+
+                        if(saidas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .FirstOrDefault() < primeiroDia)
+                        {
+                            primeiroDia = saidas
+                              .OrderBy(_ => _.Dhemi)
+                              .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                              .FirstOrDefault();
+                        }
+
+                        var ultimoDia = entradas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .LastOrDefault();
+
+                        if (saidas
+                           .OrderBy(_ => _.Dhemi)
+                           .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                           .LastOrDefault() > primeiroDia)
+                        {
+                            ultimoDia = saidas
+                              .OrderBy(_ => _.Dhemi)
+                              .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                              .LastOrDefault();
+                        }
+
+
+                        for (int dia = primeiroDia; dia <= ultimoDia; dia++)
+                        {
+                            var entradaDia = entradas
+                            .Where(_ => Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                            .OrderBy(_ => _.Cprod)
+                            .ToList();
+
+                            if(entradaDia.Count() > 0)
+                            {
+                                quantidade += Convert.ToDecimal(entradaDia.Select(_ => _.Qcom).Sum());
+                                total += Convert.ToDecimal(entradaDia.Select(_ => _.Vbasecalc).Sum());
+                                if (quantidade > 0)
+                                    valor = total / quantidade;
+                            }
+
+                            var saidaDia = saidas
+                                .Where(_ => Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
                                 .OrderBy(_ => _.Cprod)
                                 .ToList();
 
-                                foreach(var entrada in entradaDia)
+
+                            if(saidaDia.Count() > 0)
+                            {
+                                if (quantidade > 0)
                                 {
-                                    quantidade += Convert.ToDecimal(entrada.Qcom);
-                                    total += Convert.ToDecimal(entrada.Vbasecalc);
-                                    valor = Math.Round(total / quantidade, 2);
-                                }
+                                    quantidade -= Convert.ToDecimal(saidaDia.Select(_ => _.Qcom).Sum());
+                                    total -= valor;
 
-                                var saidaDia = saidas
-                                    .Where(_ => _.MesRef.Equals(mes) && Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
-                                    .OrderBy(_ => _.Cprod)
-                                    .ToList();
-
-                                foreach (var saida in saidaDia)
-                                {
-
-
-                                    if(quantidade - Convert.ToDecimal(saida.Qcom) <= 0)
+                                    if (quantidade > 0)
                                     {
-                                        quantidade = 0;
-                                        total = 0;
-                                        valor = 0;
+                                        valor = total / quantidade;
                                     }
-                                    else
-                                    {
-                                        quantidade -= Convert.ToDecimal(saida.Qcom);
-                                        total -= Convert.ToDecimal(saida.Vbasecalc);
-                                        valor = Math.Round(total / quantidade, 2);
-                                    }
-                                    
                                 }
-
-                                produto.Add(quantidade.ToString());
-                                produto.Add(valor.ToString());
-                                produto.Add(total.ToString());
                             }
+                                
                         }
-                    }
+
+                        produto.Add(quantidade.ToString());
+                        produto.Add(valor.ToString());
+                        produto.Add(total.ToString());
+                        }
 
                     ViewBag.Produtos = produtos.OrderBy(_ => _[0]).ToList();
                 }

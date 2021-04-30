@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
-        public List<Grupo> FindByGrupos(int taxid, Log log = null)
+        public List<Grupo> FindByGrupos(long taxid, Log log = null)
         {
             var result = _context.Grupos.Where(_ => _.TaxId.Equals(taxid)).ToList();
             AddLog(log);

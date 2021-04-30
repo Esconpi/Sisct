@@ -32,7 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<IActionResult> Index(int id, string year, string month, string archive, IFormFile arquivoSped)
+        public async Task<IActionResult> Index(long id, string year, string month, string archive, IFormFile arquivoSped)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

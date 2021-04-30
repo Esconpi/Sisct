@@ -214,7 +214,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -243,7 +243,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Model.Company entity)
+        public IActionResult Edit(long id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -288,7 +288,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditNew(int id)
+        public IActionResult EditNew(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -343,7 +343,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditNew(int id, Model.Company entity)
+        public IActionResult EditNew(long id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -397,7 +397,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -474,7 +474,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Compare(int id)
+        public IActionResult Compare(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -490,7 +490,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Listing(int id)
+        public IActionResult Listing(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -506,7 +506,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tax(int id)
+        public IActionResult Tax(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -524,7 +524,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Tax(int id, Model.Company entity)
+        public IActionResult Tax(long id, Model.Company entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Company")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -610,7 +610,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetResponsibleByCompanyId(int id)
+        public async Task<IActionResult> GetResponsibleByCompanyId(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -632,7 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteResponsibleByCompanyId(int id)
+        public IActionResult DeleteResponsibleByCompanyId(long id)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 

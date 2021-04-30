@@ -15,7 +15,7 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<Suspension> FindByCompany(int company, Log log = null)
+        public List<Suspension> FindByCompany(long company, Log log = null)
         {
             var rst = _context.Suspensions.Where(_ => _.CompanyId.Equals(company)).ToList();
             AddLog(log);

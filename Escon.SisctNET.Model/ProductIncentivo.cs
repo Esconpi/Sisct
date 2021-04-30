@@ -39,7 +39,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         private Company company;
         public Company Company
@@ -58,7 +58,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Cst")]
         [ForeignKey("Cst")]
-        public int? CstId { get; set; }
+        public long? CstId { get; set; }
 
         private Cst cst;
         public Cst Cst

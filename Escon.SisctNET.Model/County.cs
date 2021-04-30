@@ -22,7 +22,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Estado")]
         [ForeignKey("State")]
-        public int StateId { get; set; }
+        public long StateId { get; set; }
 
         private State state;
         public State State

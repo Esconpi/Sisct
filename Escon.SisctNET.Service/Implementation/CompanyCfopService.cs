@@ -23,7 +23,7 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Create(cfopCompanies, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -108,17 +108,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCfopVendaST(company, log);
         }
 
-        public List<CompanyCfop> FindByCompany(int companyId, Log log = null)
+        public List<CompanyCfop> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
         }
 
-        public CompanyCfop FindByCompanyCfop(int companyId, int cfopId, Log log = null)
+        public CompanyCfop FindByCompanyCfop(long companyId, ulong cfopId, Log log = null)
         {
             return _repository.FindByCompanyCfop(companyId, cfopId, log);
         }
 
-        public CompanyCfop FindById(int id, Log log)
+        public CompanyCfop FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }

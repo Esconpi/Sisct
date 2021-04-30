@@ -18,7 +18,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Delete(int id, Log log)
+        public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
@@ -33,17 +33,17 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public CreditBalance FindByCurrentMonth(int companyid, string month, string year, Log log = null)
+        public CreditBalance FindByCurrentMonth(long companyid, string month, string year, Log log = null)
         {
             return _repository.FindByCurrentMonth(companyid, month, year, log);
         }
 
-        public CreditBalance FindById(int id, Log log)
+        public CreditBalance FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
         }
 
-        public CreditBalance FindByLastMonth(int companyid, string month, string year, Log log = null)
+        public CreditBalance FindByLastMonth(long companyid, string month, string year, Log log = null)
         {
             return _repository.FindByLastMonth(companyid, month, year, log);
         }

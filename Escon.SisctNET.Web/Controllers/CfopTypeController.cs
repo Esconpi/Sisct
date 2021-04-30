@@ -8,7 +8,7 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class OutputDropdownList
     {
-        public int id { get; set; }
+        public long id { get; set; }
 
         public string text { get; set; }
     }

@@ -15,14 +15,14 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<string> FindByAnnex(int annexId, Log log = null)
+        public List<string> FindByAnnex(long annexId, Log log = null)
         {
             var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).Select(_ => _.Ncm).ToList();
             AddLog(log);
             return result;
         }
 
-        public List<NcmConvenio> FindByNcmAnnex(int annexId, Log log = null)
+        public List<NcmConvenio> FindByNcmAnnex(long annexId, Log log = null)
         {
             var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).ToList();
             AddLog(log);

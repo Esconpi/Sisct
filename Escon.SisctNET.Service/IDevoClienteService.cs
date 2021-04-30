@@ -8,6 +8,6 @@ namespace Escon.SisctNET.Service
 
         void Update(List<Model.DevoCliente> devoClientes, Model.Log log = null);
 
-        List<Model.DevoCliente> FindByDevoTax(int taxAnexo, Model.Log log = null);
+        List<Model.DevoCliente> FindByDevoTax(long taxAnexo, Model.Log log = null);
     }
 }

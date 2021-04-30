@@ -41,7 +41,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Capítulo")]
         [ForeignKey("Chapter")]
-        public int? ChapterId { get; set; }
+        public long? ChapterId { get; set; }
 
         private Chapter chapter;
         public Chapter Chapter
@@ -52,7 +52,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
-        public int? AnnexId { get; set; }
+        public long? AnnexId { get; set; }
 
         private Annex annex;
         public Annex Annex
@@ -63,7 +63,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("CountingType")]
-        public int? CountingTypeId { get; set; }
+        public long? CountingTypeId { get; set; }
 
         private CountingType countingType;
         public CountingType CountingType
@@ -75,13 +75,24 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Cidade")]
         [ForeignKey("County")]
-        public int? CountyId { get; set; }
+        public long? CountyId { get; set; }
 
         private County county;
         public County County
         {
             get => LazyLoader.Load(this, ref county);
             set => county = value;
+        }
+
+        [Display(Name = "Seção")]
+        [ForeignKey("Section")]
+        public long? SectionId { get; set; }
+
+        private Section section;
+        public Section Section
+        {
+            get => LazyLoader.Load(this, ref section);
+            set => section = value;
         }
 
         [Display(Name = "Inscrição Estadual")]
@@ -165,17 +176,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Icms Aliq. SUperior a 25 %")]
         public decimal? IcmsAliqM25 { get; set; }
-
-        [Display(Name = "Seção")]
-        [ForeignKey("Section")]
-        public int? SectionId { get; set; }
-
-        private Section section;
-        public Section Section
-        {
-            get => LazyLoader.Load(this, ref section);
-            set => section = value;
-        }
 
         [Display(Name = "Aliq. Interna %")]
         public decimal ? AliqInterna { get; set; }

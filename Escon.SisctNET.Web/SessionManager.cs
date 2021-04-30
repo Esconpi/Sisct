@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Web
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public static void SetUserIdInSession(int userId)
+        public static void SetUserIdInSession(long userId)
         {
-            _httpContextAccessor.HttpContext.Session.Set<int>("UserSisctNET", userId);
+            _httpContextAccessor.HttpContext.Session.Set<long>("UserSisctNET", userId);
         }
 
-        public static int GetUserIdInSession()
+        public static long GetUserIdInSession()
         {
-            return _httpContextAccessor.HttpContext.Session.Get<int>("UserSisctNET");
+            return _httpContextAccessor.HttpContext.Session.Get<long>("UserSisctNET");
         }
 
         public static void SetLoginInSession(Model.Login login)
@@ -73,14 +73,14 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<Model.Note>>("NoteSisctNET");
         }
 
-        public static void SetCompanyIdInSession(int companyId)
+        public static void SetCompanyIdInSession(long companyId)
         {
-            _httpContextAccessor.HttpContext.Session.Set<int>("CompanyIdSisctNET", companyId);
+            _httpContextAccessor.HttpContext.Session.Set<long>("CompanyIdSisctNET", companyId);
         }
 
-        public static int GetCompanyIdInSession()
+        public static long GetCompanyIdInSession()
         {
-            return _httpContextAccessor.HttpContext.Session.Get<int>("CompanyIdSisctNET");
+            return _httpContextAccessor.HttpContext.Session.Get<long>("CompanyIdSisctNET");
         }
 
         public static void SetTipoInSession(int tipo)
