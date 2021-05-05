@@ -489,10 +489,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && (comp.AnnexId.Equals(1) || comp.AnnexId.Equals(3)))
+                            if (comp.Incentive && (comp.AnnexId.Equals((long)1) || comp.AnnexId.Equals((long)3)))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
 
-                            if (comp.Incentive && comp.ChapterId.Equals(4))
+                            if (comp.Incentive && comp.ChapterId.Equals((long)4))
                                 incentivo = true;
 
                             Model.ProductNote prod = new Model.ProductNote();

@@ -25860,7 +25860,7 @@ namespace Escon.SisctNET.Web.Controllers
                             limiteTransferencia = (baseCalcVenda * Convert.ToDecimal(comp.Transferencia)) / 100,
                             limiteTransferenciaInter = (totalTranferenciaEntrada * Convert.ToDecimal(comp.TransferenciaInter)) / 100;
 
-                    if (comp.ChapterId == 4)
+                    if (comp.ChapterId == (long)4)
                         limiteNcm = (baseCalcVenda * Convert.ToDecimal(comp.Faturamento)) / 100;
 
                     decimal excedenteGrupo = 0, impostoGrupo = 0, excedenteNcm = 0, impostoNcm = 0, impostoNContribuinte = 0, excedenteNContribuinte = 0,
@@ -25888,32 +25888,32 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     //  Anexo II ou Inciso I e II
-                    if (baseCalcNcm < limiteNcm && (comp.AnnexId == 1 || comp.ChapterId == 4))
+                    if (baseCalcNcm < limiteNcm && (comp.AnnexId == (long)1 || comp.ChapterId == (long)4))
                     {
                         excedenteNcm = limiteNcm - baseCalcNcm;
 
-                        if(comp.AnnexId == 1)
+                        if(comp.AnnexId == (long)1)
                             impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.VendaAnexoExcedente)) / 100,2);
                         else
                             impostoNcm = Math.Round((excedenteNcm * Convert.ToDecimal(comp.FaturamentoExcedente)) / 100, 2);
                     }
 
                     //  Contribuinte
-                    if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == 4)
+                    if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == (long)4)
                     {
                         excedenteContribuinte = baseCalcContribuinte - limiteContribuinte;
                         impostoContribuinte = Math.Round((excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100, 2);
                     }
 
                     //  Não Contribuinte
-                    if (baseCalcNContribuinte > limiteNContribuinte && comp.ChapterId != 4)
+                    if (baseCalcNContribuinte > limiteNContribuinte && comp.ChapterId != (long)4)
                     {
                         excedenteNContribuinte = baseCalcNContribuinte - limiteNContribuinte;
                         impostoNContribuinte = Math.Round((excedenteNContribuinte * Convert.ToDecimal(comp.VendaCpfExcedente)) / 100,2);
                     }
 
                     //  Transferência
-                    if(totalTranferenciaSaida > limiteTransferencia && comp.ChapterId == 4)
+                    if(totalTranferenciaSaida > limiteTransferencia && comp.ChapterId == (long)4)
                     {
                         excedenteTranf = totalTranferenciaSaida - limiteTransferencia;
                         impostoTransf = Math.Round((excedenteTranf * Convert.ToDecimal(comp.TransferenciaExcedente)) / 100, 2);
@@ -26020,7 +26020,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return View();
                     }
 
-                    if (!comp.AnnexId.Equals(3))
+                    if (!comp.AnnexId.Equals((long)3))
                     {
                         var grupos = _grupoService.FindByGrupos(imp.Id);
 
@@ -26268,12 +26268,12 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalDeImposto = totalImposto;
                         }
                     }
-                    else if (comp.AnnexId.Equals(3))
+                    else if (comp.AnnexId.Equals((long)3))
                     {
 
                         decimal totalDarFecop = 0, totalDarIcms = 0;
 
-                        if (comp.SectionId.Equals(2))
+                        if (comp.SectionId.Equals((long)2))
                         {
 
                             decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),

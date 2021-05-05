@@ -1814,7 +1814,7 @@ namespace Escon.SisctNET.Web.Controllers
                         
                         if(comp.Incentive && !comp.TipoApuracao)
                         {
-                            if (!comp.AnnexId.Equals(3))
+                            if (!comp.AnnexId.Equals((long)3))
                             {
                                 //  Incentivo de Produtos e Indústria
                                 var prodsAll = _productIncentivoService.FindByAllProducts(companyid);
@@ -2830,7 +2830,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 }
                             }
-                            else if (comp.AnnexId.Equals(3))
+                            else if (comp.AnnexId.Equals((long)3))
                             {
                                 //  Incentivo de Medicamentos
 

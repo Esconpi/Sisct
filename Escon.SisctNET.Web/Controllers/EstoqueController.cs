@@ -130,14 +130,48 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    for (int dia = 1; dia <= 31; dia++)
+                    foreach (var produto in produtos)
                     {
-                        foreach (var produto in produtos)
-                        {
-                            decimal quantidade = 0, valor = 0, total = 0;
+                        // DESFAZER
+                        decimal quantidade = 1, total = Convert.ToDecimal(24.09), valor = total / quantidade;
 
+                        var primeiroDia = entradas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .FirstOrDefault();
+
+                        if (saidas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .FirstOrDefault() < primeiroDia)
+                        {
+                            primeiroDia = saidas
+                              .OrderBy(_ => _.Dhemi)
+                              .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                              .FirstOrDefault();
+                        }
+
+                        var ultimoDia = entradas
+                            .OrderBy(_ => _.Dhemi)
+                            .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                            .LastOrDefault();
+
+                        if (saidas
+                           .OrderBy(_ => _.Dhemi)
+                           .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                           .LastOrDefault() > primeiroDia)
+                        {
+                            ultimoDia = saidas
+                              .OrderBy(_ => _.Dhemi)
+                              .Select(_ => Convert.ToInt32(_.Dhemi.ToString("dd")))
+                              .LastOrDefault();
+                        }
+
+
+                        for (int dia = primeiroDia; dia <= ultimoDia; dia++)
+                        {
                             var entradaDia = entradas
-                            .Where(_ =>  Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
+                            .Where(_ => Convert.ToInt32(_.Dhemi.ToString("dd")).Equals(dia) && _.Cprod.Equals(produto[0]))
                             .OrderBy(_ => _.Cprod)
                             .ToList();
 
@@ -193,10 +227,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 estoque.Add(prod);
                             }
 
-                            produto.Add(quantidade.ToString());
-                            produto.Add(valor.ToString());
-                            produto.Add(total.ToString());
                         }
+
+                        produto.Add(quantidade.ToString());
+                        produto.Add(valor.ToString());
+                        produto.Add(total.ToString());
                     }
 
                     ViewBag.Produtos = produtos.OrderBy(_ => _[0]).ToList();
@@ -314,7 +349,7 @@ namespace Escon.SisctNET.Web.Controllers
                         produto.Add(quantidade.ToString());
                         produto.Add(valor.ToString());
                         produto.Add(total.ToString());
-                        }
+                    }
 
                     ViewBag.Produtos = produtos.OrderBy(_ => _[0]).ToList();
                 }

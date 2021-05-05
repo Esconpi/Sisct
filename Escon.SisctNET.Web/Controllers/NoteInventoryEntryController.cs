@@ -124,8 +124,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.ProductNoteInventoryEntry> addProduct = new List<Model.ProductNoteInventoryEntry>();
 
-                Random rndNumero = new Random();
-
                 var produtos = importSped.NFeProduct(caminhoDestinoArquivoOriginalSped, municipios);
 
                 foreach(var produto in produtos)
@@ -135,12 +133,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if(productImport == null && esxiteAdd == null)
                     {
-                        int numeroNota = rndNumero.Next(1, 999);
-                        int numeroProduto = rndNumero.Next(1, 999);
 
                         Model.ProductNoteInventoryEntry prod = new Model.ProductNoteInventoryEntry();
 
-                        prod.Id = Convert.ToInt64(numeroNota.ToString() + numeroProduto.ToString() + produto[1] + produto[13]);
                         prod.CompanyId = id;
                         prod.Chave = produto[0];
                         prod.Nnf = produto[1];

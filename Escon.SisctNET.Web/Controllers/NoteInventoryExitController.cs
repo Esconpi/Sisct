@@ -128,8 +128,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.ProductNoteInventoryExit> addProduct = new List<Model.ProductNoteInventoryExit>();
 
-                Random rndNumero = new Random();
-
                 for (int i = notes.Count - 1; i >= 0; i--)
                 {
                     if (notes[i][1]["finNFe"] == "4")
@@ -150,8 +148,6 @@ namespace Escon.SisctNET.Web.Controllers
                     string cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
 
                    
-                    int numeroNota = rndNumero.Next(1,999);
-
                     for (int j = 0; j < notes[i].Count; j++)
                     {
                         if (notes[i][j].ContainsKey("nItem"))
@@ -282,11 +278,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 decimal baseDeCalc = calculation.BaseCalc(Convert.ToDecimal(det["vProd"]), vFrete, vSeg, vOutro, vDesc, vIPI, 0);
 
-                                int numeroProduto = rndNumero.Next(1, 999);
-
                                 try
                                 {
-                                    prod.Id = Convert.ToInt64(numeroNota.ToString() + numeroProduto.ToString() + notes[i][1]["nNF"] + det["nItem"]);
                                     prod.CompanyId = id;
                                     prod.Chave = notes[i][0]["chave"];
                                     prod.Nnf = notes[i][1]["nNF"];

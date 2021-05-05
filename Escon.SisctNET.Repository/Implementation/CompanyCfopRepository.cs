@@ -29,77 +29,77 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(8)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)8)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(4)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)4)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopCompra(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(6)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)6)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopCompraST(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(9)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)9)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopDevoCompra(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0,8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(3)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0,8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)3)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopDevoCompraST(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(16)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)16)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopDevoVenda(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(7)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)7)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopDevoVendaST(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(17)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)17)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(12)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)12)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopOutraSaida(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(13)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)13)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopTransferencia(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(2)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)2)).ToList();
             AddLog(log);
             return result;
         }
@@ -113,14 +113,14 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<CompanyCfop> FindByCfopVenda(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(1)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)1)).ToList();
             AddLog(log);
             return result;
         }
 
         public List<CompanyCfop> FindByCfopVendaST(string company, Log log = null)
         {
-            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals(5)).ToList();
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)5)).ToList();
             AddLog(log);
             return result;
         }

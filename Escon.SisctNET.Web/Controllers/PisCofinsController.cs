@@ -1231,7 +1231,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Apuração Imposto Federal
 
-                    if (comp.CountingTypeId == 1)
+                    if (comp.CountingTypeId == (long)1)
                     {
                         //  Empresa Lucro Real
 
@@ -1327,7 +1327,7 @@ namespace Escon.SisctNET.Web.Controllers
                         imp.Updated = DateTime.Now;
 
                     }
-                    else if(comp.CountingTypeId == 2)
+                    else if(comp.CountingTypeId == (long)2)
                     {
                         //  Empresa Lucro Presumido
                         var basePisCofins = _baseService.FindByName("Irpj");
@@ -1715,7 +1715,7 @@ namespace Escon.SisctNET.Web.Controllers
                             SessionManager.SetValues(values);
                         }
                     }
-                    else if (comp.CountingTypeId == 3)
+                    else if (comp.CountingTypeId == (long)3)
                     {
                         //  Empresa do Simples
                     }
