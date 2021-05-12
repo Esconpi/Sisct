@@ -199,7 +199,6 @@ namespace Escon.SisctNET.Web.Controllers
                 foreach (var product in products)
                 {
                     deleteProduct.Add(product);
-                   // _itemService.Delete(product.Id, GetLog(Model.OccorenceLog.Delete));
                 }
                 _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
@@ -557,7 +556,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else
                             {
 
-                                var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, GetLog(Model.OccorenceLog.Read));
+                                var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, null);
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
                                         valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
 

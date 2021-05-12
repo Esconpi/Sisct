@@ -727,7 +727,7 @@ namespace Escon.SisctNET.Web.Controllers
                 foreach (var product in products)
                 {
                     bool status = false;
-                    var nota = _noteService.FindById(Convert.ToInt64(product.NoteId), GetLog(OccorenceLog.Read));
+                    var nota = _noteService.FindById(Convert.ToInt64(product.NoteId), null);
 
                     var productTaxation = _service.FindByTaxation(Convert.ToInt64(nota.Id));
 
@@ -935,7 +935,9 @@ namespace Escon.SisctNET.Web.Controllers
                         products = _service.FindByProductsType(notes, typeTaxation)
                             .OrderBy(_ => _.Note.Iest)
                             .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
-                            .ToList(); 
+                            .ToList();
+
+                        notasTaxation = notes;
 
                         prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
 

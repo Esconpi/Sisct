@@ -78,7 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
             
-                var result = _service.FindByMonth(id, month, year, GetLog(OccorenceLog.Read));
+                var result = _service.FindByMonth(id, month, year, null);
 
                 decimal vendasGrupo = 0, devolucaoGrupo = 0;
 

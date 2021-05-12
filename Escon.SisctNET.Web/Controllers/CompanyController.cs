@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", null);
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindAll(null);
 
                 var counties = _countyService.FindAll(null);
                
