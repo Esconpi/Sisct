@@ -2841,7 +2841,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 cfopsVenda.AddRange(cfopsBoniVenda);
                                 cfopsVenda.AddRange(cfopsVendaST);
 
-                                if (comp.SectionId.Equals(2))
+                                if (comp.SectionId.Equals((long)2))
                                 {
                                     exitNotes = importXml.NFeAll(directoryNfeExit);
 
