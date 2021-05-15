@@ -1514,7 +1514,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
                                     {
-                                        if (notifi != null)
+                                        if (notifi == null)
                                         {
                                             Model.Notification nn = new Notification();
                                             nn.Description = "Venda p/ Cliente Credenciado no Art. 781 menor que " + comp.VendaArt781.ToString() + " %";
@@ -2515,7 +2515,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
                                 {
                                     // Venda p/ Cliente Credenciado no Art. 781
-                                    if (notifi != null)
+                                    if (notifi == null)
                                     {
                                         Model.Notification nn = new Notification();
                                         nn.Description = "Venda p/ Cliente Credenciado no Art. 781 menor que " + comp.VendaArt781.ToString() + " %";

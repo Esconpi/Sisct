@@ -2835,7 +2835,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Incentivo de Medicamentos
 
                                 var clientesAll = _clientService.FindByCompany(companyid);
-                                var nContribuintes = clientesAll.Where(_ => _.TypeClientId.Equals(2)).Select(_ => _.Document).ToList();
+                                var nContribuintes = clientesAll.Where(_ => _.TypeClientId.Equals((long)2)).Select(_ => _.Document).ToList();
                                 var suspensions = _suspensionService.FindByCompany(companyid);
 
                                 cfopsVenda.AddRange(cfopsBoniVenda);
