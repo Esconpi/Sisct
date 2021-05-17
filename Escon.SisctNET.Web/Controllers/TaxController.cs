@@ -3117,7 +3117,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         foreach (var cc in caminhos)
                         {
-                            if (comp.CountingTypeId.Equals(1))
+                            if (comp.CountingTypeId.Equals((long)1))
                             {
                                 // Empresa Lucro Real
                                 var entradas = importSped.NFeEntry(cc, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST, cfopsDevoVenda, cfopsDevoVendaST, ncmsCompany, comp);
@@ -3125,7 +3125,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 devolucaoLR += entradas[1];
 
                             }
-                            else if (comp.CountingTypeId.Equals(2))
+                            else if (comp.CountingTypeId.Equals((long)2))
                             {
                                 // Empresa Lucro Presumido
                                 var devolucoes = importSped.NFeDevolution(cc, cfopsDevoCompra, cfopsDevoVendaST, ncmsCompany, comp);
@@ -3136,7 +3136,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 devolucaoNormal += devolucoes[4];
 
                             }
-                            else if (comp.CountingTypeId.Equals(3))
+                            else if (comp.CountingTypeId.Equals((long)3))
                             {
                                 // Empresa do Simples
                             }
@@ -3227,7 +3227,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 entryNotes = importXml.NFeAll(directoryNfeExit);
                             }
 
-                            if (comp.CountingTypeId.Equals(1))
+                            if (comp.CountingTypeId.Equals((long)1))
                             {
                                 //  Empresa Lucro Real
 
@@ -3383,7 +3383,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
-                            else if (comp.CountingTypeId.Equals(2))
+                            else if (comp.CountingTypeId.Equals((long)2))
                             {
 
                                 //  Empresa Lucro Presumido
@@ -3983,7 +3983,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                
                             }
-                            else if (comp.CountingTypeId.Equals(3))
+                            else if (comp.CountingTypeId.Equals((long)3))
                             {
                                 //  Empresa do Simples
                             }
