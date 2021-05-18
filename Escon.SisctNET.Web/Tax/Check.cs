@@ -6,8 +6,8 @@ namespace Escon.SisctNET.Web.Tax
 {
     public class Check
     {
-        // Verificando Apuração
-        public List<List<string>> ApuracaoST(List<Model.Note> notes, List<Model.ProductNote> productNotes, Model.TypeTaxation typeTaxation)
+        // Verificando Apuração Subbstituição Tributária
+        public List<List<string>> ApuracaoST(List<Model.Note> notes, List<Model.ProductNote> productNotes)
         {
 
             List<List<string>> apuracao = new List<List<string>>();
@@ -64,18 +64,18 @@ namespace Escon.SisctNET.Web.Tax
                 decimal totalGeralIcms = 0, icmsGeralStIE = 0, icmsGeralStSIE = 0, totalIcmsIE = 0, totalIcmsSIE = 0, gnrePagaIE = 0,
                     gnrePagaSIE = 0, gnreNPagaSIE = 0, gnreNPagaIE = 0, valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0;
 
-                if (typeTaxation.Equals(Model.TypeTaxation.ST))
+
+                if (note.Iest.Equals(""))
                 {
-                    if (note.Iest.Equals(""))
-                    {
-                        gnreNPagaSIE = Math.Round(Convert.ToDecimal(note.GnreNSt), 2);
-                        gnrePagaSIE = Math.Round(Convert.ToDecimal(note.GnreSt), 2);
-                    }
-                    else
-                    {
-                        gnreNPagaIE = Math.Round(Convert.ToDecimal(note.GnreNSt), 2);
-                        gnrePagaIE = Math.Round(Convert.ToDecimal(note.GnreSt), 2);
-                    }
+                    gnreNPagaSIE = Math.Round(Convert.ToDecimal(note.GnreNSt), 2);
+                    gnrePagaSIE = Math.Round(Convert.ToDecimal(note.GnreSt), 2);
+                    totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(note.IcmsSt), 2);
+                }
+                else
+                {
+                    gnreNPagaIE = Math.Round(Convert.ToDecimal(note.GnreNSt), 2);
+                    gnrePagaIE = Math.Round(Convert.ToDecimal(note.GnreSt), 2);
+                    totalIcmsPagoIE = Math.Round(Convert.ToDecimal(note.IcmsSt), 2);
                 }
 
                 icmsGeralStIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
@@ -89,15 +89,6 @@ namespace Escon.SisctNET.Web.Tax
 
                 valorDiefIE = Convert.ToDecimal(totalIcmsIE - icmsGeralStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
                 valorDiefSIE = Convert.ToDecimal(totalIcmsSIE - icmsGeralStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
-
-                if (note.Iest.Equals(""))
-                {
-                    totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(note.IcmsSt), 2);
-                }
-                else
-                {
-                    totalIcmsPagoIE = Math.Round(Convert.ToDecimal(note.IcmsSt), 2);
-                }
 
 
                 //  FECOP
@@ -172,38 +163,417 @@ namespace Escon.SisctNET.Web.Tax
 
 
                 // APURAÇÃO
-                if (valorDiefIE < totalIcmsPagoIE || valorDiefSIE < totalIcmsPagoSIE || (difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE) ||
-                    (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                if(valorDiefIE > 0 && valorDiefSIE > 0 && (difvalor1IE + difvalor2IE) > 0 && (difvalor1SIE + difvalor2SIE) > 0)
                 {
-                    nota.Add(note.Nnf);
-                    nota.Add(note.Xnome);
-                    nota.Add(note.Cnpj);
-                    nota.Add(note.Vnf.ToString());
-
-                    if (note.Iest.Equals(""))
+                    if (valorDiefIE < totalIcmsPagoIE || valorDiefSIE < totalIcmsPagoSIE || (difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE) ||
+                       (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
                     {
-                        nota.Add(valorDiefSIE.ToString());
-                        nota.Add(totalIcmsPagoSIE.ToString());
-                        nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
 
-                        nota.Add((difvalor1SIE + difvalor2SIE).ToString());
-                        nota.Add((base1fecopSIE + base2fecopSIE).ToString());
-                        nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
                     }
-                    else
+                }   
+                else if (valorDiefIE > 0 && valorDiefSIE > 0 && (difvalor1IE + difvalor2IE) > 0)
+                {
+                    if (valorDiefIE < totalIcmsPagoIE || valorDiefSIE < totalIcmsPagoSIE || (difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE))
                     {
-                        nota.Add(valorDiefIE.ToString());
-                        nota.Add(totalIcmsPagoIE.ToString());
-                        nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
 
-                        nota.Add((difvalor1IE + difvalor2IE).ToString());
-                        nota.Add((base1fecopSIE + base2fecopSIE).ToString());
-                        nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
                     }
-
-                    apuracao.Add(nota);
                 }
+                else if (valorDiefIE > 0 && valorDiefSIE > 0 && (difvalor1SIE + difvalor2SIE) > 0)
+                {
+                    if (valorDiefIE < totalIcmsPagoIE || valorDiefSIE < totalIcmsPagoSIE || (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
 
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefSIE > 0 && (difvalor1IE + difvalor2IE) > 0 && (difvalor1SIE + difvalor2SIE) > 0)
+                {
+                    if (valorDiefSIE < totalIcmsPagoSIE || (difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE) ||
+                       (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefIE > 0 && valorDiefSIE > 0)
+                {
+                    if (valorDiefIE < totalIcmsPagoIE || valorDiefSIE < totalIcmsPagoSIE)
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefSIE > 0 && (difvalor1IE + difvalor2IE) > 0)
+                {
+                    if (valorDiefSIE < totalIcmsPagoSIE || (difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefSIE > 0 && (difvalor1SIE + difvalor2SIE) > 0)
+                {
+                    if (valorDiefSIE < totalIcmsPagoSIE ||  (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if ((difvalor1IE + difvalor2IE) > 0 && (difvalor1SIE + difvalor2SIE) > 0)
+                {
+                    if ((difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE) || (difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefIE > 0)
+                {
+                    if (valorDiefIE < totalIcmsPagoIE)
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if (valorDiefSIE > 0)
+                {
+                    if ( valorDiefSIE < totalIcmsPagoSIE)
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if ((difvalor1IE + difvalor2IE) > 0)
+                {
+                    if ((difvalor1IE + difvalor2IE) < (base1fecopIE + base2fecopIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+                else if ((difvalor1SIE + difvalor2SIE) > 0)
+                {
+                    if ((difvalor1SIE + difvalor2SIE) < (base1fecopSIE + base2fecopSIE))
+                    {
+                        nota.Add(note.Nnf);
+                        nota.Add(note.Dhemi.ToString("dd/MM/yyyy"));
+                        nota.Add(note.Xnome);
+                        nota.Add(note.Cnpj);
+                        nota.Add(note.Vnf.ToString());
+
+                        if (note.Iest.Equals(""))
+                        {
+                            nota.Add(valorDiefSIE.ToString());
+                            nota.Add(totalIcmsPagoSIE.ToString());
+                            nota.Add(Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2).ToString());
+
+                            nota.Add((difvalor1SIE + difvalor2SIE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1SIE + difvalor2SIE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+                        else
+                        {
+                            nota.Add(valorDiefIE.ToString());
+                            nota.Add(totalIcmsPagoIE.ToString());
+                            nota.Add(Math.Round(valorDiefIE - totalIcmsPagoIE, 2).ToString());
+
+                            nota.Add((difvalor1IE + difvalor2IE).ToString());
+                            nota.Add((base1fecopSIE + base2fecopSIE).ToString());
+                            nota.Add(Math.Round((difvalor1IE + difvalor2IE) - (base1fecopSIE + base2fecopSIE), 2).ToString());
+                        }
+
+                        apuracao.Add(nota);
+                    }
+                }
+            
             }
 
             return apuracao;

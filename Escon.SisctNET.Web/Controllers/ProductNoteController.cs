@@ -1045,15 +1045,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
-                        apuracao = check.ApuracaoST(notasTaxation, products, typeTaxation);
-
-                        if(apuracao.Count() > 0)
+                        if (typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
-                            ViewBag.Apuracao = apuracao.OrderBy(_ => _[0]).ToList();
-                            ViewBag.Erro = 6;
-                            return View(null);
-                        }
+                            apuracao = check.ApuracaoST(notasTaxation, products);
 
+                            if (apuracao.Count() > 0)
+                            {
+                                ViewBag.Apuracao = apuracao.OrderBy(_ => _[0]).ToList();
+                                ViewBag.Erro = 6;
+                                return View(null);
+                            }
+                        }
+                      
                         decimal totalIcmsMvaIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Pautado.Equals(false) && !_.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2),
                                 totalIcmsPautaIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Pautado.Equals(true) && !_.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2),
                                 totalIcmsMvaSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Pautado.Equals(false) && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum()), 2),
@@ -1205,7 +1208,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var productsNormal = productsAll.Where(_ => _.Incentivo.Equals(false)).ToList();
                             var notasTaxationNormal = productsNormal.Select(_ => _.Note).Distinct().ToList();
 
-                            apuracao = check.ApuracaoST(notasTaxationNormal, productsNormal, typeTaxation);
+                            apuracao = check.ApuracaoST(notasTaxationNormal, productsNormal);
 
                             if (apuracao.Count() > 0)
                             {
@@ -2210,6 +2213,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var produtosAP = products.Where(_ => _.TaxationTypeId.Equals((long)1)).ToList();
                     var notesAP = produtosAP.Select(_ => _.Note).Distinct().ToList();
 
+
                     decimal totalFreteAPIE = 0;
 
                     foreach (var prod in produtosAP)
@@ -2281,6 +2285,15 @@ namespace Escon.SisctNET.Web.Controllers
                     // Substituição Tributária
                     var produtosST = products.Where(_ => _.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)).ToList();
                     var notesST = produtosST.Select(_ => _.Note).Distinct().ToList();
+
+                    apuracao = check.ApuracaoST(notesST, produtosST);
+
+                    if (apuracao.Count() > 0)
+                    {
+                        ViewBag.Apuracao = apuracao.OrderBy(_ => _[0]).ToList();
+                        ViewBag.Erro = 6;
+                        return View(null);
+                    }
 
                     decimal totalIcmsFreteSTIE = 0, totalFecop1FreteSTIE = 0, totalFecop2FreteSTIE = 0;
 
@@ -2373,6 +2386,15 @@ namespace Escon.SisctNET.Web.Controllers
                         var productsNormal = _service.FindByNormal(notes);
                         productsNormal = productsNormal.Where(_ => _.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)).ToList();
                         notesST = productsNormal.Select(_ => _.Note).Distinct().ToList();
+
+                        apuracao = check.ApuracaoST(notesST, productsNormal);
+
+                        if (apuracao.Count() > 0)
+                        {
+                            ViewBag.Apuracao = apuracao.OrderBy(_ => _[0]).ToList();
+                            ViewBag.Erro = 6;
+                            return View(null);
+                        }
 
                         totalIcmsFreteSTIE = 0;
                         totalFecop1FreteSTIE = 0;

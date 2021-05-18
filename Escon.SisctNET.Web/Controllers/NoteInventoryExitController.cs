@@ -104,7 +104,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
-                var calculation = new Taxation.Calculation();
+                var calculation = new Tax.Calculation();
 
                 string directoryNFe = "";
 
