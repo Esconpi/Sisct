@@ -26451,12 +26451,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var notas = _noteService.FindByNotes(companyId, year, month);
                     var products = _itemService.FindByProductsType(notas, Model.TypeTaxation.AP);
+                    notas = products.Select(_ => _.Note).Distinct().ToList();
 
                     decimal totalFreteAPIE = 0;
 
                     foreach (var prod in products)
                     {
-                        if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals(1))
+                        if (!prod.Note.Iest.Equals(""))
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                                 totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
                     }

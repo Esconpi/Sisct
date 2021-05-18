@@ -1,9 +1,9 @@
 ﻿
-namespace Escon.SisctNET.Web.Taxation
+namespace Escon.SisctNET.Web.Tax
 {
     public class Calculation
     {
-        // Cálculos Tributação dos produtos na entrada
+        // Cálculos Tributação dos Produtos na Entrada
 
         public string Code(string document, string ncm, string uf, string aliquot)
         {

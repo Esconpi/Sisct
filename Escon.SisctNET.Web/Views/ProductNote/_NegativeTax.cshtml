@@ -1,0 +1,40 @@
+﻿<h5 style="text-align:center;color:red;"><strong>NOTA(S) COM APURAÇÂO NEGATIVA</strong></h5>
+
+<table class="table" style="font-size:8px; border: 2px solid;">
+    <thead style="font-size:13px;">
+        <tr>
+            <th style="text-align:center" colspan="2">Nº NFe</th>
+            <th style="text-align:center" colspan="2">Fornecedor</th>
+            <th style="text-align:center" colspan="2">CNPJ</th>
+            <th style="text-align:center" colspan="2">Valor NFe</th>
+            <th style="text-align:center" rowspan="2">ICMS</th>
+            <th style="text-align:center" rowspan="2">FECOP</th>
+        </tr>
+        <tr>
+            <th>Apurado</th>
+            <th>Pago Posto Fiscal</th>
+            <th>Apurada</th>
+            <th>Pagar Posto Fiscal</th>
+        </tr>
+    </thead>
+    <tbody style="font-size:13px;">
+        @foreach (var item in ViewBag.Apuracao)
+        {
+            <tr>
+                <td>@item[0]</td>
+                <td>@item[1]</td>
+                <td>@item[2]</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[3].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[5].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[6].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[7].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[8].Replace(".", ",")))</td>
+                <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[9].Replace(".", ",")))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<p>OBS. Corriga o(s) valor(es) do(s) imposto(s) pago(s) no Posto Fiscal</p>
