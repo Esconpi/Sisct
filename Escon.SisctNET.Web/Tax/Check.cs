@@ -95,16 +95,16 @@ namespace Escon.SisctNET.Web.Tax
                 decimal gnreNPagaFecopSIE = 0, gnrePagaFecop1SIE = 0, gnrePagaFecop2SIE = 0, gnreNPagaFecopIE = 0, gnrePagaFecop1IE = 0, gnrePagaFecop2IE = 0;
 
                 decimal base1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2),
-                               base1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2),
-                               valorbase1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2),
-                               valorbase1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2),
-                               base1fecopIE = 0, base1fecopSIE = 0;
+                        base1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2),
+                        valorbase1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2),
+                        valorbase1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.TotalFecop).Sum()), 2),
+                        base1fecopIE = 0, base1fecopSIE = 0;
 
                 decimal base2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.ValorBCR).Sum()), 2),
-                              base2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.ValorBCR).Sum()), 2),
-                              valorbase2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2),
-                              valorbase2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2),
-                              base2fecopIE = 0, base2fecopSIE = 0;
+                        base2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.ValorBCR).Sum()), 2),
+                        valorbase2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2),
+                        valorbase2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2),
+                        base2fecopIE = 0, base2fecopSIE = 0;
 
                 if (note.Iest.Equals(""))
                 {
@@ -148,10 +148,8 @@ namespace Escon.SisctNET.Web.Tax
                         valorNfe2RetIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2),
                         valorNfe2NormalSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2),
                         valorNfe2RetSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2),                      
-                        totalGnreFecopIE = gnrePagaFecop1IE + gnrePagaFecop2IE,
-                        totalGnreFecopSIE = gnrePagaFecop1SIE + gnrePagaFecop2SIE,
-                        totalFecopCalcIE = valorbase1IE + valorbase2IE,
-                        totalFecopCalcSIE = valorbase1SIE + valorbase2SIE,
+                        totalGnreFecopIE = gnrePagaFecop1IE + gnrePagaFecop2IE, totalGnreFecopSIE = gnrePagaFecop1SIE + gnrePagaFecop2SIE,
+                        totalFecopCalcIE = valorbase1IE + valorbase2IE, totalFecopCalcSIE = valorbase1SIE + valorbase2SIE,
                         totalFecopNfeIE = valorNfe1NormalIE + valorNfe1RetIE + valorNfe2NormalIE + valorNfe2RetIE,
                         totalFecopNfeSIE = valorNfe1NormalSIE + valorNfe1RetSIE + valorNfe2NormalSIE + valorNfe2RetSIE;
 

@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Group> lista_group = _groupService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Group> lista_group = _groupService.FindAll(null);
 
                 foreach (var g in lista_group)
                 {
@@ -94,13 +94,13 @@ namespace Escon.SisctNET.Web.Controllers
                     _service.Update(item, null);
                 }
 
-                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.DateEnd = null;
                 entity.Price = price;
-                entity.Id = lastId + 1;
+                entity.Id = lastId + (long)1;
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");

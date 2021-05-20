@@ -268,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstE)
                 {
                     c.Description = c.Code + " - " + c.Description;
@@ -277,7 +277,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
                 ViewBag.CstEntradaId = cstE;
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstS)
                 {
                     c.Description = c.Code + " - " + c.Description;
@@ -413,7 +413,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try {
 
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstE)
                 {
                     c.Description = c.Code + " - " + c.Description;
@@ -422,7 +422,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
                 ViewBag.CstEntradaId = cstE;
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstS)
                 {
                     c.Description = c.Code + " - " + c.Description;
@@ -557,7 +557,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Cst> list_cstE = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstE)
                 {
                     c.Description = c.Code + " - " + c.Description;
@@ -568,7 +568,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
 
-                List<Model.Cst> list_cstS = _cstService.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
                 foreach (var c in list_cstS)
                 {
                     c.Description = c.Code + " - " + c.Description;

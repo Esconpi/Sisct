@@ -144,7 +144,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateActive.Id, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateActive.Id, null);
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return Ok(new { requestcode = 200, message = "ok" });
             }
