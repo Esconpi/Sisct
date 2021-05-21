@@ -425,6 +425,7 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<string>> devoFornecedorInterna = new List<List<string>>();
                         List<List<string>> vendaInterna = new List<List<string>>();
 
+                        string chave = "";
                         // Vendas
                         for (int i = exitNotes.Count - 1; i >= 0; i--)
                         {
@@ -435,6 +436,15 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             bool ncm = false, cfop = false;
+
+                            if (exitNotes[i][0]["chave"] == "22210402910377000294550010001552411677284742" ||
+                                exitNotes[i][0]["chave"] == "22210402910377000294550010001559661686384743" ||
+                                exitNotes[i][0]["chave"] == "22210402910377000294550010001574341594187435" ||
+                                exitNotes[i][0]["chave"] == "22210402910377000294550010001578521041887808" ||
+                                exitNotes[i][0]["chave"] == "22210402910377000294550010001578261060972009")
+                            {
+                                chave = exitNotes[i][0]["chave"];
+                            }
 
                             for (int j = 0; j < exitNotes[i].Count(); j++)
                             {
@@ -452,6 +462,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (exitNotes[i][j].ContainsKey("pICMS") && !exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") &&
                                     exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && !ncm && cfop)
                                 {
+
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
                                         int pos = -1;
@@ -519,7 +530,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             List<string> cc = new List<string>();
                                             cc.Add(exitNotes[i][j]["vBC"]);
                                             cc.Add((Math.Round(Convert.ToDecimal(exitNotes[i][j]["pICMS"]) + Convert.ToDecimal(exitNotes[i][j]["pFCP"]), 2)).ToString());
-                                            cc.Add(exitNotes[i][j]["vICMS"]);
+                                            cc.Add((Convert.ToDecimal(exitNotes[i][j]["vICMS"]) + Convert.ToDecimal(exitNotes[i][j]["vFCP"])).ToString());
                                             vendaInterna.Add(cc);
                                         }
                                         else
@@ -634,7 +645,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             List<string> cc = new List<string>();
                                             cc.Add(exitNotes[i][k]["vBC"]);
                                             cc.Add((Math.Round(Convert.ToDecimal(exitNotes[i][k]["pICMS"]) + Convert.ToDecimal(exitNotes[i][k]["pFCP"]), 2)).ToString());
-                                            cc.Add(exitNotes[i][k]["vICMS"]);
+                                            cc.Add((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) + Convert.ToDecimal(exitNotes[i][k]["vFCP"])).ToString());
                                             devoFornecedorInterna.Add(cc);
                                         }
                                         else
