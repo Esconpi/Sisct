@@ -33,7 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(GetLog(Model.OccorenceLog.Read));
+                var result = _service.FindAll(null);
                 return View(result);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", null);
+                ViewBag.ProfileId = new SelectList(_profileService.FindAll(null), "Id", "Name", null);
                 return View();
             }
             catch(Exception ex)
@@ -92,7 +92,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var person = _service.FindById(id, null);
 
-                ViewBag.ProfileId = new SelectList(_profileService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Name", person.Profile);
+                ViewBag.ProfileId = new SelectList(_profileService.FindAll(null), "Id", "Name", person.Profile);
 
                 return View(person);
             }

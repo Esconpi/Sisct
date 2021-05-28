@@ -511,10 +511,6 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Year = result.Year;
                 entity.DateEnd = null;
 
-                if (entity.CstId.Equals(0))
-                {
-                    entity.CstId = null;
-                }
                 _service.Create(entity, GetLog(OccorenceLog.Create));
 
 

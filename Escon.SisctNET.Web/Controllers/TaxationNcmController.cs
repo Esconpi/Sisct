@@ -630,77 +630,36 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<TaxationNcm> tributacoes = new List<TaxationNcm>();
 
-                if (Request.Form["opcao"].ToString() == "1")
+                rst.Updated = DateTime.Now;
+
+                if (entity.CstEntradaId.Equals((long)0))
                 {
-                    rst.Updated = DateTime.Now;
-
-                    if (entity.CstEntradaId.Equals((long)0))
-                    {
-                        rst.CstEntradaId = null;
-                    }
-                    else
-                    {
-                        rst.CstEntradaId = entity.CstEntradaId;
-                    }
-
-                    if (entity.CstSaidaId.Equals((long)0))
-                    {
-                        rst.CstSaidaId = null;
-                    }
-                    else
-                    {
-                        rst.CstSaidaId = entity.CstSaidaId;
-                    }
-
-                    rst.TypeNcmId = entity.TypeNcmId;
-                    rst.Status = true;
-                    rst.NatReceita = entity.NatReceita;
-                    rst.Pis = entity.Pis;
-                    rst.Cofins = entity.Cofins;
-                    rst.DateStart = entity.DateStart;
-                    rst.Type = Request.Form["type"].ToString();
-
-                    tributacoes.Add(rst);
-
+                    rst.CstEntradaId = null;
                 }
-                else if (Request.Form["opcao"].ToString() == "2")
+                else
                 {
-                    var ncms = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
-
-                    foreach (var n in ncms)
-                    {
-                        n.Updated = DateTime.Now;
-
-                        if (entity.CstEntradaId.Equals((long)0))
-                        {
-                            n.CstEntradaId = null;
-                        }
-                        else
-                        {
-                            n.CstEntradaId = entity.CstEntradaId;
-                        }
-
-                        if (entity.CstSaidaId.Equals((long)0))
-                        {
-                            n.CstSaidaId = null;
-                        }
-                        else
-                        {
-                            n.CstSaidaId = entity.CstSaidaId;
-                        }
-
-                        n.Status = true;
-                        n.NatReceita = entity.NatReceita;
-                        n.Pis = entity.Pis;
-                        n.Cofins = entity.Cofins;
-                        n.DateStart = entity.DateStart;
-                        n.Type = Request.Form["type"].ToString();
-
-                        tributacoes.Add(n);
-                    }
+                    rst.CstEntradaId = entity.CstEntradaId;
                 }
 
-                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
+                if (entity.CstSaidaId.Equals((long)0))
+                {
+                    rst.CstSaidaId = null;
+                }
+                else
+                {
+                    rst.CstSaidaId = entity.CstSaidaId;
+                }
+
+                rst.TypeNcmId = entity.TypeNcmId;
+                rst.Status = true;
+                rst.NatReceita = entity.NatReceita;
+                rst.Pis = entity.Pis;
+                rst.Cofins = entity.Cofins;
+                rst.DateStart = entity.DateStart;
+                rst.Type = Request.Form["type"].ToString();
+
+
+                _service.Update(rst, GetLog(OccorenceLog.Update));
                 return RedirectToAction("IndexM");
             }
             catch (Exception ex)
@@ -795,7 +754,7 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Type = Request.Form["type"].ToString();
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
-                return RedirectToAction("IndexALl", new { id = rst.CompanyId });
+                return RedirectToAction("IndexAll", new { id = rst.CompanyId });
             }
             catch (Exception ex)
             {

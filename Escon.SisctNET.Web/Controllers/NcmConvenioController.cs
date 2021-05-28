@@ -33,7 +33,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(null);
                 return View(null);
             }
             catch(Exception ex)
@@ -51,7 +50,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Annex> list_annex = _annexService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Annex> list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
                     annex.Description = annex.Description + " - " + annex.Convenio;
@@ -153,7 +152,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(GetLog(Model.OccorenceLog.Read)).OrderBy(_ => _.AnnexId);
+            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.AnnexId);
 
 
 
