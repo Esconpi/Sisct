@@ -260,6 +260,21 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult IndexM()
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                return View(null);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Ncm(long id)
         {
@@ -329,7 +344,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     rst.Updated = DateTime.Now;
 
-                    if (entity.CstEntradaId.Equals(0))
+                    if (entity.CstEntradaId.Equals((long)0))
                     {
                         rst.CstEntradaId = null;
                     }
@@ -338,7 +353,7 @@ namespace Escon.SisctNET.Web.Controllers
                         rst.CstEntradaId = entity.CstEntradaId;
                     }
 
-                    if (entity.CstSaidaId.Equals(0))
+                    if (entity.CstSaidaId.Equals((long)0))
                     {
                         rst.CstSaidaId = null;
                     }
@@ -366,7 +381,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         n.Updated = DateTime.Now;
 
-                        if (entity.CstEntradaId.Equals(0))
+                        if (entity.CstEntradaId.Equals((long)0))
                         {
                             n.CstEntradaId = null;
                         }
@@ -375,7 +390,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.CstEntradaId = entity.CstEntradaId;
                         }
 
-                        if (entity.CstSaidaId.Equals(0))
+                        if (entity.CstSaidaId.Equals((long)0))
                         {
                             n.CstSaidaId = null;
                         }
@@ -474,7 +489,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     rst.Updated = DateTime.Now;
 
-                    if (entity.CstEntradaId.Equals(0))
+                    if (entity.CstEntradaId.Equals((long)0))
                     {
                         rst.CstEntradaId = null;
                     }
@@ -483,7 +498,7 @@ namespace Escon.SisctNET.Web.Controllers
                         rst.CstEntradaId = entity.CstEntradaId;
                     }
 
-                    if (entity.CstSaidaId.Equals(0))
+                    if (entity.CstSaidaId.Equals((long)0))
                     {
                         rst.CstSaidaId = null;
                     }
@@ -511,7 +526,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         n.Updated = DateTime.Now;
 
-                        if (entity.CstEntradaId.Equals(0))
+                        if (entity.CstEntradaId.Equals((long)0))
                         {
                             n.CstEntradaId = null;
                         }
@@ -520,7 +535,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.CstEntradaId = entity.CstEntradaId;
                         }
 
-                        if (entity.CstSaidaId.Equals(0))
+                        if (entity.CstSaidaId.Equals((long)0))
                         {
                             n.CstSaidaId = null;
                         }
@@ -542,6 +557,151 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Update(tributacoes, GetLog(OccorenceLog.Update));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult EditM(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+
+                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                foreach (var c in list_cstE)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
+                ViewBag.CstEntradaId = cstE;
+
+                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                foreach (var c in list_cstS)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
+                ViewBag.CstSaidaID = cstS;
+
+                List<Model.TypeNcm> list_tipos = _typeNcmService.FindAll(null);
+                SelectList listType = new SelectList(list_tipos, "Id", "Name", null);
+                ViewBag.ListaTipoNcm = listType;
+
+                var result = _service.FindById(id, null);
+
+                ViewBag.CompanyId = result.CompanyId;
+
+                if (result.CstSaidaId == null)
+                {
+                    result.CstSaidaId = 0;
+                }
+
+                if (result.CstEntradaId == null)
+                {
+                    result.CstEntradaId = 0;
+                }
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditM(long id, Model.TaxationNcm entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+
+
+                var rst = _service.FindById(id, null);
+
+                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
+
+                if (Request.Form["opcao"].ToString() == "1")
+                {
+                    rst.Updated = DateTime.Now;
+
+                    if (entity.CstEntradaId.Equals((long)0))
+                    {
+                        rst.CstEntradaId = null;
+                    }
+                    else
+                    {
+                        rst.CstEntradaId = entity.CstEntradaId;
+                    }
+
+                    if (entity.CstSaidaId.Equals((long)0))
+                    {
+                        rst.CstSaidaId = null;
+                    }
+                    else
+                    {
+                        rst.CstSaidaId = entity.CstSaidaId;
+                    }
+
+                    rst.TypeNcmId = entity.TypeNcmId;
+                    rst.Status = true;
+                    rst.NatReceita = entity.NatReceita;
+                    rst.Pis = entity.Pis;
+                    rst.Cofins = entity.Cofins;
+                    rst.DateStart = entity.DateStart;
+                    rst.Type = Request.Form["type"].ToString();
+
+                    tributacoes.Add(rst);
+
+                }
+                else if (Request.Form["opcao"].ToString() == "2")
+                {
+                    var ncms = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
+
+                    foreach (var n in ncms)
+                    {
+                        n.Updated = DateTime.Now;
+
+                        if (entity.CstEntradaId.Equals((long)0))
+                        {
+                            n.CstEntradaId = null;
+                        }
+                        else
+                        {
+                            n.CstEntradaId = entity.CstEntradaId;
+                        }
+
+                        if (entity.CstSaidaId.Equals((long)0))
+                        {
+                            n.CstSaidaId = null;
+                        }
+                        else
+                        {
+                            n.CstSaidaId = entity.CstSaidaId;
+                        }
+
+                        n.Status = true;
+                        n.NatReceita = entity.NatReceita;
+                        n.Pis = entity.Pis;
+                        n.Cofins = entity.Cofins;
+                        n.DateStart = entity.DateStart;
+                        n.Type = Request.Form["type"].ToString();
+
+                        tributacoes.Add(n);
+                    }
+                }
+
+                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
+                return RedirectToAction("IndexM");
             }
             catch (Exception ex)
             {
@@ -619,12 +779,12 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.NcmId = rst.NcmId;
                 entity.TypeNcmId = rst.TypeNcmId;
 
-                if (entity.CstEntradaId.Equals(0))
+                if (entity.CstEntradaId.Equals((long)0))
                 {
                     entity.CstEntradaId = null;
                 }
 
-                if (entity.CstSaidaId.Equals(0))
+                if (entity.CstSaidaId.Equals((long)0))
                 {
                     entity.CstSaidaId = null;
                 }
@@ -636,6 +796,100 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult AtualizeM(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                foreach (var c in list_cstE)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
+                ViewBag.CstEntradaId = cstE;
+
+
+
+                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
+                foreach (var c in list_cstS)
+                {
+                    c.Description = c.Code + " - " + c.Description;
+                }
+                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
+                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
+                ViewBag.CstSaidaID = cstS;
+
+                var result = _service.FindById(id, null);
+
+                ViewBag.CompanyId = result.CompanyId;
+
+                if (result.CstSaidaId == null)
+                {
+                    result.CstSaidaId = 0;
+                }
+
+                if (result.CstEntradaId == null)
+                {
+                    result.CstEntradaId = 0;
+                }
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AtualizeM(long id, Model.TaxationNcm entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var rst = _service.FindById(id, null);
+                rst.Updated = DateTime.Now;
+                rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
+
+                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.CompanyId = rst.CompanyId;
+                entity.NcmId = rst.NcmId;
+                entity.TypeNcmId = rst.TypeNcmId;
+
+                if (entity.CstEntradaId.Equals((long)0))
+                {
+                    entity.CstEntradaId = null;
+                }
+
+                if (entity.CstSaidaId.Equals((long)0))
+                {
+                    entity.CstSaidaId = null;
+                }
+
+                entity.Status = true;
+                entity.CodeProduct = rst.CodeProduct;
+                entity.Id = lastId + 1;
+                entity.Type = Request.Form["type"].ToString();
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("IndexM");
             }
             catch (Exception ex)
             {
@@ -946,7 +1200,24 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
-        
+
+        public IActionResult Delete(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("IndexM");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult GetAll(int draw, int start)
         {
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
@@ -1071,5 +1342,70 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+        public IActionResult GetAllM(int draw, int start)
+        {
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var ncmsAll = _service.FindAll(null).Where(_ => _.Company.Taxation.Equals(false))
+                .OrderBy(_ => _.Status)
+                .ThenBy(_ => _.Ncm.Code)
+                .ToList();
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<TaxationNcm> ncms = new List<TaxationNcm>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<TaxationNcm> ncmTemp = new List<TaxationNcm>();
+                ncmsAll.ToList().ForEach(s =>
+                {
+                    s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
+                    ncmTemp.Add(s);
+                });
+
+                var ids = ncmTemp.Where(c =>
+                    c.CodeProduct.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Select(s => s.Id).ToList();
+
+                ncms = ncmsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var ncm = from r in ncms
+                          where ids.ToArray().Contains(r.Id)
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
+                              Type = r.Type,
+                              Status = r.Status,
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+
+                          };
+
+                return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+
+                var ncm = from r in ncmsAll
+                          select new
+                          {
+                              Id = r.Id.ToString(),
+                              Product = r.CodeProduct + " - " + r.Product,
+                              Ncm = r.Ncm.Description,
+                              Type = r.Type,
+                              Status = r.Status,
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                          };
+                return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
+            }
+
+        }
     }
 }

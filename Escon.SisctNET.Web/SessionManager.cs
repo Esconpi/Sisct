@@ -122,16 +122,6 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<List<string>>>("ProductsSpedSisctNET");
         }
 
-        public static void SetValues(List<decimal> values)
-        {
-            _httpContextAccessor.HttpContext.Session.Set<List<decimal>>("ValuesSisctNET", values);
-        }
-
-        public static List<decimal> GetValues()
-        {
-            return _httpContextAccessor.HttpContext.Session.Get<List<decimal>>("ValuesSisctNET");
-        }
-
         public static void SetMin(int tipo)
         {
             _httpContextAccessor.HttpContext.Session.Set<int>("MinSisctNET", tipo);

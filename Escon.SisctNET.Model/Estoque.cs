@@ -9,9 +9,6 @@ namespace Escon.SisctNET.Model
     {
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Código")]
-        public string Code { get; set; }
-
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]

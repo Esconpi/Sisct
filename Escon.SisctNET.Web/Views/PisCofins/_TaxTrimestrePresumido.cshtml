@@ -179,7 +179,7 @@
                 PAGO
             </td>
             <th style="text-align:center;border:1px solid;">
-                @string.Format("{0:N}", ViewBag.Company.CPRB) %
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.CPRB)) %
             </th>
         </tr>
         @foreach (var item in ViewBag.Impostos)

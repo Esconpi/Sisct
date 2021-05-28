@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(long companyId, string year, string month,string trimestre, string type, long cfopid, string arquivo)
+        public IActionResult Relatory(long companyId, string year, string month, string trimestre, string type, long cfopid, string arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -64,7 +64,7 @@ namespace Escon.SisctNET.Web.Controllers
                     return View();
                 }
 
-                
+
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
                 var NfeEntry = _configurationService.FindByName("NFe", null);
 
@@ -656,7 +656,7 @@ namespace Escon.SisctNET.Web.Controllers
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
 
-                            if((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
+                            if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
                             {
                                 status = false;
 
@@ -720,7 +720,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                             }
-                            
+
                             // Geral
                             if (notes[i][j].ContainsKey("cProd") && status)
                             {
@@ -980,11 +980,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("CSTC") && status)
                             {
-                                
+
                                 for (int e = 0; e < produtos.Count(); e++)
                                 {
                                     if (produtos[e][0].Equals(cProd) && produtos[e][2].Equals(ncm) && produtos[e][3].Equals(cfop) &&
-                                        produtos[e][4].Equals(cstP) &&  produtos[e][5].Equals(notes[i][j]["CSTC"]))
+                                        produtos[e][4].Equals(cstP) && produtos[e][5].Equals(notes[i][j]["CSTC"]))
                                     {
                                         pos = e;
                                         break;
@@ -993,7 +993,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (pos < 0)
                                 {
-                                   
+
                                     List<string> prod = new List<string>();
                                     prod.Add(cProd);
                                     prod.Add(xProd);
@@ -1202,7 +1202,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         return View();
                                     }
                                 }
-                                
+
 
                             }
 
@@ -1299,14 +1299,14 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.PisDebito = pisDebito;
                         ViewBag.PisPerda = pisPerda;
                         ViewBag.BasePerda = perda;
-                        
+
 
                         //  Apuração PIS/COFINS
                         decimal cofinsTotalCredito = cofinsCredito - cofinsPerda, cofinsTotalDebito = cofinsDebito + cofinsSaidaRF,
                                 pisTotalCredito = pisCredito - pisPerda, pisTotaDebito = pisDebito + pisSaidaRF,
                                 cofinsRecolher = 0, pisRecolher = 0;
 
-                        if(cofinsTotalDebito - cofinsTotalCredito < 0)
+                        if (cofinsTotalDebito - cofinsTotalCredito < 0)
                             imp.SaldoCredorCofins = cofinsTotalCredito - cofinsTotalDebito;
                         else
                             cofinsRecolher = cofinsTotalDebito - cofinsTotalCredito;
@@ -1327,7 +1327,7 @@ namespace Escon.SisctNET.Web.Controllers
                         imp.Updated = DateTime.Now;
 
                     }
-                    else if(comp.CountingTypeId == (long)2)
+                    else if (comp.CountingTypeId == (long)2)
                     {
                         //  Empresa Lucro Presumido
                         var basePisCofins = _baseService.FindByName("Irpj");
@@ -1341,7 +1341,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.Erro = 3;
                                 return View();
                             }
-                              
+
                             decimal receitaPetroleo = Convert.ToDecimal(imp.Receita1), receitaComercio = Convert.ToDecimal(imp.Receita2), receitaTransporte = Convert.ToDecimal(imp.Receita3),
                                     receitaServico = Convert.ToDecimal(imp.Receita4), receitaMono = Convert.ToDecimal(imp.ReceitaMono),
                                     devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Entrada), devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada),
@@ -1487,9 +1487,9 @@ namespace Escon.SisctNET.Web.Controllers
                                         receita3 = Convert.ToDecimal(imp.Receita3), receita4 = Convert.ToDecimal(imp.Receita4),
                                         receita = receita1 + receita2 + receita3 + receita4,
                                         devolucao1 = Convert.ToDecimal(imp.Devolucao1Entrada),
-                                        devolucao2 = Convert.ToDecimal(imp.Devolucao2Entrada),   
-                                        devolucao3 = Convert.ToDecimal(imp.Devolucao3Entrada),   
-                                        devolucao4 = Convert.ToDecimal(imp.Devolucao4Entrada),   
+                                        devolucao2 = Convert.ToDecimal(imp.Devolucao2Entrada),
+                                        devolucao3 = Convert.ToDecimal(imp.Devolucao3Entrada),
+                                        devolucao4 = Convert.ToDecimal(imp.Devolucao4Entrada),
                                         devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4,
                                         devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada),
                                         reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
@@ -1706,13 +1706,6 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.CsllAPagar = csllAPagar;
                             ViewBag.CsllPago = csllPagoTotal;
 
-                            List<decimal> values = new List<decimal>();
-
-                            values.Add(Math.Round(baseCalcIrpjNormal, 2));
-                            values.Add(Math.Round(irpjAPagar, 2));
-                            values.Add(Math.Round(baseCalcCsll, 2));
-                            values.Add(Math.Round(csllAPagar, 2));
-                            SessionManager.SetValues(values);
                         }
                     }
                     else if (comp.CountingTypeId == (long)3)
@@ -1720,14 +1713,14 @@ namespace Escon.SisctNET.Web.Controllers
                         //  Empresa do Simples
                     }
 
-              
+
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
-                
+
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
             }

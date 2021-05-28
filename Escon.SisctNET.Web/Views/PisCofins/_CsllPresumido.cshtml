@@ -134,8 +134,8 @@
 <script type="text/javascript">
     google.charts.load("current", { packages: ['corechart'], 'language': 'pt-br' });
     google.charts.setOnLoadCallback(drawChart);
-    var baseCsll = @SessionManager.GetValues()[2].ToString().Replace(",",".");
-    var csllAPagar = @SessionManager.GetValues()[3].ToString().Replace(",",".");
+    var baseCsll = @Math.Round(ViewBag.BaseCalcCsll, 2).ToString().Replace(",",".");
+    var csllAPagar =  @Math.Round(ViewBag.CsllAPagar, 2).ToString().Replace(",",".");
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
             ["Element", "Valor", { role: "style" }],

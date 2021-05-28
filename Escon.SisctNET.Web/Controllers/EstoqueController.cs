@@ -78,6 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var importPeriod = new Period.Month();
 
+                var produtosCompany = _service.FindByCompany(id);
                 var entradas = _productNoteInventoryEntryService.FindByNotes(id, year, month);
                 var saidas = _productNoteInventoryExitService.FindByNotes(id, year, month);
 
@@ -273,8 +274,9 @@ namespace Escon.SisctNET.Web.Controllers
                  
                     foreach (var produto in produtos)
                     {
-                        // DESFAZER
-                        decimal quantidade = 1, total = Convert.ToDecimal(24.09), valor = total / quantidade;
+                        decimal quantidade = produtosCompany.Where(_ => _.Cprod.Equals(produto[0])).FirstOrDefault().Quantity, 
+                            total = produtosCompany.Where(_ => _.Cprod.Equals(produto[0])).FirstOrDefault().Total,
+                            valor = total / quantidade;
 
                         var primeiroDia = entradas
                             .OrderBy(_ => _.Dhemi)

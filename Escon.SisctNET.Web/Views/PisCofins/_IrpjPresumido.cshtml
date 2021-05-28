@@ -163,13 +163,11 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
     google.charts.load("current", { packages: ['corechart'], 'language': 'pt-br' });
     google.charts.setOnLoadCallback(drawChart);
-    var baseIrpj = @SessionManager.GetValues()[0].ToString().Replace(",",".");
-    var irpjAPagar = @SessionManager.GetValues()[1].ToString().Replace(",",".");
+    var baseIrpj = @Math.Round(ViewBag.BaseCalcIrpjNormal, 2).ToString().Replace(",",".");
+    var irpjAPagar = @Math.Round(ViewBag.IrpjAPagar, 2).ToString().Replace(",",".");
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
             ["Element", "Valor", { role: "style" }],

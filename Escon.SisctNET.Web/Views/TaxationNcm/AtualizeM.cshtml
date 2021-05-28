@@ -1,0 +1,127 @@
+﻿@model Escon.SisctNET.Model.TaxationNcm
+
+@{
+    ViewData["Title"] = "AtualizeM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="TaxationNcm" asp-action="IndexM" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong>Atualizar:</strong> @Model.Ncm.Code</h3>
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Atualize">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label asp-for="Ncm.Code" class="control-label"></label>
+                        <input asp-for="Ncm.Code" class="form-control" readonly />
+                    </div>
+                    <div class="form-group col-lg-9 col-md-9 col-xs-12">
+                        <label asp-for="Ncm.Description" class="control-label"></label>
+                        <textarea asp-for="Ncm.Description" class="form-control" readonly></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="CstEntradaId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstEntradaId" class="form-control selectoption" name="CstEntradaId" id="cstEntrada"></select>
+                        <span asp-validation-for="CstEntradaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label asp-for="CstSaidaId" class="control-label"></label>
+                        <select asp-items="@ViewBag.CstSaidaID" class="form-control selectoption" name="CstSaidaId" id="cstSaida"></select>
+                        <span asp-validation-for="CstSaidaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Tipo Receita</label>
+                        <select asp-items="@ViewBag.ListaTipoNcm" class="form-control selectoption" name="TypeNcmId" id="TypeNcmId"></select>
+                        <span asp-validation-for="TypeNcmId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Tipo de Tributação</label>
+                        @if (Model.Type.Equals("Monofásico"))
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal">Normal</option>
+                                <option value="Monofásico" selected>Monofásico</option>
+                            </select>
+                        }
+                        else if (Model.Type.Equals("Normal"))
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal" selected>Normal</option>
+                                <option value="Monofásico">Monofásico</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control selectoption" name="type">
+                                <option value="Normal">Normal</option>
+                                <option value="Monofásico">Monofásico</option>
+                            </select>
+                        }
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="NatReceita" class="control-label"></label>
+                        <input asp-for="NatReceita" class="form-control" />
+                        <span asp-validation-for="NatReceita" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                        <label asp-for="Pis" class="control-label"></label>
+                        <input type="text" name="pis" class="form-control money" value="@Model.Pis" />
+                    </div>
+                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                        <label asp-for="Cofins" class="control-label"></label>
+                        <input type="text" name="cofins" class="form-control money" value="@Model.Cofins" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Opção</label>
+                        <select class="form-control selectoption" name="opcao">
+                            <option value="2">Por Ncm</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" required />
+                        <span asp-validation-for="DateStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="box-footer">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+        var cstEnt = @Model.CstEntradaId;
+        $("#cstEntrada").children('option').each(function () {
+            if ($(this).val() == cstEnt) {
+                $(this).attr('selected', true);
+            }
+        });
+
+        var cstSai = @Model.CstSaidaId;
+        $("#cstSaida").children('option').each(function () {
+            if ($(this).val() == cstSai) {
+                $(this).attr('selected', true);
+            }
+        });
+
+
+</script>
+
