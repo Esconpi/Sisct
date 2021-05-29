@@ -1,108 +1,82 @@
 ﻿@model Escon.SisctNET.Model.Company
 
-<div class="col-lg-12">
-    <form asp-action="Tax" method="post">
-        <div class="row">
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IRPJ1" class="control-label"></label>
-                <input class="form-control money" name="IRPJ1" value="@Model.IRPJ1" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IRPJ2" class="control-label"></label>
-                <input class="form-control money" name="IRPJ2" value="@Model.IRPJ2" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IRPJ3" class="control-label"></label>
-                <input class="form-control money" name="IRPJ3" value="@Model.IRPJ3" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="IRPJ4" class="control-label"></label>
-                <input class="form-control money" name="IRPJ4" value="@Model.IRPJ4" />
-            </div>
+<div class="row">
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="IRPJ1" class="control-label"></label>
+        <input class="form-control money" name="IRPJ1" value="@Model.IRPJ1" />
+    </div>
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="IRPJ2" class="control-label"></label>
+        <input class="form-control money" name="IRPJ2" value="@Model.IRPJ2" />
+    </div>
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="IRPJ3" class="control-label"></label>
+        <input class="form-control money" name="IRPJ3" value="@Model.IRPJ3" />
+    </div>
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="IRPJ4" class="control-label"></label>
+        <input class="form-control money" name="IRPJ4" value="@Model.IRPJ4" />
+    </div>
 
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="PercentualIRPJ" class="control-label"></label>
-                <input class="form-control money" name="PercentualIRPJ" value="@Model.PercentualIRPJ" />
-            </div>
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="PercentualIRPJ" class="control-label"></label>
+        <input class="form-control money" name="PercentualIRPJ" value="@Model.PercentualIRPJ" />
+    </div>
 
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="AdicionalIRPJ" class="control-label"></label>
-                <input class="form-control money" name="AdicionalIRPJ" value="@Model.AdicionalIRPJ" />
-            </div>
+    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+        <label asp-for="AdicionalIRPJ" class="control-label"></label>
+        <input class="form-control money" name="AdicionalIRPJ" value="@Model.AdicionalIRPJ" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <label asp-for="CSLL1" class="control-label"></label>
+        <input class="form-control money" name="CSLL1" value="@Model.CSLL1" />
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <label asp-for="CSLL2" class="control-label"></label>
+        <input class="form-control money" name="CSLL2" value="@Model.CSLL2" />
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <label asp-for="PercentualCSLL" class="control-label"></label>
+        <input class="form-control money" name="PercentualCSLL" value="@Model.PercentualCSLL" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <label asp-for="PercentualPis" class="control-label"></label>
+        <input class="form-control money" name="PercentualPis" value="@Model.PercentualPis" />
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <label asp-for="PercentualCofins" class="control-label"></label>
+        <input class="form-control money" name="PercentualCofins" value="@Model.PercentualCofins" />
+    </div>
+
+    <div class="form-group col-lg-2 col-md-6 col-xs-12" id="checkbox">
+        @Html.LabelFor(model => model.StatusCPRB, "CPRB", htmlAttributes: new { @class = "control-label col-md-12" })
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.StatusCPRB, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
+            </label>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="CSLL1" class="control-label"></label>
-                <input class="form-control money" name="CSLL1" value="@Model.CSLL1" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="CSLL2" class="control-label"></label>
-                <input class="form-control money" name="CSLL2" value="@Model.CSLL2" />
-            </div>
-
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="PercentualCSLL" class="control-label"></label>
-                <input class="form-control money" name="PercentualCSLL" value="@Model.PercentualCSLL" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="PercentualPis" class="control-label"></label>
-                <input class="form-control money" name="PercentualPis" value="@Model.PercentualPis" />
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label asp-for="PercentualCofins" class="control-label"></label>
-                <input class="form-control money" name="PercentualCofins" value="@Model.PercentualCofins" />
-            </div>
-
-            <div class="form-group col-lg-2 col-md-6 col-xs-12" id="checkbox">
-                @Html.LabelFor(model => model.StatusCPRB, "CPRB", htmlAttributes: new { @class = "control-label col-md-12" })
-                <div class="checkbox">
-                    <label>
-                        @Html.CheckBoxFor(model => model.StatusCPRB, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
-                    </label>
-                </div>
-            </div>
-
+    @if (Model.StatusCPRB.Equals(false))
+    {
+        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label asp-for="CPRB" class="control-label"></label>
+            <input asp-for="CPRB" id="cprb" class="form-control money" disabled />
         </div>
-
-        <div class="row">
-            @if (Model.StatusCPRB.Equals(false))
-            {
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="CPRB" class="control-label"></label>
-                    <input asp-for="CPRB" id="cprb" class="form-control money" disabled />
-                </div>
-            }
-            else
-            {
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label asp-for="CPRB" class="control-label"></label>
-                    <input id="cprb" class="form-control money" name="CPRB" value="@Model.CPRB" />
-                </div>
-            }
-
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                @Html.LabelFor(model => model.Sped, "Gerar Sped", htmlAttributes: new { @class = "control-label col-md-12" })
-                <div class="checkbox">
-                    <label>
-                        @Html.CheckBoxFor(model => model.Sped, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
-                    </label>
-                </div>
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                @Html.LabelFor(model => model.Taxation, "Tributação Individual", htmlAttributes: new { @class = "control-label col-md-12" })
-                <div class="checkbox">
-                    <label>
-                        @Html.CheckBoxFor(model => model.Taxation, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
-                    </label>
-                </div>
-            </div>
+    }
+    else
+    {
+        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label asp-for="CPRB" class="control-label"></label>
+            <input id="cprb" class="form-control money" name="CPRB" value="@Model.CPRB" />
         </div>
-
-        <div class="form-group col-lg-12 col-md-12 col-xs-12">
-            <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
-        </div>
-    </form>
+    }
 </div>
 
 <script type="text/javascript">
