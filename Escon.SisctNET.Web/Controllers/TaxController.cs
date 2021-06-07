@@ -3300,7 +3300,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             else
                                             {
-                                                // Empresa não possui tipo
+                                                ViewBag.NCM = exitNotes[i][j]["NCM"];
                                                 ViewBag.Erro = 4;
                                                 return View(comp);
                                             }

@@ -81,7 +81,7 @@
                     <ul class="nav navbar-nav">
                         <!-- Notifications: style can be found in dropdown.less -->
                         <li class="dropdown notifications-menu">
-                            @await Html.PartialAsync("Notification", new ViewDataDictionary(ViewData))
+                            @await Html.PartialAsync("NotificationLayout", new ViewDataDictionary(ViewData))
                         </li>
 
                         <!-- User Account: style can be found in dropdown.less -->

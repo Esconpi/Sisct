@@ -196,22 +196,22 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaArt781Excedente { get; set; }
 
-        [Display(Name = "IRPJ Combustível %")]
+        [Display(Name = "IRPJ Combustível BC %")]
         public decimal? IRPJ1 { get; set; }
 
-        [Display(Name = "IRPJ Comércio %")]
+        [Display(Name = "IRPJ Comércio BC %")]
         public decimal? IRPJ2 { get; set; }
 
-        [Display(Name = "IRPJ Transporte %")]
+        [Display(Name = "IRPJ Transporte BC %")]
         public decimal? IRPJ3 { get; set; }
 
-        [Display(Name = "IRPJ Serviço %")]
+        [Display(Name = "IRPJ Serviço BC %")]
         public decimal? IRPJ4 { get; set; }
 
-        [Display(Name = "CSLL Comércio %")]
+        [Display(Name = "CSLL Comércio BC %")]
         public decimal? CSLL1 { get; set; }
 
-        [Display(Name = "CSLL Serviço %")]
+        [Display(Name = "CSLL Serviço BC %")]
         public decimal? CSLL2 { get; set; }
 
         [Display(Name = "CPRB %")]

@@ -1713,7 +1713,6 @@ namespace Escon.SisctNET.Web.Controllers
                         //  Empresa do Simples
                     }
 
-
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
