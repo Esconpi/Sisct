@@ -160,7 +160,7 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     Model.TaxationNcm ehMono = null;
 
-                                    if (company.Taxation)
+                                    if (company.Taxation == "Produto")
                                     {
                                         if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
                                         {
@@ -359,7 +359,7 @@ namespace Escon.SisctNET.Web.Sped
                             {
                                 Model.TaxationNcm ehMono = null;
 
-                                if (company.Taxation)
+                                if (company.Taxation == "Produto")
                                 {
                                     // Tributação Individual
                                     var prod = linha[2];

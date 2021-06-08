@@ -36,7 +36,7 @@
             <table class="table table-striped table-bordered" id="tblNcm" style="width:100%">
                 <thead>
                     <tr>
-                        @if (ViewBag.Company.Taxation)
+                        @if (ViewBag.Company.Taxation == "Produto")
                         {
                             <th>
                                 Produto
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-@if (ViewBag.Company.Taxation)
+@if (ViewBag.Company.Taxation == "Produto")
 {
     <script type="text/javascript">
         $(document).ready(function () {

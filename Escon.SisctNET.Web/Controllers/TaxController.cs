@@ -3100,10 +3100,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<TaxationNcm> ncmsCompany = new List<TaxationNcm>();
 
-                    if(comp.Taxation)
-                        ncmsCompany = _taxationNcmService.FindByCompany(comp.Document);
-                    else
-                        ncmsCompany = _taxationNcmService.FindByGeneral();
+                    ncmsCompany = _taxationNcmService.FindByCompany(comp.Document);
 
                     if (type.Equals("sped") && comp.Sped)
                     {
@@ -3265,7 +3262,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                             {
                                                 Model.TaxationNcm ehMono = null;
-                                                if (comp.Taxation)
+                                                if (comp.Taxation == "Produto")
                                                 {
                                                     ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
 
@@ -3341,7 +3338,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 Model.TaxationNcm ehMono = null;
 
-                                                if (comp.Taxation)
+                                                if (comp.Taxation == "Produto")
                                                 {
                                                     ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
                                                 }
@@ -3421,7 +3418,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             }
                                             if (exitNotes[i][1]["finNFe"] != "4" && cfop)
                                             {
-                                                if (comp.Taxation)
+                                                if (comp.Taxation == "Produto")
                                                 {
                                                     if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
@@ -3621,7 +3618,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
                                             {
-                                                if (comp.Taxation)
+                                                if (comp.Taxation == "Produto")
                                                 {
                                                     if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
@@ -3817,7 +3814,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             if (entryNotes[i][j].ContainsKey("cProd") && entryNotes[i][j].ContainsKey("NCM"))
                                             {
-                                                if (comp.Taxation)
+                                                if (comp.Taxation == "Produto")
                                                 {
                                                     var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(entryNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(entryNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
 

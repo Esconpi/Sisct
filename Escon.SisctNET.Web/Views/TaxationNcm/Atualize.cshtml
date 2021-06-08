@@ -17,7 +17,7 @@
             <form asp-action="Atualize">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                @if (Model.Company.Taxation)
+                @if (Model.Company.Taxation == "Produto")
                 {
                     <div class="row">
                         <div class="form-group col-lg-3 col-md-3 col-xs-12">
@@ -101,7 +101,7 @@
                     <div class="form-group col-lg-2 col-md-2 col-xs-12">
                         <label class="control-label">Opção</label>
                         <select class="form-control selectoption" name="opcao">
-                            @if (Model.Company.Taxation)
+                            @if (Model.Company.Taxation == "Produto")
                             {
                                 <option value="1" selected>Por Produto</option>
                             }

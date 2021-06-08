@@ -18,7 +18,7 @@
                     <input type="hidden" name="company" value="@ViewBag.CompanyId" />
                     <input type="hidden" name="year" value="@ViewBag.Year" />
                     <input type="hidden" name="month" value="@ViewBag.Month" />
-                    @if (Model.Company.Taxation)
+                    @if (Model.Company.Taxation == "Produto")
                     {
                         <div class="row">
                             <div class="form-group col-lg-3 col-md-3 col-xs-12">
@@ -103,7 +103,7 @@
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">
                             <label class="control-label">Opção</label>
                             <select class="form-control selectoption" name="opcao">
-                                @if (Model.Company.Taxation)
+                                @if (Model.Company.Taxation == "Produto")
                                 {
                                     <option value="1" selected>Por Produto</option>
                                 }

@@ -67,6 +67,7 @@ namespace Escon.SisctNET.Web.Controllers
 
         [HttpPost]
         public IActionResult Import(long companyid, string year, string month,string arquivo,string option)
+
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -98,13 +99,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<TaxationNcm> ncmsCompany = new List<TaxationNcm>();
 
-                 if (comp.Taxation)
-                    ncmsCompany = _service.FindByCompany(comp.Document);
-                else
-                    ncmsCompany = _service.FindByGeneral();
-
-                //ncmsCompany = _service.FindByGeneral().Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
-
+                ncmsCompany = _service.FindByCompany(comp.Document);
+   
                 var ncmsAll = _ncmService.FindAll(null);
 
                 List<TaxationNcm> monoAdd = new List<TaxationNcm>();
@@ -123,7 +119,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
-                    if (comp.Taxation)
+                    if (comp.Taxation == "Produto")
                     {
                         taxationTemp = ncmsCompany.Where(_ => _.CodeProduct.Equals(ncms[i][0]) && _.Ncm.Code.Equals(ncms[i][1])).FirstOrDefault();
                     }
@@ -1145,7 +1141,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 taxationNcms = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ThenBy(_ => _.Ncm.Code).ToList();
 
-                if (!comp.Taxation)
+                if (comp.Taxation != "Produto")
                 {
                     var ncms = taxationNcms.Select(_ => _.Ncm).Distinct().OrderBy(_ => _.Code).ToList();
                     ViewBag.Ncms = ncms;

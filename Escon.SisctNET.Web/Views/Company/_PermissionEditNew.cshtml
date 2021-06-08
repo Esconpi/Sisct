@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="row">
-            @if (Model.AnnexId.Equals(3))
+            @if (Model.AnnexId == 3)
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <label asp-for="AliqInterna" class="control-label" style="font-size:10px;"></label>
@@ -289,7 +289,7 @@
             </div>
         </div>
         <div class="row">
-            @if (Model.AnnexId.Equals(3))
+            @if (Model.AnnexId == 3)
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label asp-for="IncIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="font-size:10px;">Elencadas</span>
@@ -319,7 +319,7 @@
                 <br />
                 <strong style="font-size:10px;">Venda p/ Cliente Credenciado no Art. 781</strong>
             </div>
-            @if (Model.AnnexId.Equals(3))
+            @if (Model.AnnexId == 3)
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <br />
@@ -349,7 +349,7 @@
         </div>
 
         <div class="row">
-            @if (Model.AnnexId.Equals(3))
+            @if (Model.AnnexId == 3)
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label asp-for="IncIIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="color:red; font-size:10px;">Daselencadas</span>
@@ -380,7 +380,7 @@
                 <br />
                 <strong style="font-size:10px;">Faturamento (Permanência no Incetivo)</strong>
             </div>
-            @if (Model.ChapterId.Equals(4))
+            @if (Model.ChapterId == 4)
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <br />

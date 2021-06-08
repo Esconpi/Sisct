@@ -84,11 +84,6 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
                 <li><a href="@Url.Action("Index","Ncm")"><i class="fa fa-circle-o"></i>NCM</a></li>
             }
 
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("IndexM","TaxationNcm")"><i class="fa fa-circle-o"></i>NCM Monofásico *</a></li>
-            }
-
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","NatReceita")"><i class="fa fa-circle-o"></i>Natureza da Receita</a></li>

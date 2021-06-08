@@ -99,10 +99,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<TaxationNcm> ncms = new List<TaxationNcm>();
 
-                if (comp.Taxation)
-                    ncms = _service.FindByCompany(comp.Document);
-                else
-                    ncms = _service.FindByGeneral();
+                ncms = _service.FindByCompany(comp.Document);
+
 
                 //ncms = _service.FindByGeneral().Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
 
@@ -660,7 +658,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 status = false;
 
-                                if (comp.Taxation)
+                                if (comp.Taxation == "Produto")
                                 {
                                     if (prodAll.Contains(notes[i][j]["cProd"]) && ncmsAll.Contains(notes[i][j]["NCM"]))
                                     {
@@ -669,6 +667,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -682,7 +681,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        var t = notes[i][j]["NCM"];
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -928,7 +927,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 cProd = notes[i][j]["cProd"];
                                 xProd = notes[i][j]["xProd"];
 
-                                if (comp.Taxation)
+                                if (comp.Taxation == "Produto")
                                 {
                                     if (prodAll.Contains(notes[i][j]["cProd"]) && ncmsAll.Contains(notes[i][j]["NCM"]))
                                     {
@@ -937,6 +936,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -950,6 +950,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -1056,7 +1057,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                if (comp.Taxation)
+                                if (comp.Taxation == "Produto")
                                 {
                                     if (codeProdMono.Contains(notes[i][j]["cProd"]) && ncmMono.Contains(notes[i][j]["NCM"]))
                                     {
@@ -1125,6 +1126,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -1198,12 +1200,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
                                 }
-
-
                             }
 
 

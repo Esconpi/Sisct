@@ -101,7 +101,7 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<TaxationNcm> FindByGeneral(Log log = null)
         {
-            var rst = _context.TaxationNcms.Where(_ => !_.Company.Taxation).ToList();
+            var rst = _context.TaxationNcms.ToList();
             AddLog(log);
             return rst;
         }

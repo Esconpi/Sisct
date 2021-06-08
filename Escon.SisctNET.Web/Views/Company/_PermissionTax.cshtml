@@ -27,12 +27,25 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    @Html.LabelFor(model => model.Taxation, "Tributação Individual", htmlAttributes: new { @class = "control-label col-md-12" })
-                    <div class="checkbox">
-                        <label>
-                            @Html.CheckBoxFor(model => model.Taxation, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "success", @data_offstyle = "danger", @readonly = "true" })
-                        </label>
-                    </div>
+                    <label class="control-label">Tributação</label>
+                    <select class="form-control selectoption" name="taxation">
+                        @if (Model.Taxation == "Produto")
+                        {
+                            <option value="Produto" selected>Produto</option>
+                            <option value="NCM">NCM</option>
+                        }
+                        else if (Model.Taxation == "NCM")
+                        {
+                            <option value="Produto">Produto</option>
+                            <option value="NCM" selected>NCM</option>
+                        }
+                        else
+                        {
+                            <option value="Produto">Produto</option>
+                            <option value="NCM">NCM</option>
+                        }
+                    </select>
+                   
                 </div>
             </div>
             <div class="form-group col-lg-12 col-md-12 col-xs-12">
