@@ -28,7 +28,7 @@
             <table class="table" style="border:1px solid;">
                 <thead>
                     <tr style="border:1px solid;">
-                        @if (ViewBag.Company.Taxation)
+                        @if (ViewBag.Company.Taxation == "Produto")
                         {
                             <th style="border:1px solid; text-align:center;">
                                 Produto
@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody style="font-size:10px;">
-                    @if (ViewBag.Company.Taxation)
+                    @if (ViewBag.Company.Taxation == "Produto")
                     {
                         @foreach (var item in Model)
                         {

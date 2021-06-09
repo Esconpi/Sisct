@@ -102,8 +102,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ncms = _service.FindByCompany(comp.Document);
 
 
-                //ncms = _service.FindByGeneral().Where(_ => _.Company.Document.Substring(0, 8).Equals(comp.Document.Substring(0, 8))).ToList();
-
                 if (type.Equals("resumoCfop"))
                 {
                     //  Resumo CFOP
