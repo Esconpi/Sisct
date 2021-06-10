@@ -114,10 +114,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 for (int i = 0; i < ncms.Count(); i++)
                 {
-                    TaxationNcm taxationTemp = new TaxationNcm();
+                    TaxationNcm taxationTemp = null;
                     TaxationNcm existAdd = null;
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
+
+                    if(ncms[i][1] == "27101999")
+                    {
+                        var t = 0;
+                    }
 
                     if (comp.Taxation == "Produto")
                     {

@@ -152,6 +152,7 @@
                                     "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
                                     "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
                                     "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+
                         }
                         else if (row.anexo != null && row.incentivo == true) {
                                 if (row.anexo == 1) {
@@ -166,6 +167,7 @@
                                             "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
                                             "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
                                             "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
+                                            
                                 }
                                 else {
                                     return  "<a href='/HomeExit/CompareCancellation/" + data + "' class = 'glyphicon glyphicon-duplicate pull-left' style = 'margin-left:10px; margin-bottom:10px; color:red;' data-toggle='tooltip' data-placement='top' title='Compara Notas Canceladas' /> " +
@@ -192,8 +194,7 @@
                                         "<a href='#" + data + "' class = 'showImport fa fa-cloud-upload pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Importar Dados ICMS e PIS/COFINS' id='" + row.id + "' /> " +
                                         "<a href='/HomeExit/Icms/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:blue;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Icms' /> " +
                                         "<a href='/HomeExit/PisCofins/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Gerar Relatório Pis/Cofins' /> "
-                             }
-                        
+                        }
 
                     }
                 }

@@ -885,7 +885,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
                     var prodAll = ncms.Select(_ => _.CodeProduct).ToList();
                     var ncmsAll = ncms.Select(_ => _.Ncm.Code).ToList();
@@ -1713,7 +1713,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                 }
+                else if (type.Equals("relatorioSimples"))
+                {
 
+                }
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
                 return View();

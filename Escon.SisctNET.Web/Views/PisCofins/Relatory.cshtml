@@ -135,8 +135,10 @@
                         {
                             <!-- Empresa do Simples -->
                         }
-
-
+                        else if (ViewBag.Type == "relatorioSimples")
+                         {
+                            @await Html.PartialAsync("_SimplesNacional", new ViewDataDictionary(ViewData))
+                        }
                     }
                 }
 
