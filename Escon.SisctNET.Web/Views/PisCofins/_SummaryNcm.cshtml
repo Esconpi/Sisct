@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var ncm in ViewBag.Cfop)
+        @foreach (var ncm in ViewBag.Ncm)
         {
             <tr style="border:1px solid;">
                 <td style="border:1px solid; padding-left:1%;">
@@ -31,7 +31,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th style="border: 1px solid; text-align: center;" colspan="2">Total</th>
+            <th style="border: 1px solid; text-align: center;">Total</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorProduto)</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorPis)</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorCofins)</th>

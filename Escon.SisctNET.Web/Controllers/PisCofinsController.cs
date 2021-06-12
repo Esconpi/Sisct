@@ -1014,7 +1014,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Produtos = produtos.OrderBy(_ => Convert.ToInt32(_[2])).ToList();
                     ViewBag.Total = vTotal;
                 }
-                else if (type.Equals("resumoNcmMono"))
+                else if (type.Equals("resumoVendaNcmMono"))
                 {
                     //  Resumo NCM Monofásico
 
@@ -1027,7 +1027,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmsAll = _ncmService.FindAll(null);
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
                     decimal valorProduto = 0, valorPis = 0, valorCofins = 0;
 
@@ -1715,7 +1720,33 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("relatorioSimples"))
                 {
+                    decimal vendasNomal = 0, vendasST = 0, vendasMono = 0, devoNormal = 0, devoST = 0, devoMono = 0, 
+                        baseNormal = 0, baseST = 0, baseMono = 0;
 
+
+                    decimal totalVendas = vendasNomal + vendasST + vendasMono,
+                            totalDevvo = devoNormal + devoST + devoMono,
+                            totalBase = baseNormal + baseST + baseMono;
+
+                    //  Vendas
+                    ViewBag.VendasNomal = vendasNomal;
+                    ViewBag.VendasST = vendasST;
+                    ViewBag.VendasMono = vendasMono;
+
+                    //  Devoluções
+                    ViewBag.DevoNormal = devoNormal;
+                    ViewBag.DevoST = devoST;
+                    ViewBag.DevoMono = devoMono;
+
+                    //  Bases
+                    ViewBag.BaseNormal = baseNormal;
+                    ViewBag.BaseST = baseST;
+                    ViewBag.BaseMono = baseMono;
+
+                    //  Totais
+                    ViewBag.TotalVendas = totalVendas;
+                    ViewBag.TotalDevo = totalDevvo;
+                    ViewBag.TotalBase = totalBase;
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
