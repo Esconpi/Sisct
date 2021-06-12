@@ -511,9 +511,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalXml = notaXml[3]["vNF"];
                                     string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
-                                    string totalSped2 = linha[9].Equals("") ? "0" : linha[9].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
-                                    string totalDif2 = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped2)).ToString();
                                     string descXml = notaXml[3]["vDesc"];
                                     string descSped = linha[3].Equals("") ? "0" : linha[3].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
@@ -526,6 +524,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     string freteXml = notaXml[3]["vFrete"];
                                     string freteSped = linha[4].Equals("") ? "0" : linha[4].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string freteDif = (Convert.ToDecimal(freteXml) - Convert.ToDecimal(freteSped)).ToString();
+
+                                    string totalSped2 = linha[9].Equals("") ? "0" : (Convert.ToDecimal(linha[9].Replace('.', '*').Replace(',', '.').Replace('*', ',')) - 
+                                        Convert.ToDecimal(descSped) + Convert.ToDecimal(outDespSped) + Convert.ToDecimal(segSped) + Convert.ToDecimal(freteSped)).ToString();
+                                    string totalDif2 = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped2)).ToString();
+
 
                                     if (!Convert.ToDecimal(totalDif).Equals(0) || !Convert.ToDecimal(totalDif2).Equals(0) || !Convert.ToDecimal(descDif).Equals(0) ||
                                         !Convert.ToDecimal(outDespDif).Equals(0) || !Convert.ToDecimal(segDif).Equals(0) ||
