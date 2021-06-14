@@ -389,7 +389,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("qCom"))
                         det.Add("qCom", notes[i][j]["qCom"]);
 
-                    if (notes[i][j].ContainsKey("vICMS") && (notes[i][j].ContainsKey("CST")))
+                    if (notes[i][j].ContainsKey("vICMS") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vICMS", notes[i][j]["vICMS"]);
 
                     if (notes[i][j].ContainsKey("orig"))
@@ -398,31 +398,31 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("pICMS"))
                         det.Add("pICMS", notes[i][j]["pICMS"]);
 
-                    if (notes[i][j].ContainsKey("vIPI") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vIPI") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vIPI", notes[i][j]["vIPI"]);
 
-                    if (notes[i][j].ContainsKey("vICMSST") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vICMSST") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vICMSST", notes[i][j]["vICMSST"]);
 
-                    if (notes[i][j].ContainsKey("vBCST") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vBCST") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vBCST", notes[i][j]["vBCST"]);
 
-                    if (notes[i][j].ContainsKey("vBCFCPST") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vBCFCPST") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vBCFCPST", notes[i][j]["vBCFCPST"]);
 
-                    if (notes[i][j].ContainsKey("pFCPST") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("pFCPST") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("pFCPST", notes[i][j]["pFCPST"]);
 
-                    if (notes[i][j].ContainsKey("vFCPST") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vFCPST") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vFCPST", notes[i][j]["vFCPST"]);
 
-                    if (notes[i][j].ContainsKey("vBCFCPSTRet") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vBCFCPSTRet") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vBCFCPSTRet", notes[i][j]["vBCFCPSTRet"]);
 
-                    if (notes[i][j].ContainsKey("pFCPSTRet") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("pFCPSTRet") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("pFCPSTRet", notes[i][j]["pFCPSTRet"]);
 
-                    if (notes[i][j].ContainsKey("vFCPSTRet") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vFCPSTRet") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vFCPSTRet", notes[i][j]["vFCPSTRet"]);
 
                     if (notes[i][j].ContainsKey("vPIS") && notes[i][j].ContainsKey("CST"))
