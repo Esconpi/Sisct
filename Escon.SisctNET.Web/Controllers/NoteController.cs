@@ -389,7 +389,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("qCom"))
                         det.Add("qCom", notes[i][j]["qCom"]);
 
-                    if (notes[i][j].ContainsKey("vICMS") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vICMS") && (notes[i][j].ContainsKey("CST")))
                         det.Add("vICMS", notes[i][j]["vICMS"]);
 
                     if (notes[i][j].ContainsKey("orig"))
