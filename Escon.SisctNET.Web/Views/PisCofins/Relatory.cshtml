@@ -95,11 +95,17 @@
 
                         @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
                     }
-                    else if (ViewBag.Type == "resumoNcmMono")
+                    else if (ViewBag.Type == "resumoVendaNcmMono")
                     {
-                        <!-- Resumo NCM Monofásico -->
+                        <!-- Resumo Venda NCM Monofásico -->
 
-                        @await Html.PartialAsync("_SummaryNcm", new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_SummaryVendaNcm", new ViewDataDictionary(ViewData))
+                    }
+                    else if (ViewBag.Type == "resumoDevoNcmMono")
+                    {
+                        <!-- Resumo Devolução NCM Monofásico -->
+
+                        @await Html.PartialAsync("_SummaryDevoNcm", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "imposto")
                     {
