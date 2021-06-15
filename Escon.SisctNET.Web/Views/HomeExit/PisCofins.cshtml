@@ -62,7 +62,7 @@
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Arquivo</label>
-                        <select name="arquivo" class="form-control selectoption" id="arquivo">
+                        <select name="arquivo" class="form-control selectoption" id="archive">
                             <option value="xmlS" selected>XML SEFAZ</option>
                             <option value="xmlE">XML EMPRESA</option>
                         </select>
@@ -88,8 +88,19 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label"><strong>Selecione o arquivo</strong></label>
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="arquivo" accept=".txt" disabled onchange="ativar_button()" />
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
+                    </div>
+                </div>
+              
+
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" />
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" id="ativa" onclick="show()" />
                 </div>
             </form>
         </div>
@@ -106,17 +117,34 @@
             var tipo = document.getElementById("status").value;
             if (tipo == "resumoPorCfop") {
                 document.getElementById("cfopid").disabled = false;
-                document.getElementById("arquivo").disabled = false;
+                document.getElementById("archive").disabled = false;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("arquivo").disabled = true;
             }
             else if (tipo == "imposto") {
                 document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = false;
+                document.getElementById("archive").disabled = true;
                 document.getElementById("arquivo").disabled = true;
+            }
+            else if (tipo == "relatorioSimples") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = true;
+                document.getElementById("arquivo").disabled = false;
+
+                var arquivo = document.getElementById("arquivo").value;
+                if (arquivo == "") {
+                    document.getElementById("ativa").disabled = true;
+                } else {
+                    document.getElementById("ativa").disabled = false;
+                }
             }
             else {
                 document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = true;
-                document.getElementById("arquivo").disabled = false;
+                document.getElementById("archive").disabled = false;
+                document.getElementById("arquivo").disabled = true;
             }
         }
         function show() {
@@ -134,19 +162,37 @@ else
             var tipo = document.getElementById("status").value;
             if (tipo == "resumoPorCfop") {
                 document.getElementById("cfopid").disabled = false;
-                document.getElementById("arquivo").disabled = false;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = false;
+                document.getElementById("arquivo").disabled = true;
             }
             else if (tipo == "imposto") {
                 document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = true;
                 document.getElementById("arquivo").disabled = true;
+            }
+            else if (tipo == "relatorioSimples") {
+                document.getElementById("cfopid").disabled = false;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = true;
+                document.getElementById("arquivo").disabled = false;
+
+                var arquivo = document.getElementById("arquivo").value;
+                if (arquivo == "") {
+                    document.getElementById("ativa").disabled = true;
+                } else {
+                    document.getElementById("ativa").disabled = false;
+                }
             }
             else {
                 document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = true;
-                document.getElementById("arquivo").disabled = false;
+                document.getElementById("archive").disabled = false;
+                document.getElementById("arquivo").disabled = true;
             }
         }
+
         function show() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('hiddenHeader').style.display = 'none';

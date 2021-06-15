@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +20,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxService _taxService;
         private readonly IBaseService _baseService;
         private readonly ICfopService _cfopService;
+        private readonly IHostingEnvironment _appEnvironment;
 
         public PisCofinsController(
             ITaxationNcmService service,
@@ -28,6 +31,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxService taxService,
             IBaseService baseService,
             ICfopService cfopService,
+            IHostingEnvironment appEnvironment,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Company")
@@ -40,10 +44,12 @@ namespace Escon.SisctNET.Web.Controllers
             _taxService = taxService;
             _baseService = baseService;
             _cfopService = cfopService;
+            _appEnvironment = appEnvironment;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public IActionResult Relatory(long companyId, string year, string month, string trimestre, string type, long cfopid, string arquivo)
+        public async Task<IActionResult> Relatory(long companyId, string year, string month, string trimestre, string type, 
+            long cfopid, string archive, IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -55,7 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Month = month;
                 ViewBag.Type = type;
                 ViewBag.Trimestre = trimestre;
-                ViewBag.Arquivo = arquivo;
+                ViewBag.Archive = archive;
                 ViewBag.Company = comp;
 
                 if (comp.CountingTypeId == null)
@@ -76,9 +82,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeExit = "";
 
-                if (arquivo != null)
+                if (archive != null)
                 {
-                    if (arquivo.Equals("xmlE"))
+                    if (archive.Equals("xmlE"))
                         directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
                     else
                         directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
@@ -1235,6 +1241,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorProduto = valorProduto;
                     ViewBag.ValorPis = valorPis;
                     ViewBag.ValorCofins = valorCofins;
+                }
+                else if (type.Equals("resumoDevoNcmMono"))
+                {
+
                 }
                 else if (type.Equals("imposto"))
                 {
