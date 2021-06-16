@@ -3111,6 +3111,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
                         //  Empresa do Simples
+                        decimal devoNormal = 0, devoST = 0, devoMono = 0;
 
                         foreach (var cc in caminhos)
                         {
@@ -3136,6 +3137,12 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (comp.CountingTypeId.Equals((long)3))
                             {
                                 // Empresa do Simples
+
+                                var sped = importSped.NFeDevolution(cc, cfopsDevoVenda, ncmsCompany, comp);
+
+                                devoNormal += sped[0];
+                                devoST += sped[1];
+                                devoMono += sped[2];
                             }
                         }
 
@@ -3156,6 +3163,9 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.DevolucaoNormalEntrada = devolucaoNormal;
 
                             //  Empresa do Simples
+                            imp.DevoNormal = devoNormal;
+                            imp.DevoST = devoST;
+                            imp.DevoMonofasico = devoMono;
                         }
                         else
                         {
@@ -3173,6 +3183,9 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.DevolucaoNormalEntrada = devolucaoNormal;
 
                             //  Empresa do Simples
+                            tax.DevoNormal = devoNormal;
+                            tax.DevoST = devoST;
+                            tax.DevoMonofasico = devoMono;
                         }
                     }
                     else if (type.Equals("xmlS") || type.Equals("xmlE"))
@@ -3197,9 +3210,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //  Empresa Lucro Presumido
                         decimal receitaComercio = 0, devolucaoComercio = 0, receitaServico = 0, devolucaoServico = 0, receitaPetroleo = 0, devolucaoPetroleo = 0,
-                            receitaTransporte = 0, devolucaoTransporte = 0, receitaMono = 0, devolucaoNoraml = 0;
+                            receitaTransporte = 0, devolucaoTransporte = 0, receitaMono = 0, devolucaoNormal = 0;
 
                         //  Empresa do Simples
+                        decimal vendasNomal = 0, vendasST = 0, vendasMono = 0;
+                        decimal devoNormal = 0,  devoST = 0, devoMono = 0;
 
 
                         //  Importação dos Dados
@@ -3636,7 +3651,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vFrete"))
@@ -3651,7 +3666,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vDesc"))
@@ -3666,7 +3681,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                                devolucaoNormal -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vOutro"))
@@ -3681,7 +3696,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vSeg"))
@@ -3696,7 +3711,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                         }
 
                                                     }
@@ -3724,7 +3739,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vFrete"))
@@ -3739,7 +3754,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vDesc"))
@@ -3754,7 +3769,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                                devolucaoNormal -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vOutro"))
@@ -3769,7 +3784,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
                                                         }
 
                                                         if (exitNotes[i][j].ContainsKey("vSeg"))
@@ -3784,7 +3799,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                                 devolucaoServico += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
 
                                                             if (ehMono == null)
-                                                                devolucaoNoraml += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                                devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
                                                         }
 
                                                     }
@@ -3830,7 +3845,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vFrete"))
@@ -3845,7 +3860,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vDesc"))
@@ -3860,7 +3875,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                            devolucaoNormal -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vOutro"))
@@ -3875,7 +3890,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vSeg"))
@@ -3890,7 +3905,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                                     }
                                                 }
                                                 else
@@ -3909,7 +3924,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vFrete"))
@@ -3924,7 +3939,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vDesc"))
@@ -3939,7 +3954,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                            devolucaoNormal -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vOutro"))
@@ -3954,7 +3969,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                                     }
 
                                                     if (entryNotes[i][j].ContainsKey("vSeg"))
@@ -3969,7 +3984,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             devolucaoServico += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
 
                                                         if (ehMono == null)
-                                                            devolucaoNoraml += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                            devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                                     }
                                                 }
                                                
@@ -3983,6 +3998,117 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (comp.CountingTypeId.Equals((long)3))
                             {
                                 //  Empresa do Simples
+
+                                //   Vendas
+                                List<string> codeProdMono = new List<string>();
+                                List<string> codeProdNormal = new List<string>();
+                                List<string> ncmMono = new List<string>();
+                                List<string> ncmNormal = new List<string>();
+
+
+                                cfopsVenda.AddRange(cfopsVendaST);
+                                cfopsVenda.AddRange(cfopsTransf);
+                                cfopsVenda.AddRange(cfopsTransfST);
+
+                                exitNotes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                                for (int i = exitNotes.Count - 1; i >= 0; i--)
+                                {
+                                    if (!exitNotes[i][2]["CNPJ"].Equals(comp.Document))
+                                    {
+                                        exitNotes.RemoveAt(i);
+                                        continue;
+                                    }
+
+                                    if (exitNotes[i][1].ContainsKey("dhEmi"))
+                                    {
+                                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsCompany, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
+                                        codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                                        codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
+                                        ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                                        ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                                    }
+
+                                    string NCM = "", cProd = "";
+                                    decimal vProd = 0;
+
+                                    for (int j = 0; j < exitNotes[i].Count(); j++)
+                                    {
+                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
+                                        {
+                                            cProd = exitNotes[i][j]["cProd"];
+                                            NCM = exitNotes[i][j]["NCM"];
+
+                                            if (exitNotes[i][j].ContainsKey("vProd"))
+                                            {
+                                                vProd = 0;
+                                                vProd += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            }
+
+                                            if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                vProd += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                            if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                vProd -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                            if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                vProd += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                            if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                vProd += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                        }
+
+                                        if (exitNotes[i][j].ContainsKey("CSOSN"))
+                                        {
+                                            if (comp.Taxation == "Produto")
+                                            {
+                                                if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                                {
+                                                    if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasMono += Convert.ToDecimal(vProd);
+                                                }
+                                                else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                                {
+                                                    if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasST += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102")
+                                                        vendasNomal += Convert.ToDecimal(vProd);
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.NCM = NCM;
+                                                    ViewBag.Erro = 4;
+                                                    return View();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (ncmMono.Contains(NCM))
+                                                {
+                                                    if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasMono += Convert.ToDecimal(vProd);
+                                                }
+                                                else if (ncmNormal.Contains(NCM))
+                                                {
+                                                    if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasST += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102")
+                                                        vendasNomal += Convert.ToDecimal(vProd);
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.NCM = NCM;
+                                                    ViewBag.Erro = 4;
+                                                    return View();
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
                             }
 
                         }
@@ -3992,22 +4118,61 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.PisCofins = true;
 
                             //  Empresa Lucro Real
-                            imp.Venda = vendaLR;
-                            imp.DevolucaoCompra = devolucaoLR;
+
+                            if (comp.Sped)
+                            {
+                                imp.Venda = vendaLR;
+                            }
+                            else
+                            {
+                                imp.Venda = vendaLR;
+                                imp.DevolucaoCompra = devolucaoLR;
+                            }
+                               
 
                             //  Empresa Lucro Presumido
-                            imp.Receita1 = receitaPetroleo;
-                            imp.Receita2 = receitaComercio;
-                            imp.Receita3 = receitaTransporte;
-                            imp.Receita4 = receitaServico;
-                            imp.ReceitaMono = receitaMono;
-                            imp.Devolucao1Saida = devolucaoPetroleo;
-                            imp.Devolucao2Saida = devolucaoComercio;
-                            imp.Devolucao3Saida = devolucaoTransporte;
-                            imp.Devolucao4Saida = devolucaoServico;
-                            imp.DevolucaoNormalSaida = devolucaoNoraml;
+                            if (comp.Sped)
+                            {
+                                imp.Receita1 = receitaPetroleo;
+                                imp.Receita2 = receitaComercio;
+                                imp.Receita3 = receitaTransporte;
+                                imp.Receita4 = receitaServico;
+                                imp.ReceitaMono = receitaMono;
+                            }
+                            else
+                            {
+                                imp.Receita1 = receitaPetroleo;
+                                imp.Receita2 = receitaComercio;
+                                imp.Receita3 = receitaTransporte;
+                                imp.Receita4 = receitaServico;
+                                imp.ReceitaMono = receitaMono;
+                                imp.Devolucao1Saida = devolucaoPetroleo;
+                                imp.Devolucao2Saida = devolucaoComercio;
+                                imp.Devolucao3Saida = devolucaoTransporte;
+                                imp.Devolucao4Saida = devolucaoServico;
+                                imp.DevolucaoNormalSaida = devolucaoNormal;
+                            }
+
+
 
                             //  Empresa do Simples
+                            if (comp.Sped)
+                            {
+                                imp.VendaNormal = vendasNomal;
+                                imp.VendaST = vendasST;
+                                imp.VendaMonofasico = vendasMono;
+                            }
+                            else
+                            {
+                                imp.VendaNormal = vendasNomal;
+                                imp.VendaST = vendasST;
+                                imp.VendaMonofasico = vendasMono;
+                                imp.DevoNormal = devoNormal;
+                                imp.DevoST = devoST;
+                                imp.DevoMonofasico = devoMono;
+
+                            }
+
                         }
                         else
                         {
@@ -4027,9 +4192,15 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.Devolucao2Saida = devolucaoComercio;
                             tax.Devolucao3Saida = devolucaoTransporte;
                             tax.Devolucao4Saida = devolucaoServico;
-                            tax.DevolucaoNormalSaida = devolucaoNoraml;
+                            tax.DevolucaoNormalSaida = devolucaoNormal;
 
                             //  Empresa do Simples
+                            tax.VendaNormal = vendasNomal;
+                            tax.VendaST = vendasST;
+                            tax.VendaMonofasico = vendasMono;
+                            tax.DevoNormal = devoNormal;
+                            tax.DevoST = devoST;
+                            tax.DevoMonofasico = devoMono;
                         }
                     }
                 }

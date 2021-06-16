@@ -1244,123 +1244,6 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("resumoDevoNcmMono"))
                 {
-
-                }
-                else if (type.Equals("relatorioSimples"))
-                {
-                    //   Vendas
-                    List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
-                    List<string> codeProdMono = new List<string>();
-                    List<string> codeProdNormal = new List<string>();
-                    List<string> ncmMono = new List<string>();
-                    List<string> ncmNormal = new List<string>();
-
-                    decimal vendasNomal = 0, vendasST = 0, vendasMono = 0;
-
-                    cfopsVenda.AddRange(cfopsVendaST);
-                    cfopsVenda.AddRange(cfopsTransf);
-                    cfopsVenda.AddRange(cfopsTransfST);
-
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
-
-                    for (int i = notes.Count - 1; i >= 0; i--)
-                    {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
-                        {
-                            notes.RemoveAt(i);
-                            continue;
-                        }
-
-                        if (notes[i][1].ContainsKey("dhEmi"))
-                        {
-                            ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
-
-                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
-                        }
-
-                        string NCM = "", cProd = "";
-                        decimal vProd = 0;
-
-                        for (int j = 0; j < notes[i].Count(); j++)
-                        {
-                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
-                            {
-                                cProd = notes[i][j]["cProd"];
-                                NCM = notes[i][j]["NCM"];
-
-                                if (notes[i][j].ContainsKey("vProd"))
-                                {
-                                    vProd = 0;
-                                    vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vFrete"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vFrete"]);
-
-                                if (notes[i][j].ContainsKey("vDesc"))
-                                    vProd -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-
-                                if (notes[i][j].ContainsKey("vOutro"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vOutro"]);
-
-                                if (notes[i][j].ContainsKey("vSeg"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
-
-                            }
-
-                            if (notes[i][j].ContainsKey("CSOSN"))
-                            {
-                                if (comp.Taxation == "Produto")
-                                {
-                                    if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
-                                    {
-                                        if (notes[i][j]["CSOSN"] == "500")
-                                            vendasMono += Convert.ToDecimal(vProd);
-                                    }
-                                    else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
-                                    {
-                                        if (notes[i][j]["CSOSN"] == "500")
-                                            vendasST += Convert.ToDecimal(vProd);
-                                        else if (notes[i][j]["CSOSN"] == "101" || notes[i][j]["CSOSN"] == "102")
-                                            vendasNomal += Convert.ToDecimal(vProd);
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = NCM;
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                                else
-                                {
-                                    if (ncmMono.Contains(NCM))
-                                    {
-                                        if (notes[i][j]["CSOSN"] == "500")
-                                            vendasMono += Convert.ToDecimal(vProd);
-                                    }
-                                    else if (ncmNormal.Contains(NCM))
-                                    {
-                                        if (notes[i][j]["CSOSN"] == "500")
-                                            vendasST += Convert.ToDecimal(vProd);
-                                        else if (notes[i][j]["CSOSN"] == "101" || notes[i][j]["CSOSN"] == "102")
-                                            vendasNomal += Convert.ToDecimal(vProd);
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = NCM;
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-
-                    //  Devoluções
                     if (arquivo == null || arquivo.Length == 0)
                     {
                         ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1395,14 +1278,21 @@ namespace Escon.SisctNET.Web.Controllers
                     var streamSped = new FileStream(caminhoDestinoArquivoOriginalSped, FileMode.Create);
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
-                    
-                    cfopsDevoVenda.AddRange(cfopsDevoVendaST);
+                }
+                else if (type.Equals("relatorioSimples"))
+                {
+                    var imp = _taxService.FindByMonth(companyId, month, year, "PisCofins");
 
-                    var sped = importSped.NFeDevolution(caminhoDestinoArquivoOriginalSped, cfopsDevoVenda, ncms, comp);
+                    if (imp == null)
+                    {
+                        ViewBag.Erro = 3;
+                        return View();
+                    }
 
-                    decimal devoNormal = sped[0];
-                    decimal devoST = sped[1];
-                    decimal devoMono = sped[2];
+                    ViewBag.Imposto = imp;
+
+                    decimal vendasNomal = Convert.ToDecimal(imp.VendaNormal), vendasST = Convert.ToDecimal(imp.VendaST), vendasMono = Convert.ToDecimal(imp.VendaMonofasico),
+                            devoNormal = Convert.ToDecimal(imp.DevoNormal), devoST = Convert.ToDecimal(imp.DevoST), devoMono = Convert.ToDecimal(imp.DevoMonofasico);
 
 
                     //  Base

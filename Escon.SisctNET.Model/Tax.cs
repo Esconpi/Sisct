@@ -225,5 +225,20 @@ namespace Escon.SisctNET.Model
 
         public decimal? Perda { get; set; }
 
+        //  Simples Nacional
+
+        public decimal? VendaNormal { get; set; }
+
+        public decimal? VendaST { get; set; }
+
+        public decimal? VendaMonofasico { get; set; }
+
+        public decimal? DevoNormal { get; set; }
+
+        public decimal? DevoST { get; set; }
+
+        public decimal? DevoMonofasico { get; set; }
+
+
     }
 }

@@ -114,7 +114,7 @@
                             <!-- EMPRESA INCENTIVO ENTRADA -->
                             @await Html.PartialAsync("_InputData", Model, new ViewDataDictionary(ViewData))
                         }
-                        else if(ViewBag.Company.TipoApuracao.Equals(false))
+                        else if (ViewBag.Company.TipoApuracao.Equals(false))
                         {
                             <!-- EMPRESA INCENTIVO SAÍDA -->
                             @if (ViewBag.Company.AnnexId != 3)
@@ -167,6 +167,7 @@
             else if (ViewBag.Company.CountingTypeId == 3)
             {
                 <!-- EMPRESA DO SIMPLES -->
+                @await Html.PartialAsync("_ReceitaDataSimmples", Model, new ViewDataDictionary(ViewData))
             }
 
         </div>
