@@ -111,7 +111,7 @@ namespace Escon.SisctNET.Web.Sped
         public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms, 
                                            Model.Company company)
         {
-            List<decimal> Devolucoes = new List<decimal>();
+            List<decimal> devolucoes = new List<decimal>();
 
             var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
             var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
@@ -247,13 +247,13 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
 
-            Devolucoes.Add(devolucaoPetroleo);
-            Devolucoes.Add(devolucaoComercio);
-            Devolucoes.Add(devolucaoTransporte);
-            Devolucoes.Add(devolucaoServico);
-            Devolucoes.Add(devolucaoNormal);
+            devolucoes.Add(devolucaoPetroleo);
+            devolucoes.Add(devolucaoComercio);
+            devolucoes.Add(devolucaoTransporte);
+            devolucoes.Add(devolucaoServico);
+            devolucoes.Add(devolucaoNormal);
 
-            return Devolucoes;
+            return devolucoes;
         }
 
         public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
@@ -361,7 +361,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                 if (company.Taxation == "Produto")
                                 {
-                                    // Tributação Individual
+                                    // Tributação Produto/NCM
                                     var prod = linha[2];
                                     foreach (var n in ncmsTaxation)
                                     {
@@ -380,7 +380,7 @@ namespace Escon.SisctNET.Web.Sped
                                 }
                                 else
                                 {
-                                    // Tributação Geral
+                                    // Tributação por NCM
                                     ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
                                 }
 
@@ -426,6 +426,125 @@ namespace Escon.SisctNET.Web.Sped
             entradas.Add(devolucao);
 
             return entradas;
+        }
+
+        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<Model.TaxationNcm> taxationNcms,
+                                           Model.Company company)
+        {
+            List<decimal> devolucoes = new List<decimal>();
+
+            List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
+            List<string> codeProdMono = new List<string>();
+            List<string> codeProdNormal = new List<string>();
+            List<string> ncmMono = new List<string>();
+            List<string> ncmNormal = new List<string>();
+
+            decimal devoNormal = 0, devoST = 0, devoMono = 0;
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            var notes = NFeC100C170(directorySped);
+
+            string line;
+
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1].Equals("0200"))
+                    {
+                        string tipo = "";
+
+                        foreach (var note in notes)
+                        {
+                            if (note[1].Equals("C100"))
+                                tipo = note[2];
+
+                            if (note[1].Equals("C100") && tipo == "0")
+                            {
+                                DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
+                                ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
+
+                                codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                                codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
+                                ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                                ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                            }
+
+                            if (note[1].Equals("C170") && tipo == "0" && note[3].Equals(linha[2]))
+                            {
+                                if (cfopsDevo.Contains(note[11]) && !note[7].Equals(""))
+                                {
+                                    Model.TaxationNcm ehMono = null;
+
+                                    if (company.Taxation == "Produto")
+                                    {
+                                        var prod = linha[2];
+
+                                        foreach (var n in ncmsTaxation)
+                                        {
+                                            int qtd = n.CodeProduct.Length;
+
+                                            string code = prod.Substring(prod.Length - qtd);
+
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+
+                                            if (ehMono != null)
+                                                break;
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                    }
+
+                                    if (ehMono == null)
+                                    {
+                                        if (note[10] == "101" || linha[8] == "102")
+                                        {
+                                            // Devolução ST
+                                            devoST += Convert.ToDecimal(note[7]);
+                                        }
+                                        else if (note[10] == "500")
+                                        {
+                                            // Devolução Normal
+                                            devoNormal += Convert.ToDecimal(note[7]);
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        // Devolução Monofásica
+                                        if (note[10] == "500")
+                                            devoMono += Convert.ToDecimal(note[7]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (linha[1].Equals("E001") || linha[1].Equals("H001"))
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            devolucoes.Add(devoNormal);
+            devolucoes.Add(devoST);
+            devolucoes.Add(devoMono);
+
+            return devolucoes;
         }
 
         public List<string> NFeEntry(string directorySped)
