@@ -3137,6 +3137,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (comp.CountingTypeId.Equals((long)3))
                             {
                                 // Empresa do Simples
+                                cfopsDevoVenda.AddRange(cfopsDevoVendaST);
 
                                 var sped = importSped.NFeDevolution(cc, cfopsDevoVenda, ncmsCompany, comp);
 

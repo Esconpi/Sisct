@@ -127,7 +127,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE) || 
                         ordem.Equals(Model.Ordem.DifereIcms))
                     {
-                        spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped);
+                        spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped, ident);
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
                     }
                     else

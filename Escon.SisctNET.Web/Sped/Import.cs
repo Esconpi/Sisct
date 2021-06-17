@@ -2655,7 +2655,7 @@ namespace Escon.SisctNET.Web.Sped
             return spedNf;
         }
 
-        public List<List<string>> NFeDif(string directorySped)
+        public List<List<string>> NFeDif(string directorySped, string tipo)
         {
             List<List<string>> sped = new List<List<string>>();
 
@@ -2669,21 +2669,44 @@ namespace Escon.SisctNET.Web.Sped
                 {
                     List<string> linhaSped = new List<string>();
                     string[] linha = line.Split('|');
-                    if (linha[1] == "C100" && linha[2] == "0")
+
+
+                    if (tipo == "0")
                     {
-                        linhaSped.Add(linha[8]);
-                        linhaSped.Add(linha[9]);
-                        linhaSped.Add(linha[12]);
-                        linhaSped.Add(linha[14]);
-                        linhaSped.Add(linha[18]);
-                        linhaSped.Add(linha[19]);
-                        linhaSped.Add(linha[20]);
-                        linhaSped.Add(linha[24]);
-                        linhaSped.Add(linha[25]);
-                        linhaSped.Add(linha[16]);
-                        linhaSped.Add(linha[22]);
-                        sped.Add(linhaSped);
+                        if (linha[1] == "C100" && linha[2] == "0")
+                        {
+                            linhaSped.Add(linha[8]);
+                            linhaSped.Add(linha[9]);
+                            linhaSped.Add(linha[12]);
+                            linhaSped.Add(linha[14]);
+                            linhaSped.Add(linha[18]);
+                            linhaSped.Add(linha[19]);
+                            linhaSped.Add(linha[20]);
+                            linhaSped.Add(linha[24]);
+                            linhaSped.Add(linha[25]);
+                            linhaSped.Add(linha[16]);
+                            linhaSped.Add(linha[22]);
+                            sped.Add(linhaSped);
+                        }
                     }
+                    else
+                    {
+                        if (linha[1] == "C100" && (linha[2] == "1" || (linha[2] == "0" && linha[3] == "0")) && linha[6] != "05" && linha[6] != "03" && linha[6] != "02")
+                        {
+                            linhaSped.Add(linha[8]);
+                            linhaSped.Add(linha[9]);
+                            linhaSped.Add(linha[12]);
+                            linhaSped.Add(linha[14]);
+                            linhaSped.Add(linha[18]);
+                            linhaSped.Add(linha[19]);
+                            linhaSped.Add(linha[20]);
+                            linhaSped.Add(linha[24]);
+                            linhaSped.Add(linha[25]);
+                            linhaSped.Add(linha[16]);
+                            linhaSped.Add(linha[22]);
+                            sped.Add(linhaSped);
+                        }
+                    }                   
                 }
             }
             catch (Exception ex)

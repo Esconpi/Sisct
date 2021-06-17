@@ -65,7 +65,7 @@
 
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label class="control-label">Arquivo</label>
-                        <select name="arquivo" class="form-control selectoption" id="archive">
+                        <select name="archive" class="form-control selectoption" id="archive">
                             <option value="xmlS" selected>XML SEFAZ</option>
                             <option value="xmlE">XML EMPRESA</option>
                         </select>
@@ -143,6 +143,12 @@
                     document.getElementById("ativa").disabled = false;
                 }
             }
+            else if (tipo == "relatorioSimples") {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = true;
+                document.getElementById("arquivo").disabled = true;
+            }
             else {
                 document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = true;
@@ -176,7 +182,7 @@ else
                 document.getElementById("arquivo").disabled = true;
             }
             else if (tipo == "resumoDevoNcmMono") {
-                document.getElementById("cfopid").disabled = false;
+                document.getElementById("cfopid").disabled = true;
                 document.getElementById("trimestre").disabled = true;
                 document.getElementById("archive").disabled = true;
                 document.getElementById("arquivo").disabled = false;
@@ -187,6 +193,12 @@ else
                 } else {
                     document.getElementById("ativa").disabled = false;
                 }
+            }
+            else if (tipo == "relatorioSimples") {
+                document.getElementById("cfopid").disabled = true;
+                document.getElementById("trimestre").disabled = true;
+                document.getElementById("archive").disabled = true;
+                document.getElementById("arquivo").disabled = true;
             }
             else {
                 document.getElementById("cfopid").disabled = true;

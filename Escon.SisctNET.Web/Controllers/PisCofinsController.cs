@@ -271,6 +271,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     cfops[pos][9] = (Convert.ToDecimal(cfops[pos][9]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
                                 }
 
+
                             }
                             else if ((cpf == "escon" || cpf == "") && cnpj == "escon")
                             {
@@ -1299,6 +1300,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal baseNormal = vendasNomal - devoNormal,
                             baseST = vendasST - devoST,
                             baseMono = vendasMono - devoMono;
+
 
                     //  Totais
                     decimal totalVendas = vendasNomal + vendasST + vendasMono,
