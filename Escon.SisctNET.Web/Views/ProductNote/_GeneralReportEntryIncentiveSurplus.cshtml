@@ -332,7 +332,7 @@
             @if (ViewBag.Company.ChapterId == 4)
             {
                 <tr>
-                    <th>ICMS Excedente P/ Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %)</th>
+                    <th>ICMS Limite Mínimo P/ Contribuinte (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %)</th>
                     <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.LimiteContribuinte)</td>
                     <th style="font-size:17px;text-align:center">-</th>
                     <td style="text-align:right; padding-right:1%;">@string.Format("{0:N}", ViewBag.BaseCalcContribuinte)</td>

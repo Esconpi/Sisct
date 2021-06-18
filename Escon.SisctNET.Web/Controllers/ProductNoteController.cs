@@ -1886,7 +1886,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Contribuinte
                                 if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == (long)4)
                                 {
-                                    excedenteContribuinte = baseCalcContribuinte - limiteContribuinte;
+                                    excedenteContribuinte = limiteContribuinte - baseCalcContribuinte;
                                     impostoContribuinte = Math.Round((excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100, 2);
                                 }
 
@@ -2890,7 +2890,7 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Contribuinte
                             if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == (long)4)
                             {
-                                excedenteContribuinte = baseCalcContribuinte - limiteContribuinte;
+                                excedenteContribuinte = limiteContribuinte - baseCalcContribuinte;
                                 impostoContribuinte = Math.Round((excedenteContribuinte * Convert.ToDecimal(comp.VendaContribuinteExcedente)) / 100, 2);
                             }
 

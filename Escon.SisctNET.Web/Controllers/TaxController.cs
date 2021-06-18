@@ -4069,6 +4069,10 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (exitNotes[i][j]["CSOSN"] == "500")
                                                         vendasMono += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasST += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102")
+                                                        vendasNomal += Convert.ToDecimal(vProd);
                                                 }
                                                 else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
                                                 {
@@ -4090,6 +4094,10 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (exitNotes[i][j]["CSOSN"] == "500")
                                                         vendasMono += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "500")
+                                                        vendasST += Convert.ToDecimal(vProd);
+                                                    else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102")
+                                                        vendasNomal += Convert.ToDecimal(vProd);
                                                 }
                                                 else if (ncmNormal.Contains(NCM))
                                                 {

@@ -518,9 +518,20 @@ namespace Escon.SisctNET.Web.Sped
                                     }
                                     else
                                     {
-                                        // Devolução Monofásica
-                                        if (note[10] == "500")
+                                        if (note[10] == "500"){
+                                            // Devolução Monofásica
                                             devoMono += Convert.ToDecimal(note[7]);
+                                        }
+                                        else if (note[10] == "101" || linha[8] == "102")
+                                        {
+                                            // Devolução ST
+                                            devoST += Convert.ToDecimal(note[7]);
+                                        }
+                                        else if (note[10] == "500")
+                                        {
+                                            // Devolução Normal
+                                            devoNormal += Convert.ToDecimal(note[7]);
+                                        }
                                     }
                                 }
                             }
@@ -528,7 +539,7 @@ namespace Escon.SisctNET.Web.Sped
                     }
 
                     if (linha[1].Equals("E001") || linha[1].Equals("H001"))
-                    break;
+                        break;
                 }
             }
             catch (Exception ex)
