@@ -47,6 +47,11 @@
     <strong>Resumo Devolução NCM Monofásico</strong>
 }
 
+@if (ViewBag.Type == "tributacaoDivergente")
+{
+    <strong>RTributação de NCM Monofásico Divergente</strong>
+}
+
 
 
 @if (ViewBag.Type != "imposto" && ViewBag.Type != "relatorioSimples")

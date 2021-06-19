@@ -109,9 +109,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                List<TaxationNcm> ncms = new List<TaxationNcm>();
-
-                ncms = _service.FindByCompany(comp.Document);
+                var ncms = _service.FindByCompany(comp.Document);
 
 
                 if (type.Equals("resumoCfop"))
@@ -1377,6 +1375,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("resumoDevoNcmMono"))
                 {
+                    //  Resumo Devolução NCM Monofásico
+
                     if (arquivo == null || arquivo.Length == 0)
                     {
                         ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
@@ -1411,6 +1411,121 @@ namespace Escon.SisctNET.Web.Controllers
                     var streamSped = new FileStream(caminhoDestinoArquivoOriginalSped, FileMode.Create);
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
+                }
+                else if (type.Equals("tributacaoDivergente"))
+                {
+                    // Tributação de NCM Monofásico Divergente
+                    List<List<string>> resumoNcm = new List<List<string>>();
+
+                    List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
+                    List<string> codeProdMono = new List<string>();
+                    List<string> codeProdNormal = new List<string>();
+                    List<string> ncmMono = new List<string>();
+                    List<string> ncmNormal = new List<string>();
+
+                    var ncmsAll = _ncmService.FindAll(null);
+
+                    notes = importXml.NFeAll(directoryNfeExit);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["finNFe"] == "4")
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (notes[i][1].ContainsKey("dhEmi"))
+                        {
+                            ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                        }
+
+                        string cProd = "", NCM = "";
+                        bool status = false;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
+                            {
+                                cProd = notes[i][j]["cProd"];
+                                NCM = notes[i][j]["NCM"];
+
+                                status = false;
+
+                                if (comp.Taxation == "Produto")
+                                {
+                                    if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                    {
+                                        status = true;
+                                    }
+                                    else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                    {
+                                        status = false;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NCM = NCM;
+                                        ViewBag.Erro = 2;
+                                        return View();
+                                    }
+                                }
+                                else
+                                {
+                                    if (ncmMono.Contains(NCM))
+                                    {
+                                        status = true;
+                                    }
+                                    else if (ncmNormal.Contains(NCM))
+                                    {
+                                        status = false;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NCM = notes[i][j]["NCM"];
+                                        ViewBag.Erro = 2;
+                                        return View();
+                                    }
+                                }
+                            }
+
+
+                            if (notes[i][j].ContainsKey("CSOSN") && status == true)
+                            {
+                                if (notes[i][j]["CSOSN"] != "500")
+                                {
+                                    int pos = -1;
+                                    for (int k = 0; k < resumoNcm.Count(); k++)
+                                    {
+                                        if (resumoNcm[k][0].Equals(NCM))
+                                        {
+                                            pos = k;
+                                            break;
+                                        }
+                                    }
+
+                                    if (pos < 0)
+                                    {
+                                        var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                        List<string> ncmTemp = new List<string>();
+                                        ncmTemp.Add(nn.Code);
+                                        ncmTemp.Add(nn.Description);
+                                        resumoNcm.Add(ncmTemp);
+                                    }
+                                }
+                                   
+                            }
+
+                        }
+                    }
+
+                    ViewBag.Ncm = resumoNcm.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
                 else if (type.Equals("relatorioSimples"))
                 {
