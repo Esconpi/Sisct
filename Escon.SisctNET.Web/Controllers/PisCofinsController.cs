@@ -634,7 +634,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
+                    List<string> codeProdNormal = new List<string>();
                     List<string> ncmMono = new List<string>();
+                    List<string> ncmNormal = new List<string>();
 
                     var prodAll = ncms.Select(_ => _.CodeProduct).ToList();
                     var ncmsAll = ncms.Select(_ => _.Ncm.Code).ToList();
@@ -653,7 +655,9 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
                             codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
                             ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
                         }
 
 
@@ -666,40 +670,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                status = false;
                                 cProd = notes[i][j]["cProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
-
-                                if (comp.Taxation == "Produto")
-                                {
-                                    if (prodAll.Contains(notes[i][j]["cProd"]) && ncmsAll.Contains(notes[i][j]["NCM"]))
-                                    {
-                                        if (codeProdMono.Contains(notes[i][j]["cProd"]) && ncmMono.Contains(notes[i][j]["NCM"]))
-                                            status = true;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                                else
-                                {
-                                    if (ncmsAll.Contains(notes[i][j]["NCM"]))
-                                    {
-                                        if (ncmMono.Contains(notes[i][j]["NCM"]))
-                                            status = true;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-
 
                                 if (notes[i][j].ContainsKey("vProd"))
                                 {
@@ -732,6 +705,49 @@ namespace Escon.SisctNET.Web.Controllers
                             if (notes[i][j].ContainsKey("CSOSN"))
                             {
                                 CSOSN = notes[i][j]["CSOSN"];
+
+                                status = false;
+
+                                if (notes[i][j]["CSOSN"] == "500")
+                                {
+                                    if (comp.Taxation == "Produto")
+                                    {
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                }
                             }
 
                             if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && status == true && CSOSN == "500")
@@ -934,7 +950,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
+                    List<string> codeProdNormal = new List<string>();
                     List<string> ncmMono = new List<string>();
+                    List<string> ncmNormal = new List<string>();
 
                     notes = importXml.NFeAll(directoryNfeExit);
 
@@ -955,12 +973,14 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
                             codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
                             ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
                         }
 
 
                         bool status = false;
-                        string cProd = "", xProd = "", cfop = "", ncm = "", cstP = "", CSOSN = "";
+                        string cProd = "", xProd = "", cfop = "", NCM = "", cstP = "", CSOSN = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -969,41 +989,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
                             {
-                                status = false;
                                 pos = -1;
-                                ncm = notes[i][j]["NCM"];
+                                NCM = notes[i][j]["NCM"];
                                 cfop = notes[i][j]["CFOP"];
                                 cProd = notes[i][j]["cProd"];
                                 xProd = notes[i][j]["xProd"];
-
-                                if (comp.Taxation == "Produto")
-                                {
-                                    if (prodAll.Contains(notes[i][j]["cProd"]) && ncmsAll.Contains(notes[i][j]["NCM"]))
-                                    {
-                                        if (codeProdMono.Contains(notes[i][j]["cProd"]) && ncmMono.Contains(notes[i][j]["NCM"]))
-                                            status = true;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                                else
-                                {
-                                    if (ncmsAll.Contains(notes[i][j]["NCM"]))
-                                    {
-                                        if (ncmMono.Contains(notes[i][j]["NCM"]))
-                                            status = true;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
 
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
                                 {
@@ -1026,44 +1016,86 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             if (notes[i][j].ContainsKey("CSOSN"))
-                                CSOSN = notes[i][j]["CSOSN"];
-
-                            if (notes[i][j].ContainsKey("CSTP") && status)
-                                cstP = notes[i][j]["CSTP"];
-
-                            if (notes[i][j].ContainsKey("CSTC") && status)
                             {
+                                CSOSN = notes[i][j]["CSOSN"];
+                                status = false;
 
-                                if(CSOSN == "500")
+                                if (notes[i][j]["CSOSN"] == "500")
                                 {
-                                    for (int e = 0; e < produtos.Count(); e++)
+                                    if (comp.Taxation == "Produto")
                                     {
-                                        if (produtos[e][0].Equals(cProd) && produtos[e][2].Equals(ncm) && produtos[e][3].Equals(cfop) &&
-                                            produtos[e][4].Equals(cstP) && produtos[e][5].Equals(notes[i][j]["CSTC"]))
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
                                         {
-                                            pos = e;
-                                            break;
+                                            status = true;
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
                                         }
                                     }
-
-                                    if (pos < 0)
+                                    else
                                     {
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
 
-                                        List<string> prod = new List<string>();
-                                        prod.Add(cProd);
-                                        prod.Add(xProd);
-                                        prod.Add(ncm);
-                                        prod.Add(cfop);
-                                        prod.Add(cstP);
-                                        prod.Add(notes[i][j]["CSTC"]);
-                                        prod.Add("0");
-                                        produtos.Add(prod);
-                                        pos = produtos.Count() - 1;
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
                                     }
-                                    produtos[pos][6] = (Convert.ToDecimal(produtos[pos][6]) + vProd).ToString();
-                                    vTotal += vProd;
                                 }
-                                
+                            }
+                            
+
+                            if (notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status)
+                                cstP = notes[i][j]["CSTP"];
+
+                            if (notes[i][j].ContainsKey("CSTC") && CSOSN == "500" && status)
+                            {
+
+                                for (int e = 0; e < produtos.Count(); e++)
+                                {
+                                    if (produtos[e][0].Equals(cProd) && produtos[e][2].Equals(NCM) && produtos[e][3].Equals(cfop) &&
+                                        produtos[e][4].Equals(cstP) && produtos[e][5].Equals(notes[i][j]["CSTC"]))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+
+                                    List<string> prod = new List<string>();
+                                    prod.Add(cProd);
+                                    prod.Add(xProd);
+                                    prod.Add(NCM);
+                                    prod.Add(cfop);
+                                    prod.Add(cstP);
+                                    prod.Add(notes[i][j]["CSTC"]);
+                                    prod.Add("0");
+                                    produtos.Add(prod);
+                                    pos = produtos.Count() - 1;
+                                }
+                                produtos[pos][6] = (Convert.ToDecimal(produtos[pos][6]) + vProd).ToString();
+                                vTotal += vProd;
+
                             }
                         }
 
@@ -1264,13 +1296,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
                             
-                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status == true)
+                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status)
                             {
                                 resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
                                 valorPis += Convert.ToDecimal(notes[i][j]["vPIS"]);
                             }
 
-                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && CSOSN == "500" && status == true)
+                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && CSOSN == "500" && status)
                             {
                                 resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
                                 valorCofins += Convert.ToDecimal(notes[i][j]["vCOFINS"]);
