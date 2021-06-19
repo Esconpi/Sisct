@@ -1113,7 +1113,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                         string cProd = "", NCM = "", CSOSN = "";
                         decimal vProd = 0;
-                        bool achouPIS = false;
+                        bool status = false;
+                        int pos = -1;
+
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -1155,214 +1157,123 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 CSOSN = notes[i][j]["CSOSN"];
 
-                                if (CSOSN == "500")
-                                    valorProduto += vProd;
-                            }
-                                
+                                pos = -1;
+                                status = false;
 
-                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && CSOSN == "500")
-                            {
-                                achouPIS = true;
-                                int pos = -1;
-
-                                if (comp.Taxation == "Produto")
+                                if (notes[i][j]["CSOSN"] == "500")
                                 {
-                                    if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                    if (comp.Taxation == "Produto")
                                     {
-                                        pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
                                         {
-                                            if (resumoNcm[k][0].Equals(NCM))
+                                            status = true;
+
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
                                             {
-                                                pos = k;
-                                                break;
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
                                             }
-                                        }
 
-                                        if (pos < 0)
-                                        {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add(notes[i][j]["vPIS"]);
-                                            ncmTemp.Add("0");
-                                            ncmTemp.Add(vProd.ToString());
-                                            resumoNcm.Add(ncmTemp);
-                                            pos = resumoNcm.Count() - 1;
-                                        }
-
-                                        if (pos >= 0)
-                                        {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
-                                            resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
-                                            valorPis += Convert.ToDecimal(notes[i][j]["vPIS"]);
-                                        }
-
-                                    }
-                                    else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = NCM;
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                                else
-                                {
-                                    if (ncmMono.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
-                                        {
-                                            if (resumoNcm[k][0].Equals(NCM))
+                                            if (pos < 0)
                                             {
-                                                pos = k;
-                                                break;
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add(vProd.ToString());
+                                                resumoNcm.Add(ncmTemp);
+                                                pos = resumoNcm.Count() - 1;
                                             }
-                                        }
 
-                                        if (pos < 0)
-                                        {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add(notes[i][j]["vPIS"]);
-                                            ncmTemp.Add("0");
-                                            ncmTemp.Add(vProd.ToString());
-                                            resumoNcm.Add(ncmTemp);
-                                            pos = resumoNcm.Count() - 1;
-                                        }
-
-                                        if (pos >= 0)
-                                        {
-                                            resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
-                                            resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
-                                            valorPis += Convert.ToDecimal(notes[i][j]["vPIS"]);
-                                        }
-
-                                    }
-                                    else if (ncmNormal.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                            }
-
-                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && CSOSN == "500")
-                            {
-                                int pos = -1;
-
-                                if (comp.Taxation == "Produto")
-                                {
-                                    if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
-                                        {
-                                            if (resumoNcm[k][0].Equals(NCM))
+                                            if (pos >= 0)
                                             {
-                                                pos = k;
-                                                break;
-                                            }
-                                        }
-
-                                        if (pos < 0)
-                                        {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add("0");
-                                            ncmTemp.Add(notes[i][j]["vCOFINS"]);
-                                            ncmTemp.Add(vProd.ToString());
-                                            resumoNcm.Add(ncmTemp);
-                                            pos = resumoNcm.Count() - 1;
-                                        }
-
-                                        if (pos >= 0)
-                                        {
-                                            resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
-                                            if (!achouPIS)
                                                 resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
-                                            valorCofins += Convert.ToDecimal(notes[i][j]["vCOFINS"]);
-                                        }
-
-                                    }
-                                    else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        ViewBag.NCM = NCM;
-                                        ViewBag.Erro = 2;
-                                        return View();
-                                    }
-                                }
-                                else
-                                {
-                                    if (ncmMono.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
-                                        {
-                                            if (resumoNcm[k][0].Equals(NCM))
-                                            {
-                                                pos = k;
-                                                break;
+                                             
                                             }
-                                        }
 
-                                        if (pos < 0)
+                                            valorProduto += vProd;
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
                                         {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add("0");
-                                            ncmTemp.Add(notes[i][j]["vCOFINS"]);
-                                            ncmTemp.Add(vProd.ToString());
-                                            resumoNcm.Add(ncmTemp);
-                                            pos = resumoNcm.Count() - 1;
+                                            pos = -1;
+                                            status = false;
+                                            continue;
                                         }
-
-                                        if (pos >= 0)
+                                        else
                                         {
-                                            resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
-                                            if (!achouPIS)
-                                                resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
-                                            valorCofins += Convert.ToDecimal(notes[i][j]["vCOFINS"]);
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
                                         }
-
-                                    }
-                                    else if (ncmNormal.Contains(NCM))
-                                    {
-                                        pos = -1;
-                                        continue;
                                     }
                                     else
                                     {
-                                        ViewBag.NCM = notes[i][j]["NCM"];
-                                        ViewBag.Erro = 2;
-                                        return View();
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add(vProd.ToString());
+                                                resumoNcm.Add(ncmTemp);
+                                                pos = resumoNcm.Count() - 1;
+                                            }
+
+                                            if (pos >= 0)
+                                            {
+                                                resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
+                                            }
+
+                                            valorProduto += vProd;
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            pos = -1;
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
                                     }
 
-                                    achouPIS = false;
                                 }
+
+                            }
+                            
+                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status == true)
+                            {
+                                resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
+                                valorPis += Convert.ToDecimal(notes[i][j]["vPIS"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && CSOSN == "500" && status == true)
+                            {
+                                resumoNcm[pos][3] = (Convert.ToDecimal(resumoNcm[pos][3]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
+                                valorCofins += Convert.ToDecimal(notes[i][j]["vCOFINS"]);
                             }
                         }
 
@@ -1466,7 +1377,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
                                     {
                                         status = false;
-                                        continue;
                                     }
                                     else
                                     {
@@ -1484,7 +1394,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     else if (ncmNormal.Contains(NCM))
                                     {
                                         status = false;
-                                        continue;
                                     }
                                     else
                                     {
@@ -1496,27 +1405,58 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
 
-                            if (notes[i][j].ContainsKey("CSOSN") && status == true)
+                            if (notes[i][j].ContainsKey("CSOSN"))
                             {
-                                if (notes[i][j]["CSOSN"] != "500")
+                                if (status == true)
                                 {
-                                    int pos = -1;
-                                    for (int k = 0; k < resumoNcm.Count(); k++)
+                                    if (notes[i][j]["CSOSN"] != "500")
                                     {
-                                        if (resumoNcm[k][0].Equals(NCM))
+                                        int pos = -1;
+                                        for (int k = 0; k < resumoNcm.Count(); k++)
                                         {
-                                            pos = k;
-                                            break;
+                                            if (resumoNcm[k][0].Equals(NCM))
+                                            {
+                                                pos = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (pos < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> ncmTemp = new List<string>();
+                                            ncmTemp.Add(nn.Code);
+                                            ncmTemp.Add(nn.Description);
+                                            ncmTemp.Add("NORMAL");
+                                            ncmTemp.Add("MONOFÁSICO");
+                                            resumoNcm.Add(ncmTemp);
                                         }
                                     }
-
-                                    if (pos < 0)
+                                }
+                                else
+                                {
+                                    if (notes[i][j]["CSOSN"] == "500")
                                     {
-                                        var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                        List<string> ncmTemp = new List<string>();
-                                        ncmTemp.Add(nn.Code);
-                                        ncmTemp.Add(nn.Description);
-                                        resumoNcm.Add(ncmTemp);
+                                        int pos = -1;
+                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        {
+                                            if (resumoNcm[k][0].Equals(NCM))
+                                            {
+                                                pos = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (pos < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> ncmTemp = new List<string>();
+                                            ncmTemp.Add(nn.Code);
+                                            ncmTemp.Add(nn.Description);
+                                            ncmTemp.Add("MONOFÁSICO");
+                                            ncmTemp.Add("NORMAL");
+                                            resumoNcm.Add(ncmTemp);
+                                        }
                                     }
                                 }
                                    
