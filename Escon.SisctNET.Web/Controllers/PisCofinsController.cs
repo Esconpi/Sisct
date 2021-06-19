@@ -661,9 +661,10 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
 
-                        bool status = false, achouPIS = false;
+                        bool status = false;
                         decimal vProd = 0;
                         string cProd = "", NCM = "", CFOP = "", CSOSN = "";
+                        int pos = -1;
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -705,8 +706,8 @@ namespace Escon.SisctNET.Web.Controllers
                             if (notes[i][j].ContainsKey("CSOSN"))
                             {
                                 CSOSN = notes[i][j]["CSOSN"];
-
                                 status = false;
+                                pos = -1;
 
                                 if (notes[i][j]["CSOSN"] == "500")
                                 {
@@ -715,9 +716,39 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
                                         {
                                             status = true;
+
+                                            for (int k = 0; k < cfops.Count(); k++)
+                                            {
+                                                if (cfops[k][0].Equals(CFOP))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var cfp = _cfopService.FindByCode(CFOP);
+                                                List<string> cfop = new List<string>();
+                                                cfop.Add(CFOP);
+                                                cfop.Add(cfp.Description);
+
+                                                // Geral
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+
+                                                cfops.Add(cfop);
+                                                pos = cfops.Count() - 1;
+                                            }
+
+                                            cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
                                         }
                                         else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
                                         {
+                                            pos = -1;
                                             status = false;
                                             continue;
                                         }
@@ -734,9 +765,39 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             status = true;
 
+
+                                            for (int k = 0; k < cfops.Count(); k++)
+                                            {
+                                                if (cfops[k][0].Equals(CFOP))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var cfp = _cfopService.FindByCode(CFOP);
+                                                List<string> cfop = new List<string>();
+                                                cfop.Add(CFOP);
+                                                cfop.Add(cfp.Description);
+
+                                                // Geral
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+
+                                                cfops.Add(cfop);
+                                                pos = cfops.Count() - 1;
+                                            }
+
+                                            cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
                                         }
                                         else if (ncmNormal.Contains(NCM))
                                         {
+                                            pos = -1;
                                             status = false;
                                             continue;
                                         }
@@ -747,79 +808,23 @@ namespace Escon.SisctNET.Web.Controllers
                                             return View();
                                         }
                                     }
+
                                 }
+
                             }
 
-                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && status == true && CSOSN == "500")
+                            if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && status && CSOSN == "500")
                             {
-                                achouPIS = true;
-                                int pos = -1;
-                                for (int k = 0; k < cfops.Count(); k++)
-                                {
-                                    if (cfops[k][0].Equals(CFOP))
-                                    {
-                                        pos = k;
-                                        break;
-                                    }
-                                }
-
-                                if (pos < 0)
-                                {
-                                    var cfp = _cfopService.FindByCode(CFOP);
-                                    List<string> cfop = new List<string>();
-                                    cfop.Add(CFOP);
-                                    cfop.Add(cfp.Description);
-
-                                    // Geral
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    cfops.Add(cfop);
-                                    pos = cfops.Count() - 1;
-                                }
-
-                                cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
                                 cfops[pos][3] = (Convert.ToDecimal(cfops[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                                 cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
+
                             }
 
-                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && status == true && CSOSN == "500")
+                            if (notes[i][j].ContainsKey("pCOFINS") && notes[i][j].ContainsKey("CSTC") && status && CSOSN == "500")
                             {
-                                int pos = -1;
-                                for (int k = 0; k < cfops.Count(); k++)
-                                {
-                                    if (cfops[k][0].Equals(CFOP))
-                                    {
-                                        pos = k;
-                                        break;
-                                    }
-                                }
-
-                                if (pos < 0)
-                                {
-                                    var cfp = _cfopService.FindByCode(CFOP);
-                                    List<string> cfop = new List<string>();
-                                    cfop.Add(CFOP);
-                                    cfop.Add(cfp.Description);
-
-                                    // Geral
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-                                    cfop.Add("0");
-
-                                    cfops.Add(cfop);
-                                    pos = cfops.Count() - 1;
-                                }
-
-                                if (!achouPIS)
-                                    cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
                                 cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vCOFINS"])).ToString();
                                 cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+
                             }
 
                         }
