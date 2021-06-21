@@ -813,6 +813,116 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+                                CSOSN = "500";
+                                status = false;
+                                pos = -1;
+
+                                if (CSOSN == "500")
+                                {
+                                    if (comp.Taxation == "Produto")
+                                    {
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                            for (int k = 0; k < cfops.Count(); k++)
+                                            {
+                                                if (cfops[k][0].Equals(CFOP))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var cfp = _cfopService.FindByCode(CFOP);
+                                                List<string> cfop = new List<string>();
+                                                cfop.Add(CFOP);
+                                                cfop.Add(cfp.Description);
+
+                                                // Geral
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+
+                                                cfops.Add(cfop);
+                                                pos = cfops.Count() - 1;
+                                            }
+
+                                            cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                        {
+                                            pos = -1;
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+
+                                            for (int k = 0; k < cfops.Count(); k++)
+                                            {
+                                                if (cfops[k][0].Equals(CFOP))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var cfp = _cfopService.FindByCode(CFOP);
+                                                List<string> cfop = new List<string>();
+                                                cfop.Add(CFOP);
+                                                cfop.Add(cfp.Description);
+
+                                                // Geral
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+                                                cfop.Add("0");
+
+                                                cfops.Add(cfop);
+                                                pos = cfops.Count() - 1;
+                                            }
+
+                                            cfops[pos][2] = (Convert.ToDecimal(cfops[pos][2]) + vProd).ToString();
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            pos = -1;
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+
+                                }
+
+                            }
+                           
                             if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && status && CSOSN == "500")
                             {
                                 cfops[pos][3] = (Convert.ToDecimal(cfops[pos][3]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
@@ -1066,7 +1176,54 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
-                            
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+                                CSOSN = "500";
+                                status = false;
+
+                                if (CSOSN == "500")
+                                {
+                                    if (comp.Taxation == "Produto")
+                                    {
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                }
+                            }
+
 
                             if (notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status)
                                 cstP = notes[i][j]["CSTP"];
@@ -1189,7 +1346,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-
                             if (notes[i][j].ContainsKey("CSOSN"))
                             {
                                 CSOSN = notes[i][j]["CSOSN"];
@@ -1300,7 +1456,118 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                             }
-                            
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+                                CSOSN = "500";
+
+                                pos = -1;
+                                status = false;
+
+                                if (CSOSN == "500")
+                                {
+                                    if (comp.Taxation == "Produto")
+                                    {
+                                        if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add(vProd.ToString());
+                                                resumoNcm.Add(ncmTemp);
+                                                pos = resumoNcm.Count() - 1;
+                                            }
+
+                                            if (pos >= 0)
+                                            {
+                                                resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
+
+                                            }
+
+                                            valorProduto += vProd;
+                                        }
+                                        else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                        {
+                                            pos = -1;
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = NCM;
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ncmMono.Contains(NCM))
+                                        {
+                                            status = true;
+
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add("0");
+                                                ncmTemp.Add(vProd.ToString());
+                                                resumoNcm.Add(ncmTemp);
+                                                pos = resumoNcm.Count() - 1;
+                                            }
+
+                                            if (pos >= 0)
+                                            {
+                                                resumoNcm[pos][4] = (Convert.ToDecimal(resumoNcm[pos][4]) + vProd).ToString();
+                                            }
+
+                                            valorProduto += vProd;
+                                        }
+                                        else if (ncmNormal.Contains(NCM))
+                                        {
+                                            pos = -1;
+                                            status = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.Erro = 2;
+                                            return View();
+                                        }
+                                    }
+
+                                }
+
+                            }
+                           
                             if (notes[i][j].ContainsKey("pPIS") && notes[i][j].ContainsKey("CSTP") && CSOSN == "500" && status)
                             {
                                 resumoNcm[pos][2] = (Convert.ToDecimal(resumoNcm[pos][2]) + Convert.ToDecimal(notes[i][j]["vPIS"])).ToString();
@@ -1441,7 +1708,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-
                             if (notes[i][j].ContainsKey("CSOSN"))
                             {
                                 if (status == true)
@@ -1498,7 +1764,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                    
                             }
-
                         }
                     }
 
