@@ -19,8 +19,6 @@
         else
         {
             <div class="col-lg-12" style="font-size:12px;">
-                <p>* Percentual Capítulo IV - C Do regime especial de substituição tributária aplicável às operações com autopeças, componentes e acessórios para motocicletas</p>
-                
                 <form asp-action="Product" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -73,7 +71,7 @@
                             <input asp-for="Ucom" class="form-control" style="font-size:12px;" disabled />
                             <label asp-for="Cfop" class="control-label"></label>
                             <input asp-for="Cfop" class="form-control" disabled />
-                            
+
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-6">
                             <label asp-for="Qcom" class="control-label"></label>
@@ -111,14 +109,14 @@
                         {
                             <div class="form-group col-lg-2 col-md-6 col-xs-6">
                                 <label class="control-label">Quantidade da Pauta</label>
-                                <input type="text" class="form-control" name="Qpauta"  id="quant" value="@Model.Qpauta" />
+                                <input type="text" class="form-control" name="Qpauta" id="quant" value="@Model.Qpauta" />
                             </div>
                         }
                         else
                         {
                             <div class="form-group col-lg-2 col-md-6 col-xs-6">
                                 <label class="control-label">Quantidade da Pauta</label>
-                                <input type="text" class="form-control" name="Qpauta"  id="quant" disabled="disabled" />
+                                <input type="text" class="form-control" name="Qpauta" id="quant" disabled="disabled" />
                             </div>
                         }
 
@@ -193,7 +191,7 @@
                             <label class="control-label">FECOP (%)</label>
                             @if (Model.TaxationTypeId.Equals(5) || Model.TaxationTypeId.Equals(6) || Model.TaxationTypeId.Equals(8))
                             {
-                                <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop"/>
+                                <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
                             }
                             else
                             {
@@ -205,7 +203,7 @@
                             <label class="control-label">* INCISO (%)</label>
                             @if (Model.Note.Company.ChapterId == 4)
                             {
-                                <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" required/>
+                                <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" required />
                             }
                             else
                             {
@@ -226,7 +224,7 @@
                             <label asp-for="DateStart" class="control-label"></label>
                             @if (Model.DateStart == null)
                             {
-                                <input type="date"  asp-for="DateStart" class="form-control" name="DateStart" value="2019-11-01" />
+                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="2019-11-01" />
                             }
                             else
                             {
@@ -264,8 +262,10 @@
                         <input type="submit" value="Tributar" onclick="Enviar()" disabled="disabled" id="taxar" class="btn btn-success pull-right" />
                     </div>
                 </form>
-            </div>
+                
+                <p>* Percentual Capítulo IV - C Do regime especial de substituição tributária aplicável às operações com autopeças, componentes e acessórios para motocicletas</p>
 
+            </div>
         }
     </div>
 </div>

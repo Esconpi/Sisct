@@ -4127,34 +4127,21 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.PisCofins = true;
 
                             //  Empresa Lucro Real
-
-                            if (comp.Sped)
+                            imp.Venda = vendaLR;
+                            if (!comp.Sped)
                             {
-                                imp.Venda = vendaLR;
-                            }
-                            else
-                            {
-                                imp.Venda = vendaLR;
                                 imp.DevolucaoCompra = devolucaoLR;
                             }
-                               
+
 
                             //  Empresa Lucro Presumido
+                            imp.Receita1 = receitaPetroleo;
+                            imp.Receita2 = receitaComercio;
+                            imp.Receita3 = receitaTransporte;
+                            imp.Receita4 = receitaServico;
+                            imp.ReceitaMono = receitaMono;
                             if (comp.Sped)
                             {
-                                imp.Receita1 = receitaPetroleo;
-                                imp.Receita2 = receitaComercio;
-                                imp.Receita3 = receitaTransporte;
-                                imp.Receita4 = receitaServico;
-                                imp.ReceitaMono = receitaMono;
-                            }
-                            else
-                            {
-                                imp.Receita1 = receitaPetroleo;
-                                imp.Receita2 = receitaComercio;
-                                imp.Receita3 = receitaTransporte;
-                                imp.Receita4 = receitaServico;
-                                imp.ReceitaMono = receitaMono;
                                 imp.Devolucao1Saida = devolucaoPetroleo;
                                 imp.Devolucao2Saida = devolucaoComercio;
                                 imp.Devolucao3Saida = devolucaoTransporte;
@@ -4165,17 +4152,11 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             //  Empresa do Simples
-                            if (comp.Sped)
+                            imp.VendaNormal = vendasNomal;
+                            imp.VendaST = vendasST;
+                            imp.VendaMonofasico = vendasMono;
+                            if (!comp.Sped)
                             {
-                                imp.VendaNormal = vendasNomal;
-                                imp.VendaST = vendasST;
-                                imp.VendaMonofasico = vendasMono;
-                            }
-                            else
-                            {
-                                imp.VendaNormal = vendasNomal;
-                                imp.VendaST = vendasST;
-                                imp.VendaMonofasico = vendasMono;
                                 imp.DevoNormal = devoNormal;
                                 imp.DevoST = devoST;
                                 imp.DevoMonofasico = devoMono;
