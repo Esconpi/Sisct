@@ -25937,10 +25937,48 @@ namespace Escon.SisctNET.Web.Controllers
                             percentualVendaIncisoII = (baseCalcIncisoII * 100) / baseCalcVenda,
                             percentualGrupo = (baseCalcGrupo * 100) / baseCalcVenda;
 
+                    //  Diferença
+                    decimal difContribuinte = 0, difNContribuinte = 0, difAnexo = 0, difGrupo = 0;
+
+                    if (percentualVendaContribuinte < Convert.ToDecimal(comp.VendaContribuinte))
+                        difContribuinte = Convert.ToDecimal(comp.VendaContribuinte) - percentualVendaContribuinte;
+
+                    if (percentualVendaNContribuinte > Convert.ToDecimal(comp.VendaCpf))
+                        difNContribuinte = percentualVendaNContribuinte - Convert.ToDecimal(comp.VendaCpf);
+
+                    if (comp.AnnexId == (long)1 || comp.ChapterId == (long)4)
+                    {
+                        if(comp.AnnexId == (long)1)
+                        {
+                            if (percentualVendaNcm < Convert.ToDecimal(comp.VendaAnexo))
+                            {
+                                difAnexo = Convert.ToDecimal(comp.VendaAnexo) - percentualVendaNcm;
+                            }
+                        }
+                        else
+                        {
+                            if (percentualVendaNcm < Convert.ToDecimal(comp.Faturamento))
+                            {
+                                difAnexo = Convert.ToDecimal(comp.Faturamento) - percentualVendaNcm;
+                            }
+                        }
+
+                    }
+                   
+
+                    if (percentualGrupo > Convert.ToDecimal(comp.VendaMGrupo))
+                        difGrupo = percentualGrupo - Convert.ToDecimal(comp.VendaMGrupo);
+
                     //  Geral
                     ViewBag.TotalVenda = totalVenda;
                     ViewBag.TotalDevo = totalDevoVenda;
                     ViewBag.BaseCalc = baseCalcVenda;
+
+                    //  Diferença
+                    ViewBag.DiferencaContribuinte = difContribuinte;
+                    ViewBag.DiferencaNContribuinte = difNContribuinte;
+                    ViewBag.DiferencaAnexo = difAnexo;
+                    ViewBag.DiferencaGrupo = difGrupo;
 
                     //  CNPJ
                     ViewBag.TotalVendaGrupo = totalVendaGrupo;

@@ -877,12 +877,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-                            if (comp.ChapterId.Equals(4))
+                            if (comp.ChapterId.Equals((long)4))
                             {
                                 var ncmInciso = _productIncentivoService.FindByAllProducts(companyid);
 
-                                var incisoI = ncmInciso.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault();
-                                var incisoII = ncmInciso.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault();
+                                var incisoI = ncmInciso.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault();
+                                var incisoII = ncmInciso.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault();
 
                                 var ncmIncisoI = ncmInciso.Where(_ => _.PercentualInciso.Equals(incisoI)).ToList();
                                 var ncmIncisoII = ncmInciso.Where(_ => _.PercentualInciso.Equals(incisoII)).ToList();
@@ -1328,7 +1328,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else
                             {
-                                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
+                                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex((long)comp.AnnexId);
 
                                 // Vendas 
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)

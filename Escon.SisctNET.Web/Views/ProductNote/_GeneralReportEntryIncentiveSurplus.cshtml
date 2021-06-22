@@ -14,7 +14,13 @@
                 Base de Cálculo
             </th>
             <th style="text-align:center; border:1px solid;">
-                Percentual (%)
+                Referência (%)
+            </th>
+            <th style="text-align:center; border:1px solid;">
+                Vendido (%)
+            </th>
+            <th style="text-align:center; border:1px solid;">
+                Dierença (%)
             </th>
         </tr>
     </thead>
@@ -32,7 +38,9 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.BaseCalc)
             </th>
-            <th style="text-align:right; padding-right:1%; border:1px solid;"></th>
+            <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
+            <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
+            <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
@@ -47,9 +55,11 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.BaseCalcContribuinte)
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaContribuinte)) %</th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.PercentualVendaContribuinte) %
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.DiferencaContribuinte)) %</th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align:center;">
@@ -64,17 +74,19 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.BaseCalcNContribuinte)
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaCpf)) %</th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.PercentualVendaNContribuinte) %
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.DiferencaNContribuinte)) %</th>
         </tr>
         @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
         {
             @if (ViewBag.Company.ChapterId == 4)
-             {
+            {
                 <tr>
                     <th style="border: 1px solid; text-align:center;">
-                        Vendas do Inciso I
+                        Vendas do Inciso I (Peças e Acessórios)
                     </th>
                     <td style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.VendasIncisoI)
@@ -85,13 +97,15 @@
                     <th style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.BaseCalcIncisoI)
                     </th>
+                    <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
                     <th style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.PercentualVendaIncisoI) %
                     </th>
+                    <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
                 </tr>
                 <tr>
                     <th style="border: 1px solid; text-align:center;">
-                        Vendas do Inciso II
+                        Vendas do Inciso II (Pneus e Câmaras de ar)
                     </th>
                     <td style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.VendasIncisoII)
@@ -102,9 +116,11 @@
                     <th style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.BaseCalcIncisoII)
                     </th>
+                    <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
                     <th style="text-align:right; padding-right:1%; border:1px solid;">
                         @string.Format("{0:N}", ViewBag.PercentualVendaIncisoII) %
                     </th>
+                    <th style="text-align:center; padding-right:1%; border:1px solid;">-------</th>
                 </tr>
             }
             <tr>
@@ -114,6 +130,7 @@
                         Vendas do Inciso I e II
                     </th>
                 }
+
                 @if (ViewBag.Company.AnnexId == 1)
                 {
                     <th style="border: 1px solid; text-align:center;">
@@ -130,9 +147,20 @@
                 <th style="text-align:right; padding-right:1%; border:1px solid;">
                     @string.Format("{0:N}", ViewBag.BaseCalcNcm)
                 </th>
+                @if (ViewBag.Company.ChapterId == 4)
+                {
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Faturamento)) %</th>
+                }
+
+                @if (ViewBag.Company.AnnexId == 1)
+                {
+                    <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %</th>
+                }
+
                 <th style="text-align:right; padding-right:1%; border:1px solid;">
                     @string.Format("{0:N}", ViewBag.PercentualVendaNcm) %
                 </th>
+                <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.DiferencaAnexo)) %</th>
             </tr>
         }
 
@@ -149,9 +177,11 @@
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.TotalBaseCalcuGrupo)
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaMGrupo)) %</th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">
                 @string.Format("{0:N}", ViewBag.PercentualVendaGrupo) %
             </th>
+            <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.DiferencaGrupo)) %</th>
         </tr>
     </tbody>
 </table>
