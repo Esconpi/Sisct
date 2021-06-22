@@ -1456,8 +1456,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (comp.ChapterId.Equals((long)4))
                             {
-                                decimal percentualCaputI = Convert.ToDecimal(productsIncentivado.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault()),
-                                        percentualCaputII = Convert.ToDecimal(productsIncentivado.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault()),
+                                decimal percentualCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault()),
+                                        percentualCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault()),
                                         baseCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vprod).Sum() + 
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Voutro).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vseg).Sum() -
@@ -1477,7 +1477,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 baseIcms = baseCaputI + baseCaputII;
                                 impostoIcms = impostoIcmsCaputI + impostoIcmsCaputII;
-                                impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (comp.Fecop / 100)), 2);
+                                //impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (comp.Fecop / 100)), 2);
+                                totalDarIcms += impostoIcms;
 
                                 ViewBag.PercentualCaputI = percentualCaputI;
                                 ViewBag.PercentualCaputII = percentualCaputII;
@@ -2541,8 +2542,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (comp.ChapterId.Equals((long)4))
                         {
-                            decimal percentualCaputI = Convert.ToDecimal(productsIncentivado.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault()),
-                                    percentualCaputII = Convert.ToDecimal(productsIncentivado.OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault()),
+                            decimal percentualCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault()),
+                                    percentualCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault()),
                                     baseCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vprod).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Voutro).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vseg).Sum() -
@@ -2562,7 +2563,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             baseIcms = baseCaputI + baseCaputII;
                             impostoIcms = impostoIcmsCaputI + impostoIcmsCaputII;
-                            impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (comp.Fecop / 100)), 2);
+                            //impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (comp.Fecop / 100)), 2);
 
                             ViewBag.PercentualCaputI = percentualCaputI;
                             ViewBag.PercentualCaputII = percentualCaputII;

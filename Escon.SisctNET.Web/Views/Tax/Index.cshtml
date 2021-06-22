@@ -116,9 +116,19 @@
                 <table class="table" style="font-size:9px;">
                     <thead>
                         <tr>
-                            <th style="text-align:center;border:1px solid;" colspan="18">
-                                DADOS
-                            </th>
+                            @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4 || ViewBag.Company.TipoApuracao.Equals(false))
+                            {
+                                <th style="text-align:center;border:1px solid;" colspan="18">
+                                    DADOS
+                                </th>
+                            }
+                            else
+                            {
+                                <th style="text-align:center;border:1px solid;" colspan="8">
+                                    DADOS
+                                </th>
+                            }
+
                         </tr>
                     </thead>
 
