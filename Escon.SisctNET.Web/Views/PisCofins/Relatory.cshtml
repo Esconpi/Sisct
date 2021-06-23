@@ -77,11 +77,11 @@
 
                         @await Html.PartialAsync("_CfopAliquotSummary", new ViewDataDictionary(ViewData))
                     }
-                    else if (ViewBag.Type == "resumoCfopMono")
+                    else if (ViewBag.Type == "resumoProdNcm")
                     {
-                        <!-- Resumo CFOP Monofásico -->
+                        <!-- Resumo Produto/NCM -->
 
-                        @await Html.PartialAsync("_CfopSummaryMono", new ViewDataDictionary(ViewData))
+                        @await Html.PartialAsync("_ProductNcmSummary", new ViewDataDictionary(ViewData))
                     }
                     else if (ViewBag.Type == "resumoPorCfop")
                     {
@@ -89,9 +89,15 @@
 
                         @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
                     }
+                    else if (ViewBag.Type == "resumoCfopMono")
+                    {
+                        <!-- Resumo CFOP Monofásico -->
+
+                        @await Html.PartialAsync("_CfopSummaryMono", new ViewDataDictionary(ViewData))
+                    }
                     else if (ViewBag.Type == "resumoProdCfopNcmCstMono")
                     {
-                        <!-- Resumo Produto/NCM/CST Monofásico -->
+                        <!-- Resumo Produto/NCM/CFOP/CST Monofásico -->
 
                         @await Html.PartialAsync("_SummaryProdutoNcmCfopCst", new ViewDataDictionary(ViewData))
                     }

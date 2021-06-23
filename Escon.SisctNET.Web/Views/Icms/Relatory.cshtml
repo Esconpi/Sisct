@@ -168,6 +168,18 @@
                         @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
                     }
                 }
+                else if (ViewBag.Type == "vendaNContribuinte")
+                {
+                    <!-- Vendas P/ não COntribuinte -->
+
+                    @await Html.PartialAsync("_SalesNTaxpayers", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Type == "vendaContribuinte")
+                {
+                    <!-- Vendas P/ COntribuinte -->
+
+                    @await Html.PartialAsync("_SalesTaxpayers", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "anexoAutoPecas")
                 {
                     @if (ViewBag.Erro == 1)

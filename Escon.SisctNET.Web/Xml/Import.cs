@@ -358,7 +358,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
+                        if (nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
                             notes.Add(nota);
 
                     }
@@ -1102,7 +1102,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr2.Close();
                         }
 
-                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
+                        if (nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
                             notes.Add(nota);
 
                     }
@@ -1381,7 +1381,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if (nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
+                        if (nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
                         {
                             notes.Add(nota);
                         }
@@ -1655,7 +1655,7 @@ namespace Escon.SisctNET.Web.Xml
                             sr.Close();
                         }
 
-                        if(nota.Count() > 0 && Convert.ToInt32(cStat).Equals(100))
+                        if(nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
                         {
                             notes.Add(nota);
                         }

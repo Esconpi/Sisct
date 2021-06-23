@@ -116,6 +116,17 @@
     <strong> Tributação Divergente(ICMS) </strong>
 }
 
+@if (ViewBag.Type == "vendaNContribuinte")
+{
+    <strong> Vendas P/ não Contribuinte </strong>
+}
+
+@if (ViewBag.Type == "vendaContribuinte")
+{
+    <strong> Vendas P/ Contribuinte </strong>
+}
+
+
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {

@@ -2,7 +2,6 @@
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25821,6 +25820,220 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Divergentes = divergentes.OrderBy(_ => _[0]).ThenBy(_ => _[5]).ToList();
+                }
+                else if (type.Equals("vendaNContribuinte"))
+                {
+                    //  Venda P/ não Contribuinte
+                    List<List<string>> vendasNContribuinte = new List<List<string>>();
+
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
+                    var contribuintes = _clientService.FindByContribuinte(companyId, "all");
+
+                    decimal total = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        bool contribuinte = false;
+
+                        if (notes[i][3].ContainsKey("CNPJ") && notes[i][3].ContainsKey("IE") && notes[i][3].ContainsKey("indIEDest") && notes[i][1]["mod"].Equals("55"))
+                        {
+                            string CNPJ = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "escon";
+
+                            bool client = false;
+
+
+                            if (clientesAll.Contains(notes[i][3]["CNPJ"]))
+                                client = true;
+
+                            if (!client)
+                            {
+                                ViewBag.Erro = 2;
+                                return View(comp);
+                            }
+
+                            if (contribuintes.Contains(CNPJ))
+                            {
+                                contribuinte = true;
+                            }
+                        }
+
+                        decimal vProd = 0;
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+
+                            if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vProd"]);
+
+                            if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vFrete"]);
+
+                            if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
+                                vProd -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+
+                            if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vOutro"]);
+
+                            if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vSeg"]);
+
+                        }
+
+
+                        if (!contribuinte)
+                        {
+                            string CPFCNPJ = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "",
+                                   xNome = notes[i][3].ContainsKey("xNome") ? notes[i][3]["xNome"] : "";
+
+                            if (CPFCNPJ == "")
+                            {
+                                CPFCNPJ = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "";
+                            }
+
+                            int pos = -1;
+
+                            for (int e = 0; e < vendasNContribuinte.Count(); e++)
+                            {
+                                if (vendasNContribuinte[e][0].Equals(CPFCNPJ))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                List<string> venda = new List<string>();
+                                venda.Add(CPFCNPJ);
+                                venda.Add(xNome);
+                                venda.Add(vProd.ToString());
+                                vendasNContribuinte.Add(venda);
+                            }
+                            else
+                            {
+                                vendasNContribuinte[pos][2] = (Convert.ToDecimal(vendasNContribuinte[pos][2]) + vProd).ToString();
+                            }
+
+                            total += vProd;
+                        }
+                    }
+
+                    ViewBag.Vendas = vendasNContribuinte;
+                    ViewBag.Total = total;
+                }
+                else if (type.Equals("vendaContribuinte"))
+                {
+                    //  Venda P/ Contribuinte
+                    List<List<string>> vendasContribuinte = new List<List<string>>();
+
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
+                    var contribuintes = _clientService.FindByContribuinte(companyId, "all");
+
+                    decimal total = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        bool contribuinte = false;
+
+                        if (notes[i][3].ContainsKey("CNPJ") && notes[i][3].ContainsKey("IE") && notes[i][3].ContainsKey("indIEDest") && notes[i][1]["mod"].Equals("55"))
+                        {
+                            string CNPJ = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "escon";              
+
+                            bool client = false;
+
+
+                            if (clientesAll.Contains(notes[i][3]["CNPJ"]))
+                                client = true;
+
+                            if (!client)
+                            {
+                                ViewBag.Erro = 2;
+                                return View(comp);
+                            }
+
+                            if (contribuintes.Contains(CNPJ))
+                            {
+                                contribuinte = true;
+                            }
+                        }
+
+                        decimal vProd = 0;
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+
+                            if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vProd"]);
+
+                            if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vFrete"]);
+
+                            if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
+                                vProd -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+
+                            if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vOutro"]);
+
+                            if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vSeg"]);
+
+                        }
+
+
+                        if (contribuinte)
+                        {
+                            string CPFCNPJ = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "",
+                                   xNome = notes[i][3].ContainsKey("xNome") ? notes[i][3]["xNome"] : "";
+
+                            if (CPFCNPJ == "")
+                            {
+                                CPFCNPJ = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "";
+                            }
+
+                            int pos = -1;
+
+                            for (int e = 0; e < vendasContribuinte.Count(); e++)
+                            {
+                                if (vendasContribuinte[e][0].Equals(CPFCNPJ))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                List<string> venda = new List<string>();
+                                venda.Add(CPFCNPJ);
+                                venda.Add(xNome);
+                                venda.Add(vProd.ToString());
+                                vendasContribuinte.Add(venda);
+                            }
+                            else
+                            {
+                                vendasContribuinte[pos][2] = (Convert.ToDecimal(vendasContribuinte[pos][2]) + vProd).ToString();
+                            }
+
+                            total += vProd;
+                        }
+                    }
+
+                    ViewBag.Vendas = vendasContribuinte;
+                    ViewBag.Total = total;
                 }
                 else if (type.Equals("icmsExcedente"))
                 {
