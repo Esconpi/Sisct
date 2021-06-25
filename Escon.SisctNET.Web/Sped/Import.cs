@@ -3365,7 +3365,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13]);
 
                         if (!ncm)
                         {
@@ -3439,7 +3439,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8]);
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13]);
 
                         if (!ncm)
                         {

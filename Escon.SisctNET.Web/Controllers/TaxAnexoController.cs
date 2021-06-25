@@ -457,7 +457,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 if (exitNotes[i][j].ContainsKey("NCM"))
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"]);
+                                {
+                                    string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
+
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST);
+                                }
 
                                 if (exitNotes[i][j].ContainsKey("pICMS") && !exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") &&
                                     exitNotes[i][j].ContainsKey("orig") && exitNotes[i][1]["finNFe"] != "4" && !ncm && cfop)
@@ -576,7 +580,11 @@ namespace Escon.SisctNET.Web.Controllers
                             for (int k = 0; k < exitNotes[i].Count(); k++)
                             {
                                 if (exitNotes[i][k].ContainsKey("NCM"))
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"]);
+                                {
+                                    string CEST = exitNotes[i][k].ContainsKey("CEST") ? exitNotes[i][k]["CEST"] : "";
+
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"], CEST);
+                                }
 
                                 if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)
                                 {

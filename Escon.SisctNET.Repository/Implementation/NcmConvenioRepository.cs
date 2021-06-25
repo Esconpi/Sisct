@@ -29,28 +29,36 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, Log log = null)
+        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm,  string cest, Log log = null)
         {
             bool ncmIncentivo = false;
+            string cestBase = null;
+
+            if(cest != "")
+                cestBase = cest;
+
             foreach (var n in ncms)
             {
                 int contaChar = n.Ncm.Length;
                 string substring = "";
-                if (contaChar < 8 && ncm.Length > contaChar)
-                {
-                    substring = ncm.Substring(0, contaChar);
-                }
-                else
-                {
-                    substring = ncm;
-                }
 
-                if (n.Ncm.Equals(substring))
+                if (contaChar < 8 && ncm.Length > contaChar)
+                    substring = ncm.Substring(0, contaChar);
+                else
+                    substring = ncm;
+
+                string cestTemp = n.Cest;
+
+                if (n.Cest == null || n.Cest == "")
+                    cestTemp = null;
+
+                if (n.Ncm.Equals(substring) && cestTemp.Equals(cestBase))
                 {
                     ncmIncentivo = true;
                     break;
                 }
             }
+
             return ncmIncentivo;
         }
     }
