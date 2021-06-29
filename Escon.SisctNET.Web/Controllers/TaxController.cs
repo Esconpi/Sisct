@@ -3123,7 +3123,8 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
                         //  Empresa do Simples
-                        decimal devoNormalNormal = 0, devoSTNormal = 0, devoSTMono = 0;
+                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0,
+                            devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0;
 
                         foreach (var cc in caminhos)
                         {
@@ -3156,6 +3157,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 devoNormalNormal += sped[0];
                                 devoSTNormal += sped[1];
                                 devoSTMono += sped[2];
+                                devoNormalMono += sped[3];
+                                devoNormalST += sped[4];
+                                devoNormalAliqZero += sped[5];
+                                devoNormalIsento += sped[6];
+                                devoSTNormal += sped[7];
+                                devoSTMono += sped[8];
+                                devoSTST += sped[9];
+                                devoSTAliqZero += sped[10];
+                                devoSTIsento += sped[11];
                             }
                         }
 
@@ -3178,7 +3188,14 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Empresa do Simples
                             imp.DevoNormalNormal = devoNormalNormal;
                             imp.DevoSTNormal = devoSTNormal;
+                            imp.DevoNormalMonofasico = devoNormalMono;
                             imp.DevoSTMonofasico = devoSTMono;
+                            imp.DevoNormalST = devoNormalST;
+                            imp.DevoNormalAliqZero = devoNormalAliqZero;
+                            imp.DevoNormalIsento = devoNormalIsento;
+                            imp.DevoSTST = devoSTST;
+                            imp.DevoSTAliqZero = devoSTAliqZero;
+                            imp.DevoSTIsento = devoSTIsento;
                         }
                         else
                         {
@@ -3198,7 +3215,14 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Empresa do Simples
                             tax.DevoNormalNormal = devoNormalNormal;
                             tax.DevoSTNormal = devoSTNormal;
+                            tax.DevoNormalMonofasico = devoNormalMono;
                             tax.DevoSTMonofasico = devoSTMono;
+                            tax.DevoNormalST = devoNormalST;
+                            tax.DevoNormalAliqZero = devoNormalAliqZero;
+                            tax.DevoNormalIsento = devoNormalIsento;
+                            tax.DevoSTST = devoSTST;
+                            tax.DevoSTAliqZero = devoSTAliqZero;
+                            tax.DevoSTIsento = devoSTIsento;
                         }
                     }
                     else if (type.Equals("xmlS") || type.Equals("xmlE"))
@@ -3226,9 +3250,11 @@ namespace Escon.SisctNET.Web.Controllers
                             receitaTransporte = 0, devolucaoTransporte = 0, receitaMono = 0, devolucaoNormal = 0;
 
                         //  Empresa do Simples
-                        decimal vendasNomalNormal = 0, vendasSTNormal = 0, vendasNormalMono = 0, vendasSTMono = 0;
+                        decimal vendasNomalNormal = 0, vendasNormalMono = 0, vendasNormalST = 0, vendasNormalAliqZero = 0, vendasNormalIsento = 0, vendasSTNormal = 0, 
+                            vendasSTMono = 0, vendasSTST = 0, vendasSTAliqZero = 0, vendasSTIsento = 0;
 
-                        decimal devoNormalNormal = 0,  devoSTNormal = 0, devoNormalMono = 0, devoSTMono = 0;
+                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, 
+                            devoSTNormal = 0,  devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0;
 
 
                         //  Importação dos Dados
@@ -3293,12 +3319,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                 Model.TaxationNcm ehMono = null;
                                                 if (comp.Taxation == "Produto")
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                 }
                                                 else
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                 }
 
@@ -3369,11 +3395,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (comp.Taxation == "Produto")
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
                                                 }
                                                 else
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
                                                 }
 
 
@@ -3451,7 +3477,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
-                                                        var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                        var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                         {
@@ -3539,7 +3565,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
-                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                         {
@@ -3651,7 +3677,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
-                                                        var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                        var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                         {
@@ -3739,7 +3765,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if ( ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                     {
-                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                         {
@@ -3845,7 +3871,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 if (comp.Taxation == "Produto")
                                                 {
-                                                    var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(entryNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(entryNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(entryNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(entryNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                     if (entryNotes[i][j].ContainsKey("vProd"))
                                                     {
@@ -3924,7 +3950,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                                 else
                                                 {
-                                                    var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(entryNotes[i][j]["NCM"]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                                    var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(entryNotes[i][j]["NCM"]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
 
                                                     if (entryNotes[i][j].ContainsKey("vProd"))
                                                     {
@@ -4016,8 +4042,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 //   Vendas
                                 List<string> codeProdMono = new List<string>();
                                 List<string> codeProdNormal = new List<string>();
+                                List<string> codeProdST = new List<string>();
+                                List<string> codeProdAliqZero = new List<string>();
+                                List<string> codeProdIsento = new List<string>();
                                 List<string> ncmMono = new List<string>();
                                 List<string> ncmNormal = new List<string>();
+                                List<string> ncmST = new List<string>();
+                                List<string> ncmAliqZero = new List<string>();
+                                List<string> ncmIsento = new List<string>();
 
 
                                 cfopsVenda.AddRange(cfopsVendaST);
@@ -4038,10 +4070,18 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsCompany, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
 
-                                        codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                                        codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                                        ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                                        ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                                        codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                                        codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1)).Select(_ => _.CodeProduct).ToList();
+                                        codeProdST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
+                                        codeProdAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
+                                        codeProdIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+
+                                        ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+                                        ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
+                                        ncmST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
+                                        ncmAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
+                                        ncmIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+
                                     }
 
                                     string NCM = "", cProd = "", CFOP = "";
@@ -4110,6 +4150,51 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
                                                    
                                                 }
+                                                else if (codeProdST.Contains(cProd) && ncmST.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalST += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTST += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalST += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
+                                                else if (codeProdAliqZero.Contains(cProd) && ncmAliqZero.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalAliqZero += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTAliqZero += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalAliqZero += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
+                                                else if (codeProdIsento.Contains(cProd) && ncmIsento.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalIsento += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTIsento += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalIsento += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
                                                 else
                                                 {
                                                     ViewBag.NCM = NCM;
@@ -4148,6 +4233,51 @@ namespace Escon.SisctNET.Web.Controllers
                                                             vendasNomalNormal += Convert.ToDecimal(vProd);
                                                     }
                                                  
+                                                }
+                                                else if (ncmST.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalST += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTST += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalST += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
+                                                else if (ncmAliqZero.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalAliqZero += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTAliqZero += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalAliqZero += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
+                                                else if (ncmIsento.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalIsento += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTIsento += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalIsento += Convert.ToDecimal(vProd);
+                                                    }
+
                                                 }
                                                 else
                                                 {
@@ -4193,19 +4323,30 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
 
-
                             //  Empresa do Simples
                             imp.VendaNormalNormal = vendasNomalNormal;
                             imp.VendaSTNormal = vendasSTNormal;
                             imp.VendaNormalMonofasico = vendasNormalMono;
                             imp.VendaSTMonofasico = vendasSTMono;
+                            imp.VendaNormalST = vendasNormalST;
+                            imp.VendaNormalAliqZero = vendasNormalAliqZero;
+                            imp.VendaNormalIsento = vendasNormalIsento;
+                            imp.VendaSTST = vendasSTST;
+                            imp.VendaSTAliqZero = vendasSTAliqZero;
+                            imp.VendaSTIsento = vendasSTIsento;
+
                             if (!comp.Sped)
                             {
                                 imp.DevoNormalNormal = devoNormalNormal;
                                 imp.DevoSTNormal = devoSTNormal;
                                 imp.DevoNormalMonofasico = devoNormalMono;
                                 imp.DevoSTMonofasico = devoSTMono;
-
+                                imp.DevoNormalST = devoNormalST;
+                                imp.DevoNormalAliqZero = devoNormalAliqZero;
+                                imp.DevoNormalIsento = devoNormalIsento;
+                                imp.DevoSTST = devoSTST;
+                                imp.DevoSTAliqZero = devoSTAliqZero;
+                                imp.DevoSTIsento = devoSTIsento;
                             }
 
  
@@ -4235,12 +4376,24 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.VendaSTNormal = vendasSTNormal;
                             tax.VendaNormalMonofasico = vendasNormalMono;
                             tax.VendaSTMonofasico = vendasSTMono;
+                            tax.VendaNormalST = vendasNormalST;
+                            tax.VendaNormalAliqZero = vendasNormalAliqZero;
+                            tax.VendaNormalIsento = vendasNormalIsento;
+                            tax.VendaSTST = vendasSTST;
+                            tax.VendaSTAliqZero = vendasSTAliqZero;
+                            tax.VendaSTIsento = vendasSTIsento;
                             if (!comp.Sped)
                             {
                                 tax.DevoNormalNormal = devoNormalNormal;
                                 tax.DevoSTNormal = devoSTNormal;
                                 tax.DevoNormalMonofasico = devoNormalMono;
                                 tax.DevoSTMonofasico = devoSTMono;
+                                tax.DevoNormalST = devoNormalST;
+                                tax.DevoNormalAliqZero = devoNormalAliqZero;
+                                tax.DevoNormalIsento = devoNormalIsento;
+                                tax.DevoSTST = devoSTST;
+                                tax.DevoSTAliqZero = devoSTAliqZero;
+                                tax.DevoSTIsento = devoSTIsento;
                             }
                             
                         }

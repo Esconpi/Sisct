@@ -52,7 +52,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (n.Ncm.Equals(substring) && cestTemp.Equals(cestBase))
+                if (n.Ncm.Equals(substring) && cestTemp == cestBase)
                 {
                     ncmIncentivo = true;
                     break;

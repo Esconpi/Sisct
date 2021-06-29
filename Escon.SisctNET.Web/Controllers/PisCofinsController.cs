@@ -776,10 +776,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                         }
 
                         string cProd = "", NCM = "", xProd = "";
@@ -1192,10 +1192,10 @@ namespace Escon.SisctNET.Web.Controllers
                         if (notes[i][1].ContainsKey("dhEmi"))
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
-                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                         }
 
 
@@ -1723,10 +1723,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                         }
 
                         string cProd = "", NCM = "", CSOSN = "";
@@ -2081,10 +2081,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            codeProdMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.Type.Equals("Monofásico")).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => !_.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                         }
 
                         string cProd = "", xProd =  "", NCM = "", CFOP = "", CSOSN = "";
@@ -2356,39 +2356,68 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Imposto = imp;
 
-                    decimal vendasNomalNormal = Convert.ToDecimal(imp.VendaNormalNormal), vendasSTNormal = Convert.ToDecimal(imp.VendaSTNormal), vendasSTMono = Convert.ToDecimal(imp.VendaSTMonofasico), vendasNormalMono = Convert.ToDecimal(imp.VendaNormalMonofasico),
-                            devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal), devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal), devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico);
+                    decimal vendasNomalNormal = Convert.ToDecimal(imp.VendaNormalNormal), vendasNormalMono = Convert.ToDecimal(imp.VendaNormalMonofasico), vendasNormalST = Convert.ToDecimal(imp.VendaNormalST),
+                            vendasNormalAliqZero = Convert.ToDecimal(imp.VendaNormalAliqZero), vendasNormalIsento = Convert.ToDecimal(imp.VendaNormalIsento), vendasSTNormal = Convert.ToDecimal(imp.VendaSTNormal),  vendasSTMono = Convert.ToDecimal(imp.VendaSTMonofasico),
+                            vendasSTST = Convert.ToDecimal(imp.VendaSTST), vendasSTAliqZero = Convert.ToDecimal(imp.VendaSTAliqZero), vendasSTIsento = Convert.ToDecimal(imp.VendaSTIsento),
+                            devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico), devoNormalST = Convert.ToDecimal(imp.DevoNormalST), 
+                            devoNormalAliqZero = Convert.ToDecimal(imp.DevoNormalAliqZero), devoNormalIsento = Convert.ToDecimal(imp.DevoNormalIsento),
+                            devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico), devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal), devoSTST = Convert.ToDecimal(imp.DevoSTST),
+                            devoSTAliqZero = Convert.ToDecimal(imp.DevoSTAliqZero), devoSTIsento = Convert.ToDecimal(imp.DevoSTIsento);
 
 
                     //  Base
                     decimal baseNormalNormal = vendasNomalNormal - devoNormalNormal,
+                            baseNormalMono = vendasNormalMono - devoNormalMono,
+                            baseNormalST = vendasNormalST - devoNormalST,
+                            baseNormalAliqZero = vendasNormalAliqZero - devoNormalAliqZero,
+                            baseNormalIsento = vendasNormalIsento - devoNormalIsento,
                             baseSTNormal = vendasSTNormal - devoSTNormal,
                             baseSTMono = vendasSTMono - devoSTMono,
-                            baseNormalMono = vendasNormalMono - devoNormalMono;
+                            baseSTST = vendasSTST - devoSTST,
+                            baseSTAliqZero = vendasSTAliqZero - devoSTAliqZero,
+                            baseSTIsento = vendasSTIsento - devoSTIsento;
 
 
                     //  Totais
-                    decimal totalVendas = vendasNomalNormal + vendasSTNormal + vendasSTMono + vendasNormalMono,
-                            totalDevo = devoNormalNormal + devoSTNormal + devoSTMono - devoNormalMono,
+                    decimal totalVendas = vendasNomalNormal + vendasNormalMono + vendasNormalST + vendasNormalAliqZero + vendasNormalIsento + vendasSTNormal + vendasSTMono + vendasSTST + vendasSTAliqZero + vendasSTIsento,
+                            totalDevo = devoNormalNormal + devoNormalMono + devoNormalST + devoNormalAliqZero + devoNormalIsento + devoSTNormal + devoSTMono + devoSTST + devoSTAliqZero + devoSTIsento,
                             totalBase = totalVendas - totalDevo;
 
                     //  Vendas
                     ViewBag.VendasNomalNormal = vendasNomalNormal;
+                    ViewBag.VendasNormalMono = vendasNormalMono;
+                    ViewBag.VendasNormalST = vendasNormalST;
+                    ViewBag.VendasNormalAliqZero = vendasNormalAliqZero;
+                    ViewBag.VendasNormalIsento = vendasNormalIsento;
                     ViewBag.VendasSTNormal = vendasSTNormal;
                     ViewBag.VendasSTMono = vendasSTMono;
-                    ViewBag.VendasNormalMono = vendasNormalMono;
+                    ViewBag.VendasSTST = vendasSTST;
+                    ViewBag.VendasSTAliqZero = vendasSTAliqZero;
+                    ViewBag.VendasSTIsento = vendasSTIsento;
 
                     //  Devoluções
-                    ViewBag.NormalNormal = devoNormalNormal;
+                    ViewBag.DevoNormalNormal = devoNormalNormal;
+                    ViewBag.DevoNormalMono = devoNormalMono;
+                    ViewBag.DevoNormalST = devoNormalST;
+                    ViewBag.DevoNormalAliqZero = devoNormalAliqZero;
+                    ViewBag.DevoNormalIsento = devoNormalIsento;
                     ViewBag.DevoSTNormal = devoSTNormal;
                     ViewBag.DevoSTMono = devoSTMono;
-                    ViewBag.DevoNormalMono = devoNormalMono;
+                    ViewBag.DevoSTST = devoSTST;
+                    ViewBag.DevoSTAliqZero = devoSTAliqZero;
+                    ViewBag.DevoSTIsento = devoSTIsento;
 
                     //  Bases
                     ViewBag.BaseNormalNormal = baseNormalNormal;
+                    ViewBag.BaseNormalMono = baseNormalMono;
+                    ViewBag.BaseNormalST = baseNormalST;
+                    ViewBag.BaseNormalAliqZero = baseNormalAliqZero;
+                    ViewBag.BaseNormalIsento = baseNormalIsento;
                     ViewBag.BaseSTNormal = baseSTNormal;
                     ViewBag.BaseSTMono = baseSTMono;
-                    ViewBag.BaseNormalMono = baseNormalMono;
+                    ViewBag.BaseSTST = baseSTST;
+                    ViewBag.BaseSTAliqZero = baseSTAliqZero;
+                    ViewBag.BaseSTIsento = baseSTIsento;
 
                     //  Totais
                     ViewBag.TotalVendas = totalVendas;

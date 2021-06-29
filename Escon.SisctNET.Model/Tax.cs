@@ -229,19 +229,44 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaNormalNormal { get; set; }
 
+        public decimal? VendaNormalMonofasico { get; set; }
+
+        public decimal? VendaNormalST { get; set; }
+
+        public decimal? VendaNormalAliqZero { get; set; }
+
+        public decimal? VendaNormalIsento { get; set; }
+
         public decimal? VendaSTNormal { get; set; }
 
         public decimal? VendaSTMonofasico { get; set; }
 
-        public decimal? VendaNormalMonofasico { get; set; }
+        public decimal? VendaSTST { get; set; }
+
+        public decimal? VendaSTAliqZero { get; set; }
+
+        public decimal? VendaSTIsento { get; set; }
 
         public decimal? DevoNormalNormal { get; set; }
+
+        public decimal? DevoNormalMonofasico { get; set; }
+
+        public decimal? DevoNormalST { get; set; }
+
+        public decimal? DevoNormalAliqZero { get; set; }
+
+        public decimal? DevoNormalIsento { get; set; }
 
         public decimal? DevoSTNormal { get; set; }
 
         public decimal? DevoSTMonofasico { get; set; }
 
-        public decimal? DevoNormalMonofasico { get; set; }
+        public decimal? DevoSTST { get; set; }
+
+        public decimal? DevoSTAliqZero { get; set; }
+
+        public decimal? DevoSTIsento { get; set; }
+
 
 
     }

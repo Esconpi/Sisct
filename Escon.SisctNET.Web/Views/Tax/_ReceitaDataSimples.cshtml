@@ -3,7 +3,7 @@
 <table class="table" style="font-size:11px;">
     <thead>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="8">
+            <th style="text-align:center;border:1px solid;" colspan="10">
                 DADOS
             </th>
         </tr>
@@ -11,34 +11,39 @@
 
     <tbody>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="4">VENDAS</th>
-            <th style="text-align:center;border:1px solid;" colspan="4">DEVOLUÇÕES</th>
+            <th style="text-align:center;border:1px solid;" colspan="10">VENDAS</th>
         </tr>
 
         <tr>
             <th style="text-align:center;border:1px solid;">
-                NORMAL
+                NORMAL/<br />NORMAL
             </th>
             <th style="text-align:center;border:1px solid;">
-                SUBSTITUIÇÃO/NORMAL
+                NORMAL/<br />MONOFÁSICO
             </th>
             <th style="text-align:center;border:1px solid;">
-                SUBSTITUIÇÃO/MONOFÁSICO
+                NORMAL/ST
             </th>
             <th style="text-align:center;border:1px solid;">
-                NORMAL/MONOFÁSICO
+                NORMAL/<br />ALIQ. ZERO
             </th>
             <th style="text-align:center;border:1px solid;">
-                NORMAL
+                NORMAL/<br />ISENTO
             </th>
             <th style="text-align:center;border:1px solid;">
-                SUBSTITUIÇÃO/NORMAL
+                SUBSTITUIÇÃO/<br />NORMAL
             </th>
             <th style="text-align:center;border:1px solid;">
-                SUBSTITUIÇÃO/MONOFÁSICO
+                SUBSTITUIÇÃO/<br />MONOFÁSICO
             </th>
             <th style="text-align:center;border:1px solid;">
-                NORMAL/MONOFÁSICO
+                SUBSTITUIÇÃO/ST
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />ALIQ. ZERO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />ISENTO
             </th>
         </tr>
 
@@ -52,13 +57,31 @@
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTNormal))
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaNormalMonofasico))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaNormalMonofasico))
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaNormalST))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaNormalAliqZero))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaNormalIsento))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTNormal))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
@@ -70,13 +93,69 @@
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoNormalNormal))
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTST))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
-                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTNormal))
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTAliqZero))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTIsento))
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table" style="font-size:11px;">
+    <tbody>
+        <tr>
+            <th style="text-align:center;border:1px solid;" colspan="10">DEVOLUÇÕES</th>
+        </tr>
+
+        <tr>
+            <th style="text-align:center;border:1px solid;">
+                NORMAL/<br />NORMAL
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                NORMAL/<br />MONOFÁSICO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                NORMAL/ST
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                NORMAL/<br />ALIQ. ZERO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                NORMAL/<br />ISENTO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />NORMAL
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />MONOFÁSICO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/ST
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />ALIQ. ZERO
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SUBSTITUIÇÃO/<br />ISENTO
+            </th>
+        </tr>
+
+        <tr>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoNormalNormal))
                 }
             </td>
             <td style="text-align:right;border:1px solid;padding-right:1%;">
@@ -88,7 +167,49 @@
             <td style="text-align:right;border:1px solid;padding-right:1%;">
                 @if (Model != null)
                 {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoNormalST))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoNormalAliqZero))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoNormalIsento))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTNormal))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
                     @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTMonofasico))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTST))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTAliqZero))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTIsento))
                 }
             </td>
         </tr>
