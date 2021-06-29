@@ -52,7 +52,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                List<Model.Attachment> list_anexos = _attachmentService.FindAll(GetLog(Model.OccorenceLog.Read));
+                List<Model.Attachment> list_anexos = _attachmentService.FindAll(null);
                 list_anexos.Insert(0, new Model.Attachment() { Description = "Nennhum item selecionado", Id = 0 });
                 SelectList anexos = new SelectList(list_anexos, "Id", "Description", null);
                 ViewBag.AttachmentId = anexos;
@@ -92,7 +92,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                ViewBag.AttachmentId = new SelectList(_attachmentService.FindAll(GetLog(Model.OccorenceLog.Read)), "Id", "Description", null);
+                ViewBag.AttachmentId = new SelectList(_attachmentService.FindAll(null), "Id", "Description", null);
                 return View(result);
             }
             catch (Exception ex)

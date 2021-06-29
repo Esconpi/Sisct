@@ -48,7 +48,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.CheckBoxFor(modelItem => item.Type, new { @data_off = "ICMS", @data_on = "PIS/COFINS", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "primary", @data_onstyle = "warning", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })
+                                @Html.CheckBoxFor(modelItem => item.Type, new { @data_off = "ICMS", @data_on = "PIS/COFINS", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "primary", @data_onstyle = "warning", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active", @disabled = "true" })
                             </td>
                             <td>
                                 @Html.CheckBoxFor(modelItem => item.Ident, new { @data_off = "Entrada", @data_on = "Saida", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "success", @data_onstyle = "danger", @readonly = "true", @id = item.Id, onclick = "return alert()", @class = "active" })

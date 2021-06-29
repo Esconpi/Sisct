@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Escon.SisctNET.Web.Controllers
 {
     public class CstController : ControllerBaseSisctNET
     {
-        ICstService _service;
+        private readonly ICstService _service;
+        private readonly ITaxationTypeNcmService _taxationTypeNcmService;
+
 
         public CstController(
             ICstService service,
+            ITaxationTypeNcmService taxationTypeNcmService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Cst")
         {
             _service = service;
+            _taxationTypeNcmService = taxationTypeNcmService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
 
         }
@@ -48,6 +52,10 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                List<Model.TaxationTypeNcm> list_tipos = _taxationTypeNcmService.FindAll(null);
+                list_tipos.Insert(0, new Model.TaxationTypeNcm() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList tipos = new SelectList(list_tipos, "Id", "Description", null);
+                ViewBag.TaxationTypeNcmId = tipos;
                 return View();
             }
             catch(Exception e)
@@ -83,6 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                ViewBag.TaxationTypeNcmId = new SelectList(_taxationTypeNcmService.FindAll(null), "Id", "Description", null);
                 var result = _service.FindById(id, null);
                 return View(result);
             }
@@ -98,10 +107,14 @@ namespace Escon.SisctNET.Web.Controllers
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active)
                 return Unauthorized();
 
-            try
-            {
+            try 
+            { 
+
+
+                var result = _service.FindById(id, null);
                 entity.Updated = DateTime.Now;
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                entity.Type = result.Type;
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

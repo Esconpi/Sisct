@@ -227,17 +227,21 @@ namespace Escon.SisctNET.Model
 
         //  Simples Nacional
 
-        public decimal? VendaNormal { get; set; }
+        public decimal? VendaNormalNormal { get; set; }
 
-        public decimal? VendaST { get; set; }
+        public decimal? VendaSTNormal { get; set; }
 
-        public decimal? VendaMonofasico { get; set; }
+        public decimal? VendaSTMonofasico { get; set; }
 
-        public decimal? DevoNormal { get; set; }
+        public decimal? VendaNormalMonofasico { get; set; }
 
-        public decimal? DevoST { get; set; }
+        public decimal? DevoNormalNormal { get; set; }
 
-        public decimal? DevoMonofasico { get; set; }
+        public decimal? DevoSTNormal { get; set; }
+
+        public decimal? DevoSTMonofasico { get; set; }
+
+        public decimal? DevoNormalMonofasico { get; set; }
 
 
     }

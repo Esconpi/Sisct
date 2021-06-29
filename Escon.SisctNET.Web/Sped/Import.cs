@@ -439,7 +439,7 @@ namespace Escon.SisctNET.Web.Sped
             List<string> ncmMono = new List<string>();
             List<string> ncmNormal = new List<string>();
 
-            decimal devoNormal = 0, devoST = 0, devoMono = 0;
+            decimal devoNormalNormal = 0, devoSTNormal = 0, devoSTMono = 0, devoNoramlMono = 0;
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -504,34 +504,47 @@ namespace Escon.SisctNET.Web.Sped
 
                                     if (ehMono == null)
                                     {
-                                        if (note[10] == "101" || linha[8] == "102")
-                                        {
-                                            // Devolução ST
-                                            devoST += Convert.ToDecimal(note[7]);
-                                        }
-                                        else if (note[10] == "500")
+                                        if (note[11].Substring(0, 1) == "6")
                                         {
                                             // Devolução Normal
-                                            devoNormal += Convert.ToDecimal(note[7]);
+                                            devoNormalNormal += Convert.ToDecimal(note[7]);
+                                        }
+                                        else
+                                        {
+                                            if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                            {
+                                                // Devolução ST
+                                                devoSTNormal += Convert.ToDecimal(note[7]);
+                                            }
+                                            else if (note[10] == "500")
+                                            {
+                                                // Devolução Normal
+                                                devoNormalNormal += Convert.ToDecimal(note[7]);
+                                            }
                                         }
                                         
                                     }
                                     else
                                     {
-                                        if (note[10] == "500"){
-                                            // Devolução Monofásica
-                                            devoMono += Convert.ToDecimal(note[7]);
-                                        }
-                                        else if (note[10] == "101" || linha[8] == "102")
-                                        {
-                                            // Devolução ST
-                                            devoST += Convert.ToDecimal(note[7]);
-                                        }
-                                        else if (note[10] == "500")
+                                        if (note[11].Substring(0, 1) == "6")
                                         {
                                             // Devolução Normal
-                                            devoNormal += Convert.ToDecimal(note[7]);
+                                            devoNoramlMono += Convert.ToDecimal(note[7]);
                                         }
+                                        else
+                                        {
+                                            if (note[10] == "500")
+                                            {
+                                                // Devolução ST Monofásica
+                                                devoSTMono += Convert.ToDecimal(note[7]);
+                                            }
+                                            else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                            {
+                                                // Devolução Normal Monofásica
+                                                devoNoramlMono += Convert.ToDecimal(note[7]);
+                                            }
+                                        }
+                                     
                                     }
                                 }
                             }
@@ -551,9 +564,10 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
 
-            devolucoes.Add(devoNormal);
-            devolucoes.Add(devoST);
-            devolucoes.Add(devoMono);
+            devolucoes.Add(devoNormalNormal);
+            devolucoes.Add(devoSTNormal);
+            devolucoes.Add(devoSTMono);
+            devolucoes.Add(devoNoramlMono);
 
             return devolucoes;
         }

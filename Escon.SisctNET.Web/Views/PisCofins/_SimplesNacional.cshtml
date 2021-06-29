@@ -16,22 +16,28 @@
     </thead>
     <tbody>
         <tr>
-            <th style="border:1px solid;">NORMAL</th>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasNomal)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoNormal)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseNormal)</td>
+            <th style="border:1px solid;">NORMAL(ICMS)/NORMAL(PIS/COFINS)</th>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasNomalNormal)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.NormalNormal)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseNormalNormal)</td>
         </tr>
         <tr>
-            <th style="border:1px solid;">SUBSTITUIÇÃO/NORMAL</th>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasST)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoST)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseST)</td>
+            <th style="border:1px solid;">SUBSTITUIÇÃO(ICMS)/NORMAL(PIS/COFINS)</th>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasSTNormal)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoSTNormal)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseSTNormal)</td>
         </tr>
         <tr>
-            <th style="border:1px solid;">SUBSTITUIÇÃO/MONOFÁSICO</th>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasMono)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoMono)</td>
-            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseMono)</td>
+            <th style="border:1px solid;">NORMAL(ICMS)/MONOFÁSICO(PIS/COFINS)</th>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasNormalMono)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoNormalMono)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseNormalMono)</td>
+        </tr>
+        <tr>
+            <th style="border:1px solid;">SUBSTITUIÇÃO(ICMS)/MONOFÁSICO(PIS/COFINS)</th>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasSTMono)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevoSTMono)</td>
+            <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseSTMono)</td>
         </tr>
         <tr>
             <th style="border:1px solid;">TOTAL</th>

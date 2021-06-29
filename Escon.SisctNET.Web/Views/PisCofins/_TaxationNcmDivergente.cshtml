@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var ncm in ViewBag.Ncm)
+        @foreach (var ncm in ViewBag.Ncms)
         {
             <tr style="border:1px solid;">
                 <td style="border:1px solid; padding-left:1%;">
@@ -26,6 +26,24 @@
                     @ncm[3]
                 </td>
             </tr>
+
+
+            <tr>
+                <th style="border: 1px solid; text-align: center;" colspan="3">Produto</th>
+            </tr>
+
+            @foreach (var prod in ViewBag.Produtos)
+            {
+                @if (ncm[0] == prod[0])
+                {
+                    <tr>
+                        <td style="border:1px solid; padding-left:1%;" colspan="3">
+                            @prod[1] - @prod[2]
+                        </td>
+                    </tr>
+                }
+
+            }
         }
     </tbody>
 </table>

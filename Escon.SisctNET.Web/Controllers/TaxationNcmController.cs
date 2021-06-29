@@ -22,6 +22,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationNcmService _service;
         private readonly ITypeNcmService _typeNcmService;
         private readonly INatReceitaService _natReceitaService;
+        private readonly ITaxationTypeNcmService _taxationTypeNcmService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public TaxationNcmController(
@@ -32,6 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
             ICstService cstService,
             ITypeNcmService typeNcmService,
             INatReceitaService natReceitaService,
+            ITaxationTypeNcmService taxationTypeNcmService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
@@ -44,6 +46,7 @@ namespace Escon.SisctNET.Web.Controllers
             _cstService = cstService;
             _typeNcmService = typeNcmService;
             _natReceitaService = natReceitaService;
+            _taxationTypeNcmService = taxationTypeNcmService;
             _appEnvironment = env;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -119,10 +122,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
-                    if(ncms[i][1] == "27101999")
-                    {
-                        var t = 0;
-                    }
 
                     if (comp.Taxation == "Produto")
                     {
@@ -140,8 +139,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         TaxationNcm tributacao = new TaxationNcm();
                         
-                        string type = "Normal", natReceita = "";
-                        long typeNcmId = 2;
+                        string natReceita = "";
+                        long typeNcmId = 2, type = 1;
                         long? cstEntradaId = null, cstSaidaId = null;
                         bool status = false;
                         decimal? pis = null, cofins = null;
@@ -160,7 +159,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).Select(_ => _.Type).Distinct().ToList().Count() == 1)
                                 {
                                     type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
-                                        .FirstOrDefault().Type;
+                                        .FirstOrDefault().TaxationTypeNcmId;
                                     typeNcmId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
                                         .FirstOrDefault().TypeNcmId;
                                     cstEntradaId = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
@@ -191,7 +190,7 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.NatReceita = natReceita;
                         tributacao.Pis = pis;
                         tributacao.Cofins = cofins;
-                        tributacao.Type = type;
+                        tributacao.TaxationTypeNcmId = type;
                         tributacao.TypeNcmId = typeNcmId;
                         tributacao.Arquivo = arqui;
                         tributacao.Status = status;
@@ -306,6 +305,8 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList listType = new SelectList(list_tipos, "Id", "Name", null);
                 ViewBag.ListaTipoNcm = listType;
 
+                ViewBag.TaxationTypeNcmId = new SelectList(_taxationTypeNcmService.FindAll(null), "Id", "Description", null);
+
                 var result = _service.FindById(id, null);
 
                 if (result.CstSaidaId == null)
@@ -369,7 +370,7 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Pis = entity.Pis;
                     rst.Cofins = entity.Cofins;
                     rst.DateStart = entity.DateStart;
-                    rst.Type = Request.Form["type"].ToString();
+                    rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
 
                     tributacoes.Add(rst);
 
@@ -405,7 +406,7 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Pis = entity.Pis;
                         n.Cofins = entity.Cofins;
                         n.DateStart = entity.DateStart;
-                        n.Type = Request.Form["type"].ToString();
+                        n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
 
                         tributacoes.Add(n);
                     }
@@ -450,6 +451,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.TypeNcm> list_tipos = _typeNcmService.FindAll(null);
                 SelectList listType = new SelectList(list_tipos, "Id", "Name", null);
                 ViewBag.ListaTipoNcm = listType;
+
+                ViewBag.TaxationTypeNcmId = new SelectList(_taxationTypeNcmService.FindAll(null), "Id", "Description", null);
 
                 var result = _service.FindById(id,null);
 
@@ -514,7 +517,7 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Pis = entity.Pis;
                     rst.Cofins = entity.Cofins;
                     rst.DateStart = entity.DateStart;
-                    rst.Type = Request.Form["type"].ToString();
+                    rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
 
                     tributacoes.Add(rst);
 
@@ -697,6 +700,8 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
                 ViewBag.CstSaidaID = cstS;
 
+                ViewBag.TaxationTypeNcmId = new SelectList(_taxationTypeNcmService.FindAll(null), "Id", "Description", null);
+
                 var result = _service.FindById(id, null);
 
                 ViewBag.CompanyId = result.CompanyId;
@@ -752,7 +757,7 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Status = true;
                 entity.CodeProduct = rst.CodeProduct;
                 entity.Id = lastId + 1;
-                entity.Type = Request.Form["type"].ToString();
+                rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("IndexAll", new { id = rst.CompanyId });
@@ -1213,7 +1218,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
@@ -1232,7 +1237,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                           };
@@ -1277,7 +1282,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status
                           };
 
@@ -1294,7 +1299,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
@@ -1340,7 +1345,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
 
@@ -1359,7 +1364,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Id = r.Id.ToString(),
                               Product = r.CodeProduct + " - " + r.Product,
                               Ncm = r.Ncm.Description,
-                              Type = r.Type,
+                              Type = r.TaxationTypeNcm.Description,
                               Status = r.Status,
                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                           };

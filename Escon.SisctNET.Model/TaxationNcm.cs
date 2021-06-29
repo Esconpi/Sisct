@@ -98,5 +98,17 @@ namespace Escon.SisctNET.Model
         }
 
         public string Product { get; set; }
+
+        [Display(Name = "Tipo de Tributação")]
+        [ForeignKey("TaxationTypeNcm")]
+        [Required(ErrorMessage = "Obrigatório")]
+        public long TaxationTypeNcmId { get; set; }
+
+        private TaxationTypeNcm taxationTypeNcm;
+        public TaxationTypeNcm TaxationTypeNcm
+        {
+            get => LazyLoader.Load(this, ref taxationTypeNcm);
+            set => taxationTypeNcm = value;
+        }
     }
 }

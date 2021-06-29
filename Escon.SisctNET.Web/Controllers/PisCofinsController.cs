@@ -21,6 +21,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxService _taxService;
         private readonly IBaseService _baseService;
         private readonly ICfopService _cfopService;
+        private readonly ICstService _cstService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public PisCofinsController(
@@ -32,6 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxService taxService,
             IBaseService baseService,
             ICfopService cfopService,
+            ICstService cstService,
             IHostingEnvironment appEnvironment,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
@@ -45,6 +47,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxService = taxService;
             _baseService = baseService;
             _cfopService = cfopService;
+            _cstService = cstService;
             _appEnvironment = appEnvironment;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
@@ -2052,6 +2055,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     // Tributação de NCM Monofásico Divergente
                     List<List<string>> resumoNcm = new List<List<string>>();
+                    List<List<string>> resumoProduto = new List<List<string>>();
 
                     List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
                     List<string> codeProdMono = new List<string>();
@@ -2060,6 +2064,8 @@ namespace Escon.SisctNET.Web.Controllers
                     List<string> ncmNormal = new List<string>();
 
                     var ncmsAll = _ncmService.FindAll(null);
+
+                    var cstMono = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).Select(_ => _.Code).ToList();
 
                     notes = importXml.NFeAll(directoryNfeExit);
 
@@ -2081,7 +2087,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ncmNormal = ncmsTaxation.Where(_ => _.Type.Equals("Normal")).Select(_ => _.Ncm.Code).ToList();
                         }
 
-                        string cProd = "", NCM = "";
+                        string cProd = "", xProd =  "", NCM = "", CFOP = "", CSOSN = "";
                         bool status = false;
 
                         for (int j = 0; j < notes[i].Count(); j++)
@@ -2090,6 +2096,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 cProd = notes[i][j]["cProd"];
                                 NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
+                                xProd = notes[i][j]["xProd"];
 
                                 status = false;
 
@@ -2131,9 +2139,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("CSOSN"))
                             {
-                                if (status == true)
+                                CSOSN = notes[i][j]["CSOSN"];
+                                   
+                            }
+
+                            if (notes[i][j].ContainsKey("CSTP"))
+                            {
+                                if (status)
                                 {
-                                    if (notes[i][j]["CSOSN"] != "500")
+                                    if (!cstMono.Contains(notes[i][j]["CSTP"]))
                                     {
                                         int pos = -1;
                                         for (int k = 0; k < resumoNcm.Count(); k++)
@@ -2154,12 +2168,33 @@ namespace Escon.SisctNET.Web.Controllers
                                             ncmTemp.Add("NORMAL");
                                             ncmTemp.Add("MONOFÁSICO");
                                             resumoNcm.Add(ncmTemp);
+                                        }
+
+                                        int posProd = -1;
+
+                                        for (int k = 0; k < resumoProduto.Count(); k++)
+                                        {
+                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            {
+                                                posProd = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (posProd < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> prodTemp = new List<string>();
+                                            prodTemp.Add(nn.Code);
+                                            prodTemp.Add(cProd);
+                                            prodTemp.Add(xProd);
+                                            resumoProduto.Add(prodTemp);
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    if (notes[i][j]["CSOSN"] == "500")
+                                    if (cstMono.Contains(notes[i][j]["CSTP"]))
                                     {
                                         int pos = -1;
                                         for (int k = 0; k < resumoNcm.Count(); k++)
@@ -2181,14 +2216,133 @@ namespace Escon.SisctNET.Web.Controllers
                                             ncmTemp.Add("NORMAL");
                                             resumoNcm.Add(ncmTemp);
                                         }
+
+                                        int posProd = -1;
+
+                                        for (int k = 0; k < resumoProduto.Count(); k++)
+                                        {
+                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            {
+                                                posProd = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (posProd < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> prodTemp = new List<string>();
+                                            prodTemp.Add(nn.Code);
+                                            prodTemp.Add(cProd);
+                                            prodTemp.Add(xProd);
+                                            resumoProduto.Add(prodTemp);
+                                        }
                                     }
                                 }
-                                   
+                            }
+
+                            if (notes[i][j].ContainsKey("CSTC"))
+                            {
+                                if (status)
+                                {
+                                    if (!cstMono.Contains(notes[i][j]["CSTC"]))
+                                    {
+                                        int pos = -1;
+                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        {
+                                            if (resumoNcm[k][0].Equals(NCM))
+                                            {
+                                                pos = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (pos < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> ncmTemp = new List<string>();
+                                            ncmTemp.Add(nn.Code);
+                                            ncmTemp.Add(nn.Description);
+                                            ncmTemp.Add("NORMAL");
+                                            ncmTemp.Add("MONOFÁSICO");
+                                            resumoNcm.Add(ncmTemp);
+                                        }
+
+                                        int posProd = -1;
+
+                                        for (int k = 0; k < resumoProduto.Count(); k++)
+                                        {
+                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            {
+                                                posProd = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (posProd < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> prodTemp = new List<string>();
+                                            prodTemp.Add(nn.Code);
+                                            prodTemp.Add(cProd);
+                                            prodTemp.Add(xProd);
+                                            resumoProduto.Add(prodTemp);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (cstMono.Contains(notes[i][j]["CSTC"]))
+                                    {
+                                        int pos = -1;
+                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        {
+                                            if (resumoNcm[k][0].Equals(NCM))
+                                            {
+                                                pos = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (pos < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> ncmTemp = new List<string>();
+                                            ncmTemp.Add(nn.Code);
+                                            ncmTemp.Add(nn.Description);
+                                            ncmTemp.Add("MONOFÁSICO");
+                                            ncmTemp.Add("NORMAL");
+                                            resumoNcm.Add(ncmTemp);
+                                        }
+
+                                        int posProd = -1;
+
+                                        for (int k = 0; k < resumoProduto.Count(); k++)
+                                        {
+                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            {
+                                                posProd = k;
+                                                break;
+                                            }
+                                        }
+
+                                        if (posProd < 0)
+                                        {
+                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                            List<string> prodTemp = new List<string>();
+                                            prodTemp.Add(nn.Code);
+                                            prodTemp.Add(cProd);
+                                            prodTemp.Add(xProd);
+                                            resumoProduto.Add(prodTemp);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
 
-                    ViewBag.Ncm = resumoNcm.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                    ViewBag.Ncms = resumoNcm.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                    ViewBag.Produtos = resumoProduto.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
                 else if (type.Equals("relatorioSimples"))
                 {
@@ -2202,35 +2356,39 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Imposto = imp;
 
-                    decimal vendasNomal = Convert.ToDecimal(imp.VendaNormal), vendasST = Convert.ToDecimal(imp.VendaST), vendasMono = Convert.ToDecimal(imp.VendaMonofasico),
-                            devoNormal = Convert.ToDecimal(imp.DevoNormal), devoST = Convert.ToDecimal(imp.DevoST), devoMono = Convert.ToDecimal(imp.DevoMonofasico);
+                    decimal vendasNomalNormal = Convert.ToDecimal(imp.VendaNormalNormal), vendasSTNormal = Convert.ToDecimal(imp.VendaSTNormal), vendasSTMono = Convert.ToDecimal(imp.VendaSTMonofasico), vendasNormalMono = Convert.ToDecimal(imp.VendaNormalMonofasico),
+                            devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal), devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal), devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico);
 
 
                     //  Base
-                    decimal baseNormal = vendasNomal - devoNormal,
-                            baseST = vendasST - devoST,
-                            baseMono = vendasMono - devoMono;
+                    decimal baseNormalNormal = vendasNomalNormal - devoNormalNormal,
+                            baseSTNormal = vendasSTNormal - devoSTNormal,
+                            baseSTMono = vendasSTMono - devoSTMono,
+                            baseNormalMono = vendasNormalMono - devoNormalMono;
 
 
                     //  Totais
-                    decimal totalVendas = vendasNomal + vendasST + vendasMono,
-                            totalDevo = devoNormal + devoST + devoMono,
+                    decimal totalVendas = vendasNomalNormal + vendasSTNormal + vendasSTMono + vendasNormalMono,
+                            totalDevo = devoNormalNormal + devoSTNormal + devoSTMono - devoNormalMono,
                             totalBase = totalVendas - totalDevo;
 
                     //  Vendas
-                    ViewBag.VendasNomal = vendasNomal;
-                    ViewBag.VendasST = vendasST;
-                    ViewBag.VendasMono = vendasMono;
+                    ViewBag.VendasNomalNormal = vendasNomalNormal;
+                    ViewBag.VendasSTNormal = vendasSTNormal;
+                    ViewBag.VendasSTMono = vendasSTMono;
+                    ViewBag.VendasNormalMono = vendasNormalMono;
 
                     //  Devoluções
-                    ViewBag.DevoNormal = devoNormal;
-                    ViewBag.DevoST = devoST;
-                    ViewBag.DevoMono = devoMono;
+                    ViewBag.NormalNormal = devoNormalNormal;
+                    ViewBag.DevoSTNormal = devoSTNormal;
+                    ViewBag.DevoSTMono = devoSTMono;
+                    ViewBag.DevoNormalMono = devoNormalMono;
 
                     //  Bases
-                    ViewBag.BaseNormal = baseNormal;
-                    ViewBag.BaseST = baseST;
-                    ViewBag.BaseMono = baseMono;
+                    ViewBag.BaseNormalNormal = baseNormalNormal;
+                    ViewBag.BaseSTNormal = baseSTNormal;
+                    ViewBag.BaseSTMono = baseSTMono;
+                    ViewBag.BaseNormalMono = baseNormalMono;
 
                     //  Totais
                     ViewBag.TotalVendas = totalVendas;
