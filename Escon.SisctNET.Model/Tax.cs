@@ -237,6 +237,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaNormalIsento { get; set; }
 
+        public decimal? VendaNormalOutras { get; set; }
+
         public decimal? VendaSTNormal { get; set; }
 
         public decimal? VendaSTMonofasico { get; set; }
@@ -246,6 +248,8 @@ namespace Escon.SisctNET.Model
         public decimal? VendaSTAliqZero { get; set; }
 
         public decimal? VendaSTIsento { get; set; }
+
+        public decimal? VendaSTOutras { get; set; }
 
         public decimal? DevoNormalNormal { get; set; }
 
@@ -257,6 +261,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? DevoNormalIsento { get; set; }
 
+        public decimal? DevoNormalOutras { get; set; }
+
         public decimal? DevoSTNormal { get; set; }
 
         public decimal? DevoSTMonofasico { get; set; }
@@ -266,6 +272,8 @@ namespace Escon.SisctNET.Model
         public decimal? DevoSTAliqZero { get; set; }
 
         public decimal? DevoSTIsento { get; set; }
+
+        public decimal? DevoSTOutras { get; set; }
 
 
 

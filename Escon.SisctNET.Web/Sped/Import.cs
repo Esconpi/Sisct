@@ -439,14 +439,16 @@ namespace Escon.SisctNET.Web.Sped
             List<string> codeProdST = new List<string>();
             List<string> codeProdAliqZero = new List<string>();
             List<string> codeProdIsento = new List<string>();
+            List<string> codeProdOutras = new List<string>();
             List<string> ncmMono = new List<string>();
             List<string> ncmNormal = new List<string>();
             List<string> ncmST = new List<string>();
             List<string> ncmAliqZero = new List<string>();
             List<string> ncmIsento = new List<string>();
+            List<string> ncmOutras = new List<string>();
 
-            decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0,
-                          devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0;
+            decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, devoNormalOutras = 0,
+                          devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0, devoSTOutras = 0;
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -480,12 +482,16 @@ namespace Escon.SisctNET.Web.Sped
                                 codeProdST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
                                 codeProdAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
                                 codeProdIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+                                codeProdOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
+
 
                                 ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                                 ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
                                 ncmST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
                                 ncmAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
                                 ncmIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+                                ncmOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
+
                             }
 
                             if (note[1].Equals("C170") && tipo == "0" && note[3].Equals(linha[2]))
@@ -497,6 +503,7 @@ namespace Escon.SisctNET.Web.Sped
                                     Model.TaxationNcm ehST = null;
                                     Model.TaxationNcm ehAliqZero = null;
                                     Model.TaxationNcm ehIsento = null;
+                                    Model.TaxationNcm ehOutras = null;
 
                                     if (company.Taxation == "Produto")
                                     {
@@ -513,8 +520,10 @@ namespace Escon.SisctNET.Web.Sped
                                             ehST = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(4)).FirstOrDefault();
                                             ehAliqZero = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(3)).FirstOrDefault();
                                             ehIsento = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(5)).FirstOrDefault();
+                                            ehOutras = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(5)).FirstOrDefault();
 
-                                            if (ehNormal != null || ehMono != null || ehST != null || ehAliqZero != null || ehIsento != null)
+
+                                            if (ehNormal != null || ehMono != null || ehST != null || ehAliqZero != null || ehIsento != null || ehOutras != null)
                                                 break;
 
                                         }
@@ -526,6 +535,8 @@ namespace Escon.SisctNET.Web.Sped
                                         ehST = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(4)).FirstOrDefault();
                                         ehAliqZero = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(3)).FirstOrDefault();
                                         ehIsento = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(5)).FirstOrDefault();
+                                        ehOutras = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(5)).FirstOrDefault();
+
                                     }
 
                                     if (ehNormal != null)
@@ -638,6 +649,28 @@ namespace Escon.SisctNET.Web.Sped
                                         }
 
                                     }
+                                    else if (ehOutras != null)
+                                    {
+                                        if (note[11].Substring(0, 1) == "6")
+                                        {
+                                            // Devolução Normal Outras
+                                            devoNormalOutras += Convert.ToDecimal(note[7]);
+                                        }
+                                        else
+                                        {
+                                            if (note[10] == "500")
+                                            {
+                                                // Devolução ST Outras
+                                                devoSTOutras += Convert.ToDecimal(note[7]);
+                                            }
+                                            else if (note[10] == "101" || linha[8] == "102" || linha[8] == "300")
+                                            {
+                                                // Devolução Normal Outras
+                                                devoNormalOutras += Convert.ToDecimal(note[7]);
+                                            }
+                                        }
+
+                                    }
                                 }
                             }
                         }
@@ -668,6 +701,8 @@ namespace Escon.SisctNET.Web.Sped
             devolucoes.Add(devoSTST);
             devolucoes.Add(devoSTAliqZero);
             devolucoes.Add(devoSTIsento);
+            devolucoes.Add(devoNormalOutras);
+            devolucoes.Add(devoSTOutras);
 
             return devolucoes;
         }

@@ -3123,8 +3123,8 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
 
                         //  Empresa do Simples
-                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0,
-                            devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0;
+                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, devoNormalOutras = 0,
+                            devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0, devoSTOutras = 0;
 
                         foreach (var cc in caminhos)
                         {
@@ -3166,6 +3166,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 devoSTST += sped[9];
                                 devoSTAliqZero += sped[10];
                                 devoSTIsento += sped[11];
+                                devoNormalOutras += sped[12];
+                                devoSTOutras += sped[13];
                             }
                         }
 
@@ -3196,6 +3198,8 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.DevoSTST = devoSTST;
                             imp.DevoSTAliqZero = devoSTAliqZero;
                             imp.DevoSTIsento = devoSTIsento;
+                            imp.DevoSTOutras = devoSTOutras;
+                            imp.DevoNormalOutras = devoNormalOutras;
                         }
                         else
                         {
@@ -3223,6 +3227,8 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.DevoSTST = devoSTST;
                             tax.DevoSTAliqZero = devoSTAliqZero;
                             tax.DevoSTIsento = devoSTIsento;
+                            tax.DevoSTOutras = devoSTOutras;
+                            tax.DevoNormalOutras = devoNormalOutras;
                         }
                     }
                     else if (type.Equals("xmlS") || type.Equals("xmlE"))
@@ -3251,11 +3257,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //  Empresa do Simples
                         decimal vendasNomalNormal = 0, vendasNormalMono = 0, vendasNormalST = 0, vendasNormalAliqZero = 0, vendasNormalIsento = 0, vendasSTNormal = 0, 
-                            vendasSTMono = 0, vendasSTST = 0, vendasSTAliqZero = 0, vendasSTIsento = 0;
+                            vendasSTMono = 0, vendasSTST = 0, vendasSTAliqZero = 0, vendasSTIsento = 0, vendasNormalOutras = 0, vendasSTOutras = 0;
 
-                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, 
-                            devoSTNormal = 0,  devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0;
-
+                        decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, devoNormalOutras = 0,
+                            devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0, devoSTOutras = 0;
 
                         //  Importação dos Dados
                         foreach (var c in companies)
@@ -4045,12 +4050,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 List<string> codeProdST = new List<string>();
                                 List<string> codeProdAliqZero = new List<string>();
                                 List<string> codeProdIsento = new List<string>();
+                                List<string> codeProdOutras = new List<string>();
                                 List<string> ncmMono = new List<string>();
                                 List<string> ncmNormal = new List<string>();
                                 List<string> ncmST = new List<string>();
                                 List<string> ncmAliqZero = new List<string>();
                                 List<string> ncmIsento = new List<string>();
-
+                                List<string> ncmOutras = new List<string>();
 
                                 cfopsVenda.AddRange(cfopsVendaST);
                                 cfopsVenda.AddRange(cfopsTransf);
@@ -4075,12 +4081,15 @@ namespace Escon.SisctNET.Web.Controllers
                                         codeProdST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
                                         codeProdAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.CodeProduct).ToList();
                                         codeProdIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+                                        codeProdOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
+
 
                                         ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2)).Select(_ => _.Ncm.Code).ToList();
                                         ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1)).Select(_ => _.Ncm.Code).ToList();
                                         ncmST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
                                         ncmAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(3)).Select(_ => _.Ncm.Code).ToList();
                                         ncmIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+                                        ncmOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
 
                                     }
 
@@ -4195,6 +4204,21 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
 
                                                 }
+                                                else if (codeProdOutras.Contains(cProd) && ncmOutras.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalOutras += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTOutras += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalOutras += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
                                                 else
                                                 {
                                                     ViewBag.NCM = NCM;
@@ -4279,6 +4303,21 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
 
                                                 }
+                                                else if (ncmOutras.Contains(NCM))
+                                                {
+                                                    if (CFOP.Substring(0, 1) == "6")
+                                                    {
+                                                        vendasNormalOutras += Convert.ToDecimal(vProd);
+                                                    }
+                                                    else
+                                                    {
+                                                        if (exitNotes[i][j]["CSOSN"] == "500")
+                                                            vendasSTOutras += Convert.ToDecimal(vProd);
+                                                        else if (exitNotes[i][j]["CSOSN"] == "101" || exitNotes[i][j]["CSOSN"] == "102" || exitNotes[i][j]["CSOSN"] == "300")
+                                                            vendasNormalOutras += Convert.ToDecimal(vProd);
+                                                    }
+
+                                                }
                                                 else
                                                 {
                                                     ViewBag.NCM = NCM;
@@ -4334,6 +4373,8 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.VendaSTST = vendasSTST;
                             imp.VendaSTAliqZero = vendasSTAliqZero;
                             imp.VendaSTIsento = vendasSTIsento;
+                            imp.VendaNormalOutras = vendasNormalOutras;
+                            imp.VendaSTOutras = vendasSTOutras;
 
                             if (!comp.Sped)
                             {
@@ -4347,6 +4388,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 imp.DevoSTST = devoSTST;
                                 imp.DevoSTAliqZero = devoSTAliqZero;
                                 imp.DevoSTIsento = devoSTIsento;
+                                imp.DevoSTOutras = devoSTOutras;
+                                imp.DevoNormalOutras = devoNormalOutras;
                             }
 
  
@@ -4382,6 +4425,8 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.VendaSTST = vendasSTST;
                             tax.VendaSTAliqZero = vendasSTAliqZero;
                             tax.VendaSTIsento = vendasSTIsento;
+                            tax.VendaNormalOutras = vendasNormalOutras;
+                            tax.VendaSTOutras = vendasSTOutras;
                             if (!comp.Sped)
                             {
                                 tax.DevoNormalNormal = devoNormalNormal;
@@ -4394,6 +4439,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 tax.DevoSTST = devoSTST;
                                 tax.DevoSTAliqZero = devoSTAliqZero;
                                 tax.DevoSTIsento = devoSTIsento;
+                                tax.DevoSTOutras = devoSTOutras;
+                                tax.DevoNormalOutras = devoNormalOutras;
                             }
                             
                         }

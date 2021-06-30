@@ -553,7 +553,7 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Pis = entity.Pis;
                         n.Cofins = entity.Cofins;
                         n.DateStart = entity.DateStart;
-                        n.Type = Request.Form["type"].ToString();
+                        n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
 
                         tributacoes.Add(n);
                     }
