@@ -2112,8 +2112,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ncmOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
                         }
 
-                        string cProd = "", xProd =  "", NCM = "", CFOP = "";
-                        bool status = false;
+                        string cProd = "", xProd =  "", NCM = "";
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -2121,15 +2120,12 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 cProd = notes[i][j]["cProd"];
                                 NCM = notes[i][j]["NCM"];
-                                CFOP = notes[i][j]["CFOP"];
                                 xProd = notes[i][j]["xProd"];
 
                             }
 
-
                             if (notes[i][j].ContainsKey("CSTP"))
                             {
-
                                 if (comp.Taxation == "Produto")
                                 {
                                     if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
@@ -2730,100 +2726,602 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("CSTC"))
                             {
-                                if (status)
+                                if (comp.Taxation == "Produto")
                                 {
-                                    if (!cstMono.Contains(notes[i][j]["CSTC"]))
+                                    if (codeProdMono.Contains(cProd) && ncmMono.Contains(NCM))
                                     {
-                                        int pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        if (!cstMono.Contains(notes[i][j]["CSTC"]))
                                         {
-                                            if (resumoNcm[k][0].Equals(NCM))
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
                                             {
-                                                pos = k;
-                                                break;
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("MONOFÁSICO");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
                                             }
                                         }
-
-                                        if (pos < 0)
+                                    }
+                                    else if (codeProdNormal.Contains(cProd) && ncmNormal.Contains(NCM))
+                                    {
+                                        if (!cstNormal.Contains(notes[i][j]["CSTC"]))
                                         {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add("NORMAL");
-                                            ncmTemp.Add("MONOFÁSICO");
-                                            resumoNcm.Add(ncmTemp);
-                                        }
-
-                                        int posProd = -1;
-
-                                        for (int k = 0; k < resumoProduto.Count(); k++)
-                                        {
-                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
                                             {
-                                                posProd = k;
-                                                break;
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("NORMAL");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
                                             }
                                         }
-
-                                        if (posProd < 0)
+                                    }
+                                    else if (codeProdAliqZero.Contains(cProd) && ncmAliqZero.Contains(NCM))
+                                    {
+                                        if (!cstAliqZero.Contains(notes[i][j]["CSTC"]))
                                         {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> prodTemp = new List<string>();
-                                            prodTemp.Add(nn.Code);
-                                            prodTemp.Add(cProd);
-                                            prodTemp.Add(xProd);
-                                            resumoProduto.Add(prodTemp);
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("ALIQ. ZERO");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
                                         }
+                                    }
+                                    else if (codeProdST.Contains(cProd) && ncmST.Contains(NCM))
+                                    {
+                                        if (!cstST.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (codeProdIsento.Contains(cProd) && ncmIsento.Contains(NCM))
+                                    {
+                                        if (!cstIsento.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("ISENTO");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (codeProdOutras.Contains(cProd) && ncmOutras.Contains(NCM))
+                                    {
+                                        if (!cstOutras.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("OUTRAS");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NCM = NCM;
+                                        ViewBag.Erro = 2;
+                                        return View();
                                     }
                                 }
                                 else
                                 {
-                                    if (cstMono.Contains(notes[i][j]["CSTC"]))
+                                    if (ncmMono.Contains(NCM))
                                     {
-                                        int pos = -1;
-                                        for (int k = 0; k < resumoNcm.Count(); k++)
+                                        if (!cstMono.Contains(notes[i][j]["CSTC"]))
                                         {
-                                            if (resumoNcm[k][0].Equals(NCM))
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
                                             {
-                                                pos = k;
-                                                break;
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
                                             }
-                                        }
 
-                                        if (pos < 0)
-                                        {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> ncmTemp = new List<string>();
-                                            ncmTemp.Add(nn.Code);
-                                            ncmTemp.Add(nn.Description);
-                                            ncmTemp.Add("MONOFÁSICO");
-                                            ncmTemp.Add("NORMAL");
-                                            resumoNcm.Add(ncmTemp);
-                                        }
-
-                                        int posProd = -1;
-
-                                        for (int k = 0; k < resumoProduto.Count(); k++)
-                                        {
-                                            if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                            if (pos < 0)
                                             {
-                                                posProd = k;
-                                                break;
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("MONOFÁSICO");
+                                                resumoNcm.Add(ncmTemp);
                                             }
-                                        }
 
-                                        if (posProd < 0)
-                                        {
-                                            var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
-                                            List<string> prodTemp = new List<string>();
-                                            prodTemp.Add(nn.Code);
-                                            prodTemp.Add(cProd);
-                                            prodTemp.Add(xProd);
-                                            resumoProduto.Add(prodTemp);
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
                                         }
                                     }
+                                    else if (ncmNormal.Contains(NCM))
+                                    {
+                                        if (!cstNormal.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var y = notes[i][j]["CSTP"];
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("NORMAL");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (ncmAliqZero.Contains(NCM))
+                                    {
+                                        if (!cstAliqZero.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("ALIQ. ZERO");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (ncmST.Contains(NCM))
+                                    {
+                                        if (!cstST.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (ncmIsento.Contains(NCM))
+                                    {
+                                        if (!cstIsento.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("ISENTO");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else if (ncmOutras.Contains(NCM))
+                                    {
+                                        if (!cstOutras.Contains(notes[i][j]["CSTC"]))
+                                        {
+                                            int pos = -1;
+                                            for (int k = 0; k < resumoNcm.Count(); k++)
+                                            {
+                                                if (resumoNcm[k][0].Equals(NCM))
+                                                {
+                                                    pos = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (pos < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                var cstTemp = cstAll.Where(_ => _.Code.Equals(notes[i][j]["CSTC"])).FirstOrDefault();
+                                                List<string> ncmTemp = new List<string>();
+                                                ncmTemp.Add(nn.Code);
+                                                ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
+                                                ncmTemp.Add("OUTRAS");
+                                                resumoNcm.Add(ncmTemp);
+                                            }
+
+                                            int posProd = -1;
+
+                                            for (int k = 0; k < resumoProduto.Count(); k++)
+                                            {
+                                                if (resumoProduto[k][0].Equals(NCM) && resumoProduto[k][1].Equals(cProd))
+                                                {
+                                                    posProd = k;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (posProd < 0)
+                                            {
+                                                var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                                List<string> prodTemp = new List<string>();
+                                                prodTemp.Add(nn.Code);
+                                                prodTemp.Add(cProd);
+                                                prodTemp.Add(xProd);
+                                                resumoProduto.Add(prodTemp);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NCM = NCM;
+                                        ViewBag.Erro = 2;
+                                        return View();
+                                    }
                                 }
+
                             }
                         }
                     }

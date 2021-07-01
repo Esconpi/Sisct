@@ -16,46 +16,46 @@
 </style>
 
 <table class="table" style="font-size:12px; border:1px solid">
-    <thead>
-        <tr>
-            <th style="border: 1px solid; text-align: center; width:80%;">
-                NCM
-            </th>
-            <th style="border: 1px solid; text-align: center;">
-                XML
-            </th>
-            <th style="border: 1px solid; text-align: center;">
-                SisCT
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ncm in ViewBag.Ncms)
-        {
+    @foreach (var ncm in ViewBag.Ncms)
+    {
 
-
+        <thead>
+            <tr>
+                <th style="border: 1px solid; text-align: center; width:80%;">
+                    NCM
+                </th>
+                <th style="border: 1px solid; text-align: center;">
+                    XML
+                </th>
+                <th style="border: 1px solid; text-align: center;">
+                    SisCT
+                </th>
+            </tr>
+        </thead>
+        <tbody>
             <tr style="border:1px solid;">
                 <td style="border:1px solid; padding-left:1%;">
                     @if (ncm[1].Length > 100)
                     {
-                         @ncm[1].Substring(0,100)
+                        @ncm[1].Substring(0, 100)
                     }
-                    else{
+                    else
+                    {
                         @ncm[1]
                     }
 
                 </td>
-                <td style="border:1px solid; padding-left:1%;">
+                <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
                     @ncm[2]
                 </td>
-                <td style="border:1px solid; padding-left:1%;">
+                <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
                     @ncm[3]
                 </td>
             </tr>
 
 
             <tr>
-                <th style="border: 1px solid; text-align: center;" colspan="3">Produto</th>
+                <th style="border: 1px solid; text-align: center;" colspan="3">PRODUTO</th>
             </tr>
 
             @foreach (var prod in ViewBag.Produtos)
@@ -70,6 +70,6 @@
                 }
 
             }
-        }
-    </tbody>
+        </tbody>            
+    }
 </table>
