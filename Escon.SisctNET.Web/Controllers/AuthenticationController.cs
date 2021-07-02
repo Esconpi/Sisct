@@ -67,6 +67,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (person.Email.Equals(login["Email"]) && person.Password.Equals(Password))
                 {
+                    if (!person.Active)
+                    {
+                        ViewBag.CodeErro = 1; //Usuário Inativo
+                        return View("Index");
+                    }
+
                     SessionManager.SetLoginInSession(new Model.Login() { AccessKey = auth.AccessToken, Email = auth.Email, Id = auth.Id});
                     SessionManager.SetUserIdInSession(auth.Id);
                     SessionManager.SetPersonInSession(person);

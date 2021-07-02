@@ -456,7 +456,6 @@ namespace Escon.SisctNET.Web.Sped
 
             string line;
 
-
             try
             {
                 while ((line = archiveSped.ReadLine()) != null)
