@@ -27064,7 +27064,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                //Dar
+                //  Dar
                 var dars = _darService.FindAll(null);
                 ViewBag.DarIcms = dars.Where(_ => _.Type.Equals("Icms")).FirstOrDefault();
                 ViewBag.DarFunef = dars.Where(_ => _.Type.Equals("Funef")).FirstOrDefault();

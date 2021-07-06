@@ -230,6 +230,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationTypeNcmService, TaxationTypeNcmService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
+            services.AddScoped<Fortes.ICONService, Fortes.Implementation.CONService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
 
             try

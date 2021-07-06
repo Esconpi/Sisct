@@ -640,6 +640,23 @@ namespace Escon.SisctNET.Web.Controllers
             return Ok(new { code = "200", message = "ok" });
         }
 
+        [HttpGet]
+        public IActionResult Balancete(long id)
+        {
+            if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
+
+            try
+            {
+                var comp = _service.FindById(id, null);
+
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult GetAllActive(int draw, int start)
         {
 

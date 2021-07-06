@@ -1,0 +1,62 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Balancete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header" id="hiddenHeader">
+        <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+
+        <h3 class="box-title"> <strong>Gerar Balancete:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+    </div>
+    <div class="box-body" id="hiddenBody">
+        <div class="col-lg-12">
+            <form asp-action="Relatory" asp-controller="Balancete" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="companyId" value="@Html.DisplayFor(model => model.Id)" />
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Início</label>
+                        <input type="date" name="inicio" id="inicio" class="form-control" onchange="ativar_button()" />
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <label class="control-label">Fim</label>
+                        <input type="date" name="fim" id="fim" class="form-control" onchange="ativar_button()" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <br />
+                        <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div style="text-align:center; display:none;" id="loading">
+        <img src="~/img/carregando.gif" />
+    </div>
+</div>
+
+<script>
+    function ativar_button() {
+        var inicio = document.getElementById("inicio").value;
+        var fim = document.getElementById("fim").value;
+
+
+        if (fim == "" || inicio == "") {
+            document.getElementById("ativa").disabled = true;
+        }
+        else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
+    function show() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('hiddenHeader').style.display = 'none';
+        document.getElementById('hiddenBody').style.display = 'none';
+    }
+</script>
+
