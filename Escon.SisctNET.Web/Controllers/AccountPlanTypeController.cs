@@ -94,7 +94,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var rst = _service.FindById(id, null);
                 entity.Created = rst.Created;
 
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));

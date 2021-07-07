@@ -230,6 +230,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationTypeNcmService, TaxationTypeNcmService>();
             services.AddScoped<IAccountPlanService, AccountPlanService>();
             services.AddScoped<IAccountPlanTypeService, AccountPlanTypeService>();
+            services.AddScoped<IAccountPlanTypeGroupService, AccountPlanTypeGroupService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<Fortes.IAccountPlanService, Fortes.Implementation.AccountPlanService>();
