@@ -142,6 +142,26 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<int>("MaxSisctNET");
         }
 
+        public static void SetCompanyInSession(Model.Company company)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<Model.Company>("CompanyProtocoloNET", company);
+        }
+
+        public static Model.Company GetCompanyInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<Model.Company>("CompanyProtocoloNET");
+        }
+
+        public static void SetAccountPlanTypeInSession(List<Model.AccountPlanType> accountPlanTypes)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<Model.AccountPlanType>>("AccountPlanTypeSisctNET", accountPlanTypes);
+        }
+
+        public static List<Model.AccountPlanType> GetAccountPlanTypeInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<Model.AccountPlanType>>("AccountPlanTypeSisctNET");
+        }
+
     }
 
 }

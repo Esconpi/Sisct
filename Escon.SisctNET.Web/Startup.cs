@@ -164,7 +164,7 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProductNoteInventoryExitRepository, ProductNoteInventoryExitRepository>();
             services.AddScoped<IEstoqueRepository, EstoqueRepository>();
             services.AddScoped<ITaxationTypeNcmRepository, TaxationTypeNcmRepository>();
-
+            services.AddScoped<IAccountPlanRepository, AccountPlanRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -228,8 +228,11 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProductNoteInventoryExitService, ProductNoteInventoryExitService>();
             services.AddScoped<IEstoqueService, EstoqueService>();
             services.AddScoped<ITaxationTypeNcmService, TaxationTypeNcmService>();
+            services.AddScoped<IAccountPlanService, AccountPlanService>();
+            services.AddScoped<IAccountPlanTypeService, AccountPlanTypeService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
+            services.AddScoped<Fortes.IAccountPlanService, Fortes.Implementation.AccountPlanService>();
             services.AddScoped<Fortes.ICONService, Fortes.Implementation.CONService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
 

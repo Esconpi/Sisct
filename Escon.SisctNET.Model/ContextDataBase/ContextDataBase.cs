@@ -134,5 +134,9 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<Estoque> Estoques { get; set; }
 
         public DbSet<TaxationTypeNcm> TaxationTypeNcms { get; set; }
+
+        public DbSet<AccountPlan> AccountPlans { get; set; }
+
+        public DbSet<AccountPlanType> AccountPlanTypes { get; set; }
     }
 }

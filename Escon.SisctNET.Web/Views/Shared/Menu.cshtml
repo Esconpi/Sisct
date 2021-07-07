@@ -93,6 +93,11 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
             {
                 <li><a href="@Url.Action("Index","Aliquot")"><i class="fa fa-circle-o"></i>Aliquota Estado</a></li>
             }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanType")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","AccountPlanType")"><i class="fa fa-circle-o"></i>Tipo de Conta</a></li>
+            }
         </ul>
     </li>
 

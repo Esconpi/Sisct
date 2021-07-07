@@ -246,6 +246,14 @@ namespace Escon.SisctNET.Model
 
         public string Taxation { get; set; }
 
+        public Company()
+        {
+            AccountPlans = new List<AccountPlan>();
+
+        }
+
         public virtual IList<EmailResponsible> EmaiResponsibles { get; set; }
+
+        public virtual ICollection<AccountPlan> AccountPlans { get; set; }
     }
 }
