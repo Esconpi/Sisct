@@ -8,9 +8,18 @@ namespace Escon.SisctNET.Fortes.Implementation
     public class AccountPlanService : ContextDataBase.SqlContextFortesDb, IAccountPlanService
     {
         public AccountPlanService()
+            : base()
         {
 
         }
+
+        /**
+      * Campos tabela CON
+      * EMP_Codigo, Codigo, Reduzido, Analitica, Patrimonial, Resumir, Natureza, EST_Codigo, CRS_Codigo, EnglobaFilhas, CON_Codigo_Mae,
+      * Grupo, AjusteLucroReal, NAL_Codigo, CdAlternat, NmAlternat, LivroCaixa, Nome, PCR_Codigo, Desativada, DFC, ExpurgoFCont, PCR2014_Codigo,
+      * PCRPJLP_Codigo, PCRFIN_Codigo, PCRSEG_Codigo, PCRIIG_Codigo, PCRFII_Codigo, PCRSII_Codigo, PCREFPC_Codigo, PCRPP_Codigo, Codigo_COSIF, 
+      * Prazo, NSB_Codigo, CON_Codigo_Vinculada, PCRPJLPF_Codigo, CPFCNPJBase, PCRPP2_Codigo, OutrasSPED, TIPO_LANC, BAN_CODIGO, AGE_CODIGO, CONTACORRENTENUMERO
+      */
 
         public List<AccountPlan> GetAccountPlans(Company company, string connectionString)
         {
@@ -24,14 +33,15 @@ namespace Escon.SisctNET.Fortes.Implementation
                     using (_SqlCommand = new System.Data.SqlClient.SqlCommand())
                     {
                         _SqlCommand.Connection = _SqlConnection;
-                        _SqlCommand.CommandText = $"select * from con where emp_codigo = {company.Code}";
+                        _SqlCommand.CommandText = $"select * from CON where EMP_Codigo = '{company.Code}'";
+
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
                             while (_SqlDataReader.Read())
                             {
                                 AccountPlan accountPlan = new AccountPlan()
                                 {
-                                    AccountPlanTypeId = 4,
+                                    AccountPlanTypeId = 21,
                                     Active = false,
                                     Created = DateTime.Now,
                                     Updated = DateTime.Now,
@@ -51,6 +61,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                     _SqlConnection.Close();
                 }
 
+                base.Dispose();
                 base.Dispose();
             }
             catch (Exception ex)

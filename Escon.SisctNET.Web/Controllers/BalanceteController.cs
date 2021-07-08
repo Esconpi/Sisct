@@ -8,12 +8,12 @@ namespace Escon.SisctNET.Web.Controllers
     public class BalanceteController : ControllerBaseSisctNET
     {
         private readonly ICompanyService _companyService;
-        private readonly Fortes.ICONService _cONService;
+        private readonly Fortes.ISDOService _cONService;
         private readonly IConfigurationService _configurationService;
 
         public BalanceteController(
             ICompanyService companyService,
-            Fortes.ICONService cONService,
+            Fortes.ISDOService cONService,
             IConfigurationService configurationService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 

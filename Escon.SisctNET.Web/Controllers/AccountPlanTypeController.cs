@@ -34,7 +34,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindAll(null);
+                var result = _service.FindAll(null).OrderBy(_ => _.AccountPlanTypeGroupId).ToList();
 
                 return View(result);
             }
@@ -53,9 +53,16 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 List<Model.AccountPlanTypeGroup> list_grupos = _accountPlanTypeGroupService.FindAll(null);
+
+                foreach (var g in list_grupos)
+                {
+                    g.Name = g.Id + " - " + g.Name;
+                }
+
                 list_grupos.Insert(0, new Model.AccountPlanTypeGroup() { Name = "Nennhum item selecionado", Id = 0 });
                 SelectList grupos = new SelectList(list_grupos, "Id", "Name", null);
                 ViewBag.AccountPlanTypeGroupId = grupos;
+
                 return View();
             }
             catch (Exception ex)
@@ -93,7 +100,16 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                ViewBag.AccountPlanTypeGroupId = new SelectList(_accountPlanTypeGroupService.FindAll(null), "Id", "Name", null);
+
+                List<Model.AccountPlanTypeGroup> list_grupos = _accountPlanTypeGroupService.FindAll(null);
+                foreach (var g in list_grupos)
+                {
+                    g.Name = g.Id + " - " + g.Name;
+                }
+
+                SelectList grupos = new SelectList(list_grupos, "Id", "Name", null);
+                ViewBag.AccountPlanTypeGroupId = grupos;
+
                 return View(result);
             }
             catch (Exception ex)
@@ -170,7 +186,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             if (SessionManager.GetAccountPlanTypeInSession() == null)
             {
-                accountPlanTypes = _service.FindAll(null);
+                accountPlanTypes = _service.FindAll(null).OrderBy(_ => _.AccountPlanTypeGroupId).ToList();
                 SessionManager.SetAccountPlanTypeInSession(accountPlanTypes);
             }
 
@@ -180,12 +196,12 @@ namespace Escon.SisctNET.Web.Controllers
             }
             else
             {
-                accountPlanTypes = SessionManager.GetAccountPlanTypeInSession();
+                accountPlanTypes = SessionManager.GetAccountPlanTypeInSession().OrderBy(_ => _.AccountPlanTypeGroupId).ToList();
             }
 
             foreach (var item in accountPlanTypes)
             {
-                dropdown.Add(new OutputDropdownList() { id = item.Id, text = item.Name });
+                dropdown.Add(new OutputDropdownList() { id = item.Id, text = item.AccountPlanTypeGroup.Id + " - " + item.Name });
             }
 
             return Ok(new { results = dropdown, pagination = new { more = false } });

@@ -1,0 +1,78 @@
+﻿<table class="table" style="width:100%;font-size:10px; border:1px solid;">
+    <thead>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;">Data</th>
+            <th style="border: 1px solid;">Modelo</th>
+            <th style="border: 1px solid;">Tipo</th>
+            <th style="border: 1px solid;">UF</th>
+            <th style="border: 1px solid;">Nota</th>
+            <th style="border: 1px solid;">CNPJ/CPF</th>
+            <th style="border: 1px solid;">Nome</th>
+            <th style="border: 1px solid;">Valor</th>
+            <th style="border: 1px solid;">Chave</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var nota in ViewBag.Notas)
+        {
+            @if (Convert.ToDateTime(nota[1]["dhEmi"]).Month == ViewBag.NumberMonth)
+            {
+                <tr>
+                    <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
+                    <td style="border: 1px solid;">@nota[1]["mod"]</td>
+                    <td style="border: 1px solid;">@nota[1]["tpNF"]</td>
+                    <td style="border: 1px solid;">@nota[2]["UF"]</td>
+                    <td style="border: 1px solid;">@nota[1]["nNF"]</td>
+                    @if (nota[2].ContainsKey("CNPJ"))
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CNPJ"]</td>
+                    }
+                    else
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CPF"]</td>
+                    }
+
+                    <td style="border: 1px solid;">@nota[2]["xNome"]</td>
+
+                    <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(nota[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+
+                    <td style="border: 1px solid;">@nota[0]["chave"]</td>
+                </tr>
+            }
+            else
+            {
+                <tr style="border-left:5px solid; border-color:red;">
+                    <td style="border: 1px solid;">@nota[1]["dhEmi"]</td>
+                    <td style="border: 1px solid;">@nota[1]["mod"]</td>
+                    <td style="border: 1px solid;">@nota[1]["tpNF"]</td>
+                    <td style="border: 1px solid;">@nota[2]["UF"]</td>
+                    <td style="border: 1px solid;">@nota[1]["nNF"]</td>
+                    @if (nota[2].ContainsKey("CNPJ"))
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CNPJ"]</td>
+                    }
+                    else
+                    {
+                        <td style="border: 1px solid;">@nota[2]["CPF"]</td>
+                    }
+
+                    <td style="border: 1px solid;">@nota[2]["xNome"]</td>
+
+                    <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(nota[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+
+                    <td style="border: 1px solid;">@nota[0]["chave"]</td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+<div class="col-lg-12">
+    <h6>
+        <strong>
+            @ViewBag.Notas.Count registro(s)
+        </strong>
+    </h6>
+</div>

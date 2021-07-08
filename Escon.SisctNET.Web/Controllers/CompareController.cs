@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
 
-                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE))
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE) || ordem.Equals(Model.Ordem.EmpresaXFsist))
                         {
                             directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
                             directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
@@ -130,8 +130,8 @@ namespace Escon.SisctNET.Web.Controllers
                         spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped, ident);
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
                     }
-                    else
-                    {
+                    else if(ordem.Equals(Model.Ordem.XmlSefaz) || ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
+                    { 
                         if (ident.Equals("0"))
                         {
                             spedNormal = importSped.NFeAll(caminhoDestinoArquivoOriginalSped);
@@ -635,7 +635,60 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         ViewBag.Valores = registros;
                     }
-                    
+                    else if (ordem.Equals(Model.Ordem.SefazXFsist) || ordem.Equals(Model.Ordem.EmpresaXFsist))
+                    {
+                        if (arquivoExcel == null || arquivoExcel.Length == 0)
+                        {
+                            ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
+                            return View(ViewData);
+                        }
+
+                        string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
+
+                        if (!Directory.Exists(filedirExcel))
+                            Directory.CreateDirectory(filedirExcel);
+
+                        string nomeArquivoExcel = company.Document + "Sefaz";
+
+                        if (arquivoExcel.FileName.Contains(".xls") || arquivoExcel.FileName.Contains(".xlsx"))
+                            nomeArquivoExcel += ".xls";
+
+                        string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Planilha\\";
+                        string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
+
+                        string[] paths_upload_excel = Directory.GetFiles(caminhoDestinoArquivoExcel);
+
+                        if (System.IO.File.Exists(caminhoDestinoArquivoOriginalExcel))
+                            System.IO.File.Delete(caminhoDestinoArquivoOriginalExcel);
+
+                        var streamExcel = new FileStream(caminhoDestinoArquivoOriginalExcel, FileMode.Create);
+                        await arquivoExcel.CopyToAsync(streamExcel);
+                        streamExcel.Close();
+
+                        notesValidas = importXml.NFeResumeEmit(directoryValida);
+                        var notesPlanilha = importExcel.NotesFsist(caminhoDestinoArquivoOriginalExcel);
+
+                        qtdValida = notesValidas.Count();
+                        //  NFe e NFCe
+                        foreach (var note in notesValidas)
+                        {
+                            string nota_xml = note[0]["chave"];
+                            bool nota_encontrada = false;
+                            foreach (var nota_fsist in notesPlanilha)
+                            {
+                                if (nota_xml.Equals(nota_fsist[3]))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+
+                            if (nota_encontrada.Equals(false))
+                                notasValidas.Add(note);
+                        }
+
+                    }
+
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
                     ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
@@ -715,7 +768,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return View(ViewData);
                     }
 
-                    string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Malha");
+                    string filedirExcel = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Planilha");
 
                     if (!Directory.Exists(filedirExcel))
                         Directory.CreateDirectory(filedirExcel);
@@ -725,7 +778,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (arquivoExcel.FileName.Contains(".xls") || arquivoExcel.FileName.Contains(".xlsx"))
                         nomeArquivoExcel += ".xls";
 
-                    string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Malha\\";
+                    string caminhoDestinoArquivoExcel = caminho_WebRoot + "\\Uploads\\Planilha\\";
                     string caminhoDestinoArquivoOriginalExcel = caminhoDestinoArquivoExcel + nomeArquivoExcel;
 
                     string[] paths_upload_excel = Directory.GetFiles(caminhoDestinoArquivoExcel);
@@ -738,6 +791,8 @@ namespace Escon.SisctNET.Web.Controllers
                     streamExcel.Close();
 
                     List<List<string>> notasExcel = new List<List<string>>();
+                    List<List<string>> notasFsist = new List<List<string>>();
+
 
                     if (ordem.Equals(Model.Ordem.Malha))
                     {
@@ -761,8 +816,61 @@ namespace Escon.SisctNET.Web.Controllers
                                 notasExcel.Add(nPlanilha);
                         }
                     }
-                        
+                    else if (ordem.Equals(Model.Ordem.FsistXSefaz) || ordem.Equals(Model.Ordem.FsistXEmpresa))
+                    {
+                        List<List<Dictionary<string, string>>> notesValidas = new List<List<Dictionary<string, string>>>();
+
+
+                        string directoryValida = "";
+
+                        if (ident.Equals("0"))
+                        {
+                            confDBSisctNfe = _configurationService.FindByName("NFe");
+                            directoryValida = importDir.Entrada(company, confDBSisctNfe.Value, year, month);
+                        }
+                        else if (ident.Equals("1"))
+                        {
+                            confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+
+                            if (ordem.Equals(Model.Ordem.FsistXEmpresa))
+                            {
+                                directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
+     
+                            }
+                            else
+                            {
+                                directoryValida = importDir.SaidaSefaz(company, confDBSisctNfe.Value, year, month);
+                            }
+
+                        }
+
+                        notesValidas = importXml.NFeResumeEmit(directoryValida);
+                        var notesPlanilha = importExcel.NotesFsist(caminhoDestinoArquivoOriginalExcel);
+
+
+                        //  NFe e NFCe
+                        foreach (var note in notesPlanilha)
+                        {
+                            bool nota_encontrada = false;
+
+                            foreach (var notaXml in notesValidas)
+                            {
+                                string nota_xml = notaXml[0]["chave"];
+                                if (note[3].Equals(nota_xml))
+                                {
+                                    nota_encontrada = true;
+                                    break;
+                                }
+                            }
+
+                            if (nota_encontrada.Equals(false))
+                                notasFsist.Add(note);
+                        }
+
+                    }
+
                     ViewBag.NotasExcel = notasExcel;
+                    ViewBag.NotasFsist = notasFsist;
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

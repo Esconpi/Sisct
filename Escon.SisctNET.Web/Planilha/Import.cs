@@ -361,5 +361,91 @@ namespace Escon.SisctNET.Web.Planilha
 
             return ncms;
         }
+
+        public List<List<string>> NotesFsist(string directoryPlanilha)
+        {
+            List<List<string>> notes = new List<List<string>>();
+
+            try
+            {
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+               
+                try
+                {
+
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+
+                    foreach (Sheet thesheet in thesheetcollection)
+                    {
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
+                        {
+                            List<string> note = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
+                            {
+                                if (thecurrentcell.DataType != null)
+                                {
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
+                                    {
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                        {
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                note.Add(item.Text.Text);
+                                            }
+                                            else if (item.InnerText != null)
+                                            {
+                                                note.Add(item.InnerText);
+                                            }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                note.Add(item.InnerXml);
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (thecurrentcell.CellValue != null)
+                                {
+                                    note.Add(thecurrentcell.CellValue.Text);
+                                }
+                            }
+
+                            if (note.Count() == 13)
+                            {
+                                if (note[3].Count() == 44)
+                                {
+                                    notes.Add(note);
+                                }
+                            }
+
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
+            }
+
+            return notes;
+        }
+
     }
 }

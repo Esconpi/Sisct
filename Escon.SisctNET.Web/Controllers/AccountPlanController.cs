@@ -176,12 +176,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var r = new Task(() =>
                 {
-                    var entity = _service.FindById(updateActive.Id, GetLog(OccorenceLog.Read));
-                    if (entity.Analytical)
-                    {
-                        entity.Active = updateActive.Active;
-                        _service.Update(entity, GetLog(Model.OccorenceLog.Update));
-                    }
+                    var entity = _service.FindById(updateActive.Id, null);
+                    entity.Active = updateActive.Active;
+                    _service.Update(entity, GetLog(Model.OccorenceLog.Update));
 
                 });
 
@@ -264,7 +261,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 Id = a.Id,
                 Code = a.Code,
-                Name = a.Name,
+                Name =  a.Name,
                 Reduced = a.Reduced,
                 Analytical = a.Analytical,
                 Patrimonial = a.Patrimonial,

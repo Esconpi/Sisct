@@ -234,7 +234,7 @@ namespace Escon.SisctNET.Web
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<Fortes.IAccountPlanService, Fortes.Implementation.AccountPlanService>();
-            services.AddScoped<Fortes.ICONService, Fortes.Implementation.CONService>();
+            services.AddScoped<Fortes.ISDOService, Fortes.Implementation.SDOService>();
             services.AddScoped<IntegrationDarWeb.IIntegrationWsDar, IntegrationDarWeb.Implementation.IntegrationWsDar>();
 
             try

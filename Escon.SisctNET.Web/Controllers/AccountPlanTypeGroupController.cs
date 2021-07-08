@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
 {
-    public class AccountPlanGroupController : ControllerBaseSisctNET
+    public class AccountPlanTypeGroupController : ControllerBaseSisctNET
     {
         private readonly IAccountPlanTypeGroupService _service;
 
-        public AccountPlanGroupController(
+        public AccountPlanTypeGroupController(
             IAccountPlanTypeGroupService service,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor
@@ -24,7 +24,7 @@ namespace Escon.SisctNET.Web.Controllers
         public IActionResult Index()
         {
 
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanGroup")).FirstOrDefault().Active)
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanTypeGroup")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try

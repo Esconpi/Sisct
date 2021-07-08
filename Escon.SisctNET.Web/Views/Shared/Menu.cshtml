@@ -197,7 +197,8 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
     </li>
 }
 
-@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanType")).FirstOrDefault().Active)
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanTypeGroup")).FirstOrDefault().Active ||
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanType")).FirstOrDefault().Active)
  {
     <li class="treeview menu">
 
@@ -212,8 +213,7 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
             {
                 <li><a href="@Url.Action("Index","AccountPlanTypeGroup")"><i class="fa fa-circle-o"></i>Grupo do Tipo de Conta</a></li>
             }
-        </ul>
-        <ul class="treeview-menu" style="display:none;">
+
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanType")).FirstOrDefault().Active)
             {
                 <li><a href="@Url.Action("Index","AccountPlanType")"><i class="fa fa-circle-o"></i>Tipo de Conta</a></li>

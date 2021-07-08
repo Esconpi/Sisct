@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Escon.SisctNET.Fortes.Implementation
 {
-    public class CONService : ContextDataBase.SqlContextFortesDb, ICONService
+    public class SDOService : ContextDataBase.SqlContextFortesDb, ISDOService
     {
-        public CONService()
+        public SDOService()
             :base()
         {
         }
@@ -148,5 +148,9 @@ namespace Escon.SisctNET.Fortes.Implementation
             return saldo;
         }
 
+        List<List<string>> ISDOService.GetDisponibilidadeFinanceira(Company company, DateTime inicio, DateTime fim, string connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

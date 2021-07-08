@@ -222,7 +222,13 @@
                             success: function (data) {
                                 $('#loader_' + idLoader).css('display', 'none');
                                 if (data.requestcode === 200) {
-                                    ShowNotify(`Conta '${accountName}' ${status} com sucesso`, "Ativar", "success");
+                                    if (status === "ATIVADA") {
+                                        ShowNotify(`Conta '${accountName}' ${status} com sucesso`, "Ativar", "success");
+                                    }
+                                    else {
+                                        ShowNotify(`Conta '${accountName}' ${status} com sucesso`, "Ativar", "danger");
+                                    }
+                                   
                                 } else {
                                     ShowNotify(data.message, "Ativar", "danger");
                                 }
@@ -321,7 +327,7 @@
                 {
                     "mData": "accountPlanType.name",
                     "mRender": function (data, type, row) {
-                        return "<select accountId='" + row.id + "' name='accountType' class='form-control selectoption selectoptiontype' style='width:100%;'></select><span id='span_" + row.id + "' style='font-size:10px;margin-top:-10px;'>" + row.accountPlanType.name + "</span>";
+                        return "<select accountId='" + row.id + "' name='accountType' class='form-control selectoption selectoptiontype' style='width:100%;'></select><span id='span_" + row.id + "' style='font-size:10px;margin-top:-10px;'>" + row.accountPlanType.accountPlanTypeGroupId + " - " + row.accountPlanType.name + "</span>";
                     }
                 },
                 {

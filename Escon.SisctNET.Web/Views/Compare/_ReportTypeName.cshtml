@@ -28,6 +28,7 @@ else
     <b>(XML SEFAZ x SPED)</b>
 }
 
+
 @if (ViewBag.Ordem == "XmlEmpresa")
 {
     <b>(XML EMPRESA x SPED)</b>
@@ -67,3 +68,24 @@ else
 {
     <b>(DIFERENÇA DE CRÈDITOS)</b>
 }
+
+@if (ViewBag.Ordem == "SefazXFsist")
+{
+    <b>(XML SEFAZ x FSIST)</b>
+}
+
+@if (ViewBag.Ordem == "EmpresaXFsist")
+{
+    <b>(XML EMPRESA x FSIST)</b>
+}
+
+@if (ViewBag.Ordem == "FsistXSefaz")
+{
+    <b>(FSIST x XML SEFAZ)</b>
+}
+
+@if (ViewBag.Ordem == "FsistXEmpresa")
+{
+    <b>(FSIST x XML EMPRESA)</b>
+}
+
