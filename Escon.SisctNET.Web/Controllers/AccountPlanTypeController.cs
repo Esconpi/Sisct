@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,18 @@ namespace Escon.SisctNET.Web.Controllers
     public class AccountPlanTypeController : ControllerBaseSisctNET
     {
         private readonly Service.IAccountPlanTypeService _service;
+        private readonly Service.IAccountPlanTypeGroupService _accountPlanTypeGroupService;
 
         public AccountPlanTypeController(
             Service.IAccountPlanTypeService service,
+            Service.IAccountPlanTypeGroupService accountPlanTypeGroupService,
             Service.IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor
             ) : base(functionalityService, "AccountPlanType")
         {
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
+            _accountPlanTypeGroupService = accountPlanTypeGroupService;
         }
 
         [HttpGet]
@@ -46,7 +50,18 @@ namespace Escon.SisctNET.Web.Controllers
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlanType")).FirstOrDefault().Active)
                 return Unauthorized();
 
-            return View();
+            try
+            {
+                List<Model.AccountPlanTypeGroup> list_grupos = _accountPlanTypeGroupService.FindAll(null);
+                list_grupos.Insert(0, new Model.AccountPlanTypeGroup() { Name = "Nennhum item selecionado", Id = 0 });
+                SelectList grupos = new SelectList(list_grupos, "Id", "Name", null);
+                ViewBag.AccountPlanTypeGroupId = grupos;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -78,6 +93,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
+                ViewBag.AccountPlanTypeGroupId = new SelectList(_accountPlanTypeGroupService.FindAll(null), "Id", "Name", null);
                 return View(result);
             }
             catch (Exception ex)
