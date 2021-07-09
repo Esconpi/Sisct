@@ -8,20 +8,23 @@ namespace Escon.SisctNET.Web.Controllers
     public class BalanceteController : ControllerBaseSisctNET
     {
         private readonly ICompanyService _companyService;
-        private readonly Fortes.ISDOService _cONService;
+        private readonly Fortes.ISDOService _sDOService;
         private readonly IConfigurationService _configurationService;
+        private readonly IAccountPlanService _accountPlanService;
 
         public BalanceteController(
             ICompanyService companyService,
-            Fortes.ISDOService cONService,
+            Fortes.ISDOService sDOService,
             IConfigurationService configurationService,
+            IAccountPlanService accountPlanService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Company")
         {
             _companyService = companyService;
-            _cONService = cONService;
+            _sDOService = sDOService;
             _configurationService = configurationService;
+            _accountPlanService = accountPlanService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -35,9 +38,18 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(companyId, null);
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", null);
 
-                var balancete = _cONService.GetBalancete(comp, inicio, fim, confDbFortes.Value);
+                var accs = _accountPlanService.FindByCompanyActive(companyId);
+
+                var disponibilidadeFinanceira = _sDOService.GetDisponibilidadeFinanceira(accs, comp, inicio, fim, confDbFortes.Value);
+                var despesasOperacionais = _sDOService.GetDespesasOperacionais(accs, comp, inicio, fim, confDbFortes.Value);
+                var mercadoriasMercadorias = _sDOService.GetEstoqueMercadorias(accs, comp, inicio, fim, confDbFortes.Value);
 
                 ViewBag.Company = comp;
+                ViewBag.Inicio = inicio;
+                ViewBag.Fim = fim;
+                ViewBag.DisponibilidadeFinanceira = disponibilidadeFinanceira;
+                ViewBag.DespesasOperacionais = despesasOperacionais;
+                ViewBag.EstoqueMercadoria = mercadoriasMercadorias;
 
                 return View();
             }

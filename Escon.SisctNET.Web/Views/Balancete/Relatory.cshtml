@@ -1,8 +1,148 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Relatory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Relatory</h2>
+<div class="box box-primary">
+    <div class="box-header">
+        <div style="width:100%; overflow:hidden; padding:20px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="~/img/sisCT.png" style="width:25%; height:60%; float:left;" />
+                    <img src="~/img/escon.png" style="width:20%; height:50%; float:right;" />
+                </div>
+            </div>
 
+        </div>
+
+        <div style="text-align:center;">
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+        </div>
+
+        <div style="width:100%; overflow:hidden; padding:20px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                        <b>Declaração de Informações Econômico Fiscais</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:10px;">
+
+            <table class="table" style="font-size:11px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;border:1px solid;" colspan="2">
+                            DESPESAS OPERACIONAIS - apurado em @ViewBag.Fim.ToString("dd/MM/yyyy")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <th style="text-align:center;border:1px solid;">
+                            DESCRIÇAO
+                        </th>
+                        <th style="text-align:center;border:1px solid;">
+                            VALOR R$
+                        </th>
+
+                    </tr>
+                    @foreach (var conta in ViewBag.DespesasOperacionais)
+                    {
+                        <tr>
+                            <td style="border:1px solid;padding-right:1%;">
+                                @conta[0]
+                            </td>
+                            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                                @string.Format("{0:N}", Convert.ToDecimal(conta[1]))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <table class="table" style="font-size:11px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;border:1px solid;" colspan="3">
+                            DISPONIBILIDADE FINANCEIRA
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th style="text-align:center;border:1px solid;">
+                            SALDO
+                        </th>
+                        <th style="text-align:center;border:1px solid;">
+                            INICIAL EM @ViewBag.Inicio.ToString("dd/MM/yyyy")
+                        </th>
+                        <th style="text-align:center;border:1px solid;">
+                            FINAL EM @ViewBag.Fim.ToString("dd/MM/yyyy")
+                        </th>
+                    </tr>
+                    @foreach (var conta in ViewBag.DisponibilidadeFinanceira)
+                    {
+                        <tr>
+                            <td style="border:1px solid;padding-right:1%;">
+                                @conta[0]
+                            </td>
+                            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                                @string.Format("{0:N}", Convert.ToDecimal(conta[1]))
+                            </td>
+                            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                                @string.Format("{0:N}", Convert.ToDecimal(conta[2]))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <table class="table" style="font-size:11px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;border:1px solid;" colspan="3">
+                            ESTOQUE DE MERCADORIAS
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <th style="text-align:center;border:1px solid;">
+                            SALDO
+                        </th>
+                        <th style="text-align:center;border:1px solid;">
+                            INICIAL EM @ViewBag.Inicio.ToString("dd/MM/yyyy")
+                        </th>
+                        <th style="text-align:center;border:1px solid;">
+                            FINAL EM @ViewBag.Fim.ToString("dd/MM/yyyy")
+                        </th>
+                    </tr>
+                    @foreach (var conta in ViewBag.EstoqueMercadoria)
+                    {
+                        <tr>
+                            <td style="border:1px solid;padding-right:1%;">
+                                @conta[0]
+                            </td>
+                            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                                @string.Format("{0:N}", Convert.ToDecimal(conta[1]))
+                            </td>
+                            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                                @string.Format("{0:N}", Convert.ToDecimal(conta[2]))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

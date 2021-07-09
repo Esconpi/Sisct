@@ -34,6 +34,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<AccountPlan> FindByCompanyActive(long companyId, Log log = null)
+        {
+            List<AccountPlan> result = _context.AccountPlans.Include(t => t.AccountPlanType).Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<AccountPlan> FindByCompanyId(long companyId, Model.Log log = null)
         {
             List<AccountPlan> result = _context.AccountPlans.Include(t => t.AccountPlanType).Where(_ => _.CompanyId.Equals(companyId)).ToList();

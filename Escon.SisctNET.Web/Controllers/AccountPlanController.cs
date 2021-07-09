@@ -206,9 +206,10 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var entity = SessionManager.GetCompanyInSession().AccountPlans.Where(a => a.Id.Equals(updateAccountType.AccountPlanId)).FirstOrDefault();
+
                 var r = new Task(() =>
                 {
-                    var e = _service.FindById(updateAccountType.AccountPlanId, GetLog(OccorenceLog.Read));
+                    var e = _service.FindById(updateAccountType.AccountPlanId, null);
                     e.AccountPlanTypeId = updateAccountType.AccountTypeId;
 
                     _service.Update(e, GetLog(Model.OccorenceLog.Update));

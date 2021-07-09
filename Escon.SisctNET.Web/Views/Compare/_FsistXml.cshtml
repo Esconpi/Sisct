@@ -11,9 +11,8 @@
                 Chave
             </th>
             <th style="border: 1px solid;">
-                Total
+                Valor
             </th>
-
         </tr>
     </thead>
     <tbody>
@@ -23,7 +22,7 @@
                 <td style="border: 1px solid;">@note[6]</td>
                 <td style="border: 1px solid;">@note[9]</td>
                 <td style="border: 1px solid;">@note[3]</td>
-                <td style="border: 1px solid;">@note[11]</td>
+                <td style="border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(note[11].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
             </tr>
         }
     </tbody>
