@@ -43,7 +43,7 @@ namespace Escon.SisctNET.Fortes.Implementation
             foreach (var conta in accountPlans)
             {
                 var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
-                var saldoAtual = GetCurrentBalance(company, conta.Code, inicio, fim, connectionString);
+                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
 
                 if (contasCaixa.Contains(conta.Code))
                 {
@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                 .Select(_ => _.Code)
                 .ToList();
 
-            var contasTAgua = accountPlans
+            var contasAgua = accountPlans
                 .Where(_ => _.AccountPlanType.Name.Equals("Água, Luz, Telefone"))
                 .Select(_ => _.Code)
                 .ToList();
@@ -166,7 +166,64 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             foreach (var conta in accountPlans)
             {
+                var saldo = GetSaldoAnual(company, conta.Code, inicio, fim, connectionString);
 
+                if (contasProLabore.Contains(conta.Code))
+                {
+                    proLabore += saldo;
+                }
+                else if (contasComissao.Contains(conta.Code)) 
+                {
+                    comissao += saldo;
+                }
+                else if (contasCombustivel.Contains(conta.Code))
+                {
+                    combustivel += saldo;
+                }
+                else if (contasEncargo.Contains(conta.Code))
+                {
+                    encargo += saldo;
+                }
+                else if (contasTFederal.Contains(conta.Code))
+                {
+                    tFederal += saldo;
+                }
+                else if (contasTEstadual.Contains(conta.Code))
+                {
+                    tEstadual += saldo;
+                }
+                else if (contasTMunicipal.Contains(conta.Code))
+                {
+                    tMunicipal += saldo;
+                }
+                else if (contasAgua.Contains(conta.Code))
+                {
+                    agua += saldo;
+                }
+                else if (contasAluguel.Contains(conta.Code))
+                {
+                    aluguel += saldo;
+                }
+                else if (contasServico.Contains(conta.Code))
+                {
+                    servico += saldo;
+                }
+                else if (contasSeguro.Contains(conta.Code))
+                {
+                    seguro += saldo;
+                }
+                else if (contasFrete.Contains(conta.Code))
+                {
+                    frete += saldo;
+                }
+                else if (contasDespesas.Contains(conta.Code))
+                {
+                    despesas += saldo;
+                }
+                else if (contasOutras.Contains(conta.Code))
+                {
+                    outras += saldo;
+                }
             }
 
             List<string> saldoProLabore = new List<string>();
@@ -269,7 +326,7 @@ namespace Escon.SisctNET.Fortes.Implementation
             foreach (var conta in accountPlans)
             {
                 var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
-                var saldoAtual = GetCurrentBalance(company, conta.Code, inicio, fim, connectionString);
+                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
 
                 if (contasTributadas.Contains(conta.Code))
                 {
@@ -324,8 +381,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                     {
                         _SqlCommand.Connection = _SqlConnection;
                         _SqlCommand.CommandText = $"select top 1 * from SDO " +
-                            $"where SDO.CON_Codigo = '{conta}' and SDO.EMP_Codigo = '{company.Code}' and SDO.Data < '{inicio}' " +
-                            $"order by SDO.Data desc";
+                            $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data < cast('{inicio.ToString("yyyy/MM/dd")}' as Date) " +
+                            $"order by Data desc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
@@ -334,7 +391,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 decimal debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
                                 decimal credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
 
-                                saldo = debito - credito;
+                                if (debito >= credito)
+                                    saldo = debito - credito;
                             }
                         }
                     }
@@ -353,10 +411,9 @@ namespace Escon.SisctNET.Fortes.Implementation
             return saldo;
         }
 
-        public decimal GetCurrentBalance(Company company, string conta, DateTime inicio, DateTime fim, string connectionString)
+        public decimal GetCurrentBalance(Company company, string conta, DateTime fim, string connectionString)
         {
             decimal saldo = 0;
-
 
             try
             {
@@ -368,8 +425,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                     {
                         _SqlCommand.Connection = _SqlConnection;
                         _SqlCommand.CommandText = $"select top 1 * from SDO " +
-                           $"where SDO.CON_Codigo = '{conta}' and SDO.EMP_Codigo = '{company.Code}' and SDO.Data < '{fim.AddDays(1)}'" +
-                           $"order by sdo.Data desc";
+                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
+                           $"order by Data desc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
@@ -378,7 +435,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 decimal debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
                                 decimal credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
 
-                                saldo = debito - credito;
+                                if (debito >= credito)
+                                    saldo = debito - credito;
                             }
                         }
                     }
@@ -396,6 +454,47 @@ namespace Escon.SisctNET.Fortes.Implementation
             return saldo;
         }
 
+        public decimal GetSaldoAnual(Company company, string conta, DateTime inicio, DateTime fim, string connectionString)
+        {
+            decimal saldo = 0;
+
+            try
+            {
+                using (_SqlConnection = new System.Data.SqlClient.SqlConnection(connectionString))
+                {
+                    _SqlConnection.Open();
+
+                    using (_SqlCommand = new System.Data.SqlClient.SqlCommand())
+                    {
+                        _SqlCommand.Connection = _SqlConnection;
+                        _SqlCommand.CommandText = $"select CON_Codigo, sum(Debito) as Debito, sum(Credito) as Credito from SDO " +
+                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data >= cast('{inicio.ToString("yyyy/MM/dd")}' as Date) and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
+                           $"group by CON_Codigo";
+
+                        using (_SqlDataReader = _SqlCommand.ExecuteReader())
+                        {
+                            while (_SqlDataReader.Read())
+                            {
+                                decimal debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
+                                decimal credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
+                                if (debito >= credito)
+                                    saldo = debito - credito;
+                            }
+                        }
+                    }
+
+                    _SqlConnection.Close();
+                }
+
+                base.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return saldo;
+        }
      
     }
 }
