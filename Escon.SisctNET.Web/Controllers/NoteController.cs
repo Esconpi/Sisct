@@ -253,7 +253,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             List<Note> notas = new List<Note>();
 
-            notes = importXml.NFeAll(directoryNfe, directotyCte);
+            notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
             var taxationCompany = _taxationService.FindByCompany(id);
             var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));

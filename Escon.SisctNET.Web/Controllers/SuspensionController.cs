@@ -152,8 +152,8 @@ namespace Escon.SisctNET.Web.Controllers
                             select new
                             {
                                 Id = r.Id.ToString(),
-                                Inicio = r.DateStart.ToString("dd/MM/yyyy hh:mm:ss"),
-                                Fim = r.DateEnd.ToString("dd/MM/yyyy hh:mm:ss")
+                                Inicio = r.DateStart.ToString("dd/MM/yyyy HH:mm:ss"),
+                                Fim = r.DateEnd.ToString("dd/MM/yyyy HH:mm:ss")
 
                             };
             return Ok(new { draw = draw, recordsTotal = suspensionsAll.Count(), recordsFiltered = suspensionsAll.Count(), data = suspension.Skip(start).Take(lenght) });

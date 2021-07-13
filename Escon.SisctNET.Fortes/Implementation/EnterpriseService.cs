@@ -58,6 +58,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Active = false;
                                         company.Incentive = false;
                                         company.Status = true;
+                                        company.Taxation = "NCM";
                                         company.Created = DateTime.Now;
                                         company.Updated = company.Created;
                                         company.SocialName = _SqlDataReader["RazaoSocial"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
@@ -87,6 +88,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                         company.Active = false;
                                         company.Incentive = false;
                                         company.Status = true;
+                                        company.Taxation = "NCM";
                                         company.Created = DateTime.Now;
                                         company.Updated = company.Created;
                                         company.SocialName = _SqlDataReader["RazaoSocial"].ToString().Replace("/","").Replace("\\", "").Replace("|", "");
@@ -165,7 +167,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 var city = GetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString).ToUpper();
                                 var county = counties.Where(_ => _.State.UF.ToUpper().Equals(reader["MUN_UFD_Sigla"].ToString().ToUpper()) && _.Name.ToUpper().Equals(city)).Select(_ => _.Id).FirstOrDefault();
                                 establishment.CountyId = county.Equals(null) ? 216 : county;
-                                establishment.Phone = "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
+                                establishment.Phone = reader["Fone"].ToString().Equals("") ? "" : "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
                                 establishments.Add(establishment);
                             }
                         }

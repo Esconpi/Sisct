@@ -116,7 +116,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
-                notes = importXml.NFeAll(directoryNFe,"");
+                notes = importXml.NFeAll(directoryNFe,"", comp);
 
                 Dictionary<string, string> det = new Dictionary<string, string>();
 

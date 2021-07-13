@@ -158,8 +158,8 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var product = _service.FindByProduct(id);
-                var ncm = _ncmService.FindByCode(product.Ncm);
-
+                var ncm = _ncmService.FindByCode(product.Ncm.Trim());
+                
                 string description = "";
 
                 if(product.Ncm.Length == 8)
@@ -747,7 +747,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     string aliquot = prod.Picms.ToString();
 
-                    var ncm = _ncmService.FindByCode(prod.Ncm);
+                    var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
 
                     if (prod.Picms != 4)
                     {

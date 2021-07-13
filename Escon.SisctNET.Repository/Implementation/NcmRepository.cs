@@ -29,7 +29,7 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public Ncm FindByCode(string code, Log log = null)
         {
-            var rst = _context.Ncms.Where(_ => _.Code.Equals(code)).FirstOrDefault();
+            var rst = _context.Ncms.Where(_ => _.Code.Trim().Equals(code)).FirstOrDefault();
             AddLog(log);
             return rst;
         }

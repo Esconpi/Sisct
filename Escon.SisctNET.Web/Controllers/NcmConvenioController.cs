@@ -76,6 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
+                entity.Ncm = entity.Ncm.Trim();
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
@@ -121,7 +122,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, null);
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
-                _service.Update(entity, null);
+                entity.Ncm = entity.Ncm.Trim();
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

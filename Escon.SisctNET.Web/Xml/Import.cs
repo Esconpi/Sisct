@@ -766,13 +766,21 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
-        public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe, string directotyCte)
+        public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe, string directotyCte, Model.Company company)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
             try
             {
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
+
+                if (directotyCte != "")
+                    ctes = CTeAll(directotyCte, company.Document);
+
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
                 foreach (var arquivo in archivesNfes)
                 {
                     if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
@@ -928,10 +936,6 @@ namespace Escon.SisctNET.Web.Xml
                                             decimal frete_icms = 0;
                                             string nCT_temp = "";
 
-                                            List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
-
-                                            if(directotyCte != "")
-                                                ctes = CTeAll(directotyCte, nota[3]["CNPJ"]);
 
                                             foreach (var item in ctes)
                                             {

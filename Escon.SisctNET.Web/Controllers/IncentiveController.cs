@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -189,8 +190,8 @@ namespace Escon.SisctNET.Web.Controllers
                              select new
                              {
                                  Id = r.Id.ToString(),
-                                 Inicio = r.DateStart.ToString("dd/MM/yyyy hh:mm:ss"),
-                                 Fim = r.DateEnd.ToString("dd/MM/yyyy hh:mm:ss"),
+                                 Inicio = r.DateStart.ToString("dd/MM/yyyy HH:mm:ss"),
+                                 Fim = r.DateEnd.ToString("dd/MM/yyyy HH:mm:ss"),
                                  Active = r.Active
 
                              };
