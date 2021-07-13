@@ -108,7 +108,6 @@ namespace Escon.SisctNET.Fortes.Implementation
                 .Select(_ => _.Code)
                 .ToList();
 
-
             var contasEncargo = accountPlans
                 .Where(_ => _.AccountPlanType.Name.Equals("Encargos Sociais"))
                 .Select(_ => _.Code)
@@ -235,7 +234,7 @@ namespace Escon.SisctNET.Fortes.Implementation
             saldoComissao.Add("02 - Comissões, Salários, Ordenadose");
             saldoComissao.Add(comissao.ToString());
             saldos.Add(saldoComissao);
-
+                
             List<string> saldoCombustivel = new List<string>();
             saldoCombustivel.Add("03 - Combustíveis e Lubrificantee");
             saldoCombustivel.Add(combustivel.ToString());

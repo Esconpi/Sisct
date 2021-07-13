@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
                                   Person = r.Person.FirstName,
                                   Functionality = r.Functionality.Description,
                                   Occurrence = r.Occurrence.Name,
-                                  Date = r.Created.ToString("dd/MM/yyyy hh:mm:ss")
+                                  Date = r.Created.ToString("dd/MM/yyyy HH:mm:ss")
                               };
 
                 return Ok(new { draw = draw, recordsTotal = logs.Count(), recordsFiltered = logs.Count(), data = log.Skip(start).Take(lenght) });
@@ -91,7 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Person = r.Person.FirstName,
                               Functionality = r.Functionality.Description,
                               Occurrence = r.Occurrence.Name,
-                              Date = r.Created.ToString("dd/MM/yyyy hh:mm:ss")
+                              Date = r.Created.ToString("dd/MM/yyyy HH:mm:ss")
                           };
 
                 return Ok(new { draw = draw, recordsTotal = logAll.Count(), recordsFiltered = logAll.Count(), data = log.Skip(start).Take(lenght) });
