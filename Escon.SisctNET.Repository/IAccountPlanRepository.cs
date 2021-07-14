@@ -12,5 +12,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.AccountPlan> FindByCompanyActive(long companyId, Model.Log log = null);
 
+        List<Model.AccountPlan> FindByCompanyActive(string code, Model.Log log = null);
+
     }
 }

@@ -38,7 +38,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(companyId, null);
                 var confDbFortes = _configurationService.FindByName("DataBaseFortes", null);
 
-                var accs = _accountPlanService.FindByCompanyActive(companyId);
+                var accs = _accountPlanService.FindByCompanyActive(comp.Code);
 
                 var disponibilidadeFinanceira = _sDOService.GetDisponibilidadeFinanceira(accs, comp, inicio, fim, confDbFortes.Value);
                 var despesasOperacionais = _sDOService.GetDespesasOperacionais(accs, comp, inicio, fim, confDbFortes.Value);

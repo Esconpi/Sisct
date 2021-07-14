@@ -48,6 +48,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompanyActive(companyId, log);
         }
 
+        public List<AccountPlan> FindByCompanyActive(string code, Log log = null)
+        {
+            return _repository.FindByCompanyActive(code, log);
+        }
+
         public List<AccountPlan> FindByCompanyId(long companyId, Log log = null)
         {
             return _repository.FindByCompanyId(companyId, log);

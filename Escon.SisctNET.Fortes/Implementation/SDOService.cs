@@ -165,8 +165,15 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             foreach (var conta in accountPlans)
             {
-                var saldo = GetSaldoAnual(company, conta.Code, inicio, fim, connectionString);
+                var saldoAntarior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
+                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
 
+                decimal saldo = 0;
+
+                if(saldoAtual > saldoAntarior)
+                    saldo = saldoAtual - saldoAntarior;
+
+                
                 if (contasProLabore.Contains(conta.Code))
                 {
                     proLabore += saldo;
@@ -380,7 +387,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                     {
                         _SqlCommand.Connection = _SqlConnection;
                         _SqlCommand.CommandText = $"select top 1 * from SDO " +
-                            $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data < cast('{inicio.ToString("yyyy/MM/dd")}' as Date) " +
+                            $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8,4)}'  and Data < cast('{inicio.ToString("yyyy/MM/dd")}' as Date) " +
                             $"order by Data desc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
@@ -424,7 +431,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                     {
                         _SqlCommand.Connection = _SqlConnection;
                         _SqlCommand.CommandText = $"select top 1 * from SDO " +
-                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
+                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8, 4)}' and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
                            $"order by Data desc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
@@ -467,8 +474,8 @@ namespace Escon.SisctNET.Fortes.Implementation
                     {
                         _SqlCommand.Connection = _SqlConnection;
                         _SqlCommand.CommandText = $"select CON_Codigo, sum(Debito) as Debito, sum(Credito) as Credito from SDO " +
-                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and Data >= cast('{inicio.ToString("yyyy/MM/dd")}' as Date) and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
-                           $"group by CON_Codigo";
+                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8, 4)}' and Data >= cast('{inicio.ToString("yyyy/MM/dd")}' as Date)" +
+                           $" and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) group by CON_Codigo";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
