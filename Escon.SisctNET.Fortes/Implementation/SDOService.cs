@@ -125,7 +125,8 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             var contasTMunicipal = accountPlans
                 .Where(_ => _.AccountPlanType.Name.Equals("Tributos Municipais"))
-                .Select(_ => _.Code)
+                .Select(_ =>
+                _.Code)
                 .ToList();
 
             var contasAgua = accountPlans
@@ -165,13 +166,13 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             foreach (var conta in accountPlans)
             {
-                var saldoAntarior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
-                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
+                var saldoAntarior = GetPreviousSaldo(company, conta.Code, inicio, connectionString);
+                var saldoAtual = GetCurrentSaldo(company, conta.Code, fim, connectionString);
 
-                decimal saldo = 0;
-
-                if(saldoAtual > saldoAntarior)
-                    saldo = saldoAtual - saldoAntarior;
+                decimal debito = saldoAtual[0] - saldoAntarior[0],
+                    credito = saldoAtual[1] - saldoAntarior[1];
+               
+                decimal saldo = debito;
 
                 
                 if (contasProLabore.Contains(conta.Code))
@@ -460,9 +461,11 @@ namespace Escon.SisctNET.Fortes.Implementation
             return saldo;
         }
 
-        public decimal GetSaldoAnual(Company company, string conta, DateTime inicio, DateTime fim, string connectionString)
+        public List<decimal> GetPreviousSaldo(Company company, string conta, DateTime inicio, string connectionString)
         {
-            decimal saldo = 0;
+            List<decimal> saldo = new List<decimal>();
+
+            decimal credito = 0,  debito = 0;
 
             try
             {
@@ -473,18 +476,16 @@ namespace Escon.SisctNET.Fortes.Implementation
                     using (_SqlCommand = new System.Data.SqlClient.SqlCommand())
                     {
                         _SqlCommand.Connection = _SqlConnection;
-                        _SqlCommand.CommandText = $"select CON_Codigo, sum(Debito) as Debito, sum(Credito) as Credito from SDO " +
-                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8, 4)}' and Data >= cast('{inicio.ToString("yyyy/MM/dd")}' as Date)" +
-                           $" and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) group by CON_Codigo";
+                        _SqlCommand.CommandText = $"select top 1 * from SDO " +
+                            $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8, 4)}'  and Data < cast('{inicio.ToString("yyyy/MM/dd")}' as Date) " +
+                            $"order by Data desc";
 
                         using (_SqlDataReader = _SqlCommand.ExecuteReader())
                         {
                             while (_SqlDataReader.Read())
                             {
-                                decimal debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
-                                decimal credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
-                                if (debito >= credito)
-                                    saldo = debito - credito;
+                                debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
+                                credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
                             }
                         }
                     }
@@ -499,8 +500,56 @@ namespace Escon.SisctNET.Fortes.Implementation
                 Console.Out.WriteLine(ex.Message);
             }
 
+            saldo.Add(debito);
+            saldo.Add(credito);
+
             return saldo;
         }
-     
+
+        public List<decimal> GetCurrentSaldo(Company company, string conta, DateTime fim, string connectionString)
+        {
+            List<decimal> saldo = new List<decimal>();
+
+            decimal credito = 0, debito = 0;
+
+            try
+            {
+                using (_SqlConnection = new System.Data.SqlClient.SqlConnection(connectionString))
+                {
+                    _SqlConnection.Open();
+
+                    using (_SqlCommand = new System.Data.SqlClient.SqlCommand())
+                    {
+                        _SqlCommand.Connection = _SqlConnection;
+                        _SqlCommand.CommandText = $"select top 1 * from SDO " +
+                           $"where CON_Codigo = '{conta}' and EMP_Codigo = '{company.Code}' and EST_Codigo = '{company.Document.Substring(8, 4)}' and Data <= cast('{fim.ToString("yyyy/MM/dd")}' as Date) " +
+                           $"order by Data desc";
+
+                        using (_SqlDataReader = _SqlCommand.ExecuteReader())
+                        {
+                            while (_SqlDataReader.Read())
+                            {
+                                debito = Convert.ToDecimal(_SqlDataReader["Debito"]);
+                                credito = Convert.ToDecimal(_SqlDataReader["Credito"]);
+                            }
+                        }
+                    }
+
+                    _SqlConnection.Close();
+                }
+
+                base.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            saldo.Add(debito);
+            saldo.Add(credito);
+
+            return saldo;
+        }
+
     }
 }
