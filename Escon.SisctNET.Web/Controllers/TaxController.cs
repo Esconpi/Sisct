@@ -3161,13 +3161,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 devoNormalST += sped[4];
                                 devoNormalAliqZero += sped[5];
                                 devoNormalIsento += sped[6];
-                                devoSTNormal += sped[7];
-                                devoSTMono += sped[8];
-                                devoSTST += sped[9];
-                                devoSTAliqZero += sped[10];
-                                devoSTIsento += sped[11];
-                                devoNormalOutras += sped[12];
-                                devoSTOutras += sped[13];
+                                devoSTST += sped[7];
+                                devoSTAliqZero += sped[8];
+                                devoSTIsento += sped[9];
+                                devoNormalOutras += sped[10];
+                                devoSTOutras += sped[11];
                             }
                         }
 
@@ -3280,9 +3278,7 @@ namespace Escon.SisctNET.Web.Controllers
                             exitNotes = importXml.NFeAll(directoryNfeExit);
 
                             if (!c.Sped)
-                            {
                                 entryNotes = importXml.NFeAll(directoryNfeExit);
-                            }
 
                             if (comp.CountingTypeId.Equals((long)1))
                             {

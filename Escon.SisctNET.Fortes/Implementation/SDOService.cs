@@ -42,23 +42,32 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             foreach (var conta in accountPlans)
             {
-                var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
-                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
+               //var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
+               //var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
+
+                var saldoAntarior = GetPreviousSaldo(company, conta.Code, inicio, connectionString);
+                var saldoAtual = GetCurrentSaldo(company, conta.Code, fim, connectionString);
+
+                decimal debito = saldoAtual[0] - saldoAntarior[0],
+                    credito = saldoAtual[1] - saldoAntarior[1];
+
+                decimal anteriorSaldo = saldoAntarior[0] - saldoAntarior[1],
+                    atualSaldo = anteriorSaldo + debito - credito;
 
                 if (contasCaixa.Contains(conta.Code))
                 {
-                    saldoAnteriorCaixa += saldoAnterior;
-                    saldoAtualCaixa += saldoAtual;
+                    saldoAnteriorCaixa += anteriorSaldo;
+                    saldoAtualCaixa += atualSaldo;
                 }
                 else if (contasBanco.Contains(conta.Code))
                 {
-                    saldoAnteriorBanco += saldoAnterior;
-                    saldoAtualBanco += saldoAtual;
+                    saldoAnteriorBanco += anteriorSaldo;
+                    saldoAtualBanco += atualSaldo;
                 }
                 else if (contasOutras.Contains(conta.Code))
                 {
-                    saldoAnteriorOutras += saldoAnterior;
-                    saldoAtualOutras += saldoAtual;
+                    saldoAnteriorOutras += anteriorSaldo;
+                    saldoAtualOutras += atualSaldo;
                 }
             }
 
@@ -171,8 +180,9 @@ namespace Escon.SisctNET.Fortes.Implementation
 
                 decimal debito = saldoAtual[0] - saldoAntarior[0],
                     credito = saldoAtual[1] - saldoAntarior[1];
-               
-                decimal saldo = debito;
+
+                decimal anteriorSaldo = saldoAntarior[0] - saldoAntarior[1],
+                    saldo = anteriorSaldo + debito;
 
                 
                 if (contasProLabore.Contains(conta.Code))
@@ -332,23 +342,32 @@ namespace Escon.SisctNET.Fortes.Implementation
 
             foreach (var conta in accountPlans)
             {
-                var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
-                var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
+                //var saldoAnterior = GetPreviousBalance(company, conta.Code, inicio, connectionString);
+                //var saldoAtual = GetCurrentBalance(company, conta.Code, fim, connectionString);
+
+                var saldoAntarior = GetPreviousSaldo(company, conta.Code, inicio, connectionString);
+                var saldoAtual = GetCurrentSaldo(company, conta.Code, fim, connectionString);
+
+                decimal debito = saldoAtual[0] - saldoAntarior[0],
+                    credito = saldoAtual[1] - saldoAntarior[1];
+
+                decimal anteriorSaldo = saldoAntarior[0] - saldoAntarior[1],
+                    atualSaldo = anteriorSaldo + debito - credito;
 
                 if (contasTributadas.Contains(conta.Code))
                 {
-                    saldoAnteriorCaixa += saldoAnterior;
-                    saldoAtualCaixa += saldoAtual;
+                    saldoAnteriorCaixa += anteriorSaldo;
+                    saldoAtualCaixa += atualSaldo;
                 }
                 else if (contasNTributadas.Contains(conta.Code))
                 {
-                    saldoAnteriorBanco += saldoAnterior;
-                    saldoAtualBanco += saldoAtual;
+                    saldoAnteriorBanco += anteriorSaldo;
+                    saldoAtualBanco += atualSaldo;
                 }
                 else if (contasOutras.Contains(conta.Code))
                 {
-                    saldoAnteriorOutras += saldoAnterior;
-                    saldoAtualOutras += saldoAtual;
+                    saldoAnteriorOutras += anteriorSaldo;
+                    saldoAtualOutras += atualSaldo;
                 }
             }
 

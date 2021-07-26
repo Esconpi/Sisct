@@ -70,8 +70,6 @@ namespace Escon.SisctNET.Web.Controllers
                     else
                         nomeArquivoSped += ".tmp";
 
-                    
-
                     string caminhoDestinoArquivoSped = caminho_WebRoot + "\\Uploads\\Speds\\";
                     caminhoDestinoArquivoOriginalSped = caminhoDestinoArquivoSped + nomeArquivoSped;
 

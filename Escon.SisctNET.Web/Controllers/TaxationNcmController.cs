@@ -122,6 +122,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmTemp = ncmsAll.Where(_ => _.Code.Equals(ncms[i][1])).FirstOrDefault();
 
+                    if (ncmTemp == null)
+                    {
+                        ViewBag.Erro = 2;
+                        ViewBag.Ncm = ncms[i][1];
+                        return View(comp);
+                    }
+
 
                     if (comp.Taxation == "Produto")
                     {
@@ -135,7 +142,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    if (taxationTemp == null && ncmTemp != null && existAdd == null) 
+                    if (taxationTemp == null && existAdd == null) 
                     {
                         TaxationNcm tributacao = new TaxationNcm();
                         
@@ -202,12 +209,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    if (ncmTemp == null)
-                    {
-                        ViewBag.Erro = 2;
-                        ViewBag.Ncm = ncms[i][1];
-                        return View(comp);
-                    }
                 }
 
                 _service.Create(monoAdd, GetLog(OccorenceLog.Create));

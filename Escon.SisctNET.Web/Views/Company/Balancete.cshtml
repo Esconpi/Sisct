@@ -27,10 +27,20 @@
                         <label class="control-label">Fim</label>
                         <input type="date" name="fim" id="fim" class="form-control" onchange="ativar_button()" />
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
-                        <br />
-                        <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled />
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label"><strong>Selecione o arquivo Excel</strong></label>
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivoExcel" id="arquivoExcel" accept="application/vnd.ms-excel, .xlsx, .xls" onchange="ativar_button()">
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
                     </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <br />
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled />
                 </div>
             </form>
         </div>
@@ -45,14 +55,19 @@
         var inicio = document.getElementById("inicio").value;
         var fim = document.getElementById("fim").value;
 
-
         if (fim == "" || inicio == "") {
             document.getElementById("ativa").disabled = true;
         }
         else {
-            document.getElementById("ativa").disabled = false;
+            var arquivoExcel = document.getElementById("arquivoExcel").value;
+            if (arquivoExcel == "") {
+                document.getElementById("ativa").disabled = true;
+            } else {
+                document.getElementById("ativa").disabled = false;
+            }
         }
     }
+
     function show() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('hiddenHeader').style.display = 'none';
