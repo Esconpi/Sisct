@@ -378,7 +378,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if(Request.Form["opcao"].ToString() == "2")
                 {
-                    var ncms = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.Year.Equals(rst.Year) && _.Month.Equals(rst.Month) && _.NcmId.Equals(rst.NcmId)).ToList();
+                    var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.Year.Equals(rst.Year) && _.Month.Equals(rst.Month) && _.NcmId.Equals(rst.NcmId)).ToList();
 
                     foreach (var n in ncms)
                     {
@@ -525,7 +525,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Request.Form["opcao"].ToString() == "2")
                 {
-                    var ncms = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
+                    var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
 
                     foreach (var n in ncms)
                     {
@@ -737,7 +737,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
-                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.DateEnd = null;
@@ -831,7 +831,7 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
-                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
                 entity.DateEnd = null;

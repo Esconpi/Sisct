@@ -26,21 +26,6 @@
                         <th>@Html.DisplayNameFor(model => model.Created)</th>
                     </tr>
                 </thead>
-
-                <tfoot>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PersonId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FunctionalityId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Occurrenceid)
-                        </th>
-                        <th>@Html.DisplayNameFor(model => model.Created)</th>
-                    </tr>
-                </tfoot>
             </table>
         </div>
 
@@ -50,11 +35,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $('#tblLog tfoot th').each(function () {
-            var title = $(this).text().trim();
-            $(this).html('<input type="text" placeholder="' + title +'"/>');
-        });
 
        var table = $('#tblLog').DataTable({
             searchDelay: 300,
@@ -93,15 +73,6 @@
             ]
        });
 
-        table.columns().every(function () {
-            $('input', this.footer()).on('keyup change', function () {
-                if (table.search() !== this.value) {
-                    table
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
     });
 </script>
 

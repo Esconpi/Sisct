@@ -106,9 +106,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
-
                 var NfeEntry = _configurationService.FindByName("NFe", null);
-
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
 
                 var importXml = new Xml.Import(_companyCfopService);
@@ -152,7 +150,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Opcao = opcao;
                 ViewBag.Arquivo = arquivo;
                
-
                 if (type.Equals("resumoCfop"))
                 {
                     //  Resumo CFOP
