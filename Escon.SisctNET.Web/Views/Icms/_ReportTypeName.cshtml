@@ -126,6 +126,10 @@
     <strong> Vendas P/ Contribuinte </strong>
 }
 
+@if (ViewBag.Type == "debitoCredito")
+{
+    <strong> Débito/Crédito </strong>
+}
 
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")

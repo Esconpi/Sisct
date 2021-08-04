@@ -13,10 +13,7 @@
                 <i class="fa fa-plus"></i>
                 Tipo de Conta
             </a>
-
-
         </div>
-
     </div>
     <div class="box-body">
         <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
@@ -65,8 +62,6 @@
                             </td>
                             <td style="width:50px;">
                                 @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
-                                @Html.ActionLink(" ", "Delete", new { id = item.Id },
-                                    new { onclick = "return confirm('Deseja exluir esse registro?');", @class = "glyphicon glyphicon-trash pull-left", @style = "margin-left:10px; margin-bottom:10px;" })
                             </td>
                         </tr>
                     }

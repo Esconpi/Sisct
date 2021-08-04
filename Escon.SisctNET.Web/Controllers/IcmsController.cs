@@ -26059,6 +26059,137 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Vendas = vendasContribuinte;
                     ViewBag.Total = total;
                 }
+                else if (type.Equals("debitoCredito"))
+                {
+                    //  Apuração Débito/Crédito
+
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
+
+                    decimal vendasIncentivada = 0, vendasNIncentivada = 0, devolucaoVendasIncentivada = 0, devolucaoVendasNIncentivada = 0, debitoIncentivado = 0, debitoNIncentivado = 0,
+                        devolucaoDebitoIncentivado = 0, devolucaoDebitoNIncentivado = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        bool ncm = false;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+                            if (notes[i][j].ContainsKey("NCM"))
+                            {
+                                string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+
+                            }
+
+
+                            if (ncm)
+                            {
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasIncentivada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    debitoIncentivado += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    debitoIncentivado += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+
+                            }
+                            else
+                            {
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasNIncentivada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    debitoNIncentivado += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
+                                {
+                                    debitoNIncentivado += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+                            }
+
+                        }
+                    }
+
+                    decimal saldoDebitoIncentivado = debitoIncentivado - devolucaoDebitoIncentivado,
+                        saldoDebitoNIncentivado = debitoNIncentivado - devolucaoDebitoNIncentivado;
+
+                    //  Incentivada
+                    ViewBag.VendasIncentivada = vendasIncentivada;
+                    ViewBag.DevolucaoVendasIncentivada = devolucaoVendasIncentivada;
+                    ViewBag.DebitoIncentivado = debitoIncentivado;
+                    ViewBag.DevolucaoDebitoIncentivado = devolucaoDebitoIncentivado;
+                    ViewBag.SaldoDebitoIncentivado = saldoDebitoIncentivado;
+
+                    //  Não Incentivada
+                    ViewBag.VendasNIncentivada = vendasNIncentivada;
+                    ViewBag.DevolucaoVendasNIncentivada = devolucaoVendasNIncentivada;
+                    ViewBag.DebitoNIncentivado = debitoNIncentivado;
+                    ViewBag.DevolucaoDebitoNIncentivado = devolucaoDebitoNIncentivado;
+                    ViewBag.SaldoDebitoNIncentivado = saldoDebitoNIncentivado;
+                }
                 else if (type.Equals("icmsExcedente"))
                 {
                     //  Imposto ICMS Excedente
@@ -26948,9 +27079,13 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             List<string> note = new List<string>();
 
+                            string xNome = notes[i][3].ContainsKey("xNome") ? notes[i][3]["xNome"] : "";
+                            string UF = notes[i][3].ContainsKey("UF") ? notes[i][3]["UF"] : "";
+
+
                             note.Add(notes[i][1]["nNF"]);
-                            note.Add(notes[i][3]["xNome"]);
-                            note.Add(notes[i][3]["UF"]);
+                            note.Add(xNome);
+                            note.Add(UF);
                             note.Add(CNPJ);
                             note.Add(IE);
                             note.Add(valorNF.ToString());
@@ -27032,6 +27167,14 @@ namespace Escon.SisctNET.Web.Controllers
                         daselencadaInterna[i][7] = daselencadaInterna[i][7].Replace(".", ",");
                     }
 
+                    //  Interestadual
+                    for (int i = 0; i < daselencadaInterestadual.Count(); i++)
+                    {
+                        daselencadaInterestadual[i][6] = ((Convert.ToDecimal(daselencadaInterestadual[i][5].Replace(".", ",")) * Convert.ToDecimal(daselencadaInterestadual[i][7].Replace(".", ","))) / 100).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        daselencadaInterestadual[i][5] = Convert.ToDecimal(daselencadaInterestadual[i][5].Replace(".", ",")).ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
+                        daselencadaInterestadual[i][7] = daselencadaInterestadual[i][7].Replace(".", ",");
+                    }
+
                     //  Elencadas
                     // Interna
                     ViewBag.ElencadaInterna = elencadaInterna;
@@ -27054,7 +27197,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.PercentualDaselencadaInterna = comp.IncIIInterna.ToString().Replace(".", ",");
 
                     //Interestadual
-                    ViewBag.DaselencadaInterestadual = daselencadaInterna;
+                    ViewBag.DaselencadaInterestadual = daselencadaInterestadual;
                     ViewBag.ValorDaselencadaInterestadual = valorDaselencadaInterestadual.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.ValorCreditoDaselencadaInterestadual = valorCreditoDaselencadaInterestadual.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualDaselencadaInterestadual = comp.IncIIInterestadual.ToString().Replace(".", ",");

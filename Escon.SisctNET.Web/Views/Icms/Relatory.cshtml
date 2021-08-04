@@ -151,6 +151,12 @@
 
                     @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "debitoCredito")
+                {
+                    <!-- Débito e Crédito -->
+
+                    @await Html.PartialAsync("_DebitCredit", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "tributacaoDiveregente")
                 {
                     @if (ViewBag.Erro == 1)
