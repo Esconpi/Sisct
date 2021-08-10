@@ -630,9 +630,9 @@ namespace Escon.SisctNET.Web.Planilha
                             {
                                 decimal saldoAntarior = 0, saldoAtual = 0;
 
-                                var teste  = decimal.TryParse(saldo[2], out saldoAntarior);
+                                var vaalidar1  = decimal.TryParse(saldo[2], out saldoAntarior);
 
-                                var teste2 = decimal.TryParse(saldo[7], out saldoAtual);
+                                var vaalidar2 = decimal.TryParse(saldo[7], out saldoAtual);
 
                                 var codigo = saldo[0].Replace(".", "");
 

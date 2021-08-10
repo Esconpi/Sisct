@@ -579,7 +579,10 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.DateStart = dateStart;
                         prod.PercentualInciso = inciso;
 
-                        if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
+                        if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals((long)2))
+                            prod.Incentivo = false;
+                        
+                        if(prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
                             prod.Incentivo = false;
 
                         prod.Qpauta = null;
@@ -707,7 +710,10 @@ namespace Escon.SisctNET.Web.Controllers
                             item.DateStart = dateStart;
                             item.PercentualInciso = inciso;
 
-                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals(2))
+                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals((long)2))
+                                item.Incentivo = false;
+
+                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
                                 item.Incentivo = false;
 
                             item.Qpauta = null;
@@ -1811,7 +1817,8 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.ProdutoI))
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
-                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != (long)3 || comp.ChapterId == (long)4) && !type.Equals(Model.Type.Nota))
+                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != (long)3 || comp.ChapterId == (long)4) &&
+                                !type.Equals(Model.Type.Nota))
                             {
                                 if (imp == null)
                                 {
@@ -2204,7 +2211,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalICMSGeral = totalGeralIcms;
                     ViewBag.TotalICMS = totalGeralIcms;
                     ViewBag.TotalFecop = totalFecop;
-
 
                     //      Resumo dos Impostos
 

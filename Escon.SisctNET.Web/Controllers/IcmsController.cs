@@ -26061,17 +26061,11 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("debitoCredito"))
                 {
-                    //  Apuração Débito/Crédito
+                    //  Débito/Crédito
 
-                    cfopsVenda.AddRange(cfopsTransf);
-                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    notes = importXml.NFeAll(directoryNfeExit);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
-
-                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
-
-                    decimal vendasIncentivada = 0, vendasNIncentivada = 0, devolucaoVendasIncentivada = 0, devolucaoVendasNIncentivada = 0, debitoIncentivado = 0, debitoNIncentivado = 0,
-                        devolucaoDebitoIncentivado = 0, devolucaoDebitoNIncentivado = 0;
+                    decimal vendas = 0, devolucaoVendaa = 0, debito = 0, devolucaoDebito = 0;
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -26081,114 +26075,52 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        bool ncm = false;
+                        string CFOP = "";
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
-                            if (notes[i][j].ContainsKey("NCM"))
-                            {
-                                string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                            if (notes[i][j].ContainsKey("CFOP"))
+                                CFOP = notes[i][j]["CFOP"];
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
-
-                            }
-
-
-                            if (ncm)
+                            if (cfopsVenda.Contains(CFOP) || cfopsBoniVenda.Contains(CFOP) || cfopsTransf.Contains(CFOP))
                             {
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
+                                    vendas += Convert.ToDecimal(notes[i][j]["vProd"]);
 
                                 if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                                }
+                                    vendas += Convert.ToDecimal(notes[i][j]["vFrete"]);
 
                                 if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasIncentivada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                }
+                                    vendas -= Convert.ToDecimal(notes[i][j]["vDesc"]);
 
                                 if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                }
+                                    vendas += Convert.ToDecimal(notes[i][j]["vOutro"]);
 
                                 if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasIncentivada += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                }
+                                    vendas += Convert.ToDecimal(notes[i][j]["vSeg"]);
 
                                 if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    debitoIncentivado += Convert.ToDecimal(notes[i][j]["vICMS"]);
-                                }
+                                    debito += Convert.ToDecimal(notes[i][j]["vICMS"]);
 
                                 if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    debitoIncentivado += Convert.ToDecimal(notes[i][j]["vFCP"]);
-                                }
-
-                            }
-                            else
-                            {
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasNIncentivada -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vendasNIncentivada += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("pICMS") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    debitoNIncentivado += Convert.ToDecimal(notes[i][j]["vICMS"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
-                                {
-                                    debitoNIncentivado += Convert.ToDecimal(notes[i][j]["vFCP"]);
-                                }
-                            }
-
+                                    debito += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                            }                          
                         }
                     }
 
-                    decimal saldoDebitoIncentivado = debitoIncentivado - devolucaoDebitoIncentivado,
-                        saldoDebitoNIncentivado = debitoNIncentivado - devolucaoDebitoNIncentivado;
+                    decimal saldoDebito = debito - devolucaoDebito,
+                        valorContabilSaida = vendas - devolucaoVendaa;
 
-                    //  Incentivada
-                    ViewBag.VendasIncentivada = vendasIncentivada;
-                    ViewBag.DevolucaoVendasIncentivada = devolucaoVendasIncentivada;
-                    ViewBag.DebitoIncentivado = debitoIncentivado;
-                    ViewBag.DevolucaoDebitoIncentivado = devolucaoDebitoIncentivado;
-                    ViewBag.SaldoDebitoIncentivado = saldoDebitoIncentivado;
+                    //  Débito
+                    ViewBag.Vendas = vendas;
+                    ViewBag.DevolucaoVendas = devolucaoVendaa;
+                    ViewBag.Debito = debito;
+                    ViewBag.DevolucaoDebito = devolucaoDebito;
+                    ViewBag.ValorContabilSaida = valorContabilSaida;
+                    ViewBag.SaldoDebito = saldoDebito;
 
-                    //  Não Incentivada
-                    ViewBag.VendasNIncentivada = vendasNIncentivada;
-                    ViewBag.DevolucaoVendasNIncentivada = devolucaoVendasNIncentivada;
-                    ViewBag.DebitoNIncentivado = debitoNIncentivado;
-                    ViewBag.DevolucaoDebitoNIncentivado = devolucaoDebitoNIncentivado;
-                    ViewBag.SaldoDebitoNIncentivado = saldoDebitoNIncentivado;
+                    //  Crédito
+
                 }
                 else if (type.Equals("icmsExcedente"))
                 {

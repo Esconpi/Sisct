@@ -556,6 +556,9 @@ namespace Escon.SisctNET.Web.Controllers
                             else
                             {
 
+                                if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso == null)
+                                    incentivo = false;
+
                                 var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, null);
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
                                         valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, baseCalc = 0;

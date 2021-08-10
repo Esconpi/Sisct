@@ -1,26 +1,12 @@
 ﻿<table class="table" style="font-size:11px; border:1px solid">
     <thead>
         <tr>
-            <th style="border: 1px solid; text-align: center;" colspan="5">
-                Débito
-            </th>
-        </tr>
-        <tr>
             <th style="border: 1px solid; text-align: center;" colspan="3">
-                Apuração Incentivada
-            </th>
-            <th style="border: 1px solid; text-align: center;" colspan="2">
-                Apuração Não Incentivada
+                Débito/Saída
             </th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align: center;">
-            </th>
-            <th style="border:1px solid; text-align:center;">
-                Valor Contábil
-            </th>
-            <th style="border: 1px solid; text-align: center;">
-                ICMS
             </th>
             <th style="border:1px solid; text-align:center;">
                 Valor Contábil
@@ -33,30 +19,67 @@
     <tbody>
         <tr>
             <th style="border: 1px solid; text-align: center;">
-                Vendas
+                Venda
             </th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasIncentivada)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DebitoIncentivado)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.VendasNIncentivada)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DebitoNIncentivado)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.Vendas)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.Debito)</th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align: center;">
                 Devolução
             </th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoVendasIncentivada)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoDebitoIncentivado)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoVendasNIncentivada)</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoDebitoNIncentivado)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoVendas)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.DevolucaoDebito)</th>
         </tr>
         <tr>
             <th style="border: 1px solid; text-align: center;">
                 Saldo
             </th>
-            <th style="padding-right:1%; text-align:center; border: 1px solid;">-------</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.SaldoDebitoIncentivado)</th>
-            <th style="padding-right:1%; text-align:center; border: 1px solid;">-------</th>
-            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.SaldoDebitoNIncentivado)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorContabilSaida)</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.SaldoDebito)</th>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table" style="font-size:11px; border:1px solid">
+    <thead>
+        <tr>
+            <th style="border: 1px solid; text-align: center;" colspan="3">
+                Crédito/Entrada
+            </th>
+        </tr>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Contábil
+            </th>
+            <th style="border: 1px solid; text-align: center;">
+                ICMS
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">
+                Compra
+            </th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
+        </tr>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">
+                Devolução
+            </th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
+        </tr>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">
+                Saldo
+            </th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;"></th>
         </tr>
     </tbody>
 </table>
