@@ -935,11 +935,14 @@ namespace Escon.SisctNET.Web.Controllers
                                                 return View();
                                             }
 
-                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"]) &&
+                                                _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"]) &&
+                                                _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"]) &&
+                                                _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
                                             if (nIncentivo != null)
                                                 ncm = true;
@@ -1088,11 +1091,14 @@ namespace Escon.SisctNET.Web.Controllers
                                                 return View();
                                             }
 
-                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"])
+                                                && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"])
+                                                && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"]) 
+                                                && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
 
                                             if (nIncentivo != null)
                                                 ncm = true;
@@ -1222,7 +1228,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             ncmI = false;
                                             ncmII = false;
 
-                                            var nn = ncmInciso.Where(_ => _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nn = ncmInciso.Where(_ => _.Ncm.Equals(entryNotes[i][j]["NCM"])).FirstOrDefault();
 
                                             if (nn == null)
                                             {
@@ -1230,11 +1236,14 @@ namespace Escon.SisctNET.Web.Controllers
                                                 return View();
                                             }
 
-                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime")  && _.Code.Equals(entryNotes[i][j]["cProd"])
+                                                && _.Ncm.Equals(entryNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoI = ncmIncisoI.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(entryNotes[i][j]["cProd"]) 
+                                                && _.Ncm.Equals(entryNotes[i][j]["NCM"])).FirstOrDefault();
 
-                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Ncm.Equals(exitNotes[i][j]["NCM"])).FirstOrDefault();
+                                            var nIncentivoIncisoII = ncmIncisoII.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(entryNotes[i][j]["cProd"]) 
+                                                && _.Ncm.Equals(entryNotes[i][j]["NCM"])).FirstOrDefault();
 
                                             if (nIncentivo != null)
                                                 ncm = true;
@@ -1255,7 +1264,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (contribuinte)
                                                 totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
+                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vProd"])).ToString();
                                             if (ncmI)
                                                 totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
                                             if (ncmII)
@@ -1270,7 +1279,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (contribuinte)
                                                 totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
+                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vFrete"])).ToString();
                                             if (ncmI)
                                                 totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
                                             if (ncmII)
@@ -1285,7 +1294,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (contribuinte)
                                                 totalDevoContribuinte -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
+                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(entryNotes[i][j]["vDesc"])).ToString();
                                             if (ncmI)
                                                 totalDevoVendaIncisoI -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
                                             if (ncmII)
@@ -1300,7 +1309,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (contribuinte)
                                                 totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
+                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vOutro"])).ToString();
                                             if (ncmI)
                                                 totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
                                             if (ncmII)
@@ -1316,7 +1325,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (contribuinte)
                                                 totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                             if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
+                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vSeg"])).ToString();
                                             if (ncmI)
                                                 totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
                                             if (ncmII)

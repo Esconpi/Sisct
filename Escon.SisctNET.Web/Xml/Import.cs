@@ -627,11 +627,6 @@ namespace Escon.SisctNET.Web.Xml
                         if (nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
                             notes.Add(nota);
 
-
-                        if (nota[0]["chave"].Equals("22210630048989000174550010000021211568974505"))
-                        {
-                            var p = 0;
-                        }
                     }
                 }
 
