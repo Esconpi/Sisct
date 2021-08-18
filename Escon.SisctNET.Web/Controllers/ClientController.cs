@@ -314,7 +314,97 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
                 ViewBag.Company = comp;
-                var clients = _service.FindByCompany(id).Where(_ => _.TypeClientId.Equals(1)).ToList();
+                var clients = _service.FindByCompany(id).Where(_ => _.TypeClientId.Equals((long)1)).ToList();
+                return View(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult NContribuinte(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Company = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.TypeClientId.Equals((long)2)).OrderBy(_ => _.Ie).ToList();
+                return View(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult ClienteIE(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Company = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.Ie != null && _.Ie != "").ToList();
+                return View(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult ContribuinteMonth(long id, string year, string month)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Company = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.MesRef.Equals(month) && _.AnoRef.Equals(year) && _.TypeClientId.Equals((long)1)).ToList();
+                return View(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult NContribuinteMonth(long id, string year, string month)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Company = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.MesRef.Equals(month) && _.AnoRef.Equals(year) && _.TypeClientId.Equals((long)2)).OrderBy(_ => _.Ie).ToList();
+                return View(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult ClienteIEMonth(long id, string year, string month)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Client")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(id, null);
+                ViewBag.Company = comp;
+                var clients = _service.FindByCompany(id).Where(_ => _.MesRef.Equals(month) && _.AnoRef.Equals(year) && _.Ie != null && _.Ie != "").ToList();
                 return View(clients);
             }
             catch (Exception ex)

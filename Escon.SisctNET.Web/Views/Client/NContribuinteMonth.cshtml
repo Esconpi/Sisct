@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.Client>
 @{
-    ViewData["Title"] = "Contribuinte";
+    ViewData["Title"] = "NContribuinteMonth";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                        <strong>Contribuintes</strong>
+                        <strong>Não Contribuintes</strong>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,6 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Ie)
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
 
@@ -67,5 +66,7 @@
     </div>
     <div class="box-footer"></div>
 </div>
+
+
 
 
