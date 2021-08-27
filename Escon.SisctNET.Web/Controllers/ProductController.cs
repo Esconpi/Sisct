@@ -220,7 +220,7 @@ namespace Escon.SisctNET.Web.Controllers
                     _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 }
 
-                var lastId = _service.FindAll(GetLog(Model.OccorenceLog.Read)).Max(_ => _.Id);
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;

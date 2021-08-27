@@ -26112,7 +26112,7 @@ namespace Escon.SisctNET.Web.Controllers
                         valorContabilSaida = vendas - devolucaoVendaa;
 
                     //  Débito
-                    ViewBag.Vendas = vendas;
+                    ViewBag.Vendas = vendas;                                                                                                                                                                                                                                                                         
                     ViewBag.DevolucaoVendas = devolucaoVendaa;
                     ViewBag.Debito = debito;
                     ViewBag.DevolucaoDebito = devolucaoDebito;
