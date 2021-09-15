@@ -233,7 +233,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.AnnexId.Equals((long)1))
                     {
                         var notes = _noteService.FindByNotes(companyid, year, month);
-                        var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => _.TaxationTypeId.Equals((long)1) && _.TaxationTypeId.Equals((long)3) && _.Incentivo.Equals(false)).ToList();
+                        var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => (_.TaxationTypeId.Equals((long)1) || _.TaxationTypeId.Equals((long)3)) && _.Incentivo.Equals(false)).ToList();
 
                         decimal baseCalcCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4)).Sum(_ => _.Vbasecalc),
                                 baseCalcCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vbasecalc), 

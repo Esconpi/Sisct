@@ -1464,22 +1464,30 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 decimal percentualCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().FirstOrDefault()),
                                         percentualCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso != null).OrderBy(_ => _.PercentualInciso).Select(_ => _.PercentualInciso).Distinct().LastOrDefault()),
-                                        baseCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vprod).Sum() + 
+                                        baseCaputI = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vprod).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Voutro).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vseg).Sum() -
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vdesc).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vfrete).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Freterateado).Sum() +
                                                                        productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vipi).Sum()),
-                                        baseCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vprod).Sum() +
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Voutro).Sum() +
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vseg).Sum() -
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vdesc).Sum() +
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vfrete).Sum() +
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Freterateado).Sum() +
-                                                                       productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vipi).Sum()),
-                                        impostoIcmsCaputI = Math.Round(Convert.ToDecimal(baseCaputI * percentualCaputI / 100), 2),
-                                        impostoIcmsCaputII = Math.Round(Convert.ToDecimal(baseCaputII * percentualCaputII / 100), 2);
+                                       impostoIcmsCaputI = Math.Round(Convert.ToDecimal(baseCaputI * percentualCaputI / 100), 2);
+
+
+                                decimal baseCaputII = 0, impostoIcmsCaputII = 0;
+
+                                if (percentualCaputI != percentualCaputII)
+                                {
+                                    baseCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vprod).Sum() +
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Voutro).Sum() +
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vseg).Sum() -
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vdesc).Sum() +
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vfrete).Sum() +
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Freterateado).Sum() +
+                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vipi).Sum());
+                                    impostoIcmsCaputII = Math.Round(Convert.ToDecimal(baseCaputII * percentualCaputII / 100), 2);
+                                }    
+                                    
 
                                 baseIcms = baseCaputI + baseCaputII;
                                 impostoIcms = impostoIcmsCaputI + impostoIcmsCaputII;
@@ -2557,15 +2565,23 @@ namespace Escon.SisctNET.Web.Controllers
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vfrete).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Freterateado).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputI)).Select(_ => _.Vipi).Sum()),
-                                    baseCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vprod).Sum() +
+                                    impostoIcmsCaputI = Math.Round(Convert.ToDecimal(baseCaputI * percentualCaputI / 100), 2);
+
+
+                            decimal baseCaputII = 0, impostoIcmsCaputII = 0;
+
+                            if (percentualCaputI != percentualCaputII)
+                            {
+                                baseCaputII = Convert.ToDecimal(productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vprod).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Voutro).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vseg).Sum() -
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vdesc).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vfrete).Sum() +
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Freterateado).Sum() +
-                                                                   productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vipi).Sum()),
-                                    impostoIcmsCaputI = Math.Round(Convert.ToDecimal(baseCaputI * percentualCaputI / 100), 2),
-                                    impostoIcmsCaputII = Math.Round(Convert.ToDecimal(baseCaputII * percentualCaputII / 100), 2);
+                                                                   productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vipi).Sum());
+                                impostoIcmsCaputII = Math.Round(Convert.ToDecimal(baseCaputII * percentualCaputII / 100), 2);
+                            }
+                                    
 
                             baseIcms = baseCaputI + baseCaputII;
                             impostoIcms = impostoIcmsCaputI + impostoIcmsCaputII;
