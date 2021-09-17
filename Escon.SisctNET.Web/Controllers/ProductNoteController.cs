@@ -1692,23 +1692,23 @@ namespace Escon.SisctNET.Web.Controllers
                                             totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
                                 }
 
-                                decimal valorNfe1NormalAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2),
-                                        valorNfe1RetAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2),
-                                        valorNfe2NormalAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2),
-                                        valorNfe2RetAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && _.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2),
-                                        valorNfe1NormalAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && !_.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2),
-                                        valorNfe1RetAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && !_.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2),
-                                        valorNfe2NormalAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && !_.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2),
-                                        valorNfe2RetAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals(1) && !_.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
+                                decimal valorNfe1NormalAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && _.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2),
+                                        valorNfe1RetAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && _.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2),
+                                        valorNfe2NormalAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && _.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2),
+                                        valorNfe2RetAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && _.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2),
+                                        valorNfe1NormalAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && !_.Note.Iest.Equals("") && _.pFCPST == 1).Select(_ => _.VfcpST).Sum()), 2),
+                                        valorNfe1RetAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && !_.Note.Iest.Equals("") && _.pFCPSTRET == 1).Select(_ => _.VfcpSTRet).Sum()), 2),
+                                        valorNfe2NormalAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && !_.Note.Iest.Equals("") && _.pFCPST == 2).Select(_ => _.VfcpST).Sum()), 2),
+                                        valorNfe2RetAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.TaxationTypeId.Equals((long)1) && !_.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2);
 
                                 decimal? gnrePagaAPIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreAp).Sum()), 2),
                                          gnreNPagaAPIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreNAp).Sum()), 2),
                                          gnrePagaAPSIE = Math.Round(Convert.ToDecimal(notes.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreAp).Sum()), 2),
                                          gnreNPagaAPSIE = Math.Round(Convert.ToDecimal(notes.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreNAp).Sum()), 2),
-                                         icmsStAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPIE + valorNfe1RetAPIE + valorNfe2NormalAPIE + valorNfe2RetAPIE,
-                                         icmsStAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPSIE + valorNfe1RetAPSIE + valorNfe2NormalAPSIE + valorNfe2RetAPSIE,
-                                         totalApuradoAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2),
-                                         totalApuradoAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals(1)).Select(_ => _.IcmsApurado).Sum()), 2),
+                                         icmsStAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPIE + valorNfe1RetAPIE + valorNfe2NormalAPIE + valorNfe2RetAPIE,
+                                         icmsStAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPSIE + valorNfe1RetAPSIE + valorNfe2NormalAPSIE + valorNfe2RetAPSIE,
+                                         totalApuradoAPIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum()), 2),
+                                         totalApuradoAPSIE = Math.Round(Convert.ToDecimal(produtosAP.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum()), 2),
                                          totalDiefAPSIE = Convert.ToDecimal((totalApuradoAPSIE + totalFreteAPIE) - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE),
                                          totalDiefAPIE = Convert.ToDecimal(totalApuradoAPIE + gnreNPagaAPIE - icmsStAPIE - gnrePagaAPIE - totalFreteAPIE);
 
@@ -3803,7 +3803,7 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarFecop += Convert.ToDecimal(totalfecopDiefATIE - (icmsFecop1ATIE + icmsFecop2ATIE));
 
                     //  ANEXO CCCXVI
-                    if (comp.Incentive.Equals(true) && Convert.ToInt32(comp.AnnexId) == 1)
+                    if (comp.Incentive.Equals(true) && comp.AnnexId == (long)1)
                     {
                         if (impAnexo == null)
                         {
