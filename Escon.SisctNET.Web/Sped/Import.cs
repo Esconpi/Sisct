@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                             string code = prod.Substring(prod.Length - qtd);
 
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
 
                                             if (ehMono != null)
                                                 break;
@@ -221,7 +221,7 @@ namespace Escon.SisctNET.Web.Sped
                                             devolucaoServico += Convert.ToDecimal(note[7]);
                                         }
 
-                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals(2)).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
                                     }
 
                                     if (ehMono == null)
