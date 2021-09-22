@@ -369,7 +369,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                         string code = prod.Substring(prod.Length - qtd);
 
-                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
 
                                         if (ehMono != null)
                                         {
@@ -381,27 +381,30 @@ namespace Escon.SisctNET.Web.Sped
                                 else
                                 {
                                     // Tributação por NCM
-                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.Type.Equals("Monofásico")).FirstOrDefault();
+                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
                                 }
 
                                 if ((cfopsCompra.Contains(note[11]) || cfopsBonifi.Contains(note[11]) || cfopsCompraST.Contains(note[11])
                                     || cfopsTransf.Contains(note[11]) || cfopsTransfST.Contains(note[11])) && !note[7].Equals(""))
                                 {
-
-                                    if (ehMono == null)
+                                    compra += Convert.ToDecimal(note[7]);
+                                    
+                                    /*if (ehMono != null)
                                     {
                                         // Compra Normal
                                         compra += Convert.ToDecimal(note[7]);
-                                    }
+                                    }*/
                                 }
 
                                 if ((cfopsDevo.Contains(note[11]) || cfopsDevoST.Contains(note[11])) && !note[7].Equals(""))
                                 {
-                                    if (ehMono == null)
+                                    devolucao += Convert.ToDecimal(note[7]);
+
+                                    /*if (ehMono != null)
                                     {
                                         // Devolução Normal
                                         devolucao += Convert.ToDecimal(note[7]);
-                                    }
+                                    }*/
 
                                 }
                             }

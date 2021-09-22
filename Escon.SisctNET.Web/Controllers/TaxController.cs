@@ -3310,40 +3310,47 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
-                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
+                                        if (exitNotes[i][j].ContainsKey("CFOP"))
                                         {
-                                            if (exitNotes[i][j].ContainsKey("CFOP"))
-                                            {
-                                                cfop = false;
+                                            cfop = false;
 
-                                                if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
-                                                    cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]) ||
-                                                    cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
-                                                {
-                                                    cfop = true;
-                                                }
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
                                             }
+                                        }
 
-                                            if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
+
+                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM") && cfop && exitNotes[i][1]["finNFe"] != "4")
+                                        {
+                                            Model.TaxationNcm ehMono = null;
+
+                                            if (comp.Taxation == "Produto")
                                             {
-                                                Model.TaxationNcm ehMono = null;
-                                                if (comp.Taxation == "Produto")
+                                                if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) &&
-                                                             (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
 
-                                                }
-                                                else
-                                                {
-                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) &&
-                                                            (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
-                                                }
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                        vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
 
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
 
-                                                if (ehMono == null)
-                                                {
-                                                    if (exitNotes[i][1]["finNFe"] != "4" && cfop)
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                    /*
+                                                     * ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) &&
+                                                                   (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+
+                                                    if (ehMono != null)
                                                     {
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                             vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
@@ -3359,15 +3366,66 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                         if (exitNotes[i][j].ContainsKey("vSeg"))
                                                             vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                    }
+                                                    }*/
+
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.NCM = exitNotes[i][j]["NCM"];
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
                                                 }
                                             }
                                             else
                                             {
-                                                ViewBag.NCM = exitNotes[i][j]["NCM"];
-                                                ViewBag.Erro = 4;
-                                                return View(comp);
+                                                if (ncmAll.Contains(exitNotes[i][j]["NCM"]))
+                                                {
+
+
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                        vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                        vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                    /*
+                                                     * ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+
+                                                    if (ehMono != null)
+                                                    {
+                                                        if (exitNotes[i][j].ContainsKey("vProd"))
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                        if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                        if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                            vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                        if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                        if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }*/
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.NCM = exitNotes[i][j]["NCM"];
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
                                             }
+                                                                                    
                                         }
                                     }
                                 }
@@ -3388,37 +3446,46 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
-                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
+                                        if (exitNotes[i][j].ContainsKey("CFOP"))
                                         {
-                                            if (exitNotes[i][j].ContainsKey("CFOP"))
+                                            cfop = false;
+
+                                            if (cfopsDevoCompra.Contains(exitNotes[i][j]["CFOP"]))
                                             {
-                                                cfop = false;
-
-                                                if (cfopsDevoCompra.Contains(exitNotes[i][j]["CFOP"]))
-                                                {
-                                                    cfop = true;
-                                                }
-
+                                                cfop = true;
                                             }
 
-                                            if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
+                                        }
+
+                                        if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM") && cfop)
+                                        {
+                                            Model.TaxationNcm ehMono = null;
+
+                                            if (comp.Taxation == "Produto")
                                             {
-                                                Model.TaxationNcm ehMono = null;
-
-                                                if (comp.Taxation == "Produto")
+                                                if (codeProdAll.Contains(exitNotes[i][j]["cProd"]) && ncmAll.Contains(exitNotes[i][j]["NCM"]))
                                                 {
-                                                    ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) &&
-                                                            (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
-                                                }
-                                                else
-                                                {
-                                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
-                                                }
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
 
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
-                                                if (ehMono == null)
-                                                {
-                                                    if (cfop)
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                        devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                    /*  
+                                                     *  ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(exitNotes[i][j]["cProd"]) && _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) &&
+                                                                (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+                                                    
+
+                                                    if (ehMono != null)
                                                     {
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
                                                             devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
@@ -3434,16 +3501,67 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                         if (exitNotes[i][j].ContainsKey("vSeg"))
                                                             devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
-                                                    }
+                                                    }*/
+
                                                 }
-                                               
+                                                else
+                                                {
+                                                    ViewBag.NCM = exitNotes[i][j]["NCM"];
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
                                             }
                                             else
                                             {
-                                                // Empresa não possui tipo
-                                                ViewBag.Erro = 4;
-                                                return View(comp);
+                                                if (ncmAll.Contains(exitNotes[i][j]["NCM"]))
+                                                {
+
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                        devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                        devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                    /* 
+                                                     * ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(exitNotes[i][j]["NCM"]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+
+                                                      if (ehMono != null)
+                                                      {
+
+                                                          if (exitNotes[i][j].ContainsKey("vProd"))
+                                                              devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                          if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                              devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                          if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                              devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                          if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                              devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                          if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                              devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                      }*/
+
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.NCM = exitNotes[i][j]["NCM"];
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
                                             }
+                                          
                                         }
                                     }
                                 }

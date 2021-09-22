@@ -135,11 +135,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
             if (typeCompany.Equals(1))
             {
-                ncms = _context.TaxationNcms.Where(_ => _.Company.CountingTypeId.Equals(1) && _.Type.Equals("Monofásico")).ToList();
+                ncms = _context.TaxationNcms.Where(_ => _.Company.CountingTypeId.Equals(1) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).ToList();
             }
             else
             {
-                ncms = _context.TaxationNcms.Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && _.Type.Equals("Monofásico")).ToList();
+                ncms = _context.TaxationNcms.Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).ToList();
             }
             return ncms;
         }

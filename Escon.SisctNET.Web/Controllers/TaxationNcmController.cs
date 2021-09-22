@@ -163,7 +163,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 //  Procura se o NCM tem apenas uma tributação 
 
-                                if (taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).Select(_ => _.Type).Distinct().ToList().Count() == 1)
+                                if (taxationNcmTemp.Where(_ => _.DateEnd.Equals(null)).Select(_ => _.TaxationTypeNcmId).Distinct().ToList().Count() == 1)
                                 {
                                     type = taxationNcmTemp.Where(_ => _.DateEnd.Equals(null))
                                         .FirstOrDefault().TaxationTypeNcmId;
@@ -570,110 +570,6 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditM(long id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-
-                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                foreach (var c in list_cstE)
-                {
-                    c.Description = c.Code + " - " + c.Description;
-                }
-                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
-                ViewBag.CstEntradaId = cstE;
-
-                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                foreach (var c in list_cstS)
-                {
-                    c.Description = c.Code + " - " + c.Description;
-                }
-                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
-                ViewBag.CstSaidaID = cstS;
-
-                List<Model.TypeNcm> list_tipos = _typeNcmService.FindAll(null);
-                SelectList listType = new SelectList(list_tipos, "Id", "Name", null);
-                ViewBag.ListaTipoNcm = listType;
-
-                var result = _service.FindById(id, null);
-
-                ViewBag.CompanyId = result.CompanyId;
-
-                if (result.CstSaidaId == null)
-                {
-                    result.CstSaidaId = 0;
-                }
-
-                if (result.CstEntradaId == null)
-                {
-                    result.CstEntradaId = 0;
-                }
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult EditM(long id, Model.TaxationNcm entity)
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-
-
-                var rst = _service.FindById(id, null);
-
-                List<TaxationNcm> tributacoes = new List<TaxationNcm>();
-
-                rst.Updated = DateTime.Now;
-
-                if (entity.CstEntradaId.Equals((long)0))
-                {
-                    rst.CstEntradaId = null;
-                }
-                else
-                {
-                    rst.CstEntradaId = entity.CstEntradaId;
-                }
-
-                if (entity.CstSaidaId.Equals((long)0))
-                {
-                    rst.CstSaidaId = null;
-                }
-                else
-                {
-                    rst.CstSaidaId = entity.CstSaidaId;
-                }
-
-                rst.TypeNcmId = entity.TypeNcmId;
-                rst.Status = true;
-                rst.NatReceita = entity.NatReceita;
-                rst.Pis = entity.Pis;
-                rst.Cofins = entity.Cofins;
-                rst.DateStart = entity.DateStart;
-                rst.Type = Request.Form["type"].ToString();
-
-
-                _service.Update(rst, GetLog(OccorenceLog.Update));
-                return RedirectToAction("IndexM");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpGet]
         public IActionResult Atualize(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
@@ -769,100 +665,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult AtualizeM(long id)
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-                List<Model.Cst> list_cstE = _cstService.FindAll(null).Where(_ => _.Ident.Equals(false) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                foreach (var c in list_cstE)
-                {
-                    c.Description = c.Code + " - " + c.Description;
-                }
-                list_cstE.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
-                SelectList cstE = new SelectList(list_cstE, "Id", "Description", null);
-                ViewBag.CstEntradaId = cstE;
-
-
-
-                List<Model.Cst> list_cstS = _cstService.FindAll(null).Where(_ => _.Ident.Equals(true) && _.Type.Equals(true)).OrderBy(_ => _.Code).ToList();
-                foreach (var c in list_cstS)
-                {
-                    c.Description = c.Code + " - " + c.Description;
-                }
-                list_cstS.Insert(0, new Model.Cst() { Description = "Nennhum", Id = 0 });
-                SelectList cstS = new SelectList(list_cstS, "Id", "Description", null);
-                ViewBag.CstSaidaID = cstS;
-
-                var result = _service.FindById(id, null);
-
-                ViewBag.CompanyId = result.CompanyId;
-
-                if (result.CstSaidaId == null)
-                {
-                    result.CstSaidaId = 0;
-                }
-
-                if (result.CstEntradaId == null)
-                {
-                    result.CstEntradaId = 0;
-                }
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult AtualizeM(long id, Model.TaxationNcm entity)
-        {
-            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
-                return Unauthorized();
-
-            try
-            {
-                var rst = _service.FindById(id, null);
-                rst.Updated = DateTime.Now;
-                rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
-
-                var lastId = _service.FindAll(null).Max(_ => _.Id);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.DateEnd = null;
-                entity.CompanyId = rst.CompanyId;
-                entity.NcmId = rst.NcmId;
-                entity.TypeNcmId = rst.TypeNcmId;
-
-                if (entity.CstEntradaId.Equals((long)0))
-                {
-                    entity.CstEntradaId = null;
-                }
-
-                if (entity.CstSaidaId.Equals((long)0))
-                {
-                    entity.CstSaidaId = null;
-                }
-
-                entity.Status = true;
-                entity.CodeProduct = rst.CodeProduct;
-                entity.Id = lastId + 1;
-                entity.Type = Request.Form["type"].ToString();
-
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
-                return RedirectToAction("IndexM");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { erro = 500, message = ex.Message });
-            }
-        }
-
         public IActionResult Details(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
@@ -948,7 +750,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 //var ncmsSisct = _service.FindByPeriod(taxxationNcm, inicio, fim);
                 var ncmsSisct = _service.FindByPeriod(taxxationNcm,inicio,fim)
-                    .Where(_ => _.Type.Equals("Monofásico"))
+                    .Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))
                     .ToList();
                 var ncmsFortes = import.Ncms(caminhoDestinoArquivoOriginal);
 
@@ -1150,7 +952,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Company = comp;
                 List<Model.TaxationNcm> taxationNcms = new List<TaxationNcm>();
 
-                taxationNcms = _service.FindByCompany(comp.Id).Where(_ => _.Type.Equals("Monofásico")).OrderBy(_ => _.CodeProduct).ThenBy(_ => _.Ncm.Code).ToList();
+                taxationNcms = _service.FindByCompany(comp.Id).Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).OrderBy(_ => _.CodeProduct).ThenBy(_ => _.Ncm.Code).ToList();
 
                 if (comp.Taxation != "Produto")
                 {
@@ -1308,70 +1110,5 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
-        public IActionResult GetAllM(int draw, int start)
-        {
-            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
-            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
-
-            var ncmsAll = _service.FindAll(null).Where(_ => _.Company.Taxation.Equals(false))
-                .OrderBy(_ => _.Status)
-                .ThenBy(_ => _.Ncm.Code)
-                .ToList();
-
-            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
-            {
-                List<TaxationNcm> ncms = new List<TaxationNcm>();
-
-                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
-
-                List<TaxationNcm> ncmTemp = new List<TaxationNcm>();
-                ncmsAll.ToList().ForEach(s =>
-                {
-                    s.Ncm.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Ncm.Description);
-                    ncmTemp.Add(s);
-                });
-
-                var ids = ncmTemp.Where(c =>
-                    c.CodeProduct.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
-                    c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase))
-                .Select(s => s.Id).ToList();
-
-                ncms = ncmsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
-
-                var ncm = from r in ncms
-                          where ids.ToArray().Contains(r.Id)
-                          select new
-                          {
-                              Id = r.Id.ToString(),
-                              Product = r.CodeProduct + " - " + r.Product,
-                              Ncm = r.Ncm.Description,
-                              Type = r.TaxationTypeNcm.Description,
-                              Status = r.Status,
-                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-
-                          };
-
-                return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
-
-            }
-            else
-            {
-
-
-                var ncm = from r in ncmsAll
-                          select new
-                          {
-                              Id = r.Id.ToString(),
-                              Product = r.CodeProduct + " - " + r.Product,
-                              Ncm = r.Ncm.Description,
-                              Type = r.TaxationTypeNcm.Description,
-                              Status = r.Status,
-                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-                          };
-                return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
-            }
-
-        }
     }
 }
