@@ -141,20 +141,24 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        string tipo = "";
+                        string tipo = "", emisao = "";
 
                         foreach (var note in notes)
                         {
                             if (note[1].Equals("C100"))
+                            {
                                 tipo = note[2];
+                                emisao = note[3];
+                            }
+                                
 
-                            if (note[1].Equals("C100") && tipo == "0")
+                            if (note[1].Equals("C100") && tipo == "0" && emisao == "1")
                             {
                                 DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
                                 ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                             }
 
-                            if (note[1].Equals("C170") && tipo == "0" && note[3].Equals(linha[2]))
+                            if (note[1].Equals("C170") && tipo == "0" && emisao == "1" && note[3].Equals(linha[2]))
                             {
                                 if ((cfopsDevo.Contains(note[11]) || cfopsDevoST.Contains(note[11])) && !note[7].Equals(""))
                                 {
@@ -191,7 +195,8 @@ namespace Escon.SisctNET.Web.Sped
 
                                             string code = prod.Substring(prod.Length - qtd);
 
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) ||
+                                                                            _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5))).FirstOrDefault();
 
                                             if (ehMono != null)
                                                 break;
@@ -221,7 +226,8 @@ namespace Escon.SisctNET.Web.Sped
                                             devolucaoServico += Convert.ToDecimal(note[7]);
                                         }
 
-                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || 
+                                                                        _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5))).FirstOrDefault();
                                     }
 
                                     if (ehMono == null)
@@ -231,6 +237,7 @@ namespace Escon.SisctNET.Web.Sped
                                     }
                                 }
                             }
+                        
                         }
                     }
 
@@ -340,22 +347,23 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        string tipo = "";
+                        string tipo = "", emisao = "";
 
                         foreach (var note in notes)
                         {
                             if (note[1].Equals("C100"))
                             {
                                 tipo = note[2];
+                                emisao = note[3];
                             }
 
-                            if (note[1].Equals("C100") && tipo == "0")
+                            if (note[1].Equals("C100") && tipo == "0" && emisao == "1")
                             {
                                 DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
                                 ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
                             }
 
-                            if (note[1].Equals("C170") && tipo == "0" && note[3].Equals(linha[2]))
+                            if (note[1].Equals("C170") && tipo == "0" && emisao == "1" && note[3].Equals(linha[2]))
                             {
                                 Model.TaxationNcm ehMono = null;
 
@@ -369,7 +377,7 @@ namespace Escon.SisctNET.Web.Sped
 
                                         string code = prod.Substring(prod.Length - qtd);
 
-                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
 
                                         if (ehMono != null)
                                         {
@@ -381,7 +389,7 @@ namespace Escon.SisctNET.Web.Sped
                                 else
                                 {
                                     // Tributação por NCM
-                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
                                 }
 
                                 if ((cfopsCompra.Contains(note[11]) || cfopsBonifi.Contains(note[11]) || cfopsCompraST.Contains(note[11])
@@ -469,16 +477,17 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        string tipoTemp = "";
+                        string tipoTemp = "", emisao = "";
 
                         foreach (var note in notes)
                         {
                             if (note[1].Equals("C100"))
                             {
                                 tipoTemp = note[2];
+                                emisao = note[3];
                             }
 
-                            if (note[1].Equals("C100") && tipoTemp == "0")
+                            if (note[1].Equals("C100") && tipoTemp == "0" && emisao == "1")
                             {
                                 DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
                                 ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
@@ -499,7 +508,7 @@ namespace Escon.SisctNET.Web.Sped
 
                             }
 
-                            if (note[1].Equals("C170") && tipoTemp == "0" && note[3].Equals(linha[2]))
+                            if (note[1].Equals("C170") && tipoTemp == "0" && emisao == "1" && note[3].Equals(linha[2]))
                             {
                                 if (cfopsDevo.Contains(note[11]) && !note[7].Equals(""))
                                 {
@@ -3032,13 +3041,10 @@ namespace Escon.SisctNET.Web.Sped
                     string[] linha = line.Split('|');
                     if (linha[1] == "C100")
                     {
-                        tipo = linha[2];
-
-                        if (tipo == "0")
-                            products.Add(linha.ToList());
+                        products.Add(linha.ToList());
                     }
 
-                    if (linha[1].Equals("C170") && tipo == "0")
+                    if (linha[1].Equals("C170"))
                         products.Add(linha.ToList());
 
                     if (linha[1].Equals("E001") || linha[1].Equals("H001"))

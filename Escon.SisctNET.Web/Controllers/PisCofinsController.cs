@@ -1191,10 +1191,10 @@ namespace Escon.SisctNET.Web.Controllers
                         if (notes[i][1].ContainsKey("dhEmi"))
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
-                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
                         }
 
 
@@ -1510,10 +1510,10 @@ namespace Escon.SisctNET.Web.Controllers
                         if (notes[i][1].ContainsKey("dhEmi"))
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
-                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
                         }
 
 
@@ -1722,10 +1722,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             ncmsTaxation = _service.FindAllInDate(ncms, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.CodeProduct).ToList();
-                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
-                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)).Select(_ => _.Ncm.Code).ToList();
-                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(5) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
+                            codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.CodeProduct).ToList();
+                            codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.CodeProduct).ToList();
+                            ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4) || _.TaxationTypeNcmId.Equals(5)).Select(_ => _.Ncm.Code).ToList();
+                            ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6)).Select(_ => _.Ncm.Code).ToList();
                         }
 
                         string cProd = "", NCM = "", CSOSN = "";

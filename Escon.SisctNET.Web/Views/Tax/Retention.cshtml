@@ -14,7 +14,7 @@
             <form asp-controller="Tax" asp-action="Retention" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                @if (Model.CountingTypeId.Equals(1))
+                @if (Model.CountingTypeId.Equals((long)1))
                 {
                     @if (ViewBag.Tax == null)
                     {
@@ -44,7 +44,7 @@
                     }
 
                 }
-                else if (Model.CountingTypeId.Equals(2))
+                else if (Model.CountingTypeId.Equals((long)2))
                 {
                     @if (ViewBag.Tax == null)
                     {
