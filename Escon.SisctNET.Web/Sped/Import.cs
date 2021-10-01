@@ -150,7 +150,6 @@ namespace Escon.SisctNET.Web.Sped
                                 tipo = note[2];
                                 emisao = note[3];
                             }
-                                
 
                             if (note[1].Equals("C100") && tipo == "0" && emisao == "1")
                             {
@@ -3032,7 +3031,7 @@ namespace Escon.SisctNET.Web.Sped
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
-            string line, tipo = "";
+            string line;
 
             try
             {
