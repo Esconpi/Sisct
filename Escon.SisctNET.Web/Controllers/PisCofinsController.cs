@@ -109,7 +109,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
                 var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
      
-
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
                 var ncms = _service.FindByCompany(comp.Document);
