@@ -124,10 +124,12 @@ namespace Escon.SisctNET.Model
 
         public bool PisCofins { get; set; }
 
+
         //  PIS e COFINS
         public decimal? PisRetido { get; set; }
 
         public decimal? CofinsRetido { get; set; }
+
 
         // Lucro Presumido
         public decimal? Receita1 { get; set; }
@@ -140,25 +142,25 @@ namespace Escon.SisctNET.Model
 
         public decimal? ReceitaMono { get; set; }
 
-        public decimal? Devolucao1Entrada { get; set; }
+        public decimal? Devolucao1 { get; set; }
 
-        public decimal? Devolucao2Entrada { get; set; }
+        public decimal? Devolucao2 { get; set; }
 
-        public decimal? Devolucao3Entrada { get; set; }
+        public decimal? Devolucao3 { get; set; }
 
-        public decimal? Devolucao4Entrada { get; set; }
+        public decimal? Devolucao4 { get; set; }
         
-        public decimal? DevolucaoNormalEntrada { get; set; }
+        public decimal? DevolucaoNormal { get; set; }
 
-        public decimal? Devolucao1Saida { get; set; }
+        public decimal? Devolucao1P { get; set; }
 
-        public decimal? Devolucao2Saida { get; set; }
+        public decimal? Devolucao2P { get; set; }
 
-        public decimal? Devolucao3Saida { get; set; }
+        public decimal? Devolucao3P { get; set; }
 
-        public decimal? Devolucao4Saida { get; set; }
+        public decimal? Devolucao4P { get; set; }
 
-        public decimal? DevolucaoNormalSaida { get; set; }
+        public decimal? DevolucaoNormalP { get; set; }
 
         public decimal? CsllRetido { get; set; }
 
@@ -183,6 +185,7 @@ namespace Escon.SisctNET.Model
         public decimal? IrpjPago { get; set; }
 
         public decimal? CsllPago { get; set; }
+
 
         // Lucro Real
         public decimal? Compra { get; set; }
@@ -213,6 +216,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? DevolucaoVenda { get; set; }
 
+        public decimal? DevolucaoVendaP { get; set; }
+
         public decimal? PrestacaoServico { get; set; }
 
         public decimal? ReceitaFinanceira { get; set; }
@@ -224,6 +229,7 @@ namespace Escon.SisctNET.Model
         public decimal? Juros { get; set; }
 
         public decimal? Perda { get; set; }
+
 
         //  Simples Nacional
 
@@ -275,7 +281,29 @@ namespace Escon.SisctNET.Model
 
         public decimal? DevoSTOutras { get; set; }
 
+        public decimal? DevoNormalNormalP { get; set; }
 
+        public decimal? DevoNormalMonofasicoP { get; set; }
+
+        public decimal? DevoNormalSTP { get; set; }
+
+        public decimal? DevoNormalAliqZeroP { get; set; }
+
+        public decimal? DevoNormalIsentoP { get; set; }
+
+        public decimal? DevoNormalOutrasP { get; set; }
+
+        public decimal? DevoSTNormalP { get; set; }
+
+        public decimal? DevoSTMonofasicoP { get; set; }
+
+        public decimal? DevoSTSTP { get; set; }
+
+        public decimal? DevoSTAliqZeroP { get; set; }
+
+        public decimal? DevoSTIsentoP { get; set; }
+
+        public decimal? DevoSTOutrasP { get; set; }
 
     }
 }

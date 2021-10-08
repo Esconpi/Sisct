@@ -3345,10 +3345,11 @@ namespace Escon.SisctNET.Web.Controllers
                             vendasSTMono = Convert.ToDecimal(imp.VendaSTMonofasico), vendasSTST = Convert.ToDecimal(imp.VendaSTST), vendasSTAliqZero = Convert.ToDecimal(imp.VendaSTAliqZero),
                             vendasSTIsento = Convert.ToDecimal(imp.VendaSTIsento), vendasNormalOutras = Convert.ToDecimal(imp.VendaNormalOutras), vendasSTOutras = Convert.ToDecimal(imp.VendaSTOutras);
                            
-                    decimal devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico), devoNormalST = Convert.ToDecimal(imp.DevoNormalST), 
-                            devoNormalAliqZero = Convert.ToDecimal(imp.DevoNormalAliqZero), devoNormalIsento = Convert.ToDecimal(imp.DevoNormalIsento),  devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico),
-                            devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal), devoSTST = Convert.ToDecimal(imp.DevoSTST), devoSTAliqZero = Convert.ToDecimal(imp.DevoSTAliqZero),
-                            devoSTIsento = Convert.ToDecimal(imp.DevoSTIsento), devoNormalOutras = Convert.ToDecimal(imp.DevoNormalOutras), devoSTOutras = Convert.ToDecimal(imp.DevoSTOutras);
+                    decimal devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal) + Convert.ToDecimal(imp.DevoNormalNormalP), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico) + Convert.ToDecimal(imp.DevoNormalMonofasicoP),
+                            devoNormalST = Convert.ToDecimal(imp.DevoNormalST) + Convert.ToDecimal(imp.DevoNormalSTP), devoNormalAliqZero = Convert.ToDecimal(imp.DevoNormalAliqZero) + Convert.ToDecimal(imp.DevoNormalAliqZeroP),
+                            devoNormalIsento = Convert.ToDecimal(imp.DevoNormalIsento) + Convert.ToDecimal(imp.DevoNormalIsentoP),  devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico) + Convert.ToDecimal(imp.DevoSTMonofasicoP),
+                            devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal) + Convert.ToDecimal(imp.DevoSTNormalP), devoSTST = Convert.ToDecimal(imp.DevoSTST) + Convert.ToDecimal(imp.DevoSTSTP), devoSTAliqZero = Convert.ToDecimal(imp.DevoSTAliqZero) + Convert.ToDecimal(imp.DevoSTAliqZeroP),
+                            devoSTIsento = Convert.ToDecimal(imp.DevoSTIsento) + Convert.ToDecimal(imp.DevoSTIsentoP), devoNormalOutras = Convert.ToDecimal(imp.DevoNormalOutras) + Convert.ToDecimal(imp.DevoNormalOutrasP), devoSTOutras = Convert.ToDecimal(imp.DevoSTOutras) + Convert.ToDecimal(imp.DevoSTOutrasP);
 
 
                     //  Base
@@ -3474,7 +3475,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.PisCredito = pisCredito;
 
                         //  Saida
-                        decimal totalVendaLiquida = Convert.ToDecimal(imp.Venda) - Convert.ToDecimal(imp.DevolucaoVenda) - Convert.ToDecimal(imp.VendaTI),
+                        decimal totalVendaLiquida = Convert.ToDecimal(imp.Venda) - Convert.ToDecimal(imp.DevolucaoVenda) - Convert.ToDecimal(imp.DevolucaoVendaP) - Convert.ToDecimal(imp.VendaTI),
                                totalVenda = totalVendaLiquida + Convert.ToDecimal(imp.PrestacaoServico) + Convert.ToDecimal(imp.ReceitaFinanceira) +
                                             Convert.ToDecimal(imp.Capital) + Convert.ToDecimal(imp.ReceitaAluguel) + Convert.ToDecimal(imp.Juros),
                                cofinsSaidaRF = Math.Round(Convert.ToDecimal(imp.ReceitaFinanceira) * Convert.ToDecimal(comp.PercentualCofinsRF) / 100, 2),
@@ -3539,18 +3540,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                             decimal receitaPetroleo = Convert.ToDecimal(imp.Receita1), receitaComercio = Convert.ToDecimal(imp.Receita2), receitaTransporte = Convert.ToDecimal(imp.Receita3),
                                     receitaServico = Convert.ToDecimal(imp.Receita4), receitaMono = Convert.ToDecimal(imp.ReceitaMono),
-                                    devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Entrada), devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Entrada),
-                                    devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Entrada), devolucaoServico = Convert.ToDecimal(imp.Devolucao4Entrada),
-                                    devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada), reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
+                                    devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1), devolucaoComercio = Convert.ToDecimal(imp.Devolucao2),
+                                    devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3), devolucaoServico = Convert.ToDecimal(imp.Devolucao4),
+                                    devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormal), reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
-                            if (!comp.Sped)
-                            {
-                                devolucaoPetroleo = Convert.ToDecimal(imp.Devolucao1Saida);
-                                devolucaoComercio = Convert.ToDecimal(imp.Devolucao2Saida);
-                                devolucaoTransporte = Convert.ToDecimal(imp.Devolucao3Saida);
-                                devolucaoServico = Convert.ToDecimal(imp.Devolucao4Saida);
-                                devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalSaida);
-                            }
+                            devolucaoPetroleo += Convert.ToDecimal(imp.Devolucao1P);
+                            devolucaoComercio += Convert.ToDecimal(imp.Devolucao2P);
+                            devolucaoTransporte += Convert.ToDecimal(imp.Devolucao3P);
+                            devolucaoServico += Convert.ToDecimal(imp.Devolucao4P);
+                            devolucaoNormal += Convert.ToDecimal(imp.DevolucaoNormalP);
 
 
                             decimal baseCalcAntesMono = receitaComercio + receitaServico + receitaPetroleo + receitaTransporte,
@@ -3681,23 +3679,21 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal receita1 = Convert.ToDecimal(imp.Receita1), receita2 = Convert.ToDecimal(imp.Receita2),
                                         receita3 = Convert.ToDecimal(imp.Receita3), receita4 = Convert.ToDecimal(imp.Receita4),
                                         receita = receita1 + receita2 + receita3 + receita4,
-                                        devolucao1 = Convert.ToDecimal(imp.Devolucao1Entrada),
-                                        devolucao2 = Convert.ToDecimal(imp.Devolucao2Entrada),
-                                        devolucao3 = Convert.ToDecimal(imp.Devolucao3Entrada),
-                                        devolucao4 = Convert.ToDecimal(imp.Devolucao4Entrada),
+                                        devolucao1 = Convert.ToDecimal(imp.Devolucao1),
+                                        devolucao2 = Convert.ToDecimal(imp.Devolucao2),
+                                        devolucao3 = Convert.ToDecimal(imp.Devolucao3),
+                                        devolucao4 = Convert.ToDecimal(imp.Devolucao4),
                                         devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4,
-                                        devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalEntrada),
+                                        devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormal),
                                         reducaoIcms = Convert.ToDecimal(imp.ReducaoIcms);
 
-                                if (!comp.Sped)
-                                {
-                                    devolucao1 = Convert.ToDecimal(imp.Devolucao1Saida);
-                                    devolucao2 = Convert.ToDecimal(imp.Devolucao2Saida);
-                                    devolucao3 = Convert.ToDecimal(imp.Devolucao3Saida);
-                                    devolucao4 = Convert.ToDecimal(imp.Devolucao4Saida);
-                                    devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4;
-                                    devolucaoNormal = Convert.ToDecimal(imp.DevolucaoNormalSaida);
-                                }
+                                devolucao1 += Convert.ToDecimal(imp.Devolucao1P);
+                                devolucao2 += Convert.ToDecimal(imp.Devolucao2P);
+                                devolucao3 += Convert.ToDecimal(imp.Devolucao3P);
+                                devolucao4 += Convert.ToDecimal(imp.Devolucao4P);
+                                devolucaoNormal += Convert.ToDecimal(imp.DevolucaoNormalP);
+
+                                devolucoes = devolucao1 + devolucao2 + devolucao3 + devolucao4;
 
                                 // PIS E COFINS
                                 decimal baseCalcPisCofins = receita - Convert.ToDecimal(imp.ReceitaMono) - devolucaoNormal - reducaoIcms,
@@ -3732,10 +3728,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 receitaComercio += Convert.ToDecimal(imp.Receita2);
                                 receitaTransporte += Convert.ToDecimal(imp.Receita3);
                                 receitaServico += Convert.ToDecimal(imp.Receita4);
-                                devolucaoPetroleo += (Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida));
-                                devolucaoComercio += (Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida));
-                                devolucaoTransporte += (Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida));
-                                devolucaoServico += (Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida));
+                                devolucaoPetroleo += (Convert.ToDecimal(imp.Devolucao1) + Convert.ToDecimal(imp.Devolucao1P));
+                                devolucaoComercio += (Convert.ToDecimal(imp.Devolucao2) + Convert.ToDecimal(imp.Devolucao2P));
+                                devolucaoTransporte += (Convert.ToDecimal(imp.Devolucao3) + Convert.ToDecimal(imp.Devolucao3P));
+                                devolucaoServico += (Convert.ToDecimal(imp.Devolucao4) + Convert.ToDecimal(imp.Devolucao4P));
                                 receitas += receita;
                                 receitasMono += Convert.ToDecimal(imp.ReceitaMono);
                                 devolucoesNormal += devolucaoNormal;
@@ -3790,10 +3786,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 imposto.Add(imp.Receita2.ToString());
                                 imposto.Add(imp.Receita3.ToString());
                                 imposto.Add(imp.Receita4.ToString());
-                                imposto.Add((Convert.ToDecimal(imp.Devolucao1Entrada) + Convert.ToDecimal(imp.Devolucao1Saida)).ToString());
-                                imposto.Add((Convert.ToDecimal(imp.Devolucao2Entrada) + Convert.ToDecimal(imp.Devolucao2Saida)).ToString());
-                                imposto.Add((Convert.ToDecimal(imp.Devolucao3Entrada) + Convert.ToDecimal(imp.Devolucao3Saida)).ToString());
-                                imposto.Add((Convert.ToDecimal(imp.Devolucao4Entrada) + Convert.ToDecimal(imp.Devolucao4Saida)).ToString());
+                                imposto.Add((Convert.ToDecimal(imp.Devolucao1) + Convert.ToDecimal(imp.Devolucao1P)).ToString());
+                                imposto.Add((Convert.ToDecimal(imp.Devolucao2) + Convert.ToDecimal(imp.Devolucao2P)).ToString());
+                                imposto.Add((Convert.ToDecimal(imp.Devolucao3) + Convert.ToDecimal(imp.Devolucao3P)).ToString());
+                                imposto.Add((Convert.ToDecimal(imp.Devolucao4) + Convert.ToDecimal(imp.Devolucao4P)).ToString());
                                 imposto.Add(receita.ToString());
                                 imposto.Add(imp.ReceitaMono.ToString());
                                 imposto.Add(devolucaoNormal.ToString());

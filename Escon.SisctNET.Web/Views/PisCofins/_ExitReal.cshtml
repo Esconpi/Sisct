@@ -23,7 +23,7 @@
                 (-) DEVOLUÇÕES DE VENDAS DE MERCADORIAS R$
             </td>
             <td style="text-align:right;border:1px solid;">
-                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DevolucaoVenda))
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Imposto.DevolucaoVenda) + Convert.ToDecimal(ViewBag.Imposto.DevolucaoVendaP))
             </td>
         </tr>
         <tr>
