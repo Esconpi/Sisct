@@ -921,16 +921,12 @@ namespace Escon.SisctNET.Web.Xml
 
                                             }
 
-                                            decimal valor_carga = 0;
-                                            decimal valor_prestado = 0;
                                             decimal total_da_nota = Convert.ToDecimal(nota[4]["vNF"]);
                                             decimal total_dos_produtos = Convert.ToDecimal(nota[4]["vProd"]);
-                                            decimal proporcao = 0;
-                                            decimal frete_nota = 0;
-                                            decimal total_icms_frete = 0;
-                                            decimal frete_icms = 0;
+                                            decimal valor_carga = 0, valor_prestado = 0, proporcao = 0,  frete_nota = 0, total_icms_frete = 0, frete_icms = 0, 
+                                                proporcao_prod = 0, frete_prod = 0, proporcao_icms = 0, frete_icmsprod = 0;
                                             string nCT_temp = "";
-
+                                            nCT = "";
 
                                             foreach (var item in ctes)
                                             {
@@ -952,29 +948,26 @@ namespace Escon.SisctNET.Web.Xml
                                                     {
                                                         if (item[j]["chave"] == nota[0]["chave"])
                                                         {
-                                                            nCT = nCT_temp;
+                                                            nCT += nCT_temp + " | ";
                                                             proporcao = ((100 * total_da_nota) / valor_carga) / 100;
                                                             frete_nota = proporcao * valor_prestado;
                                                             frete_icms = proporcao * total_icms_frete;
+
+                                                            if (frete_nota > 0)
+                                                            {
+                                                                proporcao_prod = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
+                                                                frete_prod += proporcao_prod * frete_nota;
+                                                            }
+
+                                                            if (frete_icms > 0)
+                                                            {
+                                                                proporcao_icms = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
+                                                                frete_icmsprod += proporcao_icms * frete_icms;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-
-
-                                            decimal proporcao_prod = 0, frete_prod = 0, proporcao_icms = 0, frete_icmsprod = 0;
-
-                                            if (frete_nota > 0)
-                                            {
-                                                proporcao_prod = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
-                                                frete_prod = proporcao_prod * frete_nota;
-                                            }
-
-                                            if (frete_icms > 0)
-                                            {
-                                                proporcao_icms = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
-                                                frete_icmsprod = proporcao_icms * frete_icms;
-                                            }
+                                            }                    
 
 
                                             if (prod.ContainsKey("vProd"))

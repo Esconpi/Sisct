@@ -75,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var aliq = _service.FindAll(GetLog(Model.OccorenceLog.Create));
+                var aliq = _service.FindAll(null);
                 foreach (var a in aliq)
                 {
                     if (a.StateOrigemId.Equals(entity.StateOrigemId) && a.StateDestinoId.Equals(entity.StateDestinoId))

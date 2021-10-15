@@ -437,6 +437,9 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("frete_icms"))
                         det.Add("frete_icms", notes[i][j]["frete_icms"]);
 
+                    if (notes[i][j].ContainsKey("CSOSN"))
+                        det.Add("CSOSN", notes[i][j]["CSOSN"]);
+
                     if (notes[i][j].ContainsKey("baseCalc"))
                     {
                         det.Add("baseCalc", notes[i][j]["baseCalc"]);
@@ -472,18 +475,41 @@ namespace Escon.SisctNET.Web.Controllers
                         {
 
                             decimal pICMSFormat = Math.Round(pICMS, 2);
-                            string number = pICMSFormat.ToString();
+                            string pICMSValid = pICMSFormat.ToString();
 
-                            if (!number.Contains("."))
-                                number += ".00";
+                            if (!pICMSValid.Contains("."))
+                                pICMSValid += ".00";
 
-                            if (!number.Equals("4.00"))
+                            var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
+
+                            if (det.ContainsKey("CSOSN"))
                             {
-                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
-                                number = aliquot.Aliquota.ToString();
+                                var CSOSN = det["CSOSN"];
+
+                                if (CSOSN.Substring(0,1).Equals("1") || CSOSN.Substring(0, 1).Equals("2"))
+                                {
+                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", notes[i][3]["UF"]);
+                                    pICMSValid = aliquot.Aliquota.ToString();
+                                    orig = 2;
+                                }
+                                else
+                                {
+                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                                    pICMSValid = aliquot.Aliquota.ToString();
+                                }
+
+                            }
+                            else
+                            {
+                                if (!pICMSValid.Equals("4.00"))
+                                {
+                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                                    pICMSValid = aliquot.Aliquota.ToString();
+                                }
+
                             }
 
-                            var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], number.Replace(".", ","));
+                            var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                             bool incentivo = false;
@@ -514,7 +540,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Ucom = det["uCom"];
                                     prod.Vuncom = vUnCom;
                                     prod.Vicms = vICMS;
-                                    prod.Picms = pICMS;
+                                    prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -534,7 +560,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Freterateado = frete_prod;
                                     prod.NoteId = nota.Id;
                                     prod.Nitem = det["nItem"];
-                                    prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
+                                    prod.Orig = orig;
                                     prod.Incentivo = incentivo;
                                     prod.Status = false;
                                     prod.Pautado = false;
@@ -602,10 +628,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
-                                    if (number != "4.00")
+                                    if (pICMSValid != "4.00")
                                         pICMS = aliq_simples.Aliquota;
 
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), pICMS);
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc);
                                 }
                                 else if (taxedtype.Type == "Isento")
@@ -629,7 +655,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Ucom = det["uCom"];
                                     prod.Vuncom = vUnCom;
                                     prod.Vicms = vICMS;
-                                    prod.Picms = pICMS;
+                                    prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -656,7 +682,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.IcmsApurado = icmsApu;
                                     prod.NoteId = nota.Id;
                                     prod.Nitem = det["nItem"];
-                                    prod.Orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
+                                    prod.Orig = orig;
                                     prod.Incentivo = incentivo;
                                     prod.Produto = "Normal";
                                     prod.Status = true;
