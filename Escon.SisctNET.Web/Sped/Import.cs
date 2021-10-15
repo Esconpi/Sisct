@@ -3597,7 +3597,8 @@ namespace Escon.SisctNET.Web.Sped
             return products;
         }
 
-        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.NcmConvenio> ncmConvenio)
+        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, 
+            List<Model.NcmConvenio> ncmConvenio, Company comp)
         {
             List<List<string>> spedDevo = new List<List<string>>();
 
@@ -3624,7 +3625,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13]);
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13], comp);
 
                         if (!ncm)
                         {
@@ -3677,7 +3678,7 @@ namespace Escon.SisctNET.Web.Sped
         }
 
         public List<List<List<string>>> NFeInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsTransf,
-                                                    List<string> cfopsDevo, List<Model.NcmConvenio> ncmConvenio)
+                                                    List<string> cfopsDevo, List<Model.NcmConvenio> ncmConvenio, Company comp)
         {
             List<List<List<string>>> spedInterna = new List<List<List<string>>>();
 
@@ -3698,7 +3699,7 @@ namespace Escon.SisctNET.Web.Sped
 
                     if (linha[1].Equals("0200"))
                     {
-                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13]);
+                        bool ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, linha[8], linha[13], comp);
 
                         if (!ncm)
                         {

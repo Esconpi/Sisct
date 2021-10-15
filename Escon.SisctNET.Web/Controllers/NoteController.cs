@@ -256,7 +256,7 @@ namespace Escon.SisctNET.Web.Controllers
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
             var taxationCompany = _taxationService.FindByCompany(id);
-            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
+            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex((long)comp.AnnexId);
             var aliquotas = _aliquotService.FindAll(null);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
@@ -515,7 +515,7 @@ namespace Escon.SisctNET.Web.Controllers
                             bool incentivo = false;
 
                             if (comp.Incentive && (comp.AnnexId.Equals((long)1) || comp.AnnexId.Equals((long)3)))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST);
+                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.ChapterId.Equals((long)4))
                                 incentivo = true;

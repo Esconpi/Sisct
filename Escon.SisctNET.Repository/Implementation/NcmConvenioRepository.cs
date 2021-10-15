@@ -29,7 +29,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm,  string cest, Log log = null)
+        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm,  string cest, Company comp, Log log = null)
         {
             bool ncmIncentivo = false;
             string cestBase = null;
@@ -52,11 +52,22 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (n.Ncm.Equals(substring) && cestTemp == cestBase)
-                {
-                    ncmIncentivo = true;
-                    break;
+                if (comp.AnnexId.Equals((long)3)){
+                    if (n.Ncm.Equals(substring))
+                    {
+                        ncmIncentivo = true;
+                        break;
+                    }
                 }
+                else
+                {
+                    if (n.Ncm.Equals(substring) && cestTemp == cestBase)
+                    {
+                        ncmIncentivo = true;
+                        break;
+                    }
+                }
+               
             }
 
             return ncmIncentivo;

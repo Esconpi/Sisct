@@ -242,8 +242,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vicms),
                                 icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vicms);
 
-                        var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncmConvenio);
-                        var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncmConvenio);
+                        var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncmConvenio, comp);
+                        var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncmConvenio, comp);
 
                         if (imp != null)
                         {
@@ -460,7 +460,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST);
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
                                 }
 
                                 if (exitNotes[i][j].ContainsKey("pICMS") && !exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") &&
@@ -583,7 +583,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     string CEST = exitNotes[i][k].ContainsKey("CEST") ? exitNotes[i][k]["CEST"] : "";
 
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"], CEST);
+                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"], CEST, comp);
                                 }
 
                                 if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)

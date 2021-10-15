@@ -1401,7 +1401,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST);
+                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
@@ -1527,7 +1527,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST);
+                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
@@ -1627,7 +1627,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = entryNotes[i][j].ContainsKey("CEST") ? entryNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, entryNotes[i][j]["NCM"], CEST);
+                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, entryNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))

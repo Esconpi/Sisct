@@ -24018,7 +24018,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
                             }
                                
 
@@ -24165,7 +24165,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);                                
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);                                
 
                                 if (ncm)
                                 {
@@ -24443,7 +24443,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
                             }
                                 
 
@@ -24559,7 +24559,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
                             }
  
                             if (!ncm)
@@ -24705,7 +24705,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
 
                                 if (ncm == false)
                                 {
@@ -24853,7 +24853,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
                             }
 
                             if (ncm)
@@ -25267,7 +25267,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST);
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
 
                                 ncmTemp = notes[i][j]["NCM"];
                             }
