@@ -256,7 +256,7 @@ namespace Escon.SisctNET.Web.Controllers
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
             var taxationCompany = _taxationService.FindByCompany(id);
-            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex((long)comp.AnnexId);
+            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
             var aliquotas = _aliquotService.FindAll(null);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
