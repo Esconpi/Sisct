@@ -402,6 +402,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.CstSaidaId = entity.CstSaidaId;
                         }
 
+                        n.TypeNcmId = entity.TypeNcmId;
                         n.Status = true;
                         n.NatReceita = entity.NatReceita;
                         n.Pis = entity.Pis;
@@ -549,6 +550,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.CstSaidaId = entity.CstSaidaId;
                         }
 
+                        n.TypeNcmId = entity.TypeNcmId;
                         n.Status = true;
                         n.NatReceita = entity.NatReceita;
                         n.Pis = entity.Pis;
