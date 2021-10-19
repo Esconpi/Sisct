@@ -108,10 +108,10 @@ namespace Escon.SisctNET.Web.Sped
             return totalDeCredito;
         }
 
-        public List<decimal> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<Model.TaxationNcm> taxationNcms, 
+        public List<decimal> NFeLPresumido(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, List<string> cfopsBoniCompra, List<Model.TaxationNcm> taxationNcms, 
                                            Model.Company company)
         {
-            List<decimal> devolucoes = new List<decimal>();
+            List<decimal> lucroPresumido = new List<decimal>();
 
             var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)1)).Select(_ => _.CodeProduct).ToList();
             var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)2)).Select(_ => _.CodeProduct).ToList();
@@ -125,7 +125,7 @@ namespace Escon.SisctNET.Web.Sped
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
 
-            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
+            decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0, bonificacao = 0;
 
             StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
@@ -235,6 +235,11 @@ namespace Escon.SisctNET.Web.Sped
                                         devolucaoNormal += Convert.ToDecimal(note[7]);
                                     }
                                 }
+
+                                if (cfopsBoniCompra.Contains(note[11]) && !note[7].Equals("")){
+                                    // Bonificação
+                                    bonificacao += Convert.ToDecimal(note[7]);
+                                }
                             }
                         
                         }
@@ -253,13 +258,14 @@ namespace Escon.SisctNET.Web.Sped
                 archiveSped.Close();
             }
 
-            devolucoes.Add(devolucaoPetroleo);
-            devolucoes.Add(devolucaoComercio);
-            devolucoes.Add(devolucaoTransporte);
-            devolucoes.Add(devolucaoServico);
-            devolucoes.Add(devolucaoNormal);
+            lucroPresumido.Add(devolucaoPetroleo);
+            lucroPresumido.Add(devolucaoComercio);
+            lucroPresumido.Add(devolucaoTransporte);
+            lucroPresumido.Add(devolucaoServico);
+            lucroPresumido.Add(devolucaoNormal);
+            lucroPresumido.Add(bonificacao);
 
-            return devolucoes;
+            return lucroPresumido;
         }
 
         public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
@@ -322,7 +328,7 @@ namespace Escon.SisctNET.Web.Sped
             return entradas;
         }
         
-        public List<decimal> NFeEntry(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
+        public List<decimal> NFeLReal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsCompraST,
                                       List<string> cfopsTransf, List<string> cfopsTransfST, List<string> cfopsDevo, List<string> cfopsDevoST,
                                       List<Model.TaxationNcm> taxationNcms, Model.Company company)
         {

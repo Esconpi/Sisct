@@ -3153,7 +3153,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal compraLR = 0, devolucaoLR = 0;
 
                         // Empresa Lucro Presumido
-                        decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0;
+                        decimal devolucaoComercio = 0, devolucaoServico = 0, devolucaoPetroleo = 0, devolucaoTransporte = 0, devolucaoNormal = 0, bonificacao = 0;
 
                         //  Empresa do Simples
                         decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, devoNormalOutras = 0,
@@ -3164,7 +3164,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (comp.CountingTypeId.Equals((long)1))
                             {
                                 // Empresa Lucro Real
-                                var entradas = importSped.NFeEntry(cc, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST, cfopsDevoVenda, cfopsDevoVendaST, ncmsCompany, comp);
+                                var entradas = importSped.NFeLReal(cc, cfopsCompra, cfopsBoniCompra, cfopsCompraST, cfopsTransf, cfopsTransfST, cfopsDevoVenda, cfopsDevoVendaST, ncmsCompany, comp);
                                 compraLR += entradas[0];
                                 devolucaoLR += entradas[1];
 
@@ -3172,12 +3172,13 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (comp.CountingTypeId.Equals((long)2))
                             {
                                 // Empresa Lucro Presumido
-                                var devolucoes = importSped.NFeDevolution(cc, cfopsDevoCompra, cfopsDevoVendaST, ncmsCompany, comp);
-                                devolucaoPetroleo += devolucoes[0];
-                                devolucaoComercio += devolucoes[1];
-                                devolucaoTransporte += devolucoes[2];
-                                devolucaoServico += devolucoes[3];
-                                devolucaoNormal += devolucoes[4];
+                                var lucroPresumido = importSped.NFeLPresumido(cc, cfopsDevoCompra, cfopsDevoVendaST, cfopsBoniCompra, ncmsCompany, comp);
+                                devolucaoPetroleo += lucroPresumido[0];
+                                devolucaoComercio += lucroPresumido[1];
+                                devolucaoTransporte += lucroPresumido[2];
+                                devolucaoServico += lucroPresumido[3];
+                                devolucaoNormal += lucroPresumido[4];
+                                bonificacao += lucroPresumido[5];
 
                             }
                             else if (comp.CountingTypeId.Equals((long)3))
@@ -3202,7 +3203,6 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-
                         if (imp != null)
                         {
                             imp.PisCofins = true;
@@ -3217,6 +3217,7 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.Devolucao3 = devolucaoTransporte;
                             imp.Devolucao4 = devolucaoServico;
                             imp.DevolucaoNormal = devolucaoNormal;
+                            imp.Bonificacao = bonificacao;
 
                             //  Empresa do Simples
                             imp.DevoNormalNormal = devoNormalNormal;
@@ -3246,6 +3247,7 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.Devolucao3 = devolucaoTransporte;
                             tax.Devolucao4 = devolucaoServico;
                             tax.DevolucaoNormal = devolucaoNormal;
+                            tax.Bonificacao = bonificacao;
 
                             //  Empresa do Simples
                             tax.DevoNormalNormal = devoNormalNormal;
