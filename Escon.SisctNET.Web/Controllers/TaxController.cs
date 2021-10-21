@@ -474,6 +474,66 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Service()
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+                var tax = _service.FindByMonth(SessionManager.GetCompanyIdInSession(), SessionManager.GetMonthInSession(), SessionManager.GetYearInSession());
+                ViewBag.Tax = tax;
+                return View(comp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Service(Model.Tax entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                long companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+                var imp = _service.FindByMonth(companyid, month, year);
+
+                if (imp == null)
+                {
+                    entity.CompanyId = companyid;
+                    entity.MesRef = month;
+                    entity.AnoRef = year;
+                    entity.Created = DateTime.Now;
+                    entity.Updated = entity.Created;
+
+                    _service.Create(entity, GetLog(OccorenceLog.Create));
+                }
+                else
+                {
+                    imp.Receita4 = entity.Receita4;
+                    imp.Devolucao4 = entity.Devolucao4;
+                    imp.Updated = DateTime.Now;
+
+                    _service.Update(imp, GetLog(OccorenceLog.Update));
+                }
+
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
@@ -3172,7 +3232,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (comp.CountingTypeId.Equals((long)2))
                             {
                                 // Empresa Lucro Presumido
-                                var lucroPresumido = importSped.NFeLPresumido(cc, cfopsDevoCompra, cfopsDevoVendaST, cfopsBoniCompra, ncmsCompany, comp);
+                                var lucroPresumido = importSped.NFeLPresumido(cc, cfopsDevoVenda, cfopsDevoVendaST, cfopsBoniCompra, ncmsCompany, comp);
                                 devolucaoPetroleo += lucroPresumido[0];
                                 devolucaoComercio += lucroPresumido[1];
                                 devolucaoTransporte += lucroPresumido[2];
@@ -4323,6 +4383,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
+                                
                                 // Devoluções de Vendas
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
                                 {
