@@ -533,7 +533,6 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
-
         public IActionResult Import()
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)

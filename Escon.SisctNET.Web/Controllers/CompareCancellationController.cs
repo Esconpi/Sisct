@@ -106,24 +106,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                string directoryValida = "", directoryNFeCancelada = "", directoryNFCeCancelada = "";
+                string directoryValida = "", directoryNFeCancelada = "", directoryNFCeCancelada = "";    
 
                 if (ordem.Equals(Model.OrdemCancellation.VerificarSefaz))
                 {
                     directoryValida = importDir.SaidaSefaz(company, confDBSisctNfe.Value, year, month);
                     directoryNFeCancelada = importDir.NFeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
                     directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
-                    
                 }
                 else if (ordem.Equals(Model.OrdemCancellation.VerificarEmpresa))
                 {
                     directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
+                    directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
+                    directoryNFCeCancelada = importDir.NFCeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
                 }
                 else if(ordem.Equals(Model.OrdemCancellation.NotasSefaz))
                 {
-                    directoryNFeCancelada = importDir.NFeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
-                    directoryNFCeCancelada = importDir.NFCeCanceladaSefaz(company, confDBSisctNfe.Value, year, month);
-
                     if (period.Equals("periodo"))
                     {
                         var meses = importMonth.Months(inicio, fim);
@@ -139,9 +137,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if(ordem.Equals(Model.OrdemCancellation.NotasEmpresa))
                 {
-                    directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
-                    directoryNFCeCancelada = importDir.NFCeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
-
+                    
                     if (period.Equals("periodo"))
                     {
                         var meses = importMonth.Months(inicio, fim);

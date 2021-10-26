@@ -16,7 +16,7 @@
                 {
                     <a asp-action="Receita" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Outras Receitas
+                        Outra Receita
                     </a>
                 }
 
@@ -25,7 +25,7 @@
                 {
                     <a asp-action="Reduction" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Reduções
+                        Redução
                     </a>
                 }
 
@@ -33,7 +33,7 @@
                 {
                     <a asp-action="Despesa" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Outras Despesas
+                        Outra Despesa
                     </a>
                 }
 
@@ -41,7 +41,7 @@
                 {
                     <a asp-action="Retention" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Retenções
+                        Retenção
                     </a>
                 }
 
@@ -59,7 +59,7 @@
                 {
                     <a asp-action="Loss" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Perdas
+                        Perda
                     </a>
                 }
 
@@ -68,7 +68,15 @@
                 {
                     <a asp-action="Pag" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
-                        Pagamentos
+                        Pagamento
+                    </a>
+                }
+
+                @if (ViewBag.Company.CountingTypeId == 2)
+                {
+                    <a asp-action="Service" size="large" class="btn btn-primary">
+                        <i class="fa fa-plus"></i>
+                        Serviço
                     </a>
                 }
 

@@ -3655,7 +3655,6 @@ namespace Escon.SisctNET.Web.Controllers
                             var mesesTrimestre = importTrimestre.Months(trimestre);
 
                             List<List<string>> impostosTrimestre = new List<List<string>>();
-                            List<List<string>> impostosBimestre = new List<List<string>>();
 
                             decimal irpj1Total = 0, irpj2Total = 0, irpj3Total = 0, irpj4Total = 0, irpjFonteServico = 0, irpjFonteAF = 0, irpjPagoTotal = 0,
                               csll1Total = 0, csll2Total = 0, csll3Total = 0, csll4Total = 0, csllFonte = 0, csllPagoTotal = 0,
@@ -3781,16 +3780,16 @@ namespace Escon.SisctNET.Web.Controllers
                                 List<string> imposto = new List<string>();
 
                                 imposto.Add(imp.MesRef);
-                                imposto.Add(imp.Receita1.ToString());
-                                imposto.Add(imp.Receita2.ToString());
-                                imposto.Add(imp.Receita3.ToString());
-                                imposto.Add(imp.Receita4.ToString());
+                                imposto.Add(Convert.ToDecimal(imp.Receita1).ToString());
+                                imposto.Add(Convert.ToDecimal(imp.Receita2).ToString());
+                                imposto.Add(Convert.ToDecimal(imp.Receita3).ToString());
+                                imposto.Add(Convert.ToDecimal(imp.Receita4).ToString());
                                 imposto.Add((Convert.ToDecimal(imp.Devolucao1) + Convert.ToDecimal(imp.Devolucao1P)).ToString());
                                 imposto.Add((Convert.ToDecimal(imp.Devolucao2) + Convert.ToDecimal(imp.Devolucao2P)).ToString());
                                 imposto.Add((Convert.ToDecimal(imp.Devolucao3) + Convert.ToDecimal(imp.Devolucao3P)).ToString());
                                 imposto.Add((Convert.ToDecimal(imp.Devolucao4) + Convert.ToDecimal(imp.Devolucao4P)).ToString());
                                 imposto.Add(receita.ToString());
-                                imposto.Add(imp.ReceitaMono.ToString());
+                                imposto.Add(Convert.ToDecimal(imp.ReceitaMono).ToString());
                                 imposto.Add(devolucaoNormal.ToString());
                                 imposto.Add(reducaoIcms.ToString());
                                 imposto.Add(baseCalcPisCofins.ToString());

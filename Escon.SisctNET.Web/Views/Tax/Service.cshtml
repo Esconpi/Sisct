@@ -12,7 +12,7 @@
     </div>
     <div class="box-body">
         <div class="col-lg-12">
-            <form asp-controller="Tax" asp-action="Loss" method="post">
+            <form asp-controller="Tax" asp-action="Service" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @if (ViewBag.Tax == null)
                 {
@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="form-group col-lg-6 col-md-6 col-xs-6">
                             <label class="control-label">Receita</label>
-                            <input class="form-control money" name="Perda" value="@ViewBag.Tax.Receita4">
+                            <input class="form-control money" name="Receita4" value="@ViewBag.Tax.Receita4">
                         </div>
                         <div class="form-group col-lg-6 col-md-6 col-xs-6">
                             <label class="control-label">Devolução</label>
