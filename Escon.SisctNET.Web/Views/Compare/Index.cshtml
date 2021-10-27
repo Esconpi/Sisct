@@ -59,7 +59,7 @@
                 if (SessionManager.GetTipoInSession() == 0 && (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa"))
                 {
                     <div class="box-footer no-print">
-                        <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnMove" onclick="mover()">
+                        <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnMove">
                             <div id="loaderMove" class="loader pull-left" style="display:none;"></div>
                             MOVER NOTAS PARA O PRÓXIMO MÊS
                         </button>
@@ -102,8 +102,8 @@
 </div>
 
 <script type="text/javascript">
-    //  Envio de cotação pelo cliente
-    function mover() {
+    //  Mover notas de um mês para outro
+    function Move() {
         var isMove = confirm('As notas serão movida para o próximo mês. Deseja continuar:');
 
         if (!isMove) return;
@@ -140,4 +140,11 @@
             console.log(e);
         }
     }
+
+    $(document).ready(function () {
+        $('#btnMove').on('click', function () {
+            Move();
+        });
+    });
+
 </script>

@@ -902,8 +902,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             try
             {
-                var notes = SessionManager.GetKeysInSession();
-
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
                 var importMonth = new Period.Month();
@@ -912,12 +910,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var directory = importDir.Entrada(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, SessionManager.GetYearInSession(), SessionManager.GetMonthInSession());
 
-                var notasMove = importXml.NFeMove(directory, notes);
+                var notasMove = importXml.NFeMove(directory, SessionManager.GetKeysInSession());
 
                 var numberMonth = importMonth.NumberMonth(SessionManager.GetMonthInSession());
 
                 var month = importMonth.NameMonthNext(numberMonth);
-
                 var year = SessionManager.GetYearInSession();
 
                 if (numberMonth == 12)
