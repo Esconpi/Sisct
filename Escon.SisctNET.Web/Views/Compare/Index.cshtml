@@ -34,7 +34,6 @@
                 @if (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa")
                 {
                     @await Html.PartialAsync("_XmlSped", new ViewDataDictionary(ViewData))
-
                 }
                 else if (ViewBag.Ordem == "SpedXS" || ViewBag.Ordem == "SpedXE")
                 {
@@ -55,6 +54,27 @@
                 else if (ViewBag.Ordem == "SefazXFsist" || ViewBag.Ordem == "EmpresaXFsist")
                 {
                     @await Html.PartialAsync("_XmlFsist", new ViewDataDictionary(ViewData))
+                }
+
+                if (SessionManager.GetTipoInSession() == 0 && (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa"))
+                {
+                    <div class="box-footer no-print">
+                        <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnMove" onclick="mover()">
+                            <div id="loaderMove" class="loader pull-left" style="display:none;"></div>
+                            MOVER NOTAS PARA O PRÓXIMO MÊS
+                        </button>
+                    </div>                       
+
+                    <br />
+                    <br />
+
+                    <div class="row no-print">
+                        <div class="col-md-12">
+                            <div id="responseMove" style="padding:15px;">
+
+                            </div>
+                        </div>
+                    </div>
                 }
             }
             else if (ViewBag.Opcao == "CTe")
@@ -78,5 +98,46 @@
             }
         </div>
     </div>
-    <div class="box-footer"></div>
+    
 </div>
+
+<script type="text/javascript">
+    //  Envio de cotação pelo cliente
+    function mover() {
+        var isMove = confirm('As notas serão movida para o próximo mês. Deseja continuar:');
+
+        if (!isMove) return;
+
+        try {
+            $.ajax({
+                url: '/Compare/Move',
+                beforeSend: function () {
+                    $('#btnMove').attr('disabled', 'disable');
+                    $('#loaderMove').css('display', 'block');
+                },
+                complete: function () {
+                    $('#btnMove').removeAttr('disabled');
+                    $('#loaderMove').css('display', 'none');
+                },
+                success: function (data, textStatus, jQxhr) {
+                    if (data.code === 200)
+                    {
+                        $('#responseMove').append("<div class='row'><div class='col-md-12'><div class='box box-success' style='padding:10px;'>" + data.message +"</div></div></div>");
+                    }
+                    else
+                    {
+                        $('#responseMove').append("<div class='row'><div class='col-md-12'><div class='box box-danger' style='padding:10px;'> " + data.message +"</div></div></div>");
+
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    $('#responseMove').css('color', 'red');
+                    $('#responseMove').text(jqXhr.responseText);
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+</script>

@@ -162,6 +162,15 @@ namespace Escon.SisctNET.Web
             return _httpContextAccessor.HttpContext.Session.Get<List<Model.AccountPlanType>>("AccountPlanTypeSisctNET");
         }
 
+        public static void SetKeysInSession(List<string> keys)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<List<string>>("KeysSisctNET", keys);
+        }
+
+        public static List<string> GetKeysInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<List<string>>("KeysSisctNET");
+        }
     }
 
 }

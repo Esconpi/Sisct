@@ -1914,6 +1914,61 @@ namespace Escon.SisctNET.Web.Xml
             return notes;
         }
 
+        public List<string> NFeMove(string directoryNfe, List<string> notas)
+        {
+            List<string> notes = new List<string>();
+
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+                string[] archivesNfes = Directory.GetFiles(directoryNfe);
+
+                for (int i = 0; i < archivesNfes.Count(); i++)
+                {
+                    var arquivo = archivesNfes[i];
+
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    {
+                        StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                        using (XmlReader reader = XmlReader.Create(sr))
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsStartElement())
+                                {
+                                    switch (reader.Name)
+                                    {
+                                        case "infNFe":
+                                            while (reader.MoveToNextAttribute())
+                                            {
+                                                if (reader.Name == "Id")
+                                                {
+                                                    string chave = reader.Value.Substring(3, 44);
+                                                    if (notas.Contains(chave))
+                                                    {
+                                                        notes.Add(arquivo);
+
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                            reader.Close();
+                            sr.Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+
+            return notes;
+        }
 
         // CTe
 

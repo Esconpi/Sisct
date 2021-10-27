@@ -36,6 +36,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var company = _companyService.FindById(id, null);
 
+                SessionManager.SetCompanyInSession(company);
+                SessionManager.SetYearInSession(year);
+                SessionManager.SetMonthInSession(month);
+
                 var importPeriod = new Period.Month();
 
                 ViewBag.Opcao = opcao.ToString();
@@ -152,6 +156,8 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> notasInvalidas = new List<List<string>>();
                     List<List<string>> notas_sped = new List<List<string>>();
 
+                    List<string> keys = new List<string>();
+
                     List<List<List<string>>> notasCanceladas = new List<List<List<string>>>();
                     List<List<List<string>>> eventos = new List<List<List<string>>>();
 
@@ -196,7 +202,10 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             if (nota_encontrada.Equals(false))
+                            {
                                 notasValidas.Add(note);
+                                keys.Add(nota_xml);
+                            }
                         }
 
                         //  NFe
@@ -695,6 +704,8 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.QtdValida = qtdValida;
                     ViewBag.QtdInvalida = qtdInvalida;
 
+                    SessionManager.SetKeysInSession(keys);
+
                 }
                 else if (opcao.Equals(Model.Opcao.CTe))
                 {
@@ -885,6 +896,54 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
             
+        }
+
+        public IActionResult Move()
+        {
+            try
+            {
+                var notes = SessionManager.GetKeysInSession();
+
+                var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
+                var importMonth = new Period.Month();
+
+                var confDBSisctNfe = _configurationService.FindByName("NFe");
+
+                var directory = importDir.Entrada(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, SessionManager.GetYearInSession(), SessionManager.GetMonthInSession());
+
+                var notasMove = importXml.NFeMove(directory, notes);
+
+                var numberMonth = importMonth.NumberMonth(SessionManager.GetMonthInSession());
+
+                var month = importMonth.NameMonthNext(numberMonth);
+
+                var year = SessionManager.GetYearInSession();
+
+                if (numberMonth == 12)
+                    year = (Convert.ToInt32(year) + 1).ToString();
+
+                var newDirectory = importDir.Entrada(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, year, month);
+
+                foreach (var nota in notasMove)
+                {
+                    var temp = nota.Split("\\");
+                    var dirtemp = newDirectory + "\\" + temp[temp.Count() - 1];
+
+                    if (System.IO.File.Exists(dirtemp))
+                        System.IO.File.Delete(dirtemp);
+
+                    if (System.IO.File.Exists(nota))
+                        System.IO.File.Move(nota, dirtemp);
+                }
+
+                return Ok(new { code = 200, message = "As notas foram movida com sucesso!" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
     }
 }
