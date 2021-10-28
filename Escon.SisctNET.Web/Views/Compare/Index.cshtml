@@ -111,14 +111,6 @@
         try {
             $.ajax({
                 url: '/Compare/Move',
-                beforeSend: function () {
-                    $('#btnMove').attr('disabled', 'disable');
-                    $('#loaderMove').css('display', 'block');
-                },
-                complete: function () {
-                    $('#btnMove').removeAttr('disabled');
-                    $('#loaderMove').css('display', 'none');
-                },
                 success: function (data, textStatus, jQxhr) {
                     if (data.code === 200)
                     {

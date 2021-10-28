@@ -85,4 +85,7 @@
     </h6>
 </div>
 
-@await Html.PartialAsync("_NotaInvalida", new ViewDataDictionary(ViewData))
+@if (SessionManager.GetTipoInSession() == 1)
+{
+    @await Html.PartialAsync("_NotaInvalida", new ViewDataDictionary(ViewData))
+}

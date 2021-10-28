@@ -922,6 +922,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var newDirectory = importDir.Entrada(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, year, month);
 
+                if (!Directory.Exists(newDirectory))
+                    Directory.CreateDirectory(newDirectory);
+
                 foreach (var nota in notasMove)
                 {
                     var temp = nota.Split("\\");
