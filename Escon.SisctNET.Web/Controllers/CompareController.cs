@@ -937,7 +937,7 @@ namespace Escon.SisctNET.Web.Controllers
                         System.IO.File.Move(nota, dirtemp);
                 }
 
-                return Ok(new { code = 200, message = "As notas foram movida com sucesso!" });
+                return Ok(new { code = 200, message = "As notas foram movida para " + month + " de " + year + " com sucesso!" });
 
             }
             catch (Exception ex)
