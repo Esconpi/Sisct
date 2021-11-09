@@ -1093,7 +1093,8 @@ namespace Escon.SisctNET.Web.Xml
                                             baseCal.Add("baseCalc", base_calc.ToString());
                                             nota.Add(baseCal);
                                             Dictionary<string, string> NCte = new Dictionary<string, string>();
-                                            NCte.Add("nCT", nCT);
+                                            char[] charsToTrim = { ' ', '|' };
+                                            NCte.Add("nCT", nCT.Trim(charsToTrim));
                                             nota.Add(NCte);
                                             break;
                                     }

@@ -2115,7 +2115,7 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFecop1IE = totalfecop1IE;
                         ViewBag.TotalFecop1SIE = totalfecop1SIE;
                         ViewBag.TotalFecop2IE = totalfecop2IE;
-                        ViewBag.TotalFecop2SIE = totalfecop2IE;
+                        ViewBag.TotalFecop2SIE = totalfecop2SIE;
                         ViewBag.TotalFinalFecopCalculadaIE = Math.Round(totalfecop1IE + totalfecop2IE, 2);
                         ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
 
