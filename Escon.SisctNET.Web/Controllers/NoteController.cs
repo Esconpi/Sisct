@@ -482,31 +482,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                             var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
 
-                            if (det.ContainsKey("CSOSN"))
+                            if (orig == 1 || orig == 2)
                             {
-                                var CSOSN = det["CSOSN"];
-
-                                if (CSOSN.Substring(0,1).Equals("1") || CSOSN.Substring(0, 1).Equals("2"))
-                                {
-                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", notes[i][3]["UF"]);
-                                    pICMSValid = aliquot.Aliquota.ToString();
-                                    orig = 2;
-                                }
-                                else
-                                {
-                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
-                                    pICMSValid = aliquot.Aliquota.ToString();
-                                }
-
+                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", notes[i][3]["UF"]);
+                                pICMSValid = aliquot.Aliquota.ToString();
                             }
                             else
                             {
-                                if (!pICMSValid.Equals("4.00"))
-                                {
-                                    var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
-                                    pICMSValid = aliquot.Aliquota.ToString();
-                                }
-
+                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                                pICMSValid = aliquot.Aliquota.ToString();
                             }
 
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
