@@ -86,6 +86,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
+                var confDateNfe = _configurationService.FindByName("Data Inicio", null);
 
                 var importDir = new Diretorio.Import();
 
@@ -202,6 +203,7 @@ namespace Escon.SisctNET.Web.Controllers
                         tributacao.Arquivo = arqui;
                         tributacao.Status = status;
                         tributacao.DateStart = dateStart;
+                        tributacao.DateStart = Convert.ToDateTime(confDateNfe.Value);
                         tributacao.Created = DateTime.Now;
                         tributacao.Updated = DateTime.Now;
 

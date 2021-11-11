@@ -78,6 +78,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, null);
                 var confDBSisctNfe = _configurationService.FindByName("NFe Saida", null);
+                var confDateNfe = _configurationService.FindByName("Data Inicio", null);
 
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
@@ -140,6 +141,7 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Month = month;
                         product.Year = year;
                         product.Arquivo = arqui;
+                        product.DateStart = Convert.ToDateTime(confDateNfe.Value);
                         product.Created = DateTime.Now;
                         product.Updated = DateTime.Now;
 
