@@ -1964,11 +1964,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             prodsTemp = _productIncentivoService.FindByDate(prodsAll, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
 
-                                            codeProdIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Code).ToList();
+                                            codeProdIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST") || _.TypeTaxation.Equals("Normal")).Select(_ => _.Code).ToList();
                                             codeProdST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
                                             codeProdIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Code).ToList();
 
-                                            cestIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST")).Select(_ => _.Cest).ToList();
+                                            cestIncentivado = prodsTemp.Where(_ => _.TypeTaxation.Equals("Incentivado/Normal") || _.TypeTaxation.Equals("Incentivado/ST") || _.TypeTaxation.Equals("Normal")).Select(_ => _.Cest).ToList();
                                             cestST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
                                             cestIsento = prodsTemp.Where(_ => _.TypeTaxation.Equals("Isento")).Select(_ => _.Cest).ToList();
                                         }
@@ -2230,7 +2230,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                             {
                                                                 vendaCfopSTNaoContriForaDoEstadoNIncentivo += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
                                                                 icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(exitNotes[i][k]["vProd"])).ToString();
-
                                                             }
                                                         }
                                                         else
