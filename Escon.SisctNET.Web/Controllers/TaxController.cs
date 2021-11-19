@@ -798,7 +798,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-
                             // Notas Suspensãp
                             for (int i = exitNotes.Count - 1; i >= 0; i--)
                             {
@@ -3707,7 +3706,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                                 // Devoluções de Vendas
-                                for (int i = exitNotes.Count - 1; i >= 0; i--)
+                                /*for (int i = exitNotes.Count - 1; i >= 0; i--)
                                 {
                                     if (exitNotes[i][1]["finNFe"] != "4" || exitNotes[i][1]["tpNF"].Equals("1"))
                                     {
@@ -3904,7 +3903,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
                                 }
-
+                                */
                                 if (!comp.Sped)
                                 {
                                     // Devoluções de Vendas
