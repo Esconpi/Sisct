@@ -163,27 +163,32 @@ namespace Escon.SisctNET.Web.Sped
                                 {
                                     Model.TaxationNcm ehMono = null;
 
+                                    decimal desconto = 0;
+
+                                    if (!note[8].Equals(""))
+                                        desconto = Convert.ToDecimal(note[8]);
+
                                     if (company.Taxation == "Produto")
                                     {
                                         if (codeProd1.Contains(linha[3]) && ncm1.Contains(linha[8]))
                                         {
                                             // Devolução Pretoleo
-                                            devolucaoPetroleo += Convert.ToDecimal(note[7]);
+                                            devolucaoPetroleo += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (codeProd2.Contains(linha[3]) && ncm2.Contains(linha[8]))
                                         {
                                             // Devolução Comercio
-                                            devolucaoComercio += Convert.ToDecimal(note[7]);
+                                            devolucaoComercio += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (codeProd3.Contains(linha[3]) && ncm3.Contains(linha[8]))
                                         {
                                             // Devolução Transporte
-                                            devolucaoTransporte += Convert.ToDecimal(note[7]);
+                                            devolucaoTransporte += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (codeProd4.Contains(linha[3]) && ncm4.Contains(linha[8]))
                                         {
                                             // Devolução Serviço
-                                            devolucaoServico += Convert.ToDecimal(note[7]);
+                                            devolucaoServico += (Convert.ToDecimal(note[7]) - desconto);
                                         }
 
                                         var prod = linha[2];
@@ -207,22 +212,22 @@ namespace Escon.SisctNET.Web.Sped
                                         if (ncm1.Contains(linha[8]))
                                         {
                                             // Devolução Pretoleo
-                                            devolucaoPetroleo += Convert.ToDecimal(note[7]);
+                                            devolucaoPetroleo += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (ncm2.Contains(linha[8]))
                                         {
                                             // Devolução Comercio
-                                            devolucaoComercio += Convert.ToDecimal(note[7]);
+                                            devolucaoComercio += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (ncm3.Contains(linha[8]))
                                         {
                                             // Devolução Transporte
-                                            devolucaoTransporte += Convert.ToDecimal(note[7]);
+                                            devolucaoTransporte += (Convert.ToDecimal(note[7]) - desconto);
                                         }
                                         else if (ncm4.Contains(linha[8]))
                                         {
                                             // Devolução Serviço
-                                            devolucaoServico += Convert.ToDecimal(note[7]);
+                                            devolucaoServico += (Convert.ToDecimal(note[7]) - desconto);
                                         }
 
                                         ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || 
@@ -232,7 +237,7 @@ namespace Escon.SisctNET.Web.Sped
                                     if (ehMono == null)
                                     {
                                         // Devolução Normal
-                                        devolucaoNormal += Convert.ToDecimal(note[7]);
+                                        devolucaoNormal += (Convert.ToDecimal(note[7]) - desconto);
                                     }
                                 }
 
