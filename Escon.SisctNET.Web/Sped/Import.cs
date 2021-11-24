@@ -387,8 +387,10 @@ namespace Escon.SisctNET.Web.Sped
 
                                         string code = prod.Substring(prod.Length - qtd);
 
-                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
-
+                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) &&
+                                                                                  (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) ||
+                                                                                  _.TaxationTypeNcmId.Equals((long)5)))
+                                                                          .FirstOrDefault();
                                         if (ehMono != null)
                                         {
                                             break;
@@ -399,30 +401,29 @@ namespace Escon.SisctNET.Web.Sped
                                 else
                                 {
                                     // Tributação por NCM
-                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals(1) || _.TaxationTypeNcmId.Equals(6))).FirstOrDefault();
+                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals((long)2) ||
+                                                                                        _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5)))
+                                                                             .FirstOrDefault();
                                 }
 
                                 if ((cfopsCompra.Contains(note[11]) || cfopsBonifi.Contains(note[11]) || cfopsCompraST.Contains(note[11])
                                     || cfopsTransf.Contains(note[11]) || cfopsTransfST.Contains(note[11])) && !note[7].Equals(""))
                                 {
-                                    compra += Convert.ToDecimal(note[7]);
                                     
-                                    /*if (ehMono != null)
+                                    if (ehMono == null)
                                     {
                                         // Compra Normal
                                         compra += Convert.ToDecimal(note[7]);
-                                    }*/
+                                    }
                                 }
 
                                 if ((cfopsDevo.Contains(note[11]) || cfopsDevoST.Contains(note[11])) && !note[7].Equals(""))
                                 {
-                                    devolucao += Convert.ToDecimal(note[7]);
-
-                                    /*if (ehMono != null)
+                                    if (ehMono == null)
                                     {
                                         // Devolução Normal
                                         devolucao += Convert.ToDecimal(note[7]);
-                                    }*/
+                                    }
 
                                 }
                             }

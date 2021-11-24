@@ -3398,8 +3398,12 @@ namespace Escon.SisctNET.Web.Controllers
                                         continue;
                                     }
 
-                                    bool cfop = false;
 
+                                    if (exitNotes[i][1].ContainsKey("dhEmi"))
+                                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsCompany, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
+                                    bool cfop = false;
+                                    string NCM = "", cProd = "";
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
@@ -3417,20 +3421,100 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM") && cfop && exitNotes[i][1]["finNFe"] != "4")
                                         {
-                                            if (exitNotes[i][j].ContainsKey("vProd"))
-                                                vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            NCM = exitNotes[i][j]["NCM"];
+                                            cProd = exitNotes[i][j]["cProd"];
 
-                                            if (exitNotes[i][j].ContainsKey("vFrete"))
-                                                vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
-                                            if (exitNotes[i][j].ContainsKey("vDesc"))
-                                                vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                            if (comp.Taxation == "Produto")
+                                            {
+                                                if (codeProdAll.Contains(cProd) && ncmAll.Contains(NCM))
+                                                {
+                                                    var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(cProd) && _.Ncm.Code.Equals(NCM) &&
+                                                                                    (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) ||
+                                                                                    _.TaxationTypeNcmId.Equals((long)5)))
+                                                                            .FirstOrDefault();
 
-                                            if (exitNotes[i][j].ContainsKey("vOutro"))
-                                                vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    }
 
-                                            if (exitNotes[i][j].ContainsKey("vSeg"))
-                                                vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (ncmAll.Contains(NCM))
+                                                {
+                                                    var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(NCM) && (_.TaxationTypeNcmId.Equals((long)2) ||
+                                                                                        _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5)))
+                                                                             .FirstOrDefault();
+
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            vendaLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -3444,7 +3528,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         continue;
                                     }
 
+                                    if (exitNotes[i][1].ContainsKey("dhEmi"))
+                                        ncmsTaxation = _taxationNcmService.FindAllInDate(ncmsCompany, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                     bool cfop = false;
+                                    string NCM = "", cProd = "";
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
@@ -3461,21 +3549,99 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM") && cfop)
                                         {
-                                            if (exitNotes[i][j].ContainsKey("vProd"))
-                                                devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                            NCM = exitNotes[i][j]["NCM"];
+                                            cProd = exitNotes[i][j]["cProd"];
 
-                                            if (exitNotes[i][j].ContainsKey("vFrete"))
-                                                devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                            if (comp.Taxation == "Produto")
+                                            {
+                                                if (codeProdAll.Contains(cProd) && ncmAll.Contains(NCM))
+                                                {
+                                                    var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(cProd) && _.Ncm.Code.Equals(NCM) &&
+                                                                                    (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) ||
+                                                                                    _.TaxationTypeNcmId.Equals((long)5)))
+                                                                            .FirstOrDefault();
 
-                                            if (exitNotes[i][j].ContainsKey("vDesc"))
-                                                devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    }
 
-                                            if (exitNotes[i][j].ContainsKey("vOutro"))
-                                                devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    }
 
-                                            if (exitNotes[i][j].ContainsKey("vSeg"))
-                                                devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    }
 
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (ncmAll.Contains(NCM))
+                                                {
+                                                    var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(NCM) && (_.TaxationTypeNcmId.Equals((long)2) ||
+                                                                                        _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5)))
+                                                                             .FirstOrDefault();
+
+                                                    if (exitNotes[i][j].ContainsKey("vProd"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vFrete"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vDesc"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vOutro"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+                                                    }
+
+                                                    if (exitNotes[i][j].ContainsKey("vSeg"))
+                                                    {
+                                                        if (ehMono == null)
+                                                            devolucaoLR += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    ViewBag.Erro = 4;
+                                                    return View(comp);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -3505,14 +3671,12 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             cfop = false;
 
-                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
-                                                cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
 
                                         }
-
 
                                         if (exitNotes[i][1]["finNFe"] != "4" && cfop)
                                         {
@@ -4904,13 +5068,13 @@ namespace Escon.SisctNET.Web.Controllers
                             imp.Receita1 = receitaPetroleo;
                             imp.Receita2 = receitaComercio;
                             imp.Receita3 = receitaTransporte;
-                            imp.Receita4 = receitaServico;
+                            //imp.Receita4 = receitaServico;
                             imp.ReceitaMono = receitaMono;
 
                             imp.Devolucao1P = devolucaoPetroleo;
                             imp.Devolucao2P = devolucaoComercio;
                             imp.Devolucao3P = devolucaoTransporte;
-                            imp.Devolucao4P = devolucaoServico;
+                            //imp.Devolucao4P = devolucaoServico;
                             imp.DevolucaoNormalP = devolucaoNormal;
 
 
@@ -4955,13 +5119,13 @@ namespace Escon.SisctNET.Web.Controllers
                             tax.Receita1 = receitaPetroleo;
                             tax.Receita2 = receitaComercio;
                             tax.Receita3 = receitaTransporte;
-                            tax.Receita4 = receitaServico;
+                            //tax.Receita4 = receitaServico;
                             tax.ReceitaMono = receitaMono;
 
                             tax.Devolucao1P = devolucaoPetroleo;
                             tax.Devolucao2P = devolucaoComercio;
                             tax.Devolucao3P = devolucaoTransporte;
-                            tax.Devolucao4P = devolucaoServico;
+                           //tax.Devolucao4P = devolucaoServico;
                             tax.DevolucaoNormalP = devolucaoNormal;
 
                             //  Empresa do Simples

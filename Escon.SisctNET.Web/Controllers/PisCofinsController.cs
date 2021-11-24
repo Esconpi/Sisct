@@ -1869,7 +1869,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                         else
                                         {
-                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.NCM = NCM;
                                             ViewBag.Erro = 2;
                                             return View();
                                         }
@@ -1980,7 +1980,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                         else
                                         {
-                                            ViewBag.NCM = notes[i][j]["NCM"];
+                                            ViewBag.NCM = NCM;
                                             ViewBag.Erro = 2;
                                             return View();
                                         }
@@ -2292,7 +2292,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
-                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
                                             }
 
@@ -2590,7 +2590,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
-                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
                                             }
 
@@ -2892,7 +2892,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
-                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
                                             }
 
@@ -3190,7 +3190,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
-                                                ncmTemp.Add("SUBSTITUIÇÂO TRIBUTÁRIA");
+                                                ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
                                             }
 
@@ -3319,7 +3319,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         return View();
                                     }
                                 }
-
                             }
                         }
                     }
