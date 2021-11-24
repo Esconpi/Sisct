@@ -3867,7 +3867,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
                                                 }
                                             }
-
+                                            /*
                                             if (comp.Taxation == "Produto")
                                             {
                                                 var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(cProd) && _.Ncm.Code.Equals(NCM) &&
@@ -3925,7 +3925,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             receitaServico += Convert.ToDecimal(exitNotes[i][j]["vFCP"]);
 
                                                         if (ehMono != null)
-                                                            receitaMono += Convert.ToDecimal(exitNotes[i][j]["vICMSST"]);
+                                                            receitaMono += Convert.ToDecimal(exitNotes[i][j]["vFCP"]);
                                                     }
 
                                                     if (exitNotes[i][j].ContainsKey("pIPI"))
@@ -3949,6 +3949,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     return View(comp);
                                                 }
                                             }
+                                            */
                                         }
                                     }
                                 }
@@ -4154,8 +4155,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                             }
                                         }
-
-
+                                        /*
                                         if (comp.Taxation == "Produto")
                                         {
                                             var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(cProd) && _.Ncm.Code.Equals(NCM) &&
@@ -4227,6 +4227,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     devolucaoNormal += Convert.ToDecimal(exitNotes[i][j]["vIPI"]);
                                             }
                                         }
+                                        */
                                     }
                                 }
 
@@ -4417,7 +4418,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                                
                                             }
-
+                                            /*
                                             if (comp.Taxation == "Produto")
                                             {
                                                 var ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(cProd) && _.Ncm.Code.Equals(NCM) &&
@@ -4490,7 +4491,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         devolucaoNormal += Convert.ToDecimal(entryNotes[i][j]["vIPI"]);
                                                 }
                                             }
-
+                                            */
                                         }
                                     }
                                 }
