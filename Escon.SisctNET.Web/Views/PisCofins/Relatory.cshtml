@@ -119,6 +119,13 @@
 
                         @await Html.PartialAsync("_TaxationNcmDivergente", new ViewDataDictionary(ViewData))
                     }
+
+                    else if (ViewBag.Type == "tributacaoDivergenteNota")
+                    {
+                        <!-- Tributação de NCM Monofásico Divergente/Nota -->
+
+                        @await Html.PartialAsync("_TaxationNcmDivergenteNota", new ViewDataDictionary(ViewData))
+                    }
                     else if (ViewBag.Type == "imposto")
                     {
                         <!--Apuração Imposto Federal-->

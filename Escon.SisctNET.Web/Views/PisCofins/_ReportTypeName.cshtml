@@ -14,7 +14,7 @@
 }
 @if (ViewBag.Type == "resumoCfopMono")
 {
-<strong>Resumo CFOP - NCM MONO, ALIQ ZERO e ST</strong>
+    <strong>Resumo CFOP - NCM MONO, ALIQ ZERO e ST</strong>
 }
 
 @if (ViewBag.Type == "resumoPorCfop")
@@ -50,6 +50,11 @@
 @if (ViewBag.Type == "tributacaoDivergente")
 {
     <strong>Tributação de NCM Divergente</strong>
+}
+
+@if (ViewBag.Type == "tributacaoDivergenteNota")
+{
+    <strong>Tributação de NCM Divergente/Nota</strong>
 }
 
 @if (ViewBag.Type == "resumoProdNcm")
