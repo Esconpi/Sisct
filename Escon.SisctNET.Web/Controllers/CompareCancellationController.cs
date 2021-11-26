@@ -213,6 +213,9 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!Directory.Exists(directoryNFeCancelada))
                         Directory.CreateDirectory(directoryNFeCancelada);
 
+                    if (!Directory.Exists(directoryNFCeCancelada))
+                        Directory.CreateDirectory(directoryNFCeCancelada);
+
                     for (int i = 0; i < notasCanceladas[0].Count(); i++)
                     {
                         var temp = notasCanceladas[0][i][0].Split("\\");
@@ -238,9 +241,6 @@ namespace Escon.SisctNET.Web.Controllers
                             System.IO.File.Move(eventos[0][i][0], dirtemp);
 
                     }
-
-                    if (!Directory.Exists(directoryNFCeCancelada))
-                        Directory.CreateDirectory(directoryNFCeCancelada);
 
                     for (int i = 0; i < notasCanceladas[1].Count(); i++)
                     {
@@ -275,6 +275,10 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!Directory.Exists(directoryNFeCancelada))
                         Directory.CreateDirectory(directoryNFeCancelada);
 
+                    if (!Directory.Exists(directoryNFCeCancelada))
+                        Directory.CreateDirectory(directoryNFCeCancelada);
+
+                    //  NFe
                     for (int i = 0; i < notasCanceladas[0].Count(); i++)
                     {
                         var temp = notasCanceladas[0][i][0].Split("\\");
@@ -299,9 +303,7 @@ namespace Escon.SisctNET.Web.Controllers
                             System.IO.File.Move(eventos[0][i][0], dirtemp);
                     }
 
-                    if (!Directory.Exists(directoryNFCeCancelada))
-                        Directory.CreateDirectory(directoryNFCeCancelada);
-
+                    //  NFCe                  
                     for (int i = 0; i < notasCanceladas[1].Count(); i++)
                     {
                         var temp = notasCanceladas[1][i][0].Split("\\");

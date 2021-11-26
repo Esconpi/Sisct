@@ -5061,7 +5061,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             //  Empresa Lucro Real
                             imp.Venda = vendaLR;
-
                             imp.DevolucaoVendaP = devolucaoLR;
 
 
@@ -5113,7 +5112,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             //  Empresa Lucro Real
                             tax.Venda = vendaLR;
-
                             tax.DevolucaoVendaP = devolucaoLR;
 
                             //  Empresa Lucro Presumido

@@ -29,29 +29,60 @@
         {
             @if (Convert.ToDecimal(note[2]) > 0)
             {
-                <tr style="border:1px solid;">
-                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                        @note[1]
-                    </td>
-                    <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                        @Convert.ToDateTime(note[7]).ToString("dd/MM/yyyy hh:mm:ss")
-                    </td>
-                    <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(note[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                    </td>
-                    <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(note[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                    </td>
-                    <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(note[3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                    </td>
-                    <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(note[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                    </td>
-                    <td style="border:1px solid; text-align:right; padding-right:1%;">
-                        @string.Format("{0:N}", Convert.ToDecimal(note[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                    </td>
-                </tr>
+                @if (Convert.ToDecimal(note[6]) == Convert.ToDecimal(note[2]))
+                {
+                    <tr style="border:1px solid;">
+                        <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                            @note[1]
+                        </td>
+                        <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                            @Convert.ToDateTime(note[7]).ToString("dd/MM/yyyy hh:mm:ss")
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="border-left: 5px solid; border-color: red;">
+                        <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                            @note[1]
+                        </td>
+                        <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                            @Convert.ToDateTime(note[7]).ToString("dd/MM/yyyy hh:mm:ss")
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[6].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[3].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                        <td style="border:1px solid; text-align:right; padding-right:1%;">
+                            @string.Format("{0:N}", Convert.ToDecimal(note[5].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                        </td>
+                    </tr>
+                }
+
+
 
             }
         }

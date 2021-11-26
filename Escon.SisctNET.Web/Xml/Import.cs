@@ -1863,13 +1863,15 @@ namespace Escon.SisctNET.Web.Xml
                                                     {
                                                         foreach (var note in spedNFeCancelada)
                                                         {
-                                                            if (note.Equals(chave))
+                                                            if (note[0].Equals(chave))
                                                             {
                                                                 nn.Add(arquivo);
+                                                                nn.Add(note[1]);
+                                                                notes55.Add(nn);
+
                                                                 nnInfo.Add(note[0]);
                                                                 nnInfo.Add(note[1]);
                                                                 nnInfo.Add(note[2]);
-                                                                notes55.Add(nn);
                                                                 notesInfo.Add(nnInfo);
                                                                 break;
                                                             }
@@ -1880,10 +1882,12 @@ namespace Escon.SisctNET.Web.Xml
                                                             if (note[0].Equals(chave))
                                                             {
                                                                 nn.Add(arquivo);
+                                                                nn.Add(note[1]);
+                                                                notes65.Add(nn);
+
                                                                 nnInfo.Add(note[0]);
                                                                 nnInfo.Add(note[1]);
                                                                 nnInfo.Add(note[2]);
-                                                                notes55.Add(nn);
                                                                 notesInfo.Add(nnInfo);
                                                                 break;
                                                             }
