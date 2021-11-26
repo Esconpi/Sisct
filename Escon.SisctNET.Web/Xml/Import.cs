@@ -1866,7 +1866,6 @@ namespace Escon.SisctNET.Web.Xml
                                                             if (note[0].Equals(chave))
                                                             {
                                                                 nn.Add(arquivo);
-                                                                nn.Add(note[1]);
                                                                 notes55.Add(nn);
 
                                                                 nnInfo.Add(note[0]);
@@ -1882,7 +1881,6 @@ namespace Escon.SisctNET.Web.Xml
                                                             if (note[0].Equals(chave))
                                                             {
                                                                 nn.Add(arquivo);
-                                                                nn.Add(note[1]);
                                                                 notes65.Add(nn);
 
                                                                 nnInfo.Add(note[0]);
