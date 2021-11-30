@@ -444,30 +444,19 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         det.Add("baseCalc", notes[i][j]["baseCalc"]);
 
-                        string nItem = det.ContainsKey("nItem") ? det["nItem"] : "";
-                        string NCM = det.ContainsKey("NCM") ? det["NCM"] : "";
-                        string CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "";
-                        string CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
-                        decimal vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : 0;
-                        decimal vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : 0;
-                        decimal pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : 0;
-                        decimal vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : 0;
-                        decimal vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : 0;
-                        decimal vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : 0;
-                        decimal vFrete = det.ContainsKey("vFrete") ? Convert.ToDecimal(det["vFrete"]) : 0;
-                        decimal vSeg = det.ContainsKey("vSeg") ? Convert.ToDecimal(det["vSeg"]) : 0;
-                        decimal vOutro = det.ContainsKey("vOutro") ? Convert.ToDecimal(det["vOutro"]) : 0;
-                        decimal vDesc = det.ContainsKey("vDesc") ? Convert.ToDecimal(det["vDesc"]) : 0;
-                        decimal vICMSST = det.ContainsKey("vICMSST") ? Convert.ToDecimal(det["vICMSST"]) : 0;
-                        decimal vBCST = det.ContainsKey("vBCST") ? Convert.ToDecimal(det["vBCST"]) : 0;
-                        decimal vBCFCPST = det.ContainsKey("vBCFCPST") ? Convert.ToDecimal(det["vBCFCPST"]) : 0;
-                        decimal vBCFCPSTRet = det.ContainsKey("vBCFCPSTRet") ? Convert.ToDecimal(det["vBCFCPSTRet"]) : 0;
-                        decimal pFCPST = det.ContainsKey("pFCPST") ? Convert.ToDecimal(det["pFCPST"]) : 0;
-                        decimal pFCPSTRet = det.ContainsKey("pFCPSTRet") ? Convert.ToDecimal(det["pFCPSTRet"]) : 0;
-                        decimal vFCPST = det.ContainsKey("vFCPST") ? Convert.ToDecimal(det["vFCPST"]) : 0;
-                        decimal vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : 0;
-                        decimal freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0;
-                        decimal frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : 0;
+                        string nItem = det.ContainsKey("nItem") ? det["nItem"] : "",  NCM = det.ContainsKey("NCM") ? det["NCM"] : "",  CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "",
+                                 CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
+                        decimal vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : 0, vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : 0,
+                                pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : 0, vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : 0,
+                                vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : 0, vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : 0,
+                                vFrete = det.ContainsKey("vFrete") ? Convert.ToDecimal(det["vFrete"]) : 0, vSeg = det.ContainsKey("vSeg") ? Convert.ToDecimal(det["vSeg"]) : 0,
+                                vOutro = det.ContainsKey("vOutro") ? Convert.ToDecimal(det["vOutro"]) : 0, vDesc = det.ContainsKey("vDesc") ? Convert.ToDecimal(det["vDesc"]) : 0,
+                                vICMSST = det.ContainsKey("vICMSST") ? Convert.ToDecimal(det["vICMSST"]) : 0, vBCST = det.ContainsKey("vBCST") ? Convert.ToDecimal(det["vBCST"]) : 0,
+                                vBCFCPST = det.ContainsKey("vBCFCPST") ? Convert.ToDecimal(det["vBCFCPST"]) : 0, vBCFCPSTRet = det.ContainsKey("vBCFCPSTRet") ? Convert.ToDecimal(det["vBCFCPSTRet"]) : 0,
+                                pFCPST = det.ContainsKey("pFCPST") ? Convert.ToDecimal(det["pFCPST"]) : 0, pFCPSTRet = det.ContainsKey("pFCPSTRet") ? Convert.ToDecimal(det["pFCPSTRet"]) : 0,
+                                vFCPST = det.ContainsKey("vFCPST") ? Convert.ToDecimal(det["vFCPST"]) : 0, vFCPSTRet = det.ContainsKey("vFCPSTRet") ? Convert.ToDecimal(det["vFCPSTRet"]) : 0,
+                                freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0, frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : 0,
+                                vProd = det.ContainsKey("vProd") ? Convert.ToDecimal(det["vProd"]) : 0;
 
                         var productImport = produtos.Where(_ => _.Nitem.Equals(nItem)).FirstOrDefault();
 
@@ -506,7 +495,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             Model.ProductNote prod = new Model.ProductNote();
 
-                            decimal baseDeCalc = calculation.BaseCalc(Convert.ToDecimal(det["vProd"]), vFrete, vSeg, vOutro, vDesc, vIPI, frete_prod);
+                            decimal baseDeCalc = calculation.BaseCalc(vProd, vFrete, vSeg, vOutro, vDesc, vIPI, frete_prod);
 
                             if (taxed == null)
                             {
@@ -519,7 +508,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Cest = CEST;
                                     prod.Cfop = CFOP;
                                     prod.Xprod = det["xProd"];
-                                    prod.Vprod = Convert.ToDecimal(det["vProd"]);
+                                    prod.Vprod = vProd;
                                     prod.Qcom = Convert.ToDecimal(det["qCom"]);
                                     prod.Ucom = det["uCom"];
                                     prod.Vuncom = vUnCom;

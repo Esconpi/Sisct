@@ -261,7 +261,7 @@ namespace Escon.SisctNET.Web.Controllers
                 long taxationType = Convert.ToInt64(entity.TaxationTypeId);
 
                 decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta, inciso = entity.PercentualInciso;
-                decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, dif = 0,valorFecop = 0;
+                decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, dif = 0, valorFecop = 0;
 
                 if (bcr != null)
                     bcr = Convert.ToDecimal(bcr);
@@ -417,33 +417,6 @@ namespace Escon.SisctNET.Web.Controllers
                         if (product2.Group.Active.Equals(true))
                             prod.Incentivo = true;
                     }
-
-                    /*
-                    if (product != null)
-                    {
-                        if (product.Group.Active.Equals(true))
-                        {
-                            prod.Incentivo = true;
-                        }
-                    }
-
-                    if (product1 != null)
-                    {
-                        if (product1.Group.Active.Equals(true))
-                        {
-                            prod.Incentivo = true;
-                        }
-                    }
-
-                    if (product2 != null)
-                    {
-                        if (product2.Group.Active.Equals(true))
-                        {
-                            prod.Incentivo = true;
-                        }
-                    }
-
-                    */
 
                     prod.TaxationTypeId = taxationType;
                     prod.Status = true;
