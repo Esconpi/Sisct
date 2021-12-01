@@ -46,7 +46,16 @@
                 <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
                 <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
-                <td style="font-size:5px;">@Html.DisplayFor(modelItem => item.Xprod)</td>
+                <td>
+                    @if (item.Xprod.Length <= 30)
+                    {
+                        @Html.DisplayFor(modelItem => item.Xprod)
+                    }
+                    else
+                    {
+                        @item.Xprod.Substring(0, 30)
+                    }
+                </td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                             Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                 <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
@@ -117,7 +126,16 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                     <td>@Html.DisplayFor(modelItem => item.Note.Uf)</td>
                     <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
-                    <td>@Html.DisplayFor(modelItem => item.Xprod)</td>
+                    <td>
+                        @if (item.Xprod.Length <= 30)
+                        {
+                            @Html.DisplayFor(modelItem => item.Xprod)
+                        }
+                        else
+                        {
+                            @item.Xprod.Substring(0, 30)
+                        }
+                    </td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                 Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))</td>
                     <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>

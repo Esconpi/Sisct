@@ -65,7 +65,16 @@
                                 @if (note.Id.Equals(item.NoteId))
                                 {
                                     <tr>
-                                        <td>@item.Xprod</td>
+                                        <td>
+                                            @if (item.Xprod.Length <= 30)
+                                            {
+                                                @item.Xprod
+                                            }
+                                            else
+                                            {
+                                                @item.Xprod.Substring(0, 30)
+                                            }
+                                        </td>
                                         <td>
                                             @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                                 Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
@@ -170,7 +179,16 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                 @if (note.Id.Equals(item.NoteId))
                                 {
                                     <tr>
-                                        <td>@item.Xprod</td>
+                                        <td>
+                                            @if (item.Xprod.Length <= 30)
+                                            {
+                                                @item.Xprod
+                                            }
+                                            else
+                                            {
+                                                @item.Xprod.Substring(0, 30)
+                                            }
+                                        </td>
                                         <td>
                                             @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) -
                                                                 Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))

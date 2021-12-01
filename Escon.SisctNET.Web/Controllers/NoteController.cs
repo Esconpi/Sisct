@@ -465,11 +465,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                             decimal pICMSFormat = Math.Round(pICMS, 2);
                             string pICMSValid = pICMSFormat.ToString();
+                            string pICMSValidOrig = pICMSFormat.ToString();
 
                             if (!pICMSValid.Contains("."))
                                 pICMSValid += ".00";
 
+                            if (!pICMSValidOrig.Contains("."))
+                                pICMSValidOrig += ".00";
+
                             var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
+
+                            var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                            pICMSValidOrig = aliquotOrig.Aliquota.ToString();
 
                             if (orig == 1 || orig == 2)
                             {
@@ -481,6 +488,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
+
+                            
 
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
@@ -514,6 +523,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Vuncom = vUnCom;
                                     prod.Vicms = vICMS;
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
+                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -605,7 +615,9 @@ namespace Escon.SisctNET.Web.Controllers
                                         pICMS = aliq_simples.Aliquota;
 
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    icmsApu = calculation.IcmsApurado(dif, baseCalc);
+                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValidOrig));
+                                    icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
+                                    icmsApu += calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
                                 else if (taxedtype.Type == "Isento")
                                 {
@@ -629,6 +641,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Vuncom = vUnCom;
                                     prod.Vicms = vICMS;
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
+                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;

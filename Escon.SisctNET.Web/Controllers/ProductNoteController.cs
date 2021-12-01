@@ -494,12 +494,15 @@ namespace Escon.SisctNET.Web.Controllers
                         else if (taxedtype.Type == "Normal")
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
+                            var dif_frete = calculation.DiferencialAliq(aliqInterna, prod.PicmsOrig);
+
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
                             if (prod.Picms != 4)
                             {
                                 var aliqSimples = _aliquotService.FindByUf(prod.Note.Uf);
                                 dif = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
+                                dif_frete = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
                                 prod.Picms = Convert.ToDecimal(aliqSimples.Aliquota);
                             }
 
@@ -512,7 +515,8 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.ValorAC = null;
                             prod.TotalICMS = null;
                             prod.Diferencial = dif;
-                            decimal icmsApu = calculation.IcmsApurado(dif, baseCalc);
+                            decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(prod.Freterateado));
+                            icmsApu += calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
                             prod.IcmsApurado = icmsApu;
                         }
                         else if (taxedtype.Type == "Isento")
@@ -2113,8 +2117,14 @@ namespace Escon.SisctNET.Web.Controllers
                             foreach (var prod in products)
                             {
                                 if (!prod.Note.Iest.Equals(""))
+                                {
                                     if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                        totalIcmsFreteIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                                    {
+                                        var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                        var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                        totalIcmsFreteIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                    }
+                                }
                             }
 
                             totalIcmsIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsApurado).Sum());
@@ -2244,8 +2254,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in produtosAP)
                     {
                         if (!prod.Note.Iest.Equals(""))
+                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            {
+                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                            }
+                        }
                     }
 
                     ViewBag.TotalFreteAPIE = totalFreteAPIE;
@@ -3427,8 +3443,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals(""))
+                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                totalFreteCOIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            {
+                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                totalFreteCOIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                            }
+                        }
                     }
 
                     ViewBag.TotalFreteCOIE = totalFreteCOIE;
@@ -3499,8 +3521,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in produtosCOR)
                     {
                         if (!prod.Note.Iest.Equals(""))
+                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                totalFreteCORIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            {
+                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                totalFreteCORIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                            }
+                        }
                     }
 
                     ViewBag.TotalFreteCORIE = totalFreteCORIE;
@@ -3555,8 +3583,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in produtosIM)
                     {
                         if (!prod.Note.Iest.Equals(""))
+                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                totalFreteIMIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            {
+                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                totalFreteIMIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                            }
+                        }
                     }
 
                     ViewBag.TotalFreteIMIE = totalFreteIMIE;
