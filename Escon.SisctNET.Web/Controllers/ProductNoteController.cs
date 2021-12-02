@@ -494,7 +494,8 @@ namespace Escon.SisctNET.Web.Controllers
                         else if (taxedtype.Type == "Normal")
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
-                            var dif_frete = calculation.DiferencialAliq(aliqInterna, prod.PicmsOrig);
+                            var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                            var dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
@@ -629,16 +630,22 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (taxedtype.Type == "Normal")
                             {
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
+
+                                var aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms;
+                                var dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
+
                                 item.AliqInterna = aliqInterna;
                                 baseCalc = Vbasecalc;
                                 if (item.Picms != 4)
                                 {
                                     var aliq_simples = _aliquotService.FindByUf(item.Note.Uf);
                                     dif = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
+                                    dif_frete = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
                                     item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
                                 }
                                 item.Diferencial = dif;
-                                decimal icmsApu = calculation.IcmsApurado(dif, baseCalc);
+                                decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(item.Freterateado));
+                                icmsApu += calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
                                 item.IcmsApurado = icmsApu;
 
                                 item.Mva = null;
@@ -3440,7 +3447,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal totalFreteCOIE = 0;
 
-                    foreach (var prod in products)
+                    foreach (var prod in produtosCO)
                     {
                         if (!prod.Note.Iest.Equals(""))
                         {

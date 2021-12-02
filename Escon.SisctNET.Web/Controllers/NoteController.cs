@@ -489,8 +489,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
 
-                            
-
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
