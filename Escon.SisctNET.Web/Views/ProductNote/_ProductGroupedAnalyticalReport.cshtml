@@ -51,11 +51,26 @@
                                 <th>V. Produto</th>
                                 <th>Frete Nº</th>
                                 <th>V. Frete</th>
-                                <th>BC. ICMS</th>
-                                <th>Aliq Intra(%)</th>
+                                @if (ViewBag.IsCTe == false)
+                                {
+                                    <th>BC. ICMS</th>
+                                }
                                 <th>Aliq Inter(%)</th>
-                                <th>Dif</th>
-                                <th>ICMS ST NFe</th>
+                                <th>Aliq Intra(%)</th>
+                                @if (ViewBag.IsCTe == true)
+                                {
+                                    <th>Aliq Intra <br /> UF(%)</th>
+                                }
+                                @if (ViewBag.IsCTe == false)
+                                {
+                                    <th>Dif</th>
+                                }
+                                <th>ICMS ST <br /> NFe</th>
+                                @if (ViewBag.IsCTe == true)
+                                {
+                                    <th>ICMS Produto</th>
+                                    <th>ICMS CTe</th>
+                                }
                                 <th>ICMS Apurado</th>
                             </tr>
                         </thead>
@@ -76,23 +91,75 @@
                                             }
                                         </td>
                                         <td>
-                                            @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                                Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
-                                    </td>
-                                    <td>@item.Note.Nct</td>
-                                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
-                                    <td>
-                                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                            Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi) +
-                                                            Convert.ToDecimal(item.Freterateado))
-                                </td>
-                                <td>@item.AliqInterna</td>
-                                <td>@item.Picms</td>
-                                <td>@item.Diferencial</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))</td>
-                            </tr>
-                        }
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                                                    Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
+                                        </td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                        @if (ViewBag.IsCTe == false)
+                                        {
+                                            <td>
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                                    Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi) +
+                                                    Convert.ToDecimal(item.Freterateado))
+                                            </td>
+                                        }
+                                        <td>@item.AliqInterna</td>
+                                        <td>@item.Picms</td>
+                                        @if (ViewBag.IsCTe == true)
+                                        {
+                                            <td>
+                                                @if (item.PicmsOrig > 0)
+                                                {
+                                                    @item.PicmsOrig
+                                                }
+                                                else
+                                                {
+                                                    @item.Picms
+                                                }
+                                            </td>
+                                        }
+                                        @if (ViewBag.IsCTe == false)
+                                        {
+                                            <td>@item.Diferencial</td>
+                                        }
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
+                                        @if (ViewBag.IsCTe == true)
+                                        {
+                                            <td>
+                                                @if (item.PicmsOrig > 0) 
+                                                { 
+                                                    @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))
+                                                }
+                                                else
+                                                {
+                                                     @string.Format("{0:N}", (Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                                                   Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi)) * (Convert.ToDecimal(item.Diferencial) / 100))
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.PicmsOrig > 0)
+                                                {
+                                                    @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApuradoCTe))
+                                                }
+                                                else
+                                                {
+                                                    @string.Format("{0:N}", Convert.ToDecimal(item.Freterateado) * (Convert.ToDecimal(item.Diferencial) / 100))
+                                                }
+                                            </td>
+                                        }
+                                        <td>
+                                            @if(item.IcmsApuradoCTe > 0)
+                                            {
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado) + Convert.ToDecimal(item.IcmsApuradoCTe))
+                                            }
+                                            else
+                                            {
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))
+                                            }
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
 

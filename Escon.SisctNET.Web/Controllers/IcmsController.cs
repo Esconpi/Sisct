@@ -26059,6 +26059,89 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.Vendas = vendasContribuinte;
                     ViewBag.Total = total;
                 }
+                else if (type.Equals("vendaProdutoSTNormal"))
+                {
+                    // Venda de Produto ST como Normal
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var prodsAll = _productIncentivoService.FindByAllProducts(companyId);
+                    List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
+                    List<string> codeProdST = new List<string>();
+                    List<string> cestST = new List<string>();
+
+                    var codeProd = prodsAll.Select(_ => _.Code).ToList();
+                    var cestProd = prodsAll.Select(_ => _.Cest).ToList();
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (notes[i][1].ContainsKey("dhEmi"))
+                        {
+                            prodsTemp = _productIncentivoService.FindByDate(prodsAll, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                            codeProdST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
+                            cestST = prodsTemp.Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Cest).ToList();
+                        }
+
+                        decimal valorProduto = 0;
+                        string cProd = "", cest = "";
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+                            if (notes[i][k].ContainsKey("cProd"))
+                            {
+                                cProd = notes[i][k]["cProd"];
+                                cest = "";
+                                if (notes[i][k].ContainsKey("CEST"))
+                                    cest = notes[i][k]["CEST"];
+
+                                if (notes[i][k].ContainsKey("vProd"))
+                                    valorProduto += Convert.ToDecimal(notes[i][k]["vProd"]);
+
+                                if (notes[i][k].ContainsKey("vFrete"))
+                                    valorProduto += Convert.ToDecimal(notes[i][k]["vFrete"]);
+
+                                if (notes[i][k].ContainsKey("vDesc"))
+                                    valorProduto -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+
+                                if (notes[i][k].ContainsKey("vOutro"))
+                                    valorProduto += Convert.ToDecimal(notes[i][k]["vOutro"]);
+
+                                if (notes[i][k].ContainsKey("vSeg"))
+                                    valorProduto += Convert.ToDecimal(notes[i][k]["vSeg"]);
+                            }
+
+                            if (notes[i][k].ContainsKey("pICMS") && notes[i][k].ContainsKey("orig"))
+                            {
+                                if (codeProd.Contains(cProd) && cestProd.Contains(cest))
+                                {
+                                    if (codeProdST.Contains(cProd) && cestST.Contains(cest))
+                                    {
+                                        var t = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    ViewBag.Erro = 1;
+                                    return View();
+                                }
+                                cest = "";
+                                cProd = "";
+                                valorProduto = 0;
+                            }
+                        }
+
+                    }
+
+                }
                 else if (type.Equals("debitoCredito"))
                 {
                     //  Débito/Crédito

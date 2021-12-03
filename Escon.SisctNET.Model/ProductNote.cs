@@ -135,6 +135,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "ICMS Apurado")]
         public decimal? IcmsApurado { get; set; }
 
+        [Display(Name = "ICMS Apurado CTe")]
+        public decimal? IcmsApuradoCTe { get; set; }
+
         [Display(Name = "Total ICMS")]
         public decimal? TotalICMS { get; set; }
 

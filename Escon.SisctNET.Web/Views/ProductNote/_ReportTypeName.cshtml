@@ -61,6 +61,13 @@
     {
         <strong>Não Tributado</strong>
     }
+
+    @if ((ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM") && ViewBag.Type != "AgrupadoS" ) {
+        @if(ViewBag.IsCTe == true)
+        {
+            <strong>&nbsp;Produto/Frete CTe</strong>
+        }
+    }
 }
 
 

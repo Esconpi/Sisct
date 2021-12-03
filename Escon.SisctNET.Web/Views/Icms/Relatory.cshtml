@@ -186,6 +186,17 @@
 
                     @await Html.PartialAsync("_SalesTaxpayers", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "vendaProdutoSTNormal")
+                {
+                    <!-- Venda de Produto ST como Normal -->
+
+                    @if (ViewBag.Erro == 1)
+                    {
+                        <p style="text-align:center;color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
+                    }
+
+                    @await Html.PartialAsync("_SalesProductSTNormal", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "anexoAutoPecas")
                 {
                     @if (ViewBag.Erro == 1)

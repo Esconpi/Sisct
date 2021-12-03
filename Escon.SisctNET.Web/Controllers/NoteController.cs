@@ -568,7 +568,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, null);
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
-                                        valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, baseCalc = 0;
+                                        valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, baseCalc = 0;
 
                                 if (taxedtype.Type == "ST")
                                 {
@@ -615,7 +615,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
                                     var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
-                                    icmsApu += calculation.IcmsApurado(dif_frete, frete_prod);
+                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
                                 else if (taxedtype.Type == "Isento")
                                 {
@@ -664,6 +664,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.TotalFecop = valorFecop;
                                     prod.Diferencial = dif;
                                     prod.IcmsApurado = icmsApu;
+                                    prod.IcmsApuradoCTe = icmsApuCTe;
                                     prod.NoteId = nota.Id;
                                     prod.Nitem = det["nItem"];
                                     prod.Orig = orig;
