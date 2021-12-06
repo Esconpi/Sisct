@@ -35,10 +35,9 @@
                         Empresa com menos de @SessionManager.GetMin() dias <br /> pra renovar o incentivo: Nenhuma
                     </a>
                 }
-
             </li>
             <li>
-                @if (@SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count() > 0)
+                @if (@SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax() && (_.DateEnd.Subtract(DateTime.Now)).Days > 0).ToList().Count() > 0)
                 {
                     <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Max">
                         <i class="fa fa-warning text-red"></i>
@@ -54,6 +53,13 @@
                     </a>
                 }
 
+            </li>
+            <li>
+                <a asp-controller="Incentive" asp-action="Notification" asp-route-value="Vencido">
+                    <i class="fa fa-ban text-red"></i>
+                    Empresa com incentivo vencido:
+                    @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= 0).ToList().Count()
+                </a>
             </li>
         </ul>
     </li>

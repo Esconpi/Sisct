@@ -17,9 +17,13 @@
             {
                 <h5 class="box-title"><i class="fa fa-warning text-yellow"></i> <strong>Empresa(s) com menos de 60 dias pra renovar o incentivo </strong></h5>
             }
-            else
+            else if (ViewBag.Value == "Max")
             {
                 <h5 class="box-title"><i class="fa fa-warning text-red"></i> <strong>Empresa(s) com menos de 30 dias pra renovar o incentivo </strong></h5>
+            }
+            else
+            {
+                <h5 class="box-title"><i class="fa fa-warning text-red"></i> <strong>Empresa(s) com incentivo vencido </strong></h5>
             }
         </div>
     </div>
@@ -70,9 +74,33 @@
                             </tr>
                         }
                     }
+                    else if (ViewBag.Value == "Max")
+                    {
+                        @foreach (var incentive in SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax() && (_.DateEnd.Subtract(DateTime.Now)).Days > 0).ToList())
+                        {
+                            <tr style="border:1px solid;">
+                                <td style="border:1px solid; padding-left:1%;">
+
+                                    @incentive.Company.Code
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.SocialName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.FantasyName
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.Company.Document
+                                </td>
+                                <td style="border:1px solid; padding-left:1%;">
+                                    @incentive.DateEnd.ToString("dd/MM/yyyy HH:mm:ss")
+                                </td>
+                            </tr>
+                        }
+                    }
                     else
                     {
-                        @foreach (var incentive in SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList())
+                        @foreach (var incentive in SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= 0).ToList())
                         {
                             <tr style="border:1px solid;">
                                 <td style="border:1px solid; padding-left:1%;">
@@ -103,9 +131,13 @@
                         {
                             @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMin() && (_.DateEnd.Subtract(DateTime.Now)).Days > @SessionManager.GetMax()).ToList().Count()
                         }
+                        else if (ViewBag.Value == "Max")
+                        {
+                            @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax() && (_.DateEnd.Subtract(DateTime.Now)).Days > 0).ToList().Count()
+                        }
                         else
                         {
-                            @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= @SessionManager.GetMax()).ToList().Count()
+                            @SessionManager.GetIncitiveInSession().Where(_ => (_.DateEnd.Subtract(DateTime.Now)).Days <= 0).ToList().Count()
                         }
                         registro(s)
                     </strong>
