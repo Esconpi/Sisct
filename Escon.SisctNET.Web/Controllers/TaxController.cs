@@ -2043,7 +2043,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (cfop)
                                                 {
                                                     if (exitNotes[i][k].ContainsKey("vProd"))
-                                                        valorProduto += Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+                                                        valorProduto = Convert.ToDecimal(exitNotes[i][k]["vProd"]);
 
                                                     if (exitNotes[i][k].ContainsKey("vFrete"))
                                                         valorProduto += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);

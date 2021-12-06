@@ -136,6 +136,12 @@
     <strong>Venda de Produto ST como Normal </strong>
 }
 
+@if (ViewBag.Type == "vendaProdutoSTNormalNote")
+{
+    <strong>Venda de Produto ST como Normal por Nota </strong>
+}
+
+
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {

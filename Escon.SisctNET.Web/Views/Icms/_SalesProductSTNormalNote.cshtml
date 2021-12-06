@@ -2,6 +2,9 @@
     <thead>
         <tr>
             <th style="border: 1px solid; text-align: center;">
+                Nota
+            </th>
+            <th style="border: 1px solid; text-align: center;">
                 Produto
             </th>
             <th style="border: 1px solid; text-align: center;">
@@ -23,6 +26,9 @@
         {
             <tr style="border:1px solid;">
                 <td style="border:1px solid; padding-left:1%;">
+                    @venda[6]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
                     @venda[0] -  @venda[1]
                 </td>
                 <td style="border:1px solid; padding-left:1%;">
@@ -36,7 +42,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th style="border: 1px solid; text-align: center;" colspan="2">Total</th>
+            <th style="border: 1px solid; text-align: center;" colspan="3">Total</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorContabil)</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.BaseCalculo)</th>
             <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.ValorIcms)</th>
