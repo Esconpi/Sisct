@@ -113,6 +113,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var importSped = new Sped.Import(_companyCfopService);
                 var importMes = new Period.Month();
                 var importDir = new Diretorio.Import();
+                var calculation = new Tax.Calculation();
 
                 string directoryNfeExit = "", directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month),
                        icms = Request.Form["icms"].ToString(), icmsST = Request.Form["icmsST"].ToString(), mva = Request.Form["mva"].ToString();
@@ -27137,8 +27138,14 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals(""))
+                        {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
-                                totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
+                            {
+                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                            }
+                        }
                     }
 
                     ViewBag.TotalFreteAPIE = totalFreteAPIE;
@@ -27158,8 +27165,10 @@ namespace Escon.SisctNET.Web.Controllers
                              gnreNPagaAPSIE = Math.Round(Convert.ToDecimal(notas.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreNAp).Sum()), 2),
                              icmsStAPIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPIE + valorNfe1RetAPIE + valorNfe2NormalAPIE + valorNfe2RetAPIE,
                              icmsStAPSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsST).Sum()), 2) + valorNfe1NormalAPSIE + valorNfe1RetAPSIE + valorNfe2NormalAPSIE + valorNfe2RetAPSIE,
-                             totalApuradoAPIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum()), 2),
-                             totalApuradoAPSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum()), 2),
+                             totalApuradoAPIE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum() +
+                                                                             products.Where(_ => !_.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApuradoCTe).Sum()), 2),
+                             totalApuradoAPSIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApurado).Sum() +
+                                                                              products.Where(_ => _.Note.Iest.Equals("") && _.TaxationTypeId.Equals((long)1)).Select(_ => _.IcmsApuradoCTe).Sum()), 2),
                              totalDiefAPSIE = Convert.ToDecimal((totalApuradoAPSIE + totalFreteAPIE) - icmsStAPSIE + gnreNPagaAPSIE - gnrePagaAPSIE),
                              totalDiefAPIE = Convert.ToDecimal(totalApuradoAPIE + gnreNPagaAPIE - icmsStAPIE - gnrePagaAPIE - totalFreteAPIE);
 

@@ -2427,12 +2427,10 @@ namespace Escon.SisctNET.Web.Controllers
                             totalfecopDiefSTIE = totalFecopCalcSTIE - totalGnreFecopSTIE + gnreNPagaFecopSTIE - totalFecopNfeSTIE - totalFecop1FreteSTIE - totalFecop2FreteSTIE,
                             totalfecopDiefSTSIE = totalFecopCalcSTSIE - totalGnreFecopSTSIE + gnreNPagaFecopSTSIE - totalFecopNfeSTSIE + totalFecop1FreteSTIE + totalFecop2FreteSTIE;
 
-
                     decimal? icmsFecop1STIE = Math.Round(Convert.ToDecimal(notesST.Where(_ => !_.Iest.Equals("")).Select(_ => _.Fecop1).Sum()), 2),
                              icmsFecop1STSIE = Math.Round(Convert.ToDecimal(notesST.Where(_ => _.Iest.Equals("")).Select(_ => _.Fecop1).Sum()), 2),
                              icmsFecop2STIE = Math.Round(Convert.ToDecimal(notesST.Where(_ => !_.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2),
                              icmsFecop2STSIE = Math.Round(Convert.ToDecimal(notesST.Where(_ => _.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2);
-
 
                     //Incentivo
                     if (comp.Incentive && (!comp.AnnexId.Equals(null) || comp.ChapterId.Equals((long)4)))
@@ -2584,7 +2582,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                                    productsIncentivado.Where(_ => _.PercentualInciso.Equals(percentualCaputII)).Select(_ => _.Vipi).Sum());
                                 impostoIcmsCaputII = Math.Round(Convert.ToDecimal(baseCaputII * percentualCaputII / 100), 2);
                             }
-                                    
 
                             baseIcms = baseCaputI + baseCaputII;
                             impostoIcms = impostoIcmsCaputI + impostoIcmsCaputII;
@@ -2603,54 +2600,54 @@ namespace Escon.SisctNET.Web.Controllers
                             if (comp.SectionId.Equals((long)2))
                             {
                                 decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
-                                vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
-                                InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
-                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
-                                InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
-                                InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
-                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
-                                suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
-                                vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
+                                    vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
+                                    InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
+                                    InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
+                                    InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
+                                    InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
+                                    InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
+                                    suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
+                                    vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
 
 
                                 //  Elencadas
                                 // Internas
-                                decimal icmsInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                                decimal fecopInternaElencada = Math.Round((InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2);
-                                decimal totalInternasElencada = icmsInternaElencada;
-                                decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100;
-                                decimal totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
+                                decimal icmsInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100,
+                                    fecopInternaElencada = Math.Round((InternasElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2),
+                                    totalInternasElencada = icmsInternaElencada,
+                                    icmsPresumidoInternaElencada = (InternasElencadasPortaria * Convert.ToDecimal(comp.IncIInterna)) / 100,
+                                    totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
 
                                 impostoIcms += Math.Round(totalIcmsInternaElencada, 2);
                                 impostoFecop += Math.Round(fecopInternaElencada, 2);
 
                                 // Interestadual
-                                decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                                decimal fecopInterestadualElencada = Math.Round((InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2);
-                                decimal totalInterestadualElencada = icmsInterestadualElencada;
-                                decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100;
-                                decimal totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
+                                decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100,
+                                    fecopInterestadualElencada = Math.Round((InterestadualElencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2),
+                                    totalInterestadualElencada = icmsInterestadualElencada,
+                                    icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * Convert.ToDecimal(comp.IncIInterestadual)) / 100,
+                                    totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
 
                                 impostoIcms += totalIcmsInterestadualElencada;
                                 impostoFecop += fecopInterestadualElencada;
 
                                 //  Deselencadas
                                 //  Internas
-                                decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                                decimal fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2);
-                                decimal totalInternasDeselencada = icmsInternaDeselencada;
-                                decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100;
-                                decimal totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
+                                decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100,
+                                    fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2),
+                                    totalInternasDeselencada = icmsInternaDeselencada,
+                                    icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterna)) / 100,
+                                    totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
 
                                 impostoIcms += totalIcmsInternaDeselencada;
                                 impostoFecop += fecopInternaDeselencada;
 
                                 // Interestadual
-                                decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100;
-                                decimal fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2);
-                                decimal totalInterestadualDeselencada = icmsInterestadualDeselencada;
-                                decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100;
-                                decimal totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
+                                decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.AliqInterna)) / 100,
+                                    fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.Fecop)) / 100, 2),
+                                    totalInterestadualDeselencada = icmsInterestadualDeselencada,
+                                    icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * Convert.ToDecimal(comp.IncIIInterestadual)) / 100,
+                                    totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
 
                                 impostoIcms += totalIcmsInterestadualDeselencada;
                                 impostoFecop += fecopInterestadualDeselencada;
@@ -2850,11 +2847,11 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarFecop += Math.Round(impostoFecop, 2);
                         totalApuradoFecop += Math.Round(impostoFecop, 2);
 
-                        decimal icmsGeralNormal = Convert.ToDecimal(totalApuradoSTIE) + Convert.ToDecimal(totalApuradoSTSIE);
-                        decimal icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum());
-                        decimal fecopGeralNomal = Convert.ToDecimal(totalFecopCalcSTIE) + Convert.ToDecimal(totalFecopCalcSTSIE);
-                        decimal fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum());
-                        decimal impostoGeral = icmsGeralNormal + icmsGeralIncetivo + fecopGeralNomal + fecopGeralIncentivo + icmsAnexoCCCXVI;
+                        decimal icmsGeralNormal = Convert.ToDecimal(totalApuradoSTIE) + Convert.ToDecimal(totalApuradoSTSIE),
+                            icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum()),
+                            fecopGeralNomal = Convert.ToDecimal(totalFecopCalcSTIE) + Convert.ToDecimal(totalFecopCalcSTSIE),
+                            fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum()),
+                            impostoGeral = icmsGeralNormal + icmsGeralIncetivo + fecopGeralNomal + fecopGeralIncentivo + icmsAnexoCCCXVI;
 
                         ViewBag.Base = baseIcms;
                         ViewBag.IcmsAnexoCCCXVI = icmsAnexoCCCXVI;
@@ -3116,9 +3113,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (comp.TypeCompany)
                         {
-                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito);
-
-                            decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito),
+                                naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
                                 vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
                                 ContribuintesIncentivo = Convert.ToDecimal(imp.VendasContribuinte1), ContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaNormal1),
                                 ContribuintesIncentivoAliqM25 = Convert.ToDecimal(imp.VendasContribuinte2), naoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaNormal2),
@@ -3130,16 +3126,16 @@ namespace Escon.SisctNET.Web.Controllers
                             //// Cálculos dos Produtos  Incentivados
 
                             //Contribuinte
-                            var icmsContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.Icms) * ContribuintesIncentivo / 100, 2);
-                            var icmsContribuinteIncentivoAliqM25 = Math.Round(Convert.ToDecimal(comp.IcmsAliqM25) * ContribuintesIncentivoAliqM25 / 100, 2);
+                            decimal icmsContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.Icms) * ContribuintesIncentivo / 100, 2),
+                                icmsContribuinteIncentivoAliqM25 = Math.Round(Convert.ToDecimal(comp.IcmsAliqM25) * ContribuintesIncentivoAliqM25 / 100, 2);
 
                             //Não Contribuinte
-                            var totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo + vendaCfopSTNaoContribuinteNIncetivo, 2);
-                            var icmsNContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContribuinteIncentivo / 100, 2);
+                            decimal totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo + vendaCfopSTNaoContribuinteNIncetivo, 2),
+                                icmsNContribuinteIncentivo = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinte) * naoContribuinteIncentivo / 100, 2);
 
                             //Não Contribuinte Fora do Estado
-                            var totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2);
-                            var icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * totalVendasNContribuinteForaDoEstado / 100, 2);
+                            decimal totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
+                                icmsNContribuinteForaDoEstado = Math.Round(Convert.ToDecimal(comp.IcmsNContribuinteFora) * totalVendasNContribuinteForaDoEstado / 100, 2);
 
                             //// Direfença de débito e crédito
                             var diferenca = debitosIcms - creditosIcms;
@@ -3175,9 +3171,9 @@ namespace Escon.SisctNET.Web.Controllers
                             var totalImpostoGeral = Math.Round(totalImposto + icmsNContribuinteForaDoEstado, 2);
 
                             //// Cálculos dos Totais
-                            var totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo + vendaCfopSTContribuintesNIncentivo, 2);
-                            var totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2);
-                            var totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
+                            decimal totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo + vendaCfopSTContribuintesNIncentivo, 2),
+                                totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2),
+                                totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
 
 
                             //// Produtos Incentivados
@@ -3280,20 +3276,11 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                         {
 
-                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito);
-
-                            decimal vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada), vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada),
-                                debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)), debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo));
-
-
-                            var totalVendas = vendasIncentivada + vendasNIncentivada;
-
-                            var difApuNormal = debitoIncetivo - creditosIcms;
-
-                            var percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100;
-                            var creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100;
-
-                            var difApuNNormal = debitoNIncentivo - creditoNIncentivado;
+                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito), vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada), 
+                                vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada), debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)), 
+                                debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo)), totalVendas = vendasIncentivada + vendasNIncentivada,
+                                difApuNormal = debitoIncetivo - creditosIcms, percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100, 
+                                creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100, difApuNNormal = debitoNIncentivo - creditoNIncentivado;
 
                             totalDarIcms += difApuNNormal;
 
