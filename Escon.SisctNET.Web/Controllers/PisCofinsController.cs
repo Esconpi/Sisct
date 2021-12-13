@@ -96,19 +96,34 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month);
 
-                //  Venda
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                //  Saida
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
-                //  Devolução
-                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-     
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
                 var ncms = _service.FindByCompany(comp.Document);
@@ -1701,6 +1716,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncmsAll = _ncmService.FindAll(null);
 
+                    cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);

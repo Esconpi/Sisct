@@ -38,5 +38,9 @@ namespace Escon.SisctNET.Service
         List<Model.CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null);
 
         List<Model.CompanyCfop> FindByCfopOutraSaida(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopVendaIM(string company, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopCompraIM(string company, Log log = null);
     }
 }

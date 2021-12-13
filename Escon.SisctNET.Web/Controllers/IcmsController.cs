@@ -131,13 +131,32 @@ namespace Escon.SisctNET.Web.Controllers
                 var impAnexo = _taxAnexoService.FindByMonth(companyId, month, year);
 
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -25852,6 +25871,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Venda P/ não Contribuinte
                     List<List<string>> vendasNContribuinte = new List<List<string>>();
 
+                    cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
                     cfopsVenda.AddRange(cfopsTransf);
@@ -25959,6 +25979,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Venda P/ Contribuinte
                     List<List<string>> vendasContribuinte = new List<List<string>>();
 
+                    cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
                     cfopsVenda.AddRange(cfopsTransf);
@@ -26121,8 +26142,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (notes[i][k].ContainsKey("CFOP"))
                                 {
                                     cfop = false;
-                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) ||
-                                        cfopsTransf.Contains(notes[i][k]["CFOP"]))
+                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsVendaIM.Contains(notes[i][k]["CFOP"]) ||
+                                        cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) || cfopsTransf.Contains(notes[i][k]["CFOP"]))
                                     {
                                         cfop = true;
                                     }
@@ -26291,8 +26312,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (notes[i][k].ContainsKey("CFOP"))
                                 {
                                     cfop = false;
-                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) ||
-                                        cfopsTransf.Contains(notes[i][k]["CFOP"]))
+                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsVendaIM.Contains(notes[i][k]["CFOP"]) || 
+                                        cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) || cfopsTransf.Contains(notes[i][k]["CFOP"]))
                                     {
                                         cfop = true;
                                     }

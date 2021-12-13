@@ -53,6 +53,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCfopCompra(company, log);
         }
 
+        public List<CompanyCfop> FindByCfopCompraIM(string company, Log log = null)
+        {
+            return _repository.FindByCfopCompraIM(company, log);
+        }
+
         public List<CompanyCfop> FindByCfopCompraST(string company, Log log = null)
         {
             return _repository.FindByCfopCompraST(company, log);
@@ -101,6 +106,11 @@ namespace Escon.SisctNET.Service.Implementation
         public List<CompanyCfop> FindByCfopVenda(string company, Log log = null)
         {
             return _repository.FindByCfopVenda(company, log);
+        }
+
+        public List<CompanyCfop> FindByCfopVendaIM(string company, Log log = null)
+        {
+            return _repository.FindByCfopVendaIM(company, log);
         }
 
         public List<CompanyCfop> FindByCfopVendaST(string company, Log log = null)
