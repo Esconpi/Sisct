@@ -490,10 +490,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
+                                     
+                                        string vBC = exitNotes[i][j]["vBC"],  pICMS = exitNotes[i][j]["pICMS"], vICMS = exitNotes[i][j]["vICMS"];
+
+                                        if (Convert.ToDecimal(pICMS).Equals(17))
+                                        {
+                                            pICMS = (Convert.ToDecimal(pICMS) + 1).ToString();
+                                            vICMS = (Convert.ToDecimal(vBC) * Convert.ToDecimal(pICMS) / 100).ToString();
+                                        }
+
                                         int pos = -1;
                                         for (int k = 0; k < vendaInterna.Count(); k++)
                                         {
-                                            if (vendaInterna[k][1].Equals(exitNotes[i][j]["pICMS"]))
+                                            if (vendaInterna[k][1].Equals(pICMS))
                                             {
                                                 pos = k;
                                                 break;
@@ -502,16 +511,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (pos < 0)
                                         {
+                                           
                                             List<string> cc = new List<string>();
-                                            cc.Add(exitNotes[i][j]["vBC"]);
-                                            cc.Add(exitNotes[i][j]["pICMS"]);
-                                            cc.Add(exitNotes[i][j]["vICMS"]);
+                                            cc.Add(vBC);
+                                            cc.Add(pICMS);
+                                            cc.Add(vICMS);
                                             vendaInterna.Add(cc);
                                         }
                                         else
                                         {
-                                            vendaInterna[pos][0] = (Convert.ToDecimal(vendaInterna[pos][0]) + Convert.ToDecimal(exitNotes[i][j]["vBC"])).ToString();
-                                            vendaInterna[pos][2] = (Convert.ToDecimal(vendaInterna[pos][2]) + Convert.ToDecimal(exitNotes[i][j]["vICMS"])).ToString();
+                                            vendaInterna[pos][0] = (Convert.ToDecimal(vendaInterna[pos][0]) + Convert.ToDecimal(vBC)).ToString();
+                                            vendaInterna[pos][2] = (Convert.ToDecimal(vendaInterna[pos][2]) + Convert.ToDecimal(vICMS)).ToString();
                                         }
 
                                     }
@@ -611,10 +621,18 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
+                                        string vBC = exitNotes[i][k]["vBC"], pICMS = exitNotes[i][k]["pICMS"], vICMS = exitNotes[i][k]["vICMS"];
+
+                                        if (Convert.ToDecimal(pICMS).Equals(17))
+                                        {
+                                            pICMS = (Convert.ToDecimal(pICMS) + 1).ToString();
+                                            vICMS = (Convert.ToDecimal(vBC) * Convert.ToDecimal(pICMS) / 100).ToString();
+                                        }
+
                                         int pos = -1;
                                         for (int j = 0; j < devoFornecedorInterna.Count(); j++)
                                         {
-                                            if (devoFornecedorInterna[j][1].Equals(exitNotes[i][k]["pICMS"]))
+                                            if (devoFornecedorInterna[j][1].Equals(pICMS))
                                             {
                                                 pos = j;
                                                 break;
@@ -623,16 +641,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (pos < 0)
                                         {
+                                           
+
                                             List<string> cc = new List<string>();
-                                            cc.Add(exitNotes[i][k]["vBC"]);
-                                            cc.Add(exitNotes[i][k]["pICMS"]);
-                                            cc.Add(exitNotes[i][k]["vICMS"]);
+                                            cc.Add(vBC);
+                                            cc.Add(pICMS);
+                                            cc.Add(vICMS);
                                             devoFornecedorInterna.Add(cc);
                                         }
                                         else
                                         {
-                                            devoFornecedorInterna[pos][0] = (Convert.ToDecimal(devoFornecedorInterna[pos][0]) + Convert.ToDecimal(exitNotes[i][k]["vBC"])).ToString();
-                                            devoFornecedorInterna[pos][2] = (Convert.ToDecimal(devoFornecedorInterna[pos][2]) + (Convert.ToDecimal(exitNotes[i][k]["vICMS"]))).ToString();
+                                            devoFornecedorInterna[pos][0] = (Convert.ToDecimal(devoFornecedorInterna[pos][0]) + Convert.ToDecimal(vBC)).ToString();
+                                            devoFornecedorInterna[pos][2] = (Convert.ToDecimal(devoFornecedorInterna[pos][2]) + Convert.ToDecimal(vICMS)).ToString();
                                         }
 
                                     }
