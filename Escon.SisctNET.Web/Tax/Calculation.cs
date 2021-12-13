@@ -1,4 +1,7 @@
 ﻿
+using Escon.SisctNET.Model;
+using System;
+
 namespace Escon.SisctNET.Web.Tax
 {
     public class Calculation
@@ -75,5 +78,34 @@ namespace Escon.SisctNET.Web.Tax
             return icmsPauta + valorFecop;
         }
 
+        public decimal Limite(decimal baseCalc, decimal percentual)
+        {
+            return (baseCalc * percentual) / 100;
+        }
+
+        public decimal Percentual(decimal baseCalc, decimal baseCalcVenda)
+        {
+            return (baseCalc * 100) / baseCalcVenda;
+        }
+
+        public decimal ExcedenteMaximo(decimal baseCalc, decimal limite)
+        {
+            return baseCalc - limite;
+        }
+
+        public decimal ExcedenteMinimo(decimal baseCalc, decimal limite)
+        {
+            return limite - baseCalc;
+        }
+
+        public decimal Imposto(decimal baseCalc, decimal percentual)
+        {
+            return Math.Round((baseCalc * percentual) / 100, 2);
+        }
+
+        public decimal Diferenca(decimal percentual1, decimal percentual2)
+        {
+            return percentual1 - percentual2;
+        }
     }
 }

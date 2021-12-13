@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -575,6 +576,24 @@ namespace Escon.SisctNET.Web.Tax
             }
 
             return apuracao;
+        }
+    
+        public List<List<string>> Grupos(List<Grupo> grupos)
+        {
+            List<List<string>> gruposExecentes = new List<List<string>>();
+
+            foreach (var g in grupos)
+            {
+                List<string> grupoExcedente = new List<string>();
+                grupoExcedente.Add(g.Cnpj);
+                grupoExcedente.Add(g.Nome);
+                grupoExcedente.Add(Math.Round(Convert.ToDecimal(g.BaseCalculo), 2).ToString());
+                grupoExcedente.Add(g.Percentual.ToString());
+
+                gruposExecentes.Add(grupoExcedente);
+            }
+
+            return gruposExecentes; 
         }
     }
 }

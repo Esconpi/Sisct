@@ -1749,7 +1749,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            baseCalc = totalVendas - totalDevoCompra + totalTranferenciaSaida;
+                            baseCalc = totalVendas - totalDevoVenda + totalTranferenciaSaida;
                             totalVendas += totalTranferenciaSaida;
 
                             decimal totalNcontribuinte = Convert.ToDecimal(resumoCnpjRaiz[contContribuintesRaiz - 1, 1]),
@@ -1793,9 +1793,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
                                             var clientGrupo = _clientService.FindByRaiz(cnpjGrupo);
                                             var nomeGrupo = clientGrupo.Name;
-                                            var percentGrupo = Math.Round((baseCalcGrupo / baseCalc) * 100, 2);
-
-
+                                            var percentGrupo = Math.Round((baseCalcGrupo * 100) / baseCalc, 2);
 
                                             var gg = grupoTemp.Where(_ => _.Cnpj.Equals(cnpjGrupo)).FirstOrDefault();
 
@@ -1848,7 +1846,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
                                             var clientGrupo = _clientService.FindByRaiz(cnpjGrupo);
                                             var nomeGrupo = clientGrupo.Name;
-                                            var percentGrupo = Math.Round((baseCalcGrupo / baseCalc) * 100, 2);
+                                            var percentGrupo = Math.Round((baseCalcGrupo * 100) / baseCalc, 2);
 
                                             Model.Grupo grupo = new Model.Grupo();
                                             grupo.Cnpj = cnpjGrupo;
@@ -1895,7 +1893,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         var cnpjGrupo = resumoAllCnpjRaiz[i, 0];
                                         var clientGrupo = _clientService.FindByRaiz(cnpjGrupo);
                                         var nomeGrupo = clientGrupo.Name;
-                                        var percentGrupo = Math.Round((baseCalcGrupo / baseCalc) * 100, 2);
+                                        var percentGrupo = Math.Round((baseCalcGrupo * 100) / baseCalc, 2);
 
                                         Model.Grupo grupo = new Model.Grupo();
                                         grupo.Cnpj = cnpjGrupo;
