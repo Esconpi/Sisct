@@ -160,22 +160,53 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                 //  Entrada
-                var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsDevoCompraST = _companyCfopService.FindByCfopDevoCompraST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .ToList();
+                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsDevoCompraST = _companyCfopService.FindByCfopDevoCompraST(comp.Document)
+                    .Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
-                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document).Select(_ => _.Cfop.Code).Distinct().ToList();
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(comp.Document).Select(_ => _.Cfop.Code)
+                   .Distinct()
+                   .ToList();
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code).ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code).ToList();
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
 
                 var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
 
@@ -425,7 +456,6 @@ namespace Escon.SisctNET.Web.Controllers
                         List<List<string>> devoFornecedorInterna = new List<List<string>>();
                         List<List<string>> vendaInterna = new List<List<string>>();
 
-                        string chave = "";
                         // Vendas
                         for (int i = exitNotes.Count - 1; i >= 0; i--)
                         {
@@ -437,22 +467,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool ncm = false, cfop = false;
 
-                            if (exitNotes[i][0]["chave"] == "22210402910377000294550010001552411677284742" ||
-                                exitNotes[i][0]["chave"] == "22210402910377000294550010001559661686384743" ||
-                                exitNotes[i][0]["chave"] == "22210402910377000294550010001574341594187435" ||
-                                exitNotes[i][0]["chave"] == "22210402910377000294550010001578521041887808" ||
-                                exitNotes[i][0]["chave"] == "22210402910377000294550010001578261060972009")
-                            {
-                                chave = exitNotes[i][0]["chave"];
-                            }
-
                             for (int j = 0; j < exitNotes[i].Count(); j++)
                             {
                                 if (exitNotes[i][j].ContainsKey("CFOP"))
                                 {
                                     cfop = false;
 
-                                    if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][j]["CFOP"]))
+                                    if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaIM.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][j]["CFOP"]))
                                         cfop = true;
                                 }
 
@@ -685,7 +706,6 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-
                         if (imp != null)
                         {
                             imp.BaseVenda4 = baseCalcVendaInterestadual4;
@@ -822,7 +842,6 @@ namespace Escon.SisctNET.Web.Controllers
                             _devoFornecedorService.Create(devoFornecedors);
                         }
                     }
-                    
                 }
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

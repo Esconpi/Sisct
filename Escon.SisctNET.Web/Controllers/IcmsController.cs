@@ -25871,7 +25871,6 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Venda P/ não Contribuinte
                     List<List<string>> vendasNContribuinte = new List<List<string>>();
 
-                    cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
                     cfopsVenda.AddRange(cfopsTransf);
@@ -25979,7 +25978,6 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Venda P/ Contribuinte
                     List<List<string>> vendasContribuinte = new List<List<string>>();
 
-                    cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
                     cfopsVenda.AddRange(cfopsTransf);
@@ -26142,8 +26140,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (notes[i][k].ContainsKey("CFOP"))
                                 {
                                     cfop = false;
-                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsVendaIM.Contains(notes[i][k]["CFOP"]) ||
-                                        cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) || cfopsTransf.Contains(notes[i][k]["CFOP"]))
+                                    if (cfopsVenda.Contains(notes[i][k]["CFOP"]) || cfopsBoniVenda.Contains(notes[i][k]["CFOP"]) || cfopsTransf.Contains(notes[i][k]["CFOP"]))
                                     {
                                         cfop = true;
                                     }

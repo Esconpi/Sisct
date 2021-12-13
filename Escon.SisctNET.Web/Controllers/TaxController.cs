@@ -829,9 +829,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (exitNotes[i][j].ContainsKey("CFOP"))
                                     {
                                         cfop = false;
-                                        if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaIM.Contains(exitNotes[i][j]["CFOP"]) || 
-                                            cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]) ||
-                                            cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) ||  cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]))
+                                        if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) || 
+                                            cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][j]["CFOP"]) ||  
+                                            cfopsTransfST.Contains(exitNotes[i][j]["CFOP"]))
                                         {
                                             cfop = true;
                                         }
@@ -1045,8 +1045,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             cfop = false;
 
-                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaIM.Contains(exitNotes[i][j]["CFOP"]) ||
-                                                cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) || cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
@@ -1468,8 +1467,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
                                         {
                                             cfop = false;
-                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaIM.Contains(exitNotes[i][j]["CFOP"]) ||
-                                                cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||  cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||  cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
