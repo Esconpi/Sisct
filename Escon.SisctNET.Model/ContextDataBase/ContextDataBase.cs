@@ -140,5 +140,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<AccountPlanType> AccountPlanTypes { get; set; }
 
         public DbSet<AccountPlanTypeGroup> AccountPlanTypeGroups { get; set; }
+
+        public DbSet<TaxSupplement> TaxSupplements { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IStateService _stateService;
         private readonly ICstService _cstService;
         private readonly ICsosnService _csosnService;
+        private readonly ITaxSupplementService _taxSupplementService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -62,6 +63,7 @@ namespace Escon.SisctNET.Web.Controllers
             IStateService stateService,
             ICstService cstService,
             ICsosnService csosnService,
+            ITaxSupplementService taxSupplementService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
         {
@@ -89,6 +91,7 @@ namespace Escon.SisctNET.Web.Controllers
             _stateService = stateService;
             _cstService = cstService;
             _csosnService = csosnService;
+            _taxSupplementService = taxSupplementService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -27121,6 +27124,8 @@ namespace Escon.SisctNET.Web.Controllers
                         return View();
                     }
 
+                    var supplements = _taxSupplementService.FindByTaxSupplement(impAnexo.Id).GroupBy(_ => _.Aliquota).ToList();
+
                     var notas = _noteService.FindByNotes(companyId, year, month);
                     var products = _itemService.FindByProductsType(notas, Model.TypeTaxation.AP);
                     notas = products.Select(_ => _.Note).Distinct().ToList();
@@ -27200,6 +27205,36 @@ namespace Escon.SisctNET.Web.Controllers
                     var devoFornecedors = _devoFornecedorService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                     var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                     var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+
+                    foreach (var s in supplements)
+                    {
+                        var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
+
+                        if (vendaTemp == null)
+                        {
+                            vendaTemp = new VendaAnexo();
+
+                            vendaTemp.Base = s.Sum(_ => _.Base);
+                            vendaTemp.Aliquota = s.Key;
+                            vendaTemp.Icms = s.Sum(_ => _.Icms);
+
+                            vendas.Add(vendaTemp);
+                        }
+                        else
+                        {
+                            foreach (var venda in vendas)
+                            {
+                                if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                                {
+                                    venda.Base += s.Sum(_ => _.Base);
+                                    venda.Icms += s.Sum(_ => _.Icms);
+                                }
+                            }
+                        }
+
+                    }
+
+                    vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
 
                     ViewBag.VendasInternas = vendas;
                     ViewBag.DevoFornecedorInternas = devoFornecedors;

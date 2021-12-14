@@ -1,0 +1,51 @@
+﻿@model Escon.SisctNET.Model.Company
+
+@{
+    ViewData["Title"] = "Supplement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-controller="TaxAnexo" asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" asp-route-year="@SessionManager.GetYearInSession()" asp-route-month="@SessionManager.GetMonthInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>        <h3 class="box-title"> <strong>Adicionar Complemento:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document)</h3>
+    </div>
+    <div class="box-body">
+        <div class="col-lg-12">
+            <form asp-controller="TaxAnexo" asp-action="Supplement" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="form-group col-lg-5 col-md-5 col-xs-12">
+                        <label class="control-label">Nº Nota</label>
+                        <input class="form-control" name="nNF" required>
+                    </div>
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label class="control-label">Data Nota</label>
+                        <input type="date" class="form-control" name="dhEmi" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">Base</label>
+                        <input class="form-control money" name="Base">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">Aliquota</label>
+                        <input class="form-control money" name="Aliquota">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label class="control-label">ICMS</label>
+                        <input class="form-control money" name="Icms">
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+

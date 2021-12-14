@@ -24,6 +24,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IVendaAnexoService _vendaAnexoService;
         private readonly INoteService _noteService;
         private readonly IProductNoteService _productNoteService;
+        private readonly ITaxSupplementService _taxSupplementService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public TaxAnexoController(
@@ -38,6 +39,7 @@ namespace Escon.SisctNET.Web.Controllers
             IVendaAnexoService vendaAnexoService,
             INoteService noteService,
             IProductNoteService productNoteService,
+            ITaxSupplementService taxSupplementService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
              IHttpContextAccessor httpContextAccessor)
@@ -55,6 +57,7 @@ namespace Escon.SisctNET.Web.Controllers
             _vendaAnexoService = vendaAnexoService;
             _noteService = noteService;
             _productNoteService = productNoteService;
+            _taxSupplementService = taxSupplementService;
             _appEnvironment = env;
         }
 
@@ -78,6 +81,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Model.DevoFornecedor> devoFornecedors = new List<Model.DevoFornecedor>();
                 List<Model.CompraAnexo> compras = new List<Model.CompraAnexo>();
                 List<Model.DevoCliente> devoClientes = new List<Model.DevoCliente>();
+                List<Model.TaxSupplement> notes = new List<TaxSupplement>();
+                List<IGrouping<decimal?, Model.TaxSupplement>> supplements = new List<IGrouping<decimal?, TaxSupplement>>();
 
                 if (result != null)
                 {
@@ -85,13 +90,45 @@ namespace Escon.SisctNET.Web.Controllers
                     devoFornecedors = _devoFornecedorService.FindByDevoTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
                     compras = _compraAnexoService.FindByComprasTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
                     devoClientes = _devoClienteService.FindByDevoTax(result.Id).OrderBy(_ => _.Aliquota).ToList();
+                    notes = _taxSupplementService.FindByTaxSupplement(result.Id);
+                    supplements = _taxSupplementService.FindByTaxSupplement(result.Id).GroupBy(_ => _.Aliquota).ToList();
                 }
 
+                foreach(var s in supplements)
+                {
+                    var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
+
+                    if (vendaTemp == null)
+                    {
+                        vendaTemp = new VendaAnexo();
+
+                        vendaTemp.Base = s.Sum(_ => _.Base);
+                        vendaTemp.Aliquota = s.Key;
+                        vendaTemp.Icms = s.Sum(_ => _.Icms);
+
+                        vendas.Add(vendaTemp);
+                    }
+                    else
+                    {
+                        foreach (var venda in vendas)
+                        {
+                            if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                            {
+                                venda.Base += s.Sum(_ => _.Base);
+                                venda.Icms += s.Sum(_ => _.Icms);
+                            }
+                        }
+                    }
+
+                }
+
+                vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
 
                 ViewBag.VendasInternas = vendas;
                 ViewBag.DevoFornecedorInternas = devoFornecedors;
                 ViewBag.ComprasInternas = compras;
                 ViewBag.DevoClienteInternas = devoClientes;
+                ViewBag.Notes = notes;
 
                 return View(result);
 
@@ -101,6 +138,53 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
 
+        }
+
+        [HttpGet]
+        public IActionResult Supplement()
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _companyService.FindById(SessionManager.GetCompanyIdInSession(), null);
+           
+                return View(comp);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Supplement(Model.TaxSupplement entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                long companyid = SessionManager.GetCompanyIdInSession();
+                string year = SessionManager.GetYearInSession();
+                string month = SessionManager.GetMonthInSession();
+
+                var result = _service.FindByMonth(companyid, month, year);
+
+                entity.TaxAnexoId = result.Id;
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+
+                _taxSupplementService.Create(entity, GetLog(OccorenceLog.Create));
+
+                return RedirectToAction("Index", new { id = companyid, year = year, month = month });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
         }
 
         [HttpGet]

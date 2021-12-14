@@ -51,6 +51,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICreditBalanceService _creditBalanceService;
         private readonly IConfiguration _configuration;
         private readonly ITaxProducerService _taxProducerService;
+        private readonly ITaxSupplementService _taxSupplementService;
 
         public ProductNote(
             IConfiguration configuration,
@@ -87,6 +88,7 @@ namespace Escon.SisctNET.Web.Controllers
             IVendaAnexoService vendaAnexoService,
             ICreditBalanceService creditBalanceService,
             ITaxProducerService taxProducerService,
+            ITaxSupplementService taxSupplementService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
         {
@@ -124,6 +126,7 @@ namespace Escon.SisctNET.Web.Controllers
             _creditBalanceService = creditBalanceService;
             _configuration = configuration;
             _taxProducerService = taxProducerService;
+            _taxSupplementService = taxSupplementService;
         }
 
         public IActionResult Index(long noteId)
@@ -1249,7 +1252,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
 
                                         totalIcmsFreteIE += calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), valorAgreg);
-                                        //totalIcmsFreteIE += calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), valorAgreg) - prod.IcmsCTe;
                                     }
                                 }
                             }
@@ -1670,6 +1672,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     return View(null);
                                 }
 
+                                var supplements = _taxSupplementService.FindByTaxSupplement(impAnexo.Id).GroupBy(_ => _.Aliquota).ToList();
+
                                 var produtosAP = _service.FindByProductsType(notes, Model.TypeTaxation.AP);
 
                                 decimal totalFreteAPIE = 0;
@@ -1719,6 +1723,36 @@ namespace Escon.SisctNET.Web.Controllers
                                 var devoFornecedors = _devoFornecedorService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                                 var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                                 var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+
+                                foreach (var s in supplements)
+                                {
+                                    var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
+
+                                    if (vendaTemp == null)
+                                    {
+                                        vendaTemp = new VendaAnexo();
+
+                                        vendaTemp.Base = s.Sum(_ => _.Base);
+                                        vendaTemp.Aliquota = s.Key;
+                                        vendaTemp.Icms = s.Sum(_ => _.Icms);
+
+                                        vendas.Add(vendaTemp);
+                                    }
+                                    else
+                                    {
+                                        foreach (var venda in vendas)
+                                        {
+                                            if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                                            {
+                                                venda.Base += s.Sum(_ => _.Base);
+                                                venda.Icms += s.Sum(_ => _.Icms);
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                                vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
 
                                 ViewBag.VendasInternas = vendas;
                                 ViewBag.DevoFornecedorInternas = devoFornecedors;
@@ -2769,6 +2803,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 return View(null);
                             }
 
+                            var supplements = _taxSupplementService.FindByTaxSupplement(impAnexo.Id).GroupBy(_ => _.Aliquota).ToList();
+
                             baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
                             productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
                             productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
@@ -2786,6 +2822,36 @@ namespace Escon.SisctNET.Web.Controllers
                             var devoFornecedors = _devoFornecedorService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                             var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                             var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
+
+                            foreach (var s in supplements)
+                            {
+                                var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
+
+                                if (vendaTemp == null)
+                                {
+                                    vendaTemp = new VendaAnexo();
+
+                                    vendaTemp.Base = s.Sum(_ => _.Base);
+                                    vendaTemp.Aliquota = s.Key;
+                                    vendaTemp.Icms = s.Sum(_ => _.Icms);
+
+                                    vendas.Add(vendaTemp);
+                                }
+                                else
+                                {
+                                    foreach (var venda in vendas)
+                                    {
+                                        if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                                        {
+                                            venda.Base += s.Sum(_ => _.Base);
+                                            venda.Icms += s.Sum(_ => _.Icms);
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
 
                             ViewBag.VendasInternas = vendas;
                             ViewBag.DevoFornecedorInternas = devoFornecedors;
@@ -3805,6 +3871,8 @@ namespace Escon.SisctNET.Web.Controllers
                             return View(null);
                         }
 
+                        var supplements = _taxSupplementService.FindByTaxSupplement(impAnexo.Id).GroupBy(_ => _.Aliquota).ToList();
+
                         var mesAtual = importMes.NumberMonth(month);
                         var mesAnterior = importMes.NameMonthPrevious(mesAtual);
                         decimal saldoCredorAnterior = 0;
@@ -3824,6 +3892,35 @@ namespace Escon.SisctNET.Web.Controllers
                         var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                         var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
 
+                        foreach (var s in supplements)
+                        {
+                            var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
+
+                            if (vendaTemp == null)
+                            {
+                                vendaTemp = new VendaAnexo();
+
+                                vendaTemp.Base = s.Sum(_ => _.Base);
+                                vendaTemp.Aliquota = s.Key;
+                                vendaTemp.Icms = s.Sum(_ => _.Icms);
+
+                                vendas.Add(vendaTemp);
+                            }
+                            else
+                            {
+                                foreach (var venda in vendas)
+                                {
+                                    if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                                    {
+                                        venda.Base += s.Sum(_ => _.Base);
+                                        venda.Icms += s.Sum(_ => _.Icms);
+                                    }
+                                }
+                            }
+
+                        }
+
+                        vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
 
                         decimal baseCalcFecop = Convert.ToDecimal(vendas.Where(_ => Convert.ToDecimal(_.Aliquota).Equals(18)).Sum(_ => _.Base)),
                                 valorFecop = baseCalcFecop * 1 / 100;

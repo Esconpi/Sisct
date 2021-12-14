@@ -11,7 +11,14 @@
         <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
         <h3 class="box-title"><strong> Dados Anexo</strong></h3>
         <div class="btn-group pull-right">
-            <a asp-action="Import" size="large" class="btn btn-primary"> 
+            @if (Model != null)
+            {
+                <a asp-action="Supplement" size="large" class="btn btn-primary">
+                    <i class="fa fa-plus"></i>
+                    Complemento
+                </a>
+            }
+            <a asp-action="Import" size="large" class="btn btn-primary">
                 <i class="fa fa-cloud-upload"></i>
                 Importar
             </a>
@@ -50,6 +57,52 @@
                 @await Html.PartialAsync("_AutoPartsAttachmentEntry", Model, new ViewDataDictionary(ViewData))
 
                 @await Html.PartialAsync("_AutoPartsAttachmentExit", Model, new ViewDataDictionary(ViewData))
+
+
+                <br />
+                <br />
+
+                if (ViewBag.Notes.Count > 0)
+                {
+                    <table class="table" style="border:2px solid; font-size:12px;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;border:1px solid;" colspan="5">
+                                    COMPLEMENTO
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center;border:1px solid;">
+                                    NOTA
+                                </th>
+                                <th style="text-align:center;border:1px solid;">
+                                    Emissão
+                                </th>
+                                <th style="text-align:center;border:1px solid;">
+                                    BASE DE CÁLCULO
+                                </th>
+                                <th style="text-align:center;border:1px solid;">
+                                    ALÍQUOTA
+                                </th>
+                                <th style="text-align:center;border:1px solid;">
+                                    VALOR DO ICMS
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var note in ViewBag.Notes)
+                            {
+                                <tr style="border:1px solid;">
+                                    <td style="text-align: right; padding-right: 10px; border:1px solid;">@note.Nnf</td>
+                                    <td style="text-align: right; padding-right: 10px; border: 1px solid;">@note.Dhemi.ToString("dd/MM/yyyy")</td>
+                                    <td style="text-align: right; padding-right: 10px; border: 1px solid;">@string.Format("{0:N}", note.Base)</td>
+                                    <td style="text-align: right; padding-right: 10px; border: 1px solid;">@string.Format("{0:N}", note.Aliquota)</td>
+                                    <td style="text-align: right; padding-right: 10px; border: 1px solid;">@string.Format("{0:N}", note.Icms)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
             }
         </div>
     </div>
