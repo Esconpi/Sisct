@@ -5,7 +5,6 @@ using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -495,25 +494,32 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                result.TypeTaxation = entity.TypeTaxation;
-                result.Percentual = entity.Percentual;
-                result.PercentualBcr = entity.PercentualBcr;
-                result.PercentualInciso = entity.PercentualInciso;
-                result.Bcr = entity.Bcr;
                 result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                 result.Updated = DateTime.Now;
                 _service.Update(result, GetLog(OccorenceLog.Update));
 
-                entity.Code = result.Code;
-                entity.Ncm = result.Ncm;
-                entity.Name = result.Name;
-                entity.Active = result.Active;
-                entity.CompanyId = result.CompanyId;
-                entity.Month = result.Month;
-                entity.Year = result.Year;
-                entity.DateEnd = null;
+                ProductIncentivo prod = new ProductIncentivo();
 
-                _service.Create(entity, GetLog(OccorenceLog.Create));
+                prod.Arquivo = result.Arquivo;
+                prod.Code = result.Code;
+                prod.Ncm = result.Ncm;
+                prod.Name = result.Name;
+                prod.Active = result.Active;
+                prod.CompanyId = result.CompanyId;
+                prod.Month = result.Month;
+                prod.Year = result.Year;
+                prod.DateStart = entity.DateStart;
+                prod.DateEnd = null;
+                prod.TypeTaxation = entity.TypeTaxation;
+                prod.Percentual = entity.Percentual;
+                prod.PercentualBcr = entity.PercentualBcr;
+                prod.PercentualInciso = entity.PercentualInciso;
+                prod.CstId = result.CstId;
+                prod.Bcr = entity.Bcr;
+                prod.Created = DateTime.Now;
+                prod.Updated = prod.Created;
+
+                _service.Create(prod, GetLog(OccorenceLog.Create));
 
 
                 return RedirectToAction("IndexAll", new { id = result.CompanyId });
