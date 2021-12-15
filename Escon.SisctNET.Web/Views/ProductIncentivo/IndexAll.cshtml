@@ -48,7 +48,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.TypeTaxation)
                         </th>
-
+                        <th>
+                            Percentual
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -149,6 +151,7 @@
                         }
                     },
                     { "data": "tipoTaxation" },
+                    { "data": "percentual" },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
@@ -160,7 +163,7 @@
 
                             }
                             else {
-                                return ""
+                                return "<a href='#" + data + "' class = 'showDetails glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhes' id='" + row.id + "' /> "
                             }
                         }
                     }
@@ -228,6 +231,7 @@ else
                         }
                     },
                     { "data": "tipoTaxation" },
+                    { "data": "percentual" },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {

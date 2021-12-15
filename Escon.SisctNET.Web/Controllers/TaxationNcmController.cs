@@ -633,34 +633,84 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                rst.Updated = DateTime.Now;
-                rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 
-                var lastId = _service.FindAll(null).Max(_ => _.Id);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.DateEnd = null;
-                entity.CompanyId = rst.CompanyId;
-                entity.NcmId = rst.NcmId;
-                entity.TypeNcmId = rst.TypeNcmId;
+                List<TaxationNcm> createTributacoes = new List<TaxationNcm>();
+                List<TaxationNcm> updateTributacoes = new List<TaxationNcm>();
 
-                if (entity.CstEntradaId.Equals((long)0))
+                if (Request.Form["opcao"].ToString() == "1")
                 {
-                    entity.CstEntradaId = null;
+                    rst.Updated = DateTime.Now;
+                    rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+
+                    var lastId = _service.FindAll(null).Max(_ => _.Id);
+
+                    TaxationNcm taxationNcm = new TaxationNcm();
+
+                    taxationNcm.Created = DateTime.Now;
+                    taxationNcm.Updated = taxationNcm.Created;
+                    taxationNcm.DateEnd = null;
+                    taxationNcm.CompanyId = rst.CompanyId;
+                    taxationNcm.NcmId = rst.NcmId;
+                    taxationNcm.TypeNcmId = rst.TypeNcmId;
+                    taxationNcm.CstEntradaId = rst.CstEntradaId;
+                    taxationNcm.CstSaidaId = rst.CstSaidaId;
+                    taxationNcm.Status = true;
+                    taxationNcm.CodeProduct = rst.CodeProduct;
+                    taxationNcm.Id = lastId + 1;
+                    taxationNcm.TaxationTypeNcmId = rst.TaxationTypeNcmId;
+                    taxationNcm.DateStart = entity.DateStart;
+                    taxationNcm.Year = rst.Year;
+                    taxationNcm.Month = rst.Month;
+                    taxationNcm.Arquivo = rst.Arquivo;
+                    taxationNcm.Pis = entity.Pis;
+                    taxationNcm.Cofins = entity.Cofins;
+                    taxationNcm.NatReceita = rst.NatReceita;
+
+                    createTributacoes.Add(taxationNcm);
+                    updateTributacoes.Add(rst);
+
+                }
+                else if (Request.Form["opcao"].ToString() == "2")
+                {
+                    var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null) && _.DateStart < entity.DateStart).ToList();
+
+                    foreach (var n in ncms)
+                    {
+                        n.Updated = DateTime.Now;
+                        n.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+
+                        var lastId = _service.FindAll(null).Max(_ => _.Id);
+
+                        TaxationNcm taxationNcm = new TaxationNcm();
+
+                        taxationNcm.Created = DateTime.Now;
+                        taxationNcm.Updated = taxationNcm.Created;
+                        taxationNcm.DateEnd = null;
+                        taxationNcm.CompanyId = n.CompanyId;
+                        taxationNcm.NcmId = n.NcmId;
+                        taxationNcm.TypeNcmId = n.TypeNcmId;
+                        taxationNcm.CstEntradaId = n.CstEntradaId;
+                        taxationNcm.CstSaidaId = n.CstSaidaId;
+                        taxationNcm.Status = true;
+                        taxationNcm.CodeProduct = n.CodeProduct;
+                        taxationNcm.Id = lastId + 1;
+                        taxationNcm.TaxationTypeNcmId = n.TaxationTypeNcmId;
+                        taxationNcm.DateStart = entity.DateStart;
+                        taxationNcm.Year = n.Year;
+                        taxationNcm.Month = n.Month;
+                        taxationNcm.Arquivo = n.Arquivo;
+                        taxationNcm.Pis = entity.Pis;
+                        taxationNcm.Cofins = entity.Cofins;
+                        taxationNcm.NatReceita = n.NatReceita;
+
+                        createTributacoes.Add(taxationNcm);
+                        updateTributacoes.Add(rst);
+                    }
                 }
 
-                if (entity.CstSaidaId.Equals((long)0))
-                {
-                    entity.CstSaidaId = null;
-                }
+                _service.Update(updateTributacoes, GetLog(OccorenceLog.Update));
+                _service.Create(createTributacoes, GetLog(OccorenceLog.Create));
 
-                entity.Status = true;
-                entity.CodeProduct = rst.CodeProduct;
-                entity.Id = lastId + 1;
-                rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
-
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("IndexAll", new { id = rst.CompanyId });
             }
             catch (Exception ex)
@@ -995,7 +1045,10 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Status).ThenBy(_ => _.Ncm.Code).ToList();
+            var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession())
+                .OrderBy(_ => _.Status)
+                .ThenBy(_ => _.Ncm.Code)
+                .ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -1059,7 +1112,9 @@ namespace Escon.SisctNET.Web.Controllers
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
             var ncmsAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession(), SessionManager.GetYearInSession(), SessionManager.GetMonthInSession())
-                .OrderBy(_ => _.Status).ThenBy(_ => _.Ncm.Code).ToList();
+                .OrderBy(_ => _.Status)
+                .ThenBy(_ => _.Ncm.Code)
+                .ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

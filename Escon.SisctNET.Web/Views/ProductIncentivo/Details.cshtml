@@ -31,12 +31,15 @@
         <dd>
             @Html.DisplayFor(model => model.TypeTaxation)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Percentual)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Percentual)
-        </dd>
+        @if (Model.Company.TypeCompany == true)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Percentual)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Percentual)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.PercentualBcr)
         </dt>

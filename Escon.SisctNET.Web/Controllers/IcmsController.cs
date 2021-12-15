@@ -27124,6 +27124,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return View();
                     }
 
+                    var notesComplement = _taxSupplementService.FindByTaxSupplement(impAnexo.Id);
                     var supplements = _taxSupplementService.FindByTaxSupplement(impAnexo.Id).GroupBy(_ => _.Aliquota).ToList();
 
                     var notas = _noteService.FindByNotes(companyId, year, month);
@@ -27206,37 +27207,48 @@ namespace Escon.SisctNET.Web.Controllers
                     var compras = _compraAnexoService.FindByComprasTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
                     var devoClientes = _devoClienteService.FindByDevoTax(impAnexo.Id).OrderBy(_ => _.Aliquota).ToList();
 
+                    List<List<decimal>> vendasTotal = new List<List<decimal>>();
+
+                    foreach (var venda in vendas)
+                    {
+                        List<decimal> vendaTotal = new List<decimal>();
+
+                        vendaTotal.Add(Convert.ToDecimal(venda.Base));
+                        vendaTotal.Add(Convert.ToDecimal(venda.Aliquota));
+                        vendaTotal.Add(Convert.ToDecimal(venda.Icms));
+
+                        vendasTotal.Add(vendaTotal);
+                    }
+
                     foreach (var s in supplements)
                     {
                         var vendaTemp = vendas.Where(_ => _.Aliquota.Equals(s.Key)).FirstOrDefault();
 
                         if (vendaTemp == null)
                         {
-                            vendaTemp = new VendaAnexo();
+                            List<decimal> vendaTotal = new List<decimal>();
 
-                            vendaTemp.Base = s.Sum(_ => _.Base);
-                            vendaTemp.Aliquota = s.Key;
-                            vendaTemp.Icms = s.Sum(_ => _.Icms);
+                            vendaTotal.Add(Convert.ToDecimal(s.Sum(_ => _.Base)));
+                            vendaTotal.Add(Convert.ToDecimal(s.Key));
+                            vendaTotal.Add(Convert.ToDecimal(s.Sum(_ => _.Icms)));
 
-                            vendas.Add(vendaTemp);
+                            vendasTotal.Add(vendaTotal);
                         }
                         else
                         {
-                            foreach (var venda in vendas)
+                            foreach (var venda in vendasTotal)
                             {
-                                if (venda.Aliquota.Equals(vendaTemp.Aliquota))
+                                if (venda[1].Equals(vendaTemp.Aliquota))
                                 {
-                                    venda.Base += s.Sum(_ => _.Base);
-                                    venda.Icms += s.Sum(_ => _.Icms);
+                                    venda[0] += Convert.ToDecimal(s.Sum(_ => _.Base));
+                                    venda[2] += Convert.ToDecimal(s.Sum(_ => _.Icms));
                                 }
                             }
                         }
 
                     }
 
-                    vendas = vendas.OrderBy(_ => _.Aliquota).ToList();
-
-                    ViewBag.VendasInternas = vendas;
+                    ViewBag.VendasInternas = vendasTotal;
                     ViewBag.DevoFornecedorInternas = devoFornecedors;
                     ViewBag.ComprasInternas = compras;
                     ViewBag.DevoClienteInternas = devoClientes;
@@ -27265,7 +27277,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.IcmsTotalA = icmsTotalA;
 
                     // D
-                    decimal icmsTotalD = Convert.ToDecimal(vendas.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsVenda4) +
+                    decimal icmsTotalD = Convert.ToDecimal(vendas.Sum(_ => _.Icms)) + Convert.ToDecimal(notesComplement.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsVenda4) +
                                          Convert.ToDecimal(impAnexo.IcmsVenda7) + Convert.ToDecimal(impAnexo.IcmsVenda12);
                     icmsTotalD -= (Convert.ToDecimal(devoClientes.Sum(_ => _.Icms)) + Convert.ToDecimal(impAnexo.IcmsDevoCliente4) +
                                     Convert.ToDecimal(impAnexo.IcmsDevoCliente12));

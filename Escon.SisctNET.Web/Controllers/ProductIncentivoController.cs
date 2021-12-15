@@ -237,7 +237,9 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (ncmRaiz == "")
                     {
-                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month) && _.Ncm.Equals(prod.Ncm)).ToList();
+                        var products = _service.FindAll(null)
+                            .Where(_ => _.CompanyId.Equals(companyId) && _.Ncm.Equals(prod.Ncm) && _.DateEnd.Equals(null))
+                            .ToList();
 
                         foreach (var p in products)
                         {
@@ -259,7 +261,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.Year.Equals(year) && _.Month.Equals(month)).ToList();
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).ToList();
                         products = _service.FindByProducts(products, ncmRaiz);
                         foreach (var p in products)
                         {
@@ -281,7 +283,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Request.Form["type"].ToString() == "3")
                 {
-                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).ToList();
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.DateEnd.Equals(null)).ToList();
 
                     foreach (var p in products)
                     {
@@ -494,33 +496,121 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                result.Updated = DateTime.Now;
-                _service.Update(result, GetLog(OccorenceLog.Update));
 
-                ProductIncentivo prod = new ProductIncentivo();
+                List<Model.ProductIncentivo> createProducts = new List<Model.ProductIncentivo>();
+                List<Model.ProductIncentivo> updateProducts = new List<Model.ProductIncentivo>();
 
-                prod.Arquivo = result.Arquivo;
-                prod.Code = result.Code;
-                prod.Ncm = result.Ncm;
-                prod.Name = result.Name;
-                prod.Active = result.Active;
-                prod.CompanyId = result.CompanyId;
-                prod.Month = result.Month;
-                prod.Year = result.Year;
-                prod.DateStart = entity.DateStart;
-                prod.DateEnd = null;
-                prod.TypeTaxation = entity.TypeTaxation;
-                prod.Percentual = entity.Percentual;
-                prod.PercentualBcr = entity.PercentualBcr;
-                prod.PercentualInciso = entity.PercentualInciso;
-                prod.CstId = result.CstId;
-                prod.Bcr = entity.Bcr;
-                prod.Created = DateTime.Now;
-                prod.Updated = prod.Created;
+                if (Request.Form["type"].ToString() == "1")
+                {
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    result.Updated = DateTime.Now;
 
-                _service.Create(prod, GetLog(OccorenceLog.Create));
+                    updateProducts.Add(result);
 
+                    ProductIncentivo prod = new ProductIncentivo();
+
+                    prod.Arquivo = result.Arquivo;
+                    prod.Code = result.Code;
+                    prod.Ncm = result.Ncm;
+                    prod.Name = result.Name;
+                    prod.Cest = result.Cest;
+                    prod.Active = result.Active;
+                    prod.CompanyId = result.CompanyId;
+                    prod.Month = result.Month;
+                    prod.Year = result.Year;
+                    prod.DateStart = entity.DateStart;
+                    prod.DateEnd = null;
+                    prod.TypeTaxation = result.TypeTaxation;
+                    prod.Percentual = entity.Percentual;
+                    prod.PercentualBcr = entity.PercentualBcr;
+                    prod.PercentualInciso = entity.PercentualInciso;
+                    prod.CstId = result.CstId;
+                    prod.Bcr = result.Bcr;
+                    prod.Created = DateTime.Now;
+                    prod.Updated = prod.Created;
+
+                    updateProducts.Add(result);
+                    createProducts.Add(prod);
+                }
+                else if (Request.Form["type"].ToString() == "2")
+                {
+
+                    var products = _service.FindAll(null)
+                        .Where(_ => _.CompanyId.Equals(result.CompanyId) && _.Ncm.Equals(result.Ncm) && _.DateEnd.Equals(null) && _.DateStart < entity.DateStart)
+                        .ToList();
+
+                    foreach (var p in products)
+                    {
+                        p.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                        p.Updated = DateTime.Now;
+
+                        updateProducts.Add(p);
+
+                        ProductIncentivo prod = new ProductIncentivo();
+
+                        prod.Arquivo = p.Arquivo;
+                        prod.Code = p.Code;
+                        prod.Ncm = p.Ncm;
+                        prod.Name = p.Name;
+                        prod.Cest = p.Cest;
+                        prod.Active = p.Active;
+                        prod.CompanyId = p.CompanyId;
+                        prod.Month = p.Month;
+                        prod.Year = p.Year;
+                        prod.DateStart = entity.DateStart;
+                        prod.DateEnd = null;
+                        prod.TypeTaxation = p.TypeTaxation;
+                        prod.Percentual = entity.Percentual;
+                        prod.PercentualBcr = entity.PercentualBcr;
+                        prod.PercentualInciso = entity.PercentualInciso;
+                        prod.CstId = p.CstId;
+                        prod.Bcr = p.Bcr;
+                        prod.Created = DateTime.Now;
+                        prod.Updated = prod.Created;
+
+                        createProducts.Add(prod);
+                    }
+
+                }
+                else if (Request.Form["type"].ToString() == "3")
+                {
+                    var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(result.CompanyId) && _.DateEnd.Equals(null) && _.DateStart < entity.DateStart).ToList();
+
+                    foreach (var p in products)
+                    {
+                        p.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                        p.Updated = DateTime.Now;
+
+                        updateProducts.Add(p);
+
+                        ProductIncentivo prod = new ProductIncentivo();
+
+                        prod.Arquivo = p.Arquivo;
+                        prod.Code = p.Code;
+                        prod.Ncm = p.Ncm;
+                        prod.Name = p.Name;
+                        prod.Cest = p.Cest;
+                        prod.Active = p.Active;
+                        prod.CompanyId = p.CompanyId;
+                        prod.Month = p.Month;
+                        prod.Year = p.Year;
+                        prod.DateStart = entity.DateStart;
+                        prod.DateEnd = null;
+                        prod.TypeTaxation = p.TypeTaxation;
+                        prod.Percentual = entity.Percentual;
+                        prod.PercentualBcr = entity.PercentualBcr;
+                        prod.PercentualInciso = entity.PercentualInciso;
+                        prod.CstId = p.CstId;
+                        prod.Bcr = p.Bcr;
+                        prod.Created = DateTime.Now;
+                        prod.Updated = prod.Created;
+
+                        createProducts.Add(prod);
+                    }
+                }
+
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
+                _service.Create(createProducts, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("IndexAll", new { id = result.CompanyId });
             }
@@ -612,7 +702,10 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Active).ToList();
+            var produtosAll = _service.FindByAllProducts(SessionManager.GetCompanyIdInSession())
+                .OrderBy(_ => _.DateEnd)
+                .ThenBy(_ => _.Active)
+                .ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -636,19 +729,20 @@ namespace Escon.SisctNET.Web.Controllers
                 produtos = produtosAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
 
                 var product = from r in produtos
-                           where ids.ToArray().Contains(r.Id)
-                           select new
-                           {
-                               Id = r.Id.ToString(),
-                               Product = r.Code + " - " + r.Name,
-                               Ncm = r.Ncm,
-                               Ccest = r.Cest,
-                               Active = r.Active,
-                               TipoTaxation = r.TypeTaxation, 
-                               Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
+                              where ids.ToArray().Contains(r.Id)
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Product = r.Code + " - " + r.Name,
+                                  Ncm = r.Ncm,
+                                  Ccest = r.Cest,
+                                  Active = r.Active,
+                                  TipoTaxation = r.TypeTaxation,
+                                  Percentual = r.Company.ChapterId == 4 ? r.PercentualInciso : r.Percentual,
+                                  Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
 
-                           };
+                               };
 
                 return Ok(new { draw = draw, recordsTotal = produtos.Count(), recordsFiltered = produtos.Count(), data = product.Skip(start).Take(lenght) });
 
@@ -666,6 +760,7 @@ namespace Escon.SisctNET.Web.Controllers
                                Ccest = r.Cest,
                                Active = r.Active,
                                TipoTaxation = r.TypeTaxation,
+                               Percentual = r.Company.ChapterId == 4 ? r.PercentualInciso : r.Percentual,
                                Inicio = Convert.ToDateTime(r.DateStart).ToString("dd/MM/yyyy"),
                                Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy"),
 
@@ -682,7 +777,8 @@ namespace Escon.SisctNET.Web.Controllers
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
             var produtosAll = _service.FindByProducts(SessionManager.GetCompanyIdInSession(),SessionManager.GetYearInSession(),SessionManager.GetMonthInSession())
-                .OrderBy(_ => _.Active).ToList();
+                .OrderBy(_ => _.Active)
+                .ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

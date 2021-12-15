@@ -28,7 +28,7 @@
                         @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Base)</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda[0])</td>
                             </tr>
                         }
                     </table>
@@ -38,7 +38,7 @@
                         @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Aliquota) %</td>
+                                <td style="text-align:center; padding-right:10px" width="900px">@string.Format("{0:N}", venda[1]) %</td>
                             </tr>
                         }
                     </table>
@@ -48,7 +48,7 @@
                         @foreach (var venda in ViewBag.VendasInternas)
                         {
                             <tr style="border:1px solid;">
-                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda.Icms)</td>
+                                <td style="text-align:right; padding-right:10px" width="900px">@string.Format("{0:N}", venda[2])</td>
                             </tr>
                         }
                     </table>

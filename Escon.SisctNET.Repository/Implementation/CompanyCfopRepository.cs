@@ -55,6 +55,13 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
+        public List<CompanyCfop> FindByCfopCompraPerda(string company, Log log = null)
+        {
+            var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)20)).ToList();
+            AddLog(log);
+            return result;
+        }
+
         public List<CompanyCfop> FindByCfopCompraST(string company, Log log = null)
         {
             var result = _context.CompanyCfops.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)) && _.Active.Equals(true) && _.CfopTypeId.Equals((long)9)).ToList();

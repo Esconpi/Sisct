@@ -43,7 +43,7 @@
                         {
                             @if (Model.TypeTaxation == "Incentivado/Normal")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Normal" selected>Incentivado/Normal</option>
                                     <option value="Incentivado/ST">Incentivado/ST</option>
                                     <option value="Normal">Normal</option>
@@ -53,7 +53,7 @@
                             }
                             else if (Model.TypeTaxation == "Incentivado/ST")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Normal">Incentivado/Normal</option>
                                     <option value="Incentivado/ST" selected>Incentivado/ST</option>
                                     <option value="Normal">Normal</option>
@@ -63,7 +63,7 @@
                             }
                             else if (Model.TypeTaxation == "ST")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Normal">Incentivado/Normal</option>
                                     <option value="Incentivado/ST">Incentivado/ST</option>
                                     <option value="Normal">Normal</option>
@@ -73,7 +73,7 @@
                             }
                             else if (Model.TypeTaxation == "Isento")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Normal">Incentivado/Normal</option>
                                     <option value="Incentivado/ST">Incentivado/ST</option>
                                     <option value="Normal">Normal</option>
@@ -83,7 +83,7 @@
                             }
                             else
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Normal">Incentivado/Normal</option>
                                     <option value="Incentivado/ST">Incentivado/ST</option>
                                     <option value="Normal">Normal</option>
@@ -96,7 +96,7 @@
                         {
                             @if (Model.TypeTaxation == "Incentivado/Regime")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Regime" selected>Incentivado/Regime</option>
                                     <option value="Normal">Normal</option>
                                     <option value="ST">ST</option>
@@ -105,7 +105,7 @@
                             }
                             else if (Model.TypeTaxation == "Normal")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Regime">Incentivado/Regime</option>
                                     <option value="Normal" selected>Normal</option>
                                     <option value="ST">ST</option>
@@ -114,7 +114,7 @@
                             }
                             else if (Model.TypeTaxation == "ST")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Regime">Incentivado/Regime</option>
                                     <option value="Normal">Normal</option>
                                     <option value="ST" selected>ST</option>
@@ -123,7 +123,7 @@
                             }
                             else if (Model.TypeTaxation == "Isento")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Regime">Incentivado/Regime</option>
                                     <option value="Normal">Normal</option>
                                     <option value="ST">ST</option>
@@ -132,7 +132,7 @@
                             }
                             else
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Incentivado/Regime">Incentivado/Regime</option>
                                     <option value="Normal">Normal</option>
                                     <option value="ST">ST</option>
@@ -144,7 +144,7 @@
                         {
                             @if (Model.TypeTaxation == "Normal")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Normal" selected>Normal</option>
                                     <option value="ST">ST</option>
                                     <option value="Isento">Isento</option>
@@ -152,7 +152,7 @@
                             }
                             else if (Model.TypeTaxation == "ST")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Normal">Normal</option>
                                     <option value="ST" selected>ST</option>
                                     <option value="Isento">Isento</option>
@@ -160,7 +160,7 @@
                             }
                             else if (Model.TypeTaxation == "Isento")
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Normal">Normal</option>
                                     <option value="ST">ST</option>
                                     <option value="Isento" selected>Isento</option>
@@ -168,7 +168,7 @@
                             }
                             else
                             {
-                                <select class="form-control selectoption" name="typeTaxation" id="taxation">
+                                <select class="form-control selectoption" name="typeTaxation" id="taxation" disabled>
                                     <option value="Normal">Normal</option>
                                     <option value="ST">ST</option>
                                     <option value="Isento">Isento</option>
@@ -211,7 +211,7 @@
                         @Html.LabelFor(model => model.Bcr, "BCR", htmlAttributes: new { @class = "control-label col-md-12" })
                         <div class="checkbox">
                             <label>
-                                @Html.CheckBoxFor(model => model.Bcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true" })
+                                @Html.CheckBoxFor(model => model.Bcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_offstyle = "danger", @data_onstyle = "success", @readonly = "true", @disabled = "true" })
                             </label>
                         </div>
                     </div>
@@ -274,15 +274,6 @@
             $("#PercentualInciso").prop("disabled", true);
         }
     });
-
-    $("#type").on("change", function () {
-        if ($(this).val() === '2') {
-            $("#NcmRaiz").prop("disabled", false);
-        } else {
-            $("#NcmRaiz").prop("disabled", true);
-        }
-    });
-
 
     $("#checkbox").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {

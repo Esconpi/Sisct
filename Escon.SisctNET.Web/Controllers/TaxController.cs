@@ -702,6 +702,11 @@ namespace Escon.SisctNET.Web.Controllers
                     .Distinct()
                     .ToList();
 
+
+                var cfopsPerda = _companyCfopService.FindByCfopCompraPerda(comp.Document).Select(_ => _.Cfop.Code)
+                    .Distinct()
+                    .ToList();
+
                 List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                 List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 
@@ -1917,7 +1922,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (!comp.AnnexId.Equals((long)3))
                             {
-                                //  Incentivo de Produtos e Indústria
+                                //  Incentivo de Produto e Indústria
                                 var prodsAll = _productIncentivoService.FindByAllProducts(companyid);
                                 List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
                                 List<string> codeProdIncentivado = new List<string>();
@@ -1933,7 +1938,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (comp.TypeCompany.Equals(true))
                                 {
 
-                                    //  Incentivo Produtos
+                                    //  Incentivo Produto
 
                                     List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -2491,6 +2496,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         int status = 3;
                                         decimal percent = 0;
                                         bool cfop = false;
+                                        decimal vProd = 0;
 
                                         for (int k = 0; k < exitNotes[i].Count(); k++)
                                         {
@@ -2510,7 +2516,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     if (cfopsVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][k]["CFOP"]) ||
                                                         cfopsBoniVenda.Contains(exitNotes[i][k]["CFOP"]) || cfopsDevoCompra.Contains(exitNotes[i][k]["CFOP"]) ||
                                                         cfopsDevoCompraST.Contains(exitNotes[i][k]["CFOP"]) || cfopsTransf.Contains(exitNotes[i][k]["CFOP"]) ||
-                                                        cfopsTransfST.Contains(exitNotes[i][k]["CFOP"]))
+                                                        cfopsTransfST.Contains(exitNotes[i][k]["CFOP"]) || cfopsPerda.Contains(exitNotes[i][k]["CFOP"]))
                                                     {
                                                         cfop = true;
                                                     }
@@ -2519,6 +2525,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (cfop == true)
                                                 {
+                                                    if (exitNotes[i][k].ContainsKey("vProd"))
+                                                        vProd = Convert.ToDecimal(exitNotes[i][k]["vProd"]);
+
+                                                    if (exitNotes[i][k].ContainsKey("vFrete"))
+                                                        vProd += Convert.ToDecimal(exitNotes[i][k]["vFrete"]);
+
+                                                    if (exitNotes[i][k].ContainsKey("vDesc"))
+                                                        vProd -= Convert.ToDecimal(exitNotes[i][k]["vDesc"]);
+
+                                                    if (exitNotes[i][k].ContainsKey("vOutro"))
+                                                        vProd += Convert.ToDecimal(exitNotes[i][k]["vOutro"]);
+
+                                                    if (exitNotes[i][k].ContainsKey("vSeg"))
+                                                        vProd += Convert.ToDecimal(exitNotes[i][k]["vSeg"]);
+
                                                     if (codeProd.Contains(exitNotes[i][k]["cProd"]) && cestProd.Contains(cest))
                                                     {
                                                         if (codeProdIncentivado.Contains(exitNotes[i][k]["cProd"]) && cestIncentivado.Contains(cest))
@@ -2527,16 +2548,29 @@ namespace Escon.SisctNET.Web.Controllers
                                                             var percentualIncentivado = Convert.ToDecimal(prodsTemp.Where(_ => _.Code.Equals(exitNotes[i][k]["cProd"])).ToList().Select(_ => _.Percentual).FirstOrDefault());
                                                             percent = percentualIncentivado;
 
+                                                            if (percent < 100)
+                                                            {
+                                                                var percentNIncentivado = 100 - percent;
+
+                                                                vendasIncentivada += (vProd * percent) / 100;
+                                                                vendasNIncentivada += (vProd * percentNIncentivado) / 100;
+                                                            }
+                                                            else
+                                                            {
+                                                                vendasIncentivada += vProd;
+                                                            }
                                                         }
                                                         else if (codeProdST.Contains(exitNotes[i][k]["cProd"]) && cestST.Contains(cest))
                                                         {
                                                             status = 2;
                                                             percent = 0;
+                                                            vendasNIncentivada += vProd;
                                                         }
                                                         else if (codeProdIsento.Contains(exitNotes[i][k]["cProd"]) && cestIsento.Contains(cest))
                                                         {
                                                             status = 3;
                                                             percent = 0;
+                                                            vendasNIncentivada += vProd;
                                                         }
                                                     }
                                                     else
@@ -2580,8 +2614,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percent) / 100)).ToString();
                                                         }
 
-                                                        debitoIncetivo += (((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) / 100) * percent) / 100);
-                                                        vendasIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percent) / 100);
+                                                        debitoIncetivo += ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percent) / 100);
 
                                                         int indice = -1;
                                                         for (int j = 0; j < percentuaisNIncentivado.Count(); j++)
@@ -2608,8 +2641,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         }
 
                                                         debitoNIncentivo += ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percentNIncentivado) / 100);
-                                                        vendasNIncentivada += ((Convert.ToDecimal(exitNotes[i][k]["vICMS"]) * percentNIncentivado) / 100);
-
                                                     }
                                                     else
                                                     {
@@ -2638,7 +2669,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         }
 
                                                         debitoIncetivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
-                                                        vendasIncentivada += Convert.ToDecimal(exitNotes[i][k]["vBC"]);
                                                     }
                                                 }
                                                 else if (status == 2)
@@ -2668,7 +2698,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                     }
 
                                                     debitoNIncentivo += (Convert.ToDecimal(exitNotes[i][k]["vICMS"]));
-                                                    vendasNIncentivada += Convert.ToDecimal(exitNotes[i][k]["vBC"]);
                                                 }
                                             }
 
@@ -2704,6 +2733,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                             percentuaisIncentivado[pos][2] = (Convert.ToDecimal(percentuaisIncentivado[pos][2]) + ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percent) / 100)).ToString();
                                                         }
 
+                                                       
                                                         debitoIncetivo += ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percent) / 100);
 
                                                         int indice = -1;
@@ -2731,7 +2761,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         }
 
                                                         debitoNIncentivo += ((Convert.ToDecimal(exitNotes[i][k]["vFCP"]) * percentNIncentivado) / 100);
-
                                                     }
                                                     else
                                                     {
@@ -2882,7 +2911,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                     grupo.TaxId = imp.Id;
                                                     grupo.Created = DateTime.Now;
                                                     grupo.Updated = grupo.Created;
-                                                    addGrupos.Add(grupo);
+
+                                                    if (grupo.BaseCalculo > 0 || grupo.BaseCalculoNIncentivo > 0)
+                                                        addGrupos.Add(grupo);
                                                 }
                                             }
                                             _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
@@ -2902,7 +2933,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                 grupo.TaxId = imp.Id;
                                                 grupo.Created = DateTime.Now;
                                                 grupo.Updated = grupo.Created;
-                                                addGrupos.Add(grupo);
+
+                                                if (grupo.BaseCalculo > 0 || grupo.BaseCalculoNIncentivo > 0)
+                                                    addGrupos.Add(grupo);
                                             }
                                             _grupoService.Create(addGrupos, GetLog(OccorenceLog.Create));
                                         }
