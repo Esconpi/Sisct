@@ -45,12 +45,14 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Produto Fora da Pauta")] ProdutoFP = 4,
         [Display(Name = "Produto Fora do Incentivo (Exceto ST)")] ProdutoFI = 5,
         [Display(Name = "Nota")] Nota = 6,
-        [Display(Name = "Agrupado Analítico")] AgrupadoA = 7,
-        [Display(Name = "Agrupado Sintético")] AgrupadoS = 8,
-        [Display(Name = "Resumo Geral")] Geral = 9,
-        [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 10,
-        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 11,
-        [Display(Name = "Icms Produtor Rural")] IcmsProdutor = 12
+        [Display(Name = "Nota Incentivada")] NotaI = 7,
+        [Display(Name = "Nota Não Incentivada")] NotaNI = 8,
+        [Display(Name = "Agrupado Analítico")] AgrupadoA = 9,
+        [Display(Name = "Agrupado Sintético")] AgrupadoS = 10,
+        [Display(Name = "Resumo Geral")] Geral = 11,
+        [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE = 12,
+        [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST = 13,
+        [Display(Name = "Icms Produtor Rural")] IcmsProdutor = 14
     }
 
     public enum Opcao

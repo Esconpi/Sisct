@@ -911,8 +911,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<List<string>> apuracao = new List<List<string>>();
 
-                if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.AgrupadoA) ||
-                    type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
+                if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.NotaI) || type.Equals(Model.Type.NotaNI) ||
+                    type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
                 {                    
 
                     if (!type.Equals(Model.Type.Nota))
@@ -933,6 +933,60 @@ namespace Escon.SisctNET.Web.Controllers
                         icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
                         icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
                         products = _service.FindByProductsType(notes, typeTaxation)
+                            .OrderBy(_ => _.Note.Iest)
+                            .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
+                            .ToList();
+
+                        notasTaxation = notes;
+
+                        prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
+
+                        ViewBag.NotaNumber = nota;
+
+                        if (prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                        {
+                            ViewBag.Erro = 4;
+                            return View(null);
+                        }
+                    }
+
+                    if (type.Equals(Model.Type.NotaI))
+                    {
+                        notes = notes.Where(_ => _.Nnf.Equals(nota)).ToList();
+                        total = notes.Select(_ => _.Vnf).Sum();
+                        notesS = notes.Where(_ => _.Iest == "").ToList();
+                        notesI = notes.Where(_ => _.Iest != "").ToList();
+                        icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
+                        icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
+                        products = _service.FindByProductsType(notes, typeTaxation)
+                            .Where(_ => _.Incentivo)
+                            .OrderBy(_ => _.Note.Iest)
+                            .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
+                            .ToList();
+
+                        notasTaxation = notes;
+
+                        prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
+
+                        ViewBag.NotaNumber = nota;
+
+                        if (prodsAll.Where(_ => _.Status.Equals(false)).ToList().Count() > 0)
+                        {
+                            ViewBag.Erro = 4;
+                            return View(null);
+                        }
+                    }
+
+                    if (type.Equals(Model.Type.NotaNI))
+                    {
+                        notes = notes.Where(_ => _.Nnf.Equals(nota)).ToList();
+                        total = notes.Select(_ => _.Vnf).Sum();
+                        notesS = notes.Where(_ => _.Iest == "").ToList();
+                        notesI = notes.Where(_ => _.Iest != "").ToList();
+                        icmsStnoteSIE = _service.FindBySubscription(notesS.ToList(), typeTaxation);
+                        icmsStnoteIE = _service.FindBySubscription(notesI.ToList(), typeTaxation);
+                        products = _service.FindByProductsType(notes, typeTaxation)
+                            .Where(_ => !_.Incentivo)
                             .OrderBy(_ => _.Note.Iest)
                             .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
                             .ToList();
@@ -1664,7 +1718,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
 
-                            if (comp.AnnexId.Equals((long)1) && !comp.ChapterId.Equals((long)4))
+                            if (comp.AnnexId.Equals((long)1) && !comp.ChapterId.Equals((long)4) && !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) &&
+                                !type.Equals(Model.Type.NotaNI))
                             {
                                 if (impAnexo == null)
                                 {
@@ -1839,7 +1894,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
                             if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != (long)3 || comp.ChapterId == (long)4) &&
-                                !type.Equals(Model.Type.Nota))
+                                !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (imp == null)
                                 {

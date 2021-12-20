@@ -114,11 +114,12 @@
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota" ||
-                      ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
+                        ViewBag.Type == "NotaI" || ViewBag.Type == "NotaNI" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
-                            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
+                            @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "NotaI" || ViewBag.Type == "NotaNI" || 
+                                ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI")
                             {
                                 <!-- Produtos -->
                                 @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
@@ -147,7 +148,7 @@
                     }
 
                     @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.ChapterId == 4) &&
-                      ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST")
+                     ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" && ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI")
                     {
                         <!-- Resumo Imposto Incentivo -->
                         @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")

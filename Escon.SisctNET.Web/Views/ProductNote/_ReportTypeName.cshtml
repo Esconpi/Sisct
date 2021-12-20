@@ -27,6 +27,16 @@
     <strong>Nota: @ViewBag.NotaNumber -&nbsp;</strong>
 }
 
+@if (ViewBag.Type == "NotaI")
+{
+    <strong>Nota Incentivada: @ViewBag.NotaNumber -&nbsp;</strong>
+}
+
+@if (ViewBag.Type == "NotaNI")
+{
+    <strong>Nota Não Incentivada: @ViewBag.NotaNumber -&nbsp;</strong>
+}
+
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
 {
     @if (ViewBag.TypeTaxation == "ST")
@@ -62,8 +72,9 @@
         <strong>Não Tributado</strong>
     }
 
-    @if ((ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM") && ViewBag.Type != "AgrupadoS" ) {
-        @if(ViewBag.IsCTe == true)
+    @if ((ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" || ViewBag.TypeTaxation == "COR" || ViewBag.TypeTaxation == "IM") && ViewBag.Type != "AgrupadoS")
+    {
+        @if (ViewBag.IsCTe == true)
         {
             <strong>&nbsp;Produto/Frete CTe</strong>
         }
