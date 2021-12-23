@@ -15,61 +15,70 @@
         }
 </style>
 
-<table class="table" style="font-size:12px; border:1px solid">
-    @foreach (var ncm in ViewBag.Ncms)
-    {
 
-        <thead>
-            <tr>
-                <th style="border: 1px solid; text-align: center; width:60%;">
-                    NCM
-                </th>
-                <th style="border: 1px solid; text-align: center;" width="20%">
-                    XML
-                </th>
-                <th style="border: 1px solid; text-align: center;" width="20%">
-                    SisCT
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="border:1px solid;">
-                <td style="border:1px solid; padding-left:1%;">
-                    @if (ncm[1].Length > 100)
-                    {
-                        @ncm[1].Substring(0, 100)
-                    }
-                    else
-                    {
-                        @ncm[1]
-                    }
+@if (ViewBag.Ncms.Count > 0)
+{
+    <table class="table" style="font-size:12px; border:1px solid">
+        @foreach (var ncm in ViewBag.Ncms)
+        {
 
-                </td>
-                <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
-                    @ncm[2]
-                </td>
-                <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
-                    @ncm[3]
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th style="border: 1px solid; text-align: center; width:60%;">
+                        NCM
+                    </th>
+                    <th style="border: 1px solid; text-align: center;" width="20%">
+                        XML
+                    </th>
+                    <th style="border: 1px solid; text-align: center;" width="20%">
+                        SisCT
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border:1px solid;">
+                    <td style="border:1px solid; padding-left:1%;">
+                        @if (ncm[1].Length > 100)
+                        {
+                            @ncm[1].Substring(0, 100)
+                        }
+                        else
+                        {
+                            @ncm[1]
+                        }
+
+                    </td>
+                    <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
+                        @ncm[2]
+                    </td>
+                    <td style="border: 1px solid; padding-left: 1%; text-transform: uppercase;">
+                        @ncm[3]
+                    </td>
+                </tr>
 
 
-            <tr>
-                <th style="border: 1px solid; text-align: center;" colspan="3">PRODUTO</th>
-            </tr>
+                <tr>
+                    <th style="border: 1px solid; text-align: center;" colspan="3">PRODUTO</th>
+                </tr>
 
-            @foreach (var prod in ViewBag.Produtos)
-            {
-                @if (ncm[0] == prod[0])
+                @foreach (var prod in ViewBag.Produtos)
                 {
-                    <tr>
-                        <td style="border:1px solid; padding-left:1%;" colspan="3">
-                            @prod[1] - @prod[2]
-                        </td>
-                    </tr>
-                }
+                    @if (ncm[0] == prod[0])
+                    {
+                        <tr>
+                            <td style="border:1px solid; padding-left:1%;" colspan="3">
+                                @prod[1] - @prod[2]
+                            </td>
+                        </tr>
+                    }
 
-            }
-        </tbody>            
-    }
-</table>
+                }
+            </tbody>
+
+        }
+    </table>
+}
+else
+{
+    <p style="text-align:center; color:green;">Não há NCM divergente</p>
+}

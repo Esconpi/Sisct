@@ -74,7 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
                     return View();
                 }
 
-
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
                 var NfeEntry = _configurationService.FindByName("NFe", null);
 

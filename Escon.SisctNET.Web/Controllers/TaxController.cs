@@ -702,7 +702,6 @@ namespace Escon.SisctNET.Web.Controllers
                     .Distinct()
                     .ToList();
 
-
                 var cfopsPerda = _companyCfopService.FindByCfopCompraPerda(comp.Document).Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
