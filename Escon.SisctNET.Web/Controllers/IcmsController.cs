@@ -26524,8 +26524,16 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        total += Convert.ToDecimal(notes[i][3]["vNF"]);
-                        totalIcms += Convert.ToDecimal(notes[i][3]["vICMS"]);
+                        if(notes[i].Count() > 4)
+                        {
+                            total += Convert.ToDecimal(notes[i][3]["vNF"]);
+                            totalIcms += Convert.ToDecimal(notes[i][3]["vICMS"]);
+                        }
+                        else
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
                     }
 
                     ViewBag.Notas = notes;
