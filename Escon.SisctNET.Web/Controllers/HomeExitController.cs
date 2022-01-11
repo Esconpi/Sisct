@@ -119,7 +119,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _service.FindById(id, null);
                 var list_cfop = _cfopService.FindAll(null).OrderBy(_ => _.Code).ToList();
-                list_cfop.Insert(0, new Model.Cfop() { Description = "Nennhum cfop selecionado", Id = 0 });
+                list_cfop.Insert(0, new Model.Cfop() { Description = "Nennhum cfop", Id = 0 });
                 foreach (var cfop in list_cfop)
                 {
                     if(cfop.Id != 0)
@@ -129,7 +129,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CfopId = cfops;
 
                 var list_cst = _cstService.FindByIdent(true).OrderBy(_ => _.Code).ToList();
-                list_cst.Insert(0, new Model.Cst() { Description = "Nenhum CST selecionado", Id = 0 });
+                list_cst.Insert(0, new Model.Cst() { Description = "Nenhum CST", Id = 0 });
                 foreach (var cst in list_cst)
                 {
                     if (cst.Id != 0)
@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CstId = csts;
 
                 var list_csosn = _csosnService.FindAll(null).OrderBy(_ => _.Code).ToList();
-                list_csosn.Insert(0, new Model.Csosn() { Name = "Nenhum Csosn selecionado", Id = 0 });
+                list_csosn.Insert(0, new Model.Csosn() { Name = "Nenhum Csosn", Id = 0 });
                 foreach (var csosn in list_csosn)
                 {
                     if (csosn.Id != 0)
@@ -149,7 +149,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.CsosnId = csosns;
 
                 var list_states = _stateService.FindAll(null).Where(_ => !_.UF.Equals("EXT")).OrderBy(_ => _.UF).ToList();
-                list_states.Insert(0, new Model.State() { Name = "Nenhuma UF selecionada", Id = 0 });
+                list_states.Insert(0, new Model.State() { Name = "Nenhuma UF", Id = 0 });
                 foreach (var state in list_states)
                 {
                     if(state.Id != 0)

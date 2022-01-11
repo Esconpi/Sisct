@@ -208,6 +208,10 @@
 
                     @await Html.PartialAsync("_SalesProductSTNormalNote", new ViewDataDictionary(ViewData))
                 }
+                else if (ViewBag.Type == "notaContigencia")
+                {
+                    @await Html.PartialAsync("_ContingencyNotes", new ViewDataDictionary(ViewData))
+                }
                 else if (ViewBag.Type == "anexoAutoPecas")
                 {
                     @if (ViewBag.Erro == 1)

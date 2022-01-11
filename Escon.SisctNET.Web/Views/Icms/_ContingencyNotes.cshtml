@@ -1,0 +1,57 @@
+﻿<table class="table" style="border:1px solid;">
+    <thead>
+        <tr style="border:1px solid;">
+            <th style="border:1px solid; text-align:center;">
+                Data
+            </th>
+            <th style="border:1px solid; text-align:center;">
+               Nº Nota
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                ICMS
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Chave
+            </th>
+        </tr>
+    </thead>
+    <tbody style="font-size:10px;">
+        @foreach (var item in ViewBag.Notas)
+        {
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @item[1]["dhEmi"]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @item[1]["nNF"]
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(item[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(item[3]["vICMS"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                    @item[0]["chave"]
+                </td>
+            </tr>
+        }
+
+        <tr style="border:1px solid;">
+            <td style="border:1px solid; padding-left:1%;" colspan="2">
+                TOTAL
+            </td>
+            <td style="border:1px solid; padding-left:1%;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Total.Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+            </td>
+            <td style="border:1px solid; padding-left:1%;">
+                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Icms.Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+            </td>
+              <td style="border:1px solid; padding-left:1%;">
+            </td>
+        </tr>
+    </tbody>
+</table>

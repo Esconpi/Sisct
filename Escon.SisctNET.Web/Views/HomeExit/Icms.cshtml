@@ -83,6 +83,7 @@
                             }
 
                             <option value="produtoST">Produtos ST com Base de Cálculo</option>
+                            <option value="notaContigencia">Notas Contigência</option>
                             <!--
                                 <option value="tributacaoDiveregente">Tributação Divergente</option>
                             -->
@@ -146,39 +147,46 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <div class="form-group col-lg-6 col-md-12 col-xs-12">
                             <label class="control-label">CST</label>
                             <select asp-items="@ViewBag.CstId" class="form-control selectoption" id="cstId" name="cstId" disabled="disabled" onchange="ativar_button()"></select>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <div class="form-group col-lg-6 col-md-12 col-xs-12">
                             <label class="control-label">Csosn</label>
                             <select asp-items="@ViewBag.CsosnId" class="form-control selectoption" id="csosnId" name="csosnId" disabled="disabled" onchange="ativar_button()"></select>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">UF Destino</label>
                             <select asp-items="@ViewBag.StateId" class="form-control selectoption" id="stateId" name="stateId" disabled="disabled" onchange="ativar_button()"></select>
                         </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Icms %</label>
                             <input type="text" name="icms" id="icms" class="form-control" disabled />
                         </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">Icms ST %</label>
                             <input type="text" name="icmsST" id="icmsST" class="form-control" disabled />
                         </div>
-                        <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label class="control-label">MVA %</label>
                             <input type="text" name="mva" id="mva" class="form-control" disabled />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Série</label>
+                            <input type="text" name="serie" id="serie" class="form-control" disabled />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">Número</label>
+                            <input type="text" name="numero" id="numero" class="form-control" disabled />
                         </div>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()" />
                     </div>
-</form>
+            </form>
         </div>
     </div>
     <div style="text-align:center; display:none;" id="loading">
@@ -199,6 +207,8 @@
             document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = true;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
         } else if (tipo == "resumoCfop") {
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
@@ -209,6 +219,10 @@
             document.getElementById("icms").disabled = true;
             document.getElementById("icmsST").disabled = true;
             document.getElementById("mva").disabled = true;
+            document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
         }
         else if (tipo == "resumoPorCfop") {
             document.getElementById("cfopId").disabled = false;
@@ -220,6 +234,8 @@
             document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
         }
         else if (tipo == "anexoAutoPecas" || tipo == "incentivo" || tipo == "icmsExcedente") {
             document.getElementById("cfopId").disabled = true;
@@ -231,6 +247,8 @@
             document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = true;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
         }
         else if (tipo == "resumoCfopIcmsIcmsST") {
             document.getElementById("cfopId").disabled = false;
@@ -242,6 +260,8 @@
             document.getElementById("mva").disabled = false;
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
         }
         else if (tipo == "resumoCfopIcmsIcmsSTAnalitico") {
             document.getElementById("cfopId").disabled = true;
@@ -253,6 +273,21 @@
             document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = false;
             document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
+        }
+        else if (tipo == "notaContigencia") {
+            document.getElementById("cfopId").disabled = true;
+            document.getElementById("stateId").disabled = true;
+            document.getElementById("cstId").disabled = true;
+            document.getElementById("csosnId").disabled = true;
+            document.getElementById("icms").disabled = true;
+            document.getElementById("icmsST").disabled = true;
+            document.getElementById("mva").disabled = true;
+            //document.getElementById("opcao").disabled = true;
+            document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = false;
+            document.getElementById("numero").disabled = false;
         }
         else {
             document.getElementById("cfopId").disabled = true;
@@ -264,6 +299,9 @@
             document.getElementById("mva").disabled = true;
             //document.getElementById("opcao").disabled = true;
             document.getElementById("arquivo").disabled = false;
+            document.getElementById("serie").disabled = true;
+            document.getElementById("numero").disabled = true;
+
         }
     }
     function show() {

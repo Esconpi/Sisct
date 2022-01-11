@@ -44,7 +44,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         Dictionary<string, string> dest = new Dictionary<string, string>();
 
@@ -132,7 +132,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         Dictionary<string, string> dest = new Dictionary<string, string>();
 
@@ -219,7 +219,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
 
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
@@ -308,7 +308,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
@@ -396,7 +396,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
                         Dictionary<string, string> ide = new Dictionary<string, string>();
@@ -652,7 +652,8 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
                         Dictionary<string, string> ide = new Dictionary<string, string>();
@@ -660,6 +661,7 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> dest = new Dictionary<string, string>();
                         Dictionary<string, string> infProt = new Dictionary<string, string>();
 
+        
                         List<Dictionary<string, string>> note = new List<Dictionary<string, string>>();
 
                         StreamReader arq = new StreamReader(archivesNfes[i], Encoding.GetEncoding("ISO-8859-1"));
@@ -742,6 +744,7 @@ namespace Escon.SisctNET.Web.Xml
                                     }
                                 }
                             }
+                          
                             reader.Close();
                             arq.Close();
                         }
@@ -778,7 +781,7 @@ namespace Escon.SisctNET.Web.Xml
 
                 foreach (var arquivo in archivesNfes)
                 {
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
                         Dictionary<string, string> ide = new Dictionary<string, string>();
@@ -1130,7 +1133,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         bool cfop = true;
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
@@ -1414,7 +1417,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         bool cfop = true;
                         Dictionary<string, string> infNFe = new Dictionary<string, string>();
@@ -1694,7 +1697,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
@@ -1827,7 +1830,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
@@ -1931,7 +1934,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesNfes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         StreamReader sr = new StreamReader(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                         using (XmlReader reader = XmlReader.Create(sr))
@@ -1988,7 +1991,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesCtes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         List<Dictionary<string, string>> cte = new List<Dictionary<string, string>>();
 
@@ -2107,7 +2110,7 @@ namespace Escon.SisctNET.Web.Xml
                 {
                     var arquivo = archivesCtes[i];
 
-                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")))
+                    if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
                     {
                         List<Dictionary<string, string>> cte = new List<Dictionary<string, string>>();
 

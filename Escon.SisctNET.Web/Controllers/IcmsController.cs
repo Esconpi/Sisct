@@ -96,7 +96,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         public IActionResult Relatory(long companyId, string year, string month, string type, string opcao, string arquivo,
-                                      long cfopid , long cstId, long csosnId, ulong stateId)
+                                      long cfopid , long cstId, long csosnId, ulong stateId, int serie, int numero)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -26486,6 +26486,52 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Crédito
 
                 }
+                else if (type.Equals("notaContigencia"))
+                {
+                    var mesNumber = importMes.NumberMonth(month);
+                    var mes = importMes.NameMonthNext(mesNumber);
+
+                    var ano = year;
+
+                    if(mesNumber == 12)
+                    {
+                        ano = (Convert.ToInt32(ano) + 1).ToString();
+                    }
+
+                    if (arquivo != null)
+                    {
+                        if (arquivo.Equals("xmlE"))
+                            directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, ano, mes);
+                        else
+                            directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, ano, mes);
+                    }
+
+                    notes = importXml.NFeResumeEmit(directoryNfeExit);
+
+                    decimal total = 0, totalIcms = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (Convert.ToInt32(notes[i][1]["nNF"]) > numero)
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        total += Convert.ToDecimal(notes[i][3]["vNF"]);
+                        totalIcms += Convert.ToDecimal(notes[i][3]["vICMS"]);
+                    }
+
+                    ViewBag.Notas = notes;
+                    ViewBag.Total = total;
+                    ViewBag.Icms = totalIcms;
+                }
                 else if (type.Equals("icmsExcedente"))
                 {
                     //  Imposto ICMS Excedente
@@ -26872,14 +26918,15 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else
                         {
-                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito), vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada),
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada),
                                 vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada), debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)),
                                 debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo)), totalVendas = vendasIncentivada + vendasNIncentivada,
-                                difApuNormal = debitoIncetivo - creditosIcms, percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100,
-                                creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100, difApuNNormal = debitoNIncentivo - creditoNIncentivado;
+                                percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100,
+                                creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100, difApuNNormal = debitoNIncentivo - creditoNIncentivado,
+                                creditoIncentivado = creditosIcms - creditoNIncentivado, difApuNormal = debitoIncetivo - creditoIncentivado;
 
                             //Funef e Cotac
-                            decimal baseDeCalcFunef = difApuNormal - difApuNNormal,
+                            decimal baseDeCalcFunef = difApuNormal,
                                 valorFunef = calculation.Imposto(baseDeCalcFunef, Convert.ToDecimal(comp.Funef)),
                                 valorCotac = calculation.Imposto(baseDeCalcFunef, Convert.ToDecimal(comp.Cotac)),
                                 totalImposto = difApuNNormal + valorFunef + valorCotac;
@@ -26907,6 +26954,8 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.DebitoIncentivo = debitoIncetivo;
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.TotalVendasIncentivadas = vendasIncentivada;
+                            ViewBag.CreditoIncentivo = creditoIncentivado;
+                            ViewBag.DifApuNormal = difApuNormal;
 
                             //Não Incentivado
                             ViewBag.ValoresNIncentivo = valoresNIncentivo;
@@ -26915,21 +26964,12 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.DebitoNIncentivo = debitoNIncentivo;
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.TotalVendasNIncentivadas = vendasNIncentivada;
+                            ViewBag.DifApuNNormal = difApuNNormal;
 
                             // Total
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.Credito = creditosIcms;
                             ViewBag.TotalVendas = totalVendas;
-
-                            //Apuração Normal
-                            //Debito - ViewBag.DebitoIncentivo
-                            ViewBag.CreditoIncentivo = creditosIcms;
-                            ViewBag.DifApuNormal = difApuNormal;
-
-                            //Apuração ñ Incentivada
-                            //Debito - ViewBag.DebitoNIncetivo
-                            //Credito - CreditoNIncentivo
-                            ViewBag.DifApuNNormal = difApuNNormal;
 
                             // Funef e COTAC
                             // DifNormal - DifNIncentivada

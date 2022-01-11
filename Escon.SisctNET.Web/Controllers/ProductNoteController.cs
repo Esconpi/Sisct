@@ -3339,24 +3339,22 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else
                         {
-
-                            decimal creditosIcms = creditosIcms = Convert.ToDecimal(imp.Credito), vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada), 
-                                vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada), debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)), 
-                                debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo)), totalVendas = vendasIncentivada + vendasNIncentivada,
-                                difApuNormal = debitoIncetivo - creditosIcms, percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100, 
-                                creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100, difApuNNormal = debitoNIncentivo - creditoNIncentivado;
-
-                            totalDarIcms += difApuNNormal;
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), vendasIncentivada = Convert.ToDecimal(imp.VendasIncentivada),
+                              vendasNIncentivada = Convert.ToDecimal(imp.VendasNIncentivada), debitoIncetivo = Convert.ToDecimal(grupos.Sum(_ => _.Icms)),
+                              debitoNIncentivo = Convert.ToDecimal(grupos.Sum(_ => _.IcmsNIncentivo)), totalVendas = vendasIncentivada + vendasNIncentivada,
+                              percentualCreditoNIncentivado = vendasNIncentivada / totalVendas * 100,
+                              creditoNIncentivado = creditosIcms * percentualCreditoNIncentivado / 100, difApuNNormal = debitoNIncentivo - creditoNIncentivado,
+                              creditoIncentivado = creditosIcms - creditoNIncentivado, difApuNormal = debitoIncetivo - creditoIncentivado;
 
                             //Funef e Cotac
-                            decimal baseDeCalcFunef = difApuNormal - difApuNNormal,
+                            decimal baseDeCalcFunef = difApuNormal,
                                 valorFunef = calculation.Imposto(baseDeCalcFunef, Convert.ToDecimal(comp.Funef)),
-                                valorCotac = calculation.Imposto(baseDeCalcFunef, Convert.ToDecimal(comp.Cotac));
+                                valorCotac = calculation.Imposto(baseDeCalcFunef, Convert.ToDecimal(comp.Cotac)),
+                                totalImposto = difApuNNormal + valorFunef + valorCotac;
 
+                            totalDarIcms += difApuNNormal;
                             totalDarFunef += Math.Round(valorFunef, 2);
                             totalDarCotac += Math.Round(valorCotac, 2);
-
-                            var totalImposto = Math.Round(difApuNNormal + valorFunef + valorCotac, 2);
 
                             List<List<string>> valoresIncentivo = new List<List<string>>();
                             List<List<string>> valoresNIncentivo = new List<List<string>>();
@@ -3381,6 +3379,8 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.DebitoIncentivo = debitoIncetivo;
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.TotalVendasIncentivadas = vendasIncentivada;
+                            ViewBag.CreditoIncentivo = creditoIncentivado;
+                            ViewBag.DifApuNormal = difApuNormal;
 
                             //Não Incentivado
                             ViewBag.ValoresNIncentivo = valoresNIncentivo;
@@ -3389,22 +3389,12 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.DebitoNIncentivo = debitoNIncentivo;
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.TotalVendasNIncentivadas = vendasNIncentivada;
+                            ViewBag.DifApuNNormal = difApuNNormal;
 
                             // Total
                             ViewBag.TotalVendas = totalVendas;
                             ViewBag.Credito = creditosIcms;
                             ViewBag.TotalVendas = totalVendas;
-
-
-                            //Apuração Normal
-                            //Debito - ViewBag.DebitoIncentivo
-                            ViewBag.CreditoIncentivo = creditosIcms;
-                            ViewBag.DifApuNormal = difApuNormal;
-
-                            //Apuração ñ Incentivada
-                            //Debito - ViewBag.DebitoNIncetivo
-                            //Credito - CreditoNIncentivo
-                            ViewBag.DifApuNNormal = difApuNNormal;
 
                             // Funef e COTAC
                             // DifNormal - DifNIncentivada

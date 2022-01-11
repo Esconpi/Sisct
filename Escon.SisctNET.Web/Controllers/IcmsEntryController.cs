@@ -25,7 +25,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
-        public async Task<IActionResult> Relatory(long id, string year, string month, IFormFile arquivo)
+        public async Task<IActionResult> Relatory(long id, string year, string month, string type, IFormFile arquivo)
         {
             if (SessionManager.GetLoginInSession().Equals(null)) return Unauthorized();
 
@@ -61,6 +61,11 @@ namespace Escon.SisctNET.Web.Controllers
                     var streamSped = new FileStream(caminhoDestinoArquivoOriginal, FileMode.Create);
                     await arquivo.CopyToAsync(streamSped);
                     streamSped.Close();
+                }
+
+                if (type.Equals(""))
+                {
+                    
                 }
 
                 return View();
