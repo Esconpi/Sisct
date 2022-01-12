@@ -73,8 +73,8 @@ namespace Escon.SisctNET.Web.Sped
                         cfop = true;
                     }
 
-                    if (linha[1].Equals("C191") && cfop == true && tipoOperacao == "0")
-                        totalDeCredito += Convert.ToDecimal(linha[2]);
+                    //if (linha[1].Equals("C191") && cfop == true && tipoOperacao == "0")
+                        //totalDeCredito += Convert.ToDecimal(linha[2]);
 
                     if (linha[1].Equals("D100"))
                         tipoOperacao = linha[2];
@@ -3082,6 +3082,45 @@ namespace Escon.SisctNET.Web.Sped
             }
 
             return products;
+        }
+
+        public List<List<string>> NFeC190(string directorySped)
+        {
+            List<List<string>> cfops = new List<List<string>>();
+
+            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
+
+            string line, tipo = "";
+
+            try
+            {
+                while ((line = archiveSped.ReadLine()) != null)
+                {
+                    string[] linha = line.Split('|');
+
+                    if (linha[1] == "C100")
+                    {
+                        tipo = linha[2];
+                    }
+
+                    if (linha[1].Equals("C190") && tipo == "0")
+                        cfops.Add(linha.ToList());
+
+                    if (linha[1].Equals("E001") || linha[1].Equals("H001"))
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                archiveSped.Close();
+            }
+
+            return cfops;
         }
 
         public List<List<string>> NFe0150(string directorySped)

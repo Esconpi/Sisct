@@ -1,49 +1,82 @@
 ﻿@model Escon.SisctNET.Model.Company
 
-<div>
-    <h4><strong>Importar Dados ICMS Produtor Rural:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h4>
-    <hr />
-    <div class="row">
+@{
+    ViewData["Title"] = "Icms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header" id="hiddenHeader">
+        <a asp-controller="HomeExit" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"> <strong>Relatório Icms:</strong> @Html.DisplayFor(model => model.SocialName) - @Html.DisplayFor(model => model.Document) </h3>
+
+    </div>
+    <div class="box-body" id="hiddenBody">
         <div class="col-lg-12">
-            <form action="TaxProducer/Index" method="get">
+            <form asp-controller="IcmsEntry" asp-action="Relatory" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="id" value="@Html.DisplayFor(model => model.Id)" />
-                <div class="form-group col-lg-1 col-md-1 col-xs-12">
+                <div class="row">
+                    <div class="form-group col-lg-1 col-md-6 col-xs-12">
+                        <label class="control-label">Ano</label>
+                        <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label class="control-label">Mês</label>
+                        <select name="month" class="form-control selectoption">
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                        <label class="control-label">Tipo</label>
+                        <select name="type" class="form-control selectoption">
+                            <option value="resumoCfop" selected>Resumo CFOP</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-5 col-md-6 col-xs-12">
+                        <label class="control-label"><strong>Selecione o arquivo Sped</strong></label>
+                        <div class="fileUploadInput">
+                            <input type="file" name="arquivo" id="arquivo" accept=".txt"  onchange="ativar_button()"  />
+                            <button><i class="fa fa-cloud-upload"></i></button>
+                        </div>
+                    </div>
+                </div>
 
-                </div>
-                <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label class="control-label">Ano</label>
-                    <input type="text" name="year" class="form-control" value="@DateTime.Now.ToString("yyyy")" required />
-                </div>
-                <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <label class="control-label">Mês</label>
-                    <select name="month" class="form-control selectoption">
-                        <option value="Janeiro">Janeiro</option>
-                        <option value="Fevereiro">Fevereiro</option>
-                        <option value="Março">Março</option>
-                        <option value="Abril">Abril</option>
-                        <option value="Maio">Maio</option>
-                        <option value="Junho">Junho</option>
-                        <option value="Julho">Julho</option>
-                        <option value="Agosto">Agosto</option>
-                        <option value="Setembro">Setembro</option>
-                        <option value="Outubro">Outubro</option>
-                        <option value="Novembro">Novembro</option>
-                        <option value="Dezembro">Dezembro</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-lg-1 col-md-1 col-xs-12">
-
-                </div>
-                <br />
-                <div class="form-group col-lg-3 col-md-1 col-xs-12">
-                    <input type="submit" value="Confirmar" class="btn btn-success" />
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Gerar" class="btn btn-success pull-right" onclick="show()"  id="ativa" disabled/>
                 </div>
             </form>
         </div>
-
+    </div>
+    <div style="text-align:center; display:none;" id="loading">
+        <img src="~/img/carregando.gif" />
     </div>
 </div>
 
+<script type="text/javascript">
+    function ativar_button() {
+        var arquivo = document.getElementById("arquivo").value;
+        if (arquivo == "") {
+            document.getElementById("ativa").disabled = true;
+        } else {
+            document.getElementById("ativa").disabled = false;
+        }
+    }
 
+    function show() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('hiddenHeader').style.display = 'none';
+        document.getElementById('hiddenBody').style.display = 'none';
+    }
+</script>
