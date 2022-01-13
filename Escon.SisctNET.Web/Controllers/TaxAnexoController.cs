@@ -206,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(string type, IFormFile arqchive)
+        public async Task<IActionResult> Import(string type, IFormFile arqchive)   
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -350,12 +350,30 @@ namespace Escon.SisctNET.Web.Controllers
                         var notes = _noteService.FindByNotes(companyid, year, month);
                         var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => (_.TaxationTypeId.Equals((long)1) || _.TaxationTypeId.Equals((long)3)) && _.Incentivo.Equals(false)).ToList();
 
-                        decimal baseCalcCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4)).Sum(_ => _.Vbasecalc),
-                                baseCalcCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vbasecalc), 
-                                baseCalcCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vbasecalc),
-                                icmsCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4)).Sum(_ => _.Vicms),
-                                icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7)).Sum(_ => _.Vicms),
-                                icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12)).Sum(_ => _.Vicms);
+                        decimal baseCalcCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                        .Sum(_ => _.Vbasecalc),
+                                baseCalcCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                        .Sum(_ => _.Vbasecalc), 
+                                baseCalcCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                        .Sum(_ => _.Vbasecalc),
+                                icmsCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                    .Sum(_ => _.Vicms),
+                                icmsCompraInterestadual7 = products.Where(_ => _.Picms.Equals(7) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                    .Sum(_ => _.Vicms),
+                                icmsCompraInterestadual12 = products.Where(_ => _.Picms.Equals(12) && (cfopsVenda.Contains(_.Cfop) ||
+                                                                            cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||
+                                                                            cfopsDevoCompra.Contains(_.Cfop)))
+                                                                    .Sum(_ => _.Vicms);
 
                         var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncmConvenio, comp);
                         var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncmConvenio, comp);

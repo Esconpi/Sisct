@@ -266,6 +266,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             for (int i = notes.Count - 1; i >= 0; i--)
             {
+                if (notes[i].Count() < 3)
+                {
+                    notes.RemoveAt(i);
+                    continue;
+                }
+
                 if (notes[i][1]["finNFe"] == "4")
                 {
                     notes.RemoveAt(i);

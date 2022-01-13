@@ -779,6 +779,8 @@ namespace Escon.SisctNET.Web.Xml
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
 
+                bool infCte = false;
+
                 foreach (var arquivo in archivesNfes)
                 {
                     if (new FileInfo(arquivo).Length != 0 && (arquivo.Contains(".xml") || arquivo.Contains(".XML")) && (!arquivo.Contains(".lnk") || !arquivo.Contains(".lnk")))
@@ -800,7 +802,13 @@ namespace Escon.SisctNET.Web.Xml
                                 {
                                     switch (reader.Name)
                                     {
+                                        case "infCte":
+                                            infCte = true;
+                                            break;
+
                                         case "infNFe":
+                                            infCte = false;
+
                                             while (reader.MoveToNextAttribute())
                                             {
                                                 if (reader.Name == "Id")
@@ -811,65 +819,81 @@ namespace Escon.SisctNET.Web.Xml
                                             nota.Add(infNFe);
                                             break;
 
+
                                         case "ide":
                                             reader.Read();
-                                            while (reader.Name != "ide" && reader.Name != "NFref")
+                                            if (!infCte)
                                             {
-                                                ide.Add(reader.Name, reader.ReadString());
-                                                reader.Read();
+                                                while (reader.Name != "ide" && reader.Name != "NFref")
+                                                {
+                                                    ide.Add(reader.Name, reader.ReadString());
+                                                    reader.Read();
+                                                }
+                                                nota.Add(ide);
                                             }
-                                            nota.Add(ide);
                                             break;
 
 
                                         case "emit":
                                             reader.Read();
-                                            while (reader.Name.ToString() != "emit")
+                                            if (!infCte)
                                             {
-                                                if (reader.Name.ToString() != "enderEmit")
+                                                while (reader.Name.ToString() != "emit")
                                                 {
-                                                    emit.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name.ToString() != "enderEmit")
+                                                    {
+                                                        emit.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
                                                 }
-                                                reader.Read();
+                                                nota.Add(emit);
                                             }
-                                            nota.Add(emit);
                                             break;
 
                                         case "dest":
                                             reader.Read();
-                                            while (reader.Name.ToString() != "dest")
+                                            if (!infCte)
                                             {
-                                                if (reader.Name.ToString() != "enderDest")
+                                                while (reader.Name.ToString() != "dest")
                                                 {
-                                                    dest.Add(reader.Name, reader.ReadString());
+                                                    if (reader.Name.ToString() != "enderDest")
+                                                    {
+                                                        dest.Add(reader.Name, reader.ReadString());
+                                                    }
+                                                    reader.Read();
                                                 }
-                                                reader.Read();
+                                                nota.Add(dest);
                                             }
-                                            nota.Add(dest);
                                             break;
 
                                         case "ICMSTot":
                                             Dictionary<string, string> total = new Dictionary<string, string>();
                                             reader.Read();
-                                            while (reader.Name.ToString() != "ICMSTot")
+                                            if (!infCte)
                                             {
-                                                total.Add(reader.Name, reader.ReadString());
+                                                while (reader.Name.ToString() != "ICMSTot")
+                                                {
+                                                    total.Add(reader.Name, reader.ReadString());
 
-                                                reader.Read();
+                                                    reader.Read();
 
+                                                }
+                                                nota.Add(total);
                                             }
-                                            nota.Add(total);
                                             break;
 
                                         case "infProt":
                                             reader.Read();
-                                            while (reader.Name.ToString() != "infProt")
+                                            if (!infCte)
                                             {
-                                                if (reader.Name.ToString() == "cStat")
+                                                while (reader.Name.ToString() != "infProt")
                                                 {
-                                                    cStat = reader.ReadString();
+                                                    if (reader.Name.ToString() == "cStat")
+                                                    {
+                                                        cStat = reader.ReadString();
+                                                    }
+                                                    reader.Read();
                                                 }
-                                                reader.Read();
                                             }
                                             break;
                                     }
@@ -971,7 +995,6 @@ namespace Escon.SisctNET.Web.Xml
                                                     }
                                                 }
                                             }                    
-
 
                                             if (prod.ContainsKey("vProd"))
                                                 base_calc = Convert.ToDecimal(prod["vProd"]);
@@ -1108,8 +1131,10 @@ namespace Escon.SisctNET.Web.Xml
                         }
 
                         if (nota.Count() > 0 && (Convert.ToInt32(cStat).Equals(100) || Convert.ToInt32(cStat).Equals(150)))
+                        {
                             notes.Add(nota);
-
+                        }
+                          
                     }
                 }
             }
