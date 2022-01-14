@@ -206,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Import(string type, IFormFile arqchive)   
+        public async Task<IActionResult> Import(string type, IFormFile arqchive)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Tax")).FirstOrDefault().Active)
                 return Unauthorized();
