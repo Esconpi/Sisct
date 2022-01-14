@@ -1289,6 +1289,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         entryNotes.RemoveAt(i);
                                         continue;
                                     }
+                                    else if (!entryNotes[i][3]["CNPJ"].Equals(comp.Document))
+                                    {
+                                        entryNotes.RemoveAt(i);
+                                        continue;
+                                    }
 
                                     bool contribuinte = false, ncm = false, ncmI = false, ncmII = false;
                                     int posClienteRaiz = contContribuintesRaiz - 1;
