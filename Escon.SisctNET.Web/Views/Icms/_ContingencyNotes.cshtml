@@ -27,9 +27,12 @@
             <th style="border:1px solid; text-align:center;">
                 Valor
             </th>
-            <th style="border:1px solid; text-align:center;">
-                ICMS
-            </th>
+            @if(ViewBag.Type == "notaContigenciaIcms")
+            {
+                <th style="border:1px solid; text-align:center;">
+                    ICMS
+                </th>
+            }
             <th style="border:1px solid; text-align:center;">
                 Chave
             </th>
@@ -48,14 +51,18 @@
                 <td style="border:1px solid; padding-left:1%; padding-right:1%;">
                     @string.Format("{0:N}", Convert.ToDecimal(item[3]["vNF"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
                 </td>
-                <td style="border:1px solid; padding-left:1%; padding-right:1%;">
-                    @string.Format("{0:N}", Convert.ToDecimal(item[3]["vICMS"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
-                </td>
+                @if(ViewBag.Type == "notaContigenciaIcms")
+                {
+                   <td style="border:1px solid; padding-left:1%; padding-right:1%;">
+                        @string.Format("{0:N}", Convert.ToDecimal(item[3]["vICMS"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                    </td>
+                }             
                 <td style="border:1px solid; padding-left:1%; padding-right:1%;">
                     @item[0]["chave"]
                 </td>
             </tr>
         }
+
 
         <tr style="border:1px solid;">
             <th style="border:1px solid; padding-left:1%;" colspan="2">
@@ -64,9 +71,12 @@
             <th style="border:1px solid; padding-left:1%;">
                 @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Total))
             </th>
-            <th style="border:1px solid; padding-left:1%;">
-                @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Icms))
-            </th>
+            @if(ViewBag.Type == "notaContigenciaIcms")
+            {
+               <th style="border:1px solid; padding-left:1%;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Icms))
+               </th>   
+            }
             <th style="border:1px solid; padding-left:1%;">
             </th>
         </tr>

@@ -83,7 +83,8 @@
                             }
 
                             <option value="produtoST">Produtos ST com Base de Cálculo</option>
-                            <option value="notaContigencia">Notas Contigência</option>
+                            <option value="notaContigenciaIcms">Notas Contigência com ICMS</option>
+                            <option value="notaContigenciaNIcms">Notas Contigência sem ICMS</option>
                             <!--
                                 <option value="tributacaoDiveregente">Tributação Divergente</option>
                             -->
@@ -276,7 +277,7 @@
             document.getElementById("serie").disabled = true;
             document.getElementById("numero").disabled = true;
         }
-        else if (tipo == "notaContigencia") {
+        else if (tipo == "notaContigenciaIcms" || tipo == "notaContigenciaNIcms") {
             document.getElementById("cfopId").disabled = true;
             document.getElementById("stateId").disabled = true;
             document.getElementById("cstId").disabled = true;

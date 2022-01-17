@@ -26486,7 +26486,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Crédito
 
                 }
-                else if (type.Equals("notaContigencia"))
+                else if (type.Equals("notaContigenciaIcms") || type.Equals("notaContigenciaNIcms"))
                 {
                     var mesNumber = importMes.NumberMonth(month);
                     var mes = importMes.NameMonthNext(mesNumber);

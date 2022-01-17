@@ -208,7 +208,7 @@
 
                     @await Html.PartialAsync("_SalesProductSTNormalNote", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "notaContigencia")
+                else if (ViewBag.Type == "notaContigenciaIcms" || ViewBag.Type == "notaContigenciaNIcms")
                 {
                     @await Html.PartialAsync("_ContingencyNotes", new ViewDataDictionary(ViewData))
                 }
