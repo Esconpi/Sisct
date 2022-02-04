@@ -110,7 +110,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         confDBSisctNfe = _configurationService.FindByName("NFe Saida");
 
-                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE) || ordem.Equals(Model.Ordem.EmpresaXFsist))
+                        if (ordem.Equals(Model.Ordem.XmlEmpresa) || ordem.Equals(Model.Ordem.SisCTXE) || ordem.Equals(Model.Ordem.SpedXE) || 
+                            ordem.Equals(Model.Ordem.EmpresaXFsist) || ordem.Equals(Model.Ordem.DifereValorEmpresa))
                         {
                             directoryValida = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
                             directoryNFeCancelada = importDir.NFeCanceladaEmpresa(company, confDBSisctNfe.Value, year, month);
@@ -127,7 +128,7 @@ namespace Escon.SisctNET.Web.Controllers
                    
 
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE) || 
-                        ordem.Equals(Model.Ordem.DifereIcms))
+                        ordem.Equals(Model.Ordem.DifereIcms) || ordem.Equals(Model.Ordem.DifereValorSefaz) || ordem.Equals(Model.Ordem.DifereValorEmpresa))
                     {
                         spedNormal = importSped.NFeDif(caminhoDestinoArquivoOriginalSped, ident);
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
@@ -502,9 +503,10 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    else if (ordem.Equals(Model.Ordem.DifereValor))
+                    else if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.DifereValorSefaz) || ordem.Equals(Model.Ordem.DifereValorEmpresa))
                     {
                         List<List<string>> registros = new List<List<string>>();
+                        
                         foreach (var linha in spedNormal)
                         {
                             List<string> Valores = new List<string>();
@@ -571,6 +573,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
+                       
                         ViewBag.Valores = registros;
                     }
                     else if (ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE))

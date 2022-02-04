@@ -39,7 +39,7 @@
                 {
                     @await Html.PartialAsync("_SpedXml", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Ordem == "DifereValor")
+                else if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "DifereValorSefaz" || ViewBag.Ordem == "DifereValorEmpresa")
                 {
                     @await Html.PartialAsync("_TotalDifference", new ViewDataDictionary(ViewData))
                 }
