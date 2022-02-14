@@ -78,7 +78,6 @@ namespace Escon.SisctNET.Repository.Implementation
                     }
 
                    
-
                     if (cestBase != "" && cestBase != null && cestTemp != "")
                     {
                         if (cestTemp == cestBase)
