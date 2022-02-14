@@ -719,7 +719,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"], CEST, comp);
                                 }
 
-                                if (exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)
+                                if ((exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig")) && !ncm)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
@@ -778,7 +778,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                if (exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig") && !ncm)
+                                if ((exitNotes[i][k].ContainsKey("pICMS") && exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig")) && !ncm)
                                 {
                                     if (exitNotes[i][1]["idDest"].Equals("1"))
                                     {
