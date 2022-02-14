@@ -68,16 +68,24 @@ namespace Escon.SisctNET.Repository.Implementation
                         break;
                     }
 
-                    if (n.Ncm.Equals(substring))
+                    if (substring != "" && (n.Ncm != "" || n.Ncm != null))
                     {
-                        ncmIncentivo = true;
-                        break;
+                         if (n.Ncm.Equals(substring))
+                         {
+                            ncmIncentivo = true;
+                            break;
+                         }
                     }
 
-                    if (cestTemp == cestBase)
+                   
+
+                    if (cestBase != "" && cestBase != null && cestTemp != "")
                     {
-                        ncmIncentivo = true;
-                        break;
+                        if (cestTemp == cestBase)
+                        {
+                            ncmIncentivo = true;
+                            break;
+                        }
                     }
                 }
                
