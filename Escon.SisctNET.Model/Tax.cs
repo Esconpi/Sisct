@@ -74,6 +74,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? ReceitaNormal1 { get; set; }
 
+        public decimal? ReceitaNormal1AliqM25 { get; set; }
+
         public decimal? ReceitaST1 { get; set; }
 
         public decimal? ReceitaIsento1 { get; set; }

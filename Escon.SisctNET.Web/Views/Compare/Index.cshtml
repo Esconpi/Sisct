@@ -33,27 +33,27 @@
             {
                 @if (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa")
                 {
-                    @await Html.PartialAsync("_XmlSped", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeXmlSped", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "SpedXS" || ViewBag.Ordem == "SpedXE")
                 {
-                    @await Html.PartialAsync("_SpedXml", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeSpedXml", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "DifereValor" || ViewBag.Ordem == "DifereValorSefaz" || ViewBag.Ordem == "DifereValorEmpresa")
                 {
-                    @await Html.PartialAsync("_TotalDifference", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeTotalDifference", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "SisCTXS" || ViewBag.Ordem == "SisCTXE")
                 {
-                    @await Html.PartialAsync("_XmlSpedSisct", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeXmlSpedSisct", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "DifereIcms")
                 {
-                    @await Html.PartialAsync("_CreditDifference", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeCreditDifference", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "SefazXFsist" || ViewBag.Ordem == "EmpresaXFsist")
                 {
-                    @await Html.PartialAsync("_XmlFsist", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_NFeXmlFsist", new ViewDataDictionary(ViewData))
                 }
 
                 if (SessionManager.GetTipoInSession() == 0 && (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa"))
@@ -81,18 +81,22 @@
             {
                 @if (ViewBag.Ordem == "XmlSefaz" || ViewBag.Ordem == "XmlEmpresa")
                 {
-                    @await Html.PartialAsync("_CompareCte", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_CTeXmlSped", new ViewDataDictionary(ViewData))
+                }
+                else if (ViewBag.Ordem == "SpedXS" || ViewBag.Ordem == "SpedXE")
+                {
+                    @await Html.PartialAsync("_CTeSpedXml", new ViewDataDictionary(ViewData))
                 }
             }
             else if (ViewBag.Opcao == "Planilha")
             {
                 if (ViewBag.Ordem == "Malha")
                 {
-                    @await Html.PartialAsync("_Malha", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_ExcelMalha", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Ordem == "FsistXSefaz" || ViewBag.Ordem == "FsistXEmpresa")
                 {
-                    @await Html.PartialAsync("_FsistXml", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_ExcelFsistXml", new ViewDataDictionary(ViewData))
                 }
 
             }

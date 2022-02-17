@@ -714,10 +714,14 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     string directoryCte = "";
 
+                    List<List<string>> sped = new List<List<string>>();
+
                     if (ident.Equals("0"))
                     {
                         var confDBSisctCte = _configurationService.FindByName("CTe");
                         directoryCte = importDir.Entrada(company, confDBSisctCte.Value, year, month);
+
+                        sped = importSped.CTeType(caminhoDestinoArquivoOriginalSped, "0");
                     }
                     else
                     {
@@ -727,20 +731,20 @@ namespace Escon.SisctNET.Web.Controllers
                             directoryCte = importDir.SaidaEmpresa(company, confDBSisctCte.Value, year, month);
                         else
                             directoryCte = importDir.SaidaSefaz(company, confDBSisctCte.Value, year, month);
+
+                        sped = importSped.CTeType(caminhoDestinoArquivoOriginalSped, "1");
                     }
                     
 
                     List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
-                    List<string> sped = new List<string>();
 
                     ctes = importXml.CTeAll(directoryCte);
 
-                    sped = importSped.CTeAll(caminhoDestinoArquivoOriginalSped);
-
-                    List<List<Dictionary<string, string>>> ctes_nao_encontrados = new List<List<Dictionary<string, string>>>();
 
                     if (ordem.Equals(Model.Ordem.XmlSefaz) || ordem.Equals(Model.Ordem.XmlEmpresa))
                     {
+                        List<List<Dictionary<string, string>>> ctesXml = new List<List<Dictionary<string, string>>>();
+
                         foreach (var cte in ctes)
                         {
                             for (int i = 0; i < cte.Count; i++)
@@ -749,9 +753,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     string cte_xml = cte[i]["chave"];
                                     bool cte_encontrado = false;
-                                    for (int k = 0; k < sped.Count(); k++)
+                                    foreach (var cteSped in sped)
                                     {
-                                        if (cte_xml == sped[k])
+                                        if (cte_xml == cteSped[1])
                                         {
                                             cte_encontrado = true;
                                             break;
@@ -759,18 +763,53 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
 
                                     if (cte_encontrado == false)
-                                        ctes_nao_encontrados.Add(cte);
+                                        ctesXml.Add(cte);
                                 }
                             }
                         }
+
+                        ViewBag.Ctes = ctesXml;
+                        ViewBag.QuantidadeCTe = ctes.Count;
                     }
+                    else if (ordem.Equals(Model.Ordem.SpedXS) || ordem.Equals(Model.Ordem.SpedXE))
+                    {
+                        List<List<string>> ctesSped = new List<List<string>>();
+
+                        foreach (var cteSped in sped)
+                        {
+                            bool cte_encontrado = false;
+
+                            foreach (var cte in ctes)
+                            {
+                                for (int i = 0; i < cte.Count; i++)
+                                {
+                                    if (cte[i].ContainsKey("chave"))
+                                    {
+                                        string cte_xml = cte[i]["chave"];
+
+                                        if (cte_xml == cteSped[1])
+                                        {
+                                            cte_encontrado = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (cte_encontrado == false)
+                                ctesSped.Add(cteSped);
+                        }
+
+                        ViewBag.Ctes = ctesSped;
+                        ViewBag.QuantidadeCTe = sped.Count;
+                    }
+
                    
                     List<string> modal = new List<string> { "Rod", "Aér", "Aquav", "Ferrov", "Dutov", "Multi" };
                     List<string> tipo = new List<string> { "Normal", "Subcontratação", "Redespacho", "Red. Inter", "Ser. Vin. Multi" };
                     ViewBag.Modal = modal;
                     ViewBag.Tipos = tipo;
-                    ViewBag.Ctes = ctes_nao_encontrados;
-                        
+
                 }
                 else if (opcao.Equals(Model.Opcao.Planilha))
                 {

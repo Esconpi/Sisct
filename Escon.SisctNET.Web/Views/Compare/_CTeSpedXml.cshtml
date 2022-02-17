@@ -1,0 +1,127 @@
+﻿<div class="col-lg-6">
+    <b>CTes</b>
+
+</div>
+<div class="col-lg-6" style="text-align:right">
+    <b>Quantidade:</b> @ViewBag.QuantidadeCTe
+</div>
+<br />
+<table class="table" style="width:100%;font-size:10px; border:1px solid;">
+    <thead>
+        <tr style="border: 1px solid;">
+            <th style="border: 1px solid;">
+                Data
+            </th>
+            <th style="border: 1px solid;">
+                Modal
+            </th>
+            <th style="border: 1px solid;">
+                Tipo
+            </th>
+            <th style="border: 1px solid;">
+                UF
+            </th>
+            <th style="border: 1px solid;">
+                Nota
+            </th>
+            <th style="border: 1px solid;">
+                CNPJ
+            </th>
+            <th style="border: 1px solid;">
+                Nome
+            </th>
+            <th style="border: 1px solid;">
+                Valor
+            </th>
+            <th style="border: 1px solid;">
+                Chave
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < ViewBag.Ctes.Count; i++)
+        {
+            <tr>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][1]["dhEmi"]
+                </td>
+                <td style="border: 1px solid;">
+                    @if (ViewBag.Ctes[i][1]["modal"] == "01")
+                    {
+                        @ViewBag.Modal[0]
+                    }
+                    else if (ViewBag.Ctes[i][1]["modal"] == "02")
+                    {
+                        @ViewBag.Modal[1]
+                    }
+                    else if (ViewBag.Ctes[i][1]["modal"] == "03")
+                    {
+                        @ViewBag.Modal[2]
+                    }
+                    else if (ViewBag.Ctes[i][1]["modal"] == "04")
+                    {
+                        @ViewBag.Modal[3]
+                    }
+                    else if (ViewBag.Ctes[i][1]["modal"] == "05")
+                    {
+                        @ViewBag.Modal[4]
+                    }
+                    else if (ViewBag.Ctes[i][1]["modal"] == "06")
+                    {
+                        @ViewBag.Modal[5]
+                    }
+                </td>
+                <td style="border: 1px solid;">
+                    @if (ViewBag.Ctes[i][1]["tpServ"] == "0")
+                    {
+                        @ViewBag.Tipos[0]
+                    }
+                    else if (ViewBag.Ctes[i][1]["tpServ"] == "1")
+                    {
+                        @ViewBag.Tipos[1]
+                    }
+                    else if (ViewBag.Ctes[i][1]["tpServ"] == "2")
+                    {
+                        @ViewBag.Tipos[2]
+                    }
+                    else if (ViewBag.Ctes[i][1]["tpServ"] == "3")
+                    {
+                        @ViewBag.Tipos[3]
+                    }
+                    else if (ViewBag.Ctes[i][1]["tpServ"] == "4")
+                    {
+                        @ViewBag.Tipos[4]
+                    }
+                </td>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][3]["UF"]
+                </td>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][1]["nCT"]
+                </td>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][3]["CNPJ"]
+                </td>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][3]["xNome"]
+                </td>
+                <td style="border: 1px solid;">
+                    @string.Format("{0:N}", Convert.ToDecimal(ViewBag.Ctes[i][4]["vTPrest"].Replace(',', '*').Replace('.', ',').Replace('*', '.')))
+                </td>
+                <td style="border: 1px solid;">
+                    @ViewBag.Ctes[i][0]["chave"]
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<div class="col-lg-12">
+    <h6>
+        <strong>
+            @ViewBag.Ctes.Count registro(s)
+        </strong>
+    </h6>
+</div>
