@@ -3177,29 +3177,34 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (comp.TypeCompany)
                         {
-                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito),
-                                naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
+                            decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito);
+
+                            decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
                                 vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
                                 ContribuintesIncentivo = Convert.ToDecimal(imp.VendasContribuinte1), ContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaNormal1),
+                                ContribuintesNIncentivoALiqM25 = Convert.ToDecimal(imp.ReceitaNormal1AliqM25),
                                 ContribuintesIncentivoAliqM25 = Convert.ToDecimal(imp.VendasContribuinte2), naoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaNormal2),
                                 vendaCfopSTNaoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaST2), NaoContribuiteIsento = Convert.ToDecimal(imp.ReceitaIsento2),
                                 naoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaNormal3), vendaCfopSTNaoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaST3),
                                 NaoContribuinteForaDoEstadoIsento = Convert.ToDecimal(imp.ReceitaIsento3);
 
 
-                            //// Cálculos dos Produtos  Incentivados
+                            //  Contribuinte
+                            decimal baseCalculoContribuinte = ContribuintesIncentivo + ContribuintesNIncentivo,
+                                baseCalculoContribuinteAliqM25 = ContribuintesIncentivoAliqM25 + ContribuintesNIncentivoALiqM25,
+                                totalVendaContribuinte = Math.Round(baseCalculoContribuinte + baseCalculoContribuinteAliqM25 + vendaCfopSTContribuintesNIncentivo + ContribuinteIsento, 2),
+                                icmsContribuinteIncentivo = calculation.Imposto(baseCalculoContribuinte, Convert.ToDecimal(comp.Icms)),
+                                icmsContribuinteIncentivoAliqM25 = calculation.Imposto(baseCalculoContribuinteAliqM25, Convert.ToDecimal(comp.IcmsAliqM25));
 
-                            //Contribuinte
-                            decimal icmsContribuinteIncentivo = calculation.Imposto(ContribuintesIncentivo, Convert.ToDecimal(comp.Icms)),
-                                icmsContribuinteIncentivoAliqM25 = calculation.Imposto(ContribuintesIncentivoAliqM25, Convert.ToDecimal(comp.IcmsAliqM25));
+                            //  Não Contribuinte
+                            decimal baseCalculoNCOntribuinte = naoContribuinteIncentivo + naoContribuinteNIncetivo,
+                                totalVendasNContribuinte = Math.Round(baseCalculoNCOntribuinte + vendaCfopSTNaoContribuinteNIncetivo + NaoContribuiteIsento, 2),
+                                icmsNContribuinteIncentivo = calculation.Imposto(baseCalculoNCOntribuinte, Convert.ToDecimal(comp.IcmsNContribuinte));
 
-                            //Não Contribuinte
-                            decimal totalVendasNContribuinte = Math.Round(naoContribuinteIncentivo + naoContribuinteNIncetivo + vendaCfopSTNaoContribuinteNIncetivo, 2),
-                                icmsNContribuinteIncentivo = calculation.Imposto(naoContribuinteIncentivo, Convert.ToDecimal(comp.IcmsNContribuinte));
-
-                            //Não Contribuinte Fora do Estado
-                            decimal totalVendasNContribuinteForaDoEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
-                                icmsNContribuinteForaDoEstado = calculation.Imposto(totalVendasNContribuinteForaDoEstado, Convert.ToDecimal(comp.IcmsNContribuinteFora));
+                            //  Não Contribuinte Fora do Estado
+                            decimal baseCalculoNCOntribuinteForaEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
+                                totalVendasNContribuinteForaEstado = Math.Round(baseCalculoNCOntribuinteForaEstado + NaoContribuinteForaDoEstadoIsento, 2),
+                                icmsNContribuinteForaDoEstado = calculation.Imposto(baseCalculoNCOntribuinteForaEstado, Convert.ToDecimal(comp.IcmsNContribuinteFora));
 
                             //// Direfença de débito e crédito
                             var diferenca = debitosIcms - creditosIcms;
@@ -3210,22 +3215,20 @@ namespace Escon.SisctNET.Web.Controllers
                             totalDarIcms += totalIcms;
 
                             //// FUNEF e COTAC
-                            var baseCalculo = diferenca - totalIcms;
+                            var baseCalculoFC = diferenca - totalIcms;
 
                             //FUNEF
                             decimal percentualFunef = Convert.ToDecimal(comp.Funef == null ? 0 : comp.Funef),
-                               totalFunef = calculation.Imposto(baseCalculo, percentualFunef);
-
-                            totalDarFunef += Math.Round(totalFunef, 2);
+                                totalFunef = calculation.Imposto(baseCalculoFC, percentualFunef);
 
                             //COTAC
                             decimal percentualCotac = Convert.ToDecimal(comp.Cotac == null ? 0 : comp.Cotac),
-                                totalCotac = calculation.Imposto(baseCalculo, percentualCotac);
-
-                            totalDarCotac += Math.Round(totalCotac, 2);
+                                totalCotac = calculation.Imposto(baseCalculoFC, percentualCotac);
 
                             //Total Funef e Cotac
                             var totalFunefCotac = totalFunef + totalCotac;
+
+                            totalDarCotac += Math.Round(totalCotac, 2);
 
                             ////Total Imposto
                             var totalImposto = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + totalFunef + totalCotac, 2);
@@ -3235,39 +3238,48 @@ namespace Escon.SisctNET.Web.Controllers
                             var totalImpostoGeral = Math.Round(totalImposto + icmsNContribuinteForaDoEstado, 2);
 
                             //// Cálculos dos Totais
-                            decimal totalVendaContribuinte = Math.Round(ContribuintesIncentivo + ContribuintesNIncentivo + vendaCfopSTContribuintesNIncentivo, 2),
-                                totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2),
+                            decimal  totalIcmsGeralIncentivo = Math.Round(icmsContribuinteIncentivo + icmsNContribuinteIncentivo + icmsNContribuinteForaDoEstado, 2),
                                 totalGeralVendasIncentivo = Math.Round(totalVendaContribuinte + totalVendasNContribuinte + ContribuinteIsento + NaoContribuiteIsento + ContribuintesIncentivoAliqM25, 2);
 
 
-                            //// Produtos Incentivados
 
-                            //Contribuinte
+                            //  Contribuinte
                             ViewBag.VendaContribuinteIncentivo = ContribuintesIncentivo;
+                            ViewBag.VendaContribuinteIncentivoAliM25 = ContribuintesIncentivoAliqM25;
+                            ViewBag.VendaContribuinteSTNormalTotal = ContribuintesNIncentivo + ContribuintesNIncentivoALiqM25;
+                            ViewBag.VendaContribuinteSTNormal = ContribuintesNIncentivo;
+                            ViewBag.VendaContribuinteSTNormalAliqM25 = ContribuintesNIncentivoALiqM25;
+                            ViewBag.VendaContribuinteST = vendaCfopSTContribuintesNIncentivo;
+                            ViewBag.VendaContribuinteIsento = ContribuinteIsento;
+                            ViewBag.TotalVendaContibuinte = totalVendaContribuinte;
+                            ViewBag.BaseCalculoContribuinte = baseCalculoContribuinte;
+                            ViewBag.BaseCalculoContribuinteAliqM25 = baseCalculoContribuinteAliqM25;
                             ViewBag.PercentualIcmsContrib = Convert.ToDecimal(comp.Icms);
                             ViewBag.ValorVendaContribIncentivo = icmsContribuinteIncentivo;
-                            ViewBag.ContribuinteIsento = ContribuinteIsento;
-                            ViewBag.ContribuinteIncentivoAliM25 = ContribuintesIncentivoAliqM25;
                             ViewBag.ValorVendaContribuinteAliM25 = icmsContribuinteIncentivoAliqM25;
                             ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDecimal(comp.IcmsAliqM25);
-                            ViewBag.VendaSTContribuinte = vendaCfopSTContribuintesNIncentivo;
 
 
-                            //Não Contribuinte
+                            //  Não Contribuinte
                             ViewBag.VendaNContribIncentivo = naoContribuinteIncentivo;
-                            ViewBag.TotalVendaNContribuinte = totalVendasNContribuinte;
+                            ViewBag.VendaNContribuinteSTNormal = naoContribuinteNIncetivo;
+                            ViewBag.VendaNContribuinteST = vendaCfopSTNaoContribuinteNIncetivo;
+                            ViewBag.VendaNContribuinteIsento = NaoContribuiteIsento;
+                            ViewBag.TotalVendaNContibuinte = totalVendasNContribuinte;
+                            ViewBag.BaseCalculoNContribuinte = baseCalculoNCOntribuinte;
                             ViewBag.PercentualIcmsNContribuinte = Convert.ToDecimal(comp.IcmsNContribuinte);
                             ViewBag.ValorVendaNContribIncentivo = icmsNContribuinteIncentivo;
-                            ViewBag.NaoContribuinteIsento = NaoContribuiteIsento;
-                            ViewBag.VendaSTNContribuinte = vendaCfopSTNaoContribuinteNIncetivo;
 
-                            //Não Contribuinte Fora do Estado
-                            ViewBag.VendaNForaEstadoContribuinteIncetivo = naoContriForaDoEstadoIncentivo;
-                            ViewBag.TotalVendaNContribuinteForaDoEstado = totalVendasNContribuinteForaDoEstado;
+
+                            //  Não Contribuinte Fora do Estado
+                            ViewBag.VendaContribuinteForaEstadoIncetivo = naoContriForaDoEstadoIncentivo;
+                            ViewBag.VendaNContribuinteForaEstadoSTNormal = naoContriForaDoEstadoNIncentivo;
+                            ViewBag.VendaContribuinteForaEstadoST = vendaCfopSTNaoContriForaDoEstadoNIncentivo;
+                            ViewBag.VendaNContribuinteForaDoEstadoIsento = NaoContribuinteForaDoEstadoIsento;
+                            ViewBag.TotalVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaEstado;
+                            ViewBag.BaseCalculoNContribuinteForaEstado = baseCalculoNCOntribuinteForaEstado;
                             ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDecimal(comp.IcmsNContribuinteFora);
                             ViewBag.ValorVendaNContribForaDoEstado = icmsNContribuinteForaDoEstado;
-                            ViewBag.NaoContribuinteForaDoEstadoIsento = NaoContribuinteForaDoEstadoIsento;
-                            ViewBag.VendaSTForaEstadoNContribuinte = vendaCfopSTNaoContriForaDoEstadoNIncentivo;
 
                             List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
@@ -3281,17 +3293,6 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             ViewBag.IcmsForaDoEstado = icmsForaDoEstado;
-
-                            //// Produtos não incentivados
-
-                            //Contribuinte
-                            ViewBag.VendaContribuinteNIncentivo = ContribuintesNIncentivo;
-
-                            //Não Contribuinte
-                            ViewBag.VendaNContribuinteNIncentivo = naoContribuinteNIncetivo;
-
-                            //Não Contribuinte Fora do Estado
-                            ViewBag.VendaNContribuinteNIncentivoForaDoEstado = naoContriForaDoEstadoNIncentivo;
 
                             //// Crédito e Débito
                             //Crédito
@@ -3309,7 +3310,7 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                             //// FUNEF e COTAC
-                            ViewBag.BaseCalculo = baseCalculo;
+                            ViewBag.BaseCalculoFC = baseCalculoFC;
 
                             //FUNEF
                             ViewBag.PercentualFunef = percentualFunef;
@@ -3322,6 +3323,7 @@ namespace Escon.SisctNET.Web.Controllers
                             //Total Funef e Cotac
                             ViewBag.TotalFunefCotac = totalFunefCotac;
 
+
                             ////Total Imposto
                             ViewBag.TotalImposto = totalImposto;
 
@@ -3329,9 +3331,6 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalImpostoGeral = totalImpostoGeral;
 
                             //// Total
-                            ViewBag.TotalVendaContibuinte = totalVendaContribuinte + ContribuinteIsento + ContribuintesIncentivoAliqM25;
-                            ViewBag.TotalGeralVendaNContibuinte = totalVendasNContribuinte + NaoContribuiteIsento;
-                            ViewBag.TotalGeralVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaDoEstado + NaoContribuinteForaDoEstadoIsento;
                             ViewBag.TotalGeralIcmsIncentivo = totalIcmsGeralIncentivo;
                             ViewBag.TotalGeralVendasIncentivo = totalGeralVendasIncentivo;
                             ViewBag.Uf = comp.County.State.UF;

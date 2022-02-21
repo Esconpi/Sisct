@@ -26783,19 +26783,19 @@ namespace Escon.SisctNET.Web.Controllers
                                 NaoContribuinteForaDoEstadoIsento = Convert.ToDecimal(imp.ReceitaIsento3);
 
 
-                            //Contribuinte
+                            //  Contribuinte
                             decimal baseCalculoContribuinte = ContribuintesIncentivo + ContribuintesNIncentivo,
                                 baseCalculoContribuinteAliqM25 = ContribuintesIncentivoAliqM25 + ContribuintesNIncentivoALiqM25,
                                 totalVendaContribuinte = Math.Round(baseCalculoContribuinte + baseCalculoContribuinteAliqM25 + vendaCfopSTContribuintesNIncentivo + ContribuinteIsento, 2),
                                 icmsContribuinteIncentivo = calculation.Imposto(baseCalculoContribuinte, Convert.ToDecimal(comp.Icms)),
                                 icmsContribuinteIncentivoAliqM25 = calculation.Imposto(baseCalculoContribuinteAliqM25, Convert.ToDecimal(comp.IcmsAliqM25));
 
-                            //Não Contribuinte
+                            //  Não Contribuinte
                             decimal baseCalculoNCOntribuinte = naoContribuinteIncentivo + naoContribuinteNIncetivo,
                                 totalVendasNContribuinte = Math.Round(baseCalculoNCOntribuinte + vendaCfopSTNaoContribuinteNIncetivo + NaoContribuiteIsento, 2),
                                 icmsNContribuinteIncentivo = calculation.Imposto(baseCalculoNCOntribuinte, Convert.ToDecimal(comp.IcmsNContribuinte));
 
-                            //Não Contribuinte Fora do Estado
+                            //  Não Contribuinte Fora do Estado
                             decimal baseCalculoNCOntribuinteForaEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
                                 totalVendasNContribuinteForaEstado = Math.Round(baseCalculoNCOntribuinteForaEstado + NaoContribuinteForaDoEstadoIsento, 2), 
                                 icmsNContribuinteForaDoEstado = calculation.Imposto(baseCalculoNCOntribuinteForaEstado, Convert.ToDecimal(comp.IcmsNContribuinteFora));
