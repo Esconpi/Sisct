@@ -2015,12 +2015,13 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
 
                                         int posUf = -1;
-                                        if (exitNotes[i][3].ContainsKey("UF") && exitNotes[i][1]["idDest"].Equals("2"))
+                                        if (exitNotes[i][1]["idDest"].Equals("2"))
                                         {
+                                            var UF = exitNotes[i][3].ContainsKey("UF") ? exitNotes[i][3]["UF"] : "";
 
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
-                                                if (icmsForaDoEstado[j][0].Equals(exitNotes[i][3]["UF"]))
+                                                if (icmsForaDoEstado[j][0].Equals(UF))
                                                 {
                                                     posUf = j;
                                                     break;
@@ -2030,7 +2031,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (posUf < 0)
                                             {
                                                 List<string> uf = new List<string>();
-                                                uf.Add(exitNotes[i][3]["UF"]);
+                                                uf.Add(UF);
                                                 uf.Add("0,00");
                                                 uf.Add("0,00");
                                                 icmsForaDoEstado.Add(uf);
@@ -2100,7 +2101,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         {
                                                             naoContribuinteIncentivo += Convert.ToDecimal(valorProduto);
 
-                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            if (exitNotes[i][1]["idDest"].Equals("2") && posUf >= 0)
                                                             {
                                                                 naoContriForaDoEstadoIncentivo += Convert.ToDecimal(valorProduto);
                                                                 icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
@@ -2123,7 +2124,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         {
                                                             naoContribuinteNIncetivo += Convert.ToDecimal(valorProduto);
 
-                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            if (exitNotes[i][1]["idDest"].Equals("2") && posUf >= 0)
                                                             {
                                                                 naoContriForaDoEstadoNIncentivo += Convert.ToDecimal(valorProduto);
                                                                 icmsForaDoEstado[posUf][1] = (Convert.ToDecimal(icmsForaDoEstado[posUf][1]) + Convert.ToDecimal(valorProduto)).ToString();
@@ -2142,7 +2143,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         {
                                                             naoContribuiteIsento += Convert.ToDecimal(valorProduto);
 
-                                                            if (exitNotes[i][1]["idDest"].Equals("2"))
+                                                            if (exitNotes[i][1]["idDest"].Equals("2") && posUf >= 0)
                                                             {
                                                                 naoContribuinteForaDoEstadoIsento += Convert.ToDecimal(valorProduto);
                                                             }
@@ -2196,12 +2197,13 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
 
                                         int posUf = -1;
-                                        if (exitNotes[i][3].ContainsKey("UF") && exitNotes[i][1]["idDest"].Equals("2"))
+                                        if (exitNotes[i][1]["idDest"].Equals("2"))
                                         {
+                                            var UF = exitNotes[i][3].ContainsKey("UF") ? exitNotes[i][3]["UF"] : "";
 
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
-                                                if (icmsForaDoEstado[j][0].Equals(exitNotes[i][3]["UF"]))
+                                                if (icmsForaDoEstado[j][0].Equals(UF))
                                                 {
                                                     posUf = j;
                                                     break;
@@ -2211,7 +2213,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (posUf < 0)
                                             {
                                                 List<string> uf = new List<string>();
-                                                uf.Add(exitNotes[i][3]["UF"]);
+                                                uf.Add(UF);
                                                 uf.Add("0");
                                                 uf.Add("0");
                                                 icmsForaDoEstado.Add(uf);
