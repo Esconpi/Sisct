@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("Cst")]
+    [Table("cst")]
     public class Cst : EntityBase
     {
         [JsonIgnore]
