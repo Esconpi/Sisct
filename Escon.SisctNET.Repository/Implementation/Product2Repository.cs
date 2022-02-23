@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,15 @@ namespace Escon.SisctNET.Repository.Implementation
             }
 
             return products;
+        }
+
+        public List<Product2> FindByAllGroup(Log log = null)
+        {
+            var rst = _context.Product2s
+                .Include(_ => _.Group)
+                .ToList();
+            AddLog(log);
+            return rst;
         }
     }
 }

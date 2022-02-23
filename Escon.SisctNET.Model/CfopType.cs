@@ -2,7 +2,7 @@
 
 namespace Escon.SisctNET.Model
 {
-    [Table("cfopType")]
+    [Table("cfoptype")]
     public class CfopType : EntityBase
     {
         public string Name { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("creditBalance")]
+    [Table("creditbalance")]
     public class CreditBalance : EntityBase
     {
         public ILazyLoader LazyLoader { get; set; }

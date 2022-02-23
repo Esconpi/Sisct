@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Escon.SisctNET.Repository.Implementation
@@ -25,6 +26,16 @@ namespace Escon.SisctNET.Repository.Implementation
 
             AddLog(log);
             _context.SaveChanges();
+        }
+
+        public List<Aliquot> FindByAllState(Log log = null)
+        {
+            var rst = _context.Aliquots
+                .Include(so => so.StateOrigem)
+                .Include(sd =>  sd.StateDestino)
+                .ToList();
+            AddLog(log);
+            return rst;
         }
 
         public Aliquot FindByUf(string uf, Log log = null)
