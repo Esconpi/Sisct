@@ -81,7 +81,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<TaxationNcm> FindByCompany(string company, Log log = null)
         {
-            var rst = _context.TaxationNcms.Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8))).ToList();
+            var rst = _context.TaxationNcms
+                .Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)))
+                .Include(n => n.Ncm)
+                .Include(t => t.TaxationTypeNcm)
+                .ToList();
             AddLog(log);
             return rst;
         }
@@ -91,6 +95,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.TaxationNcms
                 .Where(_ => _.CompanyId.Equals(company))
                 .Include(n => n.Ncm)
+                .Include(t => t.TaxationTypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -101,6 +106,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.TaxationNcms
                 .Where(_ => _.CompanyId.Equals(company) && _.Year.Equals(year) && _.Month.Equals(month))
                 .Include(n => n.Ncm)
+                .Include(t => t.TaxationTypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -108,7 +114,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<TaxationNcm> FindByGeneral(Log log = null)
         {
-            var rst = _context.TaxationNcms.ToList();
+            var rst = _context.TaxationNcms
+                .Include(n => n.Ncm)
+                .Include(t => t.TaxationTypeNcm)
+                .ToList();
             AddLog(log);
             return rst;
         }
@@ -142,11 +151,19 @@ namespace Escon.SisctNET.Repository.Implementation
 
             if (typeCompany.Equals(1))
             {
-                ncms = _context.TaxationNcms.Where(_ => _.Company.CountingTypeId.Equals(1) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).ToList();
+                ncms = _context.TaxationNcms
+                    .Where(_ => _.Company.CountingTypeId.Equals(1) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)))
+                    .Include(n => n.Ncm)
+                    .Include(t => t.TaxationTypeNcm)
+                    .ToList();
             }
             else
             {
-                ncms = _context.TaxationNcms.Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4))).ToList();
+                ncms = _context.TaxationNcms
+                    .Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)))
+                    .Include(n => n.Ncm)
+                    .Include(t => t.TaxationTypeNcm)
+                    .ToList();
             }
             return ncms;
         }
