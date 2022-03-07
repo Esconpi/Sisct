@@ -26512,7 +26512,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        if (Convert.ToInt32(notes[i][1]["nNF"]) > numero)
+                        if (Convert.ToInt32(notes[i][1]["nNF"]) > numero || notes[i][1]["tpEmis"] == "1")
                         {
                             notes.RemoveAt(i);
                             continue;
