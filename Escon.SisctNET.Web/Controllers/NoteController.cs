@@ -264,6 +264,8 @@ namespace Escon.SisctNET.Web.Controllers
             int erro = 0;
             string url = "Index", chave = "";
 
+            var taxedtypes = _taxationTypeService.FindAll(null);
+
             for (int i = notes.Count - 1; i >= 0; i--)
             {
                 if (notes[i].Count() < 3)
@@ -572,7 +574,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso == null)
                                     incentivo = false;
 
-                                var taxedtype = _taxationTypeService.FindById(taxed.TaxationTypeId, null);
+                                var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
                                         valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, baseCalc = 0;
 
