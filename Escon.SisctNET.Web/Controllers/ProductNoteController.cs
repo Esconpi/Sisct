@@ -845,6 +845,8 @@ namespace Escon.SisctNET.Web.Controllers
                 if(!type.Equals(Model.Type.IcmsProdutor))
                     notesEntry = importXml.NFeAll(directoryNfe);
 
+                var notes = _noteService.FindByNotes(id, year, month);
+
                 for (int i = notesEntry.Count - 1; i >= 0; i--)
                 {
                     if (notesEntry[i][1]["finNFe"] == "4")
@@ -866,16 +868,14 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    var notaImport = _noteService.FindByNote(notesEntry[i][0]["chave"]);
+                    var notaImport =  notes.Where(_ => _.Chave.Equals(notesEntry[i][0]["chave"])).FirstOrDefault();
 
-                    if(notaImport == null)
+                    if (notaImport == null)
                     {
                         ViewBag.Erro = 5;
                         return View(null);
                     }
                 }
-
-                var notes = _noteService.FindByNotes(id, year, month);
 
                 var prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
 

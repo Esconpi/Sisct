@@ -54,7 +54,12 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             var rst = _context.ProductNotes
                 .Where(_ => _.NoteId.Equals(noteId))
+                .Include(n => n.Note)
                 .Include(c => c.Note.Company)
+                .Include(t => t.TaxationType)
+                .Include(p => p.Product)
+                .Include(p1 => p1.Product1)
+                .Include(p2 => p2.Product2)
                 .ToList();
             AddLog(log);
             return rst.ToList();
@@ -67,7 +72,12 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 var rst = _context.ProductNotes
                     .Where(_ => _.NoteId.Equals(note.Id))
+                    .Include(n => n.Note)
                     .Include(c => c.Note.Company)
+                    .Include(t => t.TaxationType)
+                    .Include(p => p.Product)
+                    .Include(p1 => p1.Product1)
+                    .Include(p2 => p2.Product2)
                     .ToList();
                 products.AddRange(rst);
             }
@@ -84,7 +94,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -92,7 +107,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -100,7 +120,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)1)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -108,7 +133,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)2)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -116,7 +146,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)4)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -124,7 +159,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)3)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -132,7 +172,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)7)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -140,7 +185,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)8)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -148,7 +198,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 {
                     var rst = _context.ProductNotes
                         .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)9)))
+                        .Include(n => n.Note)
                         .Include(c => c.Note.Company)
+                        .Include(t => t.TaxationType)
+                        .Include(p => p.Product)
+                        .Include(p1 => p1.Product1)
+                        .Include(p2 => p2.Product2)
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -196,7 +251,12 @@ namespace Escon.SisctNET.Repository.Implementation
 
             var rst = _context.ProductNotes
                 .Where(_ => _.NoteId.Equals(noteId) && _.Status.Equals(false))
+                .Include(n => n.Note)
                 .Include(c => c.Note.Company)
+                .Include(t => t.TaxationType)
+                .Include(p => p.Product)
+                .Include(p1 => p1.Product1)
+                .Include(p2 => p2.Product2)
                 .ToList();
             AddLog(log);
             return rst.ToList();
@@ -206,7 +266,12 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             var rst = _context.ProductNotes
                 .Where(_ => _.NoteId.Equals(noteId) && _.Nitem.Equals(nItem))
+                .Include(n => n.Note)
                 .Include(c => c.Note.Company)
+                .Include(t => t.TaxationType)
+                .Include(p => p.Product)
+                .Include(p1 => p1.Product1)
+                .Include(p2 => p2.Product2)
                 .FirstOrDefault();
             AddLog(log);
             return rst;
@@ -223,7 +288,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 result = _context.ProductNotes
                     .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest.Equals(1) &&
                                  Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1))
+                    .Include(n => n.Note)
                     .Include(c => c.Note.Company)
+                    .Include(t => t.TaxationType)
+                    .Include(p => p.Product)
+                    .Include(p1 => p1.Product1)
+                    .Include(p2 => p2.Product2)
                     .ToList();
             }
 
@@ -241,7 +311,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 result = _context.ProductNotes
                     .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest != 1 && 
                                 Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)))
+                    .Include(n => n.Note)
                     .Include(c => c.Note.Company)
+                    .Include(t => t.TaxationType)
+                    .Include(p => p.Product)
+                    .Include(p1 => p1.Product1)
+                    .Include(p2 => p2.Product2)
                     .ToList();
             }
 
@@ -283,7 +358,12 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 var itens = _context.ProductNotes
                     .Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == true)
+                    .Include(n => n.Note)
                     .Include(c => c.Note.Company)
+                    .Include(t => t.TaxationType)
+                    .Include(p => p.Product)
+                    .Include(p1 => p1.Product1)
+                    .Include(p2 => p2.Product2)
                     .ToList();
                 products.AddRange(itens);
             }
@@ -298,7 +378,12 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 var itens = _context.ProductNotes
                     .Where(_ => _.NoteId.Equals(note.Id) && _.Incentivo == false && _.Status.Equals(true))
+                    .Include(n => n.Note)
                     .Include(c => c.Note.Company)
+                    .Include(t => t.TaxationType)
+                    .Include(p => p.Product)
+                    .Include(p1 => p1.Product1)
+                    .Include(p2 => p2.Product2)
                     .ToList();
                 products.AddRange(itens);
             }
@@ -341,9 +426,14 @@ namespace Escon.SisctNET.Repository.Implementation
         public ProductNote FindByProduct(long id, Log log = null)
         {
             var rst = _context.ProductNotes
-              .Where(_ => _.Id.Equals(id))
-              .Include(c => c.Note.Company)
-              .FirstOrDefault();
+                .Where(_ => _.Id.Equals(id))
+                .Include(n => n.Note)
+                .Include(c => c.Note.Company)
+                .Include(t => t.TaxationType)
+                .Include(p => p.Product)
+                .Include(p1 => p1.Product1)
+                .Include(p2 => p2.Product2)
+                .FirstOrDefault();
             AddLog(log);
             return rst;
         }
