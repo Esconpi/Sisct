@@ -1490,7 +1490,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
                                         {
                                             cfop = false;
-                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||  cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||  
+                                                cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }

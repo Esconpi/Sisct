@@ -77,8 +77,10 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 
-                if(entity.Ncm != null)
+                if (entity.Ncm != null)
                     entity.Ncm = entity.Ncm.Trim();
+                else
+                    entity.Ncm = "";
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -128,6 +130,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (entity.Ncm != null)
                     entity.Ncm = entity.Ncm.Trim();
+                else
+                    entity.Ncm = "";
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");

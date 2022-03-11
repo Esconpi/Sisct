@@ -338,6 +338,9 @@
                 },
                 error: function (result) {
                     console.log(result);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('hiddenHeader').style.display = 'block';
+                    document.getElementById('hiddenBody').style.display = 'block';
                     alert("Erro SisCT!");
                 }
             });
@@ -366,6 +369,9 @@
                 },
                 error: function (result) {
                     console.log(result);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('hiddenHeader').style.display = 'block';
+                    document.getElementById('hiddenBody').style.display = 'block';
                     alert("Erro SisCT!");
                 }
             });

@@ -25882,7 +25882,7 @@ namespace Escon.SisctNET.Web.Controllers
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
                     var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
-                    var contribuintes = _clientService.FindByContribuinte(companyId, "all");
+                    var contribuintes = _clientService.FindByContribuinte(companyId, "raiz");
 
                     decimal total = 0;
 
@@ -25906,7 +25906,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 return View(comp);
                             }
 
-                            if (contribuintes.Contains(CNPJ))
+                            if (contribuintes.Contains(CNPJ.Substring(0, 8)))
                             {
                                 contribuinte = true;
                             }
@@ -25989,7 +25989,7 @@ namespace Escon.SisctNET.Web.Controllers
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
                     var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
-                    var contribuintes = _clientService.FindByContribuinte(companyId, "all");
+                    var contribuintes = _clientService.FindByContribuinte(companyId, "raiz");
 
                     decimal total = 0;
 
@@ -26003,7 +26003,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool client = false;
 
-
                             if (clientesAll.Contains(notes[i][3]["CNPJ"]))
                                 client = true;
 
@@ -26013,7 +26012,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 return View(comp);
                             }
 
-                            if (contribuintes.Contains(CNPJ))
+                            if (contribuintes.Contains(CNPJ.Substring(0, 8)))
                             {
                                 contribuinte = true;
                             }
