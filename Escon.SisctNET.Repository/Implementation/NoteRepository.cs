@@ -42,6 +42,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Notes
                 .Where(_ => _.Chave.Equals(chave))
                 .Include(c => c.Company)
+                .Include(p => p.Products)
                 .FirstOrDefault();
             AddLog(log);
             return rst;
@@ -52,6 +53,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Notes
                 .Where(_ => _.CompanyId.Equals(id) && _.AnoRef.Equals(year) && _.MesRef.Equals(month))
                 .Include(c => c.Company)
+                .Include(p => p.Products)
                 .ToList();
             AddLog(log);
             return rst.ToList();
@@ -62,6 +64,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Notes
                 .Where(_ => _.CompanyId.Equals(companyId) && _.AnoRef.Equals(year) && _.MesRef.Equals(month) && _.Uf.Equals(uf))
                 .Include(c => c.Company)
+                .Include(p => p.Products)
                 .ToList();
             AddLog(log);
             return rst.ToList();

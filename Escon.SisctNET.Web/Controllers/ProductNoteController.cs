@@ -879,7 +879,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var prodsAll = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum);
 
-                var products = _service.FindByProductsType(notes, typeTaxation)
+                var products = _service.FindByProductsType(prodsAll, typeTaxation)
                     .OrderBy(_ => _.Note.Iest)
                     .ThenBy(_ => Convert.ToInt32(_.Note.Nnf))
                     .ToList();
@@ -892,11 +892,11 @@ namespace Escon.SisctNET.Web.Controllers
                     .ToList();
 
                 var notas = products
-                    .Select(_ => Convert.ToInt64(_.NoteId))
+                    .Select(_ => _.Note)
                     .Distinct()
                     .ToList();
 
-                var total = _service.FindByTotal(notas);
+                var total = notas.Sum(_ => _.Vnf);
                 var notesS = notes.Where(_ => _.Iest == "").ToList();
                 var notesI = notes.Where(_ => _.Iest != "").ToList();
 
@@ -1254,7 +1254,7 @@ namespace Escon.SisctNET.Web.Controllers
                         //  Relatorio das Empresas Incentivadas
                         if (comp.Incentive && (comp.AnnexId != null || comp.ChapterId == (long)4) && typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
-                            var productsAll = _service.FindByProductsType(notes, typeTaxation);
+                            var productsAll = _service.FindByProductsType(prodsAll, typeTaxation);
 
                             //Produtos não incentivados
                             var productsNormal = productsAll.Where(_ => _.Incentivo.Equals(false)).ToList();
@@ -1314,12 +1314,10 @@ namespace Escon.SisctNET.Web.Controllers
                             icmsGeralStIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
                             icmsGeralStSIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()), 2);
 
-
                             gnreNPagaSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreNSt).Sum()), 2);
                             gnrePagaSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2);
                             gnreNPagaIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreNSt).Sum()), 2);
                             gnrePagaIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2);
-
 
                             valorDiefIE = Convert.ToDecimal(totalIcmsNormalIE - icmsGeralStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
                             valorDiefSIE = Convert.ToDecimal(totalIcmsNormalSIE - icmsGeralStSIE - gnrePagaSIE + gnreNPagaSIE + totalIcmsFreteIE);
@@ -1328,7 +1326,6 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsPautaIE = Convert.ToDecimal(productsNormal.Where(_ => _.Pautado.Equals(true) && _.TaxationType.Type.Equals("ST") && !_.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum());
                             totalIcmsMvaSIE = Convert.ToDecimal(productsNormal.Where(_ => _.Pautado.Equals(false) && _.TaxationType.Type.Equals("ST") && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum());
                             totalIcmsPautaSIE = Convert.ToDecimal(productsNormal.Where(_ => _.Pautado.Equals(true) && _.TaxationType.Type.Equals("ST") && _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum());
-
 
                             totalIcmsPagoIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
                             totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);

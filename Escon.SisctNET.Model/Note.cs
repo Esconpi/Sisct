@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -122,5 +123,8 @@ namespace Escon.SisctNET.Model
         public bool View { get; set; }
 
         public int ? IdDest { get; set; }
+
+        public virtual List<ProductNote> Products { get; set; }
+
     }
 }
