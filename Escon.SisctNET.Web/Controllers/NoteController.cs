@@ -341,13 +341,24 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
+                    Model.Note nTemp = new Model.Note();
+
+                    nTemp.Nnf = notaImport.Nnf;
+                    nTemp.Dhemi = notaImport.Dhemi;
+                    nTemp.Uf = notaImport.Uf;
+                    nTemp.Cnpj = notaImport.Cnpj;
+                    nTemp.Xnome = notaImport.Xnome;
+                    nTemp.Vnf = notaImport.Vnf;
+                    nTemp.MesRef = notaImport.MesRef;
+                    nTemp.AnoRef = notaImport.AnoRef;
+
                     if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
-                        notas.Add(notaImport);
+                        notas.Add(nTemp);
                 }
 
                 var nota = _service.FindByNote(notes[i][0]["chave"]);
 
-                var produtos = _itemService.FindByNote(nota.Id);
+                //var produtos = _itemService.FindByNote(nota.Id);
 
                 bool tributada = true;
 
@@ -466,7 +477,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 freteIcms = det.ContainsKey("frete_icms") ? Convert.ToDecimal(det["frete_icms"]) : 0, frete_prod = det.ContainsKey("frete_prod") ? Convert.ToDecimal(det["frete_prod"]) : 0,
                                 vProd = det.ContainsKey("vProd") ? Convert.ToDecimal(det["vProd"]) : 0;
 
-                        var productImport = produtos.Where(_ => _.Nitem.Equals(nItem)).FirstOrDefault();
+                        var productImport = nota.Products.Where(_ => _.Nitem.Equals(nItem)).FirstOrDefault();
 
                         if (productImport == null)
                         {
