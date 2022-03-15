@@ -133,30 +133,32 @@ namespace Escon.SisctNET.Web.Controllers
                 var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
                 var impAnexo = _taxAnexoService.FindByMonth(companyId, month, year);
 
+                var cfopAll = _companyCfopService.FindByCompany(comp.Document);
+
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document)
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(comp.Document)
+                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document)
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document)
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document)
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document)
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();

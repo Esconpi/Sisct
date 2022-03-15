@@ -11,38 +11,40 @@ namespace Escon.SisctNET.Service
 
         List<Model.CompanyCfop> FindByCompany(long companyId, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopDevoCompra(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCompany(string company, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopDevoCompraST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoCompra(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopVendaST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoCompraST(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopCompra(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopVendaST(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopCompraST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopCompra(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopBonificacaoCompra(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopCompraST(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopDevoVenda(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopBonificacaoCompra(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopDevoVendaST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoVenda(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopVenda(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopDevoVendaST(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopBonificacaoVenda(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopVenda(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopTransferencia(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopBonificacaoVenda(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopTransferenciaST(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopTransferencia(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopOutraEntrada(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopTransferenciaST(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopOutraSaida(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopOutraEntrada(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopVendaIM(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopOutraSaida(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopCompraIM(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopVendaIM(List<Model.CompanyCfop> companyCfops, Log log = null);
 
-        List<Model.CompanyCfop> FindByCfopCompraPerda(string company, Log log = null);
+        List<Model.CompanyCfop> FindByCfopCompraIM(List<Model.CompanyCfop> companyCfops, Log log = null);
+
+        List<Model.CompanyCfop> FindByCfopCompraPerda(List<Model.CompanyCfop> companyCfops, Log log = null);
     }
 }

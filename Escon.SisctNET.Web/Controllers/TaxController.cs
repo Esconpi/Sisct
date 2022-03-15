@@ -657,65 +657,67 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
+                var cfopAll = _companyCfopService.FindByCompany(comp.Document);
+
                 //  Entrada
-                var cfopsCompra = _companyCfopService.FindByCfopCompra(comp.Document)
+                var cfopsCompra = _companyCfopService.FindByCfopCompra(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(comp.Document)
+                var cfopsCompraST = _companyCfopService.FindByCfopCompraST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(comp.Document)
+                var cfopsBoniCompra = _companyCfopService.FindByCfopBonificacaoCompra(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(comp.Document)
+                var cfopsDevoCompra = _companyCfopService.FindByCfopDevoCompra(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsDevoCompraST = _companyCfopService.FindByCfopDevoCompraST(comp.Document)
+                var cfopsDevoCompraST = _companyCfopService.FindByCfopDevoCompraST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
 
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(comp.Document)
+                var cfopsVenda = _companyCfopService.FindByCfopVenda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(comp.Document)
+                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(comp.Document)
+                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(comp.Document)
+                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(comp.Document)
+                var cfopsDevoVenda = _companyCfopService.FindByCfopDevoVenda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(comp.Document)
+                var cfopsDevoVendaST = _companyCfopService.FindByCfopDevoVendaST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(comp.Document)
+                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(comp.Document)
+                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
 
-                var cfopsPerda = _companyCfopService.FindByCfopCompraPerda(comp.Document)
+                var cfopsPerda = _companyCfopService.FindByCfopCompraPerda(cfopAll)
                     .Select(_ => _.Cfop.Code)
                     .Distinct()
                     .ToList();
