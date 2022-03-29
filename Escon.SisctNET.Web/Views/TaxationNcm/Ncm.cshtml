@@ -43,16 +43,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label">Tipo Receita</label>
                             <select asp-items="@ViewBag.ListaTipoNcm" class="form-control selectoption" name="TypeNcmId" id="TypeNcmId"></select>
                             <span asp-validation-for="TypeNcmId" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
                             <label class="control-label">Tipo de Tributação</label>
                             <select asp-items="@ViewBag.TaxationTypeNcmId" name="TaxationTypeNcmId" class="form-control selectoption" id="tipoTributacao"></select>
                             <span asp-validation-for="TaxationTypeNcmId" class="text-danger"></span>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="NatReceita" class="control-label"></label>
                             <input asp-for="NatReceita" class="form-control" />
@@ -68,13 +70,17 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-2 col-xs-12">
                             <label class="control-label">Opção</label>
-                            <select class="form-control selectoption" name="opcao">
+                            <select class="form-control selectoption" name="opcao" id="type">
                                 @if (Model.Company.Taxation == "Produto")
                                 {
                                     <option value="1" selected>Por Produto</option>
                                 }
                                 <option value="2">Por Ncm</option>
                             </select>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                            <label class="control-label">NCM Raiz</label>
+                            <input name="NcmRaiz" class="form-control" id="NcmRaiz" maxlength="8" disabled />
                         </div>
                         <div class="form-group col-lg-2 col-md-6 col-xs-12">
                             <label asp-for="DateStart" class="control-label"></label>
@@ -128,6 +134,14 @@
         $("#cstSaida").children('option').each(function () {
             if ($(this).val() == cstSai) {
                 $(this).attr('selected', true);
+            }
+        });
+
+        $("#type").on("change", function () {
+            if ($(this).val() === '2') {
+                $("#NcmRaiz").prop("disabled", false);
+            } else {
+                $("#NcmRaiz").prop("disabled", true);
             }
         });
 

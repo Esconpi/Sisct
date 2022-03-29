@@ -343,6 +343,8 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, null);
 
+                var ncmRaiz = Request.Form["NcmRaiz"].ToString().Replace(".", "");
+
                 List<TaxationNcm> tributacoes = new List<TaxationNcm>();
 
                 if (Request.Form["opcao"].ToString() == "1")
@@ -380,40 +382,83 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if(Request.Form["opcao"].ToString() == "2")
                 {
-                    var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.Year.Equals(rst.Year) && _.Month.Equals(rst.Month) && _.NcmId.Equals(rst.NcmId)).ToList();
 
-                    foreach (var n in ncms)
+                    if (ncmRaiz == "")
                     {
-                        n.Updated = DateTime.Now;
+                        var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.Year.Equals(rst.Year) && _.Month.Equals(rst.Month) && _.NcmId.Equals(rst.NcmId)).ToList();
 
-                        if (entity.CstEntradaId.Equals((long)0))
+                        foreach (var n in ncms)
                         {
-                            n.CstEntradaId = null;
-                        }
-                        else
-                        {
-                            n.CstEntradaId = entity.CstEntradaId;
-                        }
+                            n.Updated = DateTime.Now;
 
-                        if (entity.CstSaidaId.Equals((long)0))
-                        {
-                            n.CstSaidaId = null;
-                        }
-                        else
-                        {
-                            n.CstSaidaId = entity.CstSaidaId;
-                        }
+                            if (entity.CstEntradaId.Equals((long)0))
+                            {
+                                n.CstEntradaId = null;
+                            }
+                            else
+                            {
+                                n.CstEntradaId = entity.CstEntradaId;
+                            }
 
-                        n.TypeNcmId = entity.TypeNcmId;
-                        n.Status = true;
-                        n.NatReceita = entity.NatReceita;
-                        n.Pis = entity.Pis;
-                        n.Cofins = entity.Cofins;
-                        n.DateStart = entity.DateStart;
-                        n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            if (entity.CstSaidaId.Equals((long)0))
+                            {
+                                n.CstSaidaId = null;
+                            }
+                            else
+                            {
+                                n.CstSaidaId = entity.CstSaidaId;
+                            }
 
-                        tributacoes.Add(n);
+                            n.TypeNcmId = entity.TypeNcmId;
+                            n.Status = true;
+                            n.NatReceita = entity.NatReceita;
+                            n.Pis = entity.Pis;
+                            n.Cofins = entity.Cofins;
+                            n.DateStart = entity.DateStart;
+                            n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+
+                            tributacoes.Add(n);
+                        }
                     }
+                    else
+                    {
+                        var ncmsTemp = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.Year.Equals(rst.Year) && _.Month.Equals(rst.Month) && _.DateEnd.Equals(null)).ToList();
+                        var ncms = _service.FindByNcms(ncmsTemp, ncmRaiz);
+
+                        foreach (var n in ncms)
+                        {
+                            n.Updated = DateTime.Now;
+
+                            if (entity.CstEntradaId.Equals((long)0))
+                            {
+                                n.CstEntradaId = null;
+                            }
+                            else
+                            {
+                                n.CstEntradaId = entity.CstEntradaId;
+                            }
+
+                            if (entity.CstSaidaId.Equals((long)0))
+                            {
+                                n.CstSaidaId = null;
+                            }
+                            else
+                            {
+                                n.CstSaidaId = entity.CstSaidaId;
+                            }
+
+                            n.TypeNcmId = entity.TypeNcmId;
+                            n.Status = true;
+                            n.NatReceita = entity.NatReceita;
+                            n.Pis = entity.Pis;
+                            n.Cofins = entity.Cofins;
+                            n.DateStart = entity.DateStart;
+                            n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+
+                            tributacoes.Add(n);
+                        }
+                    }
+
                 }
 
                 _service.Update(tributacoes, GetLog(OccorenceLog.Update));
@@ -487,9 +532,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-
-
                 var rst = _service.FindById(id, null);
+
+                var ncmRaiz = Request.Form["NcmRaiz"].ToString().Replace(".", "");
 
                 List<TaxationNcm> tributacoes = new List<TaxationNcm>();
 
@@ -528,39 +573,80 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Request.Form["opcao"].ToString() == "2")
                 {
-                    var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
-
-                    foreach (var n in ncms)
+                    if (ncmRaiz == "")
                     {
-                        n.Updated = DateTime.Now;
+                        var ncms = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.NcmId.Equals(rst.NcmId) && _.DateEnd.Equals(null)).ToList();
 
-                        if (entity.CstEntradaId.Equals((long)0))
+                        foreach (var n in ncms)
                         {
-                            n.CstEntradaId = null;
-                        }
-                        else
-                        {
-                            n.CstEntradaId = entity.CstEntradaId;
-                        }
+                            n.Updated = DateTime.Now;
 
-                        if (entity.CstSaidaId.Equals((long)0))
-                        {
-                            n.CstSaidaId = null;
-                        }
-                        else
-                        {
-                            n.CstSaidaId = entity.CstSaidaId;
-                        }
+                            if (entity.CstEntradaId.Equals((long)0))
+                            {
+                                n.CstEntradaId = null;
+                            }
+                            else
+                            {
+                                n.CstEntradaId = entity.CstEntradaId;
+                            }
 
-                        n.TypeNcmId = entity.TypeNcmId;
-                        n.Status = true;
-                        n.NatReceita = entity.NatReceita;
-                        n.Pis = entity.Pis;
-                        n.Cofins = entity.Cofins;
-                        n.DateStart = entity.DateStart;
-                        n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            if (entity.CstSaidaId.Equals((long)0))
+                            {
+                                n.CstSaidaId = null;
+                            }
+                            else
+                            {
+                                n.CstSaidaId = entity.CstSaidaId;
+                            }
 
-                        tributacoes.Add(n);
+                            n.TypeNcmId = entity.TypeNcmId;
+                            n.Status = true;
+                            n.NatReceita = entity.NatReceita;
+                            n.Pis = entity.Pis;
+                            n.Cofins = entity.Cofins;
+                            n.DateStart = entity.DateStart;
+                            n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+
+                            tributacoes.Add(n);
+                        }
+                    }
+                    else
+                    {
+                        var ncmsTemp = _service.FindAll(null).Where(_ => _.CompanyId.Equals(rst.CompanyId) && _.DateEnd.Equals(null)).ToList();
+                        var ncms = _service.FindByNcms(ncmsTemp, ncmRaiz);
+
+                        foreach (var n in ncms)
+                        {
+                            n.Updated = DateTime.Now;
+
+                            if (entity.CstEntradaId.Equals((long)0))
+                            {
+                                n.CstEntradaId = null;
+                            }
+                            else
+                            {
+                                n.CstEntradaId = entity.CstEntradaId;
+                            }
+
+                            if (entity.CstSaidaId.Equals((long)0))
+                            {
+                                n.CstSaidaId = null;
+                            }
+                            else
+                            {
+                                n.CstSaidaId = entity.CstSaidaId;
+                            }
+
+                            n.TypeNcmId = entity.TypeNcmId;
+                            n.Status = true;
+                            n.NatReceita = entity.NatReceita;
+                            n.Pis = entity.Pis;
+                            n.Cofins = entity.Cofins;
+                            n.DateStart = entity.DateStart;
+                            n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+
+                            tributacoes.Add(n);
+                        }
                     }
                 }
 

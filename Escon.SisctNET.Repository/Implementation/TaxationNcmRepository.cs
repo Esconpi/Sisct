@@ -122,6 +122,33 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public List<TaxationNcm> FindByNcms(List<TaxationNcm> ncms, string ncmRaiz, Log log = null)
+        {
+            List<TaxationNcm> result = new List<TaxationNcm>();
+            ncmRaiz = ncmRaiz.Replace(".", "");
+
+            int contaChar = ncmRaiz.Length;
+            foreach (var n in ncms)
+            {
+                string substring = "";
+                if (contaChar < 8 && n.Ncm.Code.Length > contaChar)
+                {
+                    substring = n.Ncm.Code.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = n.Ncm.Code;
+                }
+
+                if (ncmRaiz.Equals(substring))
+                {
+                    result.Add(n);
+                }
+            }
+
+            return result;
+        }
+
         public List<TaxationNcm> FindByPeriod(List<TaxationNcm> taxationNcms, DateTime inicio, DateTime fim, Log log = null)
         {
             List<TaxationNcm> ncms = new List<TaxationNcm>();

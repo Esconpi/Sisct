@@ -261,7 +261,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId)).ToList();
+                        var products = _service.FindAll(null).Where(_ => _.CompanyId.Equals(companyId) && _.DateEnd.Equals(null)).ToList();
                         products = _service.FindByProducts(products, ncmRaiz);
                         foreach (var p in products)
                         {
