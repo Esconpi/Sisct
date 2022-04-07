@@ -26774,13 +26774,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                             decimal creditosIcms = Convert.ToDecimal(imp.Credito), debitosIcms = Convert.ToDecimal(imp.Debito);
 
-                            decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
-                                vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
-                                ContribuintesIncentivo = Convert.ToDecimal(imp.VendasContribuinte1), ContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaNormal1),
+                            decimal naoContribuinteIncentivo = Convert.ToDecimal(imp.VendasNContribuinte), 
+                                naoContriForaDoEstadoIncentivo = Convert.ToDecimal(imp.VendasNContribuinteFora),
+                                vendaCfopSTContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaST1), 
+                                ContribuinteIsento = Convert.ToDecimal(imp.ReceitaIsento1),
+                                ContribuintesIncentivo = Convert.ToDecimal(imp.VendasContribuinte1), 
+                                ContribuintesNIncentivo = Convert.ToDecimal(imp.ReceitaNormal1),
                                 ContribuintesNIncentivoALiqM25 = Convert.ToDecimal(imp.ReceitaNormal1AliqM25),
-                                ContribuintesIncentivoAliqM25 = Convert.ToDecimal(imp.VendasContribuinte2), naoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaNormal2),
-                                vendaCfopSTNaoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaST2), NaoContribuiteIsento = Convert.ToDecimal(imp.ReceitaIsento2),
-                                naoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaNormal3), vendaCfopSTNaoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaST3),
+                                ContribuintesIncentivoAliqM25 = Convert.ToDecimal(imp.VendasContribuinte2), 
+                                naoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaNormal2),
+                                vendaCfopSTNaoContribuinteNIncetivo = Convert.ToDecimal(imp.ReceitaST2), 
+                                NaoContribuiteIsento = Convert.ToDecimal(imp.ReceitaIsento2),
+                                naoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaNormal3), 
+                                vendaCfopSTNaoContriForaDoEstadoNIncentivo = Convert.ToDecimal(imp.ReceitaST3),
                                 NaoContribuinteForaDoEstadoIsento = Convert.ToDecimal(imp.ReceitaIsento3);
 
 

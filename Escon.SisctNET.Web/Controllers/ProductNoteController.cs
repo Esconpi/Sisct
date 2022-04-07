@@ -305,7 +305,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     decimal baseCalc = 0;
-                    decimal valorIcms =calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
+                    decimal valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
 
                     decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
                                                              Convert.ToDecimal(prod.Voutro), Convert.ToDecimal(prod.Vdesc), Convert.ToDecimal(prod.Vipi),
@@ -722,18 +722,18 @@ namespace Escon.SisctNET.Web.Controllers
                 foreach (var product in products)
                 {
                     bool status = false;
-                    var nota = _noteService.FindById(Convert.ToInt64(product.NoteId), null);
+                    //var nota =  _noteService.FindById(Convert.ToInt64(product.NoteId), null);
 
-                    var productTaxation = _service.FindByTaxation(Convert.ToInt64(nota.Id));
+                    var productTaxation = _service.FindByTaxation(Convert.ToInt64(product.NoteId));
 
                     if (productTaxation.Count == 0)
                         status = true;
 
-                    nota.Status = status;
-                    nota.Updated = DateTime.Now;
+                    product.Note.Status = status;
+                    product.Note.Updated = DateTime.Now;
 
-                    if (nota.Status)
-                        updateNote.Add(nota);
+                    if (product.Note.Status)
+                        updateNote.Add(product.Note);
                 }
 
                 _noteService.Update(updateNote);

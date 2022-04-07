@@ -266,6 +266,9 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxedtypes = _taxationTypeService.FindAll(null);
 
+            List<Model.Note> updateNote = new List<Model.Note>();
+            List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
+
             for (int i = notes.Count - 1; i >= 0; i--)
             {
                 if (notes[i].Count() < 3)
@@ -361,8 +364,7 @@ namespace Escon.SisctNET.Web.Controllers
                 //var produtos = _itemService.FindByNote(nota.Id);
 
                 bool tributada = true;
-
-                List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
+                int qtd = 0;
 
                 for (int j = 0; j < notes[i].Count; j++)
                 {
@@ -495,16 +497,13 @@ namespace Escon.SisctNET.Web.Controllers
                             var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
 
                             var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
+                            
                             pICMSValidOrig = aliquotOrig.Aliquota.ToString();
+                            pICMSValid = aliquotOrig.Aliquota.ToString();
 
                             if (orig == 1 || orig == 2)
                             {
                                 var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", notes[i][3]["UF"]);
-                                pICMSValid = aliquot.Aliquota.ToString();
-                            }
-                            else
-                            {
-                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
 
@@ -714,6 +713,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             addProduct.Add(prod);
+                            qtd += 1;
                         }
                         else
                         {
@@ -722,16 +722,15 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
-
-                if (tributada == true && addProduct.Count() > 0)
+                if (tributada == true && qtd > 0)
                 {
                     nota.Status = true;
-                    _service.Update(nota, GetLog(Model.OccorenceLog.Update));
+                    updateNote.Add(nota);
                 }
-
-                addProduct.Clear(); 
             }
+
+            _service.Update(updateNote, GetLog(Model.OccorenceLog.Update));
+            _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
 
             if (notas.Count() > 0 && erro == 0)
             {
