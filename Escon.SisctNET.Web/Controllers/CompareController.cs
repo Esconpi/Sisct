@@ -896,8 +896,9 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
+                        var notesCanceladas = importEvento.NFeCancelada(directoryValida);
                         var notesPlanilha = importExcel.NotesFsist(caminhoDestinoArquivoOriginalExcel);
-
+                        
 
                         //  NFe e NFCe
                         foreach (var note in notesPlanilha)
@@ -914,8 +915,23 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            if (nota_encontrada.Equals(false))
-                                notasFsist.Add(note);
+                            if (!nota_encontrada)
+                            {
+                                bool achou = false;
+
+                                foreach (var notaXml in notesCanceladas)
+                                {
+                                    string nota_xml = notaXml[0]["chNFe"];
+                                    if (note[3].Equals(nota_xml))
+                                    {
+                                        achou = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!achou)
+                                    notasFsist.Add(note);
+                            }
                         }
 
                     }

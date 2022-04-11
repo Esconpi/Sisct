@@ -848,7 +848,8 @@ namespace Escon.SisctNET.Web.Xml
                                                 {
                                                     if (reader.Name.ToString() != "enderEmit")
                                                     {
-                                                        infProt.Add(reader.Name, reader.ReadString());
+                                                        if(!infProt.ContainsKey(reader.Name))
+                                                            infProt.Add(reader.Name, reader.ReadString());
                                                     }
                                                     reader.Read();
                                                 }
