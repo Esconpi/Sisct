@@ -68,5 +68,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindAllInDate1(dateProd, log);
         }
+
+        public Product1 FindByProduct(long id, Log log = null)
+        {
+            return _repository.FindByProduct(id, log);
+        }
     }
 }

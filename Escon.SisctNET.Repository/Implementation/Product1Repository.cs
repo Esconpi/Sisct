@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,16 @@ namespace Escon.SisctNET.Repository.Implementation
             }
 
             return products;
+        }
+
+        public Product1 FindByProduct(long id, Log log = null)
+        {
+            var rst = _context.Product1s
+                .Where(_ => _.Id.Equals(id))
+                .Include(g => g.Group)
+                .FirstOrDefault();
+            AddLog(log);
+            return rst;
         }
     }
 }

@@ -20,5 +20,7 @@ namespace Escon.SisctNET.Service
         List<Model.Product2> FindAllInDate2(DateTime dateProd, Model.Log log = null);
 
         List<Model.Product2> FindByAllGroup(Model.Log log = null);
+
+        Model.Product2 FindByProduct(long id, Model.Log log = null);
     }
 }

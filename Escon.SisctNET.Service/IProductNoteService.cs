@@ -34,6 +34,8 @@ namespace Escon.SisctNET.Service
 
         List<Model.ProductNote> FindByTaxation(long noteId, Model.Log log = null);
 
+        List<Model.ProductNote> FindByTaxation(List<Model.ProductNote> productNotes, Model.Log log = null);
+
         List<Model.ProductNote> FindByCfopNotesIn(long companyId, List<Model.Note> notes, Model.Log log = null);
 
         List<Model.ProductNote> FindByCfopNotesOut(long companyId, List<Model.Note> notes, Model.Log log = null);

@@ -101,5 +101,15 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public Product2 FindByProduct(long id, Log log = null)
+        {
+            var rst = _context.Product2s
+                .Where(_ => _.Id.Equals(id))
+                .Include(g => g.Group)
+                .FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
     }
 }

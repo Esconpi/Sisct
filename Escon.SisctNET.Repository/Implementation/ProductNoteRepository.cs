@@ -76,136 +76,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        /*
-        public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
-        {
-            List<ProductNote> products = new List<ProductNote>();
-            foreach (var note in notes)
-            {
-                if (taxationType.Equals(Model.TypeTaxation.Nenhum))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.ST))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.AP))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)1)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.CO))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)2)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.COR))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)4)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.IM))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)3)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.Isento))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)7)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.AT))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)8)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-                else if (taxationType.Equals(Model.TypeTaxation.NT))
-                {
-                    var rst = _context.ProductNotes
-                        .Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)9)))
-                        .Include(n => n.Note)
-                        .Include(c => c.Note.Company)
-                        .Include(t => t.TaxationType)
-                        .Include(p => p.Product)
-                        .Include(p1 => p1.Product1)
-                        .Include(p2 => p2.Product2)
-                        .ToList();
-                    products.AddRange(rst);
-                }
-            }
-            AddLog(log);
-            return products;
-        }
-
-        */
-
         public List<ProductNote> FindByProductsType(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
@@ -555,6 +425,15 @@ namespace Escon.SisctNET.Repository.Implementation
 
             AddLog(log);
             return products;
+        }
+
+        public List<ProductNote> FindByTaxation(List<ProductNote> productNotes, Log log = null)
+        {
+            var rst = productNotes
+               .Where(_ => _.Status.Equals(false))
+               .ToList();
+            AddLog(log);
+            return rst.ToList();
         }
     }
 }

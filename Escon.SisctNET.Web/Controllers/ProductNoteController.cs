@@ -289,18 +289,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
                     {
-                        product = _productService.FindById(Convert.ToInt64(entity.ProductId), null);
+                        product = _productService.FindByProduct(Convert.ToInt64(entity.ProductId), null);
                         precoPauta = Convert.ToDecimal(product.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && 
                             Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
                     {
-                        product1 = _product1Service.FindById(Convert.ToInt64(entity.Product1Id), null);
+                        product1 = _product1Service.FindByProduct(Convert.ToInt64(entity.Product1Id), null);
                         precoPauta = Convert.ToDecimal(product1.Price);
                     }
                     else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
                     {
-                        product2 = _product2Service.FindById(Convert.ToInt64(entity.Product2Id), null);
+                        product2 = _product2Service.FindByProduct(Convert.ToInt64(entity.Product2Id), null);
                         precoPauta = Convert.ToDecimal(product2.Price);
                     }
 
@@ -429,7 +429,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Produto = "Especial";
                     prod.PercentualInciso = inciso;
                     prod.Updated = DateTime.Now;
-
 
                     updateProducts.Add(prod);
                 }
@@ -723,8 +722,9 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     bool status = false;
                     //var nota =  _noteService.FindById(Convert.ToInt64(product.NoteId), null);
+                    //var productTaxation = _service.FindByTaxation(Convert.ToInt64(product.NoteId));
 
-                    var productTaxation = _service.FindByTaxation(Convert.ToInt64(product.NoteId));
+                    var productTaxation = _service.FindByTaxation(product.Note.Products);
 
                     if (productTaxation.Count == 0)
                         status = true;

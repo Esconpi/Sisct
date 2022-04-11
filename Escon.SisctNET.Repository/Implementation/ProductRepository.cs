@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Escon.SisctNET.Repository.Implementation
@@ -70,6 +71,16 @@ namespace Escon.SisctNET.Repository.Implementation
         public Product FindByProduct(string code, long grupoId, string description, Log log = null)
         {
             var rst = _context.Products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.Description.Equals(description) && _.DateEnd == null).FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
+        public Product FindByProduct(long id, Log log = null)
+        {
+            var rst = _context.Products
+                .Where(_ => _.Id.Equals(id))
+                .Include(g => g.Group)
+                .FirstOrDefault();
             AddLog(log);
             return rst;
         }
