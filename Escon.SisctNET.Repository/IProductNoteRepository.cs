@@ -11,8 +11,6 @@ namespace Escon.SisctNET.Repository
 
         void Update(List<Model.ProductNote> products, Model.Log log = null);
 
-        bool FindByNcmAnnex(long Annex, string ncm, Model.Log log = null);
-
         decimal FindByTotal(List<long> notes, Model.Log log = null);
 
         decimal FindBySubscription(List<Model.Note> notes, Model.TypeTaxation taxationType, Model.Log log = null);

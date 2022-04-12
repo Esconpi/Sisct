@@ -27421,10 +27421,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                         decimal valorNF = 0;
 
+                        var ncmsConvenio = _ncmConvenioService.FindByAnnex(Convert.ToInt64(comp.AnnexId));
+
                         for (int j = 0; j < notes[i].Count; j++)
                         {
                             if (notes[i][j].ContainsKey("NCM"))
-                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId), notes[i][j]["NCM"].ToString());
+                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmsConvenio, notes[i][j]["NCM"].ToString());
 
                             if (ncm)
                             {

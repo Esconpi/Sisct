@@ -15,9 +15,9 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<string> FindByAnnex(long annexId, Log log = null)
+        public List<NcmConvenio> FindByAnnex(long annexId, Log log = null)
         {
-            var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).Select(_ => _.Ncm).ToList();
+            var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).ToList();
             AddLog(log);
             return result;
         }
@@ -91,6 +91,58 @@ namespace Escon.SisctNET.Repository.Implementation
             }
 
             return ncmIncentivo;
+        }
+
+        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, Log log = null)
+        {
+            bool NcmIncentivo = false;
+            foreach (var n in ncms)
+            {
+                int contaChar = n.Ncm.Length;
+                string substring = "";
+                if (contaChar < 8)
+                {
+                    substring = ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = ncm;
+                }
+
+                if (n.Equals(substring) && !contaChar.Equals(0))
+                {
+                    NcmIncentivo = true;
+                    break;
+                }
+            }
+            return NcmIncentivo;
+        }
+
+        public bool FindByNcmAnnex(long Annex, string ncm, Log log = null)
+        {
+            var ncms = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(Annex)).Select(_ => _.Ncm);
+            bool NcmIncentivo = false;
+            foreach (var n in ncms)
+            {
+                int contaChar = n.Length;
+                string substring = "";
+                if (contaChar < 8)
+                {
+                    substring = ncm.Substring(0, contaChar);
+                }
+                else
+                {
+                    substring = ncm;
+                }
+
+                if (n.Equals(substring) && !contaChar.Equals(0))
+                {
+                    NcmIncentivo = true;
+                    break;
+                }
+            }
+            return NcmIncentivo;
+
         }
     }
 }

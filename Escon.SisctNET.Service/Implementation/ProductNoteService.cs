@@ -99,11 +99,6 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCfopNotesOut(companyId, notes, log);
         }
 
-        public bool FindByNcmAnnex(long Annex, string ncm, Log log = null)
-        {
-            return _repository.FindByNcmAnnex(Annex, ncm, log);
-        }
-
         public List<ProductNote> FindByIncentive(List<Note> notes, Log log = null)
         {
             return _repository.FindByIncentive(notes, log);

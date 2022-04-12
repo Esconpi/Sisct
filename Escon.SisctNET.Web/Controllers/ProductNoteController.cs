@@ -194,7 +194,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<Product> list_product = _productService.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product)
                     {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
+                        prod.Description = prod.Code + " - " + prod.Description + " - " + prod.Price;
                     }
                     list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
                     SelectList products = new SelectList(list_product, "Id", "Description", null);

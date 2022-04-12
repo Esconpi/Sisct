@@ -722,6 +722,8 @@ namespace Escon.SisctNET.Web.Controllers
                     .Distinct()
                     .ToList();
 
+                var ncmsConvenio = _ncmConvenioService.FindByAnnex(Convert.ToInt64(comp.AnnexId));
+
                 List<List<Dictionary<string, string>>> exitNotes = new List<List<Dictionary<string, string>>>();
                 List<List<Dictionary<string, string>>> entryNotes = new List<List<Dictionary<string, string>>>();
 
@@ -3049,7 +3051,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         for (int j = 0; j < exitNotes[i].Count; j++)
                                         {
                                             if (exitNotes[i][j].ContainsKey("NCM"))
-                                                ncm = _itemService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId), exitNotes[i][j]["NCM"].ToString());
+                                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmsConvenio, exitNotes[i][j]["NCM"].ToString());
 
                                             if (exitNotes[i][j].ContainsKey("CFOP"))
                                             {
