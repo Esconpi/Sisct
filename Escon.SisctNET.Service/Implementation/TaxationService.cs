@@ -49,6 +49,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCompany(companyId, log);
         }
 
+        public List<Taxation> FindByCompanyActive(long companyId, Log log = null)
+        {
+            return _repository.FindByCompanyActive(companyId, log);
+        }
+
         public Taxation FindById(long id, Log log)
         {
             return _repository.FindById(id, log);

@@ -10,6 +10,8 @@ namespace Escon.SisctNET.Service
 
         Model.Aliquot FindByUf(string uf, Model.Log log = null);
 
+        Model.Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Model.Log log = null);
+
         Model.Aliquot FindByUf(List<Aliquot> states, DateTime data, string ufOrigem, string ufDestino, Model.Log log = null);
 
         List<Model.Aliquot> FindByAllState(Model.Log log = null);

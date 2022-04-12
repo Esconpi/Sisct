@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -75,7 +76,18 @@ namespace Escon.SisctNET.Repository.Implementation
         public List<Taxation> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.Taxations
+               .Where(_ => _.CompanyId.Equals(companyId))
+               .Include(n => n.Ncm)
+               .ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<Taxation> FindByCompanyActive(long companyId, Log log = null)
+        {
+            var rst = _context.Taxations
                 .Where(_ => _.CompanyId.Equals(companyId) && (Convert.ToDateTime(_.DateStart) < Convert.ToDateTime(_.DateEnd) || _.DateEnd.Equals(null)))
+                .Include(n => n.Ncm)
                 .ToList();
             AddLog(log);
             return rst;

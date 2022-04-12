@@ -82,13 +82,14 @@
                             <th class="all">
                                 @Html.DisplayNameFor(model => model.Cest)
                             </th>
-                            <th class="none">
-                                @Html.DisplayNameFor(model => model.Cfop)
-                            </th>
                             <th width="100px" class="all">
                                 @Html.DisplayNameFor(model => model.Vprod)
                             </th>
                             <th class="all">@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
+                            <th class="none">Código do Produto</th>
+                            <th class="none">
+                                @Html.DisplayNameFor(model => model.Cfop)
+                            </th>
                             <th class="none">Aliquota Interestadual</th>
                             <th class="none">Quantidade</th>
                             <th class="none">Valor Unitário</th>
@@ -124,9 +125,6 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cest)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Cfop)
-                                    </td>
                                     <td style="text-align:center">
                                         @string.Format("{0:C}", item.Vprod)
                                     </td>
@@ -139,7 +137,10 @@
                                     {
                                         <td></td>
                                     }
-
+                                    <td>@string.Format("{0:N}", item.Cprod)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cfop)
+                                    </td>
                                     <td>@string.Format("{0:N}", item.Picms)</td>
                                     <td>@string.Format("{0:N}", item.Qcom)</td>
                                     <td>@string.Format("{0:C}", item.Vuncom)</td>
@@ -189,9 +190,6 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Cest)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Cfop)
-                                    </td>
                                     <td style="text-align:center">
                                         @string.Format("{0:C}", item.Vprod)
                                     </td>
@@ -203,7 +201,10 @@
                                     {
                                         <td></td>
                                     }
-
+                                    <td>@string.Format("{0:N}", item.Cprod)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cfop)
+                                    </td>
                                     <td>@string.Format("{0:N}", item.Picms)</td>
                                     <td>@string.Format("{0:N}", item.Qcom)</td>
                                     <td>@string.Format("{0:C}", item.Vuncom)</td>

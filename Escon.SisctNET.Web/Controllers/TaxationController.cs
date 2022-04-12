@@ -33,8 +33,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindByCompany(id);
-                var company = _companyService.FindById(id, GetLog(Model.OccorenceLog.Read));
+                var company = _companyService.FindById(id, null);
                 ViewBag.Company = company;
                 SessionManager.SetCompanyIdInSession(id);
                 return View(null);
@@ -89,7 +88,6 @@ namespace Escon.SisctNET.Web.Controllers
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
             var taxationAll = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).OrderBy(_ => _.Ncm.Code).ToList();
-
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

@@ -71,5 +71,16 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return result;
         }
+
+        public Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Log log = null)
+        {
+            var rst = _context.Aliquots
+                .Where(_ => _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino) && 
+                ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) || (DateTime.Compare(_.DateStart, data) <= 0 && 
+                DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0)))
+                .FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
     }
 }

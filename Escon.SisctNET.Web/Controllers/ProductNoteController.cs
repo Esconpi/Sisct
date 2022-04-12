@@ -746,7 +746,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (prod.Picms != 4)
                     {
-                        var state = _aliquotService.FindByUf(prod.Note.Uf);
+                        var state = _aliquotService.FindByUf(prod.Note.Uf, prod.Note.Company.County.State.UF, prod.Note.Dhemi) ;
                         aliquot = state.Aliquota.ToString();
                     }
 

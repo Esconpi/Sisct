@@ -255,7 +255,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
-            var taxationCompany = _taxationService.FindByCompany(id);
+            var taxationCompany = _taxationService.FindByCompanyActive(id);
             var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
             var aliquotas = _aliquotService.FindByAllState(null);
 
@@ -496,14 +496,19 @@ namespace Escon.SisctNET.Web.Controllers
 
                             var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
 
-                            var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], notes[i][3]["UF"]);
-                            
-                            pICMSValidOrig = aliquotOrig.Aliquota.ToString();
-                            pICMSValid = aliquotOrig.Aliquota.ToString();
+                            //var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF);
+                            //pICMSValidOrig = aliquotOrig.Aliquota.ToString();
+                            //pICMSValid = aliquotOrig.Aliquota.ToString();
+
+                            if (Convert.ToDecimal(pICMSValid) != 4)
+                            {
+                                var state = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF);
+                                pICMSValid = state.Aliquota.ToString();
+                            }
 
                             if (orig == 1 || orig == 2)
                             {
-                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", notes[i][3]["UF"]);
+                                var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", comp.County.State.UF);
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
 

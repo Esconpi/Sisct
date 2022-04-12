@@ -59,6 +59,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByUf(states, data, ufOrigem, ufDestino, log);
         }
 
+        public Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Log log = null)
+        {
+            return _repository.FindByUf(ufOrigem, ufDestino, data, log);
+        }
+
         public Aliquot Update(Aliquot entity, Log log)
         {
             return _repository.Update(entity, log);
