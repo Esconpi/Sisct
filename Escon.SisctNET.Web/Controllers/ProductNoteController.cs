@@ -501,13 +501,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
-                            if (prod.Picms != 4)
+                            /*if (prod.Picms != 4)
                             {
                                 var aliqSimples = _aliquotService.FindByUf(prod.Note.Uf);
                                 dif = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
                                 dif_frete = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
                                 prod.Picms = Convert.ToDecimal(aliqSimples.Aliquota);
-                            }
+                            }*/
 
                             prod.Mva = null;
                             prod.Valoragregado = null;

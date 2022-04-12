@@ -496,9 +496,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             var orig = det.ContainsKey("orig") ? Convert.ToInt32(det["orig"]) : 0;
 
-                            //var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF);
-                            //pICMSValidOrig = aliquotOrig.Aliquota.ToString();
-                            //pICMSValid = aliquotOrig.Aliquota.ToString();
+                            var aliquotOrig = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF);
+                            pICMSValidOrig = aliquotOrig.Aliquota.ToString();
+                            pICMSValid = aliquotOrig.Aliquota.ToString();
 
                             if (Convert.ToDecimal(pICMSValid) != 4)
                             {
@@ -632,8 +632,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
-                                    if (pICMSValid != "4.00")
-                                        pICMS = aliq_simples.Aliquota;
+                                    //if (pICMSValid != "4.00")
+                                    //  pICMS = aliq_simples.Aliquota;
 
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
                                     var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValidOrig));
