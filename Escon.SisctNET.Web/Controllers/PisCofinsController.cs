@@ -5140,7 +5140,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (difImposto > 0)
                                 baseCalcAdcionalIrpj = difImposto;
 
-                            decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 10,
+                            decimal adicionalIrpj = (baseCalcAdcionalIrpj * Convert.ToDecimal(comp.AdicionalIRPJ)) / 100,
                                     totalIrpj = irpjNormal + adicionalIrpj, irpjAPagar = totalIrpj - irpjFonteAF - irpjFonteServico - irpjRetidoTotal - irpjPagoTotal;
 
                             // CSLL
