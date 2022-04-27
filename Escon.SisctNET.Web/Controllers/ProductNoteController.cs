@@ -272,9 +272,7 @@ namespace Escon.SisctNET.Web.Controllers
                 DateTime dateStart = Convert.ToDateTime(entity.DateStart);
 
                 var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
-
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
-
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
@@ -718,7 +716,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> updateNote = new List<Note>();
 
-                foreach (var product in products)
+                notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
+
+                /*foreach (var product in products)
                 {
                     bool status = false;
                     //var nota =  _noteService.FindById(Convert.ToInt64(product.NoteId), null);
@@ -734,6 +734,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (product.Note.Status)
                         updateNote.Add(product.Note);
+                }*/
+
+                foreach (var note in notes)
+                {
+                    bool status = false;
+
+                    var productTaxation = _service.FindByTaxation(note.Products);
+
+                    if (productTaxation.Count == 0)
+                        status = true;
+
+                    note.Status = status;
+                    note.Updated = DateTime.Now;
+
+                    if (note.Status)
+                        updateNote.Add(note);
                 }
 
                 _noteService.Update(updateNote);

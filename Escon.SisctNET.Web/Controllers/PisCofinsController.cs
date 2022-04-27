@@ -2164,6 +2164,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2212,6 +2213,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -2260,6 +2262,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2308,6 +2311,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -2356,6 +2360,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2404,6 +2409,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -2461,6 +2467,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2510,6 +2517,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -2558,6 +2566,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2606,6 +2615,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -2654,6 +2664,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2702,6 +2713,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -2764,6 +2776,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2812,6 +2825,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -2860,6 +2874,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -2908,6 +2923,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -2956,6 +2972,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3004,6 +3021,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -3061,6 +3079,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3110,6 +3129,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -3158,6 +3178,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3206,6 +3227,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -3254,6 +3276,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3302,6 +3325,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -3441,6 +3465,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3490,6 +3515,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -3539,6 +3565,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3588,6 +3615,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -3637,6 +3665,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3686,6 +3715,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -3744,6 +3774,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3794,6 +3825,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -3843,6 +3875,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3892,6 +3925,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -3941,6 +3975,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -3990,6 +4025,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -4052,6 +4088,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4101,6 +4138,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -4150,6 +4188,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4199,6 +4238,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -4248,6 +4288,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4297,6 +4338,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
@@ -4355,6 +4397,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("MONOFÁSICO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4405,6 +4448,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("NORMAL");
                                                 resumoNcm.Add(ncmTemp);
@@ -4454,6 +4498,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ALIQ. ZERO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4503,6 +4548,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("S. TRIBUTÁRIA");
                                                 resumoNcm.Add(ncmTemp);
@@ -4552,6 +4598,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("ISENTO");
                                                 resumoNcm.Add(ncmTemp);
@@ -4601,6 +4648,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 List<string> ncmTemp = new List<string>();
                                                 ncmTemp.Add(nn.Code);
                                                 ncmTemp.Add(nn.Description);
+                                                ncmTemp.Add(cstTemp.Code);
                                                 ncmTemp.Add(cstTemp.TaxationTypeNcm.Description);
                                                 ncmTemp.Add("OUTRAS");
                                                 resumoNcm.Add(ncmTemp);
