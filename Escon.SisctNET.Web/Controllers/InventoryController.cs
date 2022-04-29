@@ -115,7 +115,7 @@ namespace Escon.SisctNET.Web.Controllers
                 await arquivo.CopyToAsync(stream);
                 stream.Close();
 
-                var planilhaInventario = importPlanilha.Inventario(caminhoDestinoArquivoOriginalUpload).OrderBy(_ => _[0]);
+                var planilhaInventario = importPlanilha.Inventory(caminhoDestinoArquivoOriginalUpload).OrderBy(_ => _[0]);
 
                 // Criando Novo Arquivo Sped
                 string caminhoDestinoArquivoDownload = caminho_WebRoot + "\\Downloads\\Speds\\";

@@ -277,7 +277,7 @@ namespace Escon.SisctNET.Web.Planilha
             return ncms;
         }
 
-        public List<List<string>> Inventario(string directoryPlanilha)
+        public List<List<string>> Inventory(string directoryPlanilha)
         {
             List<List<string>> ncms = new List<List<string>>();
 
@@ -446,6 +446,85 @@ namespace Escon.SisctNET.Web.Planilha
             }
 
             return notes;
+        }
+
+        public List<List<string>> Coupons(string directoryPlanilha)
+        {
+            List<List<string>> coupons = new List<List<string>>();
+
+            try
+            {
+                SpreadsheetDocument doc = SpreadsheetDocument.Open(directoryPlanilha, false);
+
+                try
+                {
+
+                    WorkbookPart workbookPart = doc.WorkbookPart;
+                    Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+
+                    foreach (Sheet thesheet in thesheetcollection)
+                    {
+                        Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+
+                        SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
+
+                        foreach (Row thecurrentrow in thesheetdata)
+                        {
+                            List<string> coupon = new List<string>();
+
+                            foreach (Cell thecurrentcell in thecurrentrow)
+                            {
+                                if (thecurrentcell.DataType != null)
+                                {
+                                    if (thecurrentcell.DataType == CellValues.SharedString)
+                                    {
+                                        int id;
+                                        if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                        {
+                                            SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
+                                            if (item.Text != null)
+                                            {
+                                                coupon.Add(item.Text.Text);
+                                            }
+                                            else if (item.InnerText != null)
+                                            {
+                                                coupon.Add(item.InnerText);
+                                            }
+                                            else if (item.InnerXml != null)
+                                            {
+                                                coupon.Add(item.InnerXml);
+                                            }
+                                        }
+                                    }
+                                    else if (thecurrentcell.CellValue != null)
+                                    {
+                                        coupon.Add(thecurrentcell.CellValue.Text);
+                                    }
+                                }
+                            }
+
+
+                            coupons.Add(coupon);
+
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.Out.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    doc.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Arquivo Excel Corrompido", ex);
+            }
+
+            return coupons;
         }
 
         public List<List<List<string>>> Balancete(string directoryPlanilha, List<AccountPlan> accountPlans)
