@@ -878,6 +878,7 @@ namespace Escon.SisctNET.Web.Xml
             {
                 Console.Out.WriteLine(ex.Message);
             }
+
             return notes;
         }
 

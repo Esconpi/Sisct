@@ -144,13 +144,14 @@ namespace Escon.SisctNET.Web.Controllers
                             spedNormal = importSped.NFeExitNormal(caminhoDestinoArquivoOriginalSped);
                             spedNFeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped,"55");
                             spedNFCeCancelada = importSped.NFeExitCanceled(caminhoDestinoArquivoOriginalSped, "65");
+
+                            notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
+                            notesNFeCanceladasEvento = importEvento.NFeCancelada(directoryNFeCancelada);
+                            notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
+                            notesNFCeCanceladasEvento = importEvento.NFeCancelada(directoryNFCeCancelada);
                         }
 
                         notesValidas = importXml.NFeResumeEmit(directoryValida);
-                        notesNFeCanceladas = importXml.NFeResumeEmit(directoryNFeCancelada);
-                        notesNFeCanceladasEvento = importEvento.NFeCancelada(directoryNFeCancelada);
-                        notesNFCeCanceladas = importXml.NFeResumeEmit(directoryNFCeCancelada);
-                        notesNFCeCanceladasEvento = importEvento.NFeCancelada(directoryNFCeCancelada);
                     }
 
                     List<List<Dictionary<string, string>>> notasValidas = new List<List<Dictionary<string, string>>>();
@@ -628,7 +629,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     string icmsXml = notaXml[3]["vICMS"];
                                     string icmsSped = linha[10].Equals("") ? "0" : linha[10].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string icmsDif = (Convert.ToDecimal(icmsXml) - Convert.ToDecimal(icmsSped)).ToString();
-  
 
                                     if (!Convert.ToDecimal(icmsDif).Equals(0))
                                     {

@@ -503,7 +503,6 @@ namespace Escon.SisctNET.Web.Planilha
                                 }
                             }
 
-
                             coupons.Add(coupon);
 
                         }
