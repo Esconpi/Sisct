@@ -76,6 +76,48 @@
                         </div>
                     </div>
                 }
+
+                @if (SessionManager.GetTipoInSession() == 1 && ViewBag.Ordem == "XmlSefaz")
+                {
+                    <div class="box-footer no-print">
+                        <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnMoveSefaz">
+                            <div id="loaderMoveSefaz" class="loader pull-left" style="display:none;"></div>
+                            MOVER NOTAS PARA O PRÓXIMO MÊS
+                        </button>
+                    </div>                       
+
+                    <br />
+                    <br />
+
+                    <div class="row no-print">
+                        <div class="col-md-12">
+                            <div id="responseMoveSefaz" style="padding:15px;">
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (SessionManager.GetTipoInSession() == 1 && ViewBag.Ordem == "XmlEmpresa")
+                {
+                    <div class="box-footer no-print">
+                        <button type="button" class="btn btn-success pull-right" style="width:320px;" id="btnMoveEmpresa">
+                            <div id="loaderMoveEmpresa" class="loader pull-left" style="display:none;"></div>
+                            MOVER NOTAS PARA O PRÓXIMO MÊS
+                        </button>
+                    </div>                       
+
+                    <br />
+                    <br />
+
+                    <div class="row no-print">
+                        <div class="col-md-12">
+                            <div id="responseMoveEmpresa" style="padding:15px;">
+
+                            </div>
+                        </div>
+                    </div>
+                }
             }
             else if (ViewBag.Opcao == "CTe")
             {
@@ -106,7 +148,7 @@
 </div>
 
 <script type="text/javascript">
-    //  Mover notas de um mês para outro
+    //  Mover notas entrada de um mês para outro
     function Move() {
         var isMove = confirm('As notas serão movida para o próximo mês. Deseja continuar:');
 
@@ -142,5 +184,80 @@
             Move();
         });
     });
+
+    //  Mover notas saida sefaz de um mês para outro
+    function MoveSefaz() {
+        var isMove = confirm('As notas serão movida para o próximo mês. Deseja continuar:');
+
+        if (!isMove) return;
+
+        try {
+            $.ajax({
+                url: '/Compare/MoveSefaz',
+                success: function (data, textStatus, jQxhr) {
+                    if (data.code === 200)
+                    {
+                        $('#responseMoveSefaz').append("<div class='row'><div class='col-md-12'><div class='box box-success' style='padding:10px;'>" + data.message +"</div></div></div>");
+                    }
+                    else
+                    {
+                        $('#responseMoveSefaz').append("<div class='row'><div class='col-md-12'><div class='box box-danger' style='padding:10px;'> " + data.message +"</div></div></div>");
+
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    $('#responseMoveSefaz').css('color', 'red');
+                    $('#responseMoveSefaz').text(jqXhr.responseText);
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    $(document).ready(function () {
+        $('#btnMoveSefaz').on('click', function () {
+            MoveSefaz();
+        });
+    });
+
+    //  Mover notas saida sefaz de um mês para outro
+    function MoveEmpresa() {
+        var isMove = confirm('As notas serão movida para o próximo mês. Deseja continuar:');
+
+        if (!isMove) return;
+
+        try {
+            $.ajax({
+                url: '/Compare/MoveEmpresa',
+                success: function (data, textStatus, jQxhr) {
+                    if (data.code === 200)
+                    {
+                        $('#responseMoveEmpresa').append("<div class='row'><div class='col-md-12'><div class='box box-success' style='padding:10px;'>" + data.message +"</div></div></div>");
+                    }
+                    else
+                    {
+                        $('#responseMoveEmpresa').append("<div class='row'><div class='col-md-12'><div class='box box-danger' style='padding:10px;'> " + data.message +"</div></div></div>");
+
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    $('#responseMoveEmpresa').css('color', 'red');
+                    $('#responseMoveEmpresa').text(jqXhr.responseText);
+                }
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    $(document).ready(function () {
+        $('#btnMoveEmpresa').on('click', function () {
+            MoveSefaz();
+        });
+    });
+
 
 </script>

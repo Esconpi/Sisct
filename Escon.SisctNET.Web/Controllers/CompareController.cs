@@ -1003,5 +1003,101 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+        public IActionResult MoveSefaz()
+        {
+            try
+            {
+                var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
+                var importMonth = new Period.Month();
+
+                var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+
+                var directory = importDir.SaidaSefaz(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, SessionManager.GetYearInSession(), SessionManager.GetMonthInSession());
+
+                var notasMove = importXml.NFeMove(directory, SessionManager.GetKeysInSession());
+
+                var numberMonth = importMonth.NumberMonth(SessionManager.GetMonthInSession());
+
+                var month = importMonth.NameMonthNext(numberMonth);
+                var year = SessionManager.GetYearInSession();
+
+                if (numberMonth == 12)
+                    year = (Convert.ToInt32(year) + 1).ToString();
+
+                var newDirectory = importDir.SaidaSefaz(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, year, month);
+
+                if (!Directory.Exists(newDirectory))
+                    Directory.CreateDirectory(newDirectory);
+
+                foreach (var nota in notasMove)
+                {
+                    var temp = nota.Split("\\");
+                    var dirtemp = newDirectory + "\\" + temp[temp.Count() - 1];
+
+                    if (System.IO.File.Exists(dirtemp))
+                        System.IO.File.Delete(dirtemp);
+
+                    if (System.IO.File.Exists(nota))
+                        System.IO.File.Move(nota, dirtemp);
+                }
+
+                return Ok(new { code = 200, message = "As notas foram movida para " + month + " de " + year + " com sucesso!" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult MoveEmpresa()
+        {
+            try
+            {
+                var importXml = new Xml.Import();
+                var importDir = new Diretorio.Import();
+                var importMonth = new Period.Month();
+
+                var confDBSisctNfe = _configurationService.FindByName("NFe Saida");
+
+                var directory = importDir.SaidaEmpresa(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, SessionManager.GetYearInSession(), SessionManager.GetMonthInSession());
+
+                var notasMove = importXml.NFeMove(directory, SessionManager.GetKeysInSession());
+
+                var numberMonth = importMonth.NumberMonth(SessionManager.GetMonthInSession());
+
+                var month = importMonth.NameMonthNext(numberMonth);
+                var year = SessionManager.GetYearInSession();
+
+                if (numberMonth == 12)
+                    year = (Convert.ToInt32(year) + 1).ToString();
+
+                var newDirectory = importDir.SaidaEmpresa(SessionManager.GetCompanyInSession(), confDBSisctNfe.Value, year, month);
+
+                if (!Directory.Exists(newDirectory))
+                    Directory.CreateDirectory(newDirectory);
+
+                foreach (var nota in notasMove)
+                {
+                    var temp = nota.Split("\\");
+                    var dirtemp = newDirectory + "\\" + temp[temp.Count() - 1];
+
+                    if (System.IO.File.Exists(dirtemp))
+                        System.IO.File.Delete(dirtemp);
+
+                    if (System.IO.File.Exists(nota))
+                        System.IO.File.Move(nota, dirtemp);
+                }
+
+                return Ok(new { code = 200, message = "As notas foram movida para " + month + " de " + year + " com sucesso!" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
     }
 }
