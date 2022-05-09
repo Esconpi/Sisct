@@ -701,7 +701,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Notas = notasValidas.OrderBy(_ => _[1]["mod"]).ThenBy(_ => _[1]["nNF"]).ToList();
                     ViewBag.NotasInvalidas = notasInvalidas.OrderBy(_ => _[0]).ThenBy(_ => _[1]).ToList();
-                    ViewBag.notas_sped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
+                    ViewBag.NotasSped = notas_sped.OrderBy(_ => _[1]).ThenBy(_ => _[2]).ToList();
                     ViewBag.NotasCanceladas = notasCanceladas;
                     ViewBag.Eventos = eventos;
                     ViewBag.QtdValida = qtdValida;

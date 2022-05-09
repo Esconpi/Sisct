@@ -78,8 +78,8 @@ namespace Escon.SisctNET.Model
         [Display(Name = "EXCEL FSIST x XML SEFAZ")] FsistXSefaz = 12,
         [Display(Name = "EXCEL FSIST x XML EMPRESA")] FsistXEmpresa = 13,
         [Display(Name = "DIFERENÇA DE TOTAIS XML SEFAZ")] DifereValorSefaz = 14,
-        [Display(Name = "DIFERENÇA DE TOTAIS XML EMPRESA")] DifereValorEmpresa = 15
-
+        [Display(Name = "DIFERENÇA DE TOTAIS XML EMPRESA")] DifereValorEmpresa = 15,
+        [Display(Name = "Malha Cartão")] MalhaCartao = 16
     }
 
     public enum OrdemCancellation
