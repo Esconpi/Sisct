@@ -50,15 +50,22 @@
 
                     @if (SessionManager.GetTipoInSession().Equals(1))
                     {
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                         <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <label class="control-label">Opção</label>
+                            <select name="opcao" class="form-control selectoption">
+                                <option value="sEmissao" selected>Sem Emissão Própria</option>
+                                <option value="cEmissao">Com Emissão Própria</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-4 col-xs-12">
                             <label class="control-label">Aliquota Icms</label>
                             <input type="text" class="form-control money" name="aliquotIcms" id="aliquotIcms" />
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-4 col-md-4 col-xs-12">
                             <label class="control-label">Aliquota Fecop</label>
                             <input type="text" class="form-control money" name="aliquotFecop" id="aliquotFecop" />
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                        <div class="form-group col-lg-4 col-md-4 col-xs-12">
                             <label class="control-label">Arquivo</label>
                             <select name="archive" class="form-control selectoption">
                                 <option value="xmlS" selected>XML SEFAZ</option>
@@ -92,7 +99,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                         <input type="submit" value="Listar" class="btn btn-success pull-right" onclick="show()" id="ativa" disabled//>
                     </div>
@@ -121,6 +127,7 @@
             document.getElementById("ativa").disabled = false;
         }
     }
+
     function show() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('hiddenHeader').style.display = 'none';

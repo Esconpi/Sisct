@@ -9,6 +9,11 @@ else
 
 <b>Listagem de Produtos por Aliquota</b>
 
+@if (ViewBag.Opcao == "cEmissao")
+{
+    <b>- Emissão Própria Inclusa</b>
+}
+
 @if (ViewBag.Archive == "xmlS")
 {
     <b>(XML SEFAZ)</b>
