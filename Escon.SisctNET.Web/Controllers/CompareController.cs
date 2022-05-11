@@ -521,7 +521,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalXml = notaXml[3]["vNF"];
                                     string totalSped = linha[2].Equals("") ? "0" : linha[2].Replace('.', '*').Replace(',', '.').Replace('*', ',');
-                                    string totalDif = (Convert.ToDecimal(totalXml) - Convert.ToDecimal(totalSped)).ToString();
+                                    string totalDif = (Convert.ToDecimal(totalXml)  - Convert.ToDecimal(totalSped)).ToString();
                                     string descXml = notaXml[3]["vDesc"];
                                     string descSped = linha[3].Equals("") ? "0" : linha[3].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string descDif = (Convert.ToDecimal(descXml) - Convert.ToDecimal(descSped)).ToString();
@@ -626,7 +626,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     string fornecedor = notaXml[2]["xNome"];
                                     string totalNota = notaXml[3]["vNF"];
 
-                                    string icmsXml = notaXml[3]["vICMS"];
+                                    string icmsXml = (Convert.ToDecimal(notaXml[3]["vICMS"]) + Convert.ToDecimal(notaXml[3]["vFCP"])).ToString();
                                     string icmsSped = linha[10].Equals("") ? "0" : linha[10].Replace('.', '*').Replace(',', '.').Replace('*', ',');
                                     string icmsDif = (Convert.ToDecimal(icmsXml) - Convert.ToDecimal(icmsSped)).ToString();
 

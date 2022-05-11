@@ -919,7 +919,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                             {
                                 notes.RemoveAt(i);
                                 continue;
@@ -1188,7 +1188,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -12406,7 +12406,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -16240,7 +16240,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -20074,7 +20074,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -21784,7 +21784,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -22731,7 +22731,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -23209,7 +23209,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
@@ -23481,7 +23481,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                             {
                                 notes.RemoveAt(i);
                                 continue;
@@ -23744,7 +23744,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][2]["tpNF"].Equals("0"))
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                             {
                                 notes.RemoveAt(i);
                                 continue;

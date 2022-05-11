@@ -45,7 +45,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
 
-                var company = _companyService.FindById(id, null);
+                var comp = _companyService.FindById(id, null);
 
                 var importDir = new Diretorio.Import();
                 var importXml = new Xml.Import();
@@ -64,7 +64,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (!Directory.Exists(filedirSped)) Directory.CreateDirectory(filedirSped);
 
-                    string nomeArquivoSped = company.Document + "Empresa";
+                    string nomeArquivoSped = comp.Document + "Empresa";
 
                     if (arquivoSped.FileName.Contains(".txt"))
                         nomeArquivoSped += ".txt";
@@ -99,9 +99,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     string directoryNfe = "";
                     if (archive.Equals("xmlE"))
-                        directoryNfe = importDir.SaidaEmpresa(company, confDBSisctNfe.Value, year, month);
+                        directoryNfe = importDir.SaidaEmpresa(comp, confDBSisctNfe.Value, year, month);
                     else
-                        directoryNfe = importDir.SaidaSefaz(company, confDBSisctNfe.Value, year, month);
+                        directoryNfe = importDir.SaidaSefaz(comp, confDBSisctNfe.Value, year, month);
 
                     List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -111,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
-                            if (!notes[i][2]["CNPJ"].Equals(company.Document))
+                            if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                             {
                                 notes.RemoveAt(i);
                                 continue;
@@ -264,11 +264,13 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(company.Document))
+
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
                                 }
+
 
                                 string CFOP = "", cProd = "", xProd = "", pICMS = "0", pFCP = "0";
                                 decimal vProd = 0, vBC = 0, vICMS = 0, vFCP = 0;
@@ -418,11 +420,12 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
-                                if (!notes[i][2]["CNPJ"].Equals(company.Document))
+                                if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i][1]["tpNF"].Equals("0"))
                                 {
                                     notes.RemoveAt(i);
                                     continue;
                                 }
+
 
                                 string CFOP = "", cProd = "", xProd = "", pICMS = "0", pFCP = "0";
                                 decimal vProd = 0, vBC = 0, vICMS = 0, vFCP = 0;
@@ -571,7 +574,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }                  
                 }
 
-                ViewBag.Company = company;
+                ViewBag.Company = comp;
                 ViewBag.AliquotIcms = aliquotIcms;
                 ViewBag.AliquotFecop = aliquotFecop;
                 ViewBag.Archive = archive;

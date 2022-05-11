@@ -181,15 +181,15 @@
         }
         else if (ViewBag.PIcms != "" && ViewBag.PIcms != null)
         {
-            <b>/ICMS (%)</b>
+            <b>/ICMS (@ViewBag.PIcms %)</b>
         }
         else if (ViewBag.PIcmsST != "" && ViewBag.PIcmsST != null)
         {
-            <b>/ICMS ST (%)</b>
+            <b>/ICMS ST (@ViewBag.PIcmsST %)</b>
         }
         else if (ViewBag.Mva != "" && ViewBag.Mva != null)
         {
-            <b>/MVA (%)</b>
+            <b>/MVA (@ViewBag.Mva %)</b>
         }
     }
     else if (ViewBag.Cst != 0 && ViewBag.Cst != null)
