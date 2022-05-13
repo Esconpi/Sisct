@@ -109,7 +109,7 @@ namespace Escon.SisctNET.Repository.Implementation
                     substring = ncm;
                 }
 
-                if (n.Equals(substring) && !contaChar.Equals(0))
+                if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
                 {
                     NcmIncentivo = true;
                     break;
