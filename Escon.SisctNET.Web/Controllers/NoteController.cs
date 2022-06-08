@@ -506,7 +506,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 pICMSValid = state.Aliquota.ToString();
                             }
 
-                            if (orig != 0)
+                            if (orig != 0 && orig != 4)
                             {
                                 var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", comp.County.State.UF);
                                 pICMSValid = aliquot.Aliquota.ToString();

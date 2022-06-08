@@ -760,7 +760,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
 
-                    if (prod.Picms != 4)
+                    if (prod.Picms != 0 && prod.Picms != 4)
                     {
                         var state = _aliquotService.FindByUf(prod.Note.Uf, prod.Note.Company.County.State.UF, prod.Note.Dhemi) ;
                         aliquot = state.Aliquota.ToString();

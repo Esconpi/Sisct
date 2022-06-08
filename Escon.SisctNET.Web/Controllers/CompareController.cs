@@ -614,6 +614,7 @@ namespace Escon.SisctNET.Web.Controllers
                     else if (ordem.Equals(Model.Ordem.DifereIcms))
                     {
                         List<List<string>> registros = new List<List<string>>();
+                       
                         foreach (var linha in spedNormal)
                         {
                             List<string> Valores = new List<string>();
@@ -643,6 +644,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
+                       
                         ViewBag.Valores = registros;
                     }
                     else if (ordem.Equals(Model.Ordem.SefazXFsist) || ordem.Equals(Model.Ordem.EmpresaXFsist))

@@ -2214,6 +2214,7 @@ namespace Escon.SisctNET.Web.Xml
         public List<List<Dictionary<string, string>>> CTeAll(string directotyCte)
         {
             List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
+
             try
             {
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
