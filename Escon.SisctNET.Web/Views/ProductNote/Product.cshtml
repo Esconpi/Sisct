@@ -159,7 +159,7 @@
                                 </div>
                             }
                         }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020") && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("01/06/2022"))
                         {
                             if (Model.Pautado == true)
                             {
@@ -173,6 +173,24 @@
                                 <div class="form-group col-lg-9 col-md-12 col-xs-12">
                                     <label class="control-label">Produto</label>
                                     <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product2Id" id="product2id" disabled="disabled"></select>
+                                </div>
+                            }
+                        }
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("01/06/2022"))
+                        {
+                            
+                            if (Model.Pautado == true)
+                            {
+                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
+                                    <label asp-for="Product2Id" class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product3Id" id="product3id"></select>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
+                                    <label class="control-label">Produto</label>
+                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product3Id" id="product3id" disabled="disabled"></select>
                                 </div>
                             }
                         }
