@@ -2546,7 +2546,9 @@ namespace Escon.SisctNET.Web.Xml
                         }
                     }
                 }
+
                 string recebedor = "";
+                
                 for (int i = ctes.Count - 1; i >= 0; i--)
                 {
                     for (int j = 0; j < ctes[i].Count(); j++)

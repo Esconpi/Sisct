@@ -11,6 +11,11 @@
 @if (ViewBag.Type == "Geral")
 {
     <strong>Resumo Geral</strong>
+    
+    @if (ViewBag.IsPauta == false)
+    {
+        <strong>&nbsp;NFe</strong>
+    }
 }
 @if (ViewBag.Type == "IcmsST")
 {
@@ -42,6 +47,11 @@
     @if (ViewBag.TypeTaxation == "ST")
     {
         <strong>Substituição Tributária por MVA</strong>
+
+        @if (ViewBag.IsPauta == false)
+        {
+             <strong>&nbsp;NFe</strong>
+        }
     }
     else if (ViewBag.TypeTaxation == "AP")
     {

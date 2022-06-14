@@ -847,11 +847,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(id, null);
                 var isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false;
+                var isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
 
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
                 ViewBag.IsCTe = isCTe;
+                ViewBag.IsPauta = isPauta;
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
                 
                 var confDBSisctNfe = _configurationService.FindByName("NFe", null);
@@ -1455,7 +1457,6 @@ namespace Escon.SisctNET.Web.Controllers
                             //Produto incentivados
                             var productsIncentivado = productsAll.Where(_ => _.Incentivo.Equals(true)).ToList();
 
-                            decimal? impostoGeral = 0, totalIcmsNormal = 0, totalFecopNormal = 0, totalIcmsIncentivo = 0, totalFecopIncentivo = 0;
 
                             if (type.Equals(Model.Type.ProdutoNI))
                             {
@@ -1499,6 +1500,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalFecop = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop).Sum());
                             }
 
+                            decimal? impostoGeral = 0, totalIcmsNormal = 0, totalFecopNormal = 0, totalIcmsIncentivo = 0, totalFecopIncentivo = 0;
+           
                             totalIcmsNormal = Convert.ToDecimal(productsNormal.Select(_ => _.TotalICMS).Sum());
                             totalIcmsIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS).Sum());
                             totalFecopNormal = Convert.ToDecimal(productsNormal.Select(_ => _.TotalFecop).Sum());
@@ -1868,9 +1871,31 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (!comp.AnnexId.Equals((long)3) && !comp.AnnexId.Equals((long)1) && !comp.ChapterId.Equals((long)4))
                             {
-                                baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
-                                                productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
-                                                productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                if (isPauta)
+                                {
+                                    foreach(var p in productsIncentivado)
+                                    {
+                                        decimal qtd = p.Qpauta == null ? Convert.ToDecimal(p.Qcom) : Convert.ToDecimal(p.Qpauta), price = 0;
+
+                                        if (p.Product != null)
+                                            price = Convert.ToDecimal(p.Product.Price);
+
+                                        if (p.Product1 != null)
+                                            price += Convert.ToDecimal(p.Product1.Price);
+
+                                        if (p.Product2 != null)
+                                            price += Convert.ToDecimal(p.Product2.Price);
+
+                                        baseIcms += (qtd * price);
+                                    }
+                                }
+                                else
+                                {
+                                    baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
+                                        productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
+                                        productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                }
+                        
                                 impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (comp.Icms / 100)), 2);
                                 impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (comp.Fecop / 100)), 2);
 
@@ -2469,7 +2494,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
                     }
-                    
+
                     //  ICMS ST
                     decimal? gnrePagaSTIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreSt).Sum()), 2),
                             gnreNPagaSTIE = Math.Round(Convert.ToDecimal(notes.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreNSt).Sum()), 2),
@@ -2927,9 +2952,31 @@ namespace Escon.SisctNET.Web.Controllers
                        
                         if (!comp.AnnexId.Equals((long)3) && !comp.AnnexId.Equals((long)1) && !comp.ChapterId.Equals((long)4))
                         {
-                            baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
-                            productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
-                            productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                            if (isPauta)
+                            {
+                                foreach (var p in productsIncentivado)
+                                {
+                                    decimal qtd = p.Qpauta == null ? Convert.ToDecimal(p.Qcom) : Convert.ToDecimal(p.Qpauta), price = 0;
+
+                                    if (p.Product != null)
+                                        price = Convert.ToDecimal(p.Product.Price);
+
+                                    if (p.Product1 != null)
+                                        price += Convert.ToDecimal(p.Product1.Price);
+
+                                    if (p.Product2 != null)
+                                        price += Convert.ToDecimal(p.Product2.Price);
+
+                                    baseIcms += (qtd * price);
+                                }
+                            }
+                            else
+                            {
+                                baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
+                                    productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
+                                    productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                            }
+
                             impostoIcms = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Icms) / 100));
                             impostoFecop = Convert.ToDecimal(baseIcms * (Convert.ToDecimal(comp.Fecop) / 100));
                         }
