@@ -327,7 +327,7 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Code = products[i][0];
                         product.Description = products[i][1];
                         product.Unity = products[i][2];
-                        product.Price = Convert.ToDecimal(products[i][3].Replace(".",","));
+                        product.Price = Convert.ToDecimal(products[i][3].Replace(",","*").Replace(".",",").Replace("*","."));
                         product.DateStart = inicioATo;
                         product.GroupId = groupId;
                         product.Created = DateTime.Now;
