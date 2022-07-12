@@ -1220,11 +1220,15 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
 
 
-                        if (valorDiefIE >= totalIcmsPagoIE)
-                            totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
+                        /*if (valorDiefIE >= totalIcmsPagoIE)
+                            totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);*/
 
-                        if (valorDiefSIE >= totalIcmsPagoSIE)
-                            totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
+                        totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
+
+                        /*if (valorDiefSIE >= totalIcmsPagoSIE)
+                            totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);*/
+
+                        totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
 
                         // FECOP
@@ -1379,11 +1383,15 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsPagoIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
                             totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
 
-                            if (valorDiefIE >= totalIcmsPagoIE)
-                                totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
+                            /*if (valorDiefIE >= totalIcmsPagoIE)
+                                totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);*/
 
-                            if (valorDiefSIE >= totalIcmsPagoSIE)
-                                totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
+                            totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
+
+                            /*if (valorDiefSIE >= totalIcmsPagoSIE)
+                                totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);*/
+
+                            totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
                             if (valorDiefSIE - totalIcmsPagoSIE > 0)
                                 totalDarSTCO += Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
@@ -2514,6 +2522,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorAgreg = calculation.ValorAgregadoMva(prod.Freterateado, Convert.ToDecimal(prod.Mva));
                                 if (prod.BCR != null)
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(prod.BCR), valorAgreg);
+
                                 if (prod.Fecop != null)
                                 {
                                     if (Convert.ToDecimal(prod.Fecop).Equals(1))

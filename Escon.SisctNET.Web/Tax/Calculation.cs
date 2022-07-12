@@ -1,18 +1,19 @@
-﻿
-using Escon.SisctNET.Model;
-using System;
+﻿using System;
 
 namespace Escon.SisctNET.Web.Tax
 {
     public class Calculation
     {
-        // Cálculos Tributação dos Produtos na Entrada
+        //  Formação de código
 
         public string Code(string document, string ncm, string uf, string aliquot)
         {
             return document + ncm + uf + aliquot;
         }
 
+
+        // Cálculos Tributação dos Produtos na Entrada
+        
         public decimal BaseCalc(decimal vProd, decimal vFrete, decimal vSeg, decimal vOutro, decimal vDesc, decimal vIPI, decimal frete_prod)
         {
             return vProd + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;
@@ -40,7 +41,7 @@ namespace Escon.SisctNET.Web.Tax
 
         public decimal ValorAgregadoAliqInt(decimal aliqInterna, decimal valorFecop,decimal valorAgregado)
         {
-            return ((aliqInterna-valorFecop) / 100) * valorAgregado;
+            return ((aliqInterna - valorFecop) / 100) * valorAgregado;
         }
 
         public decimal ValorFecop(decimal fecop, decimal valorAgregado)
