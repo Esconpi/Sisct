@@ -124,9 +124,9 @@ namespace Escon.SisctNET.Web.Tax
             return base2 / (1 - (aliqInterna / 100));
         }
 
-        public decimal BaseDifal(decimal baseCalc, decimal aliqInterna)
+        public decimal BaseDifal(decimal base3, decimal aliqInterna)
         {
-            return baseCalc * (aliqInterna / 100);
+            return base3 * (aliqInterna / 100);
         }
 
         public decimal Icms(decimal baseDifal, decimal base1)

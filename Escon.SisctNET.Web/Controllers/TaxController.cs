@@ -2424,7 +2424,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
                                                         base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
                                                         base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                        baseDifal = calculation.BaseDifal(Convert.ToDecimal(icmsForaDoEstado[j][1]), internalAliquot.Aliquota),
+                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
                                                         icms = calculation.Icms(baseDifal, base1);
 
                                                 //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
@@ -2477,7 +2477,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
                                                         base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
                                                         base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                        baseDifal = calculation.BaseDifal(Convert.ToDecimal(icmsForaDoEstado[j][1]), internalAliquot.Aliquota),
+                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
                                                         icms = calculation.Icms(baseDifal, base1);
 
                                                 //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
@@ -2528,7 +2528,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
                                                     base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
                                                     base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                    baseDifal = calculation.BaseDifal(Convert.ToDecimal(icmsForaDoEstado[j][1]), internalAliquot.Aliquota),
+                                                    baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
                                                     icms = calculation.Icms(baseDifal, base1);
 
                                             //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
