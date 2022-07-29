@@ -2428,6 +2428,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         icms = calculation.Icms(baseDifal, base1);
 
                                                 //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+                                                
                                                 if (icms > 0)
                                                 {
                                                     var gg = grupoTemp.Where(_ => _.Uf.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
@@ -2481,6 +2482,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                         icms = calculation.Icms(baseDifal, base1);
 
                                                 //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+                                                
                                                 if (icms > 0)
                                                 {
                                                     Model.Grupo grupo = new Model.Grupo();
