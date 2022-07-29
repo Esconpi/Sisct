@@ -3317,7 +3317,20 @@ namespace Escon.SisctNET.Web.Controllers
                             //  Não Contribuinte Fora do Estado
                             decimal baseCalculoNCOntribuinteForaEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
                                 totalVendasNContribuinteForaEstado = Math.Round(baseCalculoNCOntribuinteForaEstado + NaoContribuinteForaDoEstadoIsento, 2),
-                                icmsNContribuinteForaDoEstado = calculation.Imposto(baseCalculoNCOntribuinteForaEstado, Convert.ToDecimal(comp.IcmsNContribuinteFora));
+                                icmsNContribuinteForaDoEstado = 0;
+
+                            List<List<string>> icmsForaDoEstado = new List<List<string>>();
+
+                            foreach (var g in grupos)
+                            {
+                                List<string> icmsFora = new List<string>();
+                                icmsFora.Add(g.Uf);
+                                icmsFora.Add(g.Percentual.ToString());
+                                icmsFora.Add(g.Icms.ToString());
+                                icmsForaDoEstado.Add(icmsFora);
+
+                                icmsNContribuinteForaDoEstado += Convert.ToDecimal(g.Icms);
+                            }
 
                             //// Direfença de débito e crédito
                             var diferenca = debitosIcms - creditosIcms;
@@ -3393,17 +3406,6 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.BaseCalculoNContribuinteForaEstado = baseCalculoNCOntribuinteForaEstado;
                             ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDecimal(comp.IcmsNContribuinteFora);
                             ViewBag.ValorVendaNContribForaDoEstado = icmsNContribuinteForaDoEstado;
-
-                            List<List<string>> icmsForaDoEstado = new List<List<string>>();
-
-                            foreach (var g in grupos)
-                            {
-                                List<string> icmsFora = new List<string>();
-                                icmsFora.Add(g.Uf);
-                                icmsFora.Add(g.Icms.ToString());
-                                icmsForaDoEstado.Add(icmsFora);
-
-                            }
 
                             ViewBag.IcmsForaDoEstado = icmsForaDoEstado;
 

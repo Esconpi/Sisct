@@ -42,13 +42,39 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
     </li>
 }
 
+@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
+  SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
+{
+    <li class="treeview menu">
+        <a href="#">
+            <i class="fa fa-globe"></i> <span>IBGE</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display:none;">
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Estado</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","County")"><i class="fa fa-circle-o"></i>Município</a></li>
+            }
+        </ul>
+    </li>
+}
+
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cest")).FirstOrDefault().Active ||
   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active ||
   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cst")).FirstOrDefault().Active ||
   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("NatReceita")).FirstOrDefault().Active ||
   SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Csosn")).FirstOrDefault().Active ||
-  SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+  SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active ||
+  SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -101,31 +127,6 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
         </ul>
     </li>
 
-}
-
-@if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
-  SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
-{
-    <li class="treeview menu">
-        <a href="#">
-            <i class="fa fa-globe"></i> <span>IBGE</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu" style="display:none;">
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","State")"><i class="fa fa-circle-o"></i>Estado</a></li>
-            }
-
-            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
-            {
-                <li><a href="@Url.Action("Index","County")"><i class="fa fa-circle-o"></i>Município</a></li>
-            }
-        </ul>
-    </li>
 }
 
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||

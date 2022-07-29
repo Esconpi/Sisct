@@ -215,7 +215,7 @@
                         </tr>
                         @foreach (var state in ViewBag.IcmsForaDoEstado)
                         {
-                            @if (Convert.ToDecimal(state[1]) > 0)
+                            @if (Convert.ToDecimal(state[2]) > 0)
                             {
                                 <tr>
 
@@ -223,7 +223,7 @@
                                     <td style="text-align:center;">@string.Format("{0:N}", ViewBag.PercentualIcmsNaoContribForaDoEstado) %</td>
                                     <td style="text-align:center;">@state[0]</td>
                                     <td style="text-align:center;"></td>
-                                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[1].Replace(".",",")))</td>
+                                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[2].Replace(".",",")))</td>
                                 </tr>
                             }
                         }

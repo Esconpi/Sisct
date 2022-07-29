@@ -47,8 +47,8 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Log log = null)
         {
-            string dataFomart = data.ToString("yyyy-MM-dd");
             Aliquot result = null;
+
             var statesAll = aliquots.Where(_ => _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino)).ToList();
 
             foreach (var t in statesAll)

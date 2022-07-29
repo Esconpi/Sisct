@@ -6,13 +6,13 @@ namespace Escon.SisctNET.Repository
 {
     public interface IAliquotRepository : IRepository<Model.Aliquot>
     {
-        void Create(List<Model.Aliquot> states, Model.Log log = null);
+        void Create(List<Model.Aliquot> aliquots, Model.Log log = null);
 
         Model.Aliquot FindByUf(string uf, Model.Log log = null);
 
         Model.Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Model.Log log = null);
 
-        Model.Aliquot FindByUf(List<Aliquot> states, DateTime data, string ufOrigem, string ufDestino, Model.Log log = null);
+        Model.Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Model.Log log = null);
 
         List<Model.Aliquot> FindByAllState(Model.Log log = null);
     }

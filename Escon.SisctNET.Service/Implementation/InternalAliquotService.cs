@@ -45,6 +45,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
+        public InternalAliquot FindByUf(List<InternalAliquot> aliquots, DateTime data, string uf, Log log = null)
+        {
+            return _repository.FindByUf(aliquots, data, uf, log);
+        }
+
         public InternalAliquot Update(InternalAliquot entity, Log log)
         {
             return _repository.Update(entity, log);

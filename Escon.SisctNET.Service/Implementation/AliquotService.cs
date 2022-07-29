@@ -14,9 +14,9 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Aliquot> states, Log log = null)
+        public void Create(List<Aliquot> aliquots, Log log = null)
         {
-            _repository.Create(states);         
+            _repository.Create(aliquots);         
         }
 
         public Aliquot Create(Aliquot entity, Log log)
@@ -54,9 +54,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByUf(uf);
         }
 
-        public Aliquot FindByUf(List<Aliquot> states, DateTime data, string ufOrigem, string ufDestino, Log log = null)
+        public Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Log log = null)
         {
-            return _repository.FindByUf(states, data, ufOrigem, ufDestino, log);
+            return _repository.FindByUf(aliquots, data, ufOrigem, ufDestino, log);
         }
 
         public Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Log log = null)
