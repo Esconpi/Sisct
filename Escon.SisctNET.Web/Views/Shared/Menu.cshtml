@@ -91,7 +91,12 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
 
             @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
             {
-                <li><a href="@Url.Action("Index","Aliquot")"><i class="fa fa-circle-o"></i>Aliquota Estado</a></li>
+                <li><a href="@Url.Action("Index","Aliquot")"><i class="fa fa-circle-o"></i>Aliquota Interestadual</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","InternalAliquot")"><i class="fa fa-circle-o"></i>Aliquota Interna</a></li>
             }
         </ul>
     </li>

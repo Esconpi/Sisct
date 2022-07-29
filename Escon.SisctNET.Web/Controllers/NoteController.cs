@@ -465,8 +465,9 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         det.Add("baseCalc", notes[i][j]["baseCalc"]);
 
-                        string nItem = det.ContainsKey("nItem") ? det["nItem"] : "",  NCM = det.ContainsKey("NCM") ? det["NCM"] : "",  CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "",
-                                 CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
+                        string nItem = det.ContainsKey("nItem") ? det["nItem"] : "",  NCM = det.ContainsKey("NCM") ? det["NCM"] : "",  
+                               CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "", CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
+                       
                         decimal vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : 0, vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : 0,
                                 pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : 0, vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : 0,
                                 vPIS = det.ContainsKey("vPIS") ? Convert.ToDecimal(det["vPIS"]) : 0, vCOFINS = det.ContainsKey("vCOFINS") ? Convert.ToDecimal(det["vCOFINS"]) : 0,
@@ -485,8 +486,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
 
                             decimal pICMSFormat = Math.Round(pICMS, 2);
-                            string pICMSValid = pICMSFormat.ToString();
-                            string pICMSValidOrig = pICMSFormat.ToString();
+                            string pICMSValid = pICMSFormat.ToString(), pICMSValidOrig = pICMSFormat.ToString();
 
                             if (!pICMSValid.Contains("."))
                                 pICMSValid += ".00";
@@ -629,7 +629,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 else if (taxedtype.Type == "Normal")
                                 {
 
-                                    var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
+                                    //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
                                     //if (pICMSValid != "4.00")

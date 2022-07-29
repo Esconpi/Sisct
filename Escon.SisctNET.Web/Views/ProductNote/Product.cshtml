@@ -125,7 +125,7 @@
                             </div>
                         }
 
-                        @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
+                        @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("10/02/2020").Date)
                         {
                             @if (Model.Pautado == true)
                             {
@@ -143,7 +143,7 @@
                             }
 
                         }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("10/02/2020").Date && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("14/09/2020").Date)
                         {
                             if (Model.Pautado == true)
                             {
@@ -160,7 +160,7 @@
                                 </div>
                             }
                         }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020") && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("01/06/2022"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("14/09/2020").Date && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("01/06/2022").Date)
                         {
                             if (Model.Pautado == true)
                             {
@@ -177,7 +177,7 @@
                                 </div>
                             }
                         }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("01/06/2022"))
+                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
                         {
                             
                             if (Model.Pautado == true)

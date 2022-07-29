@@ -108,5 +108,26 @@ namespace Escon.SisctNET.Web.Tax
         {
             return percentual1 - percentual2;
         }
+
+        public decimal Base1(decimal baseCalc, decimal aliquota)
+        {
+            return baseCalc * (aliquota / 100);
+        }
+
+        public decimal Base2(decimal baseCalc, decimal base1)
+        {
+            return baseCalc - base1;
+        }
+
+        public decimal Base3(decimal base2, decimal aliqInterna)
+        {
+            return base2 / (1 - (aliqInterna / 100));
+        }
+
+        public decimal BaseDifal(decimal baseCalc, decimal aliqInterna)
+        {
+            return baseCalc * (aliqInterna / 100);
+        }
+
     }
 }

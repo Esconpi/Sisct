@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 ViewBag.TaxationTypeId = taxationtypes;
 
-                if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
+                if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("10/02/2020").Date)
                 {
                     List<Product> list_product = _productService.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product)
@@ -202,8 +202,8 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products = new SelectList(list_product, "Id", "Description", null);
                     ViewBag.ProductId = products;
                 }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") &&
-                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
+                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("10/02/2020").Date &&
+                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("14/09/2020").Date)
                 {
                     List<Product1> list_product1 = _product1Service.FindAllInDate1(product.Note.Dhemi);
                     foreach (var prod in list_product1)
@@ -214,8 +214,8 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
                     ViewBag.ProductId = products1;
                 }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020") &&
-                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("01/06/2022"))
+                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("14/09/2020").Date &&
+                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("01/06/2022").Date)
                 {
                     List<Product2> list_product2 = _product2Service.FindAllInDate2(product.Note.Dhemi);
                     foreach (var prod in list_product2)
@@ -226,7 +226,7 @@ namespace Escon.SisctNET.Web.Controllers
                     SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
                     ViewBag.ProductId = products2;
                 }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("01/06/2022"))
+                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
                 {
                     List<Product3> list_product3 = _product3Service.FindAllInDate2(product.Note.Dhemi);
                     foreach (var prod in list_product3)
@@ -463,9 +463,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if (Request.Form["produto"].ToString() == "2")
                     {
-                        decimal baseCalc = 0;
-                        decimal valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
-                        decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
+                        decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms),
+                                Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
                                                                  Convert.ToDecimal(prod.Voutro), Convert.ToDecimal(prod.Vdesc), Convert.ToDecimal(prod.Vipi),
                                                                  Convert.ToDecimal(prod.Freterateado));
 
@@ -520,7 +519,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.TotalICMS = totalIcms;
 
                         }
-                        else if (taxedtype.Type == "Normal")
+                        else if (taxedtype.Type == "Normal" && taxedtype.Description == "1  IM - Imobilizado-Dif. Aliquota")
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
@@ -528,6 +527,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
+
                             /*if (prod.Picms != 4)
                             {
                                 var aliqSimples = _aliquotService.FindByUf(prod.Note.Uf);
@@ -545,10 +545,16 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.ValorAC = null;
                             prod.TotalICMS = null;
                             prod.Diferencial = dif;
-                            decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(prod.Freterateado));
-                            decimal icmsApuCTw = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
+
+                            decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(prod.Freterateado)),
+                                    icmsApuCTw = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
+
                             prod.IcmsApurado = icmsApu;
                             prod.IcmsApuradoCTe = icmsApuCTw;
+                        }
+                        else if(taxedtype.Type == "Normal" && taxedtype.Description != "1  IM - Imobilizado-Dif. Aliquota")
+                        {
+
                         }
                         else if (taxedtype.Type == "Isento")
                         {
@@ -603,9 +609,8 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                         foreach (var item in products)
                         {
-                            decimal baseCalc = 0;
-                            decimal valorIcms = calculation.ValorIcms(item.IcmsCTe, item.Vicms);
-                            decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(item.Vprod), Convert.ToDecimal(item.Vfrete), Convert.ToDecimal(item.Vseg),
+                            decimal baseCalc = 0, valorIcms = calculation.ValorIcms(item.IcmsCTe, item.Vicms),
+                                    Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(item.Vprod), Convert.ToDecimal(item.Vfrete), Convert.ToDecimal(item.Vseg),
                                                                      Convert.ToDecimal(item.Voutro), Convert.ToDecimal(item.Vdesc), Convert.ToDecimal(item.Vipi),
                                                                      Convert.ToDecimal(item.Freterateado));
                             if (taxedtype.Type == "ST")
@@ -661,21 +666,24 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
-                                var aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms;
-                                var dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
+                                decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
+                                        dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
                                 item.AliqInterna = aliqInterna;
                                 baseCalc = Vbasecalc;
-                                if (item.Picms != 4)
+
+                                /*if (item.Picms != 4)
                                 {
                                     var aliq_simples = _aliquotService.FindByUf(item.Note.Uf);
                                     dif = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
                                     item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
-                                }
+                                }*/
+                                
                                 item.Diferencial = dif;
-                                decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(item.Freterateado));
-                                decimal icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
+
+                                decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(item.Freterateado)),
+                                        icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
 
                                 item.IcmsApurado = icmsApu;
                                 item.IcmsApuradoCTe = icmsApuCTe;
@@ -734,7 +742,6 @@ namespace Escon.SisctNET.Web.Controllers
                             item.Qpauta = null;
                             item.Produto = "Normal";
                             item.Updated = DateTime.Now;
-
 
                             updateProducts.Add(item);
                         }
