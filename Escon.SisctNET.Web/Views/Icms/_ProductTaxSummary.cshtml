@@ -141,7 +141,7 @@
                             <td style="text-align:center;"></td>
                             <th style="text-align:right;">@string.Format("{0:N}", ViewBag.TotalFunefCotac)</th>
                         </tr>
-                        @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < ViewBag.Data)
+                        @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < Convert.ToDateTime(ViewBag.Data))
                         {
                             <tr>
                                 <td style="text-align:center;"></td>
@@ -152,7 +152,7 @@
                             </tr>
                             @foreach (var state in ViewBag.IcmsForaDoEstado)
                             {
-                                @if (Convert.ToDecimal(state[2]) > 0)
+                                @if (Convert.ToDecimal(state[1]) > 0)
                                 {
                                     <tr>
 
@@ -160,7 +160,7 @@
                                         <td style="text-align:center;">@string.Format("{0:N}", ViewBag.PercentualIcmsNaoContribForaDoEstado) %</td>
                                         <td style="text-align:center;">@state[0]</td>
                                         <td style="text-align:center;"></td>
-                                        <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[2].Replace(".", ",")))</td>
+                                        <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[1].Replace(".", ",")))</td>
                                     </tr>
                                 }
                             }

@@ -70,7 +70,7 @@
                 <td style="text-align:right"></td>
                 <td>&nbsp;</td>
             </tr>
-            @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < ViewBag.Data)
+            @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < Convert.ToDateTime(ViewBag.Data))
             {
                 <tr>
                     <td style="font-size:11px;">Venda p/ Não Contribuintes (R$)</td>

@@ -120,7 +120,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var calculation = new Tax.Calculation();
                 var check = new Tax.Check();
 
-
                 var mes = importMes.NumberMonth(month);
 
                 DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
@@ -26819,7 +26818,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     List<string> icmsFora = new List<string>();
                                     icmsFora.Add(g.Uf);
-                                    icmsFora.Add(g.Percentual.ToString());
                                     icmsFora.Add(g.Icms.ToString());
                                     icmsForaDoEstado.Add(icmsFora);
 
