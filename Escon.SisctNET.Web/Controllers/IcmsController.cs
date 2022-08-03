@@ -111,6 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var NfeEntry = _configurationService.FindByName("NFe", null);
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
+                var dataDifal = _configurationService.FindByName("DIFAL", null);
 
                 var importXml = new Xml.Import(_companyCfopService);
                 var importSped = new Sped.Import(_companyCfopService);
@@ -118,6 +119,11 @@ namespace Escon.SisctNET.Web.Controllers
                 var importDir = new Diretorio.Import();
                 var calculation = new Tax.Calculation();
                 var check = new Tax.Check();
+
+
+                var mes = importMes.NumberMonth(month);
+
+                DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
 
                 string directoryNfeExit = "", directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month),
                        icms = Request.Form["icms"].ToString(), icmsST = Request.Form["icmsST"].ToString(), mva = Request.Form["mva"].ToString();
@@ -175,6 +181,8 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Type = type;
                 ViewBag.Opcao = opcao;
                 ViewBag.Arquivo = arquivo;
+                ViewBag.DataDifal = dataDifal;
+                ViewBag.Data = data;
                
                 if (type.Equals("resumoCfop"))
                 {
@@ -25683,10 +25691,6 @@ namespace Escon.SisctNET.Web.Controllers
                     notes = importXml.NFeAll(directoryNfeExit);
 
                     var prodsAllCompany = _productIncentivoService.FindByAllProducts(comp.Document);
-
-                    var mes = importMes.NumberMonth(month);
-
-                    DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
                     var prodsAll = _productIncentivoService.FindByDate(prodsAllCompany, data);
 
                     var ncmsAll = _ncmService.FindAll(null);
@@ -26490,7 +26494,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("notaContigenciaIcms") || type.Equals("notaContigenciaNIcms"))
                 {
                     var mesNumber = importMes.NumberMonth(month);
-                    var mes = importMes.NameMonthNext(mesNumber);
+                    var mesName = importMes.NameMonthNext(mesNumber);
 
                     var ano = year;
 
@@ -26502,9 +26506,9 @@ namespace Escon.SisctNET.Web.Controllers
                     if (arquivo != null)
                     {
                         if (arquivo.Equals("xmlE"))
-                            directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, ano, mes);
+                            directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, ano, mesName);
                         else
-                            directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, ano, mes);
+                            directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, ano, mesName);
                     }
 
                     notes = importXml.NFeResumeEmit(directoryNfeExit);
@@ -26801,7 +26805,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal baseCalculoNCOntribuinte = naoContribuinteIncentivo + naoContribuinteNIncetivo,
                                 totalVendasNContribuinte = Math.Round(baseCalculoNCOntribuinte + vendaCfopSTNaoContribuinteNIncetivo + NaoContribuiteIsento, 2),
                                 icmsNContribuinteIncentivo = calculation.Imposto(baseCalculoNCOntribuinte, Convert.ToDecimal(comp.IcmsNContribuinte));
-
+                            
                             //  Não Contribuinte Fora do Estado
                             decimal baseCalculoNCOntribuinteForaEstado = Math.Round(naoContriForaDoEstadoIncentivo + naoContriForaDoEstadoNIncentivo + vendaCfopSTNaoContriForaDoEstadoNIncentivo, 2),
                                 totalVendasNContribuinteForaEstado = Math.Round(baseCalculoNCOntribuinteForaEstado + NaoContribuinteForaDoEstadoIsento, 2), 
@@ -26809,17 +26813,20 @@ namespace Escon.SisctNET.Web.Controllers
 
                             List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
-                            foreach (var g in grupos)
+                            if (Convert.ToDateTime(dataDifal.Value) < data)
                             {
-                                List<string> icmsFora = new List<string>();
-                                icmsFora.Add(g.Uf);
-                                icmsFora.Add(g.Percentual.ToString());
-                                icmsFora.Add(g.Icms.ToString());
-                                icmsForaDoEstado.Add(icmsFora);
+                                foreach (var g in grupos)
+                                {
+                                    List<string> icmsFora = new List<string>();
+                                    icmsFora.Add(g.Uf);
+                                    icmsFora.Add(g.Percentual.ToString());
+                                    icmsFora.Add(g.Icms.ToString());
+                                    icmsForaDoEstado.Add(icmsFora);
 
-                                icmsNContribuinteForaDoEstado += Convert.ToDecimal(g.Icms);
+                                    icmsNContribuinteForaDoEstado += Convert.ToDecimal(g.Icms);
+                                }
                             }
-
+                            
                             //// Direfença de débito e crédito
                             var diferenca = debitosIcms - creditosIcms;
 
@@ -26842,7 +26849,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             ////Total Imposto
                             var totalImposto = icmsContribuinteIncentivo + icmsNContribuinteIncentivo + totalFunef + totalCotac;
-
 
                             ////Total Imposto Geral
                             var totalImpostoGeral = totalImposto + icmsNContribuinteForaDoEstado;
@@ -26878,16 +26884,18 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.PercentualIcmsNContribuinte = Convert.ToDecimal(comp.IcmsNContribuinte);
                             ViewBag.ValorVendaNContribIncentivo = icmsNContribuinteIncentivo;
 
-
-                            //Não Contribuinte Fora do Estado
-                            ViewBag.VendaContribuinteForaEstadoIncetivo = naoContriForaDoEstadoIncentivo;
-                            ViewBag.VendaNContribuinteForaEstadoSTNormal = naoContriForaDoEstadoNIncentivo;
-                            ViewBag.VendaContribuinteForaEstadoST = vendaCfopSTNaoContriForaDoEstadoNIncentivo;
-                            ViewBag.VendaNContribuinteForaDoEstadoIsento = NaoContribuinteForaDoEstadoIsento;
-                            ViewBag.TotalVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaEstado;
-                            ViewBag.BaseCalculoNContribuinteForaEstado = baseCalculoNCOntribuinteForaEstado;
-                            ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDecimal(comp.IcmsNContribuinteFora);
-                            ViewBag.ValorVendaNContribForaDoEstado = icmsNContribuinteForaDoEstado;                        
+                            if (Convert.ToDateTime(dataDifal.Value) < data)
+                            {
+                                //Não Contribuinte Fora do Estado
+                                ViewBag.VendaContribuinteForaEstadoIncetivo = naoContriForaDoEstadoIncentivo;
+                                ViewBag.VendaNContribuinteForaEstadoSTNormal = naoContriForaDoEstadoNIncentivo;
+                                ViewBag.VendaContribuinteForaEstadoST = vendaCfopSTNaoContriForaDoEstadoNIncentivo;
+                                ViewBag.VendaNContribuinteForaDoEstadoIsento = NaoContribuinteForaDoEstadoIsento;
+                                ViewBag.TotalVendaNContibuinteForaDoEstado = totalVendasNContribuinteForaEstado;
+                                ViewBag.BaseCalculoNContribuinteForaEstado = baseCalculoNCOntribuinteForaEstado;
+                                ViewBag.PercentualIcmsNaoContribForaDoEstado = Convert.ToDecimal(comp.IcmsNContribuinteFora);
+                                ViewBag.ValorVendaNContribForaDoEstado = icmsNContribuinteForaDoEstado;
+                            }
 
                             ViewBag.IcmsForaDoEstado = icmsForaDoEstado;
 
@@ -27581,6 +27589,10 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorCreditoDaselencadaInterestadual = valorCreditoDaselencadaInterestadual.ToString("C2", CultureInfo.CurrentCulture).Replace("R$", "");
                     ViewBag.PercentualDaselencadaInterestadual = comp.IncIIInterestadual.ToString().Replace(".", ",");
 
+                }
+                else if (type.Equals("difal"))
+                {
+                   
                 }
 
                 //  Dar

@@ -141,25 +141,28 @@
                             <td style="text-align:center;"></td>
                             <th style="text-align:right;">@string.Format("{0:N}", ViewBag.TotalFunefCotac)</th>
                         </tr>
-                        <tr>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;"></td>
-                            <th style="text-align:center;">DIFAL</th>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:right;"></td>
-                        </tr>
-                        @foreach (var state in ViewBag.IcmsForaDoEstado)
+                        @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < ViewBag.Data)
                         {
-                            @if (Convert.ToDecimal(state[2]) > 0)
+                            <tr>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <th style="text-align:center;">DIFAL</th>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:right;"></td>
+                            </tr>
+                            @foreach (var state in ViewBag.IcmsForaDoEstado)
                             {
-                                <tr>
+                                @if (Convert.ToDecimal(state[2]) > 0)
+                                {
+                                    <tr>
 
-                                    <td style="text-align:center;">ICMS</td>
-                                    <td style="text-align:center;">@string.Format("{0:N}", ViewBag.PercentualIcmsNaoContribForaDoEstado) %</td>
-                                    <td style="text-align:center;">@state[0]</td>
-                                    <td style="text-align:center;"></td>
-                                    <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[2].Replace(".", ",")))</td>
-                                </tr>
+                                        <td style="text-align:center;">ICMS</td>
+                                        <td style="text-align:center;">@string.Format("{0:N}", ViewBag.PercentualIcmsNaoContribForaDoEstado) %</td>
+                                        <td style="text-align:center;">@state[0]</td>
+                                        <td style="text-align:center;"></td>
+                                        <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(state[2].Replace(".", ",")))</td>
+                                    </tr>
+                                }
                             }
                         }
                         <tr>

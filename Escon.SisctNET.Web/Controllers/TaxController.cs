@@ -577,9 +577,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
                 var NfeEntry = _configurationService.FindByName("NFe", null);
+                var dataDifal = _configurationService.FindByName("DIFAL", null);
 
                 var importDir = new Diretorio.Import();
                 var calculation = new Tax.Calculation();
+                var importMes = new Period.Month();
+
+                var mes = importMes.NumberMonth(month);
+
+                DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
 
                 string directoryNfeExit = "", arqui = "";
 
@@ -2412,6 +2418,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
+                                                decimal icms = 0;
+
                                                 var aliquot = _aliquotService.FindByUf(aliquots, Convert.ToDateTime("01/01/2022"), comp.County.State.UF, icmsForaDoEstado[j][0]);
                                                 var internalAliquot = _internalAliquotService.FindByUf(internalAliquots, Convert.ToDateTime("01/01/2022"), icmsForaDoEstado[j][0]);
 
@@ -2421,13 +2429,20 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (internalAliquot == null)
                                                     internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
-                                                decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
+                                                if (Convert.ToDateTime(dataDifal.Value) < data)
+                                                {
+                                                    icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+
+                                                }
+                                                else
+                                                {
+                                                    decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
                                                         base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
                                                         base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
-                                                        icms = calculation.Icms(baseDifal, base1);
+                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota);
 
-                                                //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+                                                    icms = calculation.Icms(baseDifal, base1);
+                                                }
                                                 
                                                 if (icms > 0)
                                                 {
@@ -2466,6 +2481,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
+                                                decimal icms = 0;
+
                                                 var aliquot = _aliquotService.FindByUf(aliquots, Convert.ToDateTime("01/01/2022"), comp.County.State.UF, icmsForaDoEstado[j][0]);
                                                 var internalAliquot = _internalAliquotService.FindByUf(internalAliquots, Convert.ToDateTime("01/01/2022"), icmsForaDoEstado[j][0]);
 
@@ -2475,14 +2492,22 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (internalAliquot == null)
                                                     internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
-                                                decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
-                                                        base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
-                                                        base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
-                                                        icms = calculation.Icms(baseDifal, base1);
 
-                                                //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
-                                                
+                                                if (Convert.ToDateTime(dataDifal.Value) < data)
+                                                {
+                                                    icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+
+                                                }
+                                                else
+                                                {
+                                                    decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
+                                                            base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
+                                                            base3 = calculation.Base3(base2, internalAliquot.Aliquota),
+                                                            baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota);
+
+                                                    icms = calculation.Icms(baseDifal, base1);
+                                                }
+                                                                                            
                                                 if (icms > 0)
                                                 {
                                                     Model.Grupo grupo = new Model.Grupo();
@@ -2518,6 +2543,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                         {
+                                            decimal icms = 0;
+
                                             var aliquot = _aliquotService.FindByUf(aliquots, Convert.ToDateTime("01/01/2022"), comp.County.State.UF, icmsForaDoEstado[j][0]);
                                             var internalAliquot = _internalAliquotService.FindByUf(internalAliquots, Convert.ToDateTime("01/01/2022"), icmsForaDoEstado[j][0]);
 
@@ -2527,13 +2554,21 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (internalAliquot == null)
                                                 internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
-                                            decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
-                                                    base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
-                                                    base3 = calculation.Base3(base2, internalAliquot.Aliquota),
-                                                    baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
-                                                    icms = calculation.Icms(baseDifal, base1);
+                                            if (Convert.ToDateTime(dataDifal.Value) < data)
+                                            {
+                                                icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
 
-                                            //decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
+                                            }
+                                            else
+                                            {
+                                                decimal base1 = calculation.Base1(Convert.ToDecimal(icmsForaDoEstado[j][1]), aliquot.Aliquota),
+                                                        base2 = calculation.Base2(Convert.ToDecimal(icmsForaDoEstado[j][1]), base1),
+                                                        base3 = calculation.Base3(base2, internalAliquot.Aliquota),
+                                                        baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota);
+
+                                                icms = calculation.Icms(baseDifal, base1);
+                                            }
+                                        
                                             
                                             if (icms > 0)
                                             {
