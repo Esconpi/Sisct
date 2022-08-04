@@ -2429,7 +2429,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (internalAliquot == null)
                                                     internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
-                                                if (Convert.ToDateTime(dataDifal.Value) < data)
+                                                if (data < Convert.ToDateTime(dataDifal.Value))
                                                 {
                                                     icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
 
@@ -2493,7 +2493,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
 
-                                                if (Convert.ToDateTime(dataDifal.Value) < data)
+                                                if (data < Convert.ToDateTime(dataDifal.Value))
                                                 {
                                                     icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
 
@@ -2554,7 +2554,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (internalAliquot == null)
                                                 internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
-                                            if (Convert.ToDateTime(dataDifal.Value) < data)
+                                            if (data < Convert.ToDateTime(dataDifal.Value))
                                             {
                                                 icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
 

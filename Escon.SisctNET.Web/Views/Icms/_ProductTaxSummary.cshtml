@@ -141,7 +141,7 @@
                             <td style="text-align:center;"></td>
                             <th style="text-align:right;">@string.Format("{0:N}", ViewBag.TotalFunefCotac)</th>
                         </tr>
-                        @if (Convert.ToDateTime(ViewBag.DataDifal.Value) < Convert.ToDateTime(ViewBag.Data))
+                        @if (Convert.ToDateTime(ViewBag.Data) < Convert.ToDateTime(ViewBag.DataDifal.Value))
                         {
                             <tr>
                                 <td style="text-align:center;"></td>

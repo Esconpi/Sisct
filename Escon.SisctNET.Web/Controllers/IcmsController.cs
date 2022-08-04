@@ -26812,7 +26812,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             List<List<string>> icmsForaDoEstado = new List<List<string>>();
 
-                            if (Convert.ToDateTime(dataDifal.Value) < data)
+                            if (data < Convert.ToDateTime(dataDifal.Value))
                             {
                                 foreach (var g in grupos)
                                 {
@@ -26871,7 +26871,6 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.ValorVendaContribuinteAliM25 = icmsContribuinteIncentivoAliqM25;
                             ViewBag.PercentualIcmsAiqM25Contrib = Convert.ToDecimal(comp.IcmsAliqM25);
 
-
                             //Não Contribuinte
                             ViewBag.VendaNContribIncentivo = naoContribuinteIncentivo;
                             ViewBag.VendaNContribuinteSTNormal = naoContribuinteNIncetivo;
@@ -26882,7 +26881,7 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.PercentualIcmsNContribuinte = Convert.ToDecimal(comp.IcmsNContribuinte);
                             ViewBag.ValorVendaNContribIncentivo = icmsNContribuinteIncentivo;
 
-                            if (Convert.ToDateTime(dataDifal.Value) < data)
+                            if (data < Convert.ToDateTime(dataDifal.Value))
                             {
                                 //Não Contribuinte Fora do Estado
                                 ViewBag.VendaContribuinteForaEstadoIncetivo = naoContriForaDoEstadoIncentivo;
