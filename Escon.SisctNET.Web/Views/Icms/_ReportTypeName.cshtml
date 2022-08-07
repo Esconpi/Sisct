@@ -147,7 +147,10 @@
     <strong>Venda de Produto ST como Normal por Nota </strong>
 }
 
-
+@if (ViewBag.Type == "difal")
+{
+    <strong>Relatório de ICMS DIFAL</strong>
+}
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {
@@ -167,6 +170,7 @@
     {
         <br />
         <b>CFOP</b>
+
         if (ViewBag.Cst != 0 && ViewBag.Cst != null)
         {
             <b>/CST</b>

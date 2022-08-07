@@ -27589,7 +27589,13 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("difal"))
                 {
-                   
+                    if (imp == null)
+                    {
+                        ViewBag.Erro = 1;
+                        return View();
+                    }
+
+                    var grupos = _grupoService.FindByGrupos(imp.Id);
                 }
 
                 //  Dar
