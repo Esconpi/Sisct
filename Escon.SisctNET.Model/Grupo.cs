@@ -43,5 +43,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? IcmsNIncentivo { get; set; }
 
+        public decimal? BaseDifal { get; set; }
+
     }
 }

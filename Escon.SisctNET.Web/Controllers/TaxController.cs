@@ -2416,7 +2416,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                     if (gg != null)
                                                     {
-                                                        gg.BaseCalculo = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                        gg.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
                                                         gg.Icms = icms;
                                                         gg.Updated = DateTime.Now;
                                                         updateGrupos.Add(gg);
@@ -2425,7 +2425,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     {
                                                         Model.Grupo grupo = new Model.Grupo();
                                                         grupo.Uf = icmsForaDoEstado[j][0];
-                                                        grupo.BaseCalculo = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                        grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
                                                         grupo.Icms = icms;
                                                         grupo.TaxId = imp.Id;
                                                         grupo.Created = DateTime.Now;
@@ -2449,7 +2449,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     Model.Grupo grupo = new Model.Grupo();
                                                     grupo.Uf = icmsForaDoEstado[j][0];
-                                                    grupo.BaseCalculo = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                    grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
                                                     grupo.Icms = icms;
                                                     grupo.TaxId = imp.Id;
                                                     grupo.Created = DateTime.Now;
@@ -2485,7 +2485,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 Model.Grupo grupo = new Model.Grupo();
                                                 grupo.Uf = icmsForaDoEstado[j][0];
-                                                grupo.BaseCalculo = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
                                                 grupo.Icms = icms;
                                                 grupo.Created = DateTime.Now;
                                                 grupo.Updated = grupo.Created;

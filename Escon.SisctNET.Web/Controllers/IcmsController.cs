@@ -27620,7 +27620,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (internalAliquot == null)
                             internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(g.Uf)).FirstOrDefault();
 
-                        decimal baseCalculo = Convert.ToDecimal(g.BaseCalculo),
+                        decimal baseCalculo = Convert.ToDecimal(g.BaseDifal),
                                 base1 = calculation.Base1(baseCalculo, aliquot.Aliquota),
                                 base2 = calculation.Base2(baseCalculo, base1),
                                 base3 = calculation.Base3(base2, internalAliquot.Aliquota),

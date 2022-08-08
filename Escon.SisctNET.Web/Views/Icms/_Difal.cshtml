@@ -1,35 +1,33 @@
-﻿<div style="width:100%; padding-top:0px;">
-    @foreach (var item in ViewBag.Estados)
-    {
-        <table style="font-size:12px;" border="1">
-            <thead>
-                <tr>
-                    <th  style="border:1px solid; text-align:center;">
-                        Origem
-                    </th>
-                    <th  style="border:1px solid; text-align:center;">
-                        Destino
-                    </th>
-                    <th  style="border:1px solid; text-align:center;">
-                        Valor da Mercadoria
-                    </th>
-                    <th  style="border:1px solid; text-align:center;">
-                        Aliquota Interna
-                    </th>
-                    <th  style="border:1px solid">
-                        Aliquota Interestadual
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                     <td style="border:1px solid">@item[0]</td>
-                      <td style="border:1px solid">@item[1]</td>
-                    <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
-                    <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[3].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
-                    <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(',', '*').Replace('.', ',').Replace('*', '.'))) %</td>
-                </tr>
-            </tbody>
-        </table>
-    }
-</div>
+﻿@foreach (var item in ViewBag.Estados)
+{
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th  style="border:1px solid; text-align:center;">
+                    Origem
+                </th>
+                <th  style="border:1px solid; text-align:center;">
+                    Destino
+                </th>
+                <th  style="border:1px solid; text-align:center;">
+                    Valor da Mercadoria
+                </th>
+                <th  style="border:1px solid; text-align:center;">
+                    Aliquota Interna
+                </th>
+                <th  style="border:1px solid">
+                    Aliquota Interestadual
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border:1px solid">@item[0]</td>
+                <td style="border:1px solid">@item[1]</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[3])) %</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[4])) %</td>
+            </tr>
+        </tbody>
+    </table>
+}
