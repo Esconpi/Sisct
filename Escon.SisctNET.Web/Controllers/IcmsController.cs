@@ -36,6 +36,8 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICstService _cstService;
         private readonly ICsosnService _csosnService;
         private readonly ITaxSupplementService _taxSupplementService;
+        private readonly IAliquotService _aliquotService;
+        private readonly IInternalAliquotService _internalAliquotService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -64,6 +66,8 @@ namespace Escon.SisctNET.Web.Controllers
             ICstService cstService,
             ICsosnService csosnService,
             ITaxSupplementService taxSupplementService,
+            IAliquotService aliquotService,
+            IInternalAliquotService internalAliquotService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
         {
@@ -92,6 +96,8 @@ namespace Escon.SisctNET.Web.Controllers
             _cstService = cstService;
             _csosnService = csosnService;
             _taxSupplementService = taxSupplementService;
+            _aliquotService = aliquotService;
+            _internalAliquotService = internalAliquotService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -27596,6 +27602,46 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     var grupos = _grupoService.FindByGrupos(imp.Id);
+                    var aliquots = _aliquotService.FindByAllState(null);
+                    var internalAliquots = _internalAliquotService.FindByAllState(null);
+
+                    List<List<string>> estados = new List<List<string>>();
+
+                    foreach(var g in grupos)
+                    {
+                        List<string> estado = new List<string>();
+
+                        var aliquot = _aliquotService.FindByUf(aliquots, Convert.ToDateTime(dataDifal.Value), comp.County.State.UF, g.Uf);
+                        var internalAliquot = _internalAliquotService.FindByUf(internalAliquots, Convert.ToDateTime(dataDifal.Value), g.Uf);
+
+                        if (aliquot == null)
+                            aliquot = aliquots.Where(_ => _.StateOrigem.UF.Equals(comp.County.State.UF) && _.StateDestino.UF.Equals(g.Uf)).FirstOrDefault();
+
+                        if (internalAliquot == null)
+                            internalAliquot = internalAliquots.Where(_ => _.State.UF.Equals(g.Uf)).FirstOrDefault();
+
+                        decimal baseCalculo = Convert.ToDecimal(g.BaseCalculo),
+                                base1 = calculation.Base1(baseCalculo, aliquot.Aliquota),
+                                base2 = calculation.Base2(baseCalculo, base1),
+                                base3 = calculation.Base3(base2, internalAliquot.Aliquota),
+                                baseDifal = calculation.BaseDifal(base3, internalAliquot.Aliquota),
+                                icmsDifal = calculation.Icms(baseDifal, base1);
+
+                        estado.Add(aliquot.StateOrigem.Name);
+                        estado.Add(aliquot.StateDestino.Name);
+                        estado.Add(baseCalculo.ToString());
+                        estado.Add(internalAliquot.Aliquota.ToString());
+                        estado.Add(aliquot.Aliquota.ToString());
+                        estado.Add(base1.ToString());
+                        estado.Add(base2.ToString());
+                        estado.Add(base3.ToString());
+                        estado.Add(baseDifal.ToString());
+                        estado.Add(icmsDifal.ToString());
+
+                        estados.Add(estado);
+                    }
+
+                    ViewBag.Estados = estados;
                 }
 
                 //  Dar
