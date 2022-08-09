@@ -24,9 +24,68 @@
             <tr>
                 <td style="border:1px solid">@item[0]</td>
                 <td style="border:1px solid">@item[1]</td>
-                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
                 <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[3])) %</td>
                 <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[4])) %</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table" border="1">
+        <tbody>
+            <tr>
+                <th style="border:1px solid;">ICMS Inteterestadual</th>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
+                <th style="text-align:center; border:1px solid; font-size: 16px;">*</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[4])) %</td>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[5]))</td>
+            </tr>
+            <tr>
+                <th style="border:1px solid;"></th>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[2]))</td>
+                <th style="text-align:center; border:1px solid; font-size: 16px;">-</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[5]))</td>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[6]))</td>
+            </tr>
+            <tr>
+                <th style="border:1px solid;"></th>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[6]))</td>
+                <th style="text-align:center; border:1px solid; font-size: 16px;">/</th>
+                <td style="text-align:right; border:1px solid;">1 - (@string.Format("{0:N}", Convert.ToDecimal(item[3])) %)</td>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[7]))</td>
+            </tr>
+            <tr>
+                <th style="border:1px solid;">Base de Cálculo</th>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[7]))</td>
+                <th style="text-align:center; border:1px solid; font-size: 16px;">*</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[4])) %</td>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[8]))</td>
+            </tr>
+             <tr>
+                <th style="border:1px solid;"></th>
+                <th style="text-align:center; border:1px solid;"></th>
+                <th style="text-align:right; border:1px solid;">Base de Cálculo</th>
+                <th style="text-align:center; border:1px solid; font-size: 16px;"></th>
+                <th style="text-align:right; border:1px solid;">ICMS Inteterestadual</th>
+                <th style="text-align:center; border:1px solid;"></th>
+                <th style="text-align:center; border:1px solid;">DIFAL</th>
+            </tr>
+            <tr>
+                <th style="border:1px solid;">DIFAL</th>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[8]))</td>
+                <th style="text-align:center; border:1px solid; font-size: 16px;">-</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[5]))</td>
+                <th style="text-align:center; border:1px solid;">=</th>
+                <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(item[9]))</td>
             </tr>
         </tbody>
     </table>

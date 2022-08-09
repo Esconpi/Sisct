@@ -2408,15 +2408,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
-                                                decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
 
-                                                if (icms > 0)
+                                                decimal baseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]),
+                                                        icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * baseDifal) / 100;
+
+                                                if (baseDifal > 0)
                                                 {
                                                     var gg = grupoTemp.Where(_ => _.Uf.Equals(icmsForaDoEstado[j][0])).FirstOrDefault();
 
                                                     if (gg != null)
                                                     {
-                                                        gg.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                        gg.BaseDifal = baseDifal;
                                                         gg.Icms = icms;
                                                         gg.Updated = DateTime.Now;
                                                         updateGrupos.Add(gg);
@@ -2425,7 +2427,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     {
                                                         Model.Grupo grupo = new Model.Grupo();
                                                         grupo.Uf = icmsForaDoEstado[j][0];
-                                                        grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                        grupo.BaseDifal = baseDifal;
                                                         grupo.Icms = icms;
                                                         grupo.TaxId = imp.Id;
                                                         grupo.Created = DateTime.Now;
@@ -2443,13 +2445,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                             {
-                                                decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
-                                                                                            
-                                                if (icms > 0)
+                                                decimal baseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]),
+                                                        icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * baseDifal) / 100;
+
+                                                if (baseDifal > 0)
                                                 {
                                                     Model.Grupo grupo = new Model.Grupo();
                                                     grupo.Uf = icmsForaDoEstado[j][0];
-                                                    grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                    grupo.BaseDifal = baseDifal;
                                                     grupo.Icms = icms;
                                                     grupo.TaxId = imp.Id;
                                                     grupo.Created = DateTime.Now;
@@ -2478,14 +2481,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         for (int j = 0; j < icmsForaDoEstado.Count(); j++)
                                         {
-                                            decimal icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * Convert.ToDecimal(icmsForaDoEstado[j][1])) / 100;
-                                        
-                                            
-                                            if (icms > 0)
+                                            decimal baseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]),
+                                                    icms = (Convert.ToDecimal(comp.IcmsNContribuinteFora) * baseDifal) / 100;
+
+                                            if (baseDifal > 0)
                                             {
                                                 Model.Grupo grupo = new Model.Grupo();
                                                 grupo.Uf = icmsForaDoEstado[j][0];
-                                                grupo.BaseDifal = Convert.ToDecimal(icmsForaDoEstado[j][1]);
+                                                grupo.BaseDifal = baseDifal;
                                                 grupo.Icms = icms;
                                                 grupo.Created = DateTime.Now;
                                                 grupo.Updated = grupo.Created;
