@@ -1095,6 +1095,10 @@ namespace Escon.SisctNET.Web.Xml
                                                         {
                                                             nCT += nCT_temp + " | ";
                                                             proporcao = ((100 * total_da_nota) / valor_carga) / 100;
+
+                                                            if (proporcao > 1)
+                                                                proporcao = 1;
+
                                                             frete_nota = proporcao * valor_prestado;
                                                             frete_icms = proporcao * total_icms_frete;
 
