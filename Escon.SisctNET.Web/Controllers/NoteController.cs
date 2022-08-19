@@ -637,9 +637,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
-                                    //if (pICMSValid != "4.00")
-                                    //  pICMS = aliq_simples.Aliquota;
-
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
                                     var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
