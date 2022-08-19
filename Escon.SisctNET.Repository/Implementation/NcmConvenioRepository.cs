@@ -52,7 +52,8 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (comp.AnnexId.Equals((long)3)){
+                if (comp.AnnexId.Equals((long)3) || comp.AnnexId.Equals((long)4))
+                {
                     if (n.Ncm.Equals(substring))
                     {
                         ncmIncentivo = true;
@@ -100,14 +101,11 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 int contaChar = n.Ncm.Length;
                 string substring = "";
-                if (contaChar < 8)
-                {
+
+                if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                }
                 else
-                {
                     substring = ncm;
-                }
 
                 if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
                 {

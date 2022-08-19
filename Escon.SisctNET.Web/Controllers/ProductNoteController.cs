@@ -333,11 +333,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (taxedtype.Type == "ST")
                     {
-                        decimal totalIcmsPauta = 0;
-                        decimal totalIcms = 0;
-                        baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
-                        decimal quantParaCalc = 0;
+                        decimal totalIcmsPauta = 0, totalIcms = 0, quantParaCalc = 0;
+
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
+                        baseCalc = Vbasecalc;
+                        //baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
+
                         if (quantPauta != null)
                         {
                             prod.Qpauta = Convert.ToDecimal(quantPauta);
@@ -471,7 +472,9 @@ namespace Escon.SisctNET.Web.Controllers
                         if (taxedtype.Type == "ST")
                         {
                             decimal totalIcms = 0;
-                            baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
+
+                            baseCalc = Vbasecalc;
+                            //baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
 
                             if (mva != null)
                             {
@@ -519,7 +522,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.TotalICMS = totalIcms;
 
                         }
-                        else if (taxedtype.Type == "Normal" && taxedtype.Description == "1  IM - Imobilizado-Dif. Aliquota")
+                        else if (taxedtype.Type == "Normal")
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
@@ -527,14 +530,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
-
-                            /*if (prod.Picms != 4)
-                            {
-                                var aliqSimples = _aliquotService.FindByUf(prod.Note.Uf);
-                                dif = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
-                                dif_frete = calculation.DiferencialAliq(aliqInterna, aliqSimples.Aliquota);
-                                prod.Picms = Convert.ToDecimal(aliqSimples.Aliquota);
-                            }*/
 
                             prod.Mva = null;
                             prod.Valoragregado = null;
@@ -551,10 +546,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             prod.IcmsApurado = icmsApu;
                             prod.IcmsApuradoCTe = icmsApuCTw;
-                        }
-                        else if(taxedtype.Type == "Normal" && taxedtype.Description != "1  IM - Imobilizado-Dif. Aliquota")
-                        {
-
                         }
                         else if (taxedtype.Type == "Isento")
                         {
@@ -616,7 +607,8 @@ namespace Escon.SisctNET.Web.Controllers
                             if (taxedtype.Type == "ST")
                             {
                                 decimal totalIcms = 0;
-                                baseCalc = calculation.BaseCalc(Vbasecalc, item.Vdesc);
+                                baseCalc = Vbasecalc;
+                                //baseCalc = calculation.BaseCalc(Vbasecalc, item.Vdesc);
 
                                 if (mva != null)
                                 {
@@ -672,14 +664,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.AliqInterna = aliqInterna;
                                 baseCalc = Vbasecalc;
 
-                                /*if (item.Picms != 4)
-                                {
-                                    var aliq_simples = _aliquotService.FindByUf(item.Note.Uf);
-                                    dif = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
-                                    dif_frete = calculation.DiferencialAliq(aliqInterna, aliq_simples.Aliquota);
-                                    item.Picms = Convert.ToDecimal(aliq_simples.Aliquota);
-                                }*/
-                                
                                 item.Diferencial = dif;
 
                                 decimal icmsApu = calculation.IcmsApurado(dif, baseCalc - Convert.ToDecimal(item.Freterateado)),
@@ -753,24 +737,6 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Note> updateNote = new List<Note>();
 
                 notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
-
-                /*foreach (var product in products)
-                {
-                    bool status = false;
-                    //var nota =  _noteService.FindById(Convert.ToInt64(product.NoteId), null);
-                    //var productTaxation = _service.FindByTaxation(Convert.ToInt64(product.NoteId));
-
-                    var productTaxation = _service.FindByTaxation(product.Note.Products);
-
-                    if (productTaxation.Count == 0)
-                        status = true;
-
-                    product.Note.Status = status;
-                    product.Note.Updated = DateTime.Now;
-
-                    if (product.Note.Status)
-                        updateNote.Add(product.Note);
-                }*/
 
                 foreach (var note in notes)
                 {
@@ -1135,8 +1101,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum())),
                             freterateado = Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()),
                             baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
-                                              Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) +
-                                              Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum())),
+                                          Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) +
+                                          Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum()) -
+                                          Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum())),
                             baseCalcIcms = Convert.ToDecimal(products.Select(_ => _.Valoragregado).Sum()),
                             baseCalcBCR = Convert.ToDecimal(products.Select(_ => _.ValorBCR).Sum()),
                             totalAC = Convert.ToDecimal(products.Select(_ => _.ValorAC).Sum()),

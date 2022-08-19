@@ -53,7 +53,10 @@ namespace Escon.SisctNET.Web.Controllers
                 List<Annex> list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
-                    annex.Description = annex.Description + " - " + annex.Convenio;
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
                 }
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
@@ -100,10 +103,14 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                List<Annex> list_annex = _annexService.FindAll(null);
+               
+                var list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
-                    annex.Description = annex.Description + " - " + annex.Convenio;
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
                 }
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
@@ -166,8 +173,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             var ncmsAll = _service.FindAll(null).OrderBy(_ => _.AnnexId);
 
-
-
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
                 List<NcmConvenio> ncms = new List<NcmConvenio>();
@@ -199,7 +204,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description + " - " + r.Annex.Convenio
+                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio
 
                           };
 
@@ -217,7 +222,7 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Description + " - " + r.Annex.Convenio
+                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio
 
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });

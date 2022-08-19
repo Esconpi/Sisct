@@ -297,16 +297,19 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, null);
 
-                List<Annex> list_annex = _annexService.FindAll(null);
+                var list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
-                    annex.Description = annex.Description + " - " + annex.Convenio;
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
                 }
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
 
-                List<Chapter> list_chapters = _chapterService.FindAll(null);
+                var list_chapters = _chapterService.FindAll(null);
                 foreach (var chapter in list_chapters)
                 {
                     chapter.Name = chapter.Name + " - " + chapter.Description;
@@ -315,7 +318,7 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList chapters = new SelectList(list_chapters, "Id", "Name", null);
                 ViewBag.ChapterId = chapters;
 
-                List<Section> list_sections = _sectionService.FindAll(null);
+                var list_sections = _sectionService.FindAll(null);
                 foreach (var section in list_sections)
                 {
                     section.Name = section.Name + " - " + section.Description;

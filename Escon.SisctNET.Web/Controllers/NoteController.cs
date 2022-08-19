@@ -246,8 +246,8 @@ namespace Escon.SisctNET.Web.Controllers
             var importDir = new Diretorio.Import();
             var calculation = new Tax.Calculation();
 
-            string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
-            string directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
+            string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month),
+                   directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
 
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -302,11 +302,9 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     try
                     {
-                        string nCT = notes[i][notes[i].Count() - 1].ContainsKey("nCT") ? notes[i][notes[i].Count() - 1]["nCT"] : "";
-
-                        string IEST = notes[i][2].ContainsKey("IEST") ? notes[i][2]["IEST"] : "";
-
-                        string cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
+                        string nCT = notes[i][notes[i].Count() - 1].ContainsKey("nCT") ? notes[i][notes[i].Count() - 1]["nCT"] : "",
+                               IEST = notes[i][2].ContainsKey("IEST") ? notes[i][2]["IEST"] : "",
+                               cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
 
                         Model.Note note = new Model.Note();
 
@@ -328,7 +326,6 @@ namespace Escon.SisctNET.Web.Controllers
                         note.MesRef = month;
                         note.Created = DateTime.Now;
                         note.Updated = DateTime.Now;
-
 
                         _service.Create(note, GetLog(Model.OccorenceLog.Create));
                     }
@@ -517,11 +514,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && (comp.AnnexId.Equals((long)1) || comp.AnnexId.Equals((long)3)))
+                            if (comp.Incentive && (comp.ChapterId.Equals((long)7) || comp.AnnexId.Equals((long)1)))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+
+                            if (comp.Incentive && (comp.ChapterId.Equals((long)1) || comp.AnnexId.Equals((long)3)))
+                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
+                             
+                            if (comp.Incentive && comp.ChapterId.Equals((long)15) && comp.AnnexId.Equals((long)4))
+                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
 
                             if (comp.Incentive && comp.ChapterId.Equals((long)4))
                                 incentivo = true;
+
 
                             Model.ProductNote prod = new Model.ProductNote();
 
@@ -595,7 +599,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (taxedtype.Type == "ST")
                                 {
-                                    baseCalc = calculation.BaseCalc(baseDeCalc, vDesc);
+                                    //baseCalc = calculation.BaseCalc(baseDeCalc, vDesc);
+                                    baseCalc = baseDeCalc;
 
                                     if (taxed.MVA != null)
                                         valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
