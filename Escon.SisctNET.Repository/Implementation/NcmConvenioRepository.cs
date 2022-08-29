@@ -124,14 +124,11 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 int contaChar = n.Length;
                 string substring = "";
-                if (contaChar < 8)
-                {
+
+                if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                }
                 else
-                {
                     substring = ncm;
-                }
 
                 if (n.Equals(substring) && !contaChar.Equals(0))
                 {

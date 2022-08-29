@@ -514,14 +514,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && (comp.ChapterId.Equals((long)7) || comp.AnnexId.Equals((long)1)))
+                            if (comp.Incentive && comp.AnnexId.Equals((long)1) && comp.ChapterId.Equals((long)7))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
-                            if (comp.Incentive && (comp.ChapterId.Equals((long)1) || comp.AnnexId.Equals((long)3)))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
-                             
-                            if (comp.Incentive && comp.ChapterId.Equals((long)15) && comp.AnnexId.Equals((long)4))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM);
+                            if (comp.Incentive && comp.AnnexId.Equals((long)3) && comp.ChapterId.Equals((long)1))
+                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+
+                            if (comp.Incentive && comp.AnnexId.Equals((long)4) && comp.ChapterId.Equals((long)15))
+                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.ChapterId.Equals((long)4))
                                 incentivo = true;

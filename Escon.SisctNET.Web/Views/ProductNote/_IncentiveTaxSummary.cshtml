@@ -83,10 +83,16 @@
 </div>
 
 <div style="width: 100%; overflow: hidden; font-size:12px;">
-    @if (ViewBag.Company.AnnexId == 3)
+    @if (ViewBag.Company.AnnexId == 3 && ViewBag.Company.ChapterId == 1)
     {
         @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
 
+        <div style="width: 100%; font-size:12px; padding-top:10px;">
+            @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
+        </div>
+    }
+    else if (ViewBag.Company.AnnexId == 4 && ViewBag.Company.ChapterId == 15)
+    {
         <div style="width: 100%; font-size:12px; padding-top:10px;">
             @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
         </div>

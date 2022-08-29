@@ -146,5 +146,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<Product3> Product3s { get; set; }
 
         public DbSet<InternalAliquot> InternalAliquots { get; set; }
+
+        public DbSet<Invoicing> Invoicings { get; set; }
     }
 }

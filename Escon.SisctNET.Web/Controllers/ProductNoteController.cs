@@ -1171,7 +1171,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
-
                        
                         //  ICMS
                         if (typeTaxation.Equals(Model.TypeTaxation.ST))
@@ -1193,7 +1192,6 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcmsPagoIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => !_.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
                         totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
 
-
                         /*if (valorDiefIE >= totalIcmsPagoIE)
                             totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);*/
 
@@ -1203,7 +1201,6 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);*/
 
                         totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
-
 
                         // FECOP
                         decimal base1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2),
@@ -1256,7 +1253,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalFecopCalcSIE = valorbase1SIE + valorbase2SIE,
                                 totalFecopNfeIE = valorNfe1NormalIE + valorNfe1RetIE + valorNfe2NormalIE + valorNfe2RetIE,
                                 totalFecopNfeSIE = valorNfe1NormalSIE + valorNfe1RetSIE + valorNfe2NormalSIE + valorNfe2RetSIE;
-
                         
                         decimal difvalor1IE = valorbase1IE - valorNfe1NormalIE - valorNfe1RetIE - gnrePagaFecop1IE - totalFecop1FreteIE - totalFecop2FreteIE,
                                 difvalor1SIE = valorbase1SIE - valorNfe1NormalSIE - valorNfe1RetSIE - gnrePagaFecop1SIE + totalFecop1FreteIE + totalFecop2FreteIE,
@@ -1276,7 +1272,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (difvalor2SIE >= base2fecopSIE)
                             totalfecop2SIE = difvalor2SIE - base2fecopSIE;
-
 
                         //  Relatorio das Empresas Incentivadas
                         if (comp.Incentive && (comp.AnnexId != null || comp.ChapterId == (long)4) && typeTaxation.Equals(Model.TypeTaxation.ST))
@@ -1373,7 +1368,6 @@ namespace Escon.SisctNET.Web.Controllers
                             if (valorDiefIE - totalIcmsPagoIE > 0)
                                 totalDarSTCO += Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
 
-
                             //  FECOP
                             base1SIE = Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.ValorBCR).Sum()), 2);
                             base1SIE += Math.Round(Convert.ToDecimal(productsNormal.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Valoragregado).Sum()), 2);
@@ -1467,7 +1461,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             //Produto incentivados
                             var productsIncentivado = productsAll.Where(_ => _.Incentivo.Equals(true)).ToList();
-
 
                             if (type.Equals(Model.Type.ProdutoNI))
                             {
@@ -2174,7 +2167,6 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
-
                         //      Resumo dos Impostos
                         
                         //  ICMS
@@ -2240,7 +2232,6 @@ namespace Escon.SisctNET.Web.Controllers
                         ViewBag.TotalFecop2SIE = totalfecop2SIE;
                         ViewBag.TotalFinalFecopCalculadaIE = Math.Round(totalfecop1IE + totalfecop2IE, 2);
                         ViewBag.TotalFinalFecopCalculadaSIE = Math.Round(totalfecop1SIE + totalfecop2SIE, 2);
-
 
                         //  Valores total DAR
                         ViewBag.TotalDarSTCO = totalDarSTCO;

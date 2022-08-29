@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class CfopController : ControllerBaseSisctNET
     {
-        ICfopService _service;
+        private readonly ICfopService _service;
 
         public CfopController(
             ICfopService service,

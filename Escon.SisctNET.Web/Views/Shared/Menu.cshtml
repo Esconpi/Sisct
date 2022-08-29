@@ -124,6 +124,11 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
             {
                 <li><a href="@Url.Action("Index","InternalAliquot")"><i class="fa fa-circle-o"></i>Aliquota Interna</a></li>
             }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Invoicing")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","Invoicing")"><i class="fa fa-circle-o"></i>Faixa de Faturamento</a></li>
+            }
         </ul>
     </li>
 
