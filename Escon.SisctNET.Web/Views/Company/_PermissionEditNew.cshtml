@@ -167,7 +167,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.TipoApuracao == true)
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
                 {
                     <input class="form-control money" value="@Model.VendaContribuinte" name="VendaContribuinte" id="VendaContribuinte"/>
                 }
@@ -178,7 +178,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.TipoApuracao == true)
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
                 {
                     <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="VendaContribuinteExcedente" id="VendaContribuinteExcedente"/>
                 }
@@ -193,7 +193,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.TipoApuracao == true)
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
                 {
                     <input class="form-control money" value="@Model.VendaCpf" name="VendaCpf" id="VendaCpf" />
                 }
@@ -204,7 +204,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.TipoApuracao == true)
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
                 {
                     <input class="form-control money" value="@Model.VendaCpfExcedente" name="VendaCpfExcedente"  id="VendaCpfExcedente"/>
                 }
@@ -280,7 +280,6 @@
                 @if (Model.TipoApuracao == true && Model.ChapterId != 4)
                 {
                     <input class="form-control money" value="@Model.VendaAnexoExcedente" name="VendaAnexoExcedente" id="VendaAnexoExcedente"/>
-
                 }
                 else
                 {
@@ -312,7 +311,16 @@
                 </div>
             }
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
-
+                 @if (Model.AnnexId == 4)
+                 {
+                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInterna" name="IncIInterestadual" id="CompraInterna" />
+                 }
+                 else
+                 {
+                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInterna" name="CompraInterna" id="CompraInterna" disabled />
+                 }
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -373,7 +381,16 @@
             }
 
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
-
+                 @if (Model.AnnexId == 4)
+                 {
+                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" />
+                 }
+                 else
+                 {
+                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" disabled />
+                 }
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -420,28 +437,36 @@
 
 <script type="text/javascript">
     var anexo = @Model.AnnexId;
-    $("#annex").children('option').each(function () {
-        if ($(this).val() == anexo) {
+    $("#annex").children('option').each(function () 
+    {
+        if ($(this).val() == anexo) 
+        {
             $(this).attr('selected', true);
         }
     });
 
     var capitulo = @Model.ChapterId;
-    $("#chapter").children('option').each(function () {
-        if ($(this).val() == capitulo) {
+    $("#chapter").children('option').each(function () 
+    {
+        if ($(this).val() == capitulo) 
+        {
             $(this).attr('selected', true);
         }
     });
 
     var section = @Model.SectionId;
-    $("#section").children('option').each(function () {
-        if ($(this).val() == section) {
+    $("#section").children('option').each(function () 
+    {
+        if ($(this).val() == section) 
+        {
             $(this).attr('selected', true);
         }
     });
 
-    $("#TipoApuracao").on("change", function () {
-        if ($(this).prop('checked')) {
+    $("#TipoApuracao").on("change", function () 
+    {
+        if ($(this).prop('checked')) 
+        {
             $('#IcmsAliqM25').prop('disabled', true);
             $('#IcmsNContribuinte').prop('disabled', true);
             $('#IcmsNContribuinteFora').prop('disabled', true);
@@ -459,7 +484,11 @@
             $('#VendaMGrupoExcedente').prop('disabled', false);
             $("#VendaAnexo").prop("disabled", false);
             $("#VendaAnexoExcedente").prop("disabled", false);
-        } else {
+            $("#CompraInterna").prop("disabled", true);
+            $("#CompraInter").prop("disabled", true);
+        } 
+        else 
+        {
             $('#IcmsAliqM25').prop('disabled', false);
             $('#IcmsNContribuinte').prop('disabled', false);
             $('#IcmsNContribuinteFora').prop('disabled', false);
@@ -468,24 +497,36 @@
             $("#Transferencia").prop("disabled", true);
             $("#TransferenciaExcedente").prop("disabled", true);
             $('#TransferenciaInter').prop('disabled', true);
-            $('#TransferenciaInterExcedente').prop('disabled', true);
-            $('#VendaContribuinte').prop('disabled', true);
-            $('#VendaContribuinteExcedente').prop('disabled', true);
-            $('#VendaCpf').prop('disabled', true);
-            $('#VendaCpfExcedente').prop('disabled', true);
+            $('#TransferenciaInterExcedente').prop('disabled', true);     
             $('#VendaMGrupo').prop('disabled', true);
             $('#VendaMGrupoExcedente').prop('disabled', true);
             $("#VendaAnexo").prop("disabled", true);
             $("#VendaAnexoExcedente").prop("disabled", true);
+            $("#CompraInterna").prop("disabled", true);
+            $("#CompraInter").prop("disabled", true);
+
+            if (anexo == 4)
+            {
+                $('#VendaContribuinte').prop('disabled', false);
+                $('#VendaContribuinteExcedente').prop('disabled', false);
+                $('#VendaCpf').prop('disabled', false);
+                $('#VendaCpfExcedente').prop('disabled', false);
+            }
+            else 
+            {
+                $('#VendaContribuinte').prop('disabled', true);
+                $('#VendaContribuinteExcedente').prop('disabled', true);
+                $('#VendaCpf').prop('disabled', true);
+                $('#VendaCpfExcedente').prop('disabled', true);
+            }
         }
 
     });
 
-    
-    
-
-    $("#annex").on("change", function () {
-        if ($(this).val() == "3") {
+    $("#annex").on("change", function () 
+    {
+        if ($(this).val() == "3") 
+        {
             $('#IcmsAliqM25').prop('disabled', true);
             $('#IcmsNContribuinte').prop('disabled', true);
             $('#IcmsNContribuinteFora').prop('disabled', true);
@@ -496,8 +537,13 @@
             $("#IncIIInterestadual").prop("disabled", false);
             $("#VendaArt781").prop("disabled", false);
             $("#VendaArt781Excedente").prop("disabled", false);
+            $('#VendaContribuinte').prop('disabled', true);
+            $('#VendaContribuinteExcedente').prop('disabled', true);
+            $('#VendaCpf').prop('disabled', true);
+            $('#VendaCpfExcedente').prop('disabled', true);
         }
-        else {
+        else if ($(this).val() == "4")
+        {
             $('#IcmsAliqM25').prop('disabled', false);
             $('#IcmsNContribuinte').prop('disabled', false);
             $('#IcmsNContribuinteFora').prop('disabled', false);
@@ -508,11 +554,34 @@
             $("#IncIIInterestadual").prop("disabled", true);
             $("#VendaArt781").prop("disabled", true);
             $("#VendaArt781Excedente").prop("disabled", true);
+            $('#VendaContribuinte').prop('disabled', false);
+            $('#VendaContribuinteExcedente').prop('disabled', false);
+            $('#VendaCpf').prop('disabled', false);
+            $('#VendaCpfExcedente').prop('disabled', false);
+        }
+        else 
+        {
+            $('#IcmsAliqM25').prop('disabled', false);
+            $('#IcmsNContribuinte').prop('disabled', false);
+            $('#IcmsNContribuinteFora').prop('disabled', false);
+            $("#AliqInterna").prop("disabled", true);
+            $("#IncIInterna").prop("disabled", true);
+            $("#IncIInterestadual").prop("disabled", true);
+            $("#IncIIInterna").prop("disabled", true);
+            $("#IncIIInterestadual").prop("disabled", true);
+            $("#VendaArt781").prop("disabled", true);
+            $("#VendaArt781Excedente").prop("disabled", true);
+            $('#VendaContribuinte').prop('disabled', false);
+            $('#VendaContribuinteExcedente').prop('disabled', false);
+            $('#VendaCpf').prop('disabled', false);
+            $('#VendaCpfExcedente').prop('disabled', false);
         }
     });
 
-    $("#chapter").on("change", function () {
-        if ($(this).val() == "4") {
+    $("#chapter").on("change", function () 
+    {
+        if ($(this).val() == "4") 
+        {
             $("#Transferencia").prop("disabled", false);
             $("#TransferenciaExcedente").prop("disabled", false);
             $("#VendaAnexo").prop("disabled", true);
@@ -520,7 +589,8 @@
             $("#Faturamento").prop("disabled", false);
             $("#FaturamentoExcedente").prop("disabled", false);
         }
-        else {
+        else 
+        {
             $("#Transferencia").prop("disabled", true);
             $("#TransferenciaExcedente").prop("disabled", true);
             $("#VendaAnexo").prop("disabled", false);
@@ -530,7 +600,8 @@
         }
     });
 
-    $(".textformartmask").on("input", function () {
+    $(".textformartmask").on("input", function () 
+    {
         $(this).val($(this).val().toUpperCase());
     });
 </script>

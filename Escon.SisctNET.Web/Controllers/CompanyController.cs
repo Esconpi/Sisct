@@ -381,13 +381,15 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.SectionId = entity.SectionId.Equals((long)0) ? null : entity.SectionId;
                 rst.AliqInterna = entity.AliqInterna;
                 rst.IncIInterna = entity.IncIInterna;
-                rst.IncIInterestadual = entity.IncIInterestadual;
+                rst.IncIInterestadual = entity.IncIInterestadual; 
                 rst.IncIIInterna = entity.IncIIInterna;
                 rst.IncIIInterestadual = entity.IncIIInterestadual;
                 rst.VendaArt781 = entity.VendaArt781;
                 rst.VendaArt781Excedente = entity.VendaArt781Excedente;
                 rst.Faturamento = entity.Faturamento;
                 rst.FaturamentoExcedente = entity.FaturamentoExcedente;
+                rst.CompraInter = entity.CompraInter;
+                rst.CompraInterna = entity.CompraInterna;
                 rst.Updated = DateTime.Now;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 

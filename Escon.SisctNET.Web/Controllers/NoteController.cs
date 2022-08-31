@@ -12,7 +12,7 @@ namespace Escon.SisctNET.Web.Controllers
     {
         private readonly INoteService _service;
         private readonly ITaxationService _taxationService;
-        private readonly IProductService _product;
+        private readonly IProductService _productService;
         private readonly IProductNoteService _itemService;
         private readonly ICompanyService _companyService;
         private readonly ITaxationTypeService _taxationTypeService;
@@ -38,7 +38,7 @@ namespace Escon.SisctNET.Web.Controllers
             _companyService = companyService;
             _configurationService = configurationService;
             _itemService = itemService;
-            _product = productService;
+            _productService = productService;
             _taxationService = taxationService;
             _aliquotService = aliquotService;
             _taxationTypeService = taxationTypeService;
@@ -176,9 +176,9 @@ namespace Escon.SisctNET.Web.Controllers
                 return View(products);
 
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                return BadRequest(new { erro = 500, message = e.Message });
+                return BadRequest(new { erro = 500, message = ex.Message });
             }
 
         }

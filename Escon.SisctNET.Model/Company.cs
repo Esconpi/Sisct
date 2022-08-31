@@ -12,18 +12,6 @@ namespace Escon.SisctNET.Model
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
 
-        [Display(Name = "Ativa")]
-        public bool Active { get; set; }
-
-        [Display(Name = "UF")]
-        public bool Status { get; set; }
-
-        [Display(Name = "Incentivada")]
-        public bool Incentive { get; set; }
-
-        [Display(Name = "Apuração do regime de ICMS")]
-        public bool TipoApuracao { get; set; }
-
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Razão Social")]
         public string SocialName { get; set; }
@@ -119,6 +107,30 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Telefone")]
         public string Phone { get; set; }
 
+        public string Taxation { get; set; }
+
+        [Display(Name = "Ativa")]
+        public bool Active { get; set; }
+
+        [Display(Name = "UF")]
+        public bool Status { get; set; }
+
+        [Display(Name = "Incentivada")]
+        public bool Incentive { get; set; }
+
+        [Display(Name = "Apuração do regime de ICMS")]
+        public bool TipoApuracao { get; set; }
+
+        [Display(Name = "Tipo")]
+        public bool TypeCompany { get; set; }
+
+        public bool StatusCPRB { get; set; }
+
+        public bool Sped { get; set; }
+
+
+        //  ICMS
+
         [Display(Name = "ICMS %")]
         public decimal? Icms { get; set; }
 
@@ -148,7 +160,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaMGrupoExcedente { get; set; }
 
-        [Display(Name = "Transferência Interestaduais %")]
+        [Display(Name = "Transferência Interestadual %")]
         public decimal? TransferenciaInter { get; set; }
 
         public decimal? TransferenciaInterExcedente { get; set; }
@@ -170,9 +182,6 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Icms p/ Não Contribuinte Fora do Estado %")]
         public decimal? IcmsNContribuinteFora { get; set; }
-
-        [Display(Name = "Tipo")]
-        public bool TypeCompany { get; set; }
 
         [Display(Name = "Icms Aliq. SUperior a 25 %")]
         public decimal? IcmsAliqM25 { get; set; }
@@ -196,6 +205,14 @@ namespace Escon.SisctNET.Model
 
         public decimal? VendaArt781Excedente { get; set; }
 
+        [Display(Name = "Compra Interestadual %")]
+        public decimal? CompraInter { get; set; }
+
+        [Display(Name = "Compra Interna %")]
+        public decimal? CompraInterna { get; set; }
+
+        //  PIS/COFINS
+
         [Display(Name = "IRPJ Combustível BC %")]
         public decimal? IRPJ1 { get; set; }
 
@@ -217,8 +234,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CPRB %")]
         public decimal? CPRB { get; set; }
 
-        public bool StatusCPRB { get; set; }
-
         [Display(Name = "PIS %")]
         public decimal? PercentualPis { get; set; }
 
@@ -234,8 +249,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Adicional IRPJ %")]
         public decimal? AdicionalIRPJ { get; set; }
 
-        public bool Sped { get; set; }
-
         public decimal? PercentualPisRF { get; set; }
 
         public decimal? PercentualPisCredito { get; set; }
@@ -244,7 +257,6 @@ namespace Escon.SisctNET.Model
 
         public decimal? PercentualCofinsCredito { get; set; }
 
-        public string Taxation { get; set; }
 
         public Company()
         {
