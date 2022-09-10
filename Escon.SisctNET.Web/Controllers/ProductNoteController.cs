@@ -1873,7 +1873,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
 
-                            if (!comp.AnnexId.Equals((long)3) && !comp.AnnexId.Equals((long)1) && !comp.ChapterId.Equals((long)4))
+                            if (!comp.AnnexId.Equals((long)3) && !comp.AnnexId.Equals((long)1) && !comp.AnnexId.Equals((long)4) && !comp.ChapterId.Equals((long)4))
                             {
                                 if (isPauta)
                                 {
@@ -1910,6 +1910,40 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
 
+                            if (comp.AnnexId.Equals((long)4) && comp.ChapterId.Equals((long)15))
+                            {
+                                var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
+                                var productsInter = products.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF)).ToList();
+
+                                decimal baseCalculoInterna = Convert.ToDecimal(productsInterna.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInterna.Select(_ => _.Voutro).Sum()) +
+                                         Convert.ToDecimal(productsInterna.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vfrete).Sum()) +
+                                         Convert.ToDecimal(productsInterna.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vipi).Sum()) -
+                                         Convert.ToDecimal(productsInterna.Select(_ => _.Vdesc).Sum())),
+                                        baseCalculoInter = Convert.ToDecimal(productsInter.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInter.Select(_ => _.Voutro).Sum()) +
+                                         Convert.ToDecimal(productsInter.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(productsInter.Select(_ => _.Vfrete).Sum()) +
+                                         Convert.ToDecimal(productsInter.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(productsInter.Select(_ => _.Vipi).Sum()) -
+                                         Convert.ToDecimal(productsInter.Select(_ => _.Vdesc).Sum())),
+                                        percentualInterna = Convert.ToDecimal(comp.CompraInterna),
+                                        percentualInter = Convert.ToDecimal(comp.CompraInter),
+                                        impostoIcmsInterna = (baseCalculoInterna * percentualInterna) / 100,
+                                        impostoIcmsInter = (baseCalculoInter * percentualInter) / 100;
+
+                                baseIcms = baseCalculoInterna + baseCalculoInter;
+                                impostoIcms = impostoIcmsInterna + impostoIcmsInter;
+                                totalDarIcms += impostoIcms;
+
+                                ViewBag.BaseInterna = baseCalculoInterna;
+                                ViewBag.BaseInter = baseCalculoInter;
+                                ViewBag.PercentualInterna = percentualInterna;
+                                ViewBag.PercentualInter = percentualInter;
+                                ViewBag.ImpostoIcmsInterna = impostoIcmsInterna;
+                                ViewBag.ImpostoIcmsInter = impostoIcmsInter;
+
+                                ViewBag.TotalIcmsExcedente = 0;
+
+
+                            }
+
                             decimal basefunef = Convert.ToDecimal(impostoGeral - impostoIcms),
                                     taxaFunef = 0;
 
@@ -1940,7 +1974,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.ProdutoI))
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
-                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && (comp.AnnexId != (long)3 || comp.ChapterId == (long)4) &&
+                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && ((comp.AnnexId != (long)3 || comp.ChapterId == (long)4) && comp.AnnexId != (long)4 ) &&
                                 !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (imp == null)

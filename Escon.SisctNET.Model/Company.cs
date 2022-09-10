@@ -211,6 +211,13 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Compra Interna %")]
         public decimal? CompraInterna { get; set; }
 
+        [Display(Name = "Venda Interestadual %")]
+        public decimal? VendaInter { get; set; }
+
+        [Display(Name = "Venda Interna %")]
+        public decimal? VendaInterna { get; set; }
+
+
         //  PIS/COFINS
 
         [Display(Name = "IRPJ Combustível BC %")]
