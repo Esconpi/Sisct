@@ -311,16 +311,7 @@
                 </div>
             }
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                 @if (Model.AnnexId == 4)
-                 {
-                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
-                    <input class="form-control money" value="@Model.CompraInterna" name="CompraInterna" id="CompraInterna" />
-                 }
-                 else
-                 {
-                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
-                    <input class="form-control money" value="@Model.CompraInterna" name="CompraInterna" id="CompraInterna" disabled />
-                 }
+
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -381,16 +372,7 @@
             }
 
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                 @if (Model.AnnexId == 4)
-                 {
-                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
-                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" />
-                 }
-                 else
-                 {
-                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
-                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" disabled />
-                 }
+
             </div>
             <div class="form-group col-lg-3 col-md-6 col-xs-12">
                 <br />
@@ -426,7 +408,44 @@
         </div>
 
         <div class="row">
-            
+            @if (Model.AnnexId == 4)
+            {
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInterna" name="CompraInterna" id="CompraInterna" />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" />
+                </div>
+                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="VendaInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.VendaInterna" name="VendaInterna" id="VendaInterna" />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="VendaInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.VendaInter" name="VendaInter" id="VendaInter" />
+                </div>
+            }
+            else
+            {
+                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInterna" name="CompraInterna" id="CompraInterna" disabled />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="CompraInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.CompraInter" name="CompraInter" id="CompraInter" disabled />
+                </div>
+                  <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="VendaInterna" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.VendaInterna" name="VendaInterna" id="VendaInterna" disabled />
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label asp-for="VendaInter" class="control-label" style="font-size:10px;"></label>
+                    <input class="form-control money" value="@Model.VendaInter" name="VendaInter" id="VendaInter" disabled />
+                </div>
+            }
         </div>
 
         <div class="form-group col-lg-12 col-md-12 col-xs-12">
@@ -486,6 +505,8 @@
             $("#VendaAnexoExcedente").prop("disabled", false);
             $("#CompraInterna").prop("disabled", true);
             $("#CompraInter").prop("disabled", true);
+            $("#VendaInterna").prop("disabled", true);
+            $("#VendaInter").prop("disabled", true);
         } 
         else 
         {
@@ -504,6 +525,8 @@
             $("#VendaAnexoExcedente").prop("disabled", true);
             $("#CompraInterna").prop("disabled", true);
             $("#CompraInter").prop("disabled", true);
+            $("#VendaInterna").prop("disabled", true);
+            $("#VendaInter").prop("disabled", true);
 
             if (anexo == 4)
             {

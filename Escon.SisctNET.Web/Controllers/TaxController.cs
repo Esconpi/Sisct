@@ -3262,6 +3262,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
                             }
+                            else if (comp.AnnexId.Equals((long)4))
+                            {
+
+                            }
                         }
                     }
                 }

@@ -388,8 +388,10 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.VendaArt781Excedente = entity.VendaArt781Excedente;
                 rst.Faturamento = entity.Faturamento;
                 rst.FaturamentoExcedente = entity.FaturamentoExcedente;
-                rst.CompraInter = entity.CompraInter;
                 rst.CompraInterna = entity.CompraInterna;
+                rst.CompraInter = entity.CompraInter;
+                rst.VendaInterna = entity.VendaInterna;
+                rst.VendaInter = entity.VendaInter;
                 rst.Updated = DateTime.Now;
                 _service.Update(rst, GetLog(Model.OccorenceLog.Update));
 

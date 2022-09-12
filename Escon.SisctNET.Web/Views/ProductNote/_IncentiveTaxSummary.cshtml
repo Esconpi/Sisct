@@ -94,10 +94,6 @@
     else if (ViewBag.Company.AnnexId == 4 && ViewBag.Company.ChapterId == 15)
     {
         @await Html.PartialAsync("_PharmaceuticalProduct", new ViewDataDictionary(ViewData))
-
-        <div style="width: 100%; font-size:12px; padding-top:10px;">
-            @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
-        </div>
     }
     else if (ViewBag.Company.ChapterId == 4)
     {

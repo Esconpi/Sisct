@@ -29,6 +29,11 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Ano")]
         public string AnoRef { get; set; }
 
+        public bool Icms { get; set; }
+
+        public bool PisCofins { get; set; }
+
+
         //  ICMS
         public decimal? Compras { get; set; }
 
@@ -122,9 +127,9 @@ namespace Escon.SisctNET.Model
 
         public decimal? SaidaPortInterestadual2 { get; set; }
 
-        public bool Icms { get; set; }
+        public decimal? VendaInterna { get; set; }
 
-        public bool PisCofins { get; set; }
+        public decimal? VendaInter { get; set; }
 
 
         //  PIS e COFINS
@@ -173,7 +178,7 @@ namespace Escon.SisctNET.Model
         public decimal? IrpjFonteServico { get; set; }
 
         public decimal? IrpjFonteFinanceira { get; set; }
-
+       
         public decimal? Bonificacao { get; set; }
 
         public decimal? ReceitaAF { get; set; }
