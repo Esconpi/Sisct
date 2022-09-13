@@ -3264,6 +3264,144 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else if (comp.AnnexId.Equals((long)4))
                             {
+                                exitNotes = importXml.NFeAll(directoryNfeExit);
+
+                                var clientesAll = _clientService.FindByCompany(companyid).Select(_ => _.Document).ToList();
+                                var contribuintes = _clientService.FindByContribuinte(companyid, "all");
+                                var ncmConvenio = _ncmConvenioService.FindByNcmAnnex((long)comp.AnnexId);
+
+                                decimal totalVendas = 0, totalVendasIncisoI = 0, totalVendasIncisoII = 0, totalNcm = 0, totalTranferenciaSaida = 0, baseCalc = 0, totalDevoCompra = 0,
+                                        totalDevoVenda = 0, totalDevoVendaIncisoI = 0, totalDevoVendaIncisoII = 0, totalDevoNcm = 0, totalDevoContribuinte = 0, totalVendasSuspensao = 0;
+
+                                int contContribuintes = contribuintes.Count();
+
+                                string[,] resumoCnpjs = new string[contContribuintes, 2];
+
+                                for (int i = 0; i < contContribuintes; i++)
+                                {
+                                    resumoCnpjs[i, 0] = contribuintes[i];
+                                    resumoCnpjs[i, 1] = "0";
+                                }
+
+                                // Vendas 
+                                for (int i = exitNotes.Count - 1; i >= 0; i--)
+                                {
+                                    int posCliente = -1;
+
+                                    bool ncm = false, cfop = false;
+
+                                    if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("IE") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][1]["mod"].Equals("55"))
+                                    {
+                                        string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "escon";
+                                        string indIEDest = exitNotes[i][3].ContainsKey("indIEDest") ? exitNotes[i][3]["indIEDest"] : "escon";
+                                        string IE = exitNotes[i][3].ContainsKey("IE") ? exitNotes[i][3]["IE"] : "escon";
+
+                                        if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
+                                            posCliente = contribuintes.IndexOf(exitNotes[i][3]["CNPJ"]);
+
+                                        bool client = false;
+
+                                        if (clientesAll.Contains(exitNotes[i][3]["CNPJ"]))
+                                            client = true;
+
+                                        if (!client)
+                                        {
+                                            ViewBag.Erro = 2;
+                                            return View(comp);
+                                        }
+                                    }
+
+                                    for (int j = 0; j < exitNotes[i].Count(); j++)
+                                    {
+
+                                        if (exitNotes[i][j].ContainsKey("NCM"))
+                                        {
+                                            string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
+
+                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
+                                        }
+
+                                        if (exitNotes[i][j].ContainsKey("CFOP"))
+                                        {
+                                            cfop = false;
+
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]) || cfopsVendaST.Contains(exitNotes[i][j]["CFOP"]) ||
+                                                cfopsBoniVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
+                                            }
+
+                                        }
+
+                                        if (cfop)
+                                        {
+                                            if (exitNotes[i][j].ContainsKey("vProd") && exitNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+                                                if (ncm)
+                                                    totalNcm += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                if (posCliente >= 0)
+                                                {
+                                                    resumoCnpjs[posCliente, 1] = (Convert.ToDecimal(resumoCnpjs[posCliente, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
+                                                }
+                                            }
+
+                                            if (exitNotes[i][j].ContainsKey("vFrete") && exitNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+                                                if (ncm)
+                                                    totalNcm += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                if (posCliente >= 0)
+                                                {
+                                                    resumoCnpjs[posCliente, 1] = (Convert.ToDecimal(resumoCnpjs[posCliente, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
+                                                }
+                                            }
+
+                                            if (exitNotes[i][j].ContainsKey("vDesc") && exitNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalVendas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                if (ncm)
+                                                    totalNcm -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                if (posCliente >= 0)
+                                                {
+                                                    resumoCnpjs[posCliente, 1] = (Convert.ToDecimal(resumoCnpjs[posCliente, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
+                                                }
+                                            }
+
+                                            if (exitNotes[i][j].ContainsKey("vOutro") && exitNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                if (ncm)
+                                                    totalNcm += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                if (posCliente >= 0)
+                                                {
+                                                    resumoCnpjs[posCliente, 1] = (Convert.ToDecimal(resumoCnpjs[posCliente, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
+                                                }
+                                            }
+
+                                            if (exitNotes[i][j].ContainsKey("vSeg") && exitNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalVendas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                if (ncm)
+                                                    totalNcm += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                if (posCliente >= 0)
+                                                {
+                                                    resumoCnpjs[posCliente, 1] = (Convert.ToDecimal(resumoCnpjs[posCliente, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
 
                             }
                         }
