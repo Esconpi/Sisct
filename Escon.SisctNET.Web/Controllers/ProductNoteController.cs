@@ -1916,7 +1916,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList(); 
                                 var productsInter = prodsAll.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();
 
-                                decimal baseCalculoInterna = Convert.ToDecimal(productsInterna.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInterna.Select(_ => _.Voutro).Sum()) +
+                                decimal totalProdutoInterna = Convert.ToDecimal(productsInterna.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInterna.Select(_ => _.Voutro).Sum()) +
+                                         Convert.ToDecimal(productsInterna.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vfrete).Sum()) +
+                                         Convert.ToDecimal(productsInterna.Select(_ => _.Vipi).Sum()) - Convert.ToDecimal(productsInterna.Select(_ => _.Vdesc).Sum())),
+                                        baseCalculoInterna = Convert.ToDecimal(productsInterna.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInterna.Select(_ => _.Voutro).Sum()) +
                                          Convert.ToDecimal(productsInterna.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vfrete).Sum()) +
                                          Convert.ToDecimal(productsInterna.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vipi).Sum()) -
                                          Convert.ToDecimal(productsInterna.Select(_ => _.Vdesc).Sum())),
@@ -1933,12 +1936,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 impostoIcms = impostoIcmsInterna + impostoIcmsInter;
                                 totalDarIcms += impostoIcms;
 
+                                ViewBag.TotalProdutoInterna = totalProdutoInterna;
                                 ViewBag.BaseInterna = baseCalculoInterna;
                                 ViewBag.BaseInter = baseCalculoInter;
                                 ViewBag.PercentualInterna = percentualInterna;
                                 ViewBag.PercentualInter = percentualInter;
                                 ViewBag.ImpostoIcmsInterna = impostoIcmsInterna;
                                 ViewBag.ImpostoIcmsInter = impostoIcmsInter;
+
+                                //  Produtos Dentro do Estado
                                 ViewBag.ProdutosIntena = productsInterna;
 
                                 ViewBag.TotalIcmsExcedente = 0;

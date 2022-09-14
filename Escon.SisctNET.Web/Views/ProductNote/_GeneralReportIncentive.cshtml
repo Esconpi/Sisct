@@ -1,4 +1,51 @@
 ﻿<div style="width: 100%; font-size:12px; page-break-before: always;">
+
+    @if(ViewBag.Company.Incentive == true && ViewBag.Company.AnnexId == 4 && ViewBag.TypeTaxation == "ST")
+    {
+        <table class="table" style="font-size:8px; border:2px solid;">
+            <thead style="font-size:12px;">
+                <tr>
+                    <th style="text-align:center;" colspan="5">
+                        PRODUTOS DENTRO DO ESTADO   
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center;">Nota</th>
+                    <th style="text-align:center;">Produto</th>
+                    <th style="text-align:center;">NCM</th>
+                    <th style="text-align:center;">Valor Produto</th>
+                    <th style="text-align:center;">B. Cálculo</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;">
+                @foreach (var item in  ViewBag.ProdutosIntena)
+                {
+                    <tr>
+                        <td>@item.Note.Nnf</td>
+                        <td>@item.Xprod</td>
+                        <td style="text-align:center;">@item.Ncm</td>
+                        <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
+                        <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Freterateado))</td>
+                    </tr>
+                }
+                <tr>
+                    <th style="text-align:center;" colspan="3">
+                        TOTAL
+                    </th>
+                    <th style="text-align:right;">
+                        @string.Format("{0:N}", ViewBag.TotalProdutoInterna)
+                    </th>
+                    <th style="text-align:right;">
+                        @string.Format("{0:N}", ViewBag.BaseInterna)
+                    </th>
+                </tr>
+            </tbody>
+
+        </table>
+  
+    }
+
+
     <table class="table" style="border: 2px solid;">
         <thead>
             <tr>
