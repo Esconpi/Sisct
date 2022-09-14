@@ -1912,8 +1912,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (comp.AnnexId.Equals((long)4) && comp.ChapterId.Equals((long)15))
                             {
-                                var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
-                                var productsInter = products.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF)).ToList();
+                                //var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
+                                var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList(); 
+                                var productsInter = prodsAll.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();
 
                                 decimal baseCalculoInterna = Convert.ToDecimal(productsInterna.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsInterna.Select(_ => _.Voutro).Sum()) +
                                          Convert.ToDecimal(productsInterna.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(productsInterna.Select(_ => _.Vfrete).Sum()) +
@@ -1938,6 +1939,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.PercentualInter = percentualInter;
                                 ViewBag.ImpostoIcmsInterna = impostoIcmsInterna;
                                 ViewBag.ImpostoIcmsInter = impostoIcmsInter;
+                                ViewBag.ProdutosIntena = productsInterna;
 
                                 ViewBag.TotalIcmsExcedente = 0;
 
