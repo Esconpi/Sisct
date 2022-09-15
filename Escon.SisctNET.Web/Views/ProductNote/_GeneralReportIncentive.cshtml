@@ -5,7 +5,7 @@
         <table class="table" style="font-size:8px; border:2px solid;">
             <thead style="font-size:12px;">
                 <tr>
-                    <th style="text-align:center;" colspan="5">
+                    <th style="text-align:center;" colspan="6">
                         PRODUTOS DENTRO DO ESTADO   
                     </th>
                 </tr>
@@ -13,6 +13,7 @@
                     <th style="text-align:center;">Nota</th>
                     <th style="text-align:center;">Produto</th>
                     <th style="text-align:center;">NCM</th>
+                    <th style="text-align:center;">CEST</th>
                     <th style="text-align:center;">Valor Produto</th>
                     <th style="text-align:center;">B. Cálculo</th>
                 </tr>
@@ -24,12 +25,13 @@
                         <td>@item.Note.Nnf</td>
                         <td>@item.Xprod</td>
                         <td style="text-align:center;">@item.Ncm</td>
+                        <td style="text-align:center;">@item.Cest</td>
                         <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc))</td>
                         <td style="text-align:right;">@string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Freterateado))</td>
                     </tr>
                 }
                 <tr>
-                    <th style="text-align:center;" colspan="3">
+                    <th style="text-align:center;" colspan="4">
                         TOTAL
                     </th>
                     <th style="text-align:right;">
