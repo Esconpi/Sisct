@@ -150,7 +150,7 @@
                         else if (ViewBag.Company.TipoApuracao.Equals(false))
                         {
                             <!-- EMPRESA INCENTIVO SAÍDA -->
-                            @if (ViewBag.Company.AnnexId != 3)
+                            @if (ViewBag.Company.AnnexId != 3 && ViewBag.Company.AnnexId != 4)
                             {
                                 @if (ViewBag.Company.TypeCompany.Equals(true))
                                 {
@@ -160,6 +160,11 @@
                                 {
                                     @await Html.PartialAsync("_IndustryData", Model, new ViewDataDictionary(ViewData))
                                 }
+                            }
+                            else if (ViewBag.Company.AnnexId == 4)
+                            {
+                                 <!-- EMPRESA DE MEDICAMENTO -->
+                                 @await Html.PartialAsync("_PharmaceuticalData", Model, new ViewDataDictionary(ViewData))
                             }
                             else if (ViewBag.Company.AnnexId.Equals(3))
                             {

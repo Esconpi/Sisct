@@ -138,5 +138,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByTaxation(productNotes, log);
         }
+
+        public List<ProductNote> FindByCompany(long companyId, Log log = null)
+        {
+            return _repository.FindByCompany(companyId, log);
+        }
     }
 }

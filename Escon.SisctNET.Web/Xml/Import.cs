@@ -590,7 +590,7 @@ namespace Escon.SisctNET.Web.Xml
                                                         reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" || reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" ||
                                                         reader.Name == "vFCPSTRet" || reader.Name == "CSOSN" || reader.Name == "pCredSN" || reader.Name == "vCredICMSSN" ||
                                                         reader.Name == "pRedBCEfet" || reader.Name == "vBCSTRet" || reader.Name == "pST" || reader.Name == "vICMSSubstituto" ||
-                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST")
+                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST" || reader.Name == "pRedBC")
                                                     {
                                                         icms.Add(reader.Name, reader.ReadString());
                                                     }
@@ -1177,7 +1177,7 @@ namespace Escon.SisctNET.Web.Xml
                                                    reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" || reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" ||
                                                    reader.Name == "vFCPSTRet" || reader.Name == "CSOSN" || reader.Name == "pCredSN" || reader.Name == "vCredICMSSN" ||
                                                    reader.Name == "pRedBCEfet" || reader.Name == "vBCSTRet" || reader.Name == "pST" || reader.Name == "vICMSSubstituto" ||
-                                                   reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST")
+                                                   reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST" || reader.Name == "pRedBC")
                                                 {
                                                     icms.Add(reader.Name, reader.ReadString());
                                                 }
@@ -1438,7 +1438,7 @@ namespace Escon.SisctNET.Web.Xml
                                                         reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" || reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" ||
                                                         reader.Name == "vFCPSTRet" || reader.Name == "CSOSN" || reader.Name == "pCredSN" || reader.Name == "vCredICMSSN" ||
                                                         reader.Name == "pRedBCEfet" || reader.Name == "vBCSTRet" || reader.Name == "pST" || reader.Name == "vICMSSubstituto" ||
-                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST")
+                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST" || reader.Name == "pRedBC")
                                                     {
                                                         icms.Add(reader.Name, reader.ReadString());
                                                     }
@@ -1763,7 +1763,7 @@ namespace Escon.SisctNET.Web.Xml
                                                         reader.Name == "vBCFCPSTRet" || reader.Name == "pFCPST" || reader.Name == "pFCPSTRet" || reader.Name == "vFCPST" ||
                                                         reader.Name == "vFCPSTRet" || reader.Name == "CSOSN" || reader.Name == "pCredSN" || reader.Name == "vCredICMSSN" ||
                                                         reader.Name == "pRedBCEfet" || reader.Name == "vBCSTRet" || reader.Name == "pST" || reader.Name == "vICMSSubstituto" ||
-                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST")
+                                                        reader.Name == "pICMSST" || reader.Name == "pMVAST" || reader.Name == "pRedBCST" || reader.Name == "pRedBC")
                                                     {
                                                         icms.Add(reader.Name, reader.ReadString());
                                                     }

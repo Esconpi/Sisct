@@ -408,5 +408,14 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst.ToList();
         }
+
+        public List<ProductNote> FindByCompany(long companyId, Log log = null)
+        {
+            var rst = _context.ProductNotes
+             .Where(_ => _.Note.CompanyId.Equals(companyId))
+             .ToList();
+            AddLog(log);
+            return rst.ToList();
+        }
     }
 }

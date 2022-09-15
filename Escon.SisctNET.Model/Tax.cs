@@ -127,9 +127,17 @@ namespace Escon.SisctNET.Model
 
         public decimal? SaidaPortInterestadual2 { get; set; }
 
-        public decimal? VendaInterna { get; set; }
+        public decimal? VendasInterna { get; set; }
 
-        public decimal? VendaInter { get; set; }
+        public decimal? VendasInter { get; set; }
+
+        public decimal? VendasST { get; set; }
+
+        public decimal? VendasNormal { get; set; }
+
+        public decimal? IcmsInterna { get; set; }
+
+        public decimal? IcmsSTInterna { get; set; }
 
 
         //  PIS e COFINS
@@ -247,6 +255,7 @@ namespace Escon.SisctNET.Model
         public decimal? VendaNormalST { get; set; }
 
         public decimal? VendaNormalAliqZero { get; set; }
+
 
         public decimal? VendaNormalIsento { get; set; }
 

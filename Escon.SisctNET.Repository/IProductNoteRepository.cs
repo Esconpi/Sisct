@@ -43,5 +43,6 @@ namespace Escon.SisctNET.Repository
 
         List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
 
+        List<Model.ProductNote> FindByCompany(long companyId, Model.Log log = null);
     }
 }

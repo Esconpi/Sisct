@@ -47,7 +47,6 @@
   
     }
 
-
     <table class="table" style="border: 2px solid;">
         <thead>
             <tr>
@@ -80,7 +79,7 @@
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </th>
                 </tr>
             }
 
@@ -88,26 +87,38 @@
             {
                 <tr>
                     <th>
-                        Base de Cálculo Regime Interna
+                        Base de Cálculo Regime Entrada Interna
                     </th>
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInterna) </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInterna) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInterna) </th>
                 </tr>
                 
                 <tr>
                     <th>
-                        Base de Cálculo Regime Interestadual
+                        Base de Cálculo Regime Entrada Interestadual
                     </th>
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInter) </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInter) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseInter) </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        Base de Cálculo Regime Saida
+                    </th>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseSaida) </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseSaida) </th>
                 </tr>
             }
 
@@ -122,7 +133,7 @@
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
                     <td style="text-align:center"> ---- </td>
-                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputI) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputI) </th>
                 </tr>
                 @if (ViewBag.PercentualCaputI != ViewBag.PercentualCaputII)
                 {
@@ -135,26 +146,55 @@
                         <td style="text-align:center"> ---- </td>
                         <td style="text-align:center"> ---- </td>
                         <td style="text-align:center"> ---- </td>
-                        <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputII) </td>
+                        <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.BaseCaputII) </th>
                     </tr>
 
                 }
             }
-            <tr>
-                <th>
-                    Imposto Normal
-                </th>
-                <td style="text-align:center"> ---- </td>
-                @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
-                {
-                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsAnexoCCCXVI)</td>
-                }
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal) </td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo)</td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
-                <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
-                <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral)</th>
-            </tr>
+            @if (ViewBag.Company.AnnexId == 4)
+            {
+                <tr>
+                    <th>
+                        Imposto Normal Entrada
+                    </th>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal) </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo)</td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoEntradaGeral)</th>
+                </tr>
+                <tr>
+                    <th>
+                        Imposto Normal Saida
+                    </th>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoSaidaGeral) </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <td style="text-align:center"> ---- </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoSaidaGeral)</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>
+                        Imposto Normal
+                    </th>
+                    <td style="text-align:center"> ---- </td>
+                    @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+                    {
+                        <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsAnexoCCCXVI)</td>
+                    }
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsNormal) </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsIncentivo)</td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopNormal) </td>
+                    <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.FecopIncentivo) </td>
+                    <th style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.ImpostoGeral)</th>
+                </tr>
+            }
+
         </tbody>
     </table>
 </div>
