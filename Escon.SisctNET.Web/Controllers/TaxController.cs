@@ -3268,7 +3268,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 var ncmConvenio = _ncmConvenioService.FindByNcmAnnex((long)comp.AnnexId);
 
-                                decimal totalVendas = 0, totalNcm = 0, totalInterna = 0, totalInter = 0, totalNcontribuinte = 0, vICMS = 0, vICMSST = 0;
+                                decimal totalVendas = 0, totalVendasIncentivadas = 0, totalNcm = 0, totalInterna = 0, totalInter = 0, totalNcontribuinte = 0, vICMS = 0, vICMSST = 0;
 
                                 // Vendas 
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
@@ -3329,6 +3329,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (ncm)
                                                 {
+                                                    totalVendasIncentivadas += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
+                                                    if (nContribuinte)
+                                                        totalNcontribuinte += Convert.ToDecimal(exitNotes[i][j]["vProd"]);
+
 
                                                     if (UF.Equals(comp.County.State.UF))
                                                     {
@@ -3348,6 +3353,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (ncm)
                                                 {
+                                                    totalVendasIncentivadas += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
+
+                                                    if (nContribuinte)
+                                                        totalNcontribuinte += Convert.ToDecimal(exitNotes[i][j]["vFrete"]);
 
                                                     if (UF.Equals(comp.County.State.UF))
                                                     {
@@ -3366,6 +3375,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (ncm)
                                                 {
+                                                    totalVendasIncentivadas -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
+
+                                                    if (nContribuinte)
+                                                        totalNcontribuinte -= Convert.ToDecimal(exitNotes[i][j]["vDesc"]);
 
                                                     if (UF.Equals(comp.County.State.UF))
                                                     {
@@ -3384,6 +3397,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (ncm)
                                                 {
+                                                    totalVendasIncentivadas += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
+
+                                                    if (nContribuinte)
+                                                        totalNcontribuinte += Convert.ToDecimal(exitNotes[i][j]["vOutro"]);
 
                                                     if (UF.Equals(comp.County.State.UF))
                                                     {
@@ -3402,6 +3419,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if (ncm)
                                                 {
+                                                    totalVendasIncentivadas += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
+                                                    if (nContribuinte)
+                                                        totalNcontribuinte += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
+
                                                     if (UF.Equals(comp.County.State.UF))
                                                     {
                                                         totalNcm += Convert.ToDecimal(exitNotes[i][j]["vSeg"]);
@@ -3424,9 +3446,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                     { 
                                                         if (ncm)
                                                         {
-                                                            if (nContribuinte)
-                                                                totalNcontribuinte += vProd;
-
                                                             vICMS += exitNotes[i][j].ContainsKey("vICMS") ? Convert.ToDecimal(exitNotes[i][j]["vICMS"]) : 0;
                                                         }
                                                     }
@@ -3439,10 +3458,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                     {
                                                         if (ncm)
                                                         {
-
-                                                            if (nContribuinte)
-                                                                totalNcontribuinte += vProd;
-
                                                             vICMS += exitNotes[i][j].ContainsKey("vICMS") ? Convert.ToDecimal(exitNotes[i][j]["vICMS"]) : 0;
 
                                                         }
@@ -3462,10 +3477,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                     {
                                                         if (ncm)
                                                         {
-
-                                                            if (nContribuinte)
-                                                                totalNcontribuinte += vProd;
-
                                                             vICMSST += exitNotes[i][j].ContainsKey("vICMSST") ? Convert.ToDecimal(exitNotes[i][j]["vICMSST"]) : 0;
                                                         }
                                                     }
@@ -3481,6 +3492,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (imp != null)
                                 {
                                     imp.Vendas = totalVendas;
+                                    imp.VendasIncentivada = totalVendasIncentivadas;
                                     imp.VendasNcm = totalNcm;
                                     imp.VendasNContribuinte = totalNcontribuinte;
                                     imp.VendasInterna = totalInterna;
@@ -3493,6 +3505,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 else
                                 {
                                     tax.Vendas = totalVendas;
+                                    tax.VendasIncentivada = totalVendasIncentivadas;
                                     tax.VendasNcm = totalNcm;
                                     tax.VendasNContribuinte = totalNcontribuinte;
                                     tax.VendasInterna = totalInterna;
