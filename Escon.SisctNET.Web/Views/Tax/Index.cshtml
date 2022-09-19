@@ -72,7 +72,7 @@
                     </a>
                 }
 
-                @if (ViewBag.Company.CountingTypeId == 2)
+                @if (ViewBag.Company.CountingTypeId == 2 || ViewBag.Company.CountingTypeId == 3)
                 {
                     <a asp-action="Service" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>

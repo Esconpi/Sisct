@@ -2439,7 +2439,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        ViewBag.NCM = NCM;
+                                        ViewBag.NCM = "Producto: " + cProd + " NCM: " + NCM;
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -2743,7 +2743,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        ViewBag.NCM = NCM;
+                                        ViewBag.NCM = "NCM: " + NCM;
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -3051,7 +3051,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        ViewBag.NCM = NCM;
+                                        ViewBag.NCM = "Producto: " + cProd + " NCM: " + NCM;
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -3355,7 +3355,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        ViewBag.NCM = NCM;
+                                        ViewBag.NCM = "NCM: " + NCM;
                                         ViewBag.Erro = 2;
                                         return View();
                                     }
@@ -4706,13 +4706,16 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal vendasNomalNormal = Convert.ToDecimal(imp.VendaNormalNormal), vendasNormalMono = Convert.ToDecimal(imp.VendaNormalMonofasico), vendasNormalST = Convert.ToDecimal(imp.VendaNormalST),
                             vendasNormalAliqZero = Convert.ToDecimal(imp.VendaNormalAliqZero), vendasNormalIsento = Convert.ToDecimal(imp.VendaNormalIsento), vendasSTNormal = Convert.ToDecimal(imp.VendaSTNormal),
                             vendasSTMono = Convert.ToDecimal(imp.VendaSTMonofasico), vendasSTST = Convert.ToDecimal(imp.VendaSTST), vendasSTAliqZero = Convert.ToDecimal(imp.VendaSTAliqZero),
-                            vendasSTIsento = Convert.ToDecimal(imp.VendaSTIsento), vendasNormalOutras = Convert.ToDecimal(imp.VendaNormalOutras), vendasSTOutras = Convert.ToDecimal(imp.VendaSTOutras);
+                            vendasSTIsento = Convert.ToDecimal(imp.VendaSTIsento), vendasNormalOutras = Convert.ToDecimal(imp.VendaNormalOutras), vendasSTOutras = Convert.ToDecimal(imp.VendaSTOutras),
+                            receitaServico = Convert.ToDecimal(imp.Receita4);
                            
                     decimal devoNormalNormal = Convert.ToDecimal(imp.DevoNormalNormal) + Convert.ToDecimal(imp.DevoNormalNormalP), devoNormalMono = Convert.ToDecimal(imp.DevoNormalMonofasico) + Convert.ToDecimal(imp.DevoNormalMonofasicoP),
                             devoNormalST = Convert.ToDecimal(imp.DevoNormalST) + Convert.ToDecimal(imp.DevoNormalSTP), devoNormalAliqZero = Convert.ToDecimal(imp.DevoNormalAliqZero) + Convert.ToDecimal(imp.DevoNormalAliqZeroP),
                             devoNormalIsento = Convert.ToDecimal(imp.DevoNormalIsento) + Convert.ToDecimal(imp.DevoNormalIsentoP),  devoSTMono = Convert.ToDecimal(imp.DevoSTMonofasico) + Convert.ToDecimal(imp.DevoSTMonofasicoP),
-                            devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal) + Convert.ToDecimal(imp.DevoSTNormalP), devoSTST = Convert.ToDecimal(imp.DevoSTST) + Convert.ToDecimal(imp.DevoSTSTP), devoSTAliqZero = Convert.ToDecimal(imp.DevoSTAliqZero) + Convert.ToDecimal(imp.DevoSTAliqZeroP),
-                            devoSTIsento = Convert.ToDecimal(imp.DevoSTIsento) + Convert.ToDecimal(imp.DevoSTIsentoP), devoNormalOutras = Convert.ToDecimal(imp.DevoNormalOutras) + Convert.ToDecimal(imp.DevoNormalOutrasP), devoSTOutras = Convert.ToDecimal(imp.DevoSTOutras) + Convert.ToDecimal(imp.DevoSTOutrasP);
+                            devoSTNormal = Convert.ToDecimal(imp.DevoSTNormal) + Convert.ToDecimal(imp.DevoSTNormalP), devoSTST = Convert.ToDecimal(imp.DevoSTST) + Convert.ToDecimal(imp.DevoSTSTP), 
+                            devoSTAliqZero = Convert.ToDecimal(imp.DevoSTAliqZero) + Convert.ToDecimal(imp.DevoSTAliqZeroP), devoSTIsento = Convert.ToDecimal(imp.DevoSTIsento) + Convert.ToDecimal(imp.DevoSTIsentoP), 
+                            devoNormalOutras = Convert.ToDecimal(imp.DevoNormalOutras) + Convert.ToDecimal(imp.DevoNormalOutrasP), devoSTOutras = Convert.ToDecimal(imp.DevoSTOutras) + Convert.ToDecimal(imp.DevoSTOutrasP),
+                            devoServico = Convert.ToDecimal(imp.Devolucao4);
 
 
                     //  Base
@@ -4727,15 +4730,16 @@ namespace Escon.SisctNET.Web.Controllers
                             baseSTST = vendasSTST - devoSTST,
                             baseSTAliqZero = vendasSTAliqZero - devoSTAliqZero,
                             baseSTIsento = vendasSTIsento - devoSTIsento,
-                            baseSTOutras = vendasSTOutras - devoSTOutras;
+                            baseSTOutras = vendasSTOutras - devoSTOutras,
+                            baseServico = receitaServico - devoServico;
 
 
                     //  Totais
                     decimal totalVendas = vendasNomalNormal + vendasNormalMono + vendasNormalST + vendasNormalAliqZero + vendasNormalIsento + vendasSTNormal + vendasSTMono + vendasSTST +
-                        vendasSTAliqZero + vendasSTIsento + vendasNormalOutras + vendasSTOutras;
+                        vendasSTAliqZero + vendasSTIsento + vendasNormalOutras + vendasSTOutras + receitaServico;
 
                     decimal totalDevo = devoNormalNormal + devoNormalMono + devoNormalST + devoNormalAliqZero + devoNormalIsento + devoSTNormal + devoSTMono + devoSTST + devoSTAliqZero + 
-                        devoSTIsento + devoNormalOutras + devoSTOutras;
+                        devoSTIsento + devoNormalOutras + devoSTOutras + devoServico;
 
                     decimal totalBase = totalVendas - totalDevo;
 
@@ -4752,6 +4756,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.VendasSTAliqZero = vendasSTAliqZero;
                     ViewBag.VendasSTIsento = vendasSTIsento;
                     ViewBag.VendasSTOutras = vendasSTOutras;
+                    ViewBag.ReceitaServico = receitaServico;
 
                     //  Devoluções
                     ViewBag.DevoNormalNormal = devoNormalNormal;
@@ -4766,6 +4771,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.DevoSTAliqZero = devoSTAliqZero;
                     ViewBag.DevoSTIsento = devoSTIsento;
                     ViewBag.DevoSTOutras = devoSTOutras;
+                    ViewBag.DevoServico = devoServico;
 
                     //  Bases
                     ViewBag.BaseNormalNormal = baseNormalNormal;
@@ -4780,6 +4786,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseSTAliqZero = baseSTAliqZero;
                     ViewBag.BaseSTIsento = baseSTIsento;
                     ViewBag.BaseSTOutras = baseSTOutras;
+                    ViewBag.BaseServico = baseServico;
 
                     //  Totais
                     ViewBag.TotalVendas = totalVendas;

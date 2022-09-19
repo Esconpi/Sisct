@@ -3,7 +3,7 @@
 <table class="table" style="font-size:9px;">
     <thead>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="12">
+            <th style="text-align:center;border:1px solid;" colspan="13">
                 DADOS
             </th>
         </tr>
@@ -11,7 +11,7 @@
 
     <tbody>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="12">VENDAS</th>
+            <th style="text-align:center;border:1px solid;" colspan="13">VENDAS</th>
         </tr>
 
         <tr>
@@ -50,6 +50,9 @@
             </th>
             <th style="text-align:center;border:1px solid;">
                 SUBSTITUIÇÃO/<br />OUTRAS
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SERVIÇO
             </th>
         </tr>
 
@@ -125,6 +128,13 @@
                 {
                     @string.Format("{0:N}", Convert.ToDecimal(Model.VendaSTOutras))
                 }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Receita4))
+                }
+            </td>
         </tr>
     </tbody>
 </table>
@@ -132,7 +142,7 @@
 <table class="table" style="font-size:9px;">
     <tbody>
         <tr>
-            <th style="text-align:center;border:1px solid;" colspan="12">DEVOLUÇÕES</th>
+            <th style="text-align:center;border:1px solid;" colspan="13">DEVOLUÇÕES</th>
         </tr>
 
         <tr>
@@ -171,6 +181,9 @@
             </th>
             <th style="text-align:center;border:1px solid;">
                 SUBSTITUIÇÃO/<br />OUTRAS
+            </th>
+            <th style="text-align:center;border:1px solid;">
+                SERVIÇO
             </th>
         </tr>
 
@@ -245,6 +258,12 @@
                 @if (Model != null)
                 {
                     @string.Format("{0:N}", Convert.ToDecimal(Model.DevoSTOutras) + Convert.ToDecimal(Model.DevoSTOutrasP))
+                }
+            </td>
+            <td style="text-align:right;border:1px solid;padding-right:1%;">
+                @if (Model != null)
+                {
+                    @string.Format("{0:N}", Convert.ToDecimal(Model.Devolucao4))
                 }
             </td>
         </tr>
