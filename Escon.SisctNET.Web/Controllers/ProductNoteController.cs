@@ -513,6 +513,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 valorFecop = calculation.ValorFecop(Convert.ToDecimal(0), valorAgreg);
                                 prod.TotalFecop = valorFecop;
                             }
+
                             prod.AliqInterna = aliqInterna;
                             decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
                             prod.ValorAC = valorAgre_AliqInt;
@@ -647,6 +648,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorFecop = calculation.ValorFecop(Convert.ToDecimal(0), valorAgreg);
                                     item.TotalFecop = valorFecop;
                                 }
+
                                 item.AliqInterna = aliqInterna;
                                 decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(item.Fecop), valorAgreg);
                                 item.ValorAC = valorAgre_AliqInt;
@@ -1601,11 +1603,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     //  Elencadas
                                     // Internas
-                                    decimal icmsInternaElencada = (InternasElencadasPortaria * aliqInterna) / 100;
-                                    decimal fecopInternaElencada = Math.Round((InternasElencadasPortaria * fecop) / 100, 2);
-                                    decimal totalInternasElencada = icmsInternaElencada;
-                                    decimal icmsPresumidoInternaElencada = (InternasElencadasPortaria * incIInterna) / 100;
-                                    decimal totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
+                                    decimal icmsInternaElencada = (InternasElencadasPortaria * aliqInterna) / 100,
+                                            fecopInternaElencada = Math.Round((InternasElencadasPortaria * fecop) / 100, 2),
+                                            totalInternasElencada = icmsInternaElencada,
+                                            icmsPresumidoInternaElencada = (InternasElencadasPortaria * incIInterna) / 100,
+                                            totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
 
                                     totalDarFecop += fecopInternaElencada;
                                     totalDarIcms += totalIcmsInternaElencada;
@@ -1614,11 +1616,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     impostoFecop += fecopInternaElencada;
 
                                     // Interestadual
-                                    decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * aliqInterna) / 100;
-                                    decimal fecopInterestadualElencada = Math.Round((InterestadualElencadasPortaria * fecop) / 100, 2);
-                                    decimal totalInterestadualElencada = icmsInterestadualElencada;
-                                    decimal icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * incIInterestadual) / 100;
-                                    decimal totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
+                                    decimal icmsInterestadualElencada = (InterestadualElencadasPortaria * aliqInterna) / 100,
+                                            fecopInterestadualElencada = Math.Round((InterestadualElencadasPortaria * fecop) / 100, 2),
+                                            totalInterestadualElencada = icmsInterestadualElencada,
+                                            icmsPresumidoInterestadualElencada = (InterestadualElencadasPortaria * incIInterestadual) / 100,
+                                            totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
 
                                     totalDarFecop += fecopInterestadualElencada;
                                     totalDarIcms += totalIcmsInterestadualElencada;
@@ -1628,11 +1630,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     //  Deselencadas
                                     //  Internas
-                                    decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * aliqInterna) / 100;
-                                    decimal fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * fecop) / 100, 2);
-                                    decimal totalInternasDeselencada = icmsInternaDeselencada;
-                                    decimal icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * incIIInterna) / 100;
-                                    decimal totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
+                                    decimal icmsInternaDeselencada = (InternasDeselencadasPortaria * aliqInterna) / 100,
+                                            fecopInternaDeselencada = Math.Round((InternasDeselencadasPortaria * fecop) / 100, 2),
+                                            totalInternasDeselencada = icmsInternaDeselencada,
+                                            icmsPresumidoInternaDeselencada = (InternasDeselencadasPortaria * incIIInterna) / 100,
+                                            totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
 
                                     totalDarFecop += fecopInternaDeselencada;
                                     totalDarIcms += totalIcmsInternaDeselencada;
@@ -1641,11 +1643,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     impostoFecop += fecopInternaDeselencada;
 
                                     // Interestadual
-                                    decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * aliqInterna) / 100;
-                                    decimal fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * fecop) / 100, 2);
-                                    decimal totalInterestadualDeselencada = icmsInterestadualDeselencada;
-                                    decimal icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * incIIInterestadual) / 100;
-                                    decimal totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
+                                    decimal icmsInterestadualDeselencada = (InterestadualDeselencadasPortaria * aliqInterna) / 100,
+                                            fecopInterestadualDeselencada = Math.Round((InterestadualDeselencadasPortaria * fecop) / 100, 2),
+                                            totalInterestadualDeselencada = icmsInterestadualDeselencada,
+                                            icmsPresumidoInterestadualDeselencada = (InterestadualDeselencadasPortaria * incIIInterestadual) / 100,
+                                            totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
 
                                     totalDarFecop += fecopInterestadualDeselencada;
                                     totalDarIcms += totalIcmsInterestadualDeselencada;
@@ -2230,6 +2232,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 totalDarIcms += Math.Round(impostoNcm + impostoContribuinte + impostoNContribuinte + impostoTransf + impostoTransfInter + impostoGrupo + valorSuspensao, 2);
                             }
+                       
                         }
 
                         //      Resumo dos Impostos
@@ -3580,6 +3583,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalFecopDiefSTSIE = totalfecopDiefSTSIE;
                     ViewBag.IcmsFecopSTIE = icmsFecop1STIE + icmsFecop2STIE;
                     ViewBag.IcmsFecopSTSIE = icmsFecop1STSIE + icmsFecop2STSIE;
+
                     if (totalfecopDiefSTIE >= Convert.ToDecimal(icmsFecop1STIE + icmsFecop2STIE))
                         ViewBag.TotalFinalFecopCalculadaSTIE = Convert.ToDecimal(totalfecopDiefSTIE - (icmsFecop1STIE + icmsFecop2STIE));
                     else
@@ -3592,8 +3596,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.TotalGnreFecopSTIE = totalGnreFecopSTIE;
                     ViewBag.TotalGnreFecopSTSIE = totalGnreFecopSTSIE;
-
-
 
                     if (Convert.ToDecimal(totalDiefSTSIE) > 0)
                         totalApuradoST += Math.Round(Convert.ToDecimal(totalDiefSTSIE), 2);
@@ -3841,7 +3843,6 @@ namespace Escon.SisctNET.Web.Controllers
                     if (icmsAPagarIMIE > 0)
                         totalDarIm += Math.Round(icmsAPagarIMIE, 2);
 
-
                     // Antecipação Total
                     var produtosAT = products.Where(_ => _.TaxationTypeId.Equals((long)8)).ToList();
                     var notesAT = produtosAT.Select(_ => _.Note).Distinct().ToList();
@@ -3910,6 +3911,7 @@ namespace Escon.SisctNET.Web.Controllers
                             valorbase2ATSIE = Math.Round(Convert.ToDecimal(produtosAT.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.TotalFecop).Sum()), 2),
                             totalFecopCalcATIE = valorbase1ATIE + valorbase2ATIE,
                             totalFecopCalcATSIE = valorbase1ATSIE + valorbase2ATSIE;
+
                     ViewBag.TotalFecopCalculadaATIE = totalFecopCalcATIE;
                     ViewBag.TotalFecopCalculadaATSIE = totalFecopCalcATSIE;
 
@@ -3927,11 +3929,13 @@ namespace Escon.SisctNET.Web.Controllers
                             valorNfe2RetATSIE = Math.Round(Convert.ToDecimal(produtosAT.Where(_ => _.Note.Iest.Equals("") && _.pFCPSTRET == 2).Select(_ => _.VfcpSTRet).Sum()), 2),
                             totalFecopNfeATIE = valorNfe1NormalATIE + valorNfe1RetATIE + valorNfe2NormalATIE + valorNfe2RetATIE,
                             totalFecopNfeATSIE = valorNfe1NormalATSIE + valorNfe1RetATSIE + valorNfe2NormalATSIE + valorNfe2RetATSIE;
+
                     ViewBag.TotalFecopNfeATIE = totalFecopNfeATIE;
                     ViewBag.TotalFecopNfeATSIE = totalFecopNfeATSIE;
 
                     decimal gnreNPagaFecopATIE = Math.Round(Convert.ToDecimal(notesAT.Where(_ => !_.Iest.Equals("")).Select(_ => _.GnreFecop).Sum()), 2),
                             gnreNPagaFecopATSIE = Math.Round(Convert.ToDecimal(notesAT.Where(_ => _.Iest.Equals("")).Select(_ => _.GnreFecop).Sum()), 2);
+
                     ViewBag.GNREnPagaFecopATIE = gnreNPagaFecopATIE;
                     ViewBag.GNREnPagaFecopATSIE = gnreNPagaFecopATSIE;
 
@@ -3943,13 +3947,15 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.GNREPagaFecopATIE = gnrePagaFecop2ATIE + gnrePagaFecop1ATIE;
                     ViewBag.GNREPagaFecopATSIE = gnrePagaFecop2ATSIE + gnrePagaFecop1ATSIE;
 
-                    decimal totalGnreFecopATIE = gnrePagaFecop1ATIE + gnrePagaFecop2ATIE;
+                    decimal totalGnreFecopATIE = gnrePagaFecop1ATIE + gnrePagaFecop2ATIE,
+                            totalGnreFecopATSIE = gnrePagaFecop1ATSIE + gnrePagaFecop2ATSIE;
+
                     ViewBag.TotalGnreFecopATIE = totalGnreFecopATIE;
-                    decimal totalGnreFecopATSIE = gnrePagaFecop1ATSIE + gnrePagaFecop2ATSIE;
                     ViewBag.TotalGnreFecopATSIE = totalGnreFecopATSIE;
 
                     decimal totalfecopDiefATIE = totalFecopCalcATIE - totalGnreFecopATIE + (gnrePagaFecop2ATIE + gnrePagaFecop1ATIE) - totalFecopNfeATIE,
                             totalfecopDiefATSIE = totalFecopCalcATSIE - totalGnreFecopATSIE + (gnrePagaFecop2ATSIE + gnrePagaFecop1ATSIE) - totalFecopNfeATSIE;
+
                     ViewBag.TotalFecopDiefATIE = totalfecopDiefATIE;
                     ViewBag.TotalFecopDiefATSIE = totalfecopDiefATSIE;
 
@@ -3957,6 +3963,7 @@ namespace Escon.SisctNET.Web.Controllers
                              icmsFecop1ATSIE = Math.Round(Convert.ToDecimal(notesAT.Where(_ => _.Iest.Equals("")).Select(_ => _.Fecop1).Sum()), 2),
                              icmsFecop2ATIE = Math.Round(Convert.ToDecimal(notesAT.Where(_ => !_.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2),
                              icmsFecop2ATSIE = Math.Round(Convert.ToDecimal(notesAT.Where(_ => _.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2);
+
                     ViewBag.IcmsFecopATIE = icmsFecop1ATIE + icmsFecop2ATIE;
                     ViewBag.IcmsFecopATSIE = icmsFecop1ATSIE + icmsFecop2ATSIE;
 

@@ -98,6 +98,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if(company == null)
                     {
                         emp.Sped = true;
+
                         addCompany.Add(emp);
                     }
                     else
@@ -115,7 +116,9 @@ namespace Escon.SisctNET.Web.Controllers
                         company.Cep = emp.Cep;
                         company.CountyId = emp.CountyId;
                         company.Phone = emp.Phone;
+                        company.CountyId = emp.CountyId;
                         company.Updated = DateTime.Now;
+
                         updateCompany.Add(company);
                     }
                 }

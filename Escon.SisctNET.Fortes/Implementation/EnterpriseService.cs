@@ -166,7 +166,7 @@ namespace Escon.SisctNET.Fortes.Implementation
                                 establishment.Cep = reader["CEP"].ToString();
                                 var city = GetCity(reader["MUN_Codigo"].ToString(), reader["MUN_UFD_Sigla"].ToString(), connectionString).ToUpper();
                                 var county = counties.Where(_ => _.State.UF.ToUpper().Equals(reader["MUN_UFD_Sigla"].ToString().ToUpper()) && _.Name.ToUpper().Equals(city)).Select(_ => _.Id).FirstOrDefault();
-                                establishment.CountyId = county.Equals(null) ? 216 : county;
+                                establishment.CountyId = county.Equals(null) || county.Equals(0) ? 216 : county;
                                 establishment.Phone = reader["Fone"].ToString().Equals("") ? "" : "(" + reader["DDD"].ToString() + ")"  + " " + reader["Fone"].ToString();
                                 establishments.Add(establishment);
                             }
