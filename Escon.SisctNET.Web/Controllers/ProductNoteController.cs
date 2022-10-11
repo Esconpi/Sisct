@@ -590,6 +590,8 @@ namespace Escon.SisctNET.Web.Controllers
                         
                         if(prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
                             prod.Incentivo = false;
+                        else if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso != null)
+                            prod.Incentivo = true;
 
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
@@ -724,7 +726,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
                                 item.Incentivo = false;
+                            else if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso != null)
+                                item.Incentivo = true;
 
+                            
                             item.Qpauta = null;
                             item.Produto = "Normal";
                             item.Updated = DateTime.Now;

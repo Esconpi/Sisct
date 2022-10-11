@@ -503,7 +503,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 pICMSValid = state.Aliquota.ToString();
                             }
 
-                            if (orig == 1 || orig == 2 || orig == 6 || orig == 7)
+                            if (orig == 1 || orig == 2 || orig == 3 || orig == 8)
                             {
                                 var aliquot = _aliquotService.FindByUf(aliquotas, Convert.ToDateTime(notes[i][1]["dhEmi"]), "EXT", comp.County.State.UF);
                                 pICMSValid = aliquot.Aliquota.ToString();
@@ -592,6 +592,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso == null)
                                     incentivo = false;
+                                else if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso != null)
+                                    incentivo = true;
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
