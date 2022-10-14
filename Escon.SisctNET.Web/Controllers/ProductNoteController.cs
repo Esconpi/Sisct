@@ -4112,7 +4112,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-
                     //  Somatório Geral
 
                     // ICMS APURADO

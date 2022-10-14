@@ -1319,7 +1319,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         continue;
                                     }
 
-                                    bool contribuinte = false, ncm = false, ncmI = false, ncmII = false;
+                                    bool contribuinte = false, ncm = false, ncmI = false, ncmII = false, cfop = false;
                                     int posClienteRaiz = contContribuintesRaiz - 1;
 
                                     if (entryNotes[i][2].ContainsKey("CNPJ") && entryNotes[i][3].ContainsKey("IE") && entryNotes[i][2].ContainsKey("indIEDest") && entryNotes[i][1]["mod"].Equals("55"))
@@ -1373,81 +1373,95 @@ namespace Escon.SisctNET.Web.Controllers
                                                 ncmII = true;
                                         }
 
-                                        if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
+                                        if (entryNotes[i][j].ContainsKey("CFOP"))
                                         {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vProd"])).ToString();
-                                            if (ncmI)
-                                                totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (ncmII)
-                                                totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                        }
-
-                                        if (entryNotes[i][j].ContainsKey("vFrete") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vFrete"])).ToString();
-                                            if (ncmI)
-                                                totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (ncmII)
-                                                totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                        }
-
-                                        if (entryNotes[i][j].ContainsKey("vDesc") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (ncm)
-                                                totalDevoNcm -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(entryNotes[i][j]["vDesc"])).ToString();
-                                            if (ncmI)
-                                                totalDevoVendaIncisoI -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (ncmII)
-                                                totalDevoVendaIncisoII -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                        }
-
-                                        if (entryNotes[i][j].ContainsKey("vOutro") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vOutro"])).ToString();
-                                            if (ncmI)
-                                                totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (ncmII)
-                                                totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                            cfop = false;
+                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
+                                            }
 
                                         }
 
-                                        if (entryNotes[i][j].ContainsKey("vSeg") && entryNotes[i][j].ContainsKey("cProd"))
+                                        if (cfop)
                                         {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vSeg"])).ToString();
-                                            if (ncmI)
-                                                totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (ncmII)
-                                                totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                            if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vProd"])).ToString();
+                                                if (ncmI)
+                                                    totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (ncmII)
+                                                    totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vFrete") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vFrete"])).ToString();
+                                                if (ncmI)
+                                                    totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (ncmII)
+                                                    totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vDesc") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (ncm)
+                                                    totalDevoNcm -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(entryNotes[i][j]["vDesc"])).ToString();
+                                                if (ncmI)
+                                                    totalDevoVendaIncisoI -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (ncmII)
+                                                    totalDevoVendaIncisoII -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vOutro") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vOutro"])).ToString();
+                                                if (ncmI)
+                                                    totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (ncmII)
+                                                    totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vSeg") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(entryNotes[i][j]["vSeg"])).ToString();
+                                                if (ncmI)
+                                                    totalDevoVendaIncisoI += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (ncmII)
+                                                    totalDevoVendaIncisoII += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                            }
                                         }
+                                        
                                     }
 
                                 }
@@ -1711,7 +1725,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             posClienteRaiz = contribuintesRaiz.IndexOf(entryNotes[i][2]["CNPJ"].Substring(0, 8));
                                     }
 
-                                    bool ncm = false;
+                                    bool ncm = false, cfop = false;
 
                                     for (int j = 0; j < entryNotes[i].Count(); j++)
                                     {
@@ -1723,62 +1737,76 @@ namespace Escon.SisctNET.Web.Controllers
                                             ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, entryNotes[i][j]["NCM"], CEST, comp);
                                         }
 
-                                        if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
+                                        if (entryNotes[i][j].ContainsKey("CFOP"))
                                         {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
+                                            cfop = false;
+                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
+                                            }
                                         }
 
-                                        if (entryNotes[i][j].ContainsKey("vFrete") && entryNotes[i][j].ContainsKey("cProd"))
+                                        if (cfop)
                                         {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
+                                            if (entryNotes[i][j].ContainsKey("vProd") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vProd"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vProd"])).ToString();
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vFrete") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vFrete"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vFrete"])).ToString();
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vDesc") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (ncm)
+                                                    totalDevoNcm -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vOutro") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
+
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
+                                            }
+
+                                            if (entryNotes[i][j].ContainsKey("vSeg") && entryNotes[i][j].ContainsKey("cProd"))
+                                            {
+                                                totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (ncm)
+                                                    totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (contribuinte)
+                                                    totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
+                                                if (posClienteRaiz < contContribuintesRaiz - 1)
+                                                    resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
+
+                                            }
+
                                         }
-
-                                        if (entryNotes[i][j].ContainsKey("vDesc") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (ncm)
-                                                totalDevoNcm -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte -= Convert.ToDecimal(entryNotes[i][j]["vDesc"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) - Convert.ToDecimal(exitNotes[i][j]["vDesc"])).ToString();
-                                        }
-
-                                        if (entryNotes[i][j].ContainsKey("vOutro") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vOutro"]);
-
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vOutro"])).ToString();
-                                        }
-
-                                        if (entryNotes[i][j].ContainsKey("vSeg") && entryNotes[i][j].ContainsKey("cProd"))
-                                        {
-                                            totalDevoVenda += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (ncm)
-                                                totalDevoNcm += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (contribuinte)
-                                                totalDevoContribuinte += Convert.ToDecimal(entryNotes[i][j]["vSeg"]);
-                                            if (posClienteRaiz < contContribuintesRaiz - 1)
-                                                resumoAllCnpjRaiz[posClienteRaiz, 2] = (Convert.ToDecimal(resumoAllCnpjRaiz[posClienteRaiz, 1]) + Convert.ToDecimal(exitNotes[i][j]["vSeg"])).ToString();
-
-                                        }
+                                        
                                     }
 
                                 }
