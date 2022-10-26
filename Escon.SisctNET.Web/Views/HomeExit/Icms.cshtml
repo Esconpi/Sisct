@@ -49,12 +49,14 @@
 
                             @if (Model.Incentive == true)
                             {
-                                @if (Model.AnnexId == 1 || Model.AnnexId == 3)
+                                @if (Model.AnnexId == 1 || Model.AnnexId == 3 || Model.AnnexId == 4)
                                 {
                                     <option value="resumoCfopAnexo">Resumo CFOP Anexo</option>
+                                    <option value="resumoCfopCstAenxo">Resumo CFOP/CST Anexo</option>
                                     <option value="resumoCfopAnexoAnalitico">Resumo CFOP Anexo Analítico</option>
                                     <option value="resumoCfopAnexoDC">Resumo CFOP Anexo Débito/Crédito</option>
                                     <option value="resumoCfopForaAnexo">Resumo CFOP Fora do Anexo</option>
+                                    <option value="resumoCfopCstForaAenxo">Resumo CFOP/CST Fora do Anexo</option>
                                     <option value="resumoCfopForaAnexoAnalitico">Resumo CFOP Fora do Anexo Analítico</option>
                                     <option value="resumoCfopForaAnexoDC">Resumo CFOP Fora Anexo Débito/Crédito</option>
                                     <option value="resumoPorCfop">Resumo por CFOP</option>
