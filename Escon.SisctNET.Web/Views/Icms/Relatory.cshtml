@@ -96,7 +96,7 @@
 
                     @await Html.PartialAsync("_SummaryCfopAttachment", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "resumoCfopCstAenxo")
+                else if (ViewBag.Type == "resumoCfopCstAnexo")
                 {
                     <!-- Resumo CFOP/CST Anexo-->
 
@@ -120,11 +120,11 @@
 
                     @await Html.PartialAsync("_SummaryCfopFAttachment", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "resumoCfopCstAenxo")
+                else if (ViewBag.Type == "resumoCfopCstForaAnexo")
                 {
                     <!-- Resumo CFOP/CST Fora Anexo-->
 
-                    @await Html.PartialAsync("_SummaryCfopFCstAttachment", new ViewDataDictionary(ViewData))
+                    @await Html.PartialAsync("_SummaryCfopCstFAttachment", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
                 {

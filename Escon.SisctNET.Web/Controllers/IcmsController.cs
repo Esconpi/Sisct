@@ -24222,6 +24222,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add("0");
                                         cc.Add("0");
                                         cc.Add("0");
+                                        cc.Add("0");
                                         cfops.Add(cc);
                                         pos = cfops.Count() - 1;
                                     }
@@ -24232,11 +24233,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                                     cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
-
                                 }
 
                                 if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pFCP"))
                                     cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+
+                                if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
 
                                 if (notes[i][j].ContainsKey("CSOSN"))
                                 {
@@ -24262,6 +24265,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add("0");
                                         cc.Add("0");
                                         cc.Add("0");
+                                        cc.Add("0");
                                         cfops.Add(cc);
                                         pos = cfops.Count() - 1;
                                     }
@@ -24272,11 +24276,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                                     cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
-
                                 }
 
                                 if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pFCP"))
                                     cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+
+                                if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
+
                             }
                         }
                     }
@@ -24823,7 +24830,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.CfopForaAnexo = cfopsForaAnexo.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
-                else if (type.Equals("resumoCfopCstForaAenxo"))
+                else if (type.Equals("resumoCfopCstForaAnexo"))
                 {
                     //  Resumo CFOP/CST Fora Anexo
 
@@ -24901,6 +24908,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add("0");
                                         cc.Add("0");
                                         cc.Add("0");
+                                        cc.Add("0");
                                         cfops.Add(cc);
                                         pos = cfops.Count() - 1;
                                     }
@@ -24916,6 +24924,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pFCP"))
                                     cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+
+                                if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
 
                                 if (notes[i][j].ContainsKey("CSOSN"))
                                 {
@@ -24941,6 +24952,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add("0");
                                         cc.Add("0");
                                         cc.Add("0");
+                                        cc.Add("0");
                                         cfops.Add(cc);
                                         pos = cfops.Count() - 1;
                                     }
@@ -24951,11 +24963,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
                                     cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
-
                                 }
 
                                 if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pFCP"))
                                     cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+
+                                if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
                             }
                         }
                     }
