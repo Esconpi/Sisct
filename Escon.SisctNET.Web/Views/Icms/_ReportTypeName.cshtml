@@ -13,6 +13,11 @@
     <strong>Resumo CFOP/CST Anexo</strong>
 }
 
+@if (ViewBag.Type == "resumoCfopCstNcmAnexo")
+{
+    <strong>Resumo CFOP/CST/NCM Anexo</strong>
+}
+
 @if (ViewBag.Type == "resumoCfopAnexoAnalitico")
 {
     <strong>Resumo CFOP Anexo Analítico</strong>
@@ -31,6 +36,11 @@
 @if (ViewBag.Type == "resumoCfopCstForaAnexo")
 {
     <strong>Resumo CFOP/CST Fora do Anexo</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopCstNcmForaAnexo")
+{
+    <strong>Resumo CFOP/CST/NCM Fora do Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
@@ -99,7 +109,6 @@
 {
     <strong>Notas Contigência </strong>
 }
-
 
 @if (ViewBag.Type == "suspensao")
 {
