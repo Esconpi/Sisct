@@ -184,7 +184,7 @@ namespace Escon.SisctNET.Web.Controllers
                               
                 ViewBag.DescriptionNCM = description;
 
-                List<TaxationType> list_taxation = _taxationTypeService.FindAll(null);
+                var list_taxation = _taxationTypeService.FindAll(null).OrderBy(_ => _.Type).ToList();
 
                 list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
 
