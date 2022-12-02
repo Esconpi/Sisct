@@ -339,10 +339,6 @@
                 $("input[name=Mva]").prop("disabled", false);
                 $("input[name=Fecop]").prop("disabled", false);
                 $("input[name=BCR]").prop("disabled", false);
-            } else if (taxacao === 10) {
-                $("input[name=Mva]").prop("disabled", true);
-                $("input[name=Fecop]").prop("disabled", true);
-                $("input[name=BCR]").prop("disabled", false);
             } else {
                 $("input[name=Mva]").prop("disabled", true);
                 $("input[name=Fecop]").prop("disabled", true);
@@ -392,14 +388,7 @@
             } else {
                 $("input[name=Fecop]").prop("value", "");
             }
-        } else if ($(this).val() == 10) {
-            $("input[name=Mva]").prop("disabled", true);
-            $("input[name=Mva]").prop("value", "");
-            $("input[name=Fecop]").prop("disabled", true);
-            $("input[name=Fecop]").prop("value", "");
-            $("input[name=BCR]").prop("disabled", false);
-            $("input[name=BCR]").prop("value", "");
-        } else {
+        }  else {
             $("input[name=Mva]").prop("disabled", true);
             $("input[name=Mva]").prop("value", "");
             $("input[name=Fecop]").prop("disabled", true);

@@ -139,14 +139,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindByNote(noteId, null)
-                    .OrderBy(_ => _.Status)
-                    .ToList();
                 var note = _noteService.FindById(noteId, null);
+                var products = note.Products.OrderBy(_ => _.Status).ToList();
 
                 ViewBag.Note = note;
 
-                return View(result);
+                return View(products);
 
             }
             catch (Exception ex)
