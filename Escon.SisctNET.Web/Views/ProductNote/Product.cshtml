@@ -243,7 +243,7 @@
                             <label asp-for="DateStart" class="control-label"></label>
                             @if (Model.DateStart == null)
                             {
-                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="2019-11-01" />
+                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="@Model.Note.Dhemi.Year.ToString()-@Model.Note.Dhemi.Month.ToString()-01" />
                             }
                             else
                             {
