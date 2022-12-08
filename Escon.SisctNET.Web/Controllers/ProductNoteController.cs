@@ -139,7 +139,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var note = _noteService.FindById(noteId, null);
+                var note = _noteService.FindByNote(noteId, null);
                 var products = note.Products.OrderBy(_ => _.Status).ToList();
 
                 ViewBag.Note = note;
