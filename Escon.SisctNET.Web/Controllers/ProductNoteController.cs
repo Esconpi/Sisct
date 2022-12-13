@@ -525,7 +525,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                            var dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(aliqCte));
+                            var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), aliquotaOrig);
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
@@ -661,7 +661,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
-                                        dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
+                                        dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), aliquotaOrig);
 
                                 item.AliqInterna = aliqInterna;
                                 baseCalc = Vbasecalc;

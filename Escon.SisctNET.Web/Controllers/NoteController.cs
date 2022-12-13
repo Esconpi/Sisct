@@ -641,7 +641,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseCalc = baseDeCalc;
 
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(aliqCte));
+                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
