@@ -241,7 +241,7 @@ namespace Escon.SisctNET.Web.Controllers
             var comp = _companyService.FindById(id, null);
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
-            var aliqCte = _configurationService.FindByName("Aliquota CTe", null);
+            var aliqCte = _configurationService.FindByName("Aliquota CTe", null).Value;
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();

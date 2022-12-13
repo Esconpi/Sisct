@@ -286,7 +286,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
-                var aliqCte = _configurationService.FindByName("Aliquota CTe", null);
+                var aliqCte = _configurationService.FindByName("Aliquota CTe", null).Value;
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
