@@ -286,6 +286,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
+                var aliqCte = _configurationService.FindByName("Aliquota CTe", null);
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
@@ -524,7 +525,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                            var dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
+                            var dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(aliqCte));
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;

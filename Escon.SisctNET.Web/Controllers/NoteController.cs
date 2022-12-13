@@ -241,6 +241,7 @@ namespace Escon.SisctNET.Web.Controllers
             var comp = _companyService.FindById(id, null);
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
+            var aliqCte = _configurationService.FindByName("Aliquota CTe", null);
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
@@ -640,7 +641,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseCalc = baseDeCalc;
 
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValidOrig));
+                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(aliqCte));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
