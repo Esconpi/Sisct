@@ -53,6 +53,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNote(chave);
         }
 
+        public Note FindByNote(long noteId, Log log = null)
+        {
+            return _repository.FindByNote(noteId, log);
+        }
+
         public List<Note> FindByNotes(long id, string year, string month, Log log = null)
         {
             return _repository.FindByNotes(id, year, month);

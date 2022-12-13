@@ -48,6 +48,17 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
+        public Note FindByNote(long noteId, Log log = null)
+        {
+            var rst = _context.Notes
+                .Where(_ => _.Id.Equals(noteId))
+                .Include(c => c.Company)
+                .Include(p => p.Products)
+                .FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
         public List<Note> FindByNotes(long id, string year, string month, Log log = null)
         {
             var rst = _context.Notes

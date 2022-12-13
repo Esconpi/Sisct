@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Escon.SisctNET.Repository
 {
@@ -10,6 +9,8 @@ namespace Escon.SisctNET.Repository
         void Update(List<Model.Note> notes, Model.Log log = null);
 
         Model.Note FindByNote(string chave, Model.Log log = null);
+
+        Model.Note FindByNote(long noteId, Model.Log log = null);
 
         List<Model.Note> FindByNotes(long id, string year, string month, Model.Log log = null);
 

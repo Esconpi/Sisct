@@ -227,5 +227,8 @@ namespace Escon.SisctNET.Model
         public string Produto { get; set; }
 
         public decimal? PercentualInciso { get; set; }
+
+        [Display(Name = "BCR")]
+        public bool EBcr { get; set; }
     }
 }
