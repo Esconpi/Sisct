@@ -526,7 +526,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                            var dif_frete = calculation.DiferencialAliq(aliqInterna, aliqCte);
+                            var dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(aliqCte));
 
                             prod.AliqInterna = aliqInterna;
                             baseCalc = Vbasecalc;
