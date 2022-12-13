@@ -349,9 +349,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal vAgre2 = calculation.ValorAgregadoPautaProd(baseCalc, quantParaCalc);
 
                         if (vAgre2 > vAgre)
-                        {
                             vAgre = vAgre2;
-                        }
 
                         if (fecop != null)
                         {
@@ -399,6 +397,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Fecop = null;
                             prod.TotalFecop = null;
                         }
+                        
                         prod.AliqInterna = aliqInterna;
                         decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
                         prod.ValorAC = valorAgre_AliqInt;
