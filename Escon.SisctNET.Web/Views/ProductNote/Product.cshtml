@@ -238,42 +238,44 @@
                             <label class="control-label">BCR (%)</label>
                             <input type="text" name="BCR" class="form-control money" value="@Model.BCR" disabled="disabled" />
                         </div>
-                        <div class="row">
-                            <div class="form-group col-lg-2 col-md-4 col-xs-4">
-                                <label asp-for="DateStart" class="control-label"></label>
-                                @if (Model.DateStart == null)
+                            
+                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
+                            <label asp-for="DateStart" class="control-label"></label>
+                            @if (Model.DateStart == null)
+                            {
+                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="@Model.Note.Dhemi.Year.ToString()-@Model.Note.Dhemi.Month.ToString()-01" />
+                            }
+                            else
+                            {
+                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" />
+                            }
+                         </div>
+                    </div>
+
+                    <div class="row">
+                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
+                            <label class="control-label">Produto</label>
+                            <select class="form-control selectoption" name="produto">
+                                @if (Model.Produto == null)
                                 {
-                                    <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="@Model.Note.Dhemi.Year.ToString()-@Model.Note.Dhemi.Month.ToString()-01" />
+                                    <option value="1" selected>Normal</option>
+                                    <option value="2">Especial</option>
                                 }
                                 else
                                 {
-                                    <input type="date" asp-for="DateStart" class="form-control" name="DateStart" />
-                                }
-                            </div>
-                            <div class="form-group col-lg-2 col-md-4 col-xs-4">
-                                <label class="control-label">Produto</label>
-                                <select class="form-control selectoption" name="produto">
-                                    @if (Model.Produto == null)
+                                    @if (Model.Produto.Equals("Especial"))
+                                    {
+                                        <option value="1">Normal</option>
+                                        <option value="2" selected>Especial</option>
+                                    }
+                                    else
                                     {
                                         <option value="1" selected>Normal</option>
                                         <option value="2">Especial</option>
                                     }
-                                    else
-                                    {
-                                        @if (Model.Produto.Equals("Especial"))
-                                        {
-                                            <option value="1">Normal</option>
-                                            <option value="2" selected>Especial</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="1" selected>Normal</option>
-                                            <option value="2">Especial</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                         </div>
+                                }
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
