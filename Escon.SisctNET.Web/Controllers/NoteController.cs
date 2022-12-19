@@ -598,7 +598,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
-                                        valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, baseCalc = 0;
+                                        valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, 
+                                        baseCalc = 0, dif_frete = 0;
 
                                 if (taxedtype.Type == "ST")
                                 {
@@ -644,7 +645,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
 
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    var dif_frete = calculation.DiferencialAliq(aliqCte, Convert.ToDecimal(pICMSValidOrig));
+                                    dif_frete = calculation.DiferencialAliq(aliqCte, Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
@@ -711,6 +712,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                     prod.PercentualInciso = taxed.PercentualInciso;
                                     prod.AliqInternaCTe = aliqCte;
+                                    prod.DiferencialCTe = dif_frete;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 

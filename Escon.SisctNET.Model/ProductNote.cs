@@ -232,5 +232,7 @@ namespace Escon.SisctNET.Model
         public bool EBcr { get; set; }
 
         public decimal? AliqInternaCTe { get; set; }
+
+        public decimal? DiferencialCTe { get; set; }
     }
 }
