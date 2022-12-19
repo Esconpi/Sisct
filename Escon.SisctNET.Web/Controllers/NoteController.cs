@@ -241,7 +241,7 @@ namespace Escon.SisctNET.Web.Controllers
             var comp = _companyService.FindById(id, null);
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
-            var aliqCte = _configurationService.FindByName("Aliquota CTe", null).Value;
+            var aliqCte = Convert.ToDecimal(_configurationService.FindByName("Aliquota CTe", null).Value);
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
@@ -640,8 +640,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
+                                    if (taxed.AliqInternaCTe != null)
+                                        aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
+
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), Convert.ToDecimal(pICMSValidOrig));
+                                    var dif_frete = calculation.DiferencialAliq(aliqCte, Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
@@ -707,6 +710,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                     prod.PercentualInciso = taxed.PercentualInciso;
+                                    prod.AliqInternaCTe = aliqCte;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 

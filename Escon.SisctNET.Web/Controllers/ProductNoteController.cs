@@ -286,7 +286,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
-                var aliqCte = _configurationService.FindByName("Aliquota CTe", null).Value;
+                var aliqCte = Convert.ToDecimal(_configurationService.FindByName("Aliquota CTe", null).Value);
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
@@ -525,9 +525,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             var aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                            var dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), aliquotaOrig);
+                            var dif_frete = calculation.DiferencialAliq(aliqCte, aliquotaOrig);
 
                             prod.AliqInterna = aliqInterna;
+                            prod.AliqInternaCTe = aliqCte;
                             baseCalc = Vbasecalc;
 
                             prod.Mva = null;
@@ -579,6 +580,7 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.ProductId = null;
                         prod.Product1Id = null;
                         prod.Product2Id = null;
+                        prod.Product3Id = null;
                         prod.Pautado = false;
                         prod.DateStart = dateStart;
                         prod.PercentualInciso = inciso;
@@ -661,9 +663,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
-                                        dif_frete = calculation.DiferencialAliq(Convert.ToDecimal(aliqCte), aliquotaOrig);
+                                        dif_frete = calculation.DiferencialAliq(aliqCte, aliquotaOrig);
 
                                 item.AliqInterna = aliqInterna;
+                                item.AliqInternaCTe = aliqCte;
                                 baseCalc = Vbasecalc;
 
                                 item.Diferencial = dif;
@@ -715,6 +718,7 @@ namespace Escon.SisctNET.Web.Controllers
                             item.ProductId = null;
                             item.Product1Id = null;
                             item.Product2Id = null;
+                            item.Product3Id = null;
                             item.Pautado = false;
                             item.DateStart = dateStart;
                             item.PercentualInciso = inciso;
@@ -791,6 +795,7 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.Code = code;
                     taxation.Cest = prod.Cest;
                     taxation.AliqInterna = aliqInterna;
+                    taxation.AliqInternaCTe = aliqCte;
                     taxation.PercentualInciso = inciso;
                     taxation.Diferencial = dif;
                     taxation.MVA = mva;
