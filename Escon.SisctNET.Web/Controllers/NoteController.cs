@@ -337,8 +337,6 @@ namespace Escon.SisctNET.Web.Controllers
                         chave = notes[i][0]["chave"];
                         break;
                     }
-
-
                 }
                 else
                 {
