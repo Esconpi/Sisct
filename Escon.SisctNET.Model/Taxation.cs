@@ -83,5 +83,7 @@ namespace Escon.SisctNET.Model
 
         public decimal? AliqInternaCTe { get; set; }
 
+        public bool EBcr { get; set; }
+
     }
 }

@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-lg-1 col-md-6 col-xs-6" id="checkbox">
+                        <div class="form-group col-lg-1 col-md-6 col-xs-6" id="pauta">
                             <label asp-for="Pautado" class="control-label">Pautado</label> <br />
                             @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
                         </div>
@@ -196,6 +196,10 @@
                     </div>
                     
                     <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-4" id="eBcr">
+                            <label asp-for="EBcr" class="control-label">BCR</label> <br />
+                            @Html.CheckBoxFor(model => model.EBcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
+                        </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label asp-for="AliqInterna" class="control-label"></label>
                             @if (Model.AliqInterna != null)
@@ -229,16 +233,25 @@
                                 <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
                             }
                         </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-2">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
                             <label class="control-label">MVA (%)</label>
                             <input type="text" name="Mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
                         </div>
 
-                        <div class="form-group col-lg-2 col-md-2 col-xs-2">
+                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
                             <label class="control-label">BCR (%)</label>
-                            <input type="text" name="BCR" class="form-control money" value="@Model.BCR" disabled="disabled" />
-                        </div>
-                            
+                            @if(Model.EBcr == true)
+                            {
+                                <input type="text" name="BCR" class="form-control money" value="@Model.BCR" id="bcr"/>
+                            }
+                            else
+                            {
+                                <input type="text" name="BCR" class="form-control money" value="@Model.BCR" id="bcr" disabled="disabled" />
+                            }
+                        </div>                      
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label asp-for="DateStart" class="control-label"></label>
                             @if (Model.DateStart == null)
@@ -249,10 +262,7 @@
                             {
                                 <input type="date" asp-for="DateStart" class="form-control" name="DateStart" />
                             }
-                         </div>
-                    </div>
-
-                    <div class="row">
+                        </div>
                          <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">Produto</label>
                             <select class="form-control selectoption" name="produto">
@@ -324,7 +334,7 @@
     });
 
     var product3 = @Model.Product3Id
-    $("#product2id").children('option').each(function () {
+    $("#product3id").children('option').each(function () {
         if ($(this).val() == product3) {
             $(this).attr('selected', true);
         }
@@ -337,15 +347,12 @@
             if (taxacao === 5 || taxacao === 8) {
                 $("input[name=Mva]").prop("disabled", false);
                 $("input[name=Fecop]").prop("disabled", false);
-                $("input[name=BCR]").prop("disabled", true);
             } else if (taxacao === 6) {
                 $("input[name=Mva]").prop("disabled", false);
                 $("input[name=Fecop]").prop("disabled", false);
-                $("input[name=BCR]").prop("disabled", false);
             } else {
                 $("input[name=Mva]").prop("disabled", true);
                 $("input[name=Fecop]").prop("disabled", true);
-                $("input[name=BCR]").prop("disabled", true);
             }
             if (taxacao == 0) {
                 document.getElementById('taxar').disabled = true;
@@ -361,8 +368,8 @@
         if ($(this).val() == 5 || $(this).val() == 8) {
             $("input[name=Mva]").prop("disabled", false);
             $("input[name=Fecop]").prop("disabled", false);
-            $("input[name=BCR]").prop("disabled", true);
-            $("input[name=BCR]").prop("value", "");
+            //$("input[name=BCR]").prop("disabled", true);
+            //$("input[name=BCR]").prop("value", "");
 
             if (parseFloat($("input[name=AliqInterna]").val()) === 18) { 
                 $("input[name=Fecop]").prop("value", "1");
@@ -378,7 +385,8 @@
         } else if ($(this).val() == 6) {
             $("input[name=Mva]").prop("disabled", false);
             $("input[name=Fecop]").prop("disabled", false);
-            $("input[name=BCR]").prop("disabled", false);
+            //$("input[name=BCR]").prop("disabled", false);
+            //$("input[name=EBcr]").prop("checked", false);
 
             if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                 $("input[name=Fecop]").prop("value", "1");
@@ -396,8 +404,8 @@
             $("input[name=Mva]").prop("value", "");
             $("input[name=Fecop]").prop("disabled", true);
             $("input[name=Fecop]").prop("value", "");
-            $("input[name=BCR]").prop("disabled", true);
-            $("input[name=BCR]").prop("value", "");
+            //$("input[name=BCR]").prop("disabled", true);
+            //$("input[name=BCR]").prop("value", "");
         }
 
     });
@@ -424,7 +432,7 @@
         });
     }
 
-    $("#checkbox").on("change", "input[type='checkbox']", function () {
+    $("#pauta").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
             $("#productid").prop("disabled", false);
             $("#product1id").prop("disabled", false);
@@ -437,6 +445,14 @@
             $("#product2id").prop("disabled", true);
             $("#product3id").prop("disabled", true);
             $("#quant").prop("disabled", true);
+        }
+    });
+
+    $("#eBcr").on("change", "input[type='checkbox']", function () {
+        if ($(this).prop("checked")) {
+            $("#bcr").prop("disabled", false);
+        } else {
+            $("#bcr").prop("disabled", true);
         }
     });
 </script>
