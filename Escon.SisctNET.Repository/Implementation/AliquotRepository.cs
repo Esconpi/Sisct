@@ -28,6 +28,13 @@ namespace Escon.SisctNET.Repository.Implementation
             _context.SaveChanges();
         }
 
+        public Aliquot FindByAliquot(long stateOrigemId, long stateDestinoId, Log log = null)
+        {
+            var rst = _context.Aliquots.Where(_ => _.StateOrigemId.Equals(stateOrigemId) && _.StateDestinoId.Equals(stateDestinoId) && _.DateEnd == null).FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
         public List<Aliquot> FindByAllState(Log log = null)
         {
             var rst = _context.Aliquots

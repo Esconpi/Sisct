@@ -100,7 +100,8 @@
                     "mData": "id",
                     "mRender": function (data, type, row) {
                          if (row.fim == "01/01/0001") {
-                            return "<a href='/InternalAliquot/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar' /> " +
+                            return "<a href='/InternalAliquot/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Aliquota' /> " +
+                                "<a href='/InternalAliquot/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar' /> " +
                                 "<a href='/InternalAliquot/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Deletar' /> "
                         }
                         else {

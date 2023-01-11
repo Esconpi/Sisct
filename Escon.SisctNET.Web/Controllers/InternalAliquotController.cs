@@ -74,15 +74,15 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var aliq = _service.FindAll(null);
-                foreach (var a in aliq)
+                var item = _service.FindByAliquot(entity.StateId);
+
+                if (item != null)
                 {
-                    if (a.StateId.Equals(entity.StateId))
-                    {
-                        a.DateEnd = entity.DateStart.AddDays(-1);
-                        _service.Update(a, GetLog(Model.OccorenceLog.Update));
-                    }
+                    item.Updated = DateTime.Now;
+                    item.DateEnd = entity.DateStart.AddDays(-1);
+                    _service.Update(item, null);
                 }
+
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 
@@ -135,6 +135,66 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Updated = DateTime.Now;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Atualize(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
+                SelectList states = new SelectList(list_states, "Id", "Name", null);
+                ViewBag.StateId = states;
+
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(long id, Model.InternalAliquot entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.Updated = DateTime.Now;
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
+                decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.StateId = result.StateId;
+                entity.Id = lastId + 1;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

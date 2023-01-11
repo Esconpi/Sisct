@@ -35,6 +35,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public InternalAliquot FindByAliquot(long stateId, Log log = null)
+        {
+            return _repository.FindByAliquot(stateId, log);
+        }
+
         public List<InternalAliquot> FindByAllState(Log log = null)
         {
             return _repository.FindByAllState(log);

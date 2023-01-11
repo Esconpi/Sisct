@@ -15,5 +15,7 @@ namespace Escon.SisctNET.Service
         Model.Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Model.Log log = null);
 
         List<Model.Aliquot> FindByAllState(Model.Log log = null);
+
+        Model.Aliquot FindByAliquot(long stateOrigemId, long stateDestinoId, Model.Log log = null);
     }
 }

@@ -1,9 +1,15 @@
-﻿using Escon.SisctNET.Service;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
+using Escon.SisctNET.Service.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -75,15 +81,15 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var aliq = _service.FindAll(null);
-                foreach (var a in aliq)
+                var item = _service.FindByAliquot((long)entity.StateOrigemId, (long)entity.StateDestinoId);
+
+                if (item != null)
                 {
-                    if (a.StateOrigemId.Equals(entity.StateOrigemId) && a.StateDestinoId.Equals(entity.StateDestinoId))
-                    {
-                        a.DateEnd = entity.DateStart.AddDays(-1);
-                        _service.Update(a, GetLog(Model.OccorenceLog.Update));
-                    }
+                    item.Updated = DateTime.Now;
+                    item.DateEnd = entity.DateStart.AddDays(-1);
+                    _service.Update(item, null);
                 }
+
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 
@@ -136,6 +142,69 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Created = rst.Created;
                 entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Atualize(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
+                SelectList states = new SelectList(list_states, "Id", "Name", null);
+                ViewBag.StateOrigemId = states;
+
+                ViewBag.StateDestinoId = states;
+
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(long id, Model.Aliquot entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.Updated = DateTime.Now;
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
+                decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.DateEnd = null;
+                entity.StateOrigemId = result.StateOrigemId;
+                entity.StateDestinoId = result.StateDestinoId;
+                entity.Id = lastId + 1;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

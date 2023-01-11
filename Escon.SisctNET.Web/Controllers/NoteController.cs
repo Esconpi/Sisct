@@ -19,6 +19,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IConfigurationService _configurationService;
         private readonly IAliquotService _aliquotService;
         private readonly INcmConvenioService _ncmConvenioService;
+        private readonly IInternalAliquotService _internalAliquotService;
 
         public NoteController(
             INoteService service,
@@ -31,6 +32,7 @@ namespace Escon.SisctNET.Web.Controllers
             IConfigurationService configurationService,
             IAliquotService aliquotService,
             INcmConvenioService ncmConvenioService,
+            IInternalAliquotService internalAliquotService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
         {
@@ -43,6 +45,7 @@ namespace Escon.SisctNET.Web.Controllers
             _aliquotService = aliquotService;
             _taxationTypeService = taxationTypeService;
             _ncmConvenioService = ncmConvenioService;
+            _internalAliquotService = internalAliquotService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -241,14 +244,15 @@ namespace Escon.SisctNET.Web.Controllers
             var comp = _companyService.FindById(id, null);
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
-            var aliqCte = Convert.ToDecimal(_configurationService.FindByName("Aliquota CTe", null).Value);
+            var aliquots = _internalAliquotService.FindByAllState(null);
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
             var calculation = new Tax.Calculation();
 
             string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month),
-                   directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month);
+                   directotyCte = importDir.Entrada(comp, confDBSisctCte.Value, year, month),
+                   ufCompany = comp.County.State.UF;
 
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
 
@@ -361,6 +365,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 bool tributada = true;
                 int qtd = 0;
+                var internalAliquot = _internalAliquotService.FindByUf(aliquots, nota.Dhemi, ufCompany);
 
                 for (int j = 0; j < notes[i].Count; j++)
                 {
@@ -625,25 +630,40 @@ namespace Escon.SisctNET.Web.Controllers
                                         valorFecop = calculation.ValorFecop(0, valorAgreg);
                                     }
 
-                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorAgreg);
+                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(internalAliquot.Aliquota, percentFecop, valorAgreg);
 
                                     if (valorbcr > 0)
-                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxed.AliqInterna), percentFecop, valorbcr);
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(internalAliquot.Aliquota, percentFecop, valorbcr);
 
                                     totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
 
                                 }
-                                else if (taxedtype.Type == "Normal")
+                                else if (taxedtype.Type == "Normal" && taxedtype.Id.Equals((long)1))
                                 {
 
                                     //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
 
-                                    if (taxed.AliqInternaCTe != null)
+                                   /* if (taxed.AliqInternaCTe != null)
                                         aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
+                                   */
 
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(taxed.AliqInterna), Convert.ToDecimal(pICMSValid));
-                                    dif_frete = calculation.DiferencialAliq(aliqCte, Convert.ToDecimal(pICMSValidOrig));
+                                    dif = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
+                                    dif_frete = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
+                                    icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
+                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
+                                }
+                                else if (taxedtype.Type == "Normal" && !taxedtype.Id.Equals((long)1))
+                                {
+                                    //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
+                                    baseCalc = baseDeCalc;
+
+                                    /*if (taxed.AliqInternaCTe != null)
+                                        aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
+                                    */
+
+                                    dif = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
+                                    dif_frete = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
@@ -703,13 +723,13 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Status = true;
                                     prod.Pautado = false;
                                     prod.TaxationTypeId = taxed.TaxationTypeId;
-                                    prod.AliqInterna = taxed.AliqInterna;
+                                    prod.AliqInterna = internalAliquot.Aliquota;
                                     prod.Mva = taxed.MVA;
                                     prod.BCR = taxed.BCR;
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                     prod.PercentualInciso = taxed.PercentualInciso;
-                                    prod.AliqInternaCTe = aliqCte;
+                                    prod.AliqInternaCTe = internalAliquot.Aliquota;
                                     prod.DiferencialCTe = dif_frete;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;

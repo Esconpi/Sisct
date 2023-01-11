@@ -1376,7 +1376,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (entryNotes[i][j].ContainsKey("CFOP"))
                                         {
                                             cfop = false;
-                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]))
+                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]) ||
+                                                cfopsDevoCompra.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoCompraST.Contains(entryNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
@@ -1740,7 +1741,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (entryNotes[i][j].ContainsKey("CFOP"))
                                         {
                                             cfop = false;
-                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]))
+                                            if (cfopsDevoVenda.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoVendaST.Contains(entryNotes[i][j]["CFOP"]) ||
+                                                cfopsDevoCompra.Contains(entryNotes[i][j]["CFOP"]) || cfopsDevoCompraST.Contains(entryNotes[i][j]["CFOP"]))
                                             {
                                                 cfop = true;
                                             }
