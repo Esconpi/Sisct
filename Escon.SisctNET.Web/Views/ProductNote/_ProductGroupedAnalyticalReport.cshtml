@@ -295,11 +295,8 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                 <th>B. <br /> Cálculo</th>
                                 <th>MVA(%)</th>
                                 <th>BC. <br /> ICMS</th>
-                                @if (ViewBag.TypeTaxation == "ST")
-                                {
-                                    <th>BCR(%)</th>
-                                    <th>BCR</th>
-                                }
+                                <th>BCR(%)</th>
+                                <th>BCR</th>
                                 <th>Aliq Int(%)</th>
                                 <th>V. <br /> Imp. AC</th>
                                 <th>ICMS</th>
@@ -329,37 +326,34 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         <td>
                                             @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) -
                                                                 Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
-                                    </td>
-                                    <td>@item.Note.Nct</td>
-                                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
-                                    <td>
-                                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) +
-                                                            Convert.ToDecimal(item.Vipi) + Convert.ToDecimal(item.Freterateado))
-                                </td>
-                                <td>@item.Mva</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
-                                @if (ViewBag.TypeTaxation == "ST")
-                                {
-                                    <td>@item.BCR</td>
-                                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                                        </td>
+                                        <td>@item.Note.Nct</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                        <td>
+                                            @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) + Convert.ToDecimal(item.Vfrete) +
+                                                                Convert.ToDecimal(item.Vipi) + Convert.ToDecimal(item.Freterateado))
+                                        </td>
+                                        <td>@item.Mva</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
+                                        <td>@item.BCR</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                                        <td>@item.AliqInterna</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
+                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
+                                        @if (item.Pautado == true)
+                                        {
+                                            <td>P</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    </tr>
                                 }
-                                <td>@item.AliqInterna</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
-                                <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
-                                @if (item.Pautado == true)
-                                {
-                                    <td>P</td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            </tr>
-                        }
                             }
                         </tbody>
 

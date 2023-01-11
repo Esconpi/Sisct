@@ -244,7 +244,6 @@ namespace Escon.SisctNET.Web.Controllers
             var comp = _companyService.FindById(id, null);
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
-            var aliquots = _internalAliquotService.FindByAllState(null);
 
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
@@ -365,7 +364,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 bool tributada = true;
                 int qtd = 0;
-                var internalAliquot = _internalAliquotService.FindByUf(aliquots, nota.Dhemi, ufCompany);
 
                 for (int j = 0; j < notes[i].Count; j++)
                 {
@@ -602,7 +600,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
                                 decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
                                         valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, 
-                                        baseCalc = 0, dif_frete = 0;
+                                        baseCalc = 0, dif_frete = 0, aliqInterna = Convert.ToDecimal(taxed.AliqInterna);
 
                                 if (taxedtype.Type == "ST")
                                 {
@@ -612,7 +610,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (taxed.MVA != null)
                                         valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
 
-                                    if (taxed.BCR != null)
+                                    if (taxed.EBcr && taxed.BCR != null)
                                     {
                                         valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
                                         valorIcms = 0;
@@ -630,10 +628,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         valorFecop = calculation.ValorFecop(0, valorAgreg);
                                     }
 
-                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(internalAliquot.Aliquota, percentFecop, valorAgreg);
+                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, valorAgreg);
 
                                     if (valorbcr > 0)
-                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(internalAliquot.Aliquota, percentFecop, valorbcr);
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, valorbcr);
 
                                     totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
 
@@ -648,8 +646,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
                                    */
 
-                                    dif = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
-                                    dif_frete = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
+                                    dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
+                                    dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
@@ -662,8 +660,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
                                     */
 
-                                    dif = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValid));
-                                    dif_frete = calculation.DiferencialAliq(internalAliquot.Aliquota, Convert.ToDecimal(pICMSValidOrig));
+                                    dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
+                                    dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
                                     icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
                                 }
@@ -723,14 +721,15 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Status = true;
                                     prod.Pautado = false;
                                     prod.TaxationTypeId = taxed.TaxationTypeId;
-                                    prod.AliqInterna = internalAliquot.Aliquota;
+                                    prod.AliqInterna = aliqInterna;
                                     prod.Mva = taxed.MVA;
                                     prod.BCR = taxed.BCR;
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                     prod.PercentualInciso = taxed.PercentualInciso;
-                                    prod.AliqInternaCTe = internalAliquot.Aliquota;
+                                    prod.AliqInternaCTe = aliqInterna;
                                     prod.DiferencialCTe = dif_frete;
+                                    prod.EBcr = taxed.EBcr;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 

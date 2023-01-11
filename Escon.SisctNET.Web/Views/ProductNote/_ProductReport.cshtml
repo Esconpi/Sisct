@@ -15,11 +15,8 @@
             <th>B. <br /> Cálculo</th>
             <th>MVA(%)</th>
             <th>BC. <br /> ICMS</th>
-            @if (ViewBag.TypeTaxation == "ST")
-            {
-                <th>BCR(%)</th>
-                <th>BCR</th>
-            }
+            <th>BCR(%)</th>
+            <th>BCR</th>
             <th>Aliq Int(%)</th>
             <th>V. <br /> Imp. AC</th>
             <th>ICMS</th>
@@ -67,11 +64,8 @@
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.Mva)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
-                @if (ViewBag.TypeTaxation == "ST")
-                {
-                    <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
-                }
+                <td>@Html.DisplayFor(modelItem => item.BCR)</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
                 <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe) + Convert.ToDecimal(item.Vicms))</td>                

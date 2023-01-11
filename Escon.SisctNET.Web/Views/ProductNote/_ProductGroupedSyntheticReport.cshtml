@@ -15,10 +15,7 @@
             <th>V. Frete</th>
             <th>Total BC</th>
             <th>BC ICMS</th>
-            @if (ViewBag.TypeTaxation == "ST")
-            {
-                <th>BCR</th>
-            }
+            <th>BCR</th>
             <th>V. Imp. AC</th>
             <th>ICMS</th>
             <th>ICMS ST NFe</th>
@@ -53,10 +50,7 @@
                                         Convert.ToDecimal(item[7].Replace(".", ",")))
                 </td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[8].Replace(".", ",")))</td>
-                @if (ViewBag.TypeTaxation == "ST")
-                {
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item[9].Replace(".", ",")))</td>
-                }
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item[9].Replace(".", ",")))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[10].Replace(".", ",")))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[11].Replace(".", ",")))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[13].Replace(".", ",")))</td>
