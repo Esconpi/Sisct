@@ -216,7 +216,7 @@
                             <label class="control-label">FECOP (%)</label>
                             @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("08/12/2022").Date)
                             {
-                                @if (Model.TaxationTypeId.Equals(5) || Model.TaxationTypeId.Equals(6) || Model.TaxationTypeId.Equals(8))
+                                @if (Model.TaxationTypeId.Equals((long)5) || Model.TaxationTypeId.Equals((long)6) || Model.TaxationTypeId.Equals((long)8))
                                 {
                                     <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
                                 }
