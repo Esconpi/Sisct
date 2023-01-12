@@ -597,9 +597,9 @@ namespace Escon.SisctNET.Web.Controllers
                                     incentivo = true;
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
-                                decimal valorAgreg = 0, valorFecop = 0, valorbcr = 0, valorIcms = vICMS + freteIcms,
-                                        valorAgreAliqInt = 0, totalIcms = 0, dif = 0, icmsApu = 0, icmsApuCTe = 0, 
-                                        baseCalc = 0, dif_frete = 0, aliqInterna = Convert.ToDecimal(taxed.AliqInterna);
+                                decimal? valorAgreg = null, valorFecop = null, valorbcr = null, valorAgreAliqInt = null, dif = null, dif_frete = null,
+                                        icmsApu = null, icmsApuCTe = null;
+                                decimal valorIcms = vICMS + freteIcms, totalIcms = 0, baseCalc = 0, aliqInterna = Convert.ToDecimal(taxed.AliqInterna);
 
                                 if (taxedtype.Type == "ST")
                                 {
@@ -610,7 +610,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (taxed.EBcr && taxed.BCR != null)
                                     {
-                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), valorAgreg);
+                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), Convert.ToDecimal(valorAgreg));
                                         valorIcms = 0;
                                     }
 
@@ -619,15 +619,15 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (taxed.Fecop != null)
                                     {
                                         percentFecop = Convert.ToDecimal(taxed.Fecop);
-                                        valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
+                                        valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgreg));
                                     }
 
-                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, valorAgreg);
+                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorAgreg));
 
                                     if (valorbcr > 0)
-                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, valorbcr);
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorbcr));
 
-                                    totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
+                                    totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
 
                                 }
                                 else if (taxedtype.Type == "Normal" && taxedtype.Id.Equals((long)1))
@@ -636,8 +636,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
-                                    icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
-                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
+                                    icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Normal" && !taxedtype.Id.Equals((long)1))
                                 {
@@ -645,8 +645,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
-                                    icmsApu = calculation.IcmsApurado(dif, baseCalc - frete_prod);
-                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, frete_prod);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
+                                    icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Isento")
                                 {
