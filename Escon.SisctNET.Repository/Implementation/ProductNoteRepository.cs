@@ -417,5 +417,21 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst.ToList();
         }
+
+        public void Create(List<Note> notes, Log log = null)
+        {
+            foreach(var note in notes)
+            {
+                foreach (var product in note.Products)
+                {
+                    product.NoteId = note.Id;
+
+                    _context.ProductNotes.Add(product);
+                }
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
     }
 }

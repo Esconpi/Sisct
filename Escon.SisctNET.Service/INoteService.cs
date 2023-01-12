@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service
 {
@@ -19,5 +18,6 @@ namespace Escon.SisctNET.Service
 
         List<Model.Note> FindByCompany(long companyId, Model.Log log = null);
 
+        List<Model.Note> Create(List<Model.Note> notes, Model.Log log = null);
     }
 }

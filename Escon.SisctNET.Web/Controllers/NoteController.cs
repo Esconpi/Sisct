@@ -270,6 +270,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxedtypes = _taxationTypeService.FindAll(null);
 
+            List<Model.Note> createNote = new List<Model.Note>();
             List<Model.Note> updateNote = new List<Model.Note>();
             List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
 
@@ -360,7 +361,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var nota = _service.FindByNote(notes[i][0]["chave"]);
 
-                //var produtos = _itemService.FindByNote(nota.Id);
 
                 bool tributada = true;
                 int qtd = 0;
@@ -604,7 +604,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (taxedtype.Type == "ST")
                                 {
-                                    //baseCalc = calculation.BaseCalc(baseDeCalc, vDesc);
                                     baseCalc = baseDeCalc;
 
                                     if (taxed.MVA != null)
@@ -623,10 +622,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         percentFecop = Convert.ToDecimal(taxed.Fecop);
                                         valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), valorAgreg);
                                     }
-                                    else
-                                    {
-                                        valorFecop = calculation.ValorFecop(0, valorAgreg);
-                                    }
 
                                     valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, valorAgreg);
 
@@ -638,13 +633,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else if (taxedtype.Type == "Normal" && taxedtype.Id.Equals((long)1))
                                 {
-
-                                    //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
-
-                                   /* if (taxed.AliqInternaCTe != null)
-                                        aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
-                                   */
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
@@ -653,12 +642,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else if (taxedtype.Type == "Normal" && !taxedtype.Id.Equals((long)1))
                                 {
-                                    //var aliq_simples = _aliquotService.FindByUf(notes[i][2]["UF"]);
                                     baseCalc = baseDeCalc;
-
-                                    /*if (taxed.AliqInternaCTe != null)
-                                        aliqCte = Convert.ToDecimal(taxed.AliqInternaCTe);
-                                    */
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));

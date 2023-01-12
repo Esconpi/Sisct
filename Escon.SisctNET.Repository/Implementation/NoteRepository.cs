@@ -16,6 +16,20 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+
+        public List<Note> Create(List<Note> notes, Log log = null)
+        {
+            foreach (var n in notes)
+            {
+                _context.Notes.Add(n);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+
+            return notes;
+        }
+
         public void Delete(List<Note> notes, Log log = null)
         {
             foreach (var n in notes)

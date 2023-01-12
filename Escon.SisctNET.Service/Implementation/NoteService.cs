@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<Note> Create(List<Note> notes, Log log = null)
+        {
+            return _repository.Create(notes, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);

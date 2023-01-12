@@ -143,5 +143,10 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByCompany(companyId, log);
         }
+
+        public void Create(List<Note> notes, Log log = null)
+        {
+            _repository.Create(notes, log);
+        }
     }
 }
