@@ -270,7 +270,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxedtypes = _taxationTypeService.FindAll(null);
 
-            List<Model.Note> createNote = new List<Model.Note>();
             List<Model.Note> updateNote = new List<Model.Note>();
             List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
 
@@ -301,7 +300,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                var notaImport = _service.FindByNote(notes[i][0]["chave"]);
+                Model.Note notaImport = _service.FindByNote(notes[i][0]["chave"]),
+                           nota = notaImport;
 
                 if (notaImport == null)
                 {
@@ -332,7 +332,9 @@ namespace Escon.SisctNET.Web.Controllers
                         note.Created = DateTime.Now;
                         note.Updated = DateTime.Now;
 
-                        _service.Create(note, GetLog(Model.OccorenceLog.Create));
+                        nota = _service.Create(note, GetLog(Model.OccorenceLog.Create));
+
+                        nota.Products = new List<Model.ProductNote>();
                     }
                     catch
                     {
@@ -358,9 +360,6 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
                         notas.Add(nTemp);
                 }
-
-                var nota = _service.FindByNote(notes[i][0]["chave"]);
-
 
                 bool tributada = true;
                 int qtd = 0;
