@@ -6,6 +6,8 @@ namespace Escon.SisctNET.Repository
 {
     public interface ITaxationRepository : IRepository<Model.Taxation>
     {
+        void Create(List<Model.Taxation> taxations, Model.Log log = null);
+
         void Update(List<Model.Taxation> taxations, Model.Log log = null);
 
         Model.Taxation FindByCode(string code, string cest, DateTime data, Model.Log log = null);

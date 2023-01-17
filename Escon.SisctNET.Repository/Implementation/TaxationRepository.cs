@@ -20,6 +20,17 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public void Create(List<Taxation> taxations, Log log = null)
+        {
+            foreach (var taxation in taxations)
+            {
+                _context.Taxations.Add(taxation);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public Taxation FindByCode(string code, string cest, DateTime data, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");

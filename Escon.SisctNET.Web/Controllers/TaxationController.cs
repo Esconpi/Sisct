@@ -86,27 +86,67 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                if (result != null)
+                /* if (result != null)
+                 {
+                     result.Updated = DateTime.Now;
+                     result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                     _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                 }
+
+                 var lastId = _service.FindAll(null).Max(_ => _.Id);
+                 entity.Created = DateTime.Now;
+                 entity.Updated = entity.Created;
+                 entity.CompanyId = result.CompanyId;
+                 entity.Code = result.Code;
+                 entity.Uf = result.Uf;
+                 entity.NcmId = result.NcmId;
+                 entity.Cest = result.Cest;
+                 entity.Picms = result.Picms;
+                 entity.AliqInternaCTe = entity.AliqInterna;
+                 entity.DateEnd = null;
+                 entity.Id = lastId + 1;
+
+                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));*/
+
+                var taxations = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Fecop.Equals((decimal)1) && _.DateEnd.Equals(null)).ToList();
+
+                List<Taxation> createTaxation = new List<Taxation>();
+                List<Taxation> updateTaxation = new List<Taxation>();
+
+                foreach (var taxation in taxations)
                 {
-                    result.Updated = DateTime.Now;
-                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                    taxation.Updated = DateTime.Now;
+                    taxation.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+
+                    updateTaxation.Add(taxation);
+
+                    Taxation taxationTemp = new Taxation();
+                    taxationTemp.Created = DateTime.Now;
+                    taxationTemp.Updated = taxationTemp.Created;
+                    taxationTemp.TaxationTypeId = taxation.TaxationTypeId;
+                    taxationTemp.NcmId = taxation.NcmId;
+                    taxationTemp.CompanyId = taxation.CompanyId;
+                    taxationTemp.Code = taxation.Code;
+                    taxationTemp.Uf = taxation.Uf;
+                    taxationTemp.Cest = taxation.Cest;
+                    taxationTemp.Picms = taxation.Picms;
+                    taxationTemp.AliqInterna = taxation.AliqInterna;
+                    taxationTemp.Diferencial = taxation.Diferencial;
+                    taxationTemp.MVA = taxation.MVA;
+                    taxationTemp.Fecop = null;
+                    taxationTemp.BCR = taxation.BCR;
+                    taxationTemp.PercentualInciso = taxation.PercentualInciso;
+                    taxationTemp.AliqInternaCTe = taxation.AliqInterna;
+                    taxationTemp.EBcr = taxation.EBcr;
+                    taxationTemp.DateStart = entity.DateStart;
+                    taxationTemp.DateEnd = null;
+
+                    createTaxation.Add(taxationTemp);
                 }
 
-                var lastId = _service.FindAll(null).Max(_ => _.Id);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.CompanyId = result.CompanyId;
-                entity.Code = result.Code;
-                entity.Uf = result.Uf;
-                entity.NcmId = result.NcmId;
-                entity.Cest = result.Cest;
-                entity.Picms = result.Picms;
-                entity.AliqInternaCTe = entity.AliqInterna;
-                entity.DateEnd = null;
-                entity.Id = lastId + 1;
+                _service.Update(updateTaxation);
+                _service.Create(createTaxation);
 
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
             }
             catch (Exception ex)
