@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -12,10 +13,12 @@ namespace Escon.SisctNET.Web.Controllers
     {
         private readonly ITaxationService _service;
         private readonly ICompanyService _companyService;
+        private readonly ITaxationTypeService _taxationTypeService;
 
         public TaxationController(
             ITaxationService service,
             ICompanyService companyService,
+            ITaxationTypeService taxationTypeService,
             IFunctionalityService functionalityService,
             IHttpContextAccessor httpContextAccessor) 
             : base(functionalityService, "Taxation")
@@ -23,6 +26,7 @@ namespace Escon.SisctNET.Web.Controllers
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
             _companyService = companyService;
+            _taxationTypeService = taxationTypeService;
 
         }
 
@@ -47,17 +51,63 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(long id)
+        public IActionResult Atualize(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
-                SessionManager.SetCompanyIdInSession(comp.CompanyId);
-                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
-                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession()});
+
+                var list_taxation = _taxationTypeService.FindAll(null).Where(_ => _.Active).OrderBy(_ => _.Description).ToList();
+
+                list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
+
+                SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
+                ViewBag.TaxationTypeId = taxationtypes;
+
+                var result = _service.FindById(id, null);
+
+                return View(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(long id, Model.Taxation entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.Updated = DateTime.Now;
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                var lastId = _service.FindAll(null).Max(_ => _.Id);
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+                entity.CompanyId = result.CompanyId;
+                entity.Code = result.Code;
+                entity.Uf = result.Uf;
+                entity.NcmId = result.NcmId;
+                entity.Cest = result.Cest;
+                entity.Picms = result.Picms;
+                entity.AliqInternaCTe = entity.AliqInterna;
+                entity.DateEnd = null;
+                entity.Id = lastId + 1;
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
             }
             catch (Exception ex)
             {
@@ -82,6 +132,26 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+
+        [HttpGet]
+        public IActionResult Delete(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var comp = _service.FindById(id, GetLog(Model.OccorenceLog.Read));
+                SessionManager.SetCompanyIdInSession(comp.CompanyId);
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult GetAll(int draw, int start)
         {
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
@@ -96,6 +166,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
                 
                 var ids = taxationAll.Where(c =>
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.TaxationType.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
@@ -110,12 +181,14 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
+                               Code = r.Code,
                                Ncm = r.Ncm.Description,
                                Cest = r.Cest,
                                Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-
+                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                            };
 
                 return Ok(new { draw = draw, recordsTotal = taxation.Count(), recordsFiltered = taxation.Count(), data = cfop.Skip(start).Take(lenght) });
@@ -129,12 +202,14 @@ namespace Escon.SisctNET.Web.Controllers
                            select new
                            {
                                Id = r.Id.ToString(),
+                               Code = r.Code,
                                Ncm = r.Ncm.Description,
                                Cest = r.Cest,
                                Taxation = r.TaxationType.Description,
                                Picms = r.Picms,
                                Uf = r.Uf,
-
+                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                            };
                 return Ok(new { draw = draw, recordsTotal = taxationAll.Count(), recordsFiltered = taxationAll.Count(), data = taxation.Skip(start).Take(lenght) });
             }

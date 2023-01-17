@@ -1,0 +1,140 @@
+﻿@model Escon.SisctNET.Model.Taxation
+
+@{
+    ViewData["Title"] = "Atualize";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" asp-route-id="@Model.CompanyId" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title"><strong>Atualizar Tributação:</strong> @Model.Code</h3>
+
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Atualize" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                        <label class="control-label">NCM</label>
+                        <textarea class="form-control" style="font-size:12px;" disabled>@Model.Ncm.Description</textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-4 col-xs-6">
+                        <label asp-for="Cest" class="control-label"></label>
+                        <input asp-for="Cest" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-xs-6">
+                        <label asp-for="Uf" class="control-label"></label>
+                        <input asp-for="Uf" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-lg-6 col-md-4 col-xs-8">
+                        <label asp-for="TaxationTypeId" class="control-label"></label>
+                        <select asp-items="@ViewBag.TaxationTypeId" class="form-control selectoption" name="TaxationTypeId" id="taxaType" onchange="activeButton()"></select>
+                    </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-4" id="eBcr">
+                        <label asp-for="EBcr" class="control-label">BCR</label> <br />
+                        @Html.CheckBoxFor(model => model.EBcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="AliqInterna" class="control-label"></label>
+                        <input type="text" name="AliqInterna" class="form-control money" value="@Model.AliqInterna" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="Fecop" class="control-label"></label>
+                        <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="MVA" class="control-label"></label>
+                        <input type="text" name="MVA" class="form-control money" value="@Model.MVA" />
+                    </div>                     
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="BCR" class="control-label"></label>
+                        @if (Model.EBcr == true)
+                        {
+                            <input type="text" name="BCR" class="form-control money" value="@Model.BCR" id="bcr" />
+                        }
+                        else
+                        {
+                            <input type="text" name="BCR" class="form-control money" id="bcr" disabled="disabled" />
+                        }
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="PercentualInciso" class="control-label"></label>
+                        <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" />
+                        <span asp-validation-for="DateStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Atualizar" onclick="Enviar()" disabled="disabled" id="taxar" class="btn btn-success pull-right" />
+                </div>
+
+            </form>
+        </div>
+        <div class="box-footer">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var taxacao = @Model.TaxationTypeId
+    $("#taxaType").children('option').each(function () {
+        if ($(this).val() == taxacao) {
+            $(this).attr('selected', true);
+            if (taxacao === 5 || taxacao === 8) {
+                $("input[name=Mva]").prop("disabled", false);
+            } else if (taxacao === 6) {
+                $("input[name=Mva]").prop("disabled", false);
+            } else {
+                $("input[name=Mva]").prop("disabled", true);
+            }
+            if (taxacao == 0) {
+                document.getElementById('taxar').disabled = true;
+            }
+            else {
+                document.getElementById('taxar').disabled = false;
+            }
+
+        }
+    });
+
+    $("#eBcr").on("change", "input[type='checkbox']", function () {
+        if ($(this).prop("checked")) {
+            $("#bcr").prop("disabled", false);
+            $("input[name=BCR]").prop("value", "");
+        } else {
+            $("#bcr").prop("disabled", true);
+            $("input[name=BCR]").prop("value", "");
+        }
+    });
+
+    function activeButton() {
+        var op = document.getElementById("taxaType").value;
+        if (op == "0") {
+            document.getElementById('taxar').disabled = true;
+        } else {
+            document.getElementById('taxar').disabled=false;
+        }
+    }
+
+    function Enviar() {
+        $("#taxaType").children('option').each(function () {
+            if ($(this).val() === 0) {
+                alert('Selecione uma tributação');
+            }
+        });
+    }
+</script>

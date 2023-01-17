@@ -27,7 +27,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "BCR")]
         public decimal? BCR { get; set; }
 
-        [Display(Name = "Aliquota FECOP")]
+        [Display(Name = "Aliq. Fecop")]
         public decimal? Fecop { get; set; }
 
         [DataType(DataType.Date)]

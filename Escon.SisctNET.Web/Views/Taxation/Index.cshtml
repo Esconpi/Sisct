@@ -23,6 +23,7 @@
             <table class="table table-striped table-bordered display responsive nowrap" id="tblTaxation" style="width:100%">
                 <thead>
                     <tr>
+                        <th class="none">Código</th>
                         <th class="all">
                             NCM
                         </th>
@@ -32,6 +33,8 @@
                         <th class="all">@Html.DisplayNameFor(model => model.TaxationTypeId)</th>
                         <th class="none">@Html.DisplayNameFor(model => model.Picms)</th>
                         <th class="all">@Html.DisplayNameFor(model => model.Uf)</th>
+                        <th class="desktop">@Html.DisplayNameFor(model => model.DateStart)</th>
+                        <th class="desktop">@Html.DisplayNameFor(model => model.DateEnd)</th>
                         <th class="all"></th>
                     </tr>
                 </thead>
@@ -101,17 +104,36 @@
                 "initComplete": function (settings, json) {
                 },
                 "columns": [
+                    { "data": "code" },
                     { "data": "ncm" },
                     { "data": "cest" },
                     { "data": "taxation" },
                     { "data": "picms" },
                     { "data": "uf" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                        }
+                    },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='#" + data + "' class = 'showTaxation glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhe da Tributação' id='" + row.id + "' /> " +
-                            "<a href='/Taxation/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
-                        }
+                            if (row.fim == "01/01/0001") {
+                                return "<a href='#" + data + "' class = 'showTaxation glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhe da Tributação' id='" + row.id + "' /> " +
+                                       "<a href='/Taxation/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Tributação' /> " +
+                                       "<a href='/Taxation/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+                            }
+                            else {
+                                return "<a href='#" + data + "' class = 'showTaxation glyphicon glyphicon-list-alt pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Detalhe da Tributação' id='" + row.id + "' /> "
+                            }
+                         }
                     }
                 ]
             });
