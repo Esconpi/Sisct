@@ -99,5 +99,16 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst;
         }
+
+        public void Update(List<Taxation> taxations, Log log = null)
+        {
+            foreach (var taxation in taxations)
+            {
+                _context.Taxations.Update(taxation);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
     }
 }
