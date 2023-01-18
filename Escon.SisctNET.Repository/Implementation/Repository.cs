@@ -76,6 +76,17 @@ namespace Escon.SisctNET.Repository.Implementation
             }
         }
 
+        public void Delete(List<T> entities, Log log)
+        {
+            foreach (var entity in entities)
+            {
+                dataSet.Remove(entity);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+        }
+
         public List<T> FindAll(Model.Log log)
         {
             AddLog(log);

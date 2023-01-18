@@ -19,6 +19,8 @@ namespace Escon.SisctNET.Service.Implementation
 
         public void Delete(long id, Log log) => _repository.Delete(id, log);
 
+        public void Delete(List<EmailResponsible> entities, Log log) => _repository.Delete(entities, log);
+
         public List<EmailResponsible> FindAll(Log log) => _repository.FindAll(log);
 
         public List<EmailResponsible> FindAll(int page, int countrow, Log log) => _repository.FindAll(page, countrow, log);

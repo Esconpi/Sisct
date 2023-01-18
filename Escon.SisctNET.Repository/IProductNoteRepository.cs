@@ -4,8 +4,6 @@ namespace Escon.SisctNET.Repository
 {
     public interface IProductNoteRepository : IRepository<Model.ProductNote>
     {
-        void Delete(List<Model.ProductNote> products, Model.Log log = null);
-
         decimal FindByTotal(List<long> notes, Model.Log log = null);
 
         decimal FindBySubscription(List<Model.Note> notes, Model.TypeTaxation taxationType, Model.Log log = null);

@@ -710,8 +710,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.AliqInternaCTe = aliqInterna;
                                     prod.DiferencialCTe = dif_frete;
                                     prod.EBcr = taxed.EBcr;
-                                    prod.Created = DateTime.Now;
-                                    prod.Updated = prod.Created;
 
                                 }
                                 catch

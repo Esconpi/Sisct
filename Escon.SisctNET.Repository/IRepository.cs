@@ -19,5 +19,7 @@ namespace Escon.SisctNET.Repository
         List<T> Update(List<T> entities, Model.Log log);
 
         void Delete(long id, Model.Log log);
+
+        void Delete(List<T> entities, Model.Log log);
     }
 }

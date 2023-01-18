@@ -385,16 +385,5 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return rst.ToList();
         }
-
-        public void Delete(List<ProductNote> products, Log log = null)
-        {
-            foreach (var product in products)
-            {
-                _context.ProductNotes.Remove(product);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
     }
 }

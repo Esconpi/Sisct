@@ -29,6 +29,11 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
+        public void Delete(List<Ncm> entities, Log log)
+        {
+            _repository.Delete(entities, log);
+        }
+
         public List<Ncm> FindAll(Log log)
         {
             return _repository.FindAll(log);

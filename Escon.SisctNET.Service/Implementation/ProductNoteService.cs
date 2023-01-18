@@ -28,9 +28,9 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
-        public void Delete(List<ProductNote> products, Log log = null)
+        public void Delete(List<ProductNote> entities, Log log = null)
         {
-            _repository.Delete(products, log);
+            _repository.Delete(entities, log);
         }
 
         public List<ProductNote> FindAll(Log log)

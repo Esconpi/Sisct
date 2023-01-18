@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -27,6 +26,11 @@ namespace Escon.SisctNET.Service.Implementation
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
+        }
+
+        public void Delete(List<Notification> entities, Log log)
+        {
+            _repository.Delete(entities, log);
         }
 
         public List<Notification> FindAll(Log log)

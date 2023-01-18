@@ -28,6 +28,11 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
+        public void Delete(List<DevoFornecedor> entities, Log log)
+        {
+            _repository.Delete(entities, log);
+        }
+
         public List<DevoFornecedor> FindAll(Log log)
         {
             return _repository.FindAll(log);

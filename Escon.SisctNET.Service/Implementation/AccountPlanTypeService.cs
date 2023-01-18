@@ -28,6 +28,10 @@ namespace Escon.SisctNET.Service.Implementation
             _repository.Delete(id, log);
         }
 
+        public void Delete(List<AccountPlanType> entities, Log log)
+        {
+            _repository.Delete(entities, log);
+        }
 
         public List<Model.AccountPlanType> FindAll(Log log)
         {

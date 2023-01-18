@@ -473,7 +473,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.DateStart = dateStart;
                     prod.Produto = "Especial";
                     prod.PercentualInciso = inciso;
-                    prod.Updated = DateTime.Now;
 
                     updateProducts.Add(prod);
                 }
@@ -642,7 +641,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
-                        prod.Updated = DateTime.Now;
 
                         updateProducts.Add(prod);
                     }
@@ -810,7 +808,6 @@ namespace Escon.SisctNET.Web.Controllers
                             
                             item.Qpauta = null;
                             item.Produto = "Normal";
-                            item.Updated = DateTime.Now;
 
                             updateProducts.Add(item);
                         }
@@ -833,7 +830,6 @@ namespace Escon.SisctNET.Web.Controllers
                         status = true;
 
                     note.Status = status;
-                    note.Updated = DateTime.Now;
 
                     if (note.Status)
                         updateNote.Add(note);

@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Delete(List<Note> notes, Log log = null)
-        {
-            foreach (var note in notes)
-            {
-                _context.Notes.Remove(note);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public List<Note> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.Notes
