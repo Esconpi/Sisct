@@ -14,14 +14,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Product> products, Log log = null)
-        {
-            _repository.Create(products);
-        }
-
         public Product Create(Product entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Product> Create(List<Product> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -52,6 +52,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Product Update(Product entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Product> Update(List<Product> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
 
         public decimal FindByPrice(long id, Log log)

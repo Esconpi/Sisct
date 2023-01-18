@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -281,33 +282,11 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public void Create(List<ProductNote> products, Log log = null)
-        {
-            foreach (var p in products)
-            {
-                _context.ProductNotes.Add(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public void Delete(List<ProductNote> products, Log log = null)
         {
             foreach (var p in products)
             {
                 _context.ProductNotes.Remove(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
-        public void Update(List<ProductNote> products, Log log = null)
-        {
-            foreach (var p in products)
-            {
-                _context.ProductNotes.Update(p);
             }
 
             AddLog(log);
@@ -418,20 +397,22 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public void Create(List<Note> notes, Log log = null)
+        public async Task CreateRange(List<ProductNote> products, Log log = null)
         {
-            foreach(var note in notes)
-            {
-                foreach (var product in note.Products)
-                {
-                    product.NoteId = note.Id;
+            _context.ProductNotes.AddRange(products);
+            await _context.SaveChangesAsync();
+        }
 
-                    _context.ProductNotes.Add(product);
-                }
-            }
+        public async Task UpdateRange(List<ProductNote> products, Log log = null)
+        {
+            _context.ProductNotes.UpdateRange(products);
+            await _context.SaveChangesAsync();
+        }
 
-            AddLog(log);
-            _context.SaveChanges();
+        public async Task DeleteRange(List<ProductNote> products, Log log = null)
+        {
+            _context.ProductNotes.RemoveRange(products);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -19,9 +19,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<Company> companies, Log log = null)
+        public List<Company> Create(List<Company> entities, Log log)
         {
-            _repository.Create(companies);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -59,14 +59,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
+        public List<Company> Update(List<Company> entities, Log log)
+        {
+            return _repository.Update(entities, log);
+        }
+
         public List<Model.Company> FindByCompanies(Log log = null)
         {
             return _repository.FindByCompanies(log);
-        }
-
-        public void Update(List<Company> companies, Log log = null)
-        {
-            _repository.Update(companies, log);
         }
 
         public async Task<List<Company>> ListAllActiveAsync(Log log) => await _repository.ListAllActiveAsync(log);

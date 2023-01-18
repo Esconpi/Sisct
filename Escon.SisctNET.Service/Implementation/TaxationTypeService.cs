@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<TaxationType> taxationTypes, Log log = null)
-        {
-            _repository.Create(taxationTypes);
-        }
-
         public TaxationType Create(TaxationType entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<TaxationType> Create(List<TaxationType> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationType Update(TaxationType entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<TaxationType> Update(List<TaxationType> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

@@ -807,7 +807,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
+                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
 
                 List<Note> updateNote = new List<Note>();
 
@@ -829,7 +829,7 @@ namespace Escon.SisctNET.Web.Controllers
                         updateNote.Add(note);
                 }
 
-                _noteService.Update(updateNote);
+                _noteService.Update(updateNote, GetLog(OccorenceLog.Update));
 
                 if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
                 {
@@ -863,7 +863,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.AliqInterna = aliqInterna;
                     taxation.AliqInternaCTe = aliqInterna;
                     taxation.PercentualInciso = inciso;
-                    taxation.Diferencial = dif;
                     taxation.MVA = mva;
                     taxation.BCR = bcr;
                     taxation.Fecop = fecop;
@@ -874,8 +873,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.EBcr = entity.EBcr;
                     taxation.DateStart = dateStart;
                     taxation.DateEnd = null;
-                    taxation.Created = DateTime.Now;
-                    taxation.Updated = DateTime.Now;
 
                     _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
 

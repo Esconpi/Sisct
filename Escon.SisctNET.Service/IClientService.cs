@@ -18,10 +18,5 @@ namespace Escon.SisctNET.Service
         List<string> FindByContribuinte(long companyId, string type, Model.Log log = null);
 
         Client FindByRaiz(string raiz, Model.Log log = null);
-
-        void Create(List<Model.Client> clients, Model.Log log = null);
-
-        void Update(List<Model.Client> clients, Model.Log log = null);
-
     }
 }

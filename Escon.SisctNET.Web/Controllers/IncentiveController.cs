@@ -73,15 +73,12 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.Active = true;
                 entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
                 _service.Create(entity, GetLog(OccorenceLog.Create));
 
                 if (incentive != null)
                 {
                     incentive.Active = false;
-                    incentive.Updated = DateTime.Now;
                     _service.Update(incentive, GetLog(OccorenceLog.Update));
                 }
 
@@ -126,8 +123,6 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
                 entity.CompanyId = rst.CompanyId;
                 entity.Active = rst.Active;
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
 
                 var configMin = _configurationService.FindByName("DiasAvisoMínimoIncentivo");

@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<AccountPlanType> Create(List<AccountPlanType> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
@@ -42,6 +47,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Model.AccountPlanType Update(Model.AccountPlanType entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<AccountPlanType> Update(List<AccountPlanType> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

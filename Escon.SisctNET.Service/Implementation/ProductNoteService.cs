@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -19,9 +19,24 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<ProductNote> Create(List<ProductNote> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
+        public async Task CreateRange(List<ProductNote> products, Log log = null)
+        {
+            await _repository.CreateRange(products, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
+        }
+
+        public async Task DeleteRange(List<ProductNote> products, Log log = null)
+        {
+            await _repository.DeleteRange(products, log);
         }
 
         public List<ProductNote> FindAll(Log log)
@@ -42,6 +57,16 @@ namespace Escon.SisctNET.Service.Implementation
         public ProductNote Update(ProductNote entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<ProductNote> Update(List<ProductNote> entities, Log log)
+        {
+            return _repository.Update(entities, log);
+        }
+
+        public async Task UpdateRange(List<ProductNote> products, Log log = null)
+        {
+           await _repository.UpdateRange(products, log);
         }
 
         public List<ProductNote> FindByNote(long noteId, Log log = null)
@@ -108,21 +133,6 @@ namespace Escon.SisctNET.Service.Implementation
         {
             return _repository.FindByNormal(notes, log);
         }
-        
-        public void Create(List<ProductNote> products, Log log = null)
-        {
-            _repository.Create(products, log);
-        }
-
-        public void Delete(List<ProductNote> products, Log log = null)
-        {
-            _repository.Delete(products, log);
-        }
-
-        public void Update(List<ProductNote> products, Log log = null)
-        {
-            _repository.Update(products, log);
-        }
 
         public ProductNote FindByProduct(long id, Log log = null)
         {
@@ -142,11 +152,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<ProductNote> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);
-        }
-
-        public void Create(List<Note> notes, Log log = null)
-        {
-            _repository.Create(notes, log);
         }
     }
 }

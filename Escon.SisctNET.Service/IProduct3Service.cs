@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service
 {
     public interface IProduct3Service : IServiceBase<Model.Product3>
     {
-        void Create(List<Model.Product3> products, Model.Log log = null);
+        Task CreateRange(List<Model.Product3> products, Model.Log log = null);
 
-        void Update(List<Model.Product3> products, Model.Log log = null);
+        Task UpdateRange(List<Model.Product3> products, Model.Log log = null);
 
         Model.Product3 FindByDescription(string description, Model.Log log = null);
 

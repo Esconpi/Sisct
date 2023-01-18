@@ -2,6 +2,7 @@
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,17 +18,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Company> companies, Model.Log log = null)
-        {
-            foreach (var c in companies)
-            {
-                _context.Companies.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Company FindByCode(string code, Model.Log log = null)
         {
             var rst = _context.Companies.Where(_ => _.Code.Equals(code)).FirstOrDefault();
@@ -40,17 +30,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Companies.Where(_ => _.Document.Equals(document)).FirstOrDefault();
             AddLog(log);
             return rst;
-        }
-
-        public void Update(List<Company> companies, Log log = null)
-        {
-            foreach (var c in companies)
-            {
-                _context.Companies.Update(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public List<Model.Company> FindByCompanies(Log log = null)

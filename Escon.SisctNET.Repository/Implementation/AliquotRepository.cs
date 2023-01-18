@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Aliquot> aliquots, Log log = null)
-        {
-            foreach(var c in aliquots)
-            {
-                _context.Aliquots.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Aliquot FindByAliquot(long stateOrigemId, long stateDestinoId, Log log = null)
         {
             var rst = _context.Aliquots.Where(_ => _.StateOrigemId.Equals(stateOrigemId) && _.StateDestinoId.Equals(stateDestinoId) && _.DateEnd == null).FirstOrDefault();

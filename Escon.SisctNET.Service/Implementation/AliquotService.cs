@@ -14,14 +14,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Aliquot> aliquots, Log log = null)
-        {
-            _repository.Create(aliquots);         
-        }
-
         public Aliquot Create(Aliquot entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Aliquot> Create(List<Aliquot> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -72,6 +72,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Aliquot Update(Aliquot entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Aliquot> Update(List<Aliquot> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

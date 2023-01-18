@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -17,15 +18,10 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<ProductIncentivo> productIncentivos, Log log = null)
+        public async Task CreateRange(List<ProductIncentivo> products, Log log = null)
         {
-            foreach (var p in productIncentivos)
-            {
-                _context.ProductIncentivos.Add(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
+            _context.ProductIncentivos.AddRange(products);
+            await _context.SaveChangesAsync();
         }
 
         public List<ProductIncentivo> FindByAllProducts(long company, Log log = null)
@@ -133,15 +129,10 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public void Update(List<ProductIncentivo> productIncentivos, Log log = null)
+        public async Task UpdateRange(List<ProductIncentivo> products, Log log = null)
         {
-            foreach (var p in productIncentivos)
-            {
-                _context.ProductIncentivos.Update(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
+            _context.ProductIncentivos.UpdateRange(products);
+            await _context.SaveChangesAsync();
         }
     }
 }

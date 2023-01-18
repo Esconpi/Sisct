@@ -89,18 +89,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (item != null)
                 {
-                    item.Updated = DateTime.Now;
                     item.DateEnd = entity.DateStart.AddDays(-1);
                     _service.Update(item, null);
                 }
 
-                //var lastId = _service.FindAll(null).Max(_ => _.Id);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
                 entity.DateEnd = null;
                 entity.Price = price;
-                //entity.Id = lastId + (long)1;
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -156,8 +151,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, null);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
-                entity.Created = result.Created;
-                entity.Updated = DateTime.Now;
                 entity.Price = price;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
 
@@ -215,24 +208,20 @@ namespace Escon.SisctNET.Web.Controllers
                 var result = _service.FindById(id, null);
                 if (result != null)
                 {
-                    result.Updated = DateTime.Now;
                     result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                     _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 }
 
-                var lastId = _service.FindAll(null).Max(_ => _.Id);
+                Product3 product = new Product3();
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.DateEnd = null;
-                entity.Price = price;
-                entity.Description = result.Description;
-                entity.GroupId = result.GroupId;
-                entity.Unity = result.Unity;
-                entity.Code = result.Code;
-                entity.Id = lastId + 1;
+                product.Price = price;
+                product.Description = result.Description;
+                product.GroupId = result.GroupId;
+                product.Unity = result.Unity;
+                product.Code = result.Code;
+                product.DateStart = entity.DateStart;
 
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                _service.Create(product, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -331,14 +320,14 @@ namespace Escon.SisctNET.Web.Controllers
                         product.DateStart = inicioATo;
                         product.GroupId = groupId;
                         product.Created = DateTime.Now;
-                        product.Updated = DateTime.Now;
+                        product.Updated = product.Created;
                         addProduct.Add(product);
                     }
 
                 }
 
-                _service.Create(addProduct);
-                _service.Update(updateProduct);
+                await _service.CreateRange(addProduct, GetLog(Model.OccorenceLog.Create));
+                await _service.UpdateRange(updateProduct, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");
 

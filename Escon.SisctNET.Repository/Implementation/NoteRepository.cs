@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -16,29 +17,16 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-
-        public List<Note> Create(List<Note> notes, Log log = null)
+        public async Task CreateRange(List<Note> notes, Log log = null)
         {
-            foreach (var n in notes)
-            {
-                _context.Notes.Add(n);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-
-            return notes;
+            _context.Notes.AddRange(notes);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(List<Note> notes, Log log = null)
+        public async Task DeleteRange(List<Note> notes, Log log = null)
         {
-            foreach (var n in notes)
-            {
-                _context.Notes.Remove(n);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
+            _context.Notes.RemoveRange(notes);
+            await _context.SaveChangesAsync();
         }
 
         public List<Note> FindByCompany(long companyId, Log log = null)
@@ -95,15 +83,10 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public void Update(List<Note> notes, Log log = null)
+        public async Task UpdateRange(List<Note> notes, Log log = null)
         {
-            foreach (var n in notes)
-            {
-                _context.Notes.Update(n);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
+            _context.Notes.UpdateRange(notes);
+            await _context.SaveChangesAsync();
         }
     }
 }

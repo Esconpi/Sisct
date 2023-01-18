@@ -14,14 +14,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Product2> products, Log log = null)
-        {
-            _repository.Create(products, log);
-        }
-
         public Product2 Create(Product2 entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Product2> Create(List<Product2> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -69,9 +69,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<Product2> products, Log log = null)
+        public List<Product2> Update(List<Product2> entities, Log log)
         {
-            _repository.Update(products, log);
+            return _repository.Update(entities, log);
         }
 
         public List<Product2> FindAllInDate2(DateTime dateProd, Log log = null)

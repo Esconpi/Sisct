@@ -148,7 +148,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Create(addProducts, GetLog(OccorenceLog.Create));
+                _service.CreateRange(addProducts, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -303,7 +303,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
+                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("IndexAll", new { id = companyId });
             }
@@ -454,7 +454,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
                 
-                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
+                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
                 
                 return RedirectToAction("Index", new { companyId = companyId, year = year, month = month });
             }
@@ -609,8 +609,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
-                _service.Create(createProducts, GetLog(OccorenceLog.Create));
+                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
+                _service.CreateRange(createProducts, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("IndexAll", new { id = result.CompanyId });
             }

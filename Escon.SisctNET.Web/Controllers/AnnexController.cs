@@ -62,9 +62,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-
                 if (entity.Convenio.Equals(null))
                     entity.Convenio = "";
 
@@ -103,8 +100,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
 
                 if (entity.Convenio.Equals(null))
                     entity.Convenio = "";

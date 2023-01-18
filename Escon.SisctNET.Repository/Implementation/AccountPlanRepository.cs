@@ -2,6 +2,7 @@
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,17 +15,6 @@ namespace Escon.SisctNET.Repository.Implementation
         public AccountPlanRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
         {
             _context = context;
-        }
-
-        public void Create(List<AccountPlan> accountPlans, Log log = null)
-        {
-            foreach (var a in accountPlans)
-            {
-                _context.AccountPlans.Add(a);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public List<AccountPlan> FindByAccountTypeId(long id, Log log = null)

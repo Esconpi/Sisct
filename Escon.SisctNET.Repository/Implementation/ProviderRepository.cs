@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Provider> providers, Log log = null)
-        {
-            foreach (var p in providers)
-            {
-                _context.Providers.Add(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public List<Provider> FindByCompany(long companyId, Log log = null)
         {
             var result = _context.Providers.Where(_ => _.CompanyId.Equals(companyId)).ToList();
@@ -84,17 +73,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var result = _context.Providers.Where(_ => _.CnpjRaiz.Equals(raiz)).FirstOrDefault();
             AddLog(log);
             return result;
-        }
-
-        public void Update(List<Provider> providers, Log log = null)
-        {
-            foreach (var p in providers)
-            {
-                _context.Providers.Update(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
     }
 }

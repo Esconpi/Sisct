@@ -5,10 +5,6 @@ namespace Escon.SisctNET.Service
 {
     public interface IProduct2Service : IServiceBase<Model.Product2>
     {
-        void Create(List<Model.Product2> products, Model.Log log = null);
-
-        void Update(List<Model.Product2> products, Model.Log log = null);
-
         Model.Product2 FindByDescription(string description, Model.Log log = null);
 
         decimal FindByPrice(long id, Model.Log log = null);

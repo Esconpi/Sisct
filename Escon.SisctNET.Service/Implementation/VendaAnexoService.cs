@@ -18,9 +18,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<VendaAnexo> vendaAnexos, Log log = null)
+        public List<VendaAnexo> Create(List<VendaAnexo> entities, Log log)
         {
-            _repository.Create(vendaAnexos, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -53,9 +53,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<VendaAnexo> vendaAnexos, Log log = null)
+        public List<VendaAnexo> Update(List<VendaAnexo> entities, Log log)
         {
-            _repository.Update(vendaAnexos, log);
+            return _repository.Update(entities, log);
         }
     }
 }

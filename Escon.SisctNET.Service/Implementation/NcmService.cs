@@ -14,14 +14,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Ncm> ncms, Log log = null)
-        {
-            _repository.Create(ncms);
-        }
-
         public Ncm Create(Ncm entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Ncm> Create(List<Ncm> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -52,6 +52,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Ncm Update(Ncm entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Ncm> Update(List<Ncm> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

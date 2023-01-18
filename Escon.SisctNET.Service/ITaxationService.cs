@@ -6,10 +6,6 @@ namespace Escon.SisctNET.Service
 {
     public interface ITaxationService : IServiceBase<Model.Taxation>
     {
-        void Create(List<Model.Taxation> taxations, Model.Log log = null);
-
-        void Update(List<Model.Taxation> taxations, Model.Log log = null);
-
         Model.Taxation FindByCode(string code, string cest, DateTime data, Model.Log log = null);
 
         Model.Taxation FindByNcm(string code, string cest, Model.Log log = null);

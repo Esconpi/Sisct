@@ -1,5 +1,4 @@
-﻿
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 using System.Collections.Generic;
 
@@ -19,9 +18,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<TaxProducer> taxProducers, Log log = null)
+        public List<TaxProducer> Create(List<TaxProducer> entities, Log log)
         {
-            _repository.Create(taxProducers, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -54,9 +53,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<TaxProducer> taxProducers, Log log = null)
+        public List<TaxProducer> Update(List<TaxProducer> entities, Log log)
         {
-            _repository.Update(taxProducers, log);
+            return _repository.Update(entities, log);
         }
     }
 }

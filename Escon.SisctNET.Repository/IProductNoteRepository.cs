@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository
 {
     public interface IProductNoteRepository : IRepository<Model.ProductNote>
     {
-        void Create(List<Model.Note> notes, Model.Log log = null);
+        Task CreateRange(List<Model.ProductNote> products, Model.Log log = null);
 
-        void Create(List<Model.ProductNote> products, Model.Log log = null);
+        Task UpdateRange(List<Model.ProductNote> products, Model.Log log = null);
 
-        void Delete(List<Model.ProductNote> products, Model.Log log = null);
-
-        void Update(List<Model.ProductNote> products, Model.Log log = null);
+        Task DeleteRange(List<Model.ProductNote> products, Model.Log log = null);
 
         decimal FindByTotal(List<long> notes, Model.Log log = null);
 

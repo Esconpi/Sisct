@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,17 +14,6 @@ namespace Escon.SisctNET.Repository.Implementation
         public AttachmentRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
         {
             _context = context;
-        }
-
-        public void Create(List<Attachment> attachments, Log log = null)
-        {
-            foreach (var c in attachments)
-            {
-                _context.Attachments.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public Attachment FindByDescription(string description, Log log = null)

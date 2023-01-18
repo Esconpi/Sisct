@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.Extensions.Configuration;
@@ -14,18 +13,6 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             _context = context;
         }
-
-        public void Create(List<Cfop> cfops, Log log = null)
-        {
-            foreach (var c in cfops)
-            {
-                _context.Cfops.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Cfop FindByCode(string code, Log log = null)
         {
             var rst = _context.Cfops.Where(_ => _.Code.Equals(code)).FirstOrDefault();

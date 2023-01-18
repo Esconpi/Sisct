@@ -19,6 +19,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<Notification> Create(List<Notification> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
@@ -52,6 +57,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Notification Update(Notification entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Notification> Update(List<Notification> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

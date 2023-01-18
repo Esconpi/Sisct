@@ -18,9 +18,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<DevoFornecedor> devoFornecedors, Log log = null)
+        public List<DevoFornecedor> Create(List<DevoFornecedor> entities, Log log)
         {
-            _repository.Create(devoFornecedors, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -53,9 +53,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<DevoFornecedor> devoFornecedors, Log log = null)
+        public List<DevoFornecedor> Update(List<DevoFornecedor> entities, Log log)
         {
-            _repository.Update(devoFornecedors, log);
+            return _repository.Update(entities, log);
         }
     }
 }

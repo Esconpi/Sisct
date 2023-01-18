@@ -19,9 +19,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<Taxation> taxations, Log log = null)
+        public List<Taxation> Create(List<Taxation> entities, Log log)
         {
-            _repository.Create(taxations, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -74,9 +74,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<Taxation> taxations, Log log = null)
+        public List<Taxation> Update(List<Taxation> entities, Log log)
         {
-            _repository.Update(taxations, log);
+            return _repository.Update(entities, log);
         }
     }
 }

@@ -18,9 +18,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliq. Inter")]
         public decimal? AliqInterna { get; set; }
 
-        [Display(Name = "Dif")]
-        public decimal? Diferencial { get; set; }
-
         [Display(Name = "MVA")]
         public decimal? MVA { get; set; }
 

@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Group> groups, Log log = null)
-        {
-            _repository.Create(groups);
-        }
-
         public Group Create(Group entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Group> Create(List<Group> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Group Update(Group entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Group> Update(List<Group> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

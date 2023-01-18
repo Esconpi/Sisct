@@ -18,9 +18,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<Client> clients, Log log = null)
+        public List<Client> Create(List<Client> entities, Log log)
         {
-            _repository.Create(clients, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -83,9 +83,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<Client> clients, Log log = null)
+        public List<Client> Update(List<Client> entities, Log log)
         {
-            _repository.Update(clients, log);
+            return _repository.Update(entities, log);
         }
     }
 }

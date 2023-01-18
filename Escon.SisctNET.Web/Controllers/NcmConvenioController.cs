@@ -77,9 +77,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-
                 if (entity.Ncm != null)
                     entity.Ncm = entity.Ncm.Trim();
                 else
@@ -132,8 +129,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
 
                 if (entity.Ncm != null)
                     entity.Ncm = entity.Ncm.Trim();

@@ -19,9 +19,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<ProductNoteInventoryExit> products, Log log = null)
+        public List<ProductNoteInventoryExit> Create(List<ProductNoteInventoryExit> entities, Log log)
         {
-            _repository.Create(products, log);
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -72,6 +72,11 @@ namespace Escon.SisctNET.Service.Implementation
         public ProductNoteInventoryExit Update(ProductNoteInventoryExit entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<ProductNoteInventoryExit> Update(List<ProductNoteInventoryExit> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

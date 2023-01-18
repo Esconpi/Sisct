@@ -67,9 +67,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
                 entity.Password = new Crypto.HashManager().GenerateHash(entity.Password);
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
@@ -122,7 +119,6 @@ namespace Escon.SisctNET.Web.Controllers
                     person.Password = _person.Password;
                 }
 
-                person.Updated = DateTime.Now;
                 _service.Update(person, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
@@ -166,7 +162,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     person.Password = _person.Password;
                 }
-                person.Updated = DateTime.Now;
                 person.ProfileId = _person.ProfileId;
                 person.Active = true;
                 _service.Update(person, GetLog(Model.OccorenceLog.Update));

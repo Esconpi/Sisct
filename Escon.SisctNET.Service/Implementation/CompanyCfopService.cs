@@ -1,6 +1,7 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -18,9 +19,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<CompanyCfop> cfopCompanies, Log log = null)
+        public List<CompanyCfop> Create(List<CompanyCfop> entities, Log log)
         {
-            _repository.Create(cfopCompanies, log);
+            return _repository.Create(entities, log);
+        }
+
+        public async Task CreateRange(List<CompanyCfop> companyCfops, Log log = null)
+        {
+            await _repository.CreateRange(companyCfops, log);
         }
 
         public void Delete(long id, Log log)
@@ -146,6 +152,11 @@ namespace Escon.SisctNET.Service.Implementation
         public CompanyCfop Update(CompanyCfop entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<CompanyCfop> Update(List<CompanyCfop> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

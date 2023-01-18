@@ -252,7 +252,6 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
-                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("IndexAll", new { id = client.CompanyId});
             }
@@ -295,7 +294,6 @@ namespace Escon.SisctNET.Web.Controllers
                     client.Diferido = entity.Diferido;
                     client.Percentual = entity.Percentual;
                 }
-                client.Updated = DateTime.Now;
                 _service.Update(client, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { companyId = client.CompanyId, year = client.AnoRef, month = client.MesRef });
             }

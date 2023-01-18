@@ -143,7 +143,6 @@ namespace Escon.SisctNET.Web.Controllers
                 note.Desconto = entity.Desconto;
                 note.Frete = entity.Frete;
                 note.GnreFecop = entity.GnreFecop;
-                note.Updated = DateTime.Now;
 
                 _service.Update(note, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = note.CompanyId, year = note.AnoRef, month = note.MesRef });
@@ -203,7 +202,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     deleteProduct.Add(product);
                 }
-                _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
+                _itemService.DeleteRange(deleteProduct, GetLog(OccorenceLog.Delete));
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
                 return RedirectToAction("Index", new { id = company, year = year, month = month });
             }
@@ -329,8 +328,6 @@ namespace Escon.SisctNET.Web.Controllers
                         note.Status = false;
                         note.AnoRef = year;
                         note.MesRef = month;
-                        note.Created = DateTime.Now;
-                        note.Updated = DateTime.Now;
 
                         nota = _service.Create(note, GetLog(Model.OccorenceLog.Create));
 
@@ -714,7 +711,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.DiferencialCTe = dif_frete;
                                     prod.EBcr = taxed.EBcr;
                                     prod.Created = DateTime.Now;
-                                    prod.Updated = DateTime.Now;
+                                    prod.Updated = prod.Created;
 
                                 }
                                 catch
@@ -741,12 +738,13 @@ namespace Escon.SisctNET.Web.Controllers
                 if (tributada == true && qtd > 0)
                 {
                     nota.Status = true;
+                    nota.Updated = DateTime.Now;
                     updateNote.Add(nota);
                 }
             }
 
-            _service.Update(updateNote, GetLog(Model.OccorenceLog.Update));
-            _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
+            _service.UpdateRange(updateNote, GetLog(Model.OccorenceLog.Update));
+            _itemService.CreateRange(addProduct, GetLog(OccorenceLog.Create));
 
             if (notas.Count() > 0 && erro == 0)
             {
@@ -791,8 +789,8 @@ namespace Escon.SisctNET.Web.Controllers
                 deleteNote.Add(note);
             }
 
-            _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
-            _service.Delete(deleteNote, GetLog(OccorenceLog.Delete));
+            _itemService.DeleteRange(deleteProduct, GetLog(OccorenceLog.Delete));
+            _service.DeleteRange(deleteNote, GetLog(OccorenceLog.Delete));
 
             int erro = 0;
             string url = "Index", chave = "Nenhuma";

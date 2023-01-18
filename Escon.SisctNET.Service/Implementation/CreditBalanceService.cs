@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<CreditBalance> Create(List<CreditBalance> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
@@ -51,6 +56,11 @@ namespace Escon.SisctNET.Service.Implementation
         public CreditBalance Update(CreditBalance entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<CreditBalance> Update(List<CreditBalance> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

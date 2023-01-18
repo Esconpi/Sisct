@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Product2> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Product2s.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Product2 FindByDescription(string description, Log log = null)
         {
             var rst = _context.Product2s.Where(_ => _.Description.Equals(description)).FirstOrDefault();
@@ -54,17 +43,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Product2s.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);
             return rst;
-        }
-
-        public void Update(List<Product2> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Product2s.Update(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public List<Product2> FindAllInDate2(DateTime dateProd, Log log = null)

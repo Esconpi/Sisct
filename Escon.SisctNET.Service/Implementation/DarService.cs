@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
@@ -19,6 +17,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Dar Create(Dar entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Dar> Create(List<Dar> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -47,6 +50,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Dar Update(Dar entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Dar> Update(List<Dar> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

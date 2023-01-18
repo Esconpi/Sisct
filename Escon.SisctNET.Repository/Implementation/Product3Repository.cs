@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -15,17 +16,6 @@ namespace Escon.SisctNET.Repository.Implementation
         public Product3Repository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
         {
             _context = context;
-        }
-
-        public void Create(List<Product3> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Product3s.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public Product3 FindByDescription(string description, Log log = null)
@@ -54,17 +44,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Product3s.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);
             return rst;
-        }
-
-        public void Update(List<Product3> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Product3s.Update(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
 
         public List<Product3> FindAllInDate2(DateTime dateProd, Log log = null)
@@ -110,6 +89,18 @@ namespace Escon.SisctNET.Repository.Implementation
                 .FirstOrDefault();
             AddLog(log);
             return rst;
+        }
+
+        public async Task CreateRange(List<Product3> products, Log log = null)
+        {
+            _context.Product3s.AddRange(products);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRange(List<Product3> products, Log log = null)
+        {
+            _context.Product3s.UpdateRange(products);
+            await _context.SaveChangesAsync();
         }
     }
 }

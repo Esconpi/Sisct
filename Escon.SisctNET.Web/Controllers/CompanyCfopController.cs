@@ -54,11 +54,11 @@ namespace Escon.SisctNET.Web.Controllers
                         cc.Active = false;
                         cc.CfopTypeId = 11;
                         cc.Created = DateTime.Now;
-                        cc.Updated = DateTime.Now;
+                        cc.Updated = cc.Created;
                         addCompanyCfop.Add(cc);
                     }
                 }
-                _service.Create(addCompanyCfop, GetLog(OccorenceLog.Create));
+                _service.CreateRange(addCompanyCfop, GetLog(OccorenceLog.Create));
                 return RedirectToAction("Index", new { id = companyId});
             }
             catch (Exception ex)

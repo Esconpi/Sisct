@@ -38,12 +38,31 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public T Create(T entity, Model.Log log)
         {
+            entity.Created = DateTime.Now;
+            entity.Updated = entity.Created;
+
             dataSet.Add(entity);
 
             AddLog(log);
             _context.SaveChanges();
 
             return entity;
+        }
+
+        public List<T> Create(List<T> entities, Log log)
+        {
+            foreach (var entity in entities)
+            {
+                entity.Created = DateTime.Now;
+                entity.Updated = entity.Created;
+
+                dataSet.Add(entity);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+
+            return entities;
         }
 
         public void Delete(long id, Model.Log log)
@@ -91,5 +110,19 @@ namespace Escon.SisctNET.Repository.Implementation
             return ent;
         }
 
+        public List<T> Update(List<T> entities, Log log)
+        {
+            foreach (var entity in entities)
+            {
+                entity.Updated = DateTime.Now;
+
+                dataSet.Update(entity);
+            }
+
+            AddLog(log);
+            _context.SaveChanges();
+
+            return entities;
+        }
     }
 }

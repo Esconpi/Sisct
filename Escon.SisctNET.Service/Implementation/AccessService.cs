@@ -18,6 +18,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<Access> Create(List<Access> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
@@ -56,6 +61,12 @@ namespace Escon.SisctNET.Service.Implementation
         public Access Update(Access entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Access> Update(List<Access> entities, Log log)
+        {
+            return _repository.Update(entities, log);
+
         }
     }
 }

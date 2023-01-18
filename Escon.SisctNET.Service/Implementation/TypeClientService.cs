@@ -1,8 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -18,6 +16,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TypeClient Create(TypeClient entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<TypeClient> Create(List<TypeClient> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -43,6 +46,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TypeClient Update(TypeClient entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<TypeClient> Update(List<TypeClient> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

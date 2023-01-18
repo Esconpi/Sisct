@@ -5,9 +5,6 @@ namespace Escon.SisctNET.Service
 {
     public interface IProductNoteInventoryEntryService : IServiceBase<Model.ProductNoteInventoryEntry>
     {
-
-        void Create(List<Model.ProductNoteInventoryEntry> products, Model.Log log = null);
-
         List<Model.ProductNoteInventoryEntry> FindByCompany(long companyId, Model.Log log = null);
 
         List<Model.ProductNoteInventoryEntry> FindByNotes(long companyId, string year, string month, Model.Log log = null);

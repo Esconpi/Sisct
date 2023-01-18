@@ -74,8 +74,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
 
                 return RedirectToAction("Index");
@@ -120,8 +118,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

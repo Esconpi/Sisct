@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,10 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<CompanyCfop> cfopCompanies, Log log = null)
+        public async Task CreateRange(List<CompanyCfop> companyCfops, Log log = null)
         {
-            foreach (var c in cfopCompanies)
-            {
-                _context.CompanyCfops.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
+            _context.CompanyCfops.AddRange(companyCfops);
+            await _context.SaveChangesAsync();
         }
 
         public List<CompanyCfop> FindByCfopBonificacaoCompra(List<Model.CompanyCfop> companyCfops, Log log = null)

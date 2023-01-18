@@ -18,9 +18,5 @@ namespace Escon.SisctNET.Service
         List<string> FindByContribuinte(long companyId, string type, Model.Log log = null);
 
         Provider FindByRaiz(string raiz, Model.Log log = null);
-
-        void Create(List<Model.Provider> providers, Model.Log log = null);
-
-        void Update(List<Model.Provider> providers, Model.Log log = null);
     }
 }

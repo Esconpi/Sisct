@@ -69,8 +69,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
                 entity.CompanyId = SessionManager.GetCompanyIdInSession();
                 _service.Create(entity, GetLog(OccorenceLog.Create));
 
@@ -112,8 +110,6 @@ namespace Escon.SisctNET.Web.Controllers
                 entity.DateStart = Convert.ToDateTime(Request.Form["DateStart"]);
                 entity.DateEnd = Convert.ToDateTime(Request.Form["DateEnd"]);
                 entity.CompanyId = rst.CompanyId;
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
             }

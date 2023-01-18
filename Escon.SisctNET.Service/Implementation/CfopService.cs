@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
      
-        public void Create(List<Cfop> cfops, Log log = null)
-        {
-            _repository.Create(cfops);
-        }
-
         public Cfop Create(Cfop entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Cfop> Create(List<Cfop> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Cfop Update(Cfop entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Cfop> Update(List<Cfop> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

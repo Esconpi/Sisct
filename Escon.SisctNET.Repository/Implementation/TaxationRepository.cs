@@ -20,17 +20,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Taxation> taxations, Log log = null)
-        {
-            foreach (var taxation in taxations)
-            {
-                _context.Taxations.Add(taxation);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Taxation FindByCode(string code, string cest, DateTime data, Log log = null)
         {
             string dataFomart = data.ToString("yyyy-MM-dd");
@@ -109,17 +98,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.Taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest) && _.DateEnd == null).FirstOrDefault();
             AddLog(log);
             return rst;
-        }
-
-        public void Update(List<Taxation> taxations, Log log = null)
-        {
-            foreach (var taxation in taxations)
-            {
-                _context.Taxations.Update(taxation);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
         }
     }
 }

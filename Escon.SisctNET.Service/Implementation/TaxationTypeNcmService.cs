@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -17,6 +16,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationTypeNcm Create(TaxationTypeNcm entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<TaxationTypeNcm> Create(List<TaxationTypeNcm> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -42,6 +46,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationTypeNcm Update(TaxationTypeNcm entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<TaxationTypeNcm> Update(List<TaxationTypeNcm> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

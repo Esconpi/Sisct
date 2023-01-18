@@ -2,7 +2,7 @@
 using Escon.SisctNET.Repository;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -21,9 +21,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
-        public void Create(List<ProductIncentivo> productIncentivos, Log log = null)
+        public List<ProductIncentivo> Create(List<ProductIncentivo> entities, Log log)
         {
-            _repository.Create(productIncentivos, log);
+            return _repository.Create(entities, log);
+        }
+
+        public async Task CreateRange(List<ProductIncentivo> products, Log log = null)
+        {
+            await _repository.CreateRange(products, log);
         }
 
         public void Delete(long id, Log log)
@@ -86,9 +91,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entity, log);
         }
 
-        public void Update(List<ProductIncentivo> productIncentivos, Log log = null)
+        public List<ProductIncentivo> Update(List<ProductIncentivo> entities, Log log)
         {
-            _repository.Update(productIncentivos, log);
+            return _repository.Update(entities, log);
+        }
+
+        public async Task UpdateRange(List<ProductIncentivo> products, Log log = null)
+        {
+            await _repository.UpdateRange(products, log);
         }
     }
 }

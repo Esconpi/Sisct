@@ -16,17 +16,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<ProductNoteInventoryEntry> products, Log log = null)
-        {
-            foreach (var p in products)
-            {
-                _context.ProductNoteInventoryEntries.Add(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public List<ProductNoteInventoryEntry> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.ProductNoteInventoryEntries

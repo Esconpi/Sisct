@@ -1,11 +1,12 @@
 ﻿using Escon.SisctNET.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository
 {
     public interface ICompanyCfopRepository : IRepository<Model.CompanyCfop>
     {
-        void Create(List<Model.CompanyCfop> cfopCompanies, Model.Log log = null);
+        Task CreateRange(List<Model.CompanyCfop> companyCfops, Model.Log log = null);
 
         Model.CompanyCfop FindByCompanyCfop(long companyId, ulong cfopId, Model.Log log = null);
 

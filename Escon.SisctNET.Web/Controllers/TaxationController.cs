@@ -86,28 +86,32 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var result = _service.FindById(id, null);
-                /* if (result != null)
+                if (result != null)
                  {
-                     result.Updated = DateTime.Now;
                      result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                      _service.Update(result, GetLog(Model.OccorenceLog.Update));
                  }
 
-                 var lastId = _service.FindAll(null).Max(_ => _.Id);
-                 entity.Created = DateTime.Now;
-                 entity.Updated = entity.Created;
-                 entity.CompanyId = result.CompanyId;
-                 entity.Code = result.Code;
-                 entity.Uf = result.Uf;
-                 entity.NcmId = result.NcmId;
-                 entity.Cest = result.Cest;
-                 entity.Picms = result.Picms;
-                 entity.AliqInternaCTe = entity.AliqInterna;
-                 entity.DateEnd = null;
-                 entity.Id = lastId + 1;
+                Taxation taxation = new Taxation();
+                taxation.TaxationTypeId = entity.TaxationTypeId;
+                taxation.NcmId = result.NcmId;
+                taxation.CompanyId = result.CompanyId;
+                taxation.Code = result.Code;
+                taxation.Uf = result.Uf;
+                taxation.Cest = result.Cest;
+                taxation.Picms = result.Picms;
+                taxation.AliqInterna = entity.AliqInterna;
+                taxation.MVA = entity.MVA;
+                taxation.Fecop = entity.Fecop;
+                taxation.BCR = entity.BCR;
+                taxation.PercentualInciso = entity.PercentualInciso;
+                taxation.AliqInternaCTe = entity.AliqInterna;
+                taxation.EBcr = entity.EBcr;
+                taxation.DateStart = entity.DateStart;
 
-                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));*/
+                _service.Create(taxation, GetLog(Model.OccorenceLog.Create));
 
+                /*
                 var taxations = _service.FindByCompany(SessionManager.GetCompanyIdInSession()).Where(_ => _.Fecop.Equals((decimal)1) && _.DateEnd.Equals(null)).ToList();
 
                 List<Taxation> createTaxation = new List<Taxation>();
@@ -131,7 +135,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxationTemp.Cest = taxation.Cest;
                     taxationTemp.Picms = taxation.Picms;
                     taxationTemp.AliqInterna = taxation.AliqInterna;
-                    taxationTemp.Diferencial = taxation.Diferencial;
                     taxationTemp.MVA = taxation.MVA;
                     taxationTemp.Fecop = null;
                     taxationTemp.BCR = taxation.BCR;
@@ -139,13 +142,12 @@ namespace Escon.SisctNET.Web.Controllers
                     taxationTemp.AliqInternaCTe = taxation.AliqInterna;
                     taxationTemp.EBcr = taxation.EBcr;
                     taxationTemp.DateStart = entity.DateStart;
-                    taxationTemp.DateEnd = null;
 
                     createTaxation.Add(taxationTemp);
                 }
 
                 _service.Update(updateTaxation);
-                _service.Create(createTaxation);
+                _service.Create(createTaxation);*/
 
                 return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
             }

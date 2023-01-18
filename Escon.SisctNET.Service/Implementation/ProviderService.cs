@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Provider> providers, Log log = null)
-        {
-            _repository.Create(providers, log);
-        }
-
         public Provider Create(Provider entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Provider> Create(List<Provider> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -78,14 +78,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByRaiz(raiz, log);
         }
 
-        public void Update(List<Provider> providers, Log log = null)
-        {
-            _repository.Update(providers, log);
-        }
-
         public Provider Update(Provider entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Provider> Update(List<Provider> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Attachment> anexos, Log log = null)
-        {
-            _repository.Create(anexos);
-        }
-
         public Attachment Create(Attachment entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Attachment> Create(List<Attachment> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Attachment Update(Attachment entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Attachment> Update(List<Attachment> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

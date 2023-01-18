@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -78,13 +79,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (item != null)
                 {
-                    item.Updated = DateTime.Now;
                     item.DateEnd = entity.DateStart.AddDays(-1);
                     _service.Update(item, null);
                 }
-
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -131,8 +128,6 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                entity.Created = rst.Created;
-                entity.Updated = DateTime.Now;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                
                 return RedirectToAction("Index");
@@ -180,20 +175,16 @@ namespace Escon.SisctNET.Web.Controllers
                 var result = _service.FindById(id, null);
                 if (result != null)
                 {
-                    result.Updated = DateTime.Now;
                     result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                     _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 }
 
-                var lastId = _service.FindAll(null).Max(_ => _.Id);
-                decimal price = Convert.ToDecimal(Request.Form["price"]);
-                entity.Created = DateTime.Now;
-                entity.Updated = entity.Created;
-                entity.DateEnd = null;
-                entity.StateId = result.StateId;
-                entity.Id = lastId + 1;
+                InternalAliquot aliquot = new InternalAliquot();
+                aliquot.StateId = result.StateId;
+                aliquot.Aliquota = entity.Aliquota;
+                aliquot.DateStart = entity.DateStart;
 
-                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                _service.Create(aliquot, GetLog(Model.OccorenceLog.Create));
 
                 return RedirectToAction("Index");
             }

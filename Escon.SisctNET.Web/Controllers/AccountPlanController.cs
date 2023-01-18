@@ -75,6 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 _service.Create(newAccounts, GetLog(Model.OccorenceLog.Create));
+
                 return RedirectToAction("Index", new { @companyId = companyId });
             }
             catch (Exception ex)

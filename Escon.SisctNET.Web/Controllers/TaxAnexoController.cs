@@ -517,8 +517,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            _compraAnexoService.Create(compraAnexosAdd);
-                            _compraAnexoService.Update(compraAnexosUpdate);
+                            _compraAnexoService.Create(compraAnexosAdd, GetLog(Model.OccorenceLog.Create));
+                            _compraAnexoService.Update(compraAnexosUpdate, GetLog(Model.OccorenceLog.Update));
 
                             List<Model.DevoCliente> devoClientesAdd = new List<Model.DevoCliente>();
                             List<Model.DevoCliente> devoClientesUpdate = new List<Model.DevoCliente>();
@@ -969,8 +969,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 devoFornecedors.Add(devoFornecedor);
                             }
 
-                            _vendaAnexoService.Create(vendaAnexos);
-                            _devoFornecedorService.Create(devoFornecedors);
+                            _vendaAnexoService.Create(vendaAnexos, GetLog(Model.OccorenceLog.Create));
+                            _devoFornecedorService.Create(devoFornecedors, GetLog(Model.OccorenceLog.Create));
                         }
                     }
                 }

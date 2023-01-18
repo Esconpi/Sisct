@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Product> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Products.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
         {
             List<Product> products = new List<Product>();

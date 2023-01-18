@@ -581,7 +581,7 @@ namespace Escon.SisctNET.Web.Controllers
                     comps.Add(c);
                 }
                 
-                _service.Update(comps);
+                _service.Update(comps, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");
             }
@@ -599,7 +599,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var entity = _service.FindById(updateCountingType.CompanyId, GetLog(Model.OccorenceLog.Read));
+                var entity = _service.FindById(updateCountingType.CompanyId, null);
 
                 if (updateCountingType.CountingTypeId.Equals(0))
                 {

@@ -13,14 +13,14 @@ namespace Escon.SisctNET.Service.Implementation
             _repository = repository;
         }
 
-        public void Create(List<Cest> cests, Log log = null)
-        {
-            _repository.Create(cests);
-        }
-
         public Cest Create(Cest entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Cest> Create(List<Cest> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -51,6 +51,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Cest Update(Cest entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Cest> Update(List<Cest> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

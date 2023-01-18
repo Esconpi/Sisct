@@ -17,17 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public void Create(List<Product1> products, Log log = null)
-        {
-            foreach (var c in products)
-            {
-                _context.Product1s.Add(c);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public Product1 FindByDescription(string description, Log log = null)
         {
             var rst = _context.Product1s.Where(_ => _.Description.Equals(description)).FirstOrDefault();

@@ -22,12 +22,6 @@ namespace Escon.SisctNET.Repository
 
         List<Model.TaxationNcm> FindByGeneral(Model.Log log = null);
 
-        List<Model.TaxationNcm> FindByNcms(List<TaxationNcm> ncms, string ncmRaiz, Model.Log log = null);
-
-        void Create(List<Model.TaxationNcm> taxationNcms, Model.Log log = null);
-
-        void Update(List<Model.TaxationNcm> taxationNcms, Model.Log log = null);
-
-        
+        List<Model.TaxationNcm> FindByNcms(List<TaxationNcm> ncms, string ncmRaiz, Model.Log log = null);        
     }
 }

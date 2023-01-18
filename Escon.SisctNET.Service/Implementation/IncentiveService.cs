@@ -1,8 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -18,6 +16,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Incentive Create(Incentive entity, Log log)
         {
             return _repository.Create(entity, log);
+        }
+
+        public List<Incentive> Create(List<Incentive> entities, Log log)
+        {
+            return _repository.Create(entities, log);
         }
 
         public void Delete(long id, Log log)
@@ -53,6 +56,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Incentive Update(Incentive entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<Incentive> Update(List<Incentive> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
     }
 }

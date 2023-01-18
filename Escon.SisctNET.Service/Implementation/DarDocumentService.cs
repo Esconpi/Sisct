@@ -19,6 +19,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entity, log);
         }
 
+        public List<DarDocument> Create(List<DarDocument> entities, Log log)
+        {
+            return _repository.Create(entities, log);
+        }
+
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
@@ -63,6 +68,11 @@ namespace Escon.SisctNET.Service.Implementation
         public DarDocument Update(DarDocument entity, Log log)
         {
             return _repository.Update(entity, log);
+        }
+
+        public List<DarDocument> Update(List<DarDocument> entities, Log log)
+        {
+            return _repository.Update(entities, log);
         }
 
         public async Task UpdateRangeAsync(List<DarDocument> documents) => await _repository.UpdateRangeAsync(documents);

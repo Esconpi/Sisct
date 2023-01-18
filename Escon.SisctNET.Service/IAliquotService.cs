@@ -6,8 +6,6 @@ namespace Escon.SisctNET.Service
 {
     public interface IAliquotService : IServiceBase<Model.Aliquot>
     {
-        void Create(List<Model.Aliquot> aliquots, Model.Log log = null);
-
         Model.Aliquot FindByUf(string uf, Model.Log log = null);
 
         Model.Aliquot FindByUf(string ufOrigem, string ufDestino, DateTime data, Model.Log log = null);
