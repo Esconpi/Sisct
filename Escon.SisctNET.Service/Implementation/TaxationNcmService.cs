@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Escon.SisctNET.Repository;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -23,11 +22,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<TaxationNcm> Create(List<TaxationNcm> entities, Log log)
         {
             return _repository.Create(entities, log);
-        }
-
-        public async Task CreateRange(List<TaxationNcm> taxationNcms, Log log = null)
-        {
-            await _repository.CreateRange(taxationNcms, log);
         }
 
         public void Delete(long id, Log log)
@@ -103,11 +97,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<TaxationNcm> Update(List<TaxationNcm> entities, Log log)
         {
             return _repository.Update(entities, log);
-        }
-
-        public async Task UpdateRange(List<TaxationNcm> taxationNcms, Log log = null)
-        {
-            await _repository.UpdateRange(taxationNcms, log);
         }
     }
 }

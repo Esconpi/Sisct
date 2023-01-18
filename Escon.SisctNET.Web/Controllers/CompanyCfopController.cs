@@ -58,7 +58,7 @@ namespace Escon.SisctNET.Web.Controllers
                         addCompanyCfop.Add(cc);
                     }
                 }
-                _service.CreateRange(addCompanyCfop, GetLog(OccorenceLog.Create));
+                _service.Create(addCompanyCfop, GetLog(OccorenceLog.Create));
                 return RedirectToAction("Index", new { id = companyId});
             }
             catch (Exception ex)

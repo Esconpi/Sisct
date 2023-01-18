@@ -336,7 +336,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _itemService.CreateRange(addProduct, GetLog(OccorenceLog.Create));
+                _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
 
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

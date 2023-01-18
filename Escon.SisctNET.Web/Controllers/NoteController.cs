@@ -202,7 +202,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     deleteProduct.Add(product);
                 }
-                _itemService.DeleteRange(deleteProduct, GetLog(OccorenceLog.Delete));
+                _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
                 _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
                 return RedirectToAction("Index", new { id = company, year = year, month = month });
             }
@@ -743,8 +743,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
             }
 
-            _service.UpdateRange(updateNote, GetLog(Model.OccorenceLog.Update));
-            _itemService.CreateRange(addProduct, GetLog(OccorenceLog.Create));
+            _service.Update(updateNote, GetLog(Model.OccorenceLog.Update));
+            _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
 
             if (notas.Count() > 0 && erro == 0)
             {
@@ -789,8 +789,8 @@ namespace Escon.SisctNET.Web.Controllers
                 deleteNote.Add(note);
             }
 
-            _itemService.DeleteRange(deleteProduct, GetLog(OccorenceLog.Delete));
-            _service.DeleteRange(deleteNote, GetLog(OccorenceLog.Delete));
+            _itemService.Delete(deleteProduct, GetLog(OccorenceLog.Delete));
+            _service.Delete(deleteNote, GetLog(OccorenceLog.Delete));
 
             int erro = 0;
             string url = "Index", chave = "Nenhuma";

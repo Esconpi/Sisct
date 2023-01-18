@@ -141,14 +141,12 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Year = year;
                         product.Arquivo = arqui;
                         product.DateStart = Convert.ToDateTime(confDateNfe.Value);
-                        product.Created = DateTime.Now;
-                        product.Updated = DateTime.Now;
 
                         addProducts.Add(product);
                     }
                 }
 
-                _service.CreateRange(addProducts, GetLog(OccorenceLog.Create));
+                _service.Create(addProducts, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -225,7 +223,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.PercentualInciso = entity.PercentualInciso;
                     prod.DateStart = entity.DateStart;
                     prod.Active = true;
-                    prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
                     {
                         prod.Percentual = entity.Percentual;
@@ -249,7 +246,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.PercentualInciso = entity.PercentualInciso;
                             p.DateStart = entity.DateStart;
                             p.Active = true;
-                            p.Updated = DateTime.Now;
                             if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                             {
                                 p.Percentual = entity.Percentual;
@@ -271,7 +267,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.PercentualInciso = entity.PercentualInciso;
                             p.DateStart = entity.DateStart;
                             p.Active = true;
-                            p.Updated = DateTime.Now;
                             if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                             {
                                 p.Percentual = entity.Percentual;
@@ -293,7 +288,6 @@ namespace Escon.SisctNET.Web.Controllers
                         p.PercentualInciso = entity.PercentualInciso;
                         p.DateStart = entity.DateStart;
                         p.Active = true;
-                        p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
@@ -303,7 +297,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("IndexAll", new { id = companyId });
             }
@@ -377,7 +371,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.PercentualInciso = entity.PercentualInciso;
                     prod.DateStart = entity.DateStart;
                     prod.Active = true;
-                    prod.Updated = DateTime.Now;
                     if (comp.TypeCompany.Equals(false) && prod.TypeTaxation.Equals("Incentivado"))
                     {
                         prod.Percentual = entity.Percentual;
@@ -399,7 +392,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.PercentualInciso = entity.PercentualInciso;
                             p.DateStart = entity.DateStart;
                             p.Active = true;
-                            p.Updated = DateTime.Now;
                             if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                             {
                                 p.Percentual = entity.Percentual;
@@ -421,7 +413,6 @@ namespace Escon.SisctNET.Web.Controllers
                             p.PercentualInciso = entity.PercentualInciso;
                             p.DateStart = entity.DateStart;
                             p.Active = true;
-                            p.Updated = DateTime.Now;
                             if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                             {
                                 p.Percentual = entity.Percentual;
@@ -444,7 +435,6 @@ namespace Escon.SisctNET.Web.Controllers
                         p.PercentualInciso = entity.PercentualInciso;
                         p.DateStart = entity.DateStart;
                         p.Active = true;
-                        p.Updated = DateTime.Now;
                         if (comp.TypeCompany.Equals(false) && p.TypeTaxation.Equals("Incentivado"))
                         {
                             p.Percentual = entity.Percentual;
@@ -454,7 +444,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
                 
-                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
                 
                 return RedirectToAction("Index", new { companyId = companyId, year = year, month = month });
             }
@@ -503,7 +493,6 @@ namespace Escon.SisctNET.Web.Controllers
                 if (Request.Form["type"].ToString() == "1")
                 {
                     result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                    result.Updated = DateTime.Now;
 
                     updateProducts.Add(result);
 
@@ -526,8 +515,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.PercentualInciso = entity.PercentualInciso;
                     prod.CstId = result.CstId;
                     prod.Bcr = result.Bcr;
-                    prod.Created = DateTime.Now;
-                    prod.Updated = prod.Created;
 
                     updateProducts.Add(result);
                     createProducts.Add(prod);
@@ -542,7 +529,6 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                        p.Updated = DateTime.Now;
 
                         updateProducts.Add(p);
 
@@ -565,8 +551,6 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.PercentualInciso = entity.PercentualInciso;
                         prod.CstId = p.CstId;
                         prod.Bcr = p.Bcr;
-                        prod.Created = DateTime.Now;
-                        prod.Updated = prod.Created;
 
                         createProducts.Add(prod);
                     }
@@ -579,7 +563,6 @@ namespace Escon.SisctNET.Web.Controllers
                     foreach (var p in products)
                     {
                         p.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
-                        p.Updated = DateTime.Now;
 
                         updateProducts.Add(p);
 
@@ -602,15 +585,13 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.PercentualInciso = entity.PercentualInciso;
                         prod.CstId = p.CstId;
                         prod.Bcr = p.Bcr;
-                        prod.Created = DateTime.Now;
-                        prod.Updated = prod.Created;
 
                         createProducts.Add(prod);
                     }
                 }
 
-                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
-                _service.CreateRange(createProducts, GetLog(OccorenceLog.Create));
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
+                _service.Create(createProducts, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("IndexAll", new { id = result.CompanyId });
             }

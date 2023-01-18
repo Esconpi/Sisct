@@ -305,7 +305,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (item != null)
                     {
-                        item.Updated = DateTime.Now;
                         item.DateEnd = inicioATo.AddDays(-1);
                         updateProduct.Add(item);
                     }
@@ -319,15 +318,13 @@ namespace Escon.SisctNET.Web.Controllers
                         product.Price = Convert.ToDecimal(products[i][3].Replace(",","*").Replace(".",",").Replace("*","."));
                         product.DateStart = inicioATo;
                         product.GroupId = groupId;
-                        product.Created = DateTime.Now;
-                        product.Updated = product.Created;
                         addProduct.Add(product);
                     }
 
                 }
 
-                await _service.CreateRange(addProduct, GetLog(Model.OccorenceLog.Create));
-                await _service.UpdateRange(updateProduct, GetLog(Model.OccorenceLog.Update));
+                _service.Create(addProduct, GetLog(Model.OccorenceLog.Create));
+                _service.Update(updateProduct, GetLog(Model.OccorenceLog.Update));
 
                 return RedirectToAction("Index");
 

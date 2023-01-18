@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service
 {
     public interface INoteService : IServiceBase<Model.Note>
     {
-        Task CreateRange(List<Model.Note> notes, Model.Log log = null);
-
-        Task UpdateRange(List<Model.Note> notes, Model.Log log = null);
-
-        Task DeleteRange(List<Model.Note> notes, Model.Log log = null);
+        void Delete(List<Model.Note> notes, Model.Log log = null);
 
         Model.Note FindByNote(string chave, Model.Log log = null);
 

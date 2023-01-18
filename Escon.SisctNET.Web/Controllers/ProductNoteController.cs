@@ -817,7 +817,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.UpdateRange(updateProducts, GetLog(OccorenceLog.Update));
+                _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
                 List<Note> updateNote = new List<Note>();
 

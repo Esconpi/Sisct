@@ -1,16 +1,11 @@
 ﻿using Escon.SisctNET.Model;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service
 {
     public interface IProductIncentivoService : IServiceBase<Model.ProductIncentivo>
     {
-        Task CreateRange(List<Model.ProductIncentivo> products, Model.Log log = null);
-
-        Task UpdateRange(List<Model.ProductIncentivo> products, Model.Log log = null);
-
         List<Model.ProductIncentivo> FindByProducts(long id, string year, string month, Model.Log log = null);
 
         Model.ProductIncentivo FindByProduct(long company, string code, string ncm,string cest, Model.Log log = null);

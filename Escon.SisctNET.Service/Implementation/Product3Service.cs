@@ -2,7 +2,6 @@
 using Escon.SisctNET.Repository;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -23,11 +22,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<Product3> Create(List<Product3> entities, Log log)
         {
             return _repository.Create(entities, log);
-        }
-
-        public async Task CreateRange(List<Product3> products, Log log = null)
-        {
-            await _repository.CreateRange(products, log);
         }
 
         public void Delete(long id, Log log)
@@ -78,11 +72,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<Product3> Update(List<Product3> entities, Log log)
         {
             return _repository.Update(entities, log);
-        }
-
-        public async Task UpdateRange(List<Product3> products, Log log = null)
-        {
-            await _repository.UpdateRange(products, log);
         }
 
         public List<Product3> FindAllInDate2(DateTime dateProd, Log log = null)

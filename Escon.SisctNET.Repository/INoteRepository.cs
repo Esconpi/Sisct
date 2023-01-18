@@ -1,16 +1,10 @@
-﻿using Escon.SisctNET.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Escon.SisctNET.Repository
 {
     public interface INoteRepository : IRepository<Model.Note>
     {
-        Task CreateRange(List<Model.Note> notes, Model.Log log = null);
-
-        Task UpdateRange(List<Model.Note> notes, Model.Log log = null);
-
-        Task DeleteRange(List<Model.Note> notes, Model.Log log = null);
+        void Delete(List<Model.Note> notes, Model.Log log = null);
 
         Model.Note FindByNote(string chave, Model.Log log = null);
 

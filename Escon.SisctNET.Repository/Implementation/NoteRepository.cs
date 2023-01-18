@@ -17,16 +17,15 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public async Task CreateRange(List<Note> notes, Log log = null)
+        public void Delete(List<Note> notes, Log log = null)
         {
-            _context.Notes.AddRange(notes);
-            await _context.SaveChangesAsync();
-        }
+            foreach (var note in notes)
+            {
+                _context.Notes.Remove(note);
+            }
 
-        public async Task DeleteRange(List<Note> notes, Log log = null)
-        {
-            _context.Notes.RemoveRange(notes);
-            await _context.SaveChangesAsync();
+            AddLog(log);
+            _context.SaveChanges();
         }
 
         public List<Note> FindByCompany(long companyId, Log log = null)

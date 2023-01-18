@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -282,17 +282,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public void Delete(List<ProductNote> products, Log log = null)
-        {
-            foreach (var p in products)
-            {
-                _context.ProductNotes.Remove(p);
-            }
-
-            AddLog(log);
-            _context.SaveChanges();
-        }
-
         public ProductNote FindByProduct(long id, Log log = null)
         {
             var rst = _context.ProductNotes
@@ -397,22 +386,15 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst.ToList();
         }
 
-        public async Task CreateRange(List<ProductNote> products, Log log = null)
+        public void Delete(List<ProductNote> products, Log log = null)
         {
-            _context.ProductNotes.AddRange(products);
-            await _context.SaveChangesAsync();
-        }
+            foreach (var product in products)
+            {
+                _context.ProductNotes.Remove(product);
+            }
 
-        public async Task UpdateRange(List<ProductNote> products, Log log = null)
-        {
-            _context.ProductNotes.UpdateRange(products);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteRange(List<ProductNote> products, Log log = null)
-        {
-            _context.ProductNotes.RemoveRange(products);
-            await _context.SaveChangesAsync();
+            AddLog(log);
+            _context.SaveChanges();
         }
     }
 }

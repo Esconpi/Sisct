@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -24,19 +23,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Create(entities, log);
         }
 
-        public async Task CreateRange(List<ProductNote> products, Log log = null)
-        {
-            await _repository.CreateRange(products, log);
-        }
-
         public void Delete(long id, Log log)
         {
             _repository.Delete(id, log);
         }
 
-        public async Task DeleteRange(List<ProductNote> products, Log log = null)
+        public void Delete(List<ProductNote> products, Log log = null)
         {
-            await _repository.DeleteRange(products, log);
+            _repository.Delete(products, log);
         }
 
         public List<ProductNote> FindAll(Log log)
@@ -62,11 +56,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<ProductNote> Update(List<ProductNote> entities, Log log)
         {
             return _repository.Update(entities, log);
-        }
-
-        public async Task UpdateRange(List<ProductNote> products, Log log = null)
-        {
-           await _repository.UpdateRange(products, log);
         }
 
         public List<ProductNote> FindByNote(long noteId, Log log = null)
