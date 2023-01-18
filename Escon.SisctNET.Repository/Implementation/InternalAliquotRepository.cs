@@ -59,6 +59,5 @@ namespace Escon.SisctNET.Repository.Implementation
             AddLog(log);
             return result;
         }
-
     }
 }

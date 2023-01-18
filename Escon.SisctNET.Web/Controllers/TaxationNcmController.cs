@@ -213,7 +213,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _service.Create(monoAdd, GetLog(OccorenceLog.Create));
+                _service.CreateRange(monoAdd, GetLog(OccorenceLog.Create));
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
 
@@ -376,6 +376,7 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Cofins = entity.Cofins;
                     rst.DateStart = entity.DateStart;
                     rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                    rst.Updated = DateTime.Now;
 
                     tributacoes.Add(rst);
 
@@ -416,6 +417,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.Cofins = entity.Cofins;
                             n.DateStart = entity.DateStart;
                             n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            n.Updated = DateTime.Now;
 
                             tributacoes.Add(n);
                         }
@@ -454,6 +456,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.Cofins = entity.Cofins;
                             n.DateStart = entity.DateStart;
                             n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            n.Updated = DateTime.Now;
 
                             tributacoes.Add(n);
                         }
@@ -461,7 +464,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
+                _service.UpdateRange(tributacoes, GetLog(OccorenceLog.Update));
 
                 return RedirectToAction("Index" , new { companyId = rst.CompanyId, year = rst.Year, month = rst.Month});
             }
@@ -567,6 +570,7 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Cofins = entity.Cofins;
                     rst.DateStart = entity.DateStart;
                     rst.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                    rst.Updated = DateTime.Now;
 
                     tributacoes.Add(rst);
 
@@ -606,6 +610,7 @@ namespace Escon.SisctNET.Web.Controllers
                             n.Cofins = entity.Cofins;
                             n.DateStart = entity.DateStart;
                             n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            n.Updated = DateTime.Now;
 
                             tributacoes.Add(n);
                         }
@@ -644,13 +649,14 @@ namespace Escon.SisctNET.Web.Controllers
                             n.Cofins = entity.Cofins;
                             n.DateStart = entity.DateStart;
                             n.TaxationTypeNcmId = entity.TaxationTypeNcmId;
+                            n.Updated = DateTime.Now;
 
                             tributacoes.Add(n);
                         }
                     }
                 }
 
-                _service.Update(tributacoes, GetLog(OccorenceLog.Update));
+                _service.UpdateRange(tributacoes, GetLog(OccorenceLog.Update));
                 return RedirectToAction("IndexALl", new { id = rst.CompanyId});
             }
             catch (Exception ex)
@@ -728,8 +734,6 @@ namespace Escon.SisctNET.Web.Controllers
                     rst.Updated = DateTime.Now;
                     rst.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
 
-                    var lastId = _service.FindAll(null).Max(_ => _.Id);
-
                     TaxationNcm taxationNcm = new TaxationNcm();
 
                     taxationNcm.Created = DateTime.Now;
@@ -742,7 +746,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxationNcm.CstSaidaId = rst.CstSaidaId;
                     taxationNcm.Status = true;
                     taxationNcm.CodeProduct = rst.CodeProduct;
-                    taxationNcm.Id = lastId + 1;
                     taxationNcm.TaxationTypeNcmId = rst.TaxationTypeNcmId;
                     taxationNcm.DateStart = entity.DateStart;
                     taxationNcm.Year = rst.Year;
@@ -794,8 +797,8 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                _service.Update(updateTributacoes, GetLog(OccorenceLog.Update));
-                _service.Create(createTributacoes, GetLog(OccorenceLog.Create));
+                _service.UpdateRange(updateTributacoes, GetLog(OccorenceLog.Update));
+                _service.CreateRange(createTributacoes, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("IndexAll", new { id = rst.CompanyId });
             }

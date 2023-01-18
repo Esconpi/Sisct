@@ -142,8 +142,6 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
@@ -153,7 +151,6 @@ namespace Escon.SisctNET.Web.Controllers
                     imp.CapitalIM = entity.CapitalIM;
                     imp.ReceitaAF = entity.ReceitaAF;
                     imp.OutrasReceitas = entity.OutrasReceitas;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -205,8 +202,6 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
@@ -218,7 +213,6 @@ namespace Escon.SisctNET.Web.Controllers
                     imp.DespesasF = entity.DespesasF;
                     imp.DespesasME = entity.DespesasME;
                     imp.DespesasA = entity.DespesasA;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -269,8 +263,6 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
@@ -283,7 +275,6 @@ namespace Escon.SisctNET.Web.Controllers
                     imp.IrpjRetido = entity.IrpjRetido;
                     imp.IrpjFonteServico = entity.IrpjFonteServico;
                     imp.IrpjFonteFinanceira = entity.IrpjFonteFinanceira;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -334,15 +325,12 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
                 else
                 {
                     imp.ReducaoIcms = entity.ReducaoIcms;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -392,15 +380,12 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
                 else
                 {
                     imp.Perda = entity.Perda;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -452,8 +437,6 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
@@ -461,7 +444,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     imp.IrpjPago = entity.IrpjPago;
                     imp.CsllPago = entity.CsllPago;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -511,8 +493,6 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.CompanyId = companyid;
                     entity.MesRef = month;
                     entity.AnoRef = year;
-                    entity.Created = DateTime.Now;
-                    entity.Updated = entity.Created;
 
                     _service.Create(entity, GetLog(OccorenceLog.Create));
                 }
@@ -520,7 +500,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     imp.Receita4 = entity.Receita4;
                     imp.Devolucao4 = entity.Devolucao4;
-                    imp.Updated = DateTime.Now;
 
                     _service.Update(imp, GetLog(OccorenceLog.Update));
                 }
@@ -610,8 +589,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     if(arqui != "")
                         imp.Arquivo = arqui;
-
-                    imp.Updated = DateTime.Now;
                 }
                 else
                 {
@@ -623,8 +600,6 @@ namespace Escon.SisctNET.Web.Controllers
                     tax.CompanyId = companyid;
                     tax.MesRef = month;
                     tax.AnoRef = year;
-                    tax.Created = DateTime.Now;
-                    tax.Updated = tax.Created;
                 }
 
                 if (type.Equals("sped"))

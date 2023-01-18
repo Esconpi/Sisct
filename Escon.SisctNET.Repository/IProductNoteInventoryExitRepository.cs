@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository
 {
     public interface IProductNoteInventoryExitRepository : IRepository<Model.ProductNoteInventoryExit>
     {
+        Task CreateRange(List<Model.ProductNoteInventoryExit> products, Model.Log log = null);
+
         List<Model.ProductNoteInventoryExit> FindByCompany(long companyId, Model.Log log = null);
 
         List<Model.ProductNoteInventoryExit> FindByNotes(long companyId, string year, string month, Model.Log log = null);

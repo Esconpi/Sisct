@@ -199,14 +199,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label asp-for="AliqInterna" class="control-label"></label>
-                            @if (Model.AliqInterna != null)
-                            {
-                                <input type="text" name="AliqInterna" class="form-control money" value="@Model.AliqInterna" required />
-                            }
-                            else
-                            {
-                                <input type="text" name="AliqInterna" class="form-control money" value="@ViewBag.Aliquot" required />
-                            }
+                            <input type="text" name="AliqInterna" class="form-control money" value="@ViewBag.Aliquot" required />
                         </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">FECOP (%)</label>

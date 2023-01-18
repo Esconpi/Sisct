@@ -163,13 +163,13 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Vuncom = Convert.ToDecimal(prod.Vprod) / Convert.ToDecimal(prod.Qcom);
                         prod.Vbasecalc = prod.Vprod - prod.Vseg;
                         prod.Created = DateTime.Now;
-                        prod.Updated = DateTime.Now;
+                        prod.Updated = prod.Created;
 
                         addProduct.Add(prod);
                     }
                 }
 
-                _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
+                _itemService.CreateRange(addProduct, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("Index", new { id = id, year = year, month = month });
             }

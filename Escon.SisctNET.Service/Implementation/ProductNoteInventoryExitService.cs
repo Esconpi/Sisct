@@ -2,6 +2,7 @@
 using Escon.SisctNET.Repository;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Service.Implementation
 {
@@ -22,6 +23,11 @@ namespace Escon.SisctNET.Service.Implementation
         public List<ProductNoteInventoryExit> Create(List<ProductNoteInventoryExit> entities, Log log)
         {
             return _repository.Create(entities, log);
+        }
+
+        public async Task CreateRange(List<ProductNoteInventoryExit> products, Log log = null)
+        {
+            await _repository.CreateRange(products, log);
         }
 
         public void Delete(long id, Log log)

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -16,6 +17,12 @@ namespace Escon.SisctNET.Repository.Implementation
           : base(context, configuration)
         {
             _context = context;
+        }
+
+        public async Task CreateRange(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _context.TaxationNcms.AddRange(taxationNcms);
+            await _context.SaveChangesAsync();
         }
 
         public List<TaxationNcm> FindAllInDate(DateTime dateProd, Log log = null)
@@ -182,6 +189,12 @@ namespace Escon.SisctNET.Repository.Implementation
                     .ToList();
             }
             return ncms;
+        }
+
+        public async Task UpdateRange(List<TaxationNcm> taxationNcms, Log log = null)
+        {
+            _context.TaxationNcms.UpdateRange(taxationNcms);
+            await _context.SaveChangesAsync();
         }
     }
 }

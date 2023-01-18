@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Repository.Implementation
 {
@@ -14,6 +15,12 @@ namespace Escon.SisctNET.Repository.Implementation
         public ProductNoteInventoryExitRepository(ContextDataBase context, IConfiguration configuration) : base(context, configuration)
         {
             _context = context;
+        }
+
+        public async Task CreateRange(List<ProductNoteInventoryExit> products, Log log = null)
+        {
+            _context.ProductNoteInventoryExits.AddRange(products);
+            await _context.SaveChangesAsync();
         }
 
         public List<ProductNoteInventoryExit> FindByCompany(long companyId, Log log = null)

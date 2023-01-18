@@ -312,7 +312,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Nitem = det["nItem"];
                                     prod.Vbasecalc = baseDeCalc;
                                     prod.Created = DateTime.Now;
-                                    prod.Updated = DateTime.Now;
+                                    prod.Updated = prod.Created;
 
                                 }
                                 catch
@@ -336,7 +336,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 }
 
-                _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
+                _itemService.CreateRange(addProduct, GetLog(OccorenceLog.Create));
 
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");

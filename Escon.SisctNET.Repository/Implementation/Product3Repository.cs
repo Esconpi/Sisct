@@ -46,7 +46,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<Product3> FindAllInDate2(DateTime dateProd, Log log = null)
+        public List<Product3> FindAllInDate(DateTime dateProd, Log log = null)
         {
             List<Product3> products = new List<Product3>();
 

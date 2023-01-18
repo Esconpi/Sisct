@@ -258,9 +258,19 @@ namespace Escon.SisctNET.Web.Controllers
                     product.Product2Id = 0;
                 }
 
-                var aliquots = _internalAliquotService.FindByAllState(null);
-                var internalAliquot = _internalAliquotService.FindByUf(aliquots, product.Note.Dhemi, product.Note.Company.County.State.UF);
-                var aliquot = internalAliquot.Aliquota;
+                decimal? aliquot = null;
+
+                if (product.AliqInterna == null)
+                {
+                    var aliquots = _internalAliquotService.FindByAllState(null);
+                    var internalAliquot = _internalAliquotService.FindByUf(aliquots, product.Note.Dhemi, product.Note.Company.County.State.UF);
+                    aliquot = internalAliquot.Aliquota;
+                }
+                else
+                {
+                    aliquot = product.AliqInterna;
+                }
+               
                 ViewBag.Aliquot = aliquot;
 
                 return View(product);
