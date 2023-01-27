@@ -559,7 +559,6 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Diferencial = dif;
                             prod.DiferencialCTe = dif_frete;
 
-
                             decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp - Convert.ToDecimal(prod.Freterateado)),
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
 
