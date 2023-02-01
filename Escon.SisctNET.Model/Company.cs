@@ -266,6 +266,8 @@ namespace Escon.SisctNET.Model
 
         public decimal? PercentualCofinsCredito { get; set; }
 
+        [Display(Name = "Empregado")]
+        public int? Employee { get; set; }
 
         public Company()
         {

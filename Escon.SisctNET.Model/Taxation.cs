@@ -78,9 +78,6 @@ namespace Escon.SisctNET.Model
 
         public decimal? PercentualInciso { get; set; }
 
-        public decimal? AliqInternaCTe { get; set; }
-
         public bool EBcr { get; set; }
-
     }
 }

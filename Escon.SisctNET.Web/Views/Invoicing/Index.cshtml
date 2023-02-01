@@ -38,13 +38,19 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Minimum)
+                            <td style="text-align:right">
+                                @if (item.Minimum > 0)
+                                {
+                                    @string.Format("{0:N}", item.Minimum)
+                                }
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Maximum)
+                             <td style="text-align:right">
+                                @if (item.Maximum > 0)
+                                {
+                                    @string.Format("{0:N}", item.Maximum)                                   
+                                }
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                 @Html.DisplayFor(modelItem => item.Employee)
                             </td>
                             <td style="width:50px;">

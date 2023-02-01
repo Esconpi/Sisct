@@ -231,8 +231,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "BCR")]
         public bool EBcr { get; set; }
 
-        public decimal? AliqInternaCTe { get; set; }
-
         public decimal? DiferencialCTe { get; set; }
     }
 }

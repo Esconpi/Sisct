@@ -7,10 +7,10 @@ namespace Escon.SisctNET.Model
     public class Invoicing : EntityBase
     {
         [Required(ErrorMessage = "Obrigatório!")]
-        [Display(Name = "Valor Mínimo")]
+        [Display(Name = "Acima")]
         public decimal? Minimum { get; set; }
 
-        [Display(Name = "Valor Máximo")]
+        [Display(Name = "Até")]
         public decimal? Maximum { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]

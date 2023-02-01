@@ -1,8 +1,54 @@
-﻿
+﻿@model Escon.SisctNET.Model.Invoicing
+
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title">
+            <strong>Editar Faixa</strong>
+        </h3>
 
-<h2>Edit</h2>
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="Minimum" class="control-label"></label>
+                        @if(Model.Minimum > 0){
+                            <input name="Minimum" class="form-control money" placeholder="Valor Mínimo" value="@Model.Minimum"/>                          
+                        }else{
+                            <input name="Minimum" class="form-control money" placeholder="Valor Mínimo"/>                          
+                        }
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="Maximum" class="control-label"></label>
+                        @if(Model.Maximum > 0){
+                            <input name="Maximum" class="form-control money" placeholder="Valor Máximo" value="@Model.Maximum"/>                          
+                        }else{
+                            <input name="Maximum" class="form-control money" placeholder="Valor Máximo"/>                          
+                        }
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="Employee" class="control-label"></label>
+                        <input name="Employee" class="form-control number" placeholder="Empregados" value="@Model.Employee"/>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="box-footer">
+
+    </div>
+</div>

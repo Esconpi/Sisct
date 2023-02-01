@@ -547,7 +547,6 @@ namespace Escon.SisctNET.Web.Controllers
                             baseCalc = Vbasecalc;
 
                             prod.AliqInterna = aliqInterna;
-                            prod.AliqInternaCTe = aliqInterna;
                             prod.Mva = null;
                             prod.Valoragregado = null;
                             prod.ValorBCR = null;
@@ -574,7 +573,6 @@ namespace Escon.SisctNET.Web.Controllers
                             baseCalc = Vbasecalc;
 
                             prod.AliqInterna = aliqInterna;
-                            prod.AliqInternaCTe = aliqInterna;
                             prod.Mva = null;
                             prod.Valoragregado = null;
                             prod.ValorBCR = null;
@@ -714,7 +712,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 baseCalc = Vbasecalc;
 
                                 item.AliqInterna = aliqInterna;
-                                item.AliqInternaCTe = aliqInterna;
                                 item.Diferencial = dif;
 
                                 decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
@@ -741,7 +738,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 baseCalc = Vbasecalc;
 
                                 item.AliqInterna = aliqInterna;
-                                item.AliqInternaCTe = aliqInterna;
                                 item.Diferencial = dif;
 
                                 decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
@@ -866,7 +862,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.Code = code;
                     taxation.Cest = prod.Cest;
                     taxation.AliqInterna = aliqInterna;
-                    taxation.AliqInternaCTe = aliqInterna;
                     taxation.PercentualInciso = inciso;
                     taxation.MVA = mva;
                     taxation.BCR = bcr;

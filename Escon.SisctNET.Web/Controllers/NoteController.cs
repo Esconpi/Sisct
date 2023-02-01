@@ -707,7 +707,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);
                                     prod.PercentualInciso = taxed.PercentualInciso;
-                                    prod.AliqInternaCTe = aliqInterna;
                                     prod.DiferencialCTe = dif_frete;
                                     prod.EBcr = taxed.EBcr;
 

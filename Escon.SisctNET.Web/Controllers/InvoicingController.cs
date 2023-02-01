@@ -62,6 +62,12 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                if (entity.Minimum == null)
+                    entity.Minimum = 0;
+
+                if (entity.Maximum == null)
+                    entity.Maximum = 0;
+
                 var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
 
                 return RedirectToAction("Index");
@@ -99,6 +105,13 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
+
+                if (entity.Minimum == null)
+                    entity.Minimum = 0;
+
+                if (entity.Maximum == null)
+                    entity.Maximum = 0;
+
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

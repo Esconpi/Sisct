@@ -105,7 +105,6 @@ namespace Escon.SisctNET.Web.Controllers
                 taxation.Fecop = entity.Fecop;
                 taxation.BCR = entity.BCR;
                 taxation.PercentualInciso = entity.PercentualInciso;
-                taxation.AliqInternaCTe = entity.AliqInterna;
                 taxation.EBcr = entity.EBcr;
                 taxation.DateStart = entity.DateStart;
 
