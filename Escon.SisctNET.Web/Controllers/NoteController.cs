@@ -571,6 +571,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Status = false;
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
+                                    prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 

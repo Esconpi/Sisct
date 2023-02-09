@@ -251,14 +251,7 @@
                     <div class="row">
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label asp-for="DateStart" class="control-label"></label>
-                            @if (Model.DateStart == null)
-                            {
-                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" value="@Model.Note.Dhemi.Year.ToString()-@Model.Note.Dhemi.Month.ToString()-01" />
-                            }
-                            else
-                            {
-                                <input type="date" asp-for="DateStart" class="form-control" name="DateStart" />
-                            }
+                            <input type="date" asp-for="DateStart" class="form-control" name="DateStart" />
                         </div>
                          <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">Produto</label>

@@ -273,6 +273,9 @@ namespace Escon.SisctNET.Web.Controllers
                
                 ViewBag.Aliquot = aliquot;
 
+                if (product.DateStart == null)
+                    product.DateStart = new DateTime(product.Note.Dhemi.Year, product.Note.Dhemi.Month, 1);
+
                 return View(product);
             }
             catch (Exception ex)
