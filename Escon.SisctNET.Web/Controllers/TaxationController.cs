@@ -87,10 +87,10 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, null);
                 if (result != null)
-                 {
+                {
                      result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
                      _service.Update(result, GetLog(Model.OccorenceLog.Update));
-                 }
+                }
 
                 Taxation taxation = new Taxation();
                 taxation.TaxationTypeId = entity.TaxationTypeId;
@@ -111,7 +111,7 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Create(taxation, GetLog(Model.OccorenceLog.Create));
 
                 /*var taxations = _service.FindAll(null)
-                    .Where(_ => _.AliqInterna.Equals((decimal)12)))
+                    .Where(_ => _.AliqInterna.Equals((decimal)25) && _.DateEnd == null)
                     .ToList();
 
                 List<Taxation> createTaxation = new List<Taxation>();
@@ -146,8 +146,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 _service.Update(updateTaxation, null);
-                _service.Create(createTaxation, null);*/
-
+                _service.Create(createTaxation, null);
+                */
                 return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
             }
             catch (Exception ex)

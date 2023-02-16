@@ -2508,6 +2508,14 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
                         .Where(_ => _.Pautado.Equals(false))
+                        .OrderBy(_ => _.Xprod)
+                        .ToList();
+                }
+                else if (type.Equals(Model.Type.ProdutoP))
+                {
+                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
+                        .Where(_ => _.Pautado.Equals(true))
+                        .OrderBy(_ => _.Xprod)
                         .ToList();
                 }
                 else if (type.Equals(Model.Type.Geral))

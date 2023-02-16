@@ -93,9 +93,9 @@
     function ativar_button() {
         var opcao = document.getElementById("opcao").value;
         var arquivoSped = document.getElementById("arquivoSped").value;
-        if (opcao == "1" || opcao == "2") {
+        if (opcao == "0" || opcao == "1") {
             var ordem = document.getElementById("ordem").value;
-            if (ordem == "10" || ordem == "11" || ordem == "12" || ordem == "13") {
+            if (ordem == "9" || ordem == "10" || ordem == "11" || ordem == "12") {
                 document.getElementById("arquivoSped").disabled = true;
                 document.getElementById("arquivoExcel").disabled = false;
                 var arquivoExcel = document.getElementById("arquivoExcel").value;

@@ -42,7 +42,7 @@
     <strong>Nota Não Incentivada: @ViewBag.NotaNumber -&nbsp;</strong>
 }
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
@@ -106,6 +106,12 @@
 @if (ViewBag.Type == "ProdutoFP")
 {
     <strong>Produtos Sem Preço de Referência</strong>
+}
+
+
+@if (ViewBag.Type == "ProdutoP")
+{
+    <strong>Produtos Com Preço de Referência</strong>
 }
 
 @if (ViewBag.Type == "ProdutoFI")

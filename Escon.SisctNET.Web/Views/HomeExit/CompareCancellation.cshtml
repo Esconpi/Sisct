@@ -116,12 +116,12 @@
     function ativar_file() {
         var ordem = document.getElementById("ordem").value;
 
-        if (ordem == "2") {
+        if (ordem == "1") {
             document.getElementById("arquivoSped").disabled = false;
             document.getElementById("ativa").disabled = true;
             document.getElementById("period").disabled = true;
         }
-        else if (ordem == "3" || ordem == "4") {
+        else if (ordem == "2" || ordem == "3") {
             document.getElementById("period").disabled = false;
             document.getElementById("arquivoSped").disabled = true;
             document.getElementById("ativa").disabled = false;

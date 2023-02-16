@@ -81,7 +81,7 @@
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" ||
-                         ViewBag.Type == "ProdutoFP" || ViewBag.Type == "IcmsProdutor")
+                         ViewBag.Type == "ProdutoFP" ||  ViewBag.Type == "ProdutoP"  || ViewBag.Type == "IcmsProdutor")
                 {
                     <table class="table" style="font-size:8px; border: 2px solid;">
                         @if (ViewBag.Type == "GNRE")
@@ -103,6 +103,11 @@
                         {
                             <!-- Relatório Produtos Fora da Pauta -->
                             @await Html.PartialAsync("_ProductFPautaReport", Model, new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoP")
+                        {
+                            <!-- Relatório Produtos Dentro da Pauta -->
+                            @await Html.PartialAsync("_ProductPautaReport", Model, new ViewDataDictionary(ViewData))
                         }
                         else if (ViewBag.Type == "IcmsProdutor")
                         {
