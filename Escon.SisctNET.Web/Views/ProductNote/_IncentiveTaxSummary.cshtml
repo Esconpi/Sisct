@@ -4,7 +4,7 @@
             <tr>
                 <th></th>
                 <th>Total da Base de Cálculo Incentivo</th>
-                @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
                 {
                     <th>Saldo Anexo CCCXVI</th>
                 }
@@ -16,14 +16,14 @@
             </tr>
         </thead>
         <tbody>
-            @if (ViewBag.Company.AnnexId != 3 && ViewBag.Company.ChapterId != 4)
+            @if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
             {
                 <tr>
                     <th>
                         Base de Cálculo Regime
                     </th>
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </td>
-                    @if (ViewBag.Company.AnnexId == 1)
+                    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                     {
                         <td style="text-align:center"> ---- </td>
                     }
@@ -34,7 +34,7 @@
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </td>
                 </tr>
             }
-            @if (ViewBag.Company.ChapterId == 4)
+            @if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
             {
                 <tr>
                     <th>
@@ -68,7 +68,7 @@
                     Imposto Normal
                 </th>
                 <td style="text-align:center"> ---- </td>
-                @if (ViewBag.Company.AnnexId == 1 && ViewBag.Company.ChapterId != 4)
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
                 {
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsAnexoCCCXVI)</td>
                 }
@@ -83,19 +83,22 @@
 </div>
 
 <div style="width: 100%; overflow: hidden; font-size:12px;">
-    @if (ViewBag.Company.AnnexId == 3 && ViewBag.Company.ChapterId == 1)
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II"))
     {
-        @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
+        @if (ViewBag.Company.Section.Name.Equals("Seção II"))
+        {
+            @await Html.PartialAsync("_IncentiveDrugsSectionII", new ViewDataDictionary(ViewData))
 
-        <div style="width: 100%; font-size:12px; padding-top:10px;">
-            @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
-        </div>
+            <div style="width: 100%; font-size:12px; padding-top:10px;">
+                @await Html.PartialAsync("_Medicament", new ViewDataDictionary(ViewData))
+            </div>
+        }
     }
-    else if (ViewBag.Company.AnnexId == 4 && ViewBag.Company.ChapterId == 15)
+    else if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A"))
     {
         @await Html.PartialAsync("_PharmaceuticalProduct", new ViewDataDictionary(ViewData))
     }
-    else if (ViewBag.Company.ChapterId == 4)
+    else if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         @await Html.PartialAsync("_MotorcycleAutoParts", new ViewDataDictionary(ViewData))
     }

@@ -628,22 +628,40 @@ namespace Escon.SisctNET.Web.Controllers
                                     totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
 
                                 }
-                                else if (taxedtype.Type == "Normal" && taxedtype.Id.Equals((long)1))
+                                else if (taxedtype.Type == "Normal" && taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {
                                     baseCalc = baseDeCalc;
+
+                                    decimal baseCalcTemp = baseCalc - frete_prod;
+
+                                    if (taxed.EBcr && taxed.BCR != null)
+                                    {
+                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), baseCalcTemp);
+                                        valorIcms = 0;
+                                        baseCalcTemp = Convert.ToDecimal(valorbcr);
+                                    }
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
-                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
-                                else if (taxedtype.Type == "Normal" && !taxedtype.Id.Equals((long)1))
+                                else if (taxedtype.Type == "Normal" && !taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {
                                     baseCalc = baseDeCalc;
 
+                                    decimal baseCalcTemp = baseCalc - frete_prod;
+
+                                    if (taxed.EBcr && taxed.BCR != null)
+                                    {
+                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), baseCalcTemp);
+                                        valorIcms = 0;
+                                        baseCalcTemp = Convert.ToDecimal(valorbcr);
+                                    }
+
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
-                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Isento")
@@ -704,6 +722,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.TaxationTypeId = taxed.TaxationTypeId;
                                     prod.AliqInterna = aliqInterna;
                                     prod.Mva = taxed.MVA;
+                                    prod.EBcr = taxed.EBcr; ;
                                     prod.BCR = taxed.BCR;
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);

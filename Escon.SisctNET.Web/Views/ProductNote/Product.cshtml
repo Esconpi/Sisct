@@ -100,6 +100,62 @@
                     </div>
 
                     <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-xs-4" id="eBcr">
+                            <label asp-for="EBcr" class="control-label">BCR</label> <br />
+                            @Html.CheckBoxFor(model => model.EBcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
+                        </div>
+                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
+                            <label asp-for="AliqInterna" class="control-label"></label>
+                            <input type="text" name="AliqInterna" class="form-control money" value="@ViewBag.Aliquot" required />
+                        </div>
+                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
+                            <label class="control-label">FECOP (%)</label>
+                            @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("08/12/2022").Date)
+                            {
+                                @if (Model.TaxationTypeId.Equals((long)5) || Model.TaxationTypeId.Equals((long)6) || Model.TaxationTypeId.Equals((long)8))
+                                {
+                                    <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
+                                }
+                                else
+                                {
+                                    <input type="text" name="Fecop" class="form-control money" disabled="disabled" />
+                                }
+                            }
+                            else
+                            {
+                                <input type="text" name="Fecop" class="form-control money" disabled="disabled" />
+                            }
+                        </div>
+                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
+                            <label class="control-label">* INCISO (%)</label>
+                            @if (Model.Note.Company.ChapterId == 4)
+                            {
+                                <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
+                            }
+                            else
+                            {
+                                <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
+                            }
+                        </div>
+                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
+                            <label class="control-label">MVA (%)</label>
+                            <input type="text" name="Mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
+                        </div>
+
+                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
+                            <label class="control-label">BCR (%)</label>
+                            @if(Model.EBcr == true)
+                            {
+                                <input type="text" name="BCR" class="form-control money" value="@Model.BCR" id="bcr"/>
+                            }
+                            else
+                            {
+                                <input type="text" name="BCR" class="form-control money" id="bcr" disabled="disabled" />
+                            }
+                        </div>                      
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-lg-1 col-md-6 col-xs-6" id="pauta">
                             <label asp-for="Pautado" class="control-label">Pautado</label> <br />
                             @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
@@ -174,7 +230,7 @@
                         }
                         else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
                         {
-                            
+
                             if (Model.Pautado == true)
                             {
                                 <div class="form-group col-lg-9 col-md-12 col-xs-12">
@@ -190,62 +246,6 @@
                                 </div>
                             }
                         }
-                    </div>
-                    
-                    <div class="row">
-                        <div class="form-group col-lg-2 col-md-6 col-xs-4" id="eBcr">
-                            <label asp-for="EBcr" class="control-label">BCR</label> <br />
-                            @Html.CheckBoxFor(model => model.EBcr, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
-                        </div>
-                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
-                            <label asp-for="AliqInterna" class="control-label"></label>
-                            <input type="text" name="AliqInterna" class="form-control money" value="@ViewBag.Aliquot" required />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
-                            <label class="control-label">FECOP (%)</label>
-                            @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("08/12/2022").Date)
-                            {
-                                @if (Model.TaxationTypeId.Equals((long)5) || Model.TaxationTypeId.Equals((long)6) || Model.TaxationTypeId.Equals((long)8))
-                                {
-                                    <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
-                                }
-                                else
-                                {
-                                    <input type="text" name="Fecop" class="form-control money" disabled="disabled" />
-                                }
-                            }
-                            else
-                            {
-                                <input type="text" name="Fecop" class="form-control money" disabled="disabled" />
-                            }
-                        </div>
-                        <div class="form-group col-lg-2 col-md-4 col-xs-4">
-                            <label class="control-label">* INCISO (%)</label>
-                            @if (Model.Note.Company.ChapterId == 4)
-                            {
-                                <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
-                            }
-                            else
-                            {
-                                <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
-                            }
-                        </div>
-                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
-                            <label class="control-label">MVA (%)</label>
-                            <input type="text" name="Mva" class="form-control money" value="@Model.Mva" disabled="disabled" />
-                        </div>
-
-                        <div class="form-group col-lg-2 col-md-2 col-xs-4">
-                            <label class="control-label">BCR (%)</label>
-                            @if(Model.EBcr == true)
-                            {
-                                <input type="text" name="BCR" class="form-control money" value="@Model.BCR" id="bcr"/>
-                            }
-                            else
-                            {
-                                <input type="text" name="BCR" class="form-control money" id="bcr" disabled="disabled" />
-                            }
-                        </div>                      
                     </div>
 
                     <div class="row">

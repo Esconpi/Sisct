@@ -77,6 +77,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
             <th>Frete Nº</th>
             <th>V. Frete</th>
             <th>BC ICMS</th>
+            <th>BCR</th>
             <th>ICMS ST NFe</th>
             <th>ICMS Apurado</th>
 
@@ -103,7 +104,8 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
                 <td>@item[5]</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[6].Replace(".", ",")))</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")) + Convert.ToDecimal(item[6].Replace(".", ",")))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
+                <td>@string.Format("{0:N}", Convert.ToDecimal(item[9].Replace(".", ",")))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[13].Replace(".", ",")) + Convert.ToDecimal(item[18].Replace(".", ",")))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item[16].Replace(".", ",")))</td>
             </tr>
