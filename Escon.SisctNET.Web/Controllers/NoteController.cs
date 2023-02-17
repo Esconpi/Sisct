@@ -512,16 +512,16 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && comp.AnnexId.Equals((long)1) && comp.ChapterId.Equals((long)7))
+                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.AnnexId.Equals((long)3) && comp.ChapterId.Equals((long)1))
+                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.AnnexId.Equals((long)4) && comp.ChapterId.Equals((long)15))
+                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.ChapterId.Equals((long)4))
+                            if (comp.Incentive && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 incentivo = true;
 
 
@@ -589,9 +589,9 @@ namespace Escon.SisctNET.Web.Controllers
                             else
                             {
 
-                                if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso == null)
+                                if (comp.Incentive.Equals(true) && comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso == null)
                                     incentivo = false;
-                                else if (comp.Incentive.Equals(true) && comp.ChapterId.Equals((long)4) && taxed.PercentualInciso != null)
+                                else if (comp.Incentive.Equals(true) && comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso != null)
                                     incentivo = true;
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();

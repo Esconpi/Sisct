@@ -11,7 +11,7 @@
 }
 else if (ViewBag.Company.Incentive == true && ViewBag.Company.TipoApuracao == false)
 {
-    @if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
+    @if (ViewBag.Company.AnnexId.Equals(null))
     {
         if (ViewBag.Company.TypeCompany == true)
         {
@@ -22,7 +22,7 @@ else if (ViewBag.Company.Incentive == true && ViewBag.Company.TipoApuracao == fa
             @await Html.PartialAsync("_GeneralIndustryIncentiveReport", new ViewDataDictionary(ViewData))
         }
     }
-    else if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II"))
+    else
     {
         @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
         @await Html.PartialAsync("_GeneralTaxSummary", new ViewDataDictionary(ViewData))

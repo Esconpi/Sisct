@@ -53,7 +53,7 @@
             <tr>
                 <th></th>
                 <th>Total da Base de Cálculo Incentivo</th>
-                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.ChapterId != 4)
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B"))
                 {
                     <th>Saldo Anexo CCCXVI</th>
                 }
@@ -73,7 +73,7 @@
                         Base de Cálculo Regime
                     </th>
                     <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.Base) </td>
-                    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
+                    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B"))
                     {
                         <td style="text-align:center"> ---- </td>
                     }
@@ -85,7 +85,7 @@
                 </tr>
             }
 
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A"))
             {
                 <tr>
                     <th>
@@ -153,7 +153,7 @@
 
                 }
             }
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A"))
             {
                 <tr>
                     <th>
@@ -185,7 +185,7 @@
                         Imposto Normal
                     </th>
                     <td style="text-align:center"> ---- </td>
-                    @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && !ViewBag.Company.Chapter.NameEquals("CAPÍTULO IV-C"))
+                    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
                         <td style="text-align:right;padding-right:1%">@string.Format("{0:N}", ViewBag.IcmsAnexoCCCXVI)</td>
                     }
@@ -256,7 +256,8 @@ else
                 <td style="text-align:center">@ViewBag.DarIcms.Code</td>
             </tr>
             
-            @if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO") && ViewBag.Type != "Nota")
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && 
+                 ViewBag.Type != "Nota")
             {
                 <tr>
                     <th style="text-align:center">ICMS Excedente</th>
@@ -265,7 +266,7 @@ else
                 </tr>
             }
 
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Type == "Geral")
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
             {
                 <tr>
                     <th style="text-align:center">ICMS ANEXO CCCXVI</th>
@@ -283,7 +284,7 @@ else
                 </tr>
             }
 
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && !ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV"))
             {
                 <tr>
                     <th style="text-align:center">Fecop Incentivo</th>
@@ -292,7 +293,7 @@ else
                 </tr>
             }
 
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Type == "Geral")
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
             {
                 <tr>
                     <th style="text-align:center">Fecop ANEXO CCCXVI</th>

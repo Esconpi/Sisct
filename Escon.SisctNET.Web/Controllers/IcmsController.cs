@@ -27191,7 +27191,7 @@ namespace Escon.SisctNET.Web.Controllers
                             limiteTransferencia = calculation.Limite(baseCalcVenda, Convert.ToDecimal(comp.Transferencia)),
                             limiteTransferenciaInter = calculation.Limite(totalTranferenciaEntrada, Convert.ToDecimal(comp.TransferenciaInter));
 
-                    if (comp.ChapterId == (long)4)
+                    if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                         limiteNcm = calculation.Limite(baseCalcVenda, Convert.ToDecimal(comp.Faturamento));
 
                     decimal excedenteGrupo = 0, impostoGrupo = 0, excedenteNcm = 0, impostoNcm = 0, impostoNContribuinte = 0, excedenteNContribuinte = 0,
@@ -27199,7 +27199,6 @@ namespace Escon.SisctNET.Web.Controllers
 
 
                     //  CNPJ
-
                     if (baseCalcGrupo > limiteGrupo)
                     {
                         excedenteGrupo = calculation.ExcedenteMaximo(baseCalcGrupo, limiteGrupo);
@@ -27209,11 +27208,11 @@ namespace Escon.SisctNET.Web.Controllers
                     var gruposExecentes = check.Grupos(grupos);
 
                     //  Anexo II ou Inciso I e II
-                    if (baseCalcNcm < limiteNcm && (comp.AnnexId == (long)1 || comp.ChapterId == (long)4))
+                    if (baseCalcNcm < limiteNcm && (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
                     {
                         excedenteNcm = calculation.ExcedenteMinimo(baseCalcNcm, limiteNcm);
 
-                        if (comp.AnnexId == (long)1)
+                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                             impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.VendaAnexoExcedente));
                         else
                             impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.FaturamentoExcedente));

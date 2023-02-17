@@ -32,10 +32,6 @@ namespace Escon.SisctNET.Repository
 
         List<Model.ProductNote> FindByCfopNotesOut(long companyId, List<Model.Note> notes, Model.Log log = null);
 
-        List<Model.ProductNote> FindByIncentive(List<Model.Note> notes, Model.Log log = null);
-
-        List<Model.ProductNote> FindByNormal(List<Model.Note> notes, Model.Log log = null);
-
         List<Model.ProductNote> FindByCompany(long companyId, Model.Log log = null);
     }
 }

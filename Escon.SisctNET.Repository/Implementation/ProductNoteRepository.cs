@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Escon.SisctNET.Repository.Implementation
@@ -91,56 +90,56 @@ namespace Escon.SisctNET.Repository.Implementation
                 else if (taxationType.Equals(Model.TypeTaxation.ST))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6))
+                        .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.AP))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)1))
+                        .Where(_ => _.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.CO))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)2))
+                        .Where(_ => _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.COR))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)4))
+                        .Where(_ => _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.IM))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)3))
+                        .Where(_ => _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.Isento))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)7))
+                        .Where(_ => _.TaxationType.Description.Equals("Isento"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.AT))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)8))
+                        .Where(_ => _.TaxationType.Description.Equals("2 AT - Antecipacao Total"))
                         .ToList();
                     products.AddRange(rst);
                 }
                 else if (taxationType.Equals(Model.TypeTaxation.NT))
                 {
                     var rst = note.Products
-                        .Where(_ => _.TaxationTypeId.Equals((long)9))
+                        .Where(_ => _.TaxationType.Description.Equals("Não Tributado"))
                         .ToList();
                     products.AddRange(rst);
                 }
@@ -169,16 +168,25 @@ namespace Escon.SisctNET.Repository.Implementation
             {
                 foreach (var note in notes)
                 {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6) || _.TaxationTypeId.Equals(8))).Select(_ => _.IcmsST).Sum());
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") ||
+                                                                                      _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida") ||
+                                                                                      _.TaxationType.Description.Equals("2 AT - Antecipacao Total")))
+                                                                          .Select(_ => _.IcmsST)
+                                                                          .Sum());
                 }
             }
             else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
                     taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
             {
-                    foreach (var note in notes)
-                    {
-                        icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationTypeId.Equals((long)1) || _.TaxationTypeId.Equals((long)2) || _.TaxationTypeId.Equals((long)3) || _.TaxationTypeId.Equals((long)4))).Select(_ => _.IcmsST).Sum());
-                    }
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("1  AP - Antecipação parcial") ||
+                                                                                      _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota") ||
+                                                                                      _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota") ||
+                                                                                      _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota")))
+                                                                           .Select(_ => _.IcmsST)
+                                                                           .Sum());
+                }
             }
             return icmsTotalSt;
         }
@@ -254,34 +262,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<ProductNote> FindByIncentive(List<Note> notes, Log log = null)
-        {
-            List <ProductNote> products = new List<ProductNote>();
-
-            foreach(var note in notes)
-            {
-                var itens = note.Products
-                    .Where(_ => _.Incentivo == true)
-                    .ToList();
-                products.AddRange(itens);
-            }
-            return products;
-        }
-
-        public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
-        {
-            List<ProductNote> products = new List<ProductNote>();
-
-            foreach (var note in notes)
-            {
-                var itens = note.Products
-                    .Where(_ => _.Incentivo == false && _.Status.Equals(true))
-                    .ToList();
-                products.AddRange(itens);
-            }
-            return products;
-        }
-
         public ProductNote FindByProduct(long id, Log log = null)
         {
             var rst = _context.ProductNotes
@@ -310,56 +290,56 @@ namespace Escon.SisctNET.Repository.Implementation
             else if (taxationType.Equals(Model.TypeTaxation.ST))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6))
+                    .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.AP))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)1))
+                    .Where(_ => _.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.CO))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)2))
+                    .Where(_ => _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.COR))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)4))
+                    .Where(_ => _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.IM))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)3))
+                    .Where(_ => _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.Isento))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)7))
+                    .Where(_ => _.TaxationType.Description.Equals("Isento"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.AT))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)8))
+                    .Where(_ => _.TaxationType.Description.Equals("2 AT - Antecipacao Total"))
                     .ToList();
                 products.AddRange(rst);
             }
             else if (taxationType.Equals(Model.TypeTaxation.NT))
             {
                 var rst = productNotes
-                    .Where(_ => _.TaxationTypeId.Equals((long)9))
+                    .Where(_ => _.TaxationType.Description.Equals("Não Tributado"))
                     .ToList();
                 products.AddRange(rst);
             }

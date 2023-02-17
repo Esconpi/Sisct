@@ -113,16 +113,6 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByCfopNotesOut(companyId, notes, log);
         }
 
-        public List<ProductNote> FindByIncentive(List<Note> notes, Log log = null)
-        {
-            return _repository.FindByIncentive(notes, log);
-        }
-
-        public List<ProductNote> FindByNormal(List<Note> notes, Log log = null)
-        {
-            return _repository.FindByNormal(notes, log);
-        }
-
         public ProductNote FindByProduct(long id, Log log = null)
         {
             return _repository.FindByProduct(id, log);
