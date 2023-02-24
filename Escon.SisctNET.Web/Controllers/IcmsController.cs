@@ -27219,14 +27219,14 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     //  Contribuinte
-                    if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == (long)4)
+                    if (baseCalcContribuinte < limiteContribuinte && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
                         excedenteContribuinte = calculation.ExcedenteMinimo(baseCalcContribuinte, limiteContribuinte);
                         impostoContribuinte = calculation.Imposto(excedenteContribuinte, Convert.ToDecimal(comp.VendaContribuinteExcedente));
                     }
 
                     //  Não Contribuinte
-                    if (baseCalcNContribuinte > limiteNContribuinte && comp.ChapterId != (long)4)
+                    if (baseCalcNContribuinte > limiteNContribuinte && !comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
                         excedenteNContribuinte = calculation.ExcedenteMaximo(baseCalcNContribuinte, limiteNContribuinte);
                         impostoNContribuinte = calculation.Imposto(excedenteNContribuinte, Convert.ToDecimal(comp.VendaCpfExcedente));
@@ -27234,7 +27234,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     //  Transferência
-                    if (totalTranferenciaSaida > limiteTransferencia && comp.ChapterId == (long)4)
+                    if (totalTranferenciaSaida > limiteTransferencia && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
                         excedenteTranf = calculation.ExcedenteMaximo(totalTranferenciaSaida, limiteTransferencia);
                         impostoTransf = calculation.Imposto(excedenteTranf, Convert.ToDecimal(comp.TransferenciaExcedente));
@@ -27267,9 +27267,9 @@ namespace Escon.SisctNET.Web.Controllers
                     if (percentualVendaNContribuinte > Convert.ToDecimal(comp.VendaCpf))
                         difNContribuinte = calculation.Diferenca(percentualVendaNContribuinte, Convert.ToDecimal(comp.VendaCpf));
 
-                    if (comp.AnnexId == (long)1 || comp.ChapterId == (long)4)
+                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
-                        if (comp.AnnexId == (long)1)
+                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                         {
                             if (percentualVendaNcm < Convert.ToDecimal(comp.VendaAnexo))
                             {
@@ -27377,7 +27377,7 @@ namespace Escon.SisctNET.Web.Controllers
                         return View();
                     }
 
-                    if (!comp.AnnexId.Equals((long)3))
+                    if (!comp.Annex.Description.Equals("ANEXO ÚNICO"))
                     {
                         var grupos = _grupoService.FindByGrupos(imp.Id);
 
@@ -27613,160 +27613,162 @@ namespace Escon.SisctNET.Web.Controllers
                             ViewBag.TotalDeImposto = totalImposto;
                         }
                     }
-                    else if (comp.AnnexId.Equals((long)3))
+                    else if (comp.Annex.Description.Equals("ANEXO ÚNICO"))
                     {
 
                         decimal totalDarFecop = 0, totalDarIcms = 0;
-
-                        if (comp.SectionId.Equals((long)2))
+                        if (comp.Chapter.Name.Equals("CAPÍTULO II"))
                         {
-
-                            decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
-                                vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
-                                InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
-                                InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
-                                InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
-                                InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
-                                InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
-                                suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
-                                vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
-
-
-                            //  Elencadas
-                            // Internas
-                            decimal icmsInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
-                                fecopInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.Fecop)),
-                                totalInternasElencada = icmsInternaElencada,
-                                icmsPresumidoInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.IncIInterna)),
-                                totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
-
-                            totalDarFecop += fecopInternaElencada;
-                            totalDarIcms += totalIcmsInternaElencada;
-
-                            // Interestadual
-                            decimal icmsInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
-                                fecopInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.Fecop)),
-                                totalInterestadualElencada = icmsInterestadualElencada,
-                                icmsPresumidoInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.IncIInterestadual)),
-                                totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
-
-                            totalDarFecop += fecopInterestadualElencada;
-                            totalDarIcms += totalIcmsInterestadualElencada;
-
-                            //  Deselencadas
-                            //  Internas
-                            decimal icmsInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
-                                fecopInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.Fecop)),
-                                totalInternasDeselencada = icmsInternaDeselencada,
-                                icmsPresumidoInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.IncIIInterna)),
-                                totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
-
-                            totalDarFecop += fecopInternaDeselencada;
-                            totalDarIcms += totalIcmsInternaDeselencada;
-
-                            // Interestadual
-                            decimal icmsInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
-                                fecopInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.Fecop)),
-                                totalInterestadualDeselencada = icmsInterestadualDeselencada,
-                                icmsPresumidoInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.IncIIInterestadual)),
-                                totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
-
-                            totalDarFecop += fecopInterestadualDeselencada;
-                            totalDarIcms += totalIcmsInterestadualDeselencada;
-
-                            //  Percentual
-                            decimal percentualVendas = calculation.Percentual(vendasClienteCredenciado, vendas);
-
-                            var notifi = _notificationService.FindByCurrentMonth(companyId, month, year);
-
-                            if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
+                            if (comp.Section.Name.Equals("Seção II"))
                             {
-                                if (notifi == null)
+
+                                decimal vendasInternasElencadas = Convert.ToDecimal(imp.VendasInternas1), vendasInterestadualElencadas = Convert.ToDecimal(imp.VendasInterestadual1),
+                                    vendasInternasDeselencadas = Convert.ToDecimal(imp.VendasInternas2), vendasInterestadualDeselencadas = Convert.ToDecimal(imp.VendasInterestadual2),
+                                    InternasElencadas = Convert.ToDecimal(imp.SaidaInterna1), InterestadualElencadas = Convert.ToDecimal(imp.SaidaInterestadual1),
+                                    InternasElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna1), InterestadualElencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual1),
+                                    InternasDeselencadas = Convert.ToDecimal(imp.SaidaInterna2), InterestadualDeselencadas = Convert.ToDecimal(imp.SaidaInterestadual2),
+                                    InternasDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterna2),
+                                    InterestadualDeselencadasPortaria = Convert.ToDecimal(imp.SaidaPortInterestadual2),
+                                    suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
+                                    vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
+
+
+                                //  Elencadas
+                                // Internas
+                                decimal icmsInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
+                                    fecopInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.Fecop)),
+                                    totalInternasElencada = icmsInternaElencada,
+                                    icmsPresumidoInternaElencada = calculation.Imposto(InternasElencadasPortaria, Convert.ToDecimal(comp.IncIInterna)),
+                                    totalIcmsInternaElencada = Math.Round(totalInternasElencada - icmsPresumidoInternaElencada, 2);
+
+                                totalDarFecop += fecopInternaElencada;
+                                totalDarIcms += totalIcmsInternaElencada;
+
+                                // Interestadual
+                                decimal icmsInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
+                                    fecopInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.Fecop)),
+                                    totalInterestadualElencada = icmsInterestadualElencada,
+                                    icmsPresumidoInterestadualElencada = calculation.Imposto(InterestadualElencadasPortaria, Convert.ToDecimal(comp.IncIInterestadual)),
+                                    totalIcmsInterestadualElencada = Math.Round(totalInterestadualElencada - icmsPresumidoInterestadualElencada, 2);
+
+                                totalDarFecop += fecopInterestadualElencada;
+                                totalDarIcms += totalIcmsInterestadualElencada;
+
+                                //  Deselencadas
+                                //  Internas
+                                decimal icmsInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
+                                    fecopInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.Fecop)),
+                                    totalInternasDeselencada = icmsInternaDeselencada,
+                                    icmsPresumidoInternaDeselencada = calculation.Imposto(InternasDeselencadasPortaria, Convert.ToDecimal(comp.IncIIInterna)),
+                                    totalIcmsInternaDeselencada = Math.Round(totalInternasDeselencada - icmsPresumidoInternaDeselencada, 2);
+
+                                totalDarFecop += fecopInternaDeselencada;
+                                totalDarIcms += totalIcmsInternaDeselencada;
+
+                                // Interestadual
+                                decimal icmsInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.AliqInterna)),
+                                    fecopInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.Fecop)),
+                                    totalInterestadualDeselencada = icmsInterestadualDeselencada,
+                                    icmsPresumidoInterestadualDeselencada = calculation.Imposto(InterestadualDeselencadasPortaria, Convert.ToDecimal(comp.IncIIInterestadual)),
+                                    totalIcmsInterestadualDeselencada = Math.Round(totalInterestadualDeselencada - icmsPresumidoInterestadualDeselencada, 2);
+
+                                totalDarFecop += fecopInterestadualDeselencada;
+                                totalDarIcms += totalIcmsInterestadualDeselencada;
+
+                                //  Percentual
+                                decimal percentualVendas = calculation.Percentual(vendasClienteCredenciado, vendas);
+
+                                var notifi = _notificationService.FindByCurrentMonth(companyId, month, year);
+
+                                if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
                                 {
-                                    Model.Notification nn = new Notification();
-                                    nn.Description = "Venda p/ Cliente Credenciado no Art. 781 menor que " + comp.VendaArt781.ToString() + " %";
-                                    nn.Percentual = percentualVendas;
-                                    nn.MesRef = month;
-                                    nn.AnoRef = year;
-                                    nn.CompanyId = companyId;
-                                    nn.Created = DateTime.Now;
-                                    nn.Updated = nn.Created;
-                                    _notificationService.Create(nn, GetLog(Model.OccorenceLog.Create));
+                                    if (notifi == null)
+                                    {
+                                        Model.Notification nn = new Notification();
+                                        nn.Description = "Venda p/ Cliente Credenciado no Art. 781 menor que " + comp.VendaArt781.ToString() + " %";
+                                        nn.Percentual = percentualVendas;
+                                        nn.MesRef = month;
+                                        nn.AnoRef = year;
+                                        nn.CompanyId = companyId;
+                                        nn.Created = DateTime.Now;
+                                        nn.Updated = nn.Created;
+                                        _notificationService.Create(nn, GetLog(Model.OccorenceLog.Create));
+                                    }
+                                    else
+                                    {
+                                        notifi.Percentual = percentualVendas;
+                                        notifi.Updated = DateTime.Now;
+                                        _notificationService.Update(notifi, GetLog(Model.OccorenceLog.Update));
+                                    }
                                 }
                                 else
                                 {
-                                    notifi.Percentual = percentualVendas;
-                                    notifi.Updated = DateTime.Now;
-                                    _notificationService.Update(notifi, GetLog(Model.OccorenceLog.Update));
+                                    if (notifi != null)
+                                    {
+                                        _notificationService.Delete(notifi.Id, GetLog(Model.OccorenceLog.Delete));
+                                    }
                                 }
+
+                                //  Suspensão
+                                decimal totalSuspensao = calculation.Imposto(suspensao, Convert.ToDecimal(comp.Suspension));
+                                totalDarIcms += totalSuspensao;
+
+
+                                //  Elencadas
+                                // Internas
+                                ViewBag.VendasInternasElencadas = vendasInternasElencadas;
+                                ViewBag.InternasElencadas = InternasElencadas;
+                                ViewBag.InternasElencadasPortaria = InternasElencadasPortaria;
+                                ViewBag.IcmsInternasElencadas = icmsInternaElencada;
+                                ViewBag.FecopInternasElencadas = fecopInternaElencada;
+                                ViewBag.TotalInternasElencadas = totalInternasElencada;
+                                ViewBag.IcmsPresumidoInternasElencadas = icmsPresumidoInternaElencada;
+                                ViewBag.TotalIcmsInternasElencadas = totalIcmsInternaElencada;
+
+                                // Interestadual
+                                ViewBag.VendasInterestadualElencadas = vendasInterestadualElencadas;
+                                ViewBag.InterestadualElencadas = InterestadualElencadas;
+                                ViewBag.InterestadualElencadasPortaria = InterestadualElencadasPortaria;
+                                ViewBag.IcmsInterestadualElencadas = icmsInterestadualElencada;
+                                ViewBag.FecopInterestadualElencadas = fecopInterestadualElencada;
+                                ViewBag.TotalInterestadualElencadas = totalInterestadualElencada;
+                                ViewBag.IcmsPresumidoInterestadualElencadas = icmsPresumidoInterestadualElencada;
+                                ViewBag.TotalIcmsInterestadualElencadas = totalIcmsInterestadualElencada;
+
+                                //  Deselencadas
+                                //  Internas
+                                ViewBag.VendasInternasDeselencadas = vendasInternasDeselencadas;
+                                ViewBag.InternasDeselencadas = InternasDeselencadas;
+                                ViewBag.InternasDeselencadasPortaria = InternasDeselencadasPortaria;
+                                ViewBag.IcmsInternasElencadas = icmsInternaElencada;
+                                ViewBag.IcmsInternasDeselencadas = icmsInternaDeselencada;
+                                ViewBag.FecopInternasDeselencadas = fecopInternaDeselencada;
+                                ViewBag.TotalInternasDeselencadas = totalInternasDeselencada;
+                                ViewBag.IcmsPresumidoInternasDeselencadas = icmsPresumidoInternaDeselencada;
+                                ViewBag.TotalIcmsInternasDeselencadas = totalIcmsInternaDeselencada;
+
+
+                                // Interestadual
+                                ViewBag.VendasInterestadualDeselencadas = vendasInterestadualDeselencadas;
+                                ViewBag.InterestadualDeselencadas = InterestadualDeselencadas;
+                                ViewBag.InterestadualDeselencadasPortaria = InterestadualDeselencadasPortaria;
+                                ViewBag.IcmsInterestadualDeselencadas = icmsInterestadualDeselencada;
+                                ViewBag.FecopInterestadualDeselencadas = fecopInterestadualDeselencada;
+                                ViewBag.TotalInterestadualDeselencadas = totalInterestadualDeselencada;
+                                ViewBag.IcmsPresumidoInterestadualDeselencadas = icmsPresumidoInterestadualDeselencada;
+                                ViewBag.TotalIcmsInterestadualDeselencadas = totalIcmsInterestadualDeselencada;
+
+
+                                //  Percentual
+                                ViewBag.PercentualVendas = percentualVendas;
+
+                                //  Suspensão
+                                ViewBag.PercentualSuspensao = Convert.ToDecimal(comp.Suspension);
+                                ViewBag.Suspensao = suspensao;
+                                ViewBag.TotalSuspensao = totalSuspensao;
                             }
-                            else
-                            {
-                                if (notifi != null)
-                                {
-                                    _notificationService.Delete(notifi.Id, GetLog(Model.OccorenceLog.Delete));
-                                }
-                            }
-
-                            //  Suspensão
-                            decimal totalSuspensao = calculation.Imposto(suspensao, Convert.ToDecimal(comp.Suspension));
-                            totalDarIcms += totalSuspensao;
-
-
-                            //  Elencadas
-                            // Internas
-                            ViewBag.VendasInternasElencadas = vendasInternasElencadas;
-                            ViewBag.InternasElencadas = InternasElencadas;
-                            ViewBag.InternasElencadasPortaria = InternasElencadasPortaria;
-                            ViewBag.IcmsInternasElencadas = icmsInternaElencada;
-                            ViewBag.FecopInternasElencadas = fecopInternaElencada;
-                            ViewBag.TotalInternasElencadas = totalInternasElencada;
-                            ViewBag.IcmsPresumidoInternasElencadas = icmsPresumidoInternaElencada;
-                            ViewBag.TotalIcmsInternasElencadas = totalIcmsInternaElencada;
-
-                            // Interestadual
-                            ViewBag.VendasInterestadualElencadas = vendasInterestadualElencadas;
-                            ViewBag.InterestadualElencadas = InterestadualElencadas;
-                            ViewBag.InterestadualElencadasPortaria = InterestadualElencadasPortaria;
-                            ViewBag.IcmsInterestadualElencadas = icmsInterestadualElencada;
-                            ViewBag.FecopInterestadualElencadas = fecopInterestadualElencada;
-                            ViewBag.TotalInterestadualElencadas = totalInterestadualElencada;
-                            ViewBag.IcmsPresumidoInterestadualElencadas = icmsPresumidoInterestadualElencada;
-                            ViewBag.TotalIcmsInterestadualElencadas = totalIcmsInterestadualElencada;
-
-                            //  Deselencadas
-                            //  Internas
-                            ViewBag.VendasInternasDeselencadas = vendasInternasDeselencadas;
-                            ViewBag.InternasDeselencadas = InternasDeselencadas;
-                            ViewBag.InternasDeselencadasPortaria = InternasDeselencadasPortaria;
-                            ViewBag.IcmsInternasElencadas = icmsInternaElencada;
-                            ViewBag.IcmsInternasDeselencadas = icmsInternaDeselencada;
-                            ViewBag.FecopInternasDeselencadas = fecopInternaDeselencada;
-                            ViewBag.TotalInternasDeselencadas = totalInternasDeselencada;
-                            ViewBag.IcmsPresumidoInternasDeselencadas = icmsPresumidoInternaDeselencada;
-                            ViewBag.TotalIcmsInternasDeselencadas = totalIcmsInternaDeselencada;
-
-
-                            // Interestadual
-                            ViewBag.VendasInterestadualDeselencadas = vendasInterestadualDeselencadas;
-                            ViewBag.InterestadualDeselencadas = InterestadualDeselencadas;
-                            ViewBag.InterestadualDeselencadasPortaria = InterestadualDeselencadasPortaria;
-                            ViewBag.IcmsInterestadualDeselencadas = icmsInterestadualDeselencada;
-                            ViewBag.FecopInterestadualDeselencadas = fecopInterestadualDeselencada;
-                            ViewBag.TotalInterestadualDeselencadas = totalInterestadualDeselencada;
-                            ViewBag.IcmsPresumidoInterestadualDeselencadas = icmsPresumidoInterestadualDeselencada;
-                            ViewBag.TotalIcmsInterestadualDeselencadas = totalIcmsInterestadualDeselencada;
-
-
-                            //  Percentual
-                            ViewBag.PercentualVendas = percentualVendas;
-
-                            //  Suspensão
-                            ViewBag.PercentualSuspensao = Convert.ToDecimal(comp.Suspension);
-                            ViewBag.Suspensao = suspensao;
-                            ViewBag.TotalSuspensao = totalSuspensao;
                         }
-
+                       
                         ViewBag.AliqInterna = Convert.ToDecimal(comp.AliqInterna);
                         ViewBag.Fecop = Convert.ToDecimal(comp.Fecop);
 
@@ -27997,7 +27999,7 @@ namespace Escon.SisctNET.Web.Controllers
                     //  Relatório Anexo Medicamentos
 
                     var clientesAll = _clientService.FindByCompany(companyId);
-                    var nContribuintes = clientesAll.Where(_ => _.TypeClientId.Equals(2)).Select(_ => _.Document).ToList();
+                    var nContribuintes = clientesAll.Where(_ => _.TypeClient.Name.Equals("Não Contribuinte")).Select(_ => _.Document).ToList();
 
                     List<List<string>> elencadaInterna = new List<List<string>>();
                     List<List<string>> elencadaInterestadual = new List<List<string>>();

@@ -12,7 +12,7 @@
         <h3 class="box-title"><strong> Dados ICMS e PIS/COFINS</strong></h3>
         <div class="btn-group pull-right">
             <div class="btn-group pull-right">
-                @if (ViewBag.Company.CountingTypeId != 3)
+                @if (!ViewBag.Company.CountingType.Name.Equals("Simples Nacional"))
                 {
                     <a asp-action="Receita" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -21,7 +21,7 @@
                 }
 
 
-                @if (ViewBag.Company.CountingTypeId == 2)
+                @if (ViewBag.Company.CountingType.Name.Equals("Lucro Presumido"))
                 {
                     <a asp-action="Reduction" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -29,7 +29,7 @@
                     </a>
                 }
 
-                @if (ViewBag.Company.CountingTypeId == 1)
+                @if (ViewBag.Company.CountingType.Name.Equals("Lucro Real"))
                 {
                     <a asp-action="Despesa" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -37,7 +37,7 @@
                     </a>
                 }
 
-                @if (ViewBag.Company.CountingTypeId != 3)
+                @if (!ViewBag.Company.CountingType.Name.Equals("Simples Nacional"))
                 {
                     <a asp-action="Retention" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -47,7 +47,7 @@
 
             </div>
 
-            @if (ViewBag.Company.CountingTypeId != 3)
+            @if (!ViewBag.Company.CountingType.Name.Equals("Simples Nacional"))
             {
                 <br />
                 <br />
@@ -55,7 +55,7 @@
 
 
             <div class="btn-group pull-right">
-                @if (ViewBag.Company.CountingTypeId == 1)
+                @if (ViewBag.Company.CountingType.Name.Equals("Lucro Real"))
                 {
                     <a asp-action="Loss" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -64,7 +64,7 @@
                 }
 
                 @if ((SessionManager.GetMonthInSession() == "Março" || SessionManager.GetMonthInSession() == "Junho" || SessionManager.GetMonthInSession() == "Setembro" ||
-                      SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingTypeId == 2)
+                     SessionManager.GetMonthInSession() == "Dezembro") && ViewBag.Company.CountingType.Name.Equals("Lucro Presumido"))
                 {
                     <a asp-action="Pag" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -72,7 +72,7 @@
                     </a>
                 }
 
-                @if (ViewBag.Company.CountingTypeId == 2 || ViewBag.Company.CountingTypeId == 3)
+                @if (ViewBag.Company.CountingType.Name.Equals("Lucro Presumido") || ViewBag.Company.CountingType.Name.Equals("Simples Nacional"))
                 {
                     <a asp-action="Service" size="large" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
@@ -124,7 +124,7 @@
                 <table class="table" style="font-size:9px;">
                     <thead>
                         <tr>
-                            @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4 || ViewBag.Company.TipoApuracao.Equals(false))
+                            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C") || ViewBag.Company.TipoApuracao.Equals(false))
                             {
                                 <th style="text-align:center;border:1px solid;" colspan="18">
                                     DADOS
@@ -150,7 +150,7 @@
                         else if (ViewBag.Company.TipoApuracao.Equals(false))
                         {
                             <!-- EMPRESA INCENTIVO SAÍDA -->
-                            @if (ViewBag.Company.AnnexId != 3 && ViewBag.Company.AnnexId != 4)
+                            @if (ViewBag.Company.AnnexId.Equals(null))
                             {
                                 @if (ViewBag.Company.TypeCompany.Equals(true))
                                 {
@@ -161,17 +161,20 @@
                                     @await Html.PartialAsync("_IndustryData", Model, new ViewDataDictionary(ViewData))
                                 }
                             }
-                            else if (ViewBag.Company.AnnexId == 4)
+                            else if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
                             {
                                  <!-- EMPRESA DE MEDICAMENTO -->
                                  @await Html.PartialAsync("_PharmaceuticalData", Model, new ViewDataDictionary(ViewData))
                             }
-                            else if (ViewBag.Company.AnnexId.Equals(3))
+                            else if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
                             {
                                 <!-- EMPRESA DE MEDICAMENTO -->
-                                @if (ViewBag.Company.SectionId.Equals(2))
+                                if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II"))
                                 {
-                                    @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
+                                    @if (ViewBag.Company.Section.Name.Equals("Seção II"))
+                                    {
+                                        @await Html.PartialAsync("_MedicationData", Model, new ViewDataDictionary(ViewData))
+                                    }
                                 }
                             }
 
@@ -182,27 +185,26 @@
                 <hr />
             }
 
-
             <!-- IMPOSTO PIS/COFINS -->
             <div style="text-align:center">
                 <strong>PIS/COFINS</strong>
             </div>
 
-            @if (ViewBag.Company.CountingTypeId == 1)
+            @if (ViewBag.Company.CountingType.Name.Equals("Lucro Real"))
             {
                 <!-- EMPRESA LUCRO REAL -->
 
                 @await Html.PartialAsync("_ReceitaDataReal", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataReal", Model, new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Company.CountingTypeId == 2)
+            else if (ViewBag.Company.CountingType.Name.Equals("Lucro Presumido"))
             {
                 <!-- EMPRESA LUCRO PRESUMIDO -->
 
                 @await Html.PartialAsync("_ReceitaDataPresumido", Model, new ViewDataDictionary(ViewData))
                 @await Html.PartialAsync("_RetentionDataPresumido", Model, new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Company.CountingTypeId == 3)
+            else if (ViewBag.Company.CountingType.Name.Equals("Simples Nacional"))
             {
                 <!-- EMPRESA DO SIMPLES -->
                 @await Html.PartialAsync("_ReceitaDataSimples", Model, new ViewDataDictionary(ViewData))

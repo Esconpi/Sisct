@@ -52,7 +52,7 @@
     <div class="box-body">
         <div style="width:100%; padding:10px;">
 
-            @if (Convert.ToInt32(ViewBag.Company.AnnexId) == 1)
+            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
             {
                 @await Html.PartialAsync("_AutoPartsAttachmentEntry", Model, new ViewDataDictionary(ViewData))
 

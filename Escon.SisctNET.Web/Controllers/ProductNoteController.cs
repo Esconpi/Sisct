@@ -206,7 +206,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("10/02/2020").Date &&
                         Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("14/09/2020").Date)
                 {
-                    List<Product1> list_product1 = _product1Service.FindAllInDate1(product.Note.Dhemi);
+                    List<Product1> list_product1 = _product1Service.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product1)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -218,7 +218,7 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("14/09/2020").Date &&
                         Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("01/06/2022").Date)
                 {
-                    List<Product2> list_product2 = _product2Service.FindAllInDate2(product.Note.Dhemi);
+                    List<Product2> list_product2 = _product2Service.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product2)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -229,7 +229,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
                 {
-                    List<Product3> list_product3 = _product3Service.FindAllInDate2(product.Note.Dhemi);
+                    List<Product3> list_product3 = _product3Service.FindAllInDate(product.Note.Dhemi);
                     foreach (var prod in list_product3)
                     {
                         prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
@@ -3268,9 +3268,11 @@ namespace Escon.SisctNET.Web.Controllers
                         totalApuradoFecop += Math.Round(impostoFecop, 2);
 
                         decimal icmsGeralNormal = Convert.ToDecimal(totalApuradoSTIE) + Convert.ToDecimal(totalApuradoSTSIE),
-                            icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum()),
+                            icmsGeralIncetivo = Convert.ToDecimal(products.Where(_ => (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida")) && 
+                                                                                       _.Incentivo.Equals(true)).Select(_ => _.TotalICMS).Sum()),
                             fecopGeralNomal = Convert.ToDecimal(totalFecopCalcSTIE) + Convert.ToDecimal(totalFecopCalcSTSIE),
-                            fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationTypeId.Equals((long)5) || _.TaxationTypeId.Equals((long)6)) && _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum()),
+                            fecopGeralIncentivo = Convert.ToDecimal(products.Where(_ => (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida")) &&
+                                                                                         _.Incentivo.Equals(true)).Select(_ => _.TotalFecop).Sum()),
                             impostoGeral = icmsGeralNormal + icmsGeralIncetivo + fecopGeralNomal + fecopGeralIncentivo + icmsAnexoCCCXVI;
 
                         ViewBag.Base = baseIcms;

@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model;
+﻿using DocumentFormat.OpenXml.EMMA;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using System;
 using System.Collections.Generic;
@@ -113,15 +114,31 @@ namespace Escon.SisctNET.Web.Sped
         {
             List<decimal> lucroPresumido = new List<decimal>();
 
-            var codeProd1 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)1)).Select(_ => _.CodeProduct).ToList();
-            var codeProd2 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)2)).Select(_ => _.CodeProduct).ToList();
-            var codeProd3 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)3)).Select(_ => _.CodeProduct).ToList();
-            var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)4)).Select(_ => _.CodeProduct).ToList();
+            var codeProd1 = taxationNcms.Where(_ => _.TypeNcm.Name.Equals("Combustível"))
+                .Select(_ => _.CodeProduct)
+                .ToList();
+            var codeProd2 = taxationNcms.Where(_ => _.TypeNcm.Name.Equals("Comércio"))
+                .Select(_ => _.CodeProduct)
+                .ToList();
+            var codeProd3 = taxationNcms.Where(_ => _.TypeNcm.Name.Equals("Transporte"))
+                .Select(_ => _.CodeProduct)
+                .ToList();
+            var codeProd4 = taxationNcms.Where(_ => _.TypeNcmId.Equals("Serviço"))
+                .Select(_ => _.CodeProduct)
+                .ToList();
 
-            var ncm1 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)1)).Select(_ => _.Ncm.Code).ToList();
-            var ncm2 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)2)).Select(_ => _.Ncm.Code).ToList();
-            var ncm3 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)3)).Select(_ => _.Ncm.Code).ToList();
-            var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals((long)4)).Select(_ => _.Ncm.Code).ToList();
+            var ncm1 = taxationNcms.Where(_ => _.TypeNcm.Name.Equals("Combustível"))
+                .Select(_ => _.Ncm.Code)
+                .ToList();
+            var ncm2 = taxationNcms.Where(_ => _.TypeNcmId.Equals("Comércio"))
+                .Select(_ => _.Ncm.Code)
+                .ToList();
+            var ncm3 = taxationNcms.Where(_ => _.TypeNcm.Name.Equals("Transporte"))
+                .Select(_ => _.Ncm.Code)
+                .ToList();
+            var ncm4 = taxationNcms.Where(_ => _.TypeNcmId.Equals("Serviço"))
+                .Select(_ => _.Ncm.Code)
+                .ToList();
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
 
@@ -199,8 +216,9 @@ namespace Escon.SisctNET.Web.Sped
 
                                             string code = prod.Substring(prod.Length - qtd);
 
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals((long)2) || 
-                                                                            _.TaxationTypeNcmId.Equals((long)3) ||  _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5))).FirstOrDefault();
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcm.Description.Equals("Monofásico") || 
+                                                                            _.TaxationTypeNcm.Description.Equals("Aliquota Zero") ||  _.TaxationTypeNcm.Description.Equals("S. Tributária") || 
+                                                                            _.TaxationTypeNcm.Description.Equals("Isento"))).FirstOrDefault();
 
                                             if (ehMono != null)
                                                 break;
@@ -230,8 +248,9 @@ namespace Escon.SisctNET.Web.Sped
                                             devolucaoServico += (Convert.ToDecimal(note[7]) - desconto);
                                         }
 
-                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || 
-                                                                        _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5))).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcm.Description.Equals("Monofásico") ||
+                                                _.TaxationTypeNcm.Description.Equals("Aliquota Zero") || _.TaxationTypeNcm.Description.Equals("S. Tributária") ||
+                                                _.TaxationTypeNcm.Description.Equals("Isento"))).FirstOrDefault();
                                     }
 
                                     if (ehMono == null)
@@ -387,10 +406,10 @@ namespace Escon.SisctNET.Web.Sped
 
                                         string code = prod.Substring(prod.Length - qtd);
 
-                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) &&
-                                                                                  (_.TaxationTypeNcmId.Equals((long)2) || _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) ||
-                                                                                  _.TaxationTypeNcmId.Equals((long)5)))
-                                                                          .FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcm.Description.Equals("Monofásico") ||
+                                                _.TaxationTypeNcm.Description.Equals("Aliquota Zero") || _.TaxationTypeNcm.Description.Equals("S. Tributária") ||
+                                                _.TaxationTypeNcm.Description.Equals("Isento"))).FirstOrDefault();
+
                                         if (ehMono != null)
                                         {
                                             break;
@@ -401,9 +420,9 @@ namespace Escon.SisctNET.Web.Sped
                                 else
                                 {
                                     // Tributação por NCM
-                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcmId.Equals((long)2) ||
-                                                                                        _.TaxationTypeNcmId.Equals((long)3) || _.TaxationTypeNcmId.Equals((long)4) || _.TaxationTypeNcmId.Equals((long)5)))
-                                                                             .FirstOrDefault();
+                                    ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && (_.TaxationTypeNcm.Description.Equals("Monofásico") ||
+                                                _.TaxationTypeNcm.Description.Equals("Aliquota Zero") || _.TaxationTypeNcm.Description.Equals("S. Tributária") ||
+                                                _.TaxationTypeNcm.Description.Equals("Isento"))).FirstOrDefault();
                                 }
 
                                 if ((cfopsCompra.Contains(note[11]) || cfopsBonifi.Contains(note[11]) || cfopsCompraST.Contains(note[11])
@@ -456,18 +475,6 @@ namespace Escon.SisctNET.Web.Sped
             List<decimal> devolucoes = new List<decimal>();
 
             List<TaxationNcm> ncmsTaxation = new List<TaxationNcm>();
-            List<string> codeProdMono = new List<string>();
-            List<string> codeProdNormal = new List<string>();
-            List<string> codeProdST = new List<string>();
-            List<string> codeProdAliqZero = new List<string>();
-            List<string> codeProdIsento = new List<string>();
-            List<string> codeProdOutras = new List<string>();
-            List<string> ncmMono = new List<string>();
-            List<string> ncmNormal = new List<string>();
-            List<string> ncmST = new List<string>();
-            List<string> ncmAliqZero = new List<string>();
-            List<string> ncmIsento = new List<string>();
-            List<string> ncmOutras = new List<string>();
 
             decimal devoNormalNormal = 0, devoNormalMono = 0, devoNormalST = 0, devoNormalAliqZero = 0, devoNormalIsento = 0, devoNormalOutras = 0,
                           devoSTNormal = 0, devoSTMono = 0, devoSTST = 0, devoSTAliqZero = 0, devoSTIsento = 0, devoSTOutras = 0;
@@ -501,20 +508,6 @@ namespace Escon.SisctNET.Web.Sped
                             {
                                 DateTime dataNota = Convert.ToDateTime(note[10].Substring(0, 2) + "/" + note[10].Substring(2, 2) + "/" + note[10].Substring(4, 4));
                                 ncmsTaxation = _taxationNcmService.FindAllInDate(taxationNcms, dataNota);
-
-                                codeProdMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)2)).Select(_ => _.CodeProduct).ToList();
-                                codeProdNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)1)).Select(_ => _.CodeProduct).ToList();
-                                codeProdST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)4)).Select(_ => _.CodeProduct).ToList();
-                                codeProdAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)3)).Select(_ => _.CodeProduct).ToList();
-                                codeProdIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)5)).Select(_ => _.CodeProduct).ToList();
-                                codeProdOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)6)).Select(_ => _.CodeProduct).ToList();
-
-                                ncmMono = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)2)).Select(_ => _.Ncm.Code).ToList();
-                                ncmNormal = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)1)).Select(_ => _.Ncm.Code).ToList();
-                                ncmST = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)4)).Select(_ => _.Ncm.Code).ToList();
-                                ncmAliqZero = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)3)).Select(_ => _.Ncm.Code).ToList();
-                                ncmIsento = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)5)).Select(_ => _.Ncm.Code).ToList();
-                                ncmOutras = ncmsTaxation.Where(_ => _.TaxationTypeNcmId.Equals((long)6)).Select(_ => _.Ncm.Code).ToList();
                             }
 
                             if (note[1].Equals("C170") && tipoTemp == "0" && emisao == "1" && note[3].Equals(linha[2]))
@@ -540,12 +533,12 @@ namespace Escon.SisctNET.Web.Sped
 
                                             string code = prod.Substring(prod.Length - qtd);
 
-                                            ehNormal = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)1)).FirstOrDefault();
-                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)2)).FirstOrDefault();
-                                            ehST = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)4)).FirstOrDefault();
-                                            ehAliqZero = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)3)).FirstOrDefault();
-                                            ehIsento = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)5)).FirstOrDefault();
-                                            ehOutras = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)5)).FirstOrDefault();
+                                            ehNormal = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
+                                            ehMono = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
+                                            ehAliqZero = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
+                                            ehST = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
+                                            ehIsento = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
+                                            ehOutras = ncmsTaxation.Where(_ => _.CodeProduct.Equals(code) && _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
 
                                             if (ehNormal != null || ehMono != null || ehST != null || ehAliqZero != null || ehIsento != null || ehOutras != null)
                                                 break;
@@ -553,12 +546,12 @@ namespace Escon.SisctNET.Web.Sped
                                     }
                                     else
                                     {
-                                        ehNormal = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)1)).FirstOrDefault();
-                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)2)).FirstOrDefault();
-                                        ehST = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)4)).FirstOrDefault();
-                                        ehAliqZero = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)3)).FirstOrDefault();
-                                        ehIsento = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)5)).FirstOrDefault();
-                                        ehOutras = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcmId.Equals((long)5)).FirstOrDefault();
+                                        ehNormal = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Normal")).FirstOrDefault();
+                                        ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Monofásico")).FirstOrDefault();
+                                        ehAliqZero = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Aliquota Zero")).FirstOrDefault();
+                                        ehST = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("S. Tributária")).FirstOrDefault();
+                                        ehIsento = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Isento")).FirstOrDefault();
+                                        ehOutras = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(linha[8]) && _.TaxationTypeNcm.Description.Equals("Outras")).FirstOrDefault();
                                     }
 
                                     if (ehNormal != null)

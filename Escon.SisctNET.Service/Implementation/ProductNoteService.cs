@@ -78,39 +78,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNcmUfAliq(notes, ncm, aliq, cest, log);
         }
 
-        public List<ProductNote> FindByCnpjCprod(List<Note> notes, string cnpj, string cprod, string ncm, string cest, Log log = null)
-        {
-            return _repository.FindByCnpjCprod(notes, cnpj, cprod, ncm, cest, log);
-        }
-
-        public decimal FindByTotal(List<long> notes, Log log = null)
-        {
-            return _repository.FindByTotal(notes, log);
-        }
-
         public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
         {
             return _repository.FindBySubscription(notes, taxationType, log);
-        }
-
-        public List<ProductNote> FindByTaxation(long noteId, Log log = null)
-        {
-            return _repository.FindByTaxation(noteId, log);
-        }
-
-        public ProductNote FindByProduct(long noteId, string nItem, Log log = null)
-        {
-            return _repository.FindByProduct(noteId, nItem, log);
-        }
-
-        public List<ProductNote> FindByCfopNotesIn(long companyId, List<Note> notes, Log log = null)
-        {
-            return _repository.FindByCfopNotesIn(companyId, notes, log);
-        }
-
-        public List<ProductNote> FindByCfopNotesOut(long companyId, List<Note> notes, Log log = null)
-        {
-            return _repository.FindByCfopNotesOut(companyId, notes, log);
         }
 
         public ProductNote FindByProduct(long id, Log log = null)
@@ -126,11 +96,6 @@ namespace Escon.SisctNET.Service.Implementation
         public List<ProductNote> FindByTaxation(List<ProductNote> productNotes, Log log = null)
         {
             return _repository.FindByTaxation(productNotes, log);
-        }
-
-        public List<ProductNote> FindByCompany(long companyId, Log log = null)
-        {
-            return _repository.FindByCompany(companyId, log);
         }
     }
 }

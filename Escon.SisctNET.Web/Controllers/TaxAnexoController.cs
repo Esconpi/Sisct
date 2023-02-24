@@ -354,7 +354,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     stream.Close();
 
-                    if (comp.AnnexId.Equals((long)1))
+                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                     {
                         var notes = _noteService.FindByNotes(companyid, year, month);
                         var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => (_.TaxationTypeId.Equals((long)1) || _.TaxationTypeId.Equals((long)3)) && _.Incentivo.Equals(false)).ToList();
@@ -555,7 +555,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    if (comp.AnnexId.Equals((long)1))
+                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                     {
                         exitNotes = importXml.NFeAll(directoryNfeExit);
 

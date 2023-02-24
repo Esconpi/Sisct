@@ -44,19 +44,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public Product1 FindByDescription(string description, Log log = null)
-        {
-            return _repository.FindByDescription(description, log);
-        }
-
         public Product1 FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
-        }
-
-        public decimal FindByPrice(long id, Log log = null)
-        {
-            return _repository.FindByPrice(id, log);
         }
 
         public Product1 FindByProduct(string code, long grupoId, Log log = null)
@@ -74,7 +64,7 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entities, log);
         }
 
-        public List<Product1> FindAllInDate1(DateTime dateProd, Log log = null)
+        public List<Product1> FindAllInDate(DateTime dateProd, Log log = null)
         {
             return _repository.FindAllInDate(dateProd, log);
         }
@@ -82,6 +72,16 @@ namespace Escon.SisctNET.Service.Implementation
         public Product1 FindByProduct(long id, Log log = null)
         {
             return _repository.FindByProduct(id, log);
+        }
+
+        public List<Product1> FindByGroup(long groupid, Log log = null)
+        {
+            return _repository.FindByGroup(groupid, log);
+        }
+
+        public List<Product1> FindByAllGroup(Log log = null)
+        {
+            return _repository.FindByAllGroup(log);
         }
     }
 }

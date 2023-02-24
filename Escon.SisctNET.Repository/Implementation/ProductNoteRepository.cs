@@ -17,6 +17,52 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
+        {
+            decimal icmsTotalSt = 0;
+
+            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.AT))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") ||
+                                                                                      _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida") ||
+                                                                                      _.TaxationType.Description.Equals("2 AT - Antecipacao Total")))
+                                                                          .Select(_ => _.IcmsST)
+                                                                          .Sum());
+                }
+            }
+            else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
+                    taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("1  AP - Antecipação parcial") ||
+                                                                                      _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota") ||
+                                                                                      _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota") ||
+                                                                                      _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota")))
+                                                                           .Select(_ => _.IcmsST)
+                                                                           .Sum());
+                }
+            }
+            return icmsTotalSt;
+        }
+
+        public ProductNote FindByProduct(long id, Log log = null)
+        {
+            var rst = _context.ProductNotes
+                .Where(_ => _.Id.Equals(id))
+                .Include(n => n.Note)
+                .Include(c => c.Note.Company)
+                .Include(t => t.TaxationType)
+                .Include(p => p.Product)
+                .Include(p1 => p1.Product1)
+                .Include(p2 => p2.Product2)
+                .FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
         public List<ProductNote> FindByNcmUfAliq(List<Note> notes, string ncm, decimal aliq, string cest, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
@@ -26,23 +72,6 @@ namespace Escon.SisctNET.Repository.Implementation
                     .Where(_ => _.Ncm.Equals(ncm) && _.Picms.Equals(aliq) && _.Cest.Equals(cest) && _.Pautado.Equals(false))
                     .ToList();
                 products.AddRange(rst);                
-            }
-            AddLog(log);
-            return products;
-        }
-
-        public List<ProductNote> FindByCnpjCprod(List<Note> notes, string cnpj, string cprod, string ncm, string cest, Log log = null)
-        {
-            List<ProductNote> products = new List<ProductNote>();
-            foreach (var note in notes)
-            {
-                if (note.Cnpj.Equals(cnpj))
-                {
-                    var rst = note.Products
-                        .Where(_ => _.Cprod.Equals(cprod) && _.Ncm.Equals(ncm) && _.Cest.Equals(cest))
-                        .ToList();
-                    products.AddRange(rst);
-                }
             }
             AddLog(log);
             return products;
@@ -58,6 +87,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Include(p => p.Product)
                 .Include(p1 => p1.Product1)
                 .Include(p2 => p2.Product2)
+                .Include(p3 => p3.Product3)
                 .ToList();
             AddLog(log);
             return rst.ToList();
@@ -148,135 +178,6 @@ namespace Escon.SisctNET.Repository.Implementation
             return products;
         }
 
-        public decimal FindByTotal(List<long> notes, Log log = null)
-        {
-            decimal total = 0;
-            foreach (var item in notes)
-            {
-                var notas = _context.Notes.Where(_ => _.Id.Equals(item)).FirstOrDefault();
-                total += notas.Vnf;
-            }
-            AddLog(log);
-            return total;
-        }
-
-        public decimal FindBySubscription(List<Note> notes, Model.TypeTaxation taxationType, Log log = null)
-        {
-            decimal icmsTotalSt = 0;
-
-            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.AT))
-            {
-                foreach (var note in notes)
-                {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") ||
-                                                                                      _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida") ||
-                                                                                      _.TaxationType.Description.Equals("2 AT - Antecipacao Total")))
-                                                                          .Select(_ => _.IcmsST)
-                                                                          .Sum());
-                }
-            }
-            else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
-                    taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
-            {
-                foreach (var note in notes)
-                {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("1  AP - Antecipação parcial") ||
-                                                                                      _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota") ||
-                                                                                      _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota") ||
-                                                                                      _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota")))
-                                                                           .Select(_ => _.IcmsST)
-                                                                           .Sum());
-                }
-            }
-            return icmsTotalSt;
-        }
-
-        public List<ProductNote> FindByTaxation(long noteId, Log log = null)
-        {
-
-            var rst = _context.ProductNotes
-                .Where(_ => _.NoteId.Equals(noteId) && _.Status.Equals(false))
-                .Include(n => n.Note)
-                .Include(c => c.Note.Company)
-                .Include(t => t.TaxationType)
-                .Include(p => p.Product)
-                .Include(p1 => p1.Product1)
-                .Include(p2 => p2.Product2)
-                .ToList();
-            AddLog(log);
-            return rst.ToList();
-        }
-
-        public ProductNote FindByProduct(long noteId, string nItem, Log log = null)
-        {
-            var rst = _context.ProductNotes
-                .Where(_ => _.NoteId.Equals(noteId) && _.Nitem.Equals(nItem))
-                .Include(n => n.Note)
-                .Include(c => c.Note.Company)
-                .Include(t => t.TaxationType)
-                .Include(p => p.Product)
-                .Include(p1 => p1.Product1)
-                .Include(p2 => p2.Product2)
-                .FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
-        public List<ProductNote> FindByCfopNotesIn(long companyId, List<Note> notes, Log log = null)
-        {
-            var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
-
-            List<ProductNote> result = null;
-            
-            foreach (var note in notes)
-            {
-                result = _context.ProductNotes
-                    .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest.Equals(1) &&
-                                 Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)) && _.TaxationTypeId.Equals(1))
-                    .Include(n => n.Note)
-                    .Include(c => c.Note.Company)
-                    .Include(t => t.TaxationType)
-                    .Include(p => p.Product)
-                    .Include(p1 => p1.Product1)
-                    .Include(p2 => p2.Product2)
-                    .ToList();
-            }
-
-            return result;
-        }
-
-        public List<ProductNote> FindByCfopNotesOut(long companyId, List<Note> notes, Log log = null)
-        {
-            var cfopAtivo = _context.CompanyCfops.Where(_ => _.CompanyId.Equals(companyId) && _.Active.Equals(true)).Select(_ => _.Cfop.Code).ToArray();
-
-            List<ProductNote> result = null;
-
-            foreach (var note in notes)
-            {
-                result = note.Products
-                    .Where(_ => _.Note.CompanyId.Equals(companyId) && _.Note.IdDest != 1 && 
-                                Array.Exists(cfopAtivo, e => e.Equals(_.Cfop)))
-                    .ToList();
-            }
-
-            return result;
-        }
-
-        public ProductNote FindByProduct(long id, Log log = null)
-        {
-            var rst = _context.ProductNotes
-                .Where(_ => _.Id.Equals(id))
-                .Include(n => n.Note)
-                .Include(c => c.Note.Company)
-                .Include(t => t.TaxationType)
-                .Include(p => p.Product)
-                .Include(p1 => p1.Product1)
-                .Include(p2 => p2.Product2)
-                .FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
         public List<ProductNote> FindByProductsType(List<ProductNote> productNotes, TypeTaxation taxationType, Log log = null)
         {
             List<ProductNote> products = new List<ProductNote>();
@@ -353,15 +254,6 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = productNotes
                .Where(_ => _.Status.Equals(false))
                .ToList();
-            AddLog(log);
-            return rst.ToList();
-        }
-
-        public List<ProductNote> FindByCompany(long companyId, Log log = null)
-        {
-            var rst = _context.ProductNotes
-             .Where(_ => _.Note.CompanyId.Equals(companyId))
-             .ToList();
             AddLog(log);
             return rst.ToList();
         }

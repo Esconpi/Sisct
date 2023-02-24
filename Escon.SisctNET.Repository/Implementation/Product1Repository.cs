@@ -17,20 +17,6 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Product1 FindByDescription(string description, Log log = null)
-        {
-            var rst = _context.Product1s.Where(_ => _.Description.Equals(description)).FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
-        public decimal FindByPrice(long id, Log log = null)
-        {
-            decimal rst = Convert.ToDecimal(_context.Product1s.Where(_ => _.Id.Equals(id)).Select(_ => _.Price));
-            AddLog(log);
-            return rst;
-        }
-
         public Product1 FindByProduct(string code, long grupoId, Log log = null)
         {
             var rst = _context.Product1s.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.DateEnd == null).FirstOrDefault();
@@ -71,6 +57,22 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Where(_ => _.Id.Equals(id))
                 .Include(g => g.Group)
                 .FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<Product1> FindByGroup(long groupid, Log log = null)
+        {
+            var rst = _context.Product1s.Where(_ => _.GroupId.Equals(groupid) && _.DateEnd == null).ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<Product1> FindByAllGroup(Log log = null)
+        {
+            var rst = _context.Product1s
+              .Include(_ => _.Group)
+              .ToList();
             AddLog(log);
             return rst;
         }

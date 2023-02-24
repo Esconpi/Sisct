@@ -1,7 +1,7 @@
 ﻿@model Escon.SisctNET.Model.Tax
 
 
-@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
+@if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
 {
     <tr>
         <th style="text-align:center;border:1px solid;" colspan="5">
@@ -34,13 +34,13 @@ else
     <th style="text-align:center;border:1px solid;">
         P/ NÃO CONTRIBUINTE
     </th>
-    @if (ViewBag.Company.AnnexId == 1)
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
     {
         <th style="text-align:center;border:1px solid;">
             DO ANEXO II
         </th>
     }
-    @if (ViewBag.Company.ChapterId == 4)
+    @if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         <th style="text-align:center;border:1px solid;">
             DO INCISO I e II
@@ -58,13 +58,13 @@ else
     <th style="text-align:center;border:1px solid;">
         P/ NÃO CONTRIBUINTE
     </th>
-    @if (ViewBag.Company.AnnexId == 1)
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
     {
         <th style="text-align:center;border:1px solid;">
             DO ANEXO II
         </th>
     }
-    @if (ViewBag.Company.ChapterId == 4)
+    @if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         <th style="text-align:center;border:1px solid;">
             DO INCISO I e II
@@ -95,7 +95,7 @@ else
             @string.Format("{0:N}", Convert.ToDecimal(Model.VendasNContribuinte))
         }
     </td>
-    @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @if (Model != null)
@@ -128,7 +128,7 @@ else
             @string.Format("{0:N}", Convert.ToDecimal(Model.DevolucaoNContribuinte))
         }
     </td>
-    @if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         <td style="text-align:right;border:1px solid;padding-right:1%;">
             @if (Model != null)
@@ -145,7 +145,7 @@ else
     </td>
 </tr>
 
-@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
+@if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
 {
     <tr>
         <th style="text-align:center;border:1px solid;" colspan="2">
@@ -186,7 +186,7 @@ else
     </tr>
 }
 
-@if (ViewBag.Company.AnnexId == 1 || ViewBag.Company.ChapterId == 4)
+@if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
 {
     <tr>
         <td style="text-align:right;border:1px solid;padding-right:1%;" colspan="2">

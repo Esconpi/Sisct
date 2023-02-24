@@ -18,23 +18,9 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public Product3 FindByDescription(string description, Log log = null)
-        {
-            var rst = _context.Product3s.Where(_ => _.Description.Equals(description)).FirstOrDefault();
-            AddLog(log);
-            return rst;
-        }
-
         public List<Product3> FindByGroup(long groupid, Log log = null)
         {
             var rst = _context.Product3s.Where(_ => _.GroupId.Equals(groupid) && _.DateEnd == null).ToList();
-            AddLog(log);
-            return rst;
-        }
-
-        public decimal FindByPrice(long id, Log log = null)
-        {
-            decimal rst = Convert.ToDecimal(_context.Product3s.Where(_ => _.Id.Equals(id)).Select(_ => _.Price));
             AddLog(log);
             return rst;
         }
