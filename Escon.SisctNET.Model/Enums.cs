@@ -66,18 +66,18 @@ namespace Escon.SisctNET.Model
     public enum Ordem
     {
         [Display(Name = "XML SEFAZ x SPED")] XmlSefaz,
-        [Display(Name = "XML EMPRESA x SPED")] XmlEmpresa,
+        [Display(Name = "XML SEFAZ x EXCEL FSIST")] SefazXFsist,
         [Display(Name = "XML SEFAZ x SPED SisCT")] SisCTXS,
+        [Display(Name = "XML EMPRESA x SPED")] XmlEmpresa,
+        [Display(Name = "XML EMPRESA x EXCEL FSIST")] EmpresaXFsist,
         [Display(Name = "XML EMPRESA x SPED SisCT")] SisCTXE,
         [Display(Name = "SPED x XML SEFAZ")] SpedXS,
         [Display(Name = "SPED x XML EMPRESA")] SpedXE,
-        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor,
-        [Display(Name = "DIFERENÇA DE CRÉDITOS")] DifereIcms,
-        [Display(Name = "EXCEL MALHA x SPED")] Malha,
-        [Display(Name = "XML SEFAZ x EXCEL FSIST")] SefazXFsist,
-        [Display(Name = "XML EMPRESA x EXCEL FSIST")] EmpresaXFsist,
         [Display(Name = "EXCEL FSIST x XML SEFAZ")] FsistXSefaz,
         [Display(Name = "EXCEL FSIST x XML EMPRESA")] FsistXEmpresa,
+        [Display(Name = "EXCEL MALHA x SPED")] Malha,
+        [Display(Name = "DIFERENÇA DE TOTAIS")] DifereValor,
+        [Display(Name = "DIFERENÇA DE CRÉDITOS")] DifereIcms,
         [Display(Name = "DIFERENÇA DE TOTAIS XML SEFAZ")] DifereValorSefaz,
         [Display(Name = "DIFERENÇA DE TOTAIS XML EMPRESA")] DifereValorEmpresa,
         [Display(Name = "Malha Cartão")] MalhaCartao
@@ -93,11 +93,11 @@ namespace Escon.SisctNET.Model
 
     public enum Archive
     {
-        [Display(Name = "NFe XML SEFAZ")] XmlNFeSefaz = 1,
-        [Display(Name = "NFe XML EMPRESA")] XmlNFeEmpresa = 2,
-        [Display(Name = "CTe XML SEFAZ")] XmlCTeSefaz = 3,
-        [Display(Name = "CTe XML EMPRESA")] XmlCTeEmpresa = 4,
-        [Display(Name = "NFe Sped")] SpedNFe = 5,
-        [Display(Name = "CTe Sped")] SpedCTe = 6
+        [Display(Name = "NFe XML SEFAZ")] XmlNFeSefaz,
+        [Display(Name = "NFe XML EMPRESA")] XmlNFeEmpresa,
+        [Display(Name = "NFe Sped")] SpedNFe,
+        [Display(Name = "CTe XML SEFAZ")] XmlCTeSefaz,
+        [Display(Name = "CTe XML EMPRESA")] XmlCTeEmpresa,
+        [Display(Name = "CTe Sped")] SpedCTe
     }
 }

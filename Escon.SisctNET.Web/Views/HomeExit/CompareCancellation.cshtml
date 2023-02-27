@@ -116,12 +116,12 @@
     function ativar_file() {
         var ordem = document.getElementById("ordem").value;
 
-        if (ordem == "1") {
+        if (ordem == "@Convert.ToInt32(Escon.SisctNET.Model.OrdemCancellation.VerificarEmpresa)") {
             document.getElementById("arquivoSped").disabled = false;
             document.getElementById("ativa").disabled = true;
             document.getElementById("period").disabled = true;
-        }
-        else if (ordem == "2" || ordem == "3") {
+        } else if (ordem == "@Convert.ToInt32(Escon.SisctNET.Model.OrdemCancellation.NotasSefaz)" || 
+                   ordem == "@Convert.ToInt32(Escon.SisctNET.Model.OrdemCancellation.NotasEmpresa)") {
             document.getElementById("period").disabled = false;
             document.getElementById("arquivoSped").disabled = true;
             document.getElementById("ativa").disabled = false;
@@ -132,15 +132,13 @@
                 document.getElementById("inicio").disabled = false;
                 document.getElementById("fim").disabled = false;
                 document.getElementById("month").disabled = true;
-            }
-            else {
+            } else {
                 document.getElementById("inicio").disabled = true;
                 document.getElementById("fim").disabled = true;
                 document.getElementById("month").disabled = false;
             }
             console.log(period);
-        }
-        else {
+        } else {
             document.getElementById("arquivoSped").disabled = true;
             document.getElementById("ativa").disabled = false;
             document.getElementById("period").disabled = true;

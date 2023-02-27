@@ -69,11 +69,11 @@
     function ativar_button() {
         var archive = document.getElementById("archive").value;
 
-        if (archive == "1" || archive == "2") {
+        if (archive == "@Convert.ToInt32(Escon.SisctNET.Model.Archive.XmlNFeSefaz)" || 
+            archive == "@Convert.ToInt32(Escon.SisctNET.Model.Archive.XmlNFeEmpresa)") {
             document.getElementById("arquivo").disabled = true;
             document.getElementById("ativa").disabled = false;
-        }
-        else {
+        } else {
             document.getElementById("arquivo").disabled = false;
             var arquivo = document.getElementById("arquivo").value;
             if (arquivo == "") {

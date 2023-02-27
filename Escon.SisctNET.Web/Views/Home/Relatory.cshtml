@@ -93,7 +93,9 @@
 <script>
     function ativar_button() {
         var tipo = document.getElementById("type").value;
-        if (tipo == "6" || tipo == "7" || tipo == "8") {
+        if (tipo == "@Convert.ToInt32(Escon.SisctNET.Model.Type.Nota)" ||
+            tipo == "@Convert.ToInt32(Escon.SisctNET.Model.Type.NotaI)" ||
+            tipo == "@Convert.ToInt32(Escon.SisctNET.Model.Type.NotaNI)") {
             document.getElementById("nota").disabled = false;
         }
         else {

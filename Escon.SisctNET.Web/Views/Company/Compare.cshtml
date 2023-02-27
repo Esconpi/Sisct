@@ -92,10 +92,15 @@
 <script>
     function ativar_button() {
         var opcao = document.getElementById("opcao").value;
+        console.log(opcao);
         var arquivoSped = document.getElementById("arquivoSped").value;
-        if (opcao == "0" || opcao == "1") {
+        if (opcao == "@Convert.ToInt32(Escon.SisctNET.Model.Opcao.NFe)" || opcao == "@Convert.ToInt32(Escon.SisctNET.Model.Opcao.CTe)") {
             var ordem = document.getElementById("ordem").value;
-            if (ordem == "9" || ordem == "10" || ordem == "11" || ordem == "12") {
+            console.log(ordem);
+            if (ordem == "@Convert.ToInt32(Escon.SisctNET.Model.Ordem.SefazXFsist)" || 
+                ordem == "@Convert.ToInt32(Escon.SisctNET.Model.Ordem.EmpresaXFsist)" || 
+                ordem == "@Convert.ToInt32(Escon.SisctNET.Model.Ordem.FsistXSefaz)" || 
+                ordem == "@Convert.ToInt32(Escon.SisctNET.Model.Ordem.FsistXEmpresa)") {
                 document.getElementById("arquivoSped").disabled = true;
                 document.getElementById("arquivoExcel").disabled = false;
                 var arquivoExcel = document.getElementById("arquivoExcel").value;
@@ -104,8 +109,7 @@
                 } else {
                     document.getElementById("ativa").disabled = false;
                 }
-            }
-            else {
+            } else {
                 document.getElementById("arquivoSped").disabled = false;
                 document.getElementById("arquivoExcel").disabled = true;
                 if (arquivoSped == "") {
@@ -114,8 +118,7 @@
                     document.getElementById("ativa").disabled = false;
                 }
             }
-        }
-        else {
+        } else {
             document.getElementById("arquivoSped").disabled = true;
             document.getElementById("arquivoExcel").disabled = false;
             var arquivoExcel = document.getElementById("arquivoExcel").value;
