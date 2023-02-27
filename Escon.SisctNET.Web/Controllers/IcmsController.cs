@@ -27208,11 +27208,11 @@ namespace Escon.SisctNET.Web.Controllers
                     var gruposExecentes = check.Grupos(grupos);
 
                     //  Anexo II ou Inciso I e II
-                    if (baseCalcNcm < limiteNcm && (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
+                    if (baseCalcNcm < limiteNcm && (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
                     {
                         excedenteNcm = calculation.ExcedenteMinimo(baseCalcNcm, limiteNcm);
 
-                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
+                        if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS"))
                             impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.VendaAnexoExcedente));
                         else
                             impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.FaturamentoExcedente));
@@ -27267,9 +27267,9 @@ namespace Escon.SisctNET.Web.Controllers
                     if (percentualVendaNContribuinte > Convert.ToDecimal(comp.VendaCpf))
                         difNContribuinte = calculation.Diferenca(percentualVendaNContribuinte, Convert.ToDecimal(comp.VendaCpf));
 
-                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                    if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
-                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
+                        if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS"))
                         {
                             if (percentualVendaNcm < Convert.ToDecimal(comp.VendaAnexo))
                             {

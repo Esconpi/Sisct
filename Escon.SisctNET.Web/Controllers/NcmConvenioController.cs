@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
+using Escon.SisctNET.Service.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -145,6 +146,70 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Atualize(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
+                return Unauthorized();
+            try
+            {
+
+                var list_annex = _annexService.FindAll(null);
+                foreach (var annex in list_annex)
+                {
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
+
+                var result = _service.FindById(id, null);
+
+                return View(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(long id, Model.NcmConvenio entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                NcmConvenio taxation = new NcmConvenio();
+                taxation.Ncm = result.Ncm;
+                taxation.Cest = result.Cest;
+                taxation.Description = result.Description;
+                taxation.AnnexId = result.AnnexId;
+                taxation.DateStart = entity.DateStart;
+
+                _service.Create(taxation, GetLog(Model.OccorenceLog.Create));
+
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+
+        [HttpGet]
         public IActionResult Delete(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
@@ -199,8 +264,9 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio
-
+                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio,
+                              Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                           };
 
                 return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
@@ -217,8 +283,9 @@ namespace Escon.SisctNET.Web.Controllers
                               Cest = r.Cest,
                               Code = r.Ncm,
                               Description = r.Description,
-                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio
-
+                              Anexx = r.Annex.Convenio == null || r.Annex.Convenio == "" ? r.Annex.Description : r.Annex.Description + " - " + r.Annex.Convenio,
+                              Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                              Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
                           };
                 return Ok(new { draw = draw, recordsTotal = ncmsAll.Count(), recordsFiltered = ncmsAll.Count(), data = ncm.Skip(start).Take(lenght) });
             }

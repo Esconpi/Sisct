@@ -548,6 +548,12 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms),
                                     baseCalcTemp = 0;
 
+                            if (dif < 0)
+                                dif = 0;
+
+                            if (dif_frete < 0)
+                                dif_frete = 0;
+
                             baseCalc = Vbasecalc;
 
                             if (entity.EBcr && bcr != null)
@@ -586,6 +592,12 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms,
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig),
                                     baseCalcTemp = 0;
+
+                            if (dif < 0)
+                                dif = 0;
+
+                            if (dif_frete < 0)
+                                dif_frete = 0;
 
                             baseCalc = Vbasecalc;
 
@@ -1878,7 +1890,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B") &&
+                            else if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B") &&
                                      !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (impAnexo == null)
@@ -2010,7 +2022,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE/ANEXO V-A - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") &&
+                                     comp.Chapter.Name.Equals("CAPÍTULO IV"))
                             {
                                 if (isPauta)
                                 {
@@ -2132,8 +2145,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
                             if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && 
-                                (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
-                                comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
+                                (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || 
+                                 comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
+                                 comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (imp == null)
                                 {
@@ -3093,7 +3107,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                         }
-                        else if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                        else if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
                         {
                             if (impAnexo == null)
                             {
@@ -3182,7 +3196,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             productsSTIncentivado.Select(_ => _.Freterateado).Sum() + productsSTIncentivado.Select(_ => _.Vipi).Sum());
                             impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
                         }
-                        else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                        else if (comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && 
+                                 comp.Chapter.Name.Equals("CAPÍTULO IV"))
                         {
                             if (isPauta)
                             {
@@ -3298,7 +3313,8 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarIcms += Math.Round(impostoIcms, 2);
                         totalDarFunef += Math.Round(taxaFunef, 2);
 
-                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") ||
+                        if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || 
+                            comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") ||
                             comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                         {
                             // Icms Excedente

@@ -10,7 +10,7 @@
         @await Html.PartialAsync("_TaxSummaryIE", new ViewDataDictionary(ViewData))
 
     }
-    else if (ViewBag.Incetive == true && ViewBag.Anexo == 3)
+    else if (ViewBag.Incetive == true && ViewBag.Annex.Description.Equals("ANEXO ÚNICO"))
     {
         @await Html.PartialAsync("_TaxSummarySIE", new ViewDataDictionary(ViewData))
 

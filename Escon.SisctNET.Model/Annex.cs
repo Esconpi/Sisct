@@ -7,7 +7,7 @@ namespace Escon.SisctNET.Model
     [Table("annex")]
     public class Annex : EntityBase
     {
-        [Display(Name = "Convênio/Portaria")]
+        [Display(Name = "Convênio/Decreto/Portaria")]
         public string Convenio { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]

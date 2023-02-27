@@ -512,7 +512,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
@@ -643,6 +643,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
+
+                                    if (dif < 0)
+                                        dif = 0;
+
+                                    if (dif_frete < 0)
+                                        dif_frete = 0;
+
                                     icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
@@ -661,6 +668,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
+
+                                    if (dif < 0)
+                                        dif = 0;
+
+                                    if (dif_frete < 0)
+                                        dif_frete = 0;
+
                                     icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }

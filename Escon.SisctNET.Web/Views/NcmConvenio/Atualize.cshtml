@@ -1,31 +1,30 @@
 ﻿@model Escon.SisctNET.Model.NcmConvenio
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Atualize";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="box box-primary">
     <div class="box-header">
         <a asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
-        <h3 class="box-title"><strong>Editar Ncm:</strong> @Model.Description</h3>
+        <h3 class="box-title"><strong>Atualize Ncm:</strong> @Model.Description</h3>
     </div>
     <hr />
     <div class="box-body">
         <div class="col-md-12">
-            <form asp-action="Edit">
+            <form asp-action="Atualize">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 
                 <div class="row">
                     <div class="form-group col-lg-8 col-md-6 col-xs-12">
                         <label asp-for="AnnexId" class="control-label"></label>
-                        <select asp-items="@ViewBag.AnnexId" name="AnnexId" class="form-control selectoption" id="annex"></select>
+                        <select asp-items="@ViewBag.AnnexId" name="AnnexId" class="form-control selectoption" id="annex" disabled></select>
                         <span asp-validation-for="AnnexId" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="Cest" class="control-label"></label>
-                        <input asp-for="Cest" class="form-control" />
+                        <input asp-for="Cest" class="form-control" disabled />
                         <span asp-validation-for="Cest" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-2 col-md-6 col-xs-12">
@@ -38,7 +37,7 @@
                 <div class="row">
                     <div class="form-group col-lg-8 col-md-8 col-xs-12">
                         <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" />
+                        <input asp-for="Description" class="form-control" disabled />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group col-lg-4 col-md-4 col-xs-12">
@@ -55,12 +54,11 @@
         </div>
     </div>
     <div class="box-footer">
-
     </div>
 </div>
 
 <script type="text/javascript">
-     var anexo = @Model.AnnexId;
+    var anexo = @Model.AnnexId;
     $("#annex").children('option').each(function () {
         if ($(this).val() == anexo) {
             $(this).attr('selected', true);

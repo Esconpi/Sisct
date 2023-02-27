@@ -20,7 +20,7 @@
     </div>
 
     <div class="box-body">
-        @if (SessionManager.GetPersonInSession().Profile.Id.Equals(1))
+        @if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
         {
             @await Html.PartialAsync("_PermissionTax", Model, new ViewDataDictionary(ViewData))
         }

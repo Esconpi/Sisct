@@ -291,8 +291,7 @@
                     else
                     {
                         <!-- Relatório ICMS Sobre Saida-->
-
-                        if (ViewBag.Company.AnnexId != 3)
+                        if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
                         {
                             if (ViewBag.Company.TypeCompany == true)
                             {
@@ -307,9 +306,9 @@
                                 @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
                             }
                         }
-                        else if (ViewBag.Company.AnnexId == 3)
+                        else if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
                         {
-                            if (ViewBag.Company.SectionId == 2)
+                            if (ViewBag.Company.Section.Name.Equals("Seção II"))
                             {
                                 <!-- Empresa/Medicamento Seção II -->
 

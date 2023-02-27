@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,14 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Descrição")]
         public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data Inicio")]
+        public DateTime DateStart { get; set; }
+
+        [Display(Name = "Data Fim")]
+        [DataType(DataType.Date)]
+        public DateTime? DateEnd { get; set; }
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]

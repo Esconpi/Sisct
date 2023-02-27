@@ -34,6 +34,8 @@
                         <th class="none">
                             @Html.DisplayNameFor(model => model.Cest)
                         </th>
+                        <th class="desktop">@Html.DisplayNameFor(model => model.DateStart)</th>
+                        <th class="desktop">@Html.DisplayNameFor(model => model.DateEnd)</th>
                         <th class="all"></th>
                     </tr>
                 </thead>
@@ -42,7 +44,7 @@
     </div>
     <div class="box-footer"></div>
 </div>
-@if (SessionManager.GetPersonInSession().ProfileId.Equals(2))
+@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
 {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -80,10 +82,30 @@
                     { "data": "code" },
                     { "data": "description" },
                     { "data": "cest" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                        }
+                    },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top'/> "
+                            if (row.fim == "01/01/0001") {
+                                return "<a href='/NcmConvenio/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar NCM' /> " +
+                                    "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar NCM' /> " +
+                                    "<a href='/NcmConvenio/Delete/" + data + "' class = 'glyphicon glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+
+                            }
+                            else {
+                                return ""
+                            }
                         }
                     }
                 ]
@@ -129,11 +151,28 @@ else
                     { "data": "code" },
                     { "data": "description" },
                     { "data": "cest" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            }
+                            else {
+                                return data
+                            }
+                        }
+                    },
                     {
                         "mData": "id",
                         "mRender": function (data, type, row) {
-                            return "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top'/> " +
-                                "<a href='/NcmConvenio/Delete/" + data + "' class = 'glyphicon glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+                            if (row.fim == "01/01/0001") {
+                                return "<a href='/NcmConvenio/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar NCM' /> " +
+                                    "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar NCM' /> "
+                            }
+                            else {
+                                return ""
+                            }
                         }
                     }
                 ]

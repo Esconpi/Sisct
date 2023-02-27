@@ -62,7 +62,7 @@
     </div>
 </div>
 
-@if (SessionManager.GetPersonInSession().Profile.Id.Equals(1))
+@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
 {
     <script type="text/javascript">
         $(document).ready(function () {
