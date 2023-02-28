@@ -44,139 +44,72 @@
     </div>
     <div class="box-footer"></div>
 </div>
-@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblNcm').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "oLanguage": {
-                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
-                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "sZeroRecords": "Nenhum registro disponível",
-                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
-                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoFiltered": "",
-                    "sSearch": "Buscar",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sPrevious": "Anterior",
-                        "sNext": "Próximo",
-                        "sLast": "Último"
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblNcm').DataTable({
+            searchDelay: 300,
+            "fnDrawCallback": function (oSettings) {
+                $('.showDetail').off();
+                $('.showProduct').off();
+                $('[data-toggle="tooltip"]').tooltip();
+                $("input[type='checkbox']").bootstrapToggle();
+            },
+            "processing": true,
+            "ordering": false,
+            "serverSide": true,
+            "oLanguage": {
+                "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                "sZeroRecords": "Nenhum registro disponível",
+                "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                "sInfoFiltered": "",
+                "sSearch": "Buscar",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+            "ajax": "/NcmConvenio/GetAll",
+            "initComplete": function (settings, json) {
+            },
+            "columns": [
+                { "data": "anexx" },
+                { "data": "code" },
+                { "data": "description" },
+                { "data": "cest" },
+                { "data": "inicio" },
+                {
+                    "mData": "fim",
+                    "mRender": function (data, type, row) {
+                        if (data == "01/01/0001") {
+                            return ""
+                        } else {
+                            return data
+                        }
                     }
                 },
-                "ajax": "/NcmConvenio/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "anexx" },
-                    { "data": "code" },
-                    { "data": "description" },
-                    { "data": "cest" },
-                    { "data": "inicio" },
-                    {
-                        "mData": "fim",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
-                            }
-                            else {
-                                return data
-                            }
-                        }
-                    },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            if (row.fim == "01/01/0001") {
+                {
+                    "mData": "id",
+                    "mRender": function (data, type, row) {
+                        if (row.fim == "01/01/0001") {
+                            if ("@SessionManager.GetPersonInSession().Profile.Name" == "Master") {
                                 return "<a href='/NcmConvenio/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar NCM' /> " +
                                     "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar NCM' /> " +
                                     "<a href='/NcmConvenio/Delete/" + data + "' class = 'glyphicon glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
-
-                            }
-                            else {
-                                return ""
-                            }
-                        }
-                    }
-                ]
-            });
-        });
-    </script>
-}
-else
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblNcm').DataTable({
-                searchDelay: 300,
-                "fnDrawCallback": function (oSettings) {
-                    $('.showDetail').off();
-                    $('.showProduct').off();
-                    $('[data-toggle="tooltip"]').tooltip();
-                    $("input[type='checkbox']").bootstrapToggle();
-                },
-                "processing": true,
-                "ordering": false,
-                "serverSide": true,
-                "oLanguage": {
-                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
-                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
-                    "sZeroRecords": "Nenhum registro disponível",
-                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
-                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
-                    "sInfoFiltered": "",
-                    "sSearch": "Buscar",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sPrevious": "Anterior",
-                        "sNext": "Próximo",
-                        "sLast": "Último"
-                    }
-                },
-                "ajax": "/NcmConvenio/GetAll",
-                "initComplete": function (settings, json) {
-                },
-                "columns": [
-                    { "data": "anexx" },
-                    { "data": "code" },
-                    { "data": "description" },
-                    { "data": "cest" },
-                    { "data": "inicio" },
-                    {
-                        "mData": "fim",
-                        "mRender": function (data, type, row) {
-                            if (data == "01/01/0001") {
-                                return ""
-                            }
-                            else {
-                                return data
-                            }
-                        }
-                    },
-                    {
-                        "mData": "id",
-                        "mRender": function (data, type, row) {
-                            if (row.fim == "01/01/0001") {
+                            } else {
                                 return "<a href='/NcmConvenio/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar NCM' /> " +
                                     "<a href='/NcmConvenio/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar NCM' /> "
                             }
-                            else {
-                                return ""
-                            }
+                        } else {
+                            return ""
                         }
                     }
-                ]
-            });
+                }
+            ]
         });
-    </script>
-}
+    });
+</script>

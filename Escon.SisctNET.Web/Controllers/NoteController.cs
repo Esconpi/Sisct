@@ -512,7 +512,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             bool incentivo = false;
 
-                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
                                 incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))

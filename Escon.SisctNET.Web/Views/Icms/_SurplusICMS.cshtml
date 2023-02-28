@@ -80,7 +80,7 @@
             </th>
             <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.DiferencaNContribuinte)) %</th>
         </tr>
-        @if (ViewBag.Company.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+        @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
         {
             @if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
             {
@@ -131,7 +131,7 @@
                     </th>
                 }
 
-                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS"))
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                 {
                     <th style="border: 1px solid; text-align:center;">
                         Vendas do Anexo II
@@ -152,7 +152,7 @@
                     <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.Faturamento)) %</th>
                 }
 
-                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS"))
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                 {
                     <th style="text-align:right; padding-right:1%; border:1px solid;">@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %</th>
                 }
@@ -332,7 +332,7 @@
                 </table>
             </td>
         </tr>
-        @if (ViewBag.Company.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+        @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
         {
             <tr>
                 <td>
@@ -353,7 +353,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS"))
+                            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                             {
                                 <tr>
                                     <th>Venda Conforme Anexo II (@string.Format("{0:N}", Convert.ToDecimal(ViewBag.Company.VendaAnexo)) %)</th>

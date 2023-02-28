@@ -113,8 +113,7 @@
                     "mRender": function (data, type, row) {
                         if (data == "01/01/0001") {
                             return ""
-                        }
-                        else {
+                        } else {
                             return data
                         }
                     }
@@ -125,8 +124,7 @@
                         if (row.fim == "01/01/0001") {
                             return "<a href='/Product/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
                                 "<a href='/Product/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
-                        }
-                        else {
+                        } else {
                             return ""
                         }
                     }

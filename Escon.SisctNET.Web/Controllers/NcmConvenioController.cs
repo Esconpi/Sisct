@@ -78,10 +78,11 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                entity.Description = entity.Description.Trim();
                 if (entity.Ncm != null)
-                    entity.Ncm = entity.Ncm.Trim();
-                else
-                    entity.Ncm = "";
+                    entity.Ncm = entity.Ncm.Replace(".", "").Trim();
+                if (entity.Cest != null)
+                    entity.Cest = entity.Cest.Replace(".", "").Trim();
 
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
@@ -131,10 +132,12 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var rst = _service.FindById(id, null);
 
+                entity.Created = rst.Created;
+                entity.Description = entity.Description.Trim();
                 if (entity.Ncm != null)
-                    entity.Ncm = entity.Ncm.Trim();
-                else
-                    entity.Ncm = "";
+                    entity.Ncm = entity.Ncm.Replace(".","").Trim();
+                if (entity.Cest != null)
+                    entity.Cest = entity.Cest.Replace(".", "").Trim();
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
@@ -194,7 +197,7 @@ namespace Escon.SisctNET.Web.Controllers
                 NcmConvenio taxation = new NcmConvenio();
                 taxation.Ncm = result.Ncm;
                 taxation.Cest = result.Cest;
-                taxation.Description = result.Description;
+                taxation.Description = entity.Description.Trim();
                 taxation.AnnexId = result.AnnexId;
                 taxation.DateStart = entity.DateStart;
 
@@ -271,9 +274,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 return Ok(new { draw = draw, recordsTotal = ncms.Count(), recordsFiltered = ncms.Count(), data = ncm.Skip(start).Take(lenght) });
 
-            }
-            else
-            {
+            } else {
 
 
                 var ncm = from r in ncmsAll

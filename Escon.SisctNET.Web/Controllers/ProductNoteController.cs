@@ -1890,7 +1890,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
 
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B") &&
+                            else if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B") &&
                                      !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (impAnexo == null)
@@ -2022,8 +2022,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE/ANEXO V-A - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") &&
-                                     comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
                             {
                                 if (isPauta)
                                 {
@@ -2145,8 +2144,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
                             if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && 
-                                (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || 
-                                 comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
+                                (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
                                  comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
                                 if (imp == null)
@@ -3107,7 +3105,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                         }
-                        else if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                        else if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
                         {
                             if (impAnexo == null)
                             {
@@ -3196,8 +3194,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             productsSTIncentivado.Select(_ => _.Freterateado).Sum() + productsSTIncentivado.Select(_ => _.Vipi).Sum());
                             impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
                         }
-                        else if (comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && 
-                                 comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                        else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
                         {
                             if (isPauta)
                             {
@@ -3313,8 +3310,7 @@ namespace Escon.SisctNET.Web.Controllers
                         totalDarIcms += Math.Round(impostoIcms, 2);
                         totalDarFunef += Math.Round(taxaFunef, 2);
 
-                        if (comp.Annex.Description.Equals("ANEXO II/ANEXO V-A I - AUTOPEÇAS") || 
-                            comp.Annex.Description.Equals("ANEXO III/ANEXO V-A II - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") ||
+                        if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
                             comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                         {
                             // Icms Excedente
@@ -3345,7 +3341,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 limiteTransferencia = calculation.Limite(baseCalcVenda, Convert.ToDecimal(comp.Transferencia)),
                                 limiteTransferenciaInter = calculation.Limite(totalTranferenciaEntrada, Convert.ToDecimal(comp.TransferenciaInter));
 
-                            if (comp.ChapterId == (long)4)
+                            if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 limiteNcm = calculation.Limite(baseCalcVenda, Convert.ToDecimal(comp.Faturamento));
 
                             decimal excedenteGrupo = 0, impostoGrupo = 0, excedenteNcm = 0, impostoNcm = 0, impostoNContribuinte = 0, excedenteNContribuinte = 0,
@@ -3363,25 +3359,25 @@ namespace Escon.SisctNET.Web.Controllers
                             var gruposExecentes = check.Grupos(grupos);
 
                             //  Anexo II ou Inciso I e II
-                            if (baseCalcNcm < limiteNcm && (comp.AnnexId == (long)1 || comp.ChapterId == (long)4))
+                            if (baseCalcNcm < limiteNcm && (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
                             {
                                 excedenteNcm = calculation.ExcedenteMinimo(baseCalcNcm, limiteNcm);
 
-                                if (comp.AnnexId == (long)1)
+                                if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                                     impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.VendaAnexoExcedente));
                                 else
                                     impostoNcm = calculation.Imposto(excedenteNcm, Convert.ToDecimal(comp.FaturamentoExcedente));
                             }
 
                             //  Contribuinte
-                            if (baseCalcContribuinte < limiteContribuinte && comp.ChapterId == (long)4)
+                            if (baseCalcContribuinte < limiteContribuinte && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                             {
                                 excedenteContribuinte = calculation.ExcedenteMinimo(baseCalcContribuinte, limiteContribuinte);
                                 impostoContribuinte = calculation.Imposto(excedenteContribuinte, Convert.ToDecimal(comp.VendaContribuinteExcedente));
                             }
 
                             //  Não Contribuinte
-                            if (baseCalcNContribuinte > limiteNContribuinte && comp.ChapterId != (long)4)
+                            if (baseCalcNContribuinte > limiteNContribuinte && !comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                             {
                                 excedenteNContribuinte = calculation.ExcedenteMaximo(baseCalcNContribuinte, limiteNContribuinte);
                                 impostoNContribuinte = calculation.Imposto(excedenteNContribuinte, Convert.ToDecimal(comp.VendaCpfExcedente));
@@ -3389,7 +3385,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             //  Transferência
-                            if (totalTranferenciaSaida > limiteTransferencia && comp.ChapterId == (long)4)
+                            if (totalTranferenciaSaida > limiteTransferencia && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                             {
                                 excedenteTranf = calculation.ExcedenteMaximo(totalTranferenciaSaida, limiteTransferencia);
                                 impostoTransf = calculation.Imposto(excedenteTranf, Convert.ToDecimal(comp.TransferenciaExcedente));
@@ -3422,9 +3418,9 @@ namespace Escon.SisctNET.Web.Controllers
                             if (percentualVendaNContribuinte > Convert.ToDecimal(comp.VendaCpf))
                                 difNContribuinte = calculation.Diferenca(percentualVendaNContribuinte, Convert.ToDecimal(comp.VendaCpf));
 
-                            if (comp.AnnexId == (long)1 || comp.ChapterId == (long)4)
+                            if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                             {
-                                if (comp.AnnexId == (long)1)
+                                if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                                 {
                                     if (percentualVendaNcm < Convert.ToDecimal(comp.VendaAnexo))
                                     {
