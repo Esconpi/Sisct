@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Service.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -195,8 +194,10 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 NcmConvenio taxation = new NcmConvenio();
-                taxation.Ncm = result.Ncm;
-                taxation.Cest = result.Cest;
+                if (entity.Ncm != null)
+                    taxation.Ncm = entity.Ncm.Replace(".", "").Trim();
+                if (entity.Cest != null)
+                    taxation.Cest = entity.Cest.Replace(".", "").Trim();
                 taxation.Description = entity.Description.Trim();
                 taxation.AnnexId = result.AnnexId;
                 taxation.DateStart = entity.DateStart;
@@ -234,7 +235,7 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.AnnexId);
+            var ncmsAll = _service.FindAll(null).OrderBy(_ => _.AnnexId).ToList();
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
@@ -243,10 +244,15 @@ namespace Escon.SisctNET.Web.Controllers
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
                 List<NcmConvenio> ncmTemp = new List<NcmConvenio>();
-                ncmsAll.ToList().ForEach(s =>
+                ncmsAll.ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
                     s.Ncm = s.Ncm;
+                    if (s.Ncm == null)
+                        s.Ncm = "";
+                    s.Cest = s.Cest;
+                    if (s.Cest == null)
+                        s.Cest = "";
                     s.Annex.Description = s.Annex.Description;
                     ncmTemp.Add(s);
                 });
@@ -254,6 +260,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var ids = ncmTemp.Where(c =>
                     c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Ncm.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Cest.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                     c.Annex.Description.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Select(s => s.Id).ToList();
 
