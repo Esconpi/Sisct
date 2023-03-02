@@ -57,20 +57,23 @@
                                     <th rowspan="2">V. Nota</th>
                                     <th rowspan="2">Produto</th>
                                     <th rowspan="2">Aliq Inter(%)</th>
-                                    <th style="text-align: center;" colspan="3">NFe</th>
-                                    <th style="text-align: center;" colspan="4">CTe</th>
+                                    <th style="text-align: center;" colspan="6">NFe</th>
+                                    <th style="text-align: center;" colspan="5">CTe</th>
                                     <th rowspan="2">ICMS ST <br /> NFe</th>
                                     <th rowspan="2">ICMS Apurado</th>
                                 </tr>
                                 <tr style="font-size:9px;">
                                     <th>V. Produto</th>
+                                    <th>BCR(%)</th>
+                                    <th>BCR</th>
                                     <th>Aliq Intra <br /> NFe(%)</th>
+                                    <th>Dif</th>
                                     <th>ICMS Produto</th>
                                     <th>Nº Frete</th>
                                     <th>V. Frete</th>
                                     <th>Aliq Intra <br /> UF(%)</th>
+                                    <th>Dif</th>
                                     <th>ICMS CTe</th>
-
                                 </tr>
                             }
                             else
@@ -86,6 +89,8 @@
                                     <th>Nº Frete</th>
                                     <th>V. Frete</th>
                                     <th>BC. ICMS</th>
+                                    <th>BCR(%)</th>
+                                    <th>BCR</th>
                                     <th>Aliq Inter(%)</th>
                                     <th>Aliq Intra <br /> NFe(%)</th>
                                     <th>Dif</th>
@@ -130,7 +135,10 @@
                                                 @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                                         Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                                             </td>
+                                            <td>@item.BCR</td>
+                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
                                             <td>@item.Picms</td>
+                                            <td>@item.Diferencial</td>
                                             <td>
                                                 @if (item.PicmsOrig > 0)
                                                 {
@@ -139,11 +147,17 @@
                                                 else
                                                 {
                                                     @string.Format("{0:N}", (Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                                    Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi)) * (Convert.ToDecimal(item.Diferencial) / 100))
+                                                                             Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi)) * 
+                                                                             (Convert.ToDecimal(item.Diferencial) / 100))
                                                 }
                                             </td>
                                             <td>@item.Note.Nct</td>
-                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                            <td>
+                                                @if (Convert.ToDecimal(item.Freterateado) > 0)
+                                                {
+                                                    @string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))
+                                                }
+                                            </td>
                                             <td>
                                                 @if (item.PicmsOrig > 0)
                                                 {
@@ -155,14 +169,17 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.PicmsOrig > 0)
+                                                @if (item.DiferencialCTe > 0)
                                                 {
-                                                    @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApuradoCTe))
+                                                    @item.DiferencialCTe
                                                 }
                                                 else
                                                 {
-                                                    @string.Format("{0:N}", Convert.ToDecimal(item.Freterateado) * (Convert.ToDecimal(item.Diferencial) / 100))
+                                                    @item.Diferencial
                                                 }
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApuradoCTe))
                                             </td>
                                             <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                             <td>
@@ -173,6 +190,7 @@
                                                 else
                                                 {
                                                     @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))
+                                                } }
                                                 }
                                             </td>
                                         </tr>
@@ -207,12 +225,18 @@
                                                                         Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                                             </td>
                                             <td>@item.Note.Nct</td>
-                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))</td>
+                                            <td>
+                                                @if (Convert.ToDecimal(item.Freterateado) > 0)
+                                                {
+                                                    @string.Format("{0:N}", Convert.ToDecimal(item.Freterateado))
+                                                }
+                                            </td>
                                             <td>
                                                 @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                    Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi) +
-                                                    Convert.ToDecimal(item.Freterateado))
+                                                                        Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                                             </td>
+                                            <td>@item.BCR</td>
+                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
                                             <td>@item.AliqInterna</td>
                                             <td>@item.Picms</td>
                                             <td>@item.Diferencial</td>

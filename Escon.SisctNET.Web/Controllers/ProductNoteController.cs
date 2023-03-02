@@ -2451,8 +2451,7 @@ namespace Escon.SisctNET.Web.Controllers
                     {
                             baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Voutro).Sum() +
                                           Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum()) +
-                                          Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()) +
-                                          Convert.ToDecimal(products.Select(_ => _.Vipi).Sum()));
+                                          Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum())) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum());
 
 
                             foreach (var prod in products)
@@ -2462,7 +2461,14 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (Convert.ToDecimal(prod.Diferencial) > 0)
                                     {
                                         var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                        var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                        decimal dif = 0;
+                                        if (typeTaxation.Equals(Model.TypeTaxation.AP))
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
+                                        else
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+
+                                        if (dif < 0)
+                                            dif = 0;
                                         totalIcmsFreteIE += calculation.IcmsApurado(dif, prod.Freterateado);
                                     }
                                 }
@@ -2607,8 +2613,9 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
+                                if (dif < 0)
+                                    dif = 0;
                                 totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
                             }
                         }

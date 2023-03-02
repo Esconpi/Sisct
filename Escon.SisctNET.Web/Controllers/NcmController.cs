@@ -70,7 +70,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                entity.Code = entity.Code.Trim();
+                entity.Code = entity.Code.Replace(".", "").Trim();
                 _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
@@ -107,7 +107,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                entity.Code = entity.Code.Trim();
+                entity.Code = entity.Code.Replace(".", "").Trim();
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
