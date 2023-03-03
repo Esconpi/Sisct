@@ -49,7 +49,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliquota Interestadual")]
         public decimal Picms { get; set; }
 
-        [Display(Name = "Aliquota Interestadual Origem")]
+        [Display(Name = "Aliquota Interestadual de Origem")]
         public decimal PicmsOrig { get; set; }
 
         [Display(Name = "Valor IPI")]
@@ -84,6 +84,9 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Aliquota Interna")]
         public decimal? AliqInterna { get; set; }
+
+        [Display(Name = "Aliquota Interna BCR")]
+        public decimal? AliqInternaBCR { get; set; }
 
         [Display(Name = "MVA")]
         public decimal? Mva { get; set; }

@@ -1477,6 +1477,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
+                                    var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                     for (int j = 0; j < exitNotes[i].Count(); j++)
                                     {
 
@@ -1484,7 +1486,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
+                                            ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, exitNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
@@ -1604,13 +1606,15 @@ namespace Escon.SisctNET.Web.Controllers
                                             contribuinte = true;
                                     }
 
+                                    var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                     for (int j = 0; j < exitNotes[i].Count(); j++)
                                     {
                                         if (exitNotes[i][j].ContainsKey("NCM"))
                                         {
                                             string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
+                                            ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, exitNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("CFOP"))
@@ -1701,6 +1705,8 @@ namespace Escon.SisctNET.Web.Controllers
                                             posClienteRaiz = contribuintesRaiz.IndexOf(entryNotes[i][2]["CNPJ"].Substring(0, 8));
                                     }
 
+                                    var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                     bool ncm = false, cfop = false;
 
                                     for (int j = 0; j < entryNotes[i].Count(); j++)
@@ -1710,7 +1716,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = entryNotes[i][j].ContainsKey("CEST") ? entryNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, entryNotes[i][j]["NCM"], CEST, comp);
+                                            ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, entryNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (entryNotes[i][j].ContainsKey("CFOP"))
@@ -3067,10 +3073,12 @@ namespace Escon.SisctNET.Web.Controllers
                                                 }
                                             }
 
+                                            var ncmConvenioAnnexTemp = _ncmConvenioService.FindAllInDate(ncmsConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                             for (int j = 0; j < exitNotes[i].Count; j++)
                                             {
                                                 if (exitNotes[i][j].ContainsKey("NCM"))
-                                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmsConvenio, exitNotes[i][j]["NCM"].ToString());
+                                                    ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, exitNotes[i][j]["NCM"].ToString());
 
                                                 if (exitNotes[i][j].ContainsKey("CFOP"))
                                                 {
@@ -3304,6 +3312,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
+                                    var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                                     for (int j = 0; j < exitNotes[i].Count(); j++)
                                     {
 
@@ -3311,7 +3321,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                            ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
+                                            ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, exitNotes[i][j]["NCM"], CEST, comp);
                                         }
 
                                         if (exitNotes[i][j].ContainsKey("CFOP"))

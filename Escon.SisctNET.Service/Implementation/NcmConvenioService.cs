@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
 
@@ -44,6 +45,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime dateNCM, Log log = null)
+        {
+            return _repository.FindAllInDate(ncms, dateNCM, log);
+        }
+
         public List<NcmConvenio> FindByAnnex(long annexId, Log log = null)
         {
             return _repository.FindByAnnex(annexId, log);
@@ -59,19 +65,24 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByNcmAnnex(annexId, log);
         }
 
-        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, string cest, Company comp, Log log = null)
-        {
-            return _repository.FindByNcmAnnex(ncms, ncm, cest, comp, log);
-        }
-
-        public bool FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, Log log = null)
+        public NcmConvenio FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, Log log = null)
         {
             return _repository.FindByNcmAnnex(ncms, ncm, log);
         }
 
-        public bool FindByNcmAnnex(long Annex, string ncm, Log log = null)
+        public NcmConvenio FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, string cest, Company comp, Log log = null)
         {
-            return _repository.FindByNcmAnnex(Annex, ncm, log);
+            return _repository.FindByNcmAnnex(ncms, ncm, cest, comp, log);
+        }
+
+        public bool FindByNcmExists(List<NcmConvenio> ncms, string ncm, string cest, Company comp, Log log = null)
+        {
+            return _repository.FindByNcmExists(ncms, ncm, cest, comp, log);
+        }
+
+        public bool FindByNcmExists(List<NcmConvenio> ncms, string ncm, Log log = null)
+        {
+            return _repository.FindByNcmExists(ncms, ncm, log);
         }
 
         public NcmConvenio Update(NcmConvenio entity, Log log)

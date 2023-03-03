@@ -259,7 +259,11 @@ namespace Escon.SisctNET.Web.Controllers
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
             var taxationCompany = _taxationService.FindByCompanyActive(id);
-            var ncmConvenio = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
+            var ncmConvenio = _ncmConvenioService.FindAll(null);
+            var ncmConvenioAnnex = ncmConvenio.Where(_ => _.AnnexId.Equals(Convert.ToInt64(comp.AnnexId))).ToList();
+            var ncmConvenioBCR = ncmConvenio.Where(_ => _.Annex.Description.Equals("ANEXO I - MÁQUINAS, APARELHOS E EQUIPAMENTOS INDUSTRIAIS") ||
+                                                        _.Annex.Description.Equals("ANEXO II - MÁQUINAS E IMPLEMENTOS AGRÍCOLA"))
+                                            .ToList();
             var aliquotas = _aliquotService.FindByAllState(null);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
@@ -269,6 +273,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxedtypes = _taxationTypeService.FindAll(null);
 
+            List<Model.NcmConvenio> ncmConvenioAnnexTemp = new List<Model.NcmConvenio>();
+            List<Model.NcmConvenio> ncmConvenioBCRTemp = new List<Model.NcmConvenio>();
             List<Model.Note> updateNote = new List<Model.Note>();
             List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
 
@@ -332,6 +338,9 @@ namespace Escon.SisctNET.Web.Controllers
                         nota = _service.Create(note, GetLog(Model.OccorenceLog.Create));
 
                         nota.Products = new List<Model.ProductNote>();
+
+                        ncmConvenioAnnexTemp = _ncmConvenioService.FindAllInDate(ncmConvenioAnnex, note.Dhemi);
+                        ncmConvenioBCRTemp = _ncmConvenioService.FindAllInDate(ncmConvenioBCR, note.Dhemi);
                     }
                     catch
                     {
@@ -510,20 +519,24 @@ namespace Escon.SisctNET.Web.Controllers
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            bool incentivo = false;
+                            bool incentivo = false, eBcr = false;
+
+                            var ncmBcr = _ncmConvenioService.FindByNcmAnnex(ncmConvenioBCRTemp, NCM, CEST, comp);
+
+                            if (ncmBcr != null)
+                                eBcr = true;
 
                             if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
-                                incentivo = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
                             if (comp.Incentive && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 incentivo = true;
-
 
                             Model.ProductNote prod = new Model.ProductNote();
 
@@ -571,6 +584,65 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Status = false;
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
+                                    prod.EBcr = eBcr;
+                                    prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
+                                    prod.Created = DateTime.Now;
+                                    prod.Updated = DateTime.Now;
+
+                                }
+                                catch
+                                {
+                                    url = "Error";
+                                    erro = 1;
+                                    chave = notes[i][0]["chave"];
+                                    break;
+                                }
+
+                                det.Clear();
+                            }
+                            else if (taxed != null && eBcr != taxed.EBcr)
+                            {
+                                tributada = false;
+
+                                try
+                                {
+                                    prod.Cprod = det["cProd"];
+                                    prod.Ncm = NCM;
+                                    prod.Cest = CEST;
+                                    prod.Cfop = CFOP;
+                                    prod.Xprod = det["xProd"];
+                                    prod.Vprod = vProd;
+                                    prod.Qcom = Convert.ToDecimal(det["qCom"]);
+                                    prod.Ucom = det["uCom"];
+                                    prod.Vuncom = vUnCom;
+                                    prod.Vicms = vICMS;
+                                    prod.Picms = Convert.ToDecimal(pICMSValid);
+                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
+                                    prod.Vipi = vIPI;
+                                    prod.Vpis = vPIS;
+                                    prod.Vcofins = vCOFINS;
+                                    prod.Vbasecalc = baseDeCalc;
+                                    prod.Vfrete = vFrete;
+                                    prod.Vseg = vSeg;
+                                    prod.Voutro = vOutro;
+                                    prod.Vdesc = vDesc;
+                                    prod.IcmsST = vICMSST;
+                                    prod.VbcFcpSt = vBCFCPST;
+                                    prod.VbcFcpStRet = vBCFCPSTRet;
+                                    prod.pFCPST = pFCPST;
+                                    prod.pFCPSTRET = pFCPSTRet;
+                                    prod.VfcpST = vFCPST;
+                                    prod.VfcpSTRet = vFCPSTRet;
+                                    prod.IcmsCTe = freteIcms;
+                                    prod.Freterateado = frete_prod;
+                                    prod.NoteId = nota.Id;
+                                    prod.Nitem = det["nItem"];
+                                    prod.Orig = orig;
+                                    prod.Incentivo = incentivo;
+                                    prod.Status = false;
+                                    prod.Pautado = false;
+                                    prod.PercentualInciso = null;
+                                    prod.EBcr = eBcr;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
@@ -736,7 +808,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.TaxationTypeId = taxed.TaxationTypeId;
                                     prod.AliqInterna = aliqInterna;
                                     prod.Mva = taxed.MVA;
-                                    prod.EBcr = taxed.EBcr; ;
+                                    prod.EBcr = eBcr;
                                     prod.BCR = taxed.BCR;
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);

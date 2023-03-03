@@ -576,6 +576,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 continue;
                             }
 
+                            var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                             bool ncm = false, cfop = false;
 
                             for (int j = 0; j < exitNotes[i].Count(); j++)
@@ -592,7 +594,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     string CEST = exitNotes[i][j].ContainsKey("CEST") ? exitNotes[i][j]["CEST"] : "";
 
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][j]["NCM"], CEST, comp);
+                                    ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, exitNotes[i][j]["NCM"], CEST, comp);
                                 }
 
                                 if (exitNotes[i][j].ContainsKey("pICMS") && !exitNotes[i][j].ContainsKey("pFCP") && exitNotes[i][j].ContainsKey("CST") &&
@@ -717,6 +719,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 continue;
                             }
 
+                            var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(exitNotes[i][1]["dhEmi"]));
+
                             bool ncm = false;
 
                             for (int k = 0; k < exitNotes[i].Count(); k++)
@@ -725,7 +729,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     string CEST = exitNotes[i][k].ContainsKey("CEST") ? exitNotes[i][k]["CEST"] : "";
 
-                                    ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, exitNotes[i][k]["NCM"], CEST, comp);
+                                    ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, exitNotes[i][k]["NCM"], CEST, comp);
                                 }
 
                                 if ((exitNotes[i][k].ContainsKey("pICMS") && !exitNotes[i][k].ContainsKey("pFCP") && exitNotes[i][k].ContainsKey("CST") && exitNotes[i][k].ContainsKey("orig")) && !ncm)

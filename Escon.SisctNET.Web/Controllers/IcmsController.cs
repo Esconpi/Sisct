@@ -24044,6 +24044,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         int pos = -1;
 
                         bool status = false;
@@ -24056,7 +24058,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
                             }
                                
 
@@ -24160,6 +24162,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         bool status = false;
                         string CFOP = "";
                         decimal vProd = 0;
@@ -24172,7 +24176,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
 
                                 pos = -1;
                                 CFOP = notes[i][j]["CFOP"];
@@ -24308,6 +24312,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         bool status = false;
                         string CFOP = "", NCM = "";
                         decimal vProd = 0;
@@ -24321,7 +24327,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
                                 NCM = notes[i][j]["NCM"];
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
                                 pos = -1;
                                 CFOP = notes[i][j]["CFOP"];
@@ -24468,6 +24474,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         int pos = -1;
 
                         bool ncm = false;
@@ -24508,7 +24516,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);                                
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);                                
 
                                 if (ncm)
                                 {
@@ -24632,7 +24640,6 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> cfopsAnexoExit = new List<List<string>>();
 
                     decimal valorContabil = 0, valorBC = 0, valorIcms = 0, valorFecop = 0;
-
 
                     // Entrada
                     notes = importXml.NFeAll(directoryNfeEntry);
@@ -24776,6 +24783,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         int pos = -1;
 
                         bool ncm = false;
@@ -24786,7 +24795,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
                             }
                                 
 
@@ -24892,6 +24901,8 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
                         int pos = -1;
 
                         bool ncm = true;
@@ -24902,7 +24913,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
                             }
  
                             if (!ncm)
@@ -25004,6 +25015,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                             continue;
                         }
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = false;
                         string CFOP = "";
@@ -25017,7 +25029,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
 
                                 pos = -1;
                                 CFOP = notes[i][j]["CFOP"];
@@ -25152,6 +25164,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                             continue;
                         }
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = false;
                         string CFOP = "", NCM = "";
@@ -25166,7 +25179,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
                                 NCM = notes[i][j]["NCM"];
 
-                                status = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, NCM, CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
                                 pos = -1;
                                 CFOP = notes[i][j]["CFOP"];
@@ -25312,6 +25325,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                             continue;
                         }
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         int pos = -1;
 
@@ -25353,7 +25367,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
 
                                 if (ncm == false)
                                 {
@@ -25479,7 +25493,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal valorContabil = 0, valorBC = 0, valorIcms = 0, valorFecop = 0;
 
-
                     //  Entrada
                     notes = importXml.NFeAll(directoryNfeEntry);
 
@@ -25490,6 +25503,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                             continue;
                         }
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         int pos = -1;
 
@@ -25501,7 +25515,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
                             }
 
                             if (ncm)
@@ -25886,8 +25900,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
-                    var ncms = _ncmConvenioService.FindByNcmAnnex(Convert.ToInt64(comp.AnnexId));
-
                     List<List<string>> ncmsForaAnexo = new List<List<string>>();
                     decimal totalVendas = 0;
 
@@ -25900,6 +25912,7 @@ namespace Escon.SisctNET.Web.Controllers
                             notes.RemoveAt(i);
                             continue;
                         }
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         string ncmTemp = "";
                         bool ncm = false;
@@ -25910,7 +25923,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmConvenio, notes[i][j]["NCM"], CEST, comp);
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
 
                                 ncmTemp = notes[i][j]["NCM"];
                             }
@@ -28000,6 +28013,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var clientesAll = _clientService.FindByCompany(companyId);
                     var nContribuintes = clientesAll.Where(_ => _.TypeClient.Name.Equals("Não Contribuinte")).Select(_ => _.Document).ToList();
+                    var ncmsConvenio = _ncmConvenioService.FindByAnnex(Convert.ToInt64(comp.AnnexId));
 
                     List<List<string>> elencadaInterna = new List<List<string>>();
                     List<List<string>> elencadaInterestadual = new List<List<string>>();
@@ -28037,14 +28051,13 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                         }
 
+                        var ncmConvenioAnnexTemp = _ncmConvenioService.FindAllInDate(ncmsConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
                         decimal valorNF = 0;
-
-                        var ncmsConvenio = _ncmConvenioService.FindByAnnex(Convert.ToInt64(comp.AnnexId));
 
                         for (int j = 0; j < notes[i].Count; j++)
                         {
                             if (notes[i][j].ContainsKey("NCM"))
-                                ncm = _ncmConvenioService.FindByNcmAnnex(ncmsConvenio, notes[i][j]["NCM"].ToString());
+                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, notes[i][j]["NCM"].ToString());
 
                             if (ncm)
                             {
