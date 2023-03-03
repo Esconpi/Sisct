@@ -52,6 +52,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliquota Interestadual de Origem")]
         public decimal PicmsOrig { get; set; }
 
+        [Display(Name = "Aliquota Interestadual BCR de Origem")]
+        public decimal PicmsBCROrig { get; set; }
+
         [Display(Name = "Valor IPI")]
         public decimal Vipi { get; set; }
 
