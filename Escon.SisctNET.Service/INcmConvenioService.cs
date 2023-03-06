@@ -14,6 +14,8 @@ namespace Escon.SisctNET.Service
 
         NcmConvenio FindByNcmAnnex(List<NcmConvenio> ncms, string ncm, string cest, Company comp, Model.Log log = null);
 
+        List<NcmConvenio> FindByAnnex(Log log = null);
+
         List<NcmConvenio> FindByAnnex(long annexId, Log log = null);
 
         List<NcmConvenio> FindByNcmAnnex(long annexId, Log log = null);

@@ -259,7 +259,7 @@ namespace Escon.SisctNET.Web.Controllers
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
             var taxationCompany = _taxationService.FindByCompanyActive(id);
-            var ncmConvenio = _ncmConvenioService.FindAll(null);
+            var ncmConvenio = _ncmConvenioService.FindByAnnex(null);
             var ncmConvenioAnnex = ncmConvenio.Where(_ => _.AnnexId.Equals(Convert.ToInt64(comp.AnnexId))).ToList();
             var ncmConvenioBCR = ncmConvenio.Where(_ => _.Annex.Description.Equals("ANEXO I - MÁQUINAS, APARELHOS E EQUIPAMENTOS INDUSTRIAIS") ||
                                                         _.Annex.Description.Equals("ANEXO II - MÁQUINAS E IMPLEMENTOS AGRÍCOLA"))

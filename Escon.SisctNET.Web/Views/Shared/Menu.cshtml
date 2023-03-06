@@ -110,7 +110,7 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
 }
 
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("State")).FirstOrDefault().Active ||
-     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
+    SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("County")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -183,7 +183,9 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
 
 
 @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Attachment")).FirstOrDefault().Active ||
-     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active)
+     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Ncm")).FirstOrDefault().Active ||
+     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active ||
+     SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
 {
     <li class="treeview menu">
         <a href="#">
@@ -202,6 +204,17 @@ SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Lo
             {
                 <li><a href="@Url.Action("Index","NcmConvenio")"><i class="fa fa-circle-o"></i>Ncm</a></li>
             }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("InternalAliquot")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","InternalAliquotConfaz")"><i class="fa fa-circle-o"></i>Aliquota Interna</a></li>
+            }
+
+            @if (SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+            {
+                <li><a href="@Url.Action("Index","AliquotConfaz")"><i class="fa fa-circle-o"></i>Aliquota Interestadual</a></li>
+            }
+
 
         </ul>
     </li>

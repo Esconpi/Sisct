@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.ContextDataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,13 @@ namespace Escon.SisctNET.Repository.Implementation
         public List<NcmConvenio> FindByAnnex(long annexId, Log log = null)
         {
             var result = _context.NcmConvenios.Where(_ => _.AnnexId.Equals(annexId)).ToList();
+            AddLog(log);
+            return result;
+        }
+
+        public List<NcmConvenio> FindByAnnex(Log log = null)
+        {
+            var result = _context.NcmConvenios.Include(_ => _.Annex).ToList();
             AddLog(log);
             return result;
         }

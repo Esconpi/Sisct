@@ -1,15 +1,10 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Escon.SisctNET.Service.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -222,7 +217,6 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 

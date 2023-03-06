@@ -169,6 +169,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProduct3Repository, Product3Repository>();
             services.AddScoped<IInternalAliquotRepository, InternalAliquotRepository>();
             services.AddScoped<IInvoicingRepository, InvoicingRepository>();
+            services.AddScoped<IAliquotConfazRepository, AliquotConfazRepository>();
+            services.AddScoped<IInternalAliquotConfazRepository, InternalAliquotConfazRepository>();
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFunctionalityService, FunctionalityService>();
@@ -239,6 +241,8 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IProduct3Service, Product3Service>();
             services.AddScoped<IInternalAliquotService, InternalAliquotService>();
             services.AddScoped<IInvoicingService, InvoicingService>();
+            services.AddScoped<IAliquotConfazService, AliquotConfazService>();
+            services.AddScoped<IInternalAliquotConfazService, InternalAliquotConfazService>();
 
             services.AddScoped<Fortes.IEnterpriseService, Fortes.Implementation.EnterpriseService>();
             services.AddScoped<Fortes.IAccountPlanService, Fortes.Implementation.AccountPlanService>();

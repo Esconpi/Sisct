@@ -1,43 +1,43 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("aliquot")]
-    public class Aliquot : EntityBase
+    [Table("internalaliquotconfaz")]
+    public class InternalAliquotConfaz : EntityBase
     {
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
-        [Display(Name = "Uf de Origem")]
+        [Display(Name = "Estado")]
         [ForeignKey("State")]
-        public long StateOrigemId { get; set; }
+        public long StateId { get; set; }
 
-        private State stateOrigem;
-        public State StateOrigem
+        private State state;
+        public State State
         {
-            get => LazyLoader.Load(this, ref stateOrigem);
-            set => stateOrigem = value;
+            get => LazyLoader.Load(this, ref state);
+            set => state = value;
         }
 
         [Required(ErrorMessage = "Obrigatório!")]
-        [Display(Name = "Uf de Destino")]
-        [ForeignKey("State")]
-        public long StateDestinoId { get; set; }
+        [Display(Name = "Anexo")]
+        [ForeignKey("Annex")]
+        public long AnnexId { get; set; }
 
-        private State stateDestino;
-        public State StateDestino
+        private Annex annex;
+        public Annex Annex
         {
-            get => LazyLoader.Load(this, ref stateDestino);
-            set => stateDestino = value;
+            get => LazyLoader.Load(this, ref annex);
+            set => annex = value;
         }
 
         [Required(ErrorMessage = "Obrigatório!")]
-        [Display(Name = "Aliquota de Origem")]
+        [Display(Name = "Aliquota")]
         public decimal Aliquota { get; set; }
 
         [Required(ErrorMessage = "Obrigatório!")]
@@ -48,6 +48,5 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Data Final")]
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
-
     }
 }

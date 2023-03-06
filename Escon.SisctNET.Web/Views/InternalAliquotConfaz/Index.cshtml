@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.InternalAliquot>
+﻿@model IEnumerable<Escon.SisctNET.Model.InternalAliquotConfaz>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,6 +27,9 @@
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Aliquota)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AnnexId)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.DateStart)
@@ -72,7 +75,7 @@
                     "sLast": "Último"
                 }
             },
-            "ajax": "/InternalAliquot/GetAll",
+            "ajax": "/InternalAliquotConfaz/GetAll",
             "initComplete": function (settings, json) {
             },
             "columns": [
@@ -83,6 +86,7 @@
                         return data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.')
                     }
                 },
+                { "data": "annex" },
                 { "data": "inicio" },
                 {
                     "mData": "fim",
@@ -97,10 +101,10 @@
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {
-                         if (row.fim == "01/01/0001") {
-                            return "<a href='/InternalAliquot/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Aliquota' /> " +
-                                "<a href='/InternalAliquot/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar' /> " +
-                                "<a href='/InternalAliquot/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Deletar' /> "
+                        if (row.fim == "01/01/0001") {
+                            return "<a href='/InternalAliquotConfaz/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Aliquota' /> " +
+                                "<a href='/InternalAliquotConfaz/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar' /> " +
+                                "<a href='/InternalAliquotConfaz/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Deletar' /> "
                         } else {
                             return ""
                         }

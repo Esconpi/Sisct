@@ -55,6 +55,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByAnnex(annexId, log);
         }
 
+        public List<NcmConvenio> FindByAnnex(Log log = null)
+        {
+            return _repository.FindByAnnex(log);
+        }
+
         public NcmConvenio FindById(long id, Log log)
         {
             return _repository.FindById(id, log);

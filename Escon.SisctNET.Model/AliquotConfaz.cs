@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("aliquot")]
-    public class Aliquot : EntityBase
+    [Table("aliquotconfaz")]
+    public class AliquotConfaz : EntityBase
     {
         [JsonIgnore]
         public ILazyLoader LazyLoader { get; set; }
@@ -37,6 +37,18 @@ namespace Escon.SisctNET.Model
         }
 
         [Required(ErrorMessage = "Obrigatório!")]
+        [Display(Name = "Anexo")]
+        [ForeignKey("Annex")]
+        public long AnnexId { get; set; }
+
+        private Annex annex;
+        public Annex Annex
+        {
+            get => LazyLoader.Load(this, ref annex);
+            set => annex = value;
+        }
+
+        [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Aliquota de Origem")]
         public decimal Aliquota { get; set; }
 
@@ -48,6 +60,5 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Data Final")]
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
-
     }
 }
