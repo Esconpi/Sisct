@@ -49,7 +49,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             var aliquotAll = _service.FindByAllState(null);
 
-
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
                 List<Model.InternalAliquotConfaz> aliquots = new List<Model.InternalAliquotConfaz>();

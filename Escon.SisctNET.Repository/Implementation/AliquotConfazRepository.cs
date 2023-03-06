@@ -16,6 +16,13 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public AliquotConfaz FindByAliquot(long stateOrigemId, long stateDestinoId, long annexId, Log log = null)
+        {
+            var rst = _context.AliquotConfazs.Where(_ => _.StateOrigemId.Equals(stateOrigemId) && _.StateDestinoId.Equals(stateDestinoId) && _.AnnexId.Equals(annexId) && _.DateEnd == null).FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
         public List<AliquotConfaz> FindByAllState(Log log = null)
         {
             var rst = _context.AliquotConfazs

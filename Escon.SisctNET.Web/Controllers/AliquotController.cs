@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var item = _service.FindByAliquot((long)entity.StateOrigemId, (long)entity.StateDestinoId);
+                var item = _service.FindByAliquot(entity.StateOrigemId, entity.StateDestinoId);
 
                 if (item != null)
                 {
@@ -129,7 +129,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var rst = _service.FindById(id, null);
                 var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }

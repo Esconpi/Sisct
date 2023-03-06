@@ -44,6 +44,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public AliquotConfaz FindByAliquot(long stateOrigemId, long stateDestinoId, long annexId, Log log = null)
+        {
+            return _repository.FindByAliquot(stateOrigemId, stateDestinoId, annexId, log);
+        }
+
         public List<AliquotConfaz> FindByAllState(Log log = null)
         {
             return _repository.FindByAllState(log);

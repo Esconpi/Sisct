@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Escon.SisctNET.Model;
 
 namespace Escon.SisctNET.Web.Controllers
 {
@@ -35,6 +37,216 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 return View(null);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
+                SelectList states = new SelectList(list_states, "Id", "Name", null);
+                ViewBag.StateOrigemId = states;
+
+                ViewBag.StateDestinoId = states;
+
+                List<Annex> list_annex = _annexService.FindAll(null);
+                foreach (var annex in list_annex)
+                {
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Create(Model.AliquotConfaz entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var item = _service.FindByAliquot(entity.StateOrigemId, entity.StateDestinoId, entity.AnnexId);
+
+                if (item != null)
+                {
+                    item.DateEnd = entity.DateStart.AddDays(-1);
+                    _service.Update(item, null);
+                }
+
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
+                SelectList states = new SelectList(list_states, "Id", "Name", null);
+                ViewBag.StateOrigemId = states;
+
+                ViewBag.StateDestinoId = states;
+
+                List<Annex> list_annex = _annexService.FindAll(null);
+                foreach (var annex in list_annex)
+                {
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
+
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(long id, Model.AliquotConfaz entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Atualize(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var list_states = _stateService.FindAll(null).OrderBy(_ => _.UF).ToList();
+                foreach (var s in list_states)
+                {
+                    s.Name = s.Name + " - " + s.UF;
+                }
+
+                SelectList states = new SelectList(list_states, "Id", "Name", null);
+                ViewBag.StateOrigemId = states;
+
+                ViewBag.StateDestinoId = states;
+
+                List<Annex> list_annex = _annexService.FindAll(null);
+                foreach (var annex in list_annex)
+                {
+                    if (annex.Convenio.Equals("") || annex.Convenio.Equals(null))
+                        annex.Description = annex.Description;
+                    else
+                        annex.Description = annex.Description + " - " + annex.Convenio;
+                }
+                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
+                SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
+                ViewBag.AnnexId = annexs;
+
+                var result = _service.FindById(id, null);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualize(long id, Model.AliquotConfaz entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+                if (result != null)
+                {
+                    result.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
+                    _service.Update(result, GetLog(Model.OccorenceLog.Update));
+                }
+
+                AliquotConfaz aliquot = new AliquotConfaz();
+                aliquot.StateOrigemId = result.StateOrigemId;
+                aliquot.StateDestinoId = result.StateDestinoId;
+                aliquot.AnnexId = result.AnnexId;
+                aliquot.Aliquota = entity.Aliquota;
+                aliquot.DateStart = entity.DateStart;
+
+                _service.Create(aliquot, GetLog(Model.OccorenceLog.Create));
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Aliquot")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                _service.Delete(id, GetLog(Model.OccorenceLog.Delete));
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
