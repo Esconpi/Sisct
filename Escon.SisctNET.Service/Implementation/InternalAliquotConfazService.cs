@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -56,6 +57,11 @@ namespace Escon.SisctNET.Service.Implementation
         public InternalAliquotConfaz FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
+        }
+
+        public InternalAliquotConfaz FindByUf(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime data, string uf, Log log = null)
+        {
+            return _repository.FindByUf(internalAliquotConfazs, data, uf, log);
         }
 
         public InternalAliquotConfaz Update(InternalAliquotConfaz entity, Log log)

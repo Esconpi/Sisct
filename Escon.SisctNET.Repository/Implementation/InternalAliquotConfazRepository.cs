@@ -2,6 +2,7 @@
 using Escon.SisctNET.Model.ContextDataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +17,15 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
+        public List<InternalAliquotConfaz> FindAllInDate(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime dateAliquot, Log log = null)
+        {
+            var result = internalAliquotConfazs.Where(_ => (DateTime.Compare(_.DateStart, dateAliquot) <= 0 && _.DateEnd == null) ||
+                                                           (DateTime.Compare(_.DateStart, dateAliquot) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), dateAliquot) > 0))
+                                               .ToList();
+            AddLog(log);
+            return result;
+        }
+
         public InternalAliquotConfaz FindByAliquot(long stateId, long annexId, Log log = null)
         {
             var rst = _context.InternalAliquotConfazs.Where(_ => _.StateId.Equals(stateId) && _.AnnexId.Equals(annexId) && _.DateEnd == null).FirstOrDefault();
@@ -27,10 +37,19 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             var rst = _context.InternalAliquotConfazs
                .Include(s => s.State)
-               .Include(a => a.Annex)
                .ToList();
             AddLog(log);
             return rst;
+        }
+
+        public InternalAliquotConfaz FindByUf(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime data, string uf, Log log = null)
+        {
+            var result = internalAliquotConfazs.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                                            (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0)) &&
+                                                           _.State.UF.Equals(uf))
+                                               .FirstOrDefault();
+            AddLog(log);
+            return result;
         }
     }
 }

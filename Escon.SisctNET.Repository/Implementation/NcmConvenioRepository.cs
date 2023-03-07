@@ -19,26 +19,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime dateNCM, Log log = null)
         {
-            List<NcmConvenio> ncmTemp = new List<NcmConvenio>();
-
-            foreach (var ncm in ncms)
-            {
-                var dataInicial = DateTime.Compare(ncm.DateStart, dateNCM);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(ncm.DateEnd), dateNCM);
-
-                if (dataInicial <= 0 && ncm.DateEnd == null)
-                {
-                    ncmTemp.Add(ncm);
-                    continue;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    ncmTemp.Add(ncm);
-                    continue;
-                }
-            }
-
-            return ncmTemp;
+            var result = ncms.Where(_ => (DateTime.Compare(_.DateStart, dateNCM) <= 0 && _.DateEnd == null) ||
+                                         (DateTime.Compare(_.DateStart, dateNCM) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), dateNCM) > 0))
+                             .ToList();
+            AddLog(log);
+            return result;
         }
 
         public List<NcmConvenio> FindByAnnex(long annexId, Log log = null)

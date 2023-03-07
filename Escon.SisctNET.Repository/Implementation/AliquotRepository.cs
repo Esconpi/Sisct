@@ -43,27 +43,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Log log = null)
         {
-            Aliquot result = null;
-
-            var statesAll = aliquots.Where(_ => _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino)).ToList();
-
-            foreach (var t in statesAll)
-            {
-                var dataInicial = DateTime.Compare(t.DateStart, data);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
-
-                if (dataInicial <= 0 && t.DateEnd == null)
-                {
-                    result = t;
-                    break;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    result = t;
-                    break;
-                }
-
-            }
+            var result = aliquots.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                                   (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0)) &&
+                                                  _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino))
+                                      .FirstOrDefault();
             AddLog(log);
             return result;
         }

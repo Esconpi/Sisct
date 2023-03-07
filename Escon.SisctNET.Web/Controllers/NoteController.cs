@@ -20,6 +20,8 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IAliquotService _aliquotService;
         private readonly INcmConvenioService _ncmConvenioService;
         private readonly IInternalAliquotService _internalAliquotService;
+        private readonly IAliquotConfazService _aliquotConfazService;
+        private readonly IInternalAliquotConfazService _internalAliquotConfazService;
 
         public NoteController(
             INoteService service,
@@ -33,6 +35,8 @@ namespace Escon.SisctNET.Web.Controllers
             IAliquotService aliquotService,
             INcmConvenioService ncmConvenioService,
             IInternalAliquotService internalAliquotService,
+            IAliquotConfazService aliquotConfazService,
+            IInternalAliquotConfazService internalAliquotConfazService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
         {
@@ -46,6 +50,8 @@ namespace Escon.SisctNET.Web.Controllers
             _taxationTypeService = taxationTypeService;
             _ncmConvenioService = ncmConvenioService;
             _internalAliquotService = internalAliquotService;
+            _aliquotConfazService = aliquotConfazService;
+            _internalAliquotConfazService = internalAliquotConfazService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 

@@ -35,27 +35,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public InternalAliquot FindByUf(List<InternalAliquot> aliquots, DateTime data, string uf, Log log = null)
         {
-            InternalAliquot result = null;
-
-            var statesAll = aliquots.Where(_ => _.State.UF.Equals(uf)).ToList();
-
-            foreach (var t in statesAll)
-            {
-                var dataInicial = DateTime.Compare(t.DateStart, data);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
-
-                if (dataInicial <= 0 && t.DateEnd == null)
-                {
-                    result = t;
-                    break;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    result = t;
-                    break;
-                }
-
-            }
+            var result = aliquots.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                              (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0)) &&
+                                             _.State.UF.Equals(uf))
+                                 .FirstOrDefault();
             AddLog(log);
             return result;
         }
