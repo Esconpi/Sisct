@@ -61,6 +61,7 @@ namespace Escon.SisctNET.Web.Controllers
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
+
                 return View();
             }
             catch (Exception ex)
@@ -113,6 +114,7 @@ namespace Escon.SisctNET.Web.Controllers
                 list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
+
                 return View(result);
             }
             catch(Exception ex)

@@ -1,6 +1,5 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
-using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -42,6 +41,11 @@ namespace Escon.SisctNET.Service.Implementation
         public List<InternalAliquotConfaz> FindAll(int page, int countrow, Log log)
         {
             return _repository.FindAll(page, countrow, log);
+        }
+
+        public InternalAliquotConfaz FindByAliquot(long stateId, long annexId, Log log = null)
+        {
+            return _repository.FindByAliquot(stateId, annexId, log);
         }
 
         public List<InternalAliquotConfaz> FindByAllState(Log log = null)
