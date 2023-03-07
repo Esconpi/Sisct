@@ -59,9 +59,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindById(id, log);
         }
 
-        public InternalAliquotConfaz FindByUf(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime data, string uf, Log log = null)
+        public InternalAliquotConfaz FindByUf(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime data, string uf, long annexId, Log log = null)
         {
-            return _repository.FindByUf(internalAliquotConfazs, data, uf, log);
+            return _repository.FindByUf(internalAliquotConfazs, data, uf, annexId, log);
         }
 
         public InternalAliquotConfaz Update(InternalAliquotConfaz entity, Log log)

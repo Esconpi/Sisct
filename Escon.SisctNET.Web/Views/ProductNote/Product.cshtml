@@ -336,10 +336,12 @@
             $(this).attr('selected', true);
             if (taxacao === 5 || taxacao === 8) {
                 $("input[name=Mva]").prop("disabled", false);
+                $("input[name=BCR]").prop("disabled", false);
             } else if (taxacao === 6) {
                 $("input[name=Mva]").prop("disabled", false);
             } else {
                 $("input[name=Mva]").prop("disabled", true);
+                $("input[name=BCR]").prop("disabled", true);
             }
             if (taxacao == 0) {
                 document.getElementById('taxar').disabled = true;
@@ -362,6 +364,7 @@
  
             if (Dhemi < data) {
                 $("input[name=Fecop]").prop("disabled", false);
+                $("input[name=BCR]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("value", "1");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
@@ -375,6 +378,7 @@
                 }
             } else {
                 $("input[name=Fecop]").prop("disabled", false);
+                $("input[name=BCR]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("disabled", true);
                     $("input[name=Fecop]").prop("value", "");
@@ -390,7 +394,7 @@
             }
         } else if ($(this).val() == 6) {
             $("input[name=Mva]").prop("disabled", false);
-
+            $("input[name=BCR]").prop("disabled", false);
             if (Dhemi < data) {
                 $("input[name=Fecop]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
@@ -420,9 +424,11 @@
                 }
             }
 
-        }  else {
+        } else {
             $("input[name=Mva]").prop("disabled", true);
             $("input[name=Mva]").prop("value", "");
+            $("input[name=BCR]").prop("disabled", true);
+            $("input[name=BCR]").prop("value", "");
             $("input[name=Fecop]").prop("disabled", true);
             $("input[name=Fecop]").prop("value", "");
 
@@ -490,7 +496,7 @@
             $("input[name=BCR]").prop("value", "");
         } else {
             $("#bcr").prop("disabled", true);
-             $("input[name=BCR]").prop("value", "");
+            $("input[name=BCR]").prop("value", "");
         }
     });
 </script>

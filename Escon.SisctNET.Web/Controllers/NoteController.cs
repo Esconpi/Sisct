@@ -23,6 +23,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IAliquotConfazService _aliquotConfazService;
         private readonly IInternalAliquotConfazService _internalAliquotConfazService;
 
+
         public NoteController(
             INoteService service,
             ICompanyService companyService,
@@ -271,6 +272,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                         _.Annex.Description.Equals("ANEXO II - MÁQUINAS E IMPLEMENTOS AGRÍCOLA"))
                                             .ToList();
             var aliquotas = _aliquotService.FindByAllState(null);
+            var aliquotasConfaz = _aliquotConfazService.FindByAllState(null);
+            var aliquotasinternaConfaz = _internalAliquotConfazService.FindByAllState(null);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
 
@@ -522,27 +525,44 @@ namespace Escon.SisctNET.Web.Controllers
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
 
+
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                             bool incentivo = false, eBcr = false;
 
                             var ncmBcr = _ncmConvenioService.FindByNcmAnnex(ncmConvenioBCRTemp, NCM, CEST, comp);
-
+                            decimal? aliquotConfaz = null, internalAliquotConfaz = null;
+                            
                             if (ncmBcr != null)
+                            {
                                 eBcr = true;
+                                aliquotConfaz = _aliquotConfazService.FindByUf(aliquotasConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
+                                internalAliquotConfaz = _internalAliquotConfazService.FindByUf(aliquotasinternaConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
+                            }
 
-                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
-                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                            if (comp.Incentive)
+                            {
+                                if (comp.Annex != null)
+                                {
+                                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
-                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                                    if (comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
+                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
-                                incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                                    if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
+                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                            if (comp.Incentive && comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
-                                incentivo = true;
+                                }
+
+                                if (comp.Chapter != null)
+                                {
+                                    if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                                        incentivo = true;
+                                }
+                            }
+
 
                             Model.ProductNote prod = new Model.ProductNote();
 
@@ -566,6 +586,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Vicms = vICMS;
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
+                                    prod.PicmsBCR = aliquotConfaz;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -591,6 +612,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
                                     prod.EBcr = eBcr;
+                                    prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
@@ -624,6 +646,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Vicms = vICMS;
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
+                                    prod.PicmsBCR = aliquotConfaz;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -649,6 +672,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
                                     prod.EBcr = eBcr;
+                                    prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
@@ -666,11 +690,16 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else
                             {
-
-                                if (comp.Incentive.Equals(true) && comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso == null)
-                                    incentivo = false;
-                                else if (comp.Incentive.Equals(true) && comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso != null)
-                                    incentivo = true;
+                                if (comp.Incentive)
+                                {
+                                    if (comp.Chapter != null)
+                                    {
+                                        if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso == null)
+                                            incentivo = false;
+                                        else if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso != null)
+                                            incentivo = true;
+                                    }
+                                }
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
                                 decimal? valorAgreg = null, valorFecop = null, valorbcr = null, valorAgreAliqInt = null, dif = null, dif_frete = null,
@@ -710,17 +739,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     baseCalc = baseDeCalc;
 
-                                    decimal baseCalcTemp = baseCalc - frete_prod;
-
-                                    if (taxed.EBcr && taxed.BCR != null)
-                                    {
-                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), baseCalcTemp);
-                                        valorIcms = 0;
-                                        baseCalcTemp = Convert.ToDecimal(valorbcr);
-                                    }
-
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
+
+                                    if (taxed.EBcr && taxed.BCR != null)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
 
                                     if (dif < 0)
                                         dif = 0;
@@ -728,24 +751,18 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (dif_frete < 0)
                                         dif_frete = 0;
 
-                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Normal" && !taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {
                                     baseCalc = baseDeCalc;
 
-                                    decimal baseCalcTemp = baseCalc - frete_prod;
-
-                                    if (taxed.EBcr && taxed.BCR != null)
-                                    {
-                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), baseCalcTemp);
-                                        valorIcms = 0;
-                                        baseCalcTemp = Convert.ToDecimal(valorbcr);
-                                    }
-
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
+
+                                    if (taxed.EBcr && taxed.BCR != null)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
 
                                     if (dif < 0)
                                         dif = 0;
@@ -753,7 +770,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (dif_frete < 0)
                                         dif_frete = 0;
 
-                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp);
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Isento")
@@ -779,6 +796,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Vicms = vICMS;
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
+                                    prod.PicmsBCR = aliquotConfaz;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -813,6 +831,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Pautado = false;
                                     prod.TaxationTypeId = taxed.TaxationTypeId;
                                     prod.AliqInterna = aliqInterna;
+                                    prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.Mva = taxed.MVA;
                                     prod.EBcr = eBcr;
                                     prod.BCR = taxed.BCR;
