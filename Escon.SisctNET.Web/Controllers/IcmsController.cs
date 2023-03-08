@@ -27328,6 +27328,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (percentualGrupo > Convert.ToDecimal(comp.VendaMGrupo))
                         difGrupo = calculation.Diferenca(percentualGrupo, Convert.ToDecimal(comp.VendaMGrupo));
+
                     //  Geral
                     ViewBag.TotalVenda = totalVenda;
                     ViewBag.TotalDevo = totalDevoVenda;
@@ -27718,6 +27719,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Percentual
                                 decimal percentualVendas = calculation.Percentual(vendasClienteCredenciado, vendas);
 
+                                if (comp.AnnexId == null)
+                                    comp.Annex = null;
+
+                                if (comp.ChapterId == null)
+                                    comp.Chapter = null;
+
+                                if (comp.SectionId == null)
+                                    comp.Section = null;
+
                                 var notifi = _notificationService.FindByCurrentMonth(companyId, month, year);
 
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -28012,6 +28022,15 @@ namespace Escon.SisctNET.Web.Controllers
                         saldoCredor = 0;
 
                     ViewBag.SaldoCredor = saldoCredor;
+
+                    if (comp.AnnexId == null)
+                        comp.Annex = null;
+
+                    if (comp.ChapterId == null)
+                        comp.Chapter = null;
+
+                    if (comp.SectionId == null)
+                        comp.Section = null;
 
                     var creditCurrent = _creditBalanceService.FindByCurrentMonth(companyId, month, year);
 

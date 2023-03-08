@@ -436,7 +436,7 @@ namespace Escon.SisctNET.Web.Controllers
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms);
 
-                            if (entity.EBcr && bcr != null)
+                            if (entity.EBcr)
                                 dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
 
                             if (dif < 0)
@@ -469,7 +469,7 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms,
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
-                            if (entity.EBcr && bcr != null)
+                            if (entity.EBcr)
                                 dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
 
                             if (dif < 0)
@@ -635,28 +635,24 @@ namespace Escon.SisctNET.Web.Controllers
                                 /*decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
                                         dif_frete = calculation.DiferencialAliq(aliqCte, aliquotaOrig);*/
 
-                                decimal dif_frete = calculation.DiferencialAliq(aliqInterna, item.Picms),
-                                        baseCalcTemp = 0;
+                                decimal dif_frete = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
                                 baseCalc = Vbasecalc;
 
-                                if (entity.EBcr && bcr != null)
-                                {
-                                    baseCalcTemp = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), baseCalc - Convert.ToDecimal(prod.Freterateado));
-                                    item.ValorBCR = baseCalcTemp;
-                                    item.BCR = Convert.ToDecimal(bcr);
-                                }
-                                else
-                                {
-                                    item.ValorBCR = null;
-                                    item.BCR = null;
-                                    baseCalcTemp = baseCalc - Convert.ToDecimal(prod.Freterateado);
-                                }
+                                if (entity.EBcr)
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                if (dif < 0)
+                                    dif = 0;
+
+                                if (dif_frete < 0)
+                                    dif_frete = 0;
 
                                 item.AliqInterna = aliqInterna;
                                 item.Diferencial = dif;
+                                item.DiferencialCTe = dif_frete;
 
-                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp),
+                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
                                         icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
 
                                 item.IcmsApurado = icmsApu;
@@ -673,28 +669,24 @@ namespace Escon.SisctNET.Web.Controllers
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
-                                        dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig),
-                                        baseCalcTemp = 0;
+                                        dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
                                 baseCalc = Vbasecalc;
 
-                                if (entity.EBcr && bcr != null)
-                                {
-                                    baseCalcTemp = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), baseCalc - Convert.ToDecimal(prod.Freterateado));
-                                    item.ValorBCR = baseCalcTemp;
-                                    item.BCR = Convert.ToDecimal(bcr);
-                                }
-                                else
-                                {
-                                    item.ValorBCR = null;
-                                    item.BCR = null;
-                                    baseCalcTemp = baseCalc - Convert.ToDecimal(prod.Freterateado);
-                                }
+                                if (entity.EBcr)
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                if (dif < 0)
+                                    dif = 0;
+
+                                if (dif_frete < 0)
+                                    dif_frete = 0;
 
                                 item.AliqInterna = aliqInterna;
                                 item.Diferencial = dif;
+                                item.DiferencialCTe = dif_frete;
 
-                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp),
+                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
                                         icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
 
                                 item.IcmsApurado = icmsApu;
@@ -1737,6 +1729,15 @@ namespace Escon.SisctNET.Web.Controllers
                                     //  Percentual
                                     decimal percentualVendas = (vendasClienteCredenciado * 100) / vendas;
 
+                                    if (comp.AnnexId == null)
+                                        comp.Annex = null;
+
+                                    if (comp.ChapterId == null)
+                                        comp.Chapter = null;
+
+                                    if (comp.SectionId == null)
+                                        comp.Section = null;
+
                                     var notifi = _notificationService.FindByCurrentMonth(id, month, year);
 
                                     if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -1934,6 +1935,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (saldoCredor < 0)
                                     saldoCredor = 0;
+
+                                if (comp.AnnexId == null)
+                                    comp.Annex = null;
+
+                                if (comp.ChapterId == null)
+                                    comp.Chapter = null;
+
+                                if (comp.SectionId == null)
+                                    comp.Section = null;
 
                                 var creditCurrent = _creditBalanceService.FindByCurrentMonth(id, month, year);
 
@@ -2950,6 +2960,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Percentual
                                 decimal percentualVendas = (vendasClienteCredenciado * 100) / vendas;
 
+                                if (comp.AnnexId == null)
+                                    comp.Annex = null;
+
+                                if (comp.ChapterId == null)
+                                    comp.Chapter = null;
+
+                                if (comp.SectionId == null)
+                                    comp.Section = null;
+
                                 var notifi = _notificationService.FindByCurrentMonth(id, month, year);
 
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -3106,6 +3125,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (saldoCredor < 0)
                                 saldoCredor = 0;
+
+                            if (comp.AnnexId == null)
+                                comp.Annex = null;
+
+                            if (comp.ChapterId == null)
+                                comp.Chapter = null;
+
+                            if (comp.SectionId == null)
+                                comp.Section = null;
 
                             var creditCurrent = _creditBalanceService.FindByCurrentMonth(id, month, year);
 

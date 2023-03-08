@@ -742,7 +742,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
 
-                                    if (taxed.EBcr && taxed.BCR != null)
+                                    if (taxed.EBcr)
                                         dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
 
                                     if (dif < 0)
@@ -761,7 +761,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
 
-                                    if (taxed.EBcr && taxed.BCR != null)
+                                    if (taxed.EBcr)
                                         dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
 
                                     if (dif < 0)

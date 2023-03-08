@@ -128,9 +128,16 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">* INCISO (%)</label>
-                            @if (Model.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                            @if (Model.Note.Company.ChapterId != null)
                             {
-                                <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
+                                @if(Model.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                                {
+                                    <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
+                                }
+                                else
+                                {
+                                    <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
+                                }
                             }
                             else
                             {
