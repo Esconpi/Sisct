@@ -31,7 +31,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
-        public long? AnnexId { get; set; }
+        public long AnnexId { get; set; }
 
         private Annex annex;
         public Annex Annex

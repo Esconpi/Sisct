@@ -57,15 +57,13 @@
                                     <th rowspan="2">V. Nota</th>
                                     <th rowspan="2">Produto</th>
                                     <th rowspan="2">Aliq Inter(%)</th>
-                                    <th style="text-align: center;" colspan="6">NFe</th>
+                                    <th style="text-align: center;" colspan="4">NFe</th>
                                     <th style="text-align: center;" colspan="5">CTe</th>
                                     <th rowspan="2">ICMS ST <br /> NFe</th>
                                     <th rowspan="2">ICMS Apurado</th>
                                 </tr>
                                 <tr style="font-size:9px;">
                                     <th>V. Produto</th>
-                                    <th>BCR(%)</th>
-                                    <th>BCR</th>
                                     <th>Aliq Intra <br /> NFe(%)</th>
                                     <th>Dif</th>
                                     <th>ICMS Produto</th>
@@ -89,8 +87,6 @@
                                     <th>Nº Frete</th>
                                     <th>V. Frete</th>
                                     <th>BC. ICMS</th>
-                                    <th>BCR(%)</th>
-                                    <th>BCR</th>
                                     <th>Aliq Inter(%)</th>
                                     <th>Aliq Intra <br /> NFe(%)</th>
                                     <th>Dif</th>
@@ -130,14 +126,30 @@
                                                     @item.Xprod.Substring(0, 30)
                                                 }
                                             </td>
-                                            <td>@item.AliqInterna</td>
+                                            <td>
+                                                @if (item.EBcr)
+                                                {
+                                                    @item.AliqInternaBCR
+                                                }
+                                                else
+                                                {
+                                                    @item.AliqInterna
+                                                }
+                                            </td>
                                             <td>
                                                 @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                                         Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                                             </td>
-                                            <td>@item.BCR</td>
-                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
-                                            <td>@item.Picms</td>
+                                            <td>
+                                                @if (item.EBcr)
+                                                {
+                                                    @item.PicmsBCR
+                                                }
+                                                else
+                                                {
+                                                    @item.Picms
+                                                }
+                                            </td>
                                             <td>@item.Diferencial</td>
                                             <td>
                                                 @if (item.PicmsOrig > 0)
@@ -235,10 +247,26 @@
                                                 @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                                                         Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                                             </td>
-                                            <td>@item.BCR</td>
-                                            <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
-                                            <td>@item.AliqInterna</td>
-                                            <td>@item.Picms</td>
+                                            <td>
+                                                @if (item.EBcr)
+                                                {
+                                                    @item.AliqInternaBCR
+                                                }
+                                                else
+                                                {
+                                                    @item.AliqInterna
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.EBcr)
+                                                {
+                                                    @item.PicmsBCR
+                                                }
+                                                else
+                                                {
+                                                    @item.Picms
+                                                }
+                                             </td>
                                             <td>@item.Diferencial</td>
                                             <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST) + Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                             <td>

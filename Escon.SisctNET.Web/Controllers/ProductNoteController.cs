@@ -210,7 +210,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     aliquot = product.AliqInterna;
                 }
-               
+
                 ViewBag.Aliquot = aliquot;
 
                 if (product.DateStart == null)
@@ -434,8 +434,10 @@ namespace Escon.SisctNET.Web.Controllers
                         else if (taxedtype.Type == "Normal" && taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
-                            decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms),
-                                    baseCalcTemp = 0;
+                            decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms);
+
+                            if (entity.EBcr && bcr != null)
+                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
 
                             if (dif < 0)
                                 dif = 0;
@@ -444,20 +446,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 dif_frete = 0;
 
                             baseCalc = Vbasecalc;
-
-                            if (entity.EBcr && bcr != null)
-                            {
-                                valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), baseCalc - Convert.ToDecimal(prod.Freterateado));
-                                prod.ValorBCR = valorAgreg;
-                                prod.BCR = Convert.ToDecimal(bcr);
-                                baseCalcTemp = valorAgreg;
-                            }
-                            else
-                            {
-                                prod.ValorBCR = null;
-                                prod.BCR = null;
-                                baseCalcTemp = baseCalc - Convert.ToDecimal(prod.Freterateado);
-                            }
 
                             prod.AliqInterna = aliqInterna;
                             prod.Mva = null;
@@ -469,7 +457,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Diferencial = dif;
                             prod.DiferencialCTe = dif_frete;
 
-                            decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalcTemp),
+                            decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado)),
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
 
                             prod.IcmsApurado = icmsApu;
@@ -479,8 +467,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             decimal aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms,
-                                    dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig),
-                                    baseCalcTemp = 0;
+                                    dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
+
+                            if (entity.EBcr && bcr != null)
+                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
 
                             if (dif < 0)
                                 dif = 0;
@@ -489,19 +479,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 dif_frete = 0;
 
                             baseCalc = Vbasecalc;
-
-                            if (entity.EBcr && bcr != null)
-                            {
-                                baseCalcTemp = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), baseCalc - Convert.ToDecimal(prod.Freterateado));
-                                prod.ValorBCR = baseCalcTemp;
-                                prod.BCR = Convert.ToDecimal(bcr);
-                            }
-                            else
-                            {
-                                prod.ValorBCR = null;
-                                prod.BCR = null;
-                                baseCalcTemp = baseCalc - Convert.ToDecimal(prod.Freterateado);
-                            }
 
                             prod.AliqInterna = aliqInterna;
                             prod.Mva = null;
@@ -513,7 +490,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Diferencial = dif;
                             prod.DiferencialCTe = dif_frete;
 
-                            decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), valorAgreg),
+                            decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado)),
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
 
                             prod.IcmsApurado = icmsApu;
