@@ -532,13 +532,24 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.DateStart = dateStart;
                         prod.PercentualInciso = inciso;
 
-                        if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals((long)2))
-                            prod.Incentivo = false;
-                        
-                        if(prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
-                            prod.Incentivo = false;
-                        else if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso != null)
-                            prod.Incentivo = true;
+                        if (prod.Note.Company.Incentive)
+                        {
+                            if (prod.Note.Company.Annex.Equals(null))
+                                prod.Note.Company.Annex = new Annex();
+
+                            if (prod.Note.Company.Chapter.Equals(null))
+                                prod.Note.Company.Chapter = new Chapter();
+
+                            if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+                                prod.Incentivo = false;
+
+                            if (prod.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C") && inciso == null)
+                                prod.Incentivo = false;
+
+                            if (prod.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C") && inciso != null)
+                                prod.Incentivo = true;
+
+                        }
 
                         prod.Qpauta = null;
                         prod.Produto = "Especial";
@@ -718,15 +729,25 @@ namespace Escon.SisctNET.Web.Controllers
                             item.DateStart = dateStart;
                             item.PercentualInciso = inciso;
 
-                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.AnnexId.Equals((long)2))
-                                item.Incentivo = false;
+                            if (prod.Note.Company.Incentive)
+                            {
+                                if (prod.Note.Company.Annex.Equals(null))
+                                    prod.Note.Company.Annex = new Annex();
 
-                            if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso == null)
-                                item.Incentivo = false;
-                            else if (prod.Note.Company.Incentive.Equals(true) && prod.Note.Company.ChapterId.Equals((long)4) && inciso != null)
-                                item.Incentivo = true;
+                                if (prod.Note.Company.Chapter.Equals(null))
+                                    prod.Note.Company.Chapter = new Chapter();
 
-                            
+                                if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+                                    item.Incentivo = false;
+
+                                if (prod.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C") && inciso == null)
+                                    item.Incentivo = false;
+                                
+                                if (prod.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C") && inciso != null)
+                                    item.Incentivo = true;
+
+                            }
+
                             item.Qpauta = null;
                             item.Produto = "Normal";
 
@@ -850,6 +871,15 @@ namespace Escon.SisctNET.Web.Controllers
                 var comp = _companyService.FindById(id, null);
                 var isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false;
                 var isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
+
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
 
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();

@@ -67,6 +67,15 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
 
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
+
                 ViewBag.PercentualPetroleo = Convert.ToDecimal(comp.IRPJ1).ToString().Replace(".", ",");
                 ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2).ToString().Replace(".", ",");
                 ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3).ToString().Replace(".", ",");
@@ -541,6 +550,15 @@ namespace Escon.SisctNET.Web.Controllers
                 string month = SessionManager.GetMonthInSession();
 
                 var comp = _companyService.FindById(companyid, null);
+
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
 
                 if (comp.CountingTypeId == null)
                 {

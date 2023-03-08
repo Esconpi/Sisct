@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Service;
+﻿using Escon.SisctNET.Model;
+using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,12 +37,21 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(id, null);
+                var comp = _companyService.FindById(id, null);
+
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
 
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
-                ViewBag.Company = company;
+                ViewBag.Company = comp;
                 ViewBag.Type = type;
 
                 var importSped = new Sped.Import();
@@ -56,7 +66,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (!Directory.Exists(filedirSped))
                         Directory.CreateDirectory(filedirSped);
 
-                    string nomeArquivo = company.Document;
+                    string nomeArquivo = comp.Document;
 
                     if (arquivo.FileName.Contains(".txt"))
                         nomeArquivo += ".txt";

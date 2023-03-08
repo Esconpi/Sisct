@@ -61,6 +61,15 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyId, null);
 
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
+
                 ViewBag.Year = year;
                 ViewBag.Month = month;
                 ViewBag.Type = type;

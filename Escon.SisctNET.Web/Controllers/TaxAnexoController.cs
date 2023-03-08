@@ -68,8 +68,18 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var company = _companyService.FindById(id, null);
-                ViewBag.Company = company;
+                var comp = _companyService.FindById(id, null);
+
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
+
+                ViewBag.Company = comp;
 
                 SessionManager.SetCompanyIdInSession(id);
                 SessionManager.SetYearInSession(year);
@@ -218,6 +228,15 @@ namespace Escon.SisctNET.Web.Controllers
                 string month = SessionManager.GetMonthInSession();
 
                 var comp = _companyService.FindById(companyid, null);
+
+                if (comp.Annex.Equals(null))
+                    comp.Annex = new Annex();
+
+                if (comp.Chapter.Equals(null))
+                    comp.Chapter = new Chapter();
+
+                if (comp.Section.Equals(null))
+                    comp.Section = new Section();
 
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
 
