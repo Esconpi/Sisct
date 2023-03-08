@@ -19,28 +19,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
         {
-            List<Product> products = new List<Product>();
-
-            var productPauta = _context.Products;
-
-            foreach (var prod in productPauta)
-            {
-                var dataInicial = DateTime.Compare(prod.DateStart, dateProd);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), dateProd);
-
-                if (dataInicial <= 0 && prod.DateEnd == null)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    products.Add(prod);
-                    continue;
-                }
-            }
-
-            return products;
+            var result = _context.Products.Where(_ => (DateTime.Compare(_.DateStart, dateProd) <= 0 && _.DateEnd == null) ||
+                                                      (DateTime.Compare(_.DateStart, dateProd) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), dateProd) > 0))
+                                          .ToList();
+            AddLog(log);
+            return result;
         }
 
         public List<Product> FindByAllGroup(Log log = null)
