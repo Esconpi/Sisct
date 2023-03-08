@@ -134,7 +134,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ICountingTypeRepository, CountingTypeRepository>();
             services.AddScoped<ITaxationNcmRepository, TaxationNcmRepository>();
             services.AddScoped<IProductIncentivoRepository, ProductIncentivoRepository>();
-            services.AddScoped<IProduct1Repository, Product1Repository>();
             services.AddScoped<ITypeClientRepository, TypeClientRepository>();
             services.AddScoped<ISuspensionRepository, SuspensionRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
@@ -145,7 +144,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IGrupoRepository, GrupoRepository>();
             services.AddScoped<ITypeNcmRepository, TypeNcmRepository>();
             services.AddScoped<IBaseRepository, BaseRepository>();
-            services.AddScoped<IProduct2Repository, Product2Repository>();
             services.AddScoped<IEmailResponsibleRepository, EmailResponsibleRepository>();
             services.AddScoped<ITaxAnexoRepository, TaxAnexoRepository>();
             services.AddScoped<ICompraAnexoRepository, CompraAnexoRepository>();
@@ -166,7 +164,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ITaxationTypeNcmRepository, TaxationTypeNcmRepository>();
             services.AddScoped<IAccountPlanRepository, AccountPlanRepository>();
             services.AddScoped<ITaxSupplementRepository, TaxSupplementRepository>();
-            services.AddScoped<IProduct3Repository, Product3Repository>();
             services.AddScoped<IInternalAliquotRepository, InternalAliquotRepository>();
             services.AddScoped<IInvoicingRepository, InvoicingRepository>();
             services.AddScoped<IAliquotConfazRepository, AliquotConfazRepository>();
@@ -204,7 +201,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<ICountingTypeService, CountingTypeService>();
             services.AddScoped<ITaxationNcmService, TaxationNcmService>();
             services.AddScoped<IProductIncentivoService, ProductIncentivoService>();
-            services.AddScoped<IProduct1Service, Product1Service>();
             services.AddScoped<ITypeClientService, TypeClientService>();
             services.AddScoped<ISuspensionService, SuspensionService>();
             services.AddScoped<ISectionService, SectionService>();
@@ -215,7 +211,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddScoped<ITypeNcmService, TypeNcmService>();
             services.AddScoped<IBaseService, BaseService>();
-            services.AddScoped<IProduct2Service, Product2Service>();
             services.AddScoped<IEmailResponsibleService, EmailResponsibleService>();
             services.AddScoped<ITaxAnexoService, TaxAnexoService>();
             services.AddScoped<ICompraAnexoService, CompraAnexoService>();
@@ -238,7 +233,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAccountPlanTypeService, AccountPlanTypeService>();
             services.AddScoped<IAccountPlanTypeGroupService, AccountPlanTypeGroupService>();
             services.AddScoped<ITaxSupplementService, TaxSupplementService>();
-            services.AddScoped<IProduct3Service, Product3Service>();
             services.AddScoped<IInternalAliquotService, InternalAliquotService>();
             services.AddScoped<IInvoicingService, InvoicingService>();
             services.AddScoped<IAliquotConfazService, AliquotConfazService>();

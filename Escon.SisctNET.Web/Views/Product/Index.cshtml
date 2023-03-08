@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.Product2>
+﻿@model IEnumerable<Escon.SisctNET.Model.Product>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,6 +12,36 @@
         width: 250px;
     }
 </style>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <i class="fa fa-search"></i>
+                    Buscar
+                </h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="box-body">
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <label class="control-label">Grupo</label>
+                    <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="group" onchange="selectGroup()"></select>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title"><strong>Sefaz Produto</strong></h3>
@@ -132,4 +162,156 @@
             ]
         });
     });
+
+    function selectGroup() {
+        var groupid = document.getElementById("group").value;
+        if (groupid == "0") {
+            $("#tblProduct").dataTable().fnDestroy();
+            $(document).ready(function () {
+                $('#tblProduct').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
+                    },
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "responsive": true,
+                    "columnDefs": [
+                        { responsivePriority: 1, targets: 0 },
+                        { responsivePriority: 10001, targets: 4 },
+                        { responsivePriority: 2, targets: -2 }
+                    ],
+                    "oLanguage": {
+                        "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                        "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                        "sZeroRecords": "Nenhum registro disponível",
+                        "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                        "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                        "sInfoFiltered": "",
+                        "sSearch": "Buscar",
+                        "oPaginate": {
+                            "sFirst": "Primeiro",
+                            "sPrevious": "Anterior",
+                            "sNext": "Próximo",
+                            "sLast": "Último"
+                        }
+                    },
+                    "ajax": "/Product/GetAll",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "group" },
+                        { "data": "product" },
+                        {
+                            "mData": "price",
+                            "mRender": function (data, type, row) {
+                                return data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.')
+                            }
+                        },
+                        { "data": "unity" },
+                        { "data": "inicio" },
+                        {
+                            "mData": "fim",
+                            "mRender": function (data, type, row) {
+                                if (data == "01/01/0001") {
+                                    return ""
+                                } else {
+                                    return data
+                                }
+                            }
+                        },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/Product/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/Product/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                                } else {
+                                    return ""
+                                }
+                            }
+                        }
+                    ]
+                });
+            });
+        } else {
+            console.log(groupid);
+            $("#tblProduct").dataTable().fnDestroy();
+            $(document).ready(function () {
+                $('#tblProduct').DataTable({
+                    searchDelay: 300,
+                    "fnDrawCallback": function (oSettings) {
+                        $('.showDetail').off();
+                        $('.showProduct').off();
+                        $('[data-toggle="tooltip"]').tooltip();
+                        $("input[type='checkbox']").bootstrapToggle();
+                    },
+                    "processing": true,
+                    "ordering": false,
+                    "serverSide": true,
+                    "responsive": true,
+                    "columnDefs": [
+                        { responsivePriority: 1, targets: 0 },
+                        { responsivePriority: 10001, targets: 4 },
+                        { responsivePriority: 2, targets: -2 }
+                    ],
+                    "oLanguage": {
+                        "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                        "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                        "sZeroRecords": "Nenhum registro disponível",
+                        "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                        "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                        "sInfoFiltered": "",
+                        "sSearch": "Buscar",
+                        "oPaginate": {
+                            "sFirst": "Primeiro",
+                            "sPrevious": "Anterior",
+                            "sNext": "Próximo",
+                            "sLast": "Último"
+                        }
+                    },
+                    "ajax": "/Product/GetFilter",
+                    "initComplete": function (settings, json) {
+                    },
+                    "columns": [
+                        { "data": "group" },
+                        { "data": "product" },
+                        {
+                            "mData": "price",
+                            "mRender": function (data, type, row) {
+                                return data.toFixed(2).toString().replace(',', '*').replace('.', ',').replace('*', '.')
+                            }
+                        },
+                        { "data": "unity" },
+                        { "data": "inicio" },
+                        {
+                            "mData": "fim",
+                            "mRender": function (data, type, row) {
+                                if (data == "01/01/0001") {
+                                    return ""
+                                } else {
+                                    return data
+                                }
+                            }
+                        },
+                        {
+                            "mData": "id",
+                            "mRender": function (data, type, row) {
+                                if (row.fim == "01/01/0001") {
+                                    return "<a href='/Product/Atualize/" + data + "' class = 'glyphicon glyphicon-refresh pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Atualizar Produto' /> " +
+                                        "<a href='/Product/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Produto' /> "
+                                } else {
+                                    return ""
+                                }
+                            }
+                        }
+                    ]
+                });
+            });
+        }
+    }
 </script>

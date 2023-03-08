@@ -56,8 +56,6 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Include(c => c.Note.Company)
                 .Include(t => t.TaxationType)
                 .Include(p => p.Product)
-                .Include(p1 => p1.Product1)
-                .Include(p2 => p2.Product2)
                 .FirstOrDefault();
             AddLog(log);
             return rst;
@@ -85,9 +83,6 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Include(c => c.Note.Company)
                 .Include(t => t.TaxationType)
                 .Include(p => p.Product)
-                .Include(p1 => p1.Product1)
-                .Include(p2 => p2.Product2)
-                .Include(p3 => p3.Product3)
                 .ToList();
             AddLog(log);
             return rst.ToList();

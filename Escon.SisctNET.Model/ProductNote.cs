@@ -176,40 +176,6 @@ namespace Escon.SisctNET.Model
             set => product = value;
         }
 
-        [Display(Name = "Produto1")]
-        [ForeignKey("Product1")]
-        public long? Product1Id { get; set; }
-
-        private Product1 product1;
-        public Product1 Product1
-        {
-            get => LazyLoader.Load(this, ref product1);
-            set => product1 = value;
-        }
-
-        [Display(Name = "Produto2")]
-        [ForeignKey("Product2")]
-        public long? Product2Id { get; set; }
-
-        private Product2 product2;
-        public Product2 Product2
-        {
-            get => LazyLoader.Load(this, ref product2);
-            set => product2 = value;
-        }
-
-
-        [Display(Name = "Produto3")]
-        [ForeignKey("Product3")]
-        public long? Product3Id { get; set; }
-
-        private Product3 product3;
-        public Product3 Product3
-        {
-            get => LazyLoader.Load(this, ref product3);
-            set => product3 = value;
-        }
-
         [Display(Name = "Nota")]
         [ForeignKey("Note")]
         public long? NoteId { get; set; }

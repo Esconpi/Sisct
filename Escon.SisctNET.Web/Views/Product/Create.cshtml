@@ -1,4 +1,4 @@
-﻿@model Escon.SisctNET.Model.Product2
+﻿@model Escon.SisctNET.Model.Product
 
 @{
     ViewData["Title"] = "Create";
@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="form-group col-lg-12 col-md-6 col-xs-12">
                         <label asp-for="GroupId" class="control-label"></label>
-                        <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="status" onchange="ativar_button()"></select>
+                        <select asp-items="@ViewBag.GroupId" name="GroupId" class="form-control selectoption" id="group" onchange="ativar_button()"></select>
                         <span asp-validation-for="GroupId" class="text-danger"></span>
                     </div>
                 </div>
@@ -75,8 +75,8 @@
 <script type="text/javascript">
 
     function ativar_button() {
-        var opcao = document.getElementById("status").value;
-        if (opcao == "0") {
+        var group = document.getElementById("group").value;
+        if (group == "0") {
             document.getElementById("ativa").disabled = true;
         } else {
             document.getElementById("ativa").disabled = false;

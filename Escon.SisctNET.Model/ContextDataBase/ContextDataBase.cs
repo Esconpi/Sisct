@@ -77,8 +77,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<ProductIncentivo> ProductIncentivos { get; set; }
 
-        public DbSet<Product1> Product1s { get; set; }
-
         public DbSet<Suspension> Suspensions { get; set; }
 
         public DbSet<Section> Sections { get; set; }
@@ -96,8 +94,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<TypeNcm> TypeNcms { get; set; }
 
         public DbSet<Base> Bases { get; set; }
-
-        public DbSet<Product2> Product2s { get; set; }
 
         public DbSet<EmailResponsible> EmailResponsible { get; set; }
 
@@ -142,8 +138,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<AccountPlanTypeGroup> AccountPlanTypeGroups { get; set; }
 
         public DbSet<TaxSupplement> TaxSupplements { get; set; }
-
-        public DbSet<Product3> Product3s { get; set; }
 
         public DbSet<InternalAliquot> InternalAliquots { get; set; }
 

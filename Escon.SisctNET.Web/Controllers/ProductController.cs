@@ -14,12 +14,12 @@ namespace Escon.SisctNET.Web.Controllers
 {
     public class ProductController : ControllerBaseSisctNET
     {
-        private readonly IProduct3Service _service;
+        private readonly IProductService _service;
         private readonly IGroupService _groupService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public ProductController(
-            IProduct3Service service,
+            IProductService service,
             IGroupService groupService,
             IHostingEnvironment env,
             IFunctionalityService functionalityService,
@@ -40,6 +40,17 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
+                List<Model.Group> lista_group = _groupService.FindAll(null);
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                lista_group.Insert(0, new Model.Group() { Description = "Nennhum grupo selecionado", Id = 0 });
+                SelectList groups = new SelectList(lista_group, "Id", "Description", null);
+                ViewBag.GroupId = groups;
+
                 return View(null);
             }
             catch (Exception ex)
@@ -64,7 +75,7 @@ namespace Escon.SisctNET.Web.Controllers
                     g.Description = g.Item + " - " + g.Description;
                 }
 
-                lista_group.Insert(0, new Model.Group() { Description = "Nennhum item selecionado", Id = 0 });
+                lista_group.Insert(0, new Model.Group() { Description = "Nennhum grupo selecionado", Id = 0 });
                 SelectList groups = new SelectList(lista_group, "Id", "Description", null);
                 ViewBag.GroupId = groups;
 
@@ -78,7 +89,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Model.Product3 entity)
+        public IActionResult Create(Model.Product entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -94,6 +105,9 @@ namespace Escon.SisctNET.Web.Controllers
                 }
 
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Code = entity.Code.Trim();
+                entity.Description = entity.Description.Trim();
+                entity.Unity = entity.Unity.Trim();
                 entity.DateEnd = null;
                 entity.Price = price;
 
@@ -142,7 +156,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(long id, Model.Product3 entity)
+        public IActionResult Edit(long id, Model.Product entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -151,6 +165,9 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var result = _service.FindById(id, null);
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
+                entity.Code = entity.Code.Trim();
+                entity.Description = entity.Description.Trim();
+                entity.Unity = entity.Unity.Trim();
                 entity.Price = price;
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
 
@@ -198,7 +215,7 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Atualize(long id, Model.Product3 entity)
+        public IActionResult Atualize(long id, Model.Product entity)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
                 return Unauthorized();
@@ -212,7 +229,7 @@ namespace Escon.SisctNET.Web.Controllers
                     _service.Update(result, GetLog(Model.OccorenceLog.Update));
                 }
 
-                Product3 product = new Product3();
+                Product product = new Product();
                 decimal price = Convert.ToDecimal(Request.Form["price"]);
                 product.Price = price;
                 product.Description = result.Description;
@@ -294,8 +311,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> products = new List<List<string>>();
                 products = import.Products(caminhoDestinoArquivoOriginal);
 
-                List<Model.Product3> addProduct = new List<Model.Product3>();
-                List<Model.Product3> updateProduct = new List<Model.Product3>();
+                List<Model.Product> addProduct = new List<Model.Product>();
+                List<Model.Product> updateProduct = new List<Model.Product>();
 
                 var productsGroup = _service.FindByGroup(groupId);
 
@@ -311,10 +328,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (!products[i][0].Equals("") && !products[i][1].Equals("") && !products[i][3].Equals(""))
                     {
-                        Model.Product3 product = new Model.Product3();
-                        product.Code = products[i][0];
-                        product.Description = products[i][1];
-                        product.Unity = products[i][2];
+                        Model.Product product = new Model.Product();
+                        product.Code = products[i][0].Trim();
+                        product.Description = products[i][1].Trim();
+                        product.Unity = products[i][2].Trim();
                         product.Price = Convert.ToDecimal(products[i][3].Replace(",","*").Replace(".",",").Replace("*","."));
                         product.DateStart = inicioATo;
                         product.GroupId = groupId;
@@ -345,20 +362,18 @@ namespace Escon.SisctNET.Web.Controllers
 
         public IActionResult GetAll(int draw, int start)
         {
-
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
             var productsAll = _service.FindByAllGroup(null).OrderBy(_ => _.Group.AttachmentId).ToList();
 
-
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {
-                List<Product3> products = new List<Product3>();
+                List<Product> products = new List<Product>();
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                List<Product3> productTemp = new List<Product3>();
+                List<Product> productTemp = new List<Product>();
                 productsAll.ToList().ForEach(s =>
                 {
                     s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
@@ -410,6 +425,73 @@ namespace Escon.SisctNET.Web.Controllers
             }
 
         }
+
+        public IActionResult GetFilter(long groupid, int draw, int start)
+        {
+            var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
+            var lenght = Convert.ToInt32(Request.Query["length"].ToString());
+
+            var productsAll = _service.FindByGroup(groupid).OrderBy(_ => _.Group.AttachmentId).ToList();
+
+            if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
+            {
+                List<Product> products = new List<Product>();
+
+                var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
+
+                List<Product> productTemp = new List<Product>();
+                productsAll.ToList().ForEach(s =>
+                {
+                    s.Description = Helpers.CharacterEspecials.RemoveDiacritics(s.Description);
+                    productTemp.Add(s);
+                });
+
+                var ids = productTemp.Where(c =>
+                    c.Description.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                    c.Group.Description.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                    )
+                .Select(s => s.Id).ToList();
+
+                products = productsAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
+
+                var product = from r in products
+                              where ids.ToArray().Contains(r.Id)
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Product = r.Code + " - " + r.Description,
+                                  Group = r.Group.Item + " - " + r.Group.Description,
+                                  Price = r.Price,
+                                  Unity = r.Unity,
+                                  Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+
+                              };
+
+                return Ok(new { draw = draw, recordsTotal = products.Count(), recordsFiltered = products.Count(), data = product.Skip(start).Take(lenght) });
+
+            }
+            else
+            {
+
+                var product = from r in productsAll
+                              select new
+                              {
+                                  Id = r.Id.ToString(),
+                                  Product = r.Code + " - " + r.Description,
+                                  Group = r.Group.Item + " - " + r.Group.Description,
+                                  Price = r.Price,
+                                  Unity = r.Unity,
+                                  Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                  Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+
+                              };
+                return Ok(new { draw = draw, recordsTotal = productsAll.Count(), recordsFiltered = productsAll.Count(), data = product.Skip(start).Take(lenght) });
+            }
+
+        }
+
     }
 }
    

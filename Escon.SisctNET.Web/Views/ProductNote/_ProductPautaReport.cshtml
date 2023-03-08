@@ -21,30 +21,9 @@
             <td>@item.Cprod</td>
             <td>@item.Xprod</td>
             <td>@item.Vuncom</td>
-            @if (item.Product != null)
-            {
-                <td>@item.Product.Code</td>
-                <td>@item.Product.Description</td>
-                <td>@item.Product.Price</td>
-            }
-            else if (item.Product1 != null)
-            {
-                <td>@item.Product1.Code</td>
-                <td>@item.Product1.Description</td>
-                <td>@item.Product1.Price</td>
-            }
-            else if (item.Product2 != null)
-            {
-                <td>@item.Product2.Code</td>
-                <td>@item.Product2.Description</td>
-                <td>@item.Product2.Price</td>
-            }
-            else if (item.Product3 != null)
-            {
-                <td>@item.Product3.Code</td>
-                <td>@item.Product3.Description</td>
-                <td>@item.Product3.Price</td>
-            }
+            <td>@item.Product.Code</td>
+            <td>@item.Product.Description</td>
+            <td>@item.Product.Price</td>
         </tr>
     }
 </tbody>

@@ -21,9 +21,6 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IProductNoteService _service;
         private readonly ITaxationTypeService _taxationTypeService;
         private readonly IProductService _productService;
-        private readonly IProduct1Service _product1Service;
-        private readonly IProduct2Service _product2Service;
-        private readonly IProduct3Service _product3Service;
         private readonly INoteService _noteService;
         private readonly INcmService _ncmService;
         private readonly IAliquotService _aliquotService;
@@ -61,9 +58,6 @@ namespace Escon.SisctNET.Web.Controllers
             INoteService noteService,
             INcmService ncmService,
             IProductService productService,
-            IProduct1Service product1Service,
-            IProduct2Service product2Service,
-            IProduct3Service product3Service,
             ITaxationTypeService taxationTypeService,
             IAliquotService aliquotService,
             ITaxationService taxationService,
@@ -102,9 +96,6 @@ namespace Escon.SisctNET.Web.Controllers
             _ncmService = ncmService;
             _taxationTypeService = taxationTypeService;
             _productService = productService;
-            _product1Service = product1Service;
-            _product2Service = product2Service;
-            _product3Service = product3Service;
             _aliquotService = aliquotService;
             _taxationService = taxationService;
             _companyService = companyService;
@@ -192,71 +183,20 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 ViewBag.TaxationTypeId = taxationtypes;
 
-                if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("10/02/2020").Date)
+                List<Product> list_product = _productService.FindAllInDate(product.Note.Dhemi);
+                foreach (var prod in list_product)
                 {
-                    List<Product> list_product = _productService.FindAllInDate(product.Note.Dhemi);
-                    foreach (var prod in list_product)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Description + " - " + prod.Price;
-                    }
-                    list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products = new SelectList(list_product, "Id", "Description", null);
-                    ViewBag.ProductId = products;
+                    prod.Description = prod.Code + " - " + prod.Description + " - " + prod.Price;
                 }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("10/02/2020").Date &&
-                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("14/09/2020").Date)
-                {
-                    List<Product1> list_product1 = _product1Service.FindAllInDate(product.Note.Dhemi);
-                    foreach (var prod in list_product1)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
-                    }
-                    list_product1.Insert(0, new Product1() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products1 = new SelectList(list_product1, "Id", "Description", null);
-                    ViewBag.ProductId = products1;
-                }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("14/09/2020").Date &&
-                        Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("01/06/2022").Date)
-                {
-                    List<Product2> list_product2 = _product2Service.FindAllInDate(product.Note.Dhemi);
-                    foreach (var prod in list_product2)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
-                    }
-                    list_product2.Insert(0, new Product2() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products2 = new SelectList(list_product2, "Id", "Description", null);
-                    ViewBag.ProductId = products2;
-                }
-                else if (Convert.ToDateTime(product.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
-                {
-                    List<Product3> list_product3 = _product3Service.FindAllInDate(product.Note.Dhemi);
-                    foreach (var prod in list_product3)
-                    {
-                        prod.Description = prod.Code + " - " + prod.Price + " - " + prod.Description;
-                    }
-                    list_product3.Insert(0, new Product3() { Description = "Nennhum item selecionado", Id = 0 });
-                    SelectList products3 = new SelectList(list_product3, "Id", "Description", null);
-                    ViewBag.ProductId = products3;
-                }
+                list_product.Insert(0, new Product() { Description = "Nennhum item selecionado", Id = 0 });
+                SelectList products = new SelectList(list_product, "Id", "Description", null);
+                ViewBag.ProductId = products;
 
                 if (product.TaxationTypeId == null)
-                {
                     product.TaxationTypeId = 0;
-                }
+
                 if (product.ProductId == null)
-                {
                     product.ProductId = 0;
-                }
-
-                if (product.Product1Id == null)
-                {
-                    product.Product1Id = 0;
-                }
-
-                if (product.Product2Id == null)
-                {
-                    product.Product2Id = 0;
-                }
 
                 decimal? aliquot = null;
 
@@ -314,35 +254,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (entity.Pautado == true)
                 {
-                    Product product = null;
-                    Product1 product1 = null;
-                    Product2 product2 = null;
-                    Product3 product3 = null;
-
-                    decimal precoPauta = 0;
-
-                    if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("10/02/2020"))
-                    {
-                        product = _productService.FindByProduct(Convert.ToInt64(entity.ProductId), null);
-                        precoPauta = Convert.ToDecimal(product.Price);
-                    }
-                    else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("10/02/2020") && 
-                            Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("14/09/2020"))
-                    {
-                        product1 = _product1Service.FindByProduct(Convert.ToInt64(entity.Product1Id), null);
-                        precoPauta = Convert.ToDecimal(product1.Price);
-                    }
-                    else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("14/09/2020") &&
-                            Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) < Convert.ToDateTime("01/06/2022"))
-                    {
-                        product2 = _product2Service.FindByProduct(Convert.ToInt64(entity.Product2Id), null);
-                        precoPauta = Convert.ToDecimal(product2.Price);
-                    }
-                    else if (Convert.ToDateTime(prod.Note.Dhemi.ToString("dd/MM/yyyy")) >= Convert.ToDateTime("01/06/2022"))
-                    {
-                        product3 = _product3Service.FindByProduct(Convert.ToInt64(entity.Product3Id), null);
-                        precoPauta = Convert.ToDecimal(product3.Price);
-                    }
+                    var product = _productService.FindByProduct(Convert.ToInt64(entity.ProductId), null);
+                    decimal precoPauta = Convert.ToDecimal(product.Price);
 
                     decimal baseCalc = 0;
                     decimal valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
@@ -442,30 +355,6 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.ProductId = product.Id;
 
                         if (product.Group.Active.Equals(true))
-                            prod.Incentivo = true;
-                    }
-
-                    if (product1 != null)
-                    {
-                        prod.Product1Id = product1.Id;
-
-                        if (product1.Group.Active.Equals(true))
-                            prod.Incentivo = true;
-                    }
-
-                    if (product2 != null)
-                    {
-                        prod.Product2Id = product2.Id;
-
-                        if (product2.Group.Active.Equals(true))
-                            prod.Incentivo = true;
-                    }
-
-                    if (product3 != null)
-                    {
-                        prod.Product3Id = product3.Id;
-
-                        if (product3.Group.Active.Equals(true))
                             prod.Incentivo = true;
                     }
 
@@ -662,9 +551,6 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Status = true;
                         prod.Vbasecalc = baseCalc;
                         prod.ProductId = null;
-                        prod.Product1Id = null;
-                        prod.Product2Id = null;
-                        prod.Product3Id = null;
                         prod.Pautado = false;
                         prod.DateStart = dateStart;
                         prod.PercentualInciso = inciso;
@@ -851,9 +737,6 @@ namespace Escon.SisctNET.Web.Controllers
                             item.Status = true;
                             item.Vbasecalc = baseCalc;
                             item.ProductId = null;
-                            item.Product1Id = null;
-                            item.Product2Id = null;
-                            item.Product3Id = null;
                             item.Pautado = false;
                             item.DateStart = dateStart;
                             item.PercentualInciso = inciso;
@@ -2033,15 +1916,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (p.Product != null)
                                             price = Convert.ToDecimal(p.Product.Price);
 
-                                        if (p.Product1 != null)
-                                            price += Convert.ToDecimal(p.Product1.Price);
-
-                                        if (p.Product2 != null)
-                                            price += Convert.ToDecimal(p.Product2.Price);
-
-                                        if (p.Product3 != null)
-                                            price += Convert.ToDecimal(p.Product3.Price);
-
                                         baseIcms += (qtd * price);
                                     }
                                 }
@@ -3211,15 +3085,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (p.Product != null)
                                         price = Convert.ToDecimal(p.Product.Price);
-
-                                    if (p.Product1 != null)
-                                        price += Convert.ToDecimal(p.Product1.Price);
-
-                                    if (p.Product2 != null)
-                                        price += Convert.ToDecimal(p.Product2.Price);
-
-                                    if (p.Product3 != null)
-                                        price += Convert.ToDecimal(p.Product3.Price);
 
                                     baseIcms += (qtd * price);
                                 }

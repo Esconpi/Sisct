@@ -112,7 +112,7 @@
                             <label class="control-label">FECOP (%)</label>
                             @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("08/12/2022").Date)
                             {
-                                @if (Model.TaxationTypeId.Equals((long)5) || Model.TaxationTypeId.Equals((long)6) || Model.TaxationTypeId.Equals((long)8))
+                                @if (Model.TaxationType.Type.Equals("ST"))
                                 {
                                     <input type="text" name="Fecop" class="form-control money" value="@Model.Fecop" />
                                 }
@@ -128,7 +128,7 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">* INCISO (%)</label>
-                            @if (Model.Note.Company.ChapterId == 4)
+                            @if (Model.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
                             {
                                 <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
                             }
@@ -160,92 +160,31 @@
                             <label asp-for="Pautado" class="control-label">Pautado</label> <br />
                             @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true" })
                         </div>
+                        <div class="form-group col-lg-2 col-md-6 col-xs-6">
+                            <label class="control-label">Quantidade da Pauta</label>
 
-                        @if (Model.Pautado == true)
-                        {
-                            <div class="form-group col-lg-2 col-md-6 col-xs-6">
-                                <label class="control-label">Quantidade da Pauta</label>
-                                <input type="text" class="form-control" name="Qpauta" id="quant" value="@Model.Qpauta" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-group col-lg-2 col-md-6 col-xs-6">
-                                <label class="control-label">Quantidade da Pauta</label>
-                                <input type="text" class="form-control" name="Qpauta" id="quant" disabled="disabled" />
-                            </div>
-                        }
-
-                        @if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("10/02/2020").Date)
-                        {
                             @if (Model.Pautado == true)
                             {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="ProductId" class="control-label"></label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="ProductId" id="productid"></select>
-                                </div>
+                                <input type="text" class="form-control" name="Qpauta" id="quant" value="@Model.Qpauta" />
                             }
                             else
                             {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="ProductId" class="control-label"></label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="ProductId" id="productid" disabled="disabled"></select>
-                                </div>
+                                <input type="text" class="form-control" name="Qpauta" id="quant" disabled="disabled" />
                             }
+                        </div>
 
-                        }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("10/02/2020").Date && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("14/09/2020").Date)
-                        {
-                            if (Model.Pautado == true)
-                            {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="Product1Id" class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product1Id" id="product1id"></select>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="Product1Id" class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product1Id" id="product1id" disabled="disabled"></select>
-                                </div>
-                            }
-                        }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("14/09/2020").Date && Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date < Convert.ToDateTime("01/06/2022").Date)
-                        {
-                            if (Model.Pautado == true)
-                            {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="Product2Id" class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product2Id" id="product2id"></select>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product2Id" id="product2id" disabled="disabled"></select>
-                                </div>
-                            }
-                        }
-                        else if (Convert.ToDateTime(Model.Note.Dhemi.ToString("dd/MM/yyyy")).Date >= Convert.ToDateTime("01/06/2022").Date)
-                        {
+                        <div class="form-group col-lg-9 col-md-12 col-xs-12">
+                            <label asp-for="ProductId" class="control-label"></label>
 
-                            if (Model.Pautado == true)
+                            @if (Model.Pautado == true)
                             {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label asp-for="Product3Id" class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product3Id" id="product3id"></select>
-                                </div>
+                                <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="ProductId" id="productid"></select>
                             }
                             else
                             {
-                                <div class="form-group col-lg-9 col-md-12 col-xs-12">
-                                    <label class="control-label">Produto</label>
-                                    <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="Product3Id" id="product3id" disabled="disabled"></select>
-                                </div>
+                                <select asp-items="@ViewBag.ProductId" class="form-control selectoption" name="ProductId" id="productid" disabled="disabled"></select>
                             }
-                        }
+                        </div>
                     </div>
 
                     <div class="row">
@@ -306,27 +245,6 @@
         if ($(this).val() == product) {
             $(this).attr('selected', true);
 
-        }
-    });
-
-    var product1 = @Model.Product1Id
-    $("#product1id").children('option').each(function () {
-        if ($(this).val() == product1) {
-            $(this).attr('selected', true);
-        }
-    });
-
-    var product2 = @Model.Product2Id
-    $("#product2id").children('option').each(function () {
-        if ($(this).val() == product2) {
-            $(this).attr('selected', true);
-        }
-    });
-
-    var product3 = @Model.Product3Id
-    $("#product3id").children('option').each(function () {
-        if ($(this).val() == product3) {
-            $(this).attr('selected', true);
         }
     });
 
