@@ -39,14 +39,32 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
 
-                if (comp.Annex.Equals(null))
-                    comp.Annex = new Annex();
+                if (comp.Annex == null)
+                {
+                    comp.Annex = new Annex()
+                    {
+                        Convenio = "",
+                        Description = ""
+                    };
+                }
 
-                if (comp.Chapter.Equals(null))
-                    comp.Chapter = new Chapter();
+                if (comp.Chapter == null)
+                {
+                    comp.Chapter = new Chapter()
+                    {
+                        Name = "",
+                        Description = ""
+                    };
+                }
 
-                if (comp.Section.Equals(null))
-                    comp.Section = new Section();
+                if (comp.Section == null)
+                {
+                    comp.Section = new Section()
+                    {
+                        Name = "",
+                        Description = ""
+                    };
+                }
 
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);

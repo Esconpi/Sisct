@@ -534,11 +534,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (prod.Note.Company.Incentive)
                         {
-                            if (prod.Note.Company.Annex.Equals(null))
-                                prod.Note.Company.Annex = new Annex();
+                            if (prod.Note.Company.Annex == null)
+                            {
+                                prod.Note.Company.Annex = new Annex()
+                                {
+                                    Convenio = "",
+                                    Description = ""
+                                };
 
-                            if (prod.Note.Company.Chapter.Equals(null))
-                                prod.Note.Company.Chapter = new Chapter();
+                            }
+
+                            if (prod.Note.Company.Chapter == null)
+                            {
+                                prod.Note.Company.Chapter = new Chapter()
+                                {
+                                    Name = "",
+                                    Description = ""
+                                };
+                            }
 
                             if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
                                 prod.Incentivo = false;
@@ -731,11 +744,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (prod.Note.Company.Incentive)
                             {
-                                if (prod.Note.Company.Annex.Equals(null))
-                                    prod.Note.Company.Annex = new Annex();
+                                if (prod.Note.Company.Annex == null)
+                                {
+                                    prod.Note.Company.Annex = new Annex()
+                                    {
+                                        Convenio = "",
+                                        Description = ""
+                                    };
 
-                                if (prod.Note.Company.Chapter.Equals(null))
-                                    prod.Note.Company.Chapter = new Chapter();
+                                }
+
+                                if (prod.Note.Company.Chapter == null)
+                                {
+                                    prod.Note.Company.Chapter = new Chapter()
+                                    {
+                                        Name = "",
+                                        Description = ""
+                                    };
+                                }
 
                                 if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
                                     item.Incentivo = false;
@@ -756,6 +782,12 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
+                if (prod.Note.Company.AnnexId == null)
+                    prod.Note.Company.Annex = null;
+
+                if (prod.Note.Company.ChapterId == null)
+                    prod.Note.Company.Chapter = null;
+                
                 _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
                 List<Note> updateNote = new List<Note>();
@@ -872,14 +904,32 @@ namespace Escon.SisctNET.Web.Controllers
                 var isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false;
                 var isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
 
-                if (comp.Annex.Equals(null))
-                    comp.Annex = new Annex();
+                if (comp.Annex == null)
+                {
+                    comp.Annex = new Annex()
+                    {
+                        Convenio = "",
+                        Description = ""
+                    };
+                }
 
-                if (comp.Chapter.Equals(null))
-                    comp.Chapter = new Chapter();
+                if (comp.Chapter == null)
+                {
+                    comp.Chapter = new Chapter()
+                    {
+                        Name = "",
+                        Description = ""
+                    };
+                }
 
-                if (comp.Section.Equals(null))
-                    comp.Section = new Section();
+                if (comp.Section == null)
+                {
+                    comp.Section = new Section()
+                    {
+                        Name = "",
+                        Description = ""
+                    };
+                }
 
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();

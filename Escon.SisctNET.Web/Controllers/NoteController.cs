@@ -251,15 +251,6 @@ namespace Escon.SisctNET.Web.Controllers
             var confDBSisctNfe = _configurationService.FindByName("NFe", null);
             var confDBSisctCte = _configurationService.FindByName("CTe", null);
 
-            if (comp.Annex.Equals(null))
-                comp.Annex = new Annex();
-
-            if (comp.Chapter.Equals(null))
-                comp.Chapter = new Chapter();
-
-            if (comp.Section.Equals(null))
-                comp.Section = new Section();
-
             var importXml = new Xml.Import();
             var importDir = new Diretorio.Import();
             var calculation = new Tax.Calculation();
