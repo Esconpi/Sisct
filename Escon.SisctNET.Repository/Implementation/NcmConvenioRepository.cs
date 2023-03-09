@@ -51,6 +51,9 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             foreach (var n in ncms)
             {
+                if (n.Ncm == null)
+                    n.Ncm = "";
+
                 int contaChar = n.Ncm.Length;
                 string substring = "";
 
@@ -75,6 +78,9 @@ namespace Escon.SisctNET.Repository.Implementation
 
             foreach (var n in ncms)
             {
+                if (n.Ncm == null)
+                    n.Ncm = "";
+
                 int contaChar = n.Ncm.Length;
                 string substring = "";
 
@@ -122,11 +128,14 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             string cestBase = null;
 
-            if(cest != "")
+            if (cest != "")
                 cestBase = cest;
 
             foreach (var n in ncms)
             {
+                if (n.Ncm == null)
+                    n.Ncm = "";
+
                 int contaChar = n.Ncm.Length;
                 string substring = "";
 

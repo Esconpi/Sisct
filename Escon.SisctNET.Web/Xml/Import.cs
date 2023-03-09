@@ -932,6 +932,11 @@ namespace Escon.SisctNET.Web.Xml
                                                 if (reader.Name == "Id")
                                                 {
                                                     infNFe.Add("chave", reader.Value.Substring(3, 44));
+
+                                                    if(reader.Value.Substring(3, 44) == "35230154069380000220550010000674811357321848")
+                                                    {
+                                                        var t = "OK";
+                                                    }
                                                 }
                                             }
                                             nota.Add(infNFe);
@@ -1089,6 +1094,7 @@ namespace Escon.SisctNET.Web.Xml
                                                     if (item[j].ContainsKey("nCT"))
                                                         nCT_temp = item[j]["nCT"];
 
+
                                                     if (item[j].ContainsKey("chave"))
                                                     {
                                                         if (item[j]["chave"] == nota[0]["chave"])
@@ -1112,6 +1118,21 @@ namespace Escon.SisctNET.Web.Xml
                                                             {
                                                                 proporcao_icms = ((100 * Convert.ToDecimal(prod["vProd"])) / total_dos_produtos) / 100;
                                                                 frete_icmsprod += proporcao_icms * frete_icms;
+                                                            }
+
+                                                            valor_carga = 0;
+                                                            valor_prestado = 0;
+                                                            total_icms_frete = 0;
+                                                            nCT_temp = "";
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item[j].Count() == 9)
+                                                            {
+                                                                valor_carga = 0;
+                                                                valor_prestado = 0;
+                                                                total_icms_frete = 0;
+                                                                nCT_temp = "";
                                                             }
                                                         }
                                                     }
