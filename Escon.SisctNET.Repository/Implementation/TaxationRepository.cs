@@ -22,53 +22,24 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public Taxation FindByCode(string code, string cest, DateTime data, Log log = null)
         {
-            string dataFomart = data.ToString("yyyy-MM-dd");
-            Taxation result = null;
-            var taxations = _context.Taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest));
-            
-            foreach(var t in taxations)
-            {
-                var dataInicial = DateTime.Compare(t.DateStart, data);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
+            var codes = _context.Taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest)).ToList();
 
-                if (dataInicial <= 0 && t.DateEnd == null)
-                {
-                    result = t;
-                    break;
-                }else if (dataInicial <= 0 && dataFinal > 0 )
-                {
-                    result = t;
-                    break;
-                }
-                
-            }
+            var result = codes.Where(_ =>  (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                           (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0))
+                               .FirstOrDefault();
+
             AddLog(log);
             return result;
         }
 
         public Taxation FindByCode(List<Taxation> taxations, string code, string cest, DateTime data, Log log = null)
         {
-            string dataFomart = data.ToString("yyyy-MM-dd");
-            Taxation result = null;
-            var taxationsAll = taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest));
+            var codes = taxations.Where(_ => _.Code.Equals(code) && _.Cest.Equals(cest)).ToList();
 
-            foreach (var t in taxationsAll)
-            {
-                var dataInicial = DateTime.Compare(t.DateStart, data);
-                var dataFinal = DateTime.Compare(Convert.ToDateTime(t.DateEnd), data);
+            var result = codes.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                          (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0))
+                                .FirstOrDefault();
 
-                if (dataInicial <= 0 && t.DateEnd == null)
-                {
-                    result = t;
-                    break;
-                }
-                else if (dataInicial <= 0 && dataFinal > 0)
-                {
-                    result = t;
-                    break;
-                }
-
-            }
             AddLog(log);
             return result;
         }

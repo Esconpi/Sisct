@@ -20,6 +20,6 @@ namespace Escon.SisctNET.Service
 
         List<NcmConvenio> FindByNcmAnnex(long annexId, Log log = null);
 
-        List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime dateNCM, Log log = null);
+        List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime data, Log log = null);
     }
 }

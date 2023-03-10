@@ -17,10 +17,10 @@ namespace Escon.SisctNET.Repository.Implementation
             _context = context;
         }
 
-        public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime dateNCM, Log log = null)
+        public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime data, Log log = null)
         {
-            var result = ncms.Where(_ => (DateTime.Compare(_.DateStart, dateNCM) <= 0 && _.DateEnd == null) ||
-                                         (DateTime.Compare(_.DateStart, dateNCM) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), dateNCM) > 0))
+            var result = ncms.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                         (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0))
                              .ToList();
             AddLog(log);
             return result;

@@ -59,9 +59,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.Update(entities, log);
         }
 
-        public List<Product> FindAllInDate(DateTime dateProd, Log log = null)
+        public List<Product> FindAllInDate(DateTime data, Log log = null)
         {
-            return _repository.FindAllInDate(dateProd, log);
+            return _repository.FindAllInDate(data, log);
         }
 
         public Product FindByProduct(long id, Log log = null)

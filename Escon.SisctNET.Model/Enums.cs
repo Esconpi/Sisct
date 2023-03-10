@@ -50,10 +50,10 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Nota Não Incentivada")] NotaNI,
         [Display(Name = "Agrupado Analítico")] AgrupadoA,
         [Display(Name = "Agrupado Sintético")] AgrupadoS,
-        [Display(Name = "Resumo Geral")] Geral,
         [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE,
         [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST,
-        [Display(Name = "Icms Produtor Rural")] IcmsProdutor
+        [Display(Name = "Icms Produtor Rural")] IcmsProdutor,
+        [Display(Name = "Resumo Geral")] Geral
     }
 
     public enum Opcao

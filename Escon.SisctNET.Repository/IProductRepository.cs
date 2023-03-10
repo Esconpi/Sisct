@@ -11,7 +11,7 @@ namespace Escon.SisctNET.Repository
 
         List<Model.Product> FindByGroup(long groupid, Model.Log log = null);
 
-        List<Model.Product> FindAllInDate(DateTime dateProd, Model.Log log = null);
+        List<Model.Product> FindAllInDate(DateTime data, Model.Log log = null);
 
         List<Model.Product> FindByAllGroup(Model.Log log = null);
     }

@@ -45,9 +45,9 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
-        public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime dateNCM, Log log = null)
+        public List<NcmConvenio> FindAllInDate(List<NcmConvenio> ncms, DateTime data, Log log = null)
         {
-            return _repository.FindAllInDate(ncms, dateNCM, log);
+            return _repository.FindAllInDate(ncms, data, log);
         }
 
         public List<NcmConvenio> FindByAnnex(long annexId, Log log = null)
