@@ -734,6 +734,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
 
+                                    if (totalIcms < 0)
+                                        totalIcms = 0;
+
                                 }
                                 else if (taxedtype.Type == "Normal" && taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {

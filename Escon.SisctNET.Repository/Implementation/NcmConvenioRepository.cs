@@ -94,10 +94,13 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (comp.AnnexId.Equals((long)3) || comp.AnnexId.Equals((long)4))
+                if (comp.Annex != null)
                 {
-                    if (n.Ncm.Equals(substring))
-                        return n;
+                    if(comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                    {
+                        if (n.Ncm.Equals(substring))
+                            return n;
+                    }
                 }
                 else
                 {
@@ -149,7 +152,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (comp.AnnexId.Equals((long)3) || comp.AnnexId.Equals((long)4))
+                if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
                 {
                     if (n.Ncm.Equals(substring))
                         return true;

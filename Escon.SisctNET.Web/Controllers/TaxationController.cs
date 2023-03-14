@@ -109,9 +109,9 @@ namespace Escon.SisctNET.Web.Controllers
                 taxation.DateStart = entity.DateStart;
 
                 _service.Create(taxation, GetLog(Model.OccorenceLog.Create));
-
-                /*var taxations = _service.FindAll(null)
-                    .Where(_ => _.AliqInterna.Equals((decimal)25) && _.DateEnd == null)
+                /*
+                var taxations = _service.FindAll(null)
+                    .Where(_ => _.AliqInterna.Equals((decimal)18) && _.DateEnd == null)
                     .ToList();
 
                 List<Taxation> createTaxation = new List<Taxation>();

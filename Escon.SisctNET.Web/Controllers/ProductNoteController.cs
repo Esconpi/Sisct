@@ -346,6 +346,9 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                             prod.TotalICMS = totalIcmsPauta;
 
+                        if (totalIcms < 0)
+                            totalIcms = 0;
+
                     }
 
                     prod.Pautado = true;
@@ -426,7 +429,9 @@ namespace Escon.SisctNET.Web.Controllers
                             valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), Convert.ToDecimal(valorAgreg));
                             prod.ValorAC = valorAgre_AliqInt;
                             totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgre_AliqInt), valorIcms);
-                            decimal total = calculation.TotalIcmsPauta(Convert.ToDecimal(entity.TotalICMS), valorFecop);
+
+                            if (totalIcms < 0)
+                                totalIcms = 0;
 
                             prod.TotalICMS = totalIcms;
 
@@ -625,6 +630,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(item.Fecop), valorAgreg);
                                 item.ValorAC = valorAgre_AliqInt;
                                 totalIcms = calculation.TotalIcms(valorAgre_AliqInt, valorIcms);
+
+                                if (totalIcms < 0)
+                                    totalIcms = 0;
+
                                 item.TotalICMS = totalIcms;
 
                             }
