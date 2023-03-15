@@ -540,6 +540,11 @@ namespace Escon.SisctNET.Web.Controllers
                                 aliquotConfaz = _aliquotConfazService.FindByUf(aliquotasConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                                 internalAliquotConfaz = _internalAliquotConfazService.FindByUf(aliquotasinternaConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                             }
+                            else
+                            {
+                                if (taxed != null)
+                                    eBcr = taxed.EBcr;
+                            }
 
                             if (comp.Incentive)
                             {

@@ -1,4 +1,5 @@
 ﻿using Escon.SisctNET.Service;
+using Escon.SisctNET.Service.Implementation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,19 +11,19 @@ namespace Escon.SisctNET.Web.Xml
 {
     public class Import
     {
-        private readonly ICompanyCfopService _companyCfopService;
+        private readonly ICfopService _cfopService;
         private readonly ITaxationNcmService _taxationNcmService;
 
-        public Import(ICompanyCfopService companyCfopService)
+        public Import(ICfopService cfopService)
         {
-            _companyCfopService = companyCfopService;
+            _cfopService = cfopService;
         }
 
         public Import(
-            ICompanyCfopService companyCfopService,
+            ICfopService cfopService,
             ITaxationNcmService taxationNcmService)
         {
-            _companyCfopService = companyCfopService;
+            _cfopService = cfopService;
             _taxationNcmService = taxationNcmService;
         }
 

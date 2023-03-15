@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,7 +64,8 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.Create(entity, GetLog(Model.OccorenceLog.Create));
+                entity.CfopTypeId = (long)11;
+                _service.Create(entity, GetLog(Model.OccorenceLog.Create));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -99,7 +100,9 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var rst = _service.FindById(id, null);
-                var result = _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                entity.CfopTypeId = rst.CfopTypeId;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -124,6 +127,53 @@ namespace Escon.SisctNET.Web.Controllers
                 return BadRequest(new { erro = 500, message = ex.Message });
             }
         }
+
+
+        [HttpPost]
+        public IActionResult UpdateStatus([FromBody] Model.UpdateActive updateActive)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var entity = _service.FindById(updateActive.Id, null);
+                entity.Active = updateActive.Active;
+
+                _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCfopType([FromBody] Model.UpdateCfopType updateCfopType)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Cfop")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                if (updateCfopType != null)
+                {
+                    var entity = _service.FindById(updateCfopType.Id, null);
+                    entity.CfopTypeId = updateCfopType.CfopTypeId;
+
+                    _service.Update(entity, GetLog(Model.OccorenceLog.Update));
+                }
+
+
+                return Ok(new { requestcode = 200, message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
 
         public IActionResult GetAll(int draw, int start)
         {
@@ -159,7 +209,9 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Code,
-                               Description = r.Description
+                               Description = r.Description,
+                               Active = r.Active,
+                               CfopType = r.CfopType.Name
 
                            };
 
@@ -175,7 +227,9 @@ namespace Escon.SisctNET.Web.Controllers
                            {
                                Id = r.Id.ToString(),
                                Code = r.Code,
-                               Description = r.Description
+                               Description = r.Description,
+                               Active = r.Active,
+                               CfopType = r.CfopType.Name
 
                            };
                 return Ok(new { draw = draw, recordsTotal = cfopsAll.Count(), recordsFiltered = cfopsAll.Count(), data = cfop.Skip(start).Take(lenght) });

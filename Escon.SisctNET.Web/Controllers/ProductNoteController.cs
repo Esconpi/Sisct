@@ -29,7 +29,6 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IDarService _darService;
         private readonly IDarDocumentService _darDocumentService;
         private readonly IConfigurationService _configurationService;
-        private readonly ICompanyCfopService _companyCfopService;
         private readonly ISuspensionService _suspensionService;
         private readonly IClientService _clientService;
         private readonly INcmConvenioService _ncmConvenioService;
@@ -64,7 +63,6 @@ namespace Escon.SisctNET.Web.Controllers
             ICompanyService companyService,
             IDarService darService,
             IDarDocumentService darDocumentService,
-            ICompanyCfopService companyCfopService,
             ISuspensionService suspensionService,
             IClientService clientService,
             INcmConvenioService ncmConvenioService,
@@ -100,7 +98,6 @@ namespace Escon.SisctNET.Web.Controllers
             _taxationService = taxationService;
             _companyService = companyService;
             _darService = darService;
-            _companyCfopService = companyCfopService;
             _suspensionService = suspensionService;
             _clientService = clientService;
             _ncmConvenioService = ncmConvenioService;

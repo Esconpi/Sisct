@@ -15,20 +15,17 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
         private readonly ICfopService _cfopService;
-        private readonly ICompanyCfopService _companyCfopService;
         private readonly IHostingEnvironment _appEnvironment;
 
         public ListingController(
             ICompanyService companyService,
             IConfigurationService configurationService,
             ICfopService cfopService,
-            ICompanyCfopService companyCfopService,
             IHostingEnvironment appEnvironment)
         {
             _companyService = companyService;
             _configurationService = configurationService;
             _cfopService = cfopService;
-            _companyCfopService = companyCfopService;
             _appEnvironment = appEnvironment;
         }
 

@@ -124,7 +124,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAliquotRepository, AliquotRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-            services.AddScoped<ICompanyCfopRepository, CompanyCfopRepository>();
             services.AddScoped<IDarRepository, DarRepository>();
             services.AddScoped<IDarDocumentRepository, DarDocumentRepository>();
             services.AddScoped<IAnnexRepository, AnnexRepository>();
@@ -190,7 +189,6 @@ namespace Escon.SisctNET.Web
             services.AddScoped<IAliquotService, AliquotService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IAuthentication, Authentication>();
-            services.AddScoped<ICompanyCfopService, CompanyCfopService>();
             services.AddScoped<IDarService, DarService>();
             services.AddScoped<IDarDocumentService, DarDocumentService>();
             services.AddScoped<IAnnexService, AnnexService>();

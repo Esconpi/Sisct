@@ -16,7 +16,6 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxationNcmService _service;
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
-        private readonly ICompanyCfopService _companyCfopService;
         private readonly INcmService _ncmService;
         private readonly ITaxService _taxService;
         private readonly IBaseService _baseService;
@@ -28,7 +27,6 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxationNcmService service,
             ICompanyService companyService,
             IConfigurationService configurationService,
-            ICompanyCfopService companyCfopService,
             INcmService ncmService,
             ITaxService taxService,
             IBaseService baseService,
@@ -42,7 +40,6 @@ namespace Escon.SisctNET.Web.Controllers
             _service = service;
             _companyService = companyService;
             _configurationService = configurationService;
-            _companyCfopService = companyCfopService;
             _ncmService = ncmService;
             _taxService = taxService;
             _baseService = baseService;
@@ -104,8 +101,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
                 var NfeEntry = _configurationService.FindByName("NFe", null);
 
-                var importXml = new Xml.Import(_companyCfopService, _service);
-                var importSped = new Sped.Import(_companyCfopService, _service);
+                var importXml = new Xml.Import(_cfopService, _service);
+                var importSped = new Sped.Import(_cfopService, _service);
                 var importTrimestre = new Period.Trimestre();
                 var importMes = new Period.Month();
                 var importDir = new Diretorio.Import();
@@ -122,33 +119,33 @@ namespace Escon.SisctNET.Web.Controllers
 
                 string directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month);
 
-                var cfopAll = _companyCfopService.FindByCompany(comp.Document);
+                var cfopAll = _cfopService.FindByType(null);
 
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVenda = _cfopService.FindByCfopVenda(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVendaST = _cfopService.FindByCfopVendaST(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsTransf = _cfopService.FindByCfopTransferencia(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsTransfST = _cfopService.FindByCfopTransferenciaST(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
 

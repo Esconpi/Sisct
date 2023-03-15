@@ -61,8 +61,6 @@ namespace Escon.SisctNET.Model.ContextDataBase
 
         public DbSet<ProductNote> ProductNotes { get; set; }
 
-        public DbSet<CompanyCfop> CompanyCfops { get; set; }
-
         public DbSet<Dar> Dars { get; set; }
 
         public DbSet<DarDocument> DarDocuments { get; set; }

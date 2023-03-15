@@ -43,6 +43,91 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public List<Cfop> FindByCfopBonificacaoCompra(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopBonificacaoCompra(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopBonificacaoVenda(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopBonificacaoVenda(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopCompra(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopCompra(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopCompraIM(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopCompraIM(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopCompraST(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopCompraST(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopDevoCompra(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopDevoCompra(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopDevoCompraST(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopDevoCompraST(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopDevoVenda(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopDevoVenda(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopDevoVendaST(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopDevoVendaST(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopOutraEntrada(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopOutraEntrada(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopOutraSaida(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopOutraSaida(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopPerda(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopPerda(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopTransferencia(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopTransferencia(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopTransferenciaST(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopTransferenciaST(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopVenda(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopVenda(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopVendaIM(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopVendaIM(cfops, log);
+        }
+
+        public List<Cfop> FindByCfopVendaST(List<Cfop> cfops, Log log = null)
+        {
+            return _repository.FindByCfopVendaST(cfops, log);
+        }
+
         public Cfop FindByCode(string code, Log log = null)
         {
             return _repository.FindByCode(code);
@@ -51,6 +136,11 @@ namespace Escon.SisctNET.Service.Implementation
         public Cfop FindById(long id, Log log)
         {
             return _repository.FindById(id, log);
+        }
+
+        public List<Cfop> FindByType(Log log = null)
+        {
+            return _repository.FindByType(log);
         }
 
         public Cfop Update(Cfop entity, Log log)

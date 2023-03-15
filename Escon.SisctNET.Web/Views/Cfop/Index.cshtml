@@ -28,6 +28,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Active)
+                        </th>
+                        <th width="200px">
+                            @Html.DisplayNameFor(model => model.CfopTypeId)
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -47,6 +53,75 @@
                 $('.showProduct').off();
                 $('[data-toggle="tooltip"]').tooltip();
                 $("input[type='checkbox']").bootstrapToggle();
+                $(".selectoption").select2();
+                $("#tblCfop").on("change", "input[type='checkbox']", function () {
+                    try {
+
+                        var status = "";
+                        status = $(this).prop('checked');
+                        $.ajax({
+                            url: '@(Url.Action("UpdateStatus", "Cfop"))',
+                            dataType: 'json',
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ "Id": $(this).prop('id'), "Active": $(this).prop('checked') }),
+                            processData: false,
+                            success: function (data, textStatus, jQxhr) {
+                                if (status == false) {
+                                    console.log(status);
+                                }
+                                else {
+                                    console.log(status);
+                                }
+
+                            },
+                            error: function (jqXhr, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+
+                    } catch (e) {
+                        console.log(e);
+                    }
+                });
+
+
+                $(".selectoption").select2({
+                    placeholder: 'Selecione um tipo de Cfop',
+                    allowClear: true,
+                    ajax: {
+                        delay: 500,
+                        quietMillis: 10,
+                        cache: false,
+                        dataType: 'json',
+                        type: 'GET',
+                        async: true,
+                        url: '/CfopType/GetAll'
+                    }
+                });
+
+                $("#tblCfop tbody").on("change", ".selectoptiontype", function () {
+                    var id = $(this).attr("id");
+                    var username = "";
+                    username = $(this).children("option:selected").text();
+                    var cfopTypeId = $(this).val();
+
+                    $('#loader_' + id).css('display', 'block');
+                    $.ajax({
+                        url: '@(Url.Action("UpdateCfopType", "Cfop"))',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        async: true,
+                        data: JSON.stringify({ "Id": id, "cfopTypeId": cfopTypeId }),
+                        processData: false,
+                        success: function (data, textStatus, jQxhr) {
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                });
             },
             "processing": true,
             "ordering": false,
@@ -72,6 +147,24 @@
             "columns": [
                 { "data": "code" },
                 { "data": "description" },
+                {
+                    "mData": "active",
+                    "mRender": function (data, type, row) {
+                        if (data == true) {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' checked='" + data + "' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success'  id='" + row.id + "' />";
+                        }
+                        else {
+                            return "<input type='checkbox' data-off='Não' data-on='Sim' data-toggle='toggle' data-size='small' data-offstyle = 'danger' data-onstyle = 'success' id='" + row.id + "' />";
+                        }
+                    }
+                },
+                {
+                    "mData": "cfopType",
+                    "mRender": function (data, type, row) {
+                        return "<select id='" + row.id + "' name='cfopTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'></select><span id='span_" + row.id + "' style='font-size:12px;margin-top:-10px;'>" + row.cfopType + "</span>";
+
+                    }
+                },
                 {
                     "mData": "id",
                     "mRender": function (data, type, row) {

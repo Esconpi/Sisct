@@ -13,7 +13,6 @@ namespace Escon.SisctNET.Web.Controllers
     {
         private readonly ICompanyService _companyService;
         private readonly IConfigurationService _configurationService;
-        private readonly ICompanyCfopService _companyCfopService;
         private readonly IClientService _clientService;
         private readonly INcmConvenioService _ncmConvenioService;
         private readonly IDarService _darService;
@@ -42,7 +41,6 @@ namespace Escon.SisctNET.Web.Controllers
         public IcmsController(
             ICompanyService companyService,
             IConfigurationService configurationService,
-            ICompanyCfopService companyCfopService,
             IClientService clientService,
             INcmConvenioService ncmConvenioService,
             IDarService darService,
@@ -73,7 +71,6 @@ namespace Escon.SisctNET.Web.Controllers
         {
             _companyService = companyService;
             _configurationService = configurationService;
-            _companyCfopService = companyCfopService;
             _clientService = clientService;
             _ncmConvenioService = ncmConvenioService;
             _darService = darService;
@@ -146,8 +143,8 @@ namespace Escon.SisctNET.Web.Controllers
                 var NfeExit = _configurationService.FindByName("NFe Saida", null);
                 var dataDifal = _configurationService.FindByName("DIFAL", null);
 
-                var importXml = new Xml.Import(_companyCfopService);
-                var importSped = new Sped.Import(_companyCfopService);
+                var importXml = new Xml.Import(_cfopService);
+                var importSped = new Sped.Import(_cfopService);
                 var importMes = new Period.Month();
                 var importDir = new Diretorio.Import();
                 var calculation = new Tax.Calculation();
@@ -171,33 +168,33 @@ namespace Escon.SisctNET.Web.Controllers
                 var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
                 var impAnexo = _taxAnexoService.FindByMonth(companyId, month, year);
 
-                var cfopAll = _companyCfopService.FindByCompany(comp.Document);
+                var cfopAll = _cfopService.FindByType(null);
 
                 //  Saida
-                var cfopsVenda = _companyCfopService.FindByCfopVenda(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVenda = _cfopService.FindByCfopVenda(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaIM = _companyCfopService.FindByCfopVendaIM(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsVendaST = _companyCfopService.FindByCfopVendaST(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsVendaST = _cfopService.FindByCfopVendaST(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsBoniVenda = _companyCfopService.FindByCfopBonificacaoVenda(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
 
                 //  Transferencia
-                var cfopsTransf = _companyCfopService.FindByCfopTransferencia(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsTransf = _cfopService.FindByCfopTransferencia(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
-                var cfopsTransfST = _companyCfopService.FindByCfopTransferenciaST(cfopAll)
-                    .Select(_ => _.Cfop.Code)
+                var cfopsTransfST = _cfopService.FindByCfopTransferenciaST(cfopAll)
+                    .Select(_ => _.Code)
                     .Distinct()
                     .ToList();
 

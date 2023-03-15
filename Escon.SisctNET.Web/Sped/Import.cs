@@ -11,30 +11,30 @@ namespace Escon.SisctNET.Web.Sped
 {
     public class Import
     {
-        private readonly ICompanyCfopService _companyCfopService;
+        private readonly ICfopService _cfopService;
         private readonly ITaxationNcmService _taxationNcmService;
         private readonly INcmConvenioService _ncmConvenioService;
 
-        public Import(ICompanyCfopService companyCfopService)
+        public Import(ICfopService cfopService)
         {
-            _companyCfopService = companyCfopService;
+            _cfopService = cfopService;
         }
 
         public Import(
-            ICompanyCfopService companyCfopService,
+            ICfopService cfopService,
             ITaxationNcmService taxationNcmService
             )
         {
-            _companyCfopService = companyCfopService;
+            _cfopService = cfopService;
             _taxationNcmService = taxationNcmService;
         }
 
         public Import(
-            ICompanyCfopService companyCfopService,
+            ICfopService cfopService,
             INcmConvenioService ncmConvenioService
             )
         {
-            _companyCfopService = companyCfopService;
+            _cfopService = cfopService;
             _ncmConvenioService = ncmConvenioService;
         }
 
@@ -901,7 +901,7 @@ namespace Escon.SisctNET.Web.Sped
             string line, tipoOperacao = "", chave = "", emissao = "", numero = "";
             bool diferenca = false;
 
-            var importXml = new Xml.Import(_companyCfopService);
+            var importXml = new Xml.Import(_cfopService);
 
             notes = importXml.NFeAll(directoryNfe);
 
@@ -1876,7 +1876,7 @@ namespace Escon.SisctNET.Web.Sped
             string line, tipoOperacao = "", chave = "", emissao = "", numero = "";
             bool diferenca = false;
 
-            var importXml = new Xml.Import(_companyCfopService);
+            var importXml = new Xml.Import(_cfopService);
 
             notes = importXml.NFeAll(directoryNfe);
 
