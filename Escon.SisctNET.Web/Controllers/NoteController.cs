@@ -432,6 +432,12 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("pICMS"))
                         det.Add("pICMS", notes[i][j]["pICMS"]);
 
+                    if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("CST"))
+                        det.Add("CST", notes[i][j]["CST"]);
+
+                    if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("CSOSN"))
+                        det.Add("CSOSN", notes[i][j]["CSOSN"]);
+
                     if (notes[i][j].ContainsKey("vIPI") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vIPI", notes[i][j]["vIPI"]);
 
@@ -471,15 +477,13 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("frete_icms"))
                         det.Add("frete_icms", notes[i][j]["frete_icms"]);
 
-                    if (notes[i][j].ContainsKey("CSOSN"))
-                        det.Add("CSOSN", notes[i][j]["CSOSN"]);
-
                     if (notes[i][j].ContainsKey("baseCalc"))
                     {
                         det.Add("baseCalc", notes[i][j]["baseCalc"]);
 
                         string nItem = det.ContainsKey("nItem") ? det["nItem"] : "",  NCM = det.ContainsKey("NCM") ? det["NCM"] : "",  
-                               CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "", CEST = det.ContainsKey("CEST") ? det["CEST"] : "";
+                               CFOP = det.ContainsKey("CFOP") ? det["CFOP"] : "", CEST = det.ContainsKey("CEST") ? det["CEST"] : "",
+                               CST = det.ContainsKey("CST") ? det["CST"] : "", CSOSN = det.ContainsKey("CSOSN") ? det["CSOSN"] : "";
                        
                         decimal vUnCom = det.ContainsKey("vUnCom") ? Convert.ToDecimal(det["vUnCom"]) : 0, vICMS = det.ContainsKey("vICMS") ? Convert.ToDecimal(det["vICMS"]) : 0,
                                 pICMS = det.ContainsKey("pICMS") ? Convert.ToDecimal(det["pICMS"]) : 0, vIPI = det.ContainsKey("vIPI") ? Convert.ToDecimal(det["vIPI"]) : 0,
@@ -525,7 +529,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 pICMSValid = aliquot.Aliquota.ToString();
                             }
 
-
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
@@ -533,10 +536,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                             var ncmBcr = _ncmConvenioService.FindByNcmAnnex(ncmConvenioBCRTemp, NCM, CEST, comp);
                             decimal? aliquotConfaz = null, internalAliquotConfaz = null;
-                            
+
                             if (ncmBcr != null)
                             {
-                                eBcr = true;
+                                if (CST == "20")
+                                    eBcr = true;
+                                else
+                                    eBcr = false;
+
                                 aliquotConfaz = _aliquotConfazService.FindByUf(aliquotasConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                                 internalAliquotConfaz = _internalAliquotConfazService.FindByUf(aliquotasinternaConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                             }
@@ -568,7 +575,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-
                             Model.ProductNote prod = new Model.ProductNote();
 
                             decimal baseDeCalc = calculation.BaseCalc(vProd, vFrete, vSeg, vOutro, vDesc, vIPI, frete_prod);
@@ -592,6 +598,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
                                     prod.PicmsBCR = aliquotConfaz;
+                                    prod.Cst = CST;
+                                    prod.Csosn = CSOSN;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -652,6 +660,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
                                     prod.PicmsBCR = aliquotConfaz;
+                                    prod.Cst = CST;
+                                    prod.Csosn = CSOSN;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;
@@ -805,6 +815,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Picms = Convert.ToDecimal(pICMSValid);
                                     prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
                                     prod.PicmsBCR = aliquotConfaz;
+                                    prod.Cst = CST;
+                                    prod.Csosn = CSOSN;
                                     prod.Vipi = vIPI;
                                     prod.Vpis = vPIS;
                                     prod.Vcofins = vCOFINS;

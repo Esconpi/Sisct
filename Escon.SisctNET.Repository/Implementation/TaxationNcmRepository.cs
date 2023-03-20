@@ -81,6 +81,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Where(_ => _.Company.Document.Substring(0, 8).Equals(company.Substring(0, 8)))
                 .Include(n => n.Ncm)
                 .Include(t => t.TaxationTypeNcm)
+                .Include(y => y.TypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -92,6 +93,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Where(_ => _.CompanyId.Equals(company))
                 .Include(n => n.Ncm)
                 .Include(t => t.TaxationTypeNcm)
+                .Include(y => y.TypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -103,6 +105,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 .Where(_ => _.CompanyId.Equals(company) && _.Year.Equals(year) && _.Month.Equals(month))
                 .Include(n => n.Ncm)
                 .Include(t => t.TaxationTypeNcm)
+                .Include(y => y.TypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -113,6 +116,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var rst = _context.TaxationNcms
                 .Include(n => n.Ncm)
                 .Include(t => t.TaxationTypeNcm)
+                .Include(y => y.TypeNcm)
                 .ToList();
             AddLog(log);
             return rst;
@@ -178,6 +182,7 @@ namespace Escon.SisctNET.Repository.Implementation
                     .Where(_ => _.Company.CountingTypeId.Equals(1) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)))
                     .Include(n => n.Ncm)
                     .Include(t => t.TaxationTypeNcm)
+                    .Include(y => y.TypeNcm)
                     .ToList();
             }
             else
@@ -186,6 +191,7 @@ namespace Escon.SisctNET.Repository.Implementation
                     .Where(_ => (_.Company.CountingTypeId.Equals(2) || _.Company.CountingTypeId.Equals(3)) && (_.TaxationTypeNcmId.Equals(2) || _.TaxationTypeNcmId.Equals(3) || _.TaxationTypeNcmId.Equals(4)))
                     .Include(n => n.Ncm)
                     .Include(t => t.TaxationTypeNcm)
+                    .Include(y => y.TypeNcm)
                     .ToList();
             }
             return ncms;

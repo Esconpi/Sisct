@@ -55,6 +55,12 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliquota Interestadual BCR")]
         public decimal? PicmsBCR { get; set; }
 
+        [Display(Name = "CST")]
+        public string Cst { get; set; }
+
+        [Display(Name = "CSOSN")]
+        public string Csosn { get; set; }
+
         [Display(Name = "Valor IPI")]
         public decimal Vipi { get; set; }
 

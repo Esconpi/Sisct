@@ -3756,20 +3756,20 @@ namespace Escon.SisctNET.Web.Controllers
                         var codeProd3 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Transporte"))
                             .Select(_ => _.CodeProduct)
                             .ToList();
-                        var codeProd4 = ncmsCompany.Where(_ => _.TypeNcmId.Equals("Serviço"))
+                        var codeProd4 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Serviço"))
                             .Select(_ => _.CodeProduct)
                             .ToList();
 
                         var ncm1 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Combustível"))
                             .Select(_ => _.Ncm.Code)
                             .ToList();
-                        var ncm2 = ncmsCompany.Where(_ => _.TypeNcmId.Equals("Comércio"))
+                        var ncm2 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Comércio"))
                             .Select(_ => _.Ncm.Code)
                             .ToList();
                         var ncm3 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Transporte"))
                             .Select(_ => _.Ncm.Code)
                             .ToList();
-                        var ncm4 = ncmsCompany.Where(_ => _.TypeNcmId.Equals("Serviço"))
+                        var ncm4 = ncmsCompany.Where(_ => _.TypeNcm.Name.Equals("Serviço"))
                             .Select(_ => _.Ncm.Code)
                             .ToList();
 
