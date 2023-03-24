@@ -210,5 +210,7 @@ namespace Escon.SisctNET.Model
         public bool EBcr { get; set; }
 
         public decimal? DiferencialCTe { get; set; }
+
+        public bool Divergent { get; set;  }
     }
 }

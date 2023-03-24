@@ -532,7 +532,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
                             var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                            bool incentivo = false, eBcr = false;
+                            bool incentivo = false, eBcr = false, divergent = false;
 
                             var ncmBcr = _ncmConvenioService.FindByNcmAnnex(ncmConvenioBCRTemp, NCM, CEST, comp);
                             decimal? aliquotConfaz = null, internalAliquotConfaz = null;
@@ -542,7 +542,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (CST == "20")
                                     eBcr = true;
                                 else
+                                {
                                     eBcr = false;
+                                    divergent = true;
+                                }
 
                                 aliquotConfaz = _aliquotConfazService.FindByUf(aliquotasConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                                 internalAliquotConfaz = _internalAliquotConfazService.FindByUf(aliquotasinternaConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
@@ -625,6 +628,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
                                     prod.EBcr = eBcr;
+                                    prod.Divergent = divergent;
                                     prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
@@ -687,6 +691,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Pautado = false;
                                     prod.PercentualInciso = null;
                                     prod.EBcr = eBcr;
+                                    prod.Divergent = divergent;
                                     prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
                                     prod.Created = DateTime.Now;
@@ -854,6 +859,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.Mva = taxed.MVA;
                                     prod.EBcr = eBcr;
+                                    prod.Divergent = divergent;
                                     prod.BCR = taxed.BCR;
                                     prod.Fecop = taxed.Fecop;
                                     prod.DateStart = Convert.ToDateTime(taxed.DateStart);

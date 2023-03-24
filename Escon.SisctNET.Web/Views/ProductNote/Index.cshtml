@@ -99,7 +99,7 @@
                             <th class="none">Valor IPI</th>
                             <th class="none">ICMS ST</th>
                             <th class="all"></th>
-                            <th class="all" style="50px;"></th>
+                            <th class="all" style="width:50px;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,13 +109,17 @@
                             {
                                 <tr style="color:red;">
                                     <td>
+                                    @if (item.Divergent.Equals(true))
+                                        {
+                                            <i class="fa fa-warning text-yellow"></i>
+                                        }
                                         @if (item.Status.Equals(false))
                                         {
-                                            <i class="fa fa-times-circle" style="color:red;"></i>
+                                            <i class="fa fa-times-circle text-red"></i>
                                         }
                                         else
                                         {
-                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                            <i class="fa fa-check-circle text-green"></i>
                                         }
                                         @Html.DisplayFor(modelItem => item.Xprod)
                                     </td>
@@ -174,13 +178,17 @@
                             {
                                 <tr>
                                     <td>
+                                        @if (item.Divergent.Equals(true))
+                                        {
+                                            <i class="fa fa-warning text-yellow"></i>
+                                        }
                                         @if (item.Status.Equals(false))
                                         {
-                                            <i class="fa fa-times-circle" style="color:red;"></i>
+                                            <i class="fa fa-times-circle text-red"></i>
                                         }
                                         else
                                         {
-                                            <i class="fa fa-check-circle" style="color:green;"></i>
+                                            <i class="fa fa-check-circle text-green"></i>
                                         }
                                         @Html.DisplayFor(modelItem => item.Xprod)
                                     </td>

@@ -809,7 +809,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _noteService.Update(updateNote, GetLog(OccorenceLog.Update));
 
-                if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false)
+                if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false && entity.Divergent == false)
                 {
                     string aliquot = prod.Picms.ToString();
 
