@@ -148,7 +148,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var countingType = _countingTypeService.FindAll(null);
                 List<CountingType> countingTypes = new List<CountingType>();
-                countingTypes.Insert(0, new CountingType() { Id = 0, Name = "Nenhum" });
 
                 foreach (var item in countingType)
                 {
@@ -316,7 +315,6 @@ namespace Escon.SisctNET.Web.Controllers
                     else
                         annex.Description = annex.Description + " - " + annex.Convenio;
                 }
-                list_annex.Insert(0, new Annex() { Description = "Nennhum anexo selecionado", Id = 0 });
                 SelectList annexs = new SelectList(list_annex, "Id", "Description", null);
                 ViewBag.AnnexId = annexs;
 
@@ -325,7 +323,6 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     chapter.Name = chapter.Name + " - " + chapter.Description;
                 }
-                list_chapters.Insert(0, new Chapter() { Name = "Nenhuma capítulo selecionado", Id = 0 });
                 SelectList chapters = new SelectList(list_chapters, "Id", "Name", null);
                 ViewBag.ChapterId = chapters;
 
@@ -334,19 +331,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     section.Name = section.Name + " - " + section.Description;
                 }
-                list_sections.Insert(0, new Section() { Name = "Nenhuma seção selecionada", Id = 0 });
                 SelectList sections = new SelectList(list_sections, "Id", "Name", null);
                 ViewBag.SectionId = sections;
-
-
-                if(result.AnnexId == null)
-                    result.AnnexId = 0;
-
-                if (result.ChapterId == null)
-                    result.ChapterId = 0;
-
-                if(result.SectionId == null)
-                    result.SectionId = 0;
 
                 return View(result);
             }

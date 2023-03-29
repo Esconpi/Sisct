@@ -421,17 +421,17 @@
                     "mData": "countingTypeId",
                     "mRender": function (data, type, row) {
                         if (data == 1) {
-                              return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1' selected>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3'>Simples</option></select>";
+                            return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='1' selected>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3'>Simples</option><option value='4'>Nenhum</option></select>";
                         }
                         else if (data == 2) {
-                              return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Lucro Real</option><option value='2' selected>Lucro Presumido</option><option value='3'>Simples</option></select>";
+                            return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='1'>Lucro Real</option><option value='2' selected>Lucro Presumido</option><option value='3'>Simples</option><option value='4'>Nenhum</option></select>";
                         }
                         else if (data == 3) {
-                             return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0'>Nenhum</option><option value='1'>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3' selected>Simples</option></select>";
+                            return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='1'>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3' selected>Simples</option><option value='4'>Nenhum</option></select>";
                         }
                         else
                         {
-                             return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='0' selected>Nenhum</option><option value='1'>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3'>Simples</option></select>";
+                            return "<select companyId='" + row.id + "' name='countingTypeId' class='form-control selectoption selectoptiontype' style='width:100%;'><option value='1'>Lucro Real</option><option value='2'>Lucro Presumido</option><option value='3'>Simples</option><option value='4' selected>Nenhum</option></select>";
                         }
                     }
                 },
