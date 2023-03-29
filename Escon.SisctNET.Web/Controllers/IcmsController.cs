@@ -109,33 +109,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(companyId, null);
 
-                if (comp.Annex == null)
-                {
-                    comp.Annex = new Annex()
-                    {
-                        Convenio = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Chapter == null)
-                {
-                    comp.Chapter = new Chapter()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Section == null)
-                {
-                    comp.Section = new Section()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
@@ -25783,10 +25756,8 @@ namespace Escon.SisctNET.Web.Controllers
                         resumoAnexo[i, 3] = "0";
                     }
 
-
                     decimal totalVendas = 0;
                     
-
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
                         if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
@@ -27307,19 +27278,11 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
                     {
                         if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
-                        {
                             if (percentualVendaNcm < Convert.ToDecimal(comp.VendaAnexo))
-                            {
                                 difAnexo = calculation.Diferenca(Convert.ToDecimal(comp.VendaAnexo), percentualVendaNcm);
-                            }
-                        }
                         else
-                        {
                             if (percentualVendaNcm < Convert.ToDecimal(comp.Faturamento))
-                            {
                                 difAnexo = calculation.Diferenca(Convert.ToDecimal(comp.Faturamento), percentualVendaNcm);
-                            }
-                        }
 
                     }
 
@@ -28019,15 +27982,6 @@ namespace Escon.SisctNET.Web.Controllers
                         saldoCredor = 0;
 
                     ViewBag.SaldoCredor = saldoCredor;
-
-                    if (comp.AnnexId == null)
-                        comp.Annex = null;
-
-                    if (comp.ChapterId == null)
-                        comp.Chapter = null;
-
-                    if (comp.SectionId == null)
-                        comp.Section = null;
 
                     var creditCurrent = _creditBalanceService.FindByCurrentMonth(companyId, month, year);
 

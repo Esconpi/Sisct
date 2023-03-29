@@ -67,30 +67,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(id, null);
 
-                if (comp.Annex == null)
-                {
-                    comp.Annex = new Annex() {
-                        Convenio = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Chapter == null)
-                {
-                    comp.Chapter = new Chapter() { 
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Section == null)
-                {
-                    comp.Section = new Section() { 
-                        Name = "",
-                        Description = ""
-                    };
-                }
-                  
                 ViewBag.PercentualPetroleo = Convert.ToDecimal(comp.IRPJ1).ToString().Replace(".", ",");
                 ViewBag.PercentualComercio = Convert.ToDecimal(comp.IRPJ2).ToString().Replace(".", ",");
                 ViewBag.PercentualTransporte = Convert.ToDecimal(comp.IRPJ3).ToString().Replace(".", ",");
@@ -566,34 +542,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var comp = _companyService.FindById(companyid, null);
 
-                if (comp.Annex == null)
-                {
-                    comp.Annex = new Annex()
-                    {
-                        Convenio = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Chapter == null)
-                {
-                    comp.Chapter = new Chapter()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Section == null)
-                {
-                    comp.Section = new Section()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.CountingTypeId == null)
+                if (comp.CountingType.Name.Equals("Nenhum"))
                 {
                     ViewBag.Erro = 1;
                     return View(comp);
@@ -1856,15 +1805,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseCalcNContribuinte = totalNcontribuinte - totalDevoNContribuinte,
                                     limiteGrupo = (baseCalc * Convert.ToDecimal(comp.VendaMGrupo)) / 100;
 
-                            if (comp.AnnexId == null)
-                                comp.Annex = null;
-
-                            if (comp.ChapterId == null)
-                                comp.Chapter = null;
-
-                            if (comp.SectionId == null)
-                                comp.Section = null;
-
                             if (imp != null)
                             {
                                 imp.Vendas = totalVendas;
@@ -2020,7 +1960,7 @@ namespace Escon.SisctNET.Web.Controllers
                         
                         if(comp.Incentive && !comp.TipoApuracao)
                         {
-                            if (comp.AnnexId.Equals(null))
+                            if (comp.Annex.Description.Equals("NENHUM"))
                             {
                                 //  Incentivo de Produto e Indústria
                                 var prodsAll = _productIncentivoService.FindByAllProducts(companyid);
@@ -5346,15 +5286,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                 }
-
-                if (comp.AnnexId == null)
-                    comp.Annex = null;
-
-                if (comp.ChapterId == null)
-                    comp.Chapter = null;
-
-                if (comp.SectionId == null)
-                    comp.Section = null;
 
                 if (imp != null)
                 {

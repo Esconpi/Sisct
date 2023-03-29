@@ -98,6 +98,10 @@ namespace Escon.SisctNET.Web.Controllers
                     if(company == null)
                     {
                         emp.Sped = true;
+                        emp.AnnexId = 17;
+                        emp.ChapterId = 16;
+                        emp.SectionId = 3;
+                        emp.CountingTypeId = 4;
 
                         addCompany.Add(emp);
                     }
@@ -204,6 +208,10 @@ namespace Escon.SisctNET.Web.Controllers
                     entity.FantasyName = "";
 
                 entity.Sped = true;
+                entity.AnnexId = 17;
+                entity.ChapterId = 16;
+                entity.SectionId = 3;
+                entity.CountingTypeId = 4;
                 entity.Created = DateTime.Now;
                 entity.Updated = entity.Created;
 

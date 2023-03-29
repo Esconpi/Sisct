@@ -542,10 +542,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (CST == "20")
                                     eBcr = true;
                                 else
-                                {
-                                    eBcr = false;
                                     divergent = true;
-                                }
 
                                 aliquotConfaz = _aliquotConfazService.FindByUf(aliquotasConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), notes[i][2]["UF"], comp.County.State.UF, ncmBcr.AnnexId).Aliquota;
                                 internalAliquotConfaz = _internalAliquotConfazService.FindByUf(aliquotasinternaConfaz, Convert.ToDateTime(notes[i][1]["dhEmi"]), comp.County.State.UF, ncmBcr.AnnexId).Aliquota;

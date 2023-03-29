@@ -902,33 +902,6 @@ namespace Escon.SisctNET.Web.Controllers
                 var isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false;
                 var isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
 
-                if (comp.Annex == null)
-                {
-                    comp.Annex = new Annex()
-                    {
-                        Convenio = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Chapter == null)
-                {
-                    comp.Chapter = new Chapter()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Section == null)
-                {
-                    comp.Section = new Section()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
@@ -1942,15 +1915,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (saldoCredor < 0)
                                     saldoCredor = 0;
 
-                                if (comp.AnnexId == null)
-                                    comp.Annex = null;
-
-                                if (comp.ChapterId == null)
-                                    comp.Chapter = null;
-
-                                if (comp.SectionId == null)
-                                    comp.Section = null;
-
                                 var creditCurrent = _creditBalanceService.FindByCurrentMonth(id, month, year);
 
                                 if (creditCurrent == null)
@@ -2726,7 +2690,7 @@ namespace Escon.SisctNET.Web.Controllers
                              icmsFecop2STSIE = Math.Round(Convert.ToDecimal(notesST.Where(_ => _.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2);
 
                     //Incentivo
-                    if (comp.Incentive && (!comp.AnnexId.Equals(null) || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
+                    if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
                     {
                         //Produtos não incentivados
                         var productsSTNormal = produtosST.Where(_ => !_.Incentivo).ToList();
@@ -2966,15 +2930,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Percentual
                                 decimal percentualVendas = (vendasClienteCredenciado * 100) / vendas;
 
-                                if (comp.AnnexId == null)
-                                    comp.Annex = null;
-
-                                if (comp.ChapterId == null)
-                                    comp.Chapter = null;
-
-                                if (comp.SectionId == null)
-                                    comp.Section = null;
-
                                 var notifi = _notificationService.FindByCurrentMonth(id, month, year);
 
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -3131,15 +3086,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (saldoCredor < 0)
                                 saldoCredor = 0;
-
-                            if (comp.AnnexId == null)
-                                comp.Annex = null;
-
-                            if (comp.ChapterId == null)
-                                comp.Chapter = null;
-
-                            if (comp.SectionId == null)
-                                comp.Section = null;
 
                             var creditCurrent = _creditBalanceService.FindByCurrentMonth(id, month, year);
 
@@ -3486,7 +3432,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
                     
-                    if (comp.Incentive && comp.AnnexId.Equals(null))
+                    if (comp.Incentive && comp.Annex.Description.Equals("NENHUM"))
                     {
                         if (imp == null)
                         {

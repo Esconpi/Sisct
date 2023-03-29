@@ -11,7 +11,7 @@
 }
 else if (ViewBag.Company.Incentive == true && ViewBag.Company.TipoApuracao == false)
 {
-    @if (ViewBag.Company.AnnexId == null)
+    @if (ViewBag.Company.Annex.Description.Equals("NENHUM"))
     {
         if (ViewBag.Company.TypeCompany == true)
         {
