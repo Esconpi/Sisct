@@ -555,24 +555,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (comp.Incentive)
                             {
-                                if (comp.Annex != null)
-                                {
-                                    if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
-                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                                if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B"))
+                                    incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                                    if (comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
-                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                                if (comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
+                                    incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                                    if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
-                                        incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
+                                if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
+                                    incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                                }
-
-                                if (comp.Chapter != null)
-                                {
-                                    if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
-                                        incentivo = true;
-                                }
+                                if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                                    incentivo = true;
                             }
 
                             Model.ProductNote prod = new Model.ProductNote();
@@ -709,13 +702,10 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 if (comp.Incentive)
                                 {
-                                    if (comp.Chapter != null)
-                                    {
-                                        if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso == null)
-                                            incentivo = false;
-                                        else if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso != null)
-                                            incentivo = true;
-                                    }
+                                    if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso == null)
+                                        incentivo = false;
+                                    else if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxed.PercentualInciso != null)
+                                        incentivo = true;
                                 }
 
                                 var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();

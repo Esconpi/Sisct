@@ -1327,7 +1327,7 @@ namespace Escon.SisctNET.Web.Controllers
                             totalfecop2SIE = difvalor2SIE - base2fecopSIE;
 
                         //  Relatorio das Empresas Incentivadas
-                        if (comp.Incentive && (comp.AnnexId != null || comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && typeTaxation.Equals(Model.TypeTaxation.ST))
+                        if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             var productsAll = _service.FindByProductsType(prodsAll, typeTaxation);
 
@@ -1650,7 +1650,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     suspensao = Convert.ToDecimal(imp.Suspensao), vendasClienteCredenciado = Convert.ToDecimal(imp.VendasClientes),
                                     vendas = vendasInternasElencadas + vendasInterestadualElencadas + vendasInternasDeselencadas + vendasInterestadualDeselencadas;
 
-
                                     //  Elencadas
                                     // Internas
                                     decimal icmsInternaElencada = (InternasElencadasPortaria * aliqInterna) / 100,
@@ -1708,15 +1707,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     //  Percentual
                                     decimal percentualVendas = (vendasClienteCredenciado * 100) / vendas;
 
-                                    if (comp.AnnexId == null)
-                                        comp.Annex = null;
-
-                                    if (comp.ChapterId == null)
-                                        comp.Chapter = null;
-
-                                    if (comp.SectionId == null)
-                                        comp.Section = null;
-
                                     var notifi = _notificationService.FindByCurrentMonth(id, month, year);
 
                                     if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -1752,7 +1742,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     decimal suspension = Convert.ToDecimal(comp.Suspension),
                                             totalSuspensao = Math.Round((suspensao * suspension) / 100, 2);
                                     totalDarIcms += totalSuspensao;
-
 
                                     //  Elencadas
                                     // Internas
@@ -1827,7 +1816,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 foreach (var prod in products)
                                 {
-                                    if (!prod.Note.Iest.Equals("") && prod.TaxationTypeId.Equals((long)1))
+                                    if (!prod.Note.Iest.Equals("") && prod.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                                         if (Convert.ToDecimal(prod.Diferencial) > 0)
                                             totalFreteAPIE += Convert.ToDecimal((prod.Freterateado * prod.Diferencial) / 100);
                                 }

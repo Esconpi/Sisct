@@ -31,7 +31,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Capítulo")]
         [ForeignKey("Chapter")]
-        public long? ChapterId { get; set; }
+        public long ChapterId { get; set; }
 
         private Chapter chapter;
         public Chapter Chapter
@@ -42,7 +42,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Anexo")]
         [ForeignKey("Annex")]
-        public long? AnnexId { get; set; }
+        public long AnnexId { get; set; }
 
         private Annex annex;
         public Annex Annex
@@ -53,7 +53,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo")]
         [ForeignKey("CountingType")]
-        public long? CountingTypeId { get; set; }
+        public long CountingTypeId { get; set; }
 
         private CountingType countingType;
         public CountingType CountingType
@@ -65,7 +65,7 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "Cidade")]
         [ForeignKey("County")]
-        public long? CountyId { get; set; }
+        public long CountyId { get; set; }
 
         private County county;
         public County County
@@ -76,7 +76,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Seção")]
         [ForeignKey("Section")]
-        public long? SectionId { get; set; }
+        public long SectionId { get; set; }
 
         private Section section;
         public Section Section

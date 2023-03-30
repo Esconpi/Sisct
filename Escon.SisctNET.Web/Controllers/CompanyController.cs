@@ -353,7 +353,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var rst = _service.FindById(id, null);
                 rst.TipoApuracao = entity.TipoApuracao;
                 rst.TypeCompany = entity.TypeCompany;
-                rst.AnnexId = entity.AnnexId.Equals(0) ? null : entity.AnnexId;
+                rst.AnnexId = entity.AnnexId;
                 rst.Icms = entity.Icms;
                 rst.Funef = entity.Funef;
                 rst.Cotac = entity.Cotac;
@@ -374,8 +374,8 @@ namespace Escon.SisctNET.Web.Controllers
                 rst.IcmsNContribuinte = entity.IcmsNContribuinte;
                 rst.IcmsNContribuinteFora = entity.IcmsNContribuinteFora;
                 rst.IcmsAliqM25 = entity.IcmsAliqM25;
-                rst.ChapterId = entity.ChapterId.Equals((long)0) ? null : entity.ChapterId;
-                rst.SectionId = entity.SectionId.Equals((long)0) ? null : entity.SectionId;
+                rst.ChapterId = entity.ChapterId;
+                rst.SectionId = entity.SectionId;
                 rst.AliqInterna = entity.AliqInterna;
                 rst.IncIInterna = entity.IncIInterna;
                 rst.IncIInterestadual = entity.IncIInterestadual; 
@@ -594,15 +594,7 @@ namespace Escon.SisctNET.Web.Controllers
             try
             {
                 var entity = _service.FindById(updateCountingType.CompanyId, null);
-
-                if (updateCountingType.CountingTypeId.Equals(0))
-                {
-                    entity.CountingTypeId = null;
-                }
-                else
-                {
-                    entity.CountingTypeId = updateCountingType.CountingTypeId;
-                }
+                entity.CountingTypeId = updateCountingType.CountingTypeId;
 
                 _service.Update(entity, GetLog(Model.OccorenceLog.Update));
                 return Ok(new { requestcode = 200, message = "ok" });

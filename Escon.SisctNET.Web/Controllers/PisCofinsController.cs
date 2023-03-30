@@ -58,33 +58,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyId, null);
 
-                if (comp.Annex == null)
-                {
-                    comp.Annex = new Annex()
-                    {
-                        Convenio = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Chapter == null)
-                {
-                    comp.Chapter = new Chapter()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
-                if (comp.Section == null)
-                {
-                    comp.Section = new Section()
-                    {
-                        Name = "",
-                        Description = ""
-                    };
-                }
-
                 ViewBag.Year = year;
                 ViewBag.Month = month;
                 ViewBag.Type = type;
@@ -92,7 +65,7 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.Archive = archive;
                 ViewBag.Company = comp;
 
-                if (comp.CountingTypeId == null)
+                if (comp.CountingType.Name.Equals("Nenhum"))
                 {
                     ViewBag.Erro = 1;
                     return View();
@@ -4821,7 +4794,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Apuração Imposto Federal
 
-                    if (comp.CountingTypeId == (long)1)
+                    if (comp.CountingType.Name.Equals("Lucro Real"))
                     {
                         //  Empresa Lucro Real
 
@@ -4917,7 +4890,7 @@ namespace Escon.SisctNET.Web.Controllers
                         imp.Updated = DateTime.Now;
 
                     }
-                    else if (comp.CountingTypeId == (long)2)
+                    else if (comp.CountingType.Name.Equals("Lucro Presumido"))
                     {
                         //  Empresa Lucro Presumido
                         var basePisCofins = _baseService.FindByName("Irpj");
@@ -5292,7 +5265,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         }
                     }
-                    else if (comp.CountingTypeId == (long)3)
+                    else if (comp.CountingType.Name.Equals("Simples Nacional"))
                     {
                         //  Empresa do Simples
                     }
