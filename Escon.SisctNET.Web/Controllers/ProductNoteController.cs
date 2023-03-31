@@ -536,25 +536,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (prod.Note.Company.Incentive)
                         {
-                            if (prod.Note.Company.Annex == null)
-                            {
-                                prod.Note.Company.Annex = new Annex()
-                                {
-                                    Convenio = "",
-                                    Description = ""
-                                };
-
-                            }
-
-                            if (prod.Note.Company.Chapter == null)
-                            {
-                                prod.Note.Company.Chapter = new Chapter()
-                                {
-                                    Name = "",
-                                    Description = ""
-                                };
-                            }
-
                             if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
                                 prod.Incentivo = false;
 
@@ -742,25 +723,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (prod.Note.Company.Incentive)
                             {
-                                if (prod.Note.Company.Annex == null)
-                                {
-                                    prod.Note.Company.Annex = new Annex()
-                                    {
-                                        Convenio = "",
-                                        Description = ""
-                                    };
-
-                                }
-
-                                if (prod.Note.Company.Chapter == null)
-                                {
-                                    prod.Note.Company.Chapter = new Chapter()
-                                    {
-                                        Name = "",
-                                        Description = ""
-                                    };
-                                }
-
                                 if (prod.Note.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
                                     item.Incentivo = false;
 
@@ -779,12 +741,6 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
                 }
-
-                if (prod.Note.Company.AnnexId == null)
-                    prod.Note.Company.Annex = null;
-
-                if (prod.Note.Company.ChapterId == null)
-                    prod.Note.Company.Chapter = null;
                 
                 _service.Update(updateProducts, GetLog(OccorenceLog.Update));
 
