@@ -501,7 +501,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (productImport == null)
                         {
-
                             decimal pICMSFormat = Math.Round(pICMS, 2);
                             string pICMSValid = pICMSFormat.ToString(), pICMSValidOrig = pICMSFormat.ToString();
 
