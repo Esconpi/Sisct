@@ -19,9 +19,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public AliquotConfaz FindByUf(List<AliquotConfaz> aliquotConfazs, DateTime data, string ufOrigem, string ufDestino, long annexId, Log log = null)
         {
-            var result = aliquotConfazs.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
-                                                    (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) > 0)) &&
-                                                   _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino) && _.AnnexId.Equals(annexId))
+            var ufs = aliquotConfazs.Where(_ => _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino) && _.AnnexId.Equals(annexId))
+                                    .ToList();
+            var result = ufs.Where(_ => ((DateTime.Compare(_.DateStart, data) < 0 && _.DateEnd == null) ||
+                                                    (DateTime.Compare(_.DateStart, data) < 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0)))
                                        .FirstOrDefault();
             AddLog(log);
             return result;

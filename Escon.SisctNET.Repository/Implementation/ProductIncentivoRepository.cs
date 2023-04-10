@@ -49,12 +49,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 var dataInicial = DateTime.Compare(Convert.ToDateTime(prod.DateStart), date);
                 var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), date);
 
-                if (dataInicial <= 0 && prod.DateEnd == null)
+                if (dataInicial < 0 && prod.DateEnd == null)
                 {
                     products.Add(prod);
                     continue;
                 }
-                else if (dataInicial <= 0 && dataFinal > 0)
+                else if (dataInicial < 0 && dataFinal >= 0)
                 {
                     products.Add(prod);
                     continue;
@@ -74,12 +74,12 @@ namespace Escon.SisctNET.Repository.Implementation
                 var dataInicial = DateTime.Compare(Convert.ToDateTime(prod.DateStart), date);
                 var dataFinal = DateTime.Compare(Convert.ToDateTime(prod.DateEnd), date);
 
-                if (dataInicial <= 0 && prod.DateEnd == null)
+                if (dataInicial < 0 && prod.DateEnd == null)
                 {
                     products.Add(prod);
                     continue;
                 }
-                else if (dataInicial <= 0 && dataFinal > 0)
+                else if (dataInicial < 0 && dataFinal >= 0)
                 {
                     products.Add(prod);
                     continue;
