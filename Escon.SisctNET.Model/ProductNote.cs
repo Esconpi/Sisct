@@ -162,7 +162,7 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Tipo de Uso")]
         [ForeignKey("TaxationType")]
-        public long? TaxationTypeId { get; set; }
+        public long TaxationTypeId { get; set; }
 
         private TaxationType taxationType;
         public TaxationType TaxationType

@@ -174,9 +174,6 @@ namespace Escon.SisctNET.Web.Controllers
                 ViewBag.DescriptionNCM = description;
 
                 var list_taxation = _taxationTypeService.FindAll(null).Where(_ => _.Active).OrderBy(_ => _.Description).ToList();
-
-                list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
-
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 ViewBag.TaxationTypeId = taxationtypes;
 
@@ -384,7 +381,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             baseCalc = Vbasecalc;
 
-                            if (mva != null)
+                            if (mva == null)
                             {
                                 prod.Valoragregado = null;
                                 prod.Mva = null;

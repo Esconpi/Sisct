@@ -620,6 +620,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Divergent = divergent;
                                     prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
+                                    prod.TaxationTypeId = 10;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 
@@ -683,6 +684,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     prod.Divergent = divergent;
                                     prod.AliqInternaBCR = internalAliquotConfaz;
                                     prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
+                                    prod.TaxationTypeId = 10;
                                     prod.Created = DateTime.Now;
                                     prod.Updated = DateTime.Now;
 

@@ -240,7 +240,7 @@
 
     function activeButton() {
         var op = document.getElementById("taxaType").value;
-        if (op == "0") {
+        if (op == "10") {
             document.getElementById('taxar').disabled = true;
         } else {
             document.getElementById('taxar').disabled=false;
@@ -268,7 +268,7 @@
                 $("input[name=Mva]").prop("disabled", true);
                 $("input[name=BCR]").prop("disabled", true);
             }
-            if (taxacao == 0) {
+            if (taxacao == 10) {
                 document.getElementById('taxar').disabled = true;
             }
             else {
@@ -356,7 +356,6 @@
             $("input[name=BCR]").prop("value", "");
             $("input[name=Fecop]").prop("disabled", true);
             $("input[name=Fecop]").prop("value", "");
-
         }
 
     });
@@ -393,7 +392,7 @@
 
     function Enviar() {
         $("#taxaType").children('option').each(function () {
-            if ($(this).val() === 0) {
+            if ($(this).val() === 10) {
                 alert('Selecione uma tributação');
             }
         });
