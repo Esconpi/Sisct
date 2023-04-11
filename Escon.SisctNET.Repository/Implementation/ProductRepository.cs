@@ -19,8 +19,8 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Product> FindAllInDate(DateTime data, Log log = null)
         {
-            var result = _context.Products.Where(_ => (DateTime.Compare(_.DateStart, data) < 0 && _.DateEnd == null) ||
-                                                      (DateTime.Compare(_.DateStart, data) < 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0))
+            var result = _context.Products.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                                      (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0))
                                           .ToList();
             AddLog(log);
             return result;

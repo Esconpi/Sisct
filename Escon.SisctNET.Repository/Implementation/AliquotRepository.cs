@@ -44,8 +44,8 @@ namespace Escon.SisctNET.Repository.Implementation
         public Aliquot FindByUf(List<Aliquot> aliquots, DateTime data, string ufOrigem, string ufDestino, Log log = null)
         {
             var ufs = aliquots.Where(_ => _.StateOrigem.UF.Equals(ufOrigem) && _.StateDestino.UF.Equals(ufDestino)).ToList();
-            var result = ufs.Where(_ => ((DateTime.Compare(_.DateStart, data) < 0 && _.DateEnd == null) ||
-                                         (DateTime.Compare(_.DateStart, data) < 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0)))
+            var result = ufs.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                         (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0)))
                             .FirstOrDefault();
             AddLog(log);
             return result;

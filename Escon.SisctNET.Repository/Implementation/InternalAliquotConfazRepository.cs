@@ -35,10 +35,10 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public InternalAliquotConfaz FindByUf(List<InternalAliquotConfaz> internalAliquotConfazs, DateTime data, string uf, long annexId, Log log = null)
         {
-            var result = internalAliquotConfazs.Where(_ => ((DateTime.Compare(_.DateStart, data) < 0 && _.DateEnd == null) ||
-                                                            (DateTime.Compare(_.DateStart, data) < 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0)) &&
-                                                           _.State.UF.Equals(uf) && _.AnnexId.Equals(annexId))
-                                               .FirstOrDefault();
+            var ufs = internalAliquotConfazs.Where(_ => _.State.UF.Equals(uf) && _.AnnexId.Equals(annexId)).ToList();
+            var result = ufs.Where(_ => ((DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                         (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0)))
+                             .FirstOrDefault();
             AddLog(log);
             return result;
         }
