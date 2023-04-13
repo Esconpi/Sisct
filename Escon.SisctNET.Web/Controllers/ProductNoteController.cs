@@ -186,9 +186,6 @@ namespace Escon.SisctNET.Web.Controllers
                 SelectList products = new SelectList(list_product, "Id", "Description", null);
                 ViewBag.ProductId = products;
 
-                if (product.TaxationTypeId == null)
-                    product.TaxationTypeId = 0;
-
                 if (product.ProductId == null)
                     product.ProductId = 0;
 
@@ -242,6 +239,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.CompanyId), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
+                //var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest).Where(_ => _.NoteId.Equals(prod.NoteId)).ToList();
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
                 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
@@ -805,7 +803,6 @@ namespace Escon.SisctNET.Web.Controllers
                     taxation.DateEnd = null;
 
                     _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
-
                 }       
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });

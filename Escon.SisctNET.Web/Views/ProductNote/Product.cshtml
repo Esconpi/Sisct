@@ -128,9 +128,13 @@
                         </div>
                         <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">* INCISO (%)</label>
-                            @if (Model.Note.Company.ChapterId != null)
+                            @if (Model.Note.Company.Chapter.Name.Equals("NENHUM"))
                             {
-                                @if(Model.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
+                                <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
+                            }
+                            else
+                            {
+                                @if (Model.Note.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 {
                                     <input type="text" name="PercentualInciso" class="form-control money" value="@Model.PercentualInciso" />
                                 }
@@ -138,10 +142,6 @@
                                 {
                                     <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
                                 }
-                            }
-                            else
-                            {
-                                <input type="text" name="PercentualInciso" class="form-control money" disabled="disabled" />
                             }
                         </div>
                         <div class="form-group col-lg-2 col-md-2 col-xs-4">
@@ -251,7 +251,6 @@
     $("#productid").children('option').each(function () {
         if ($(this).val() == product) {
             $(this).attr('selected', true);
-
         }
     });
 
@@ -261,7 +260,6 @@
             $(this).attr('selected', true);
             if (taxacao === 5 || taxacao === 8) {
                 $("input[name=Mva]").prop("disabled", false);
-                $("input[name=BCR]").prop("disabled", false);
             } else if (taxacao === 6) {
                 $("input[name=Mva]").prop("disabled", false);
             } else {
@@ -289,7 +287,6 @@
  
             if (Dhemi < data) {
                 $("input[name=Fecop]").prop("disabled", false);
-                $("input[name=BCR]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("value", "1");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
@@ -303,7 +300,6 @@
                 }
             } else {
                 $("input[name=Fecop]").prop("disabled", false);
-                $("input[name=BCR]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("disabled", true);
                     $("input[name=Fecop]").prop("value", "");

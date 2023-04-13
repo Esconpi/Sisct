@@ -152,7 +152,7 @@
                         }
                     }
 
-                    @if (ViewBag.Company.Incentive == true && (ViewBag.Company.AnnexId != null || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
+                    @if (ViewBag.Company.Incentive == true && (!ViewBag.Company.Annex.Description.Equals("NENHUM") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
                      ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" && ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI")
                     {
                         <!-- Resumo Imposto Incentivo -->
