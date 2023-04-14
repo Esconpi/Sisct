@@ -94,17 +94,8 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (comp.Annex != null)
+                if (comp.Annex.Description.Equals("NENHUM"))
                 {
-                    if(comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
-                    {
-                        if (n.Ncm.Equals(substring))
-                            return n;
-                    }
-                }
-                else
-                {
-
                     if (n.Ncm.Equals(substring) && cestTemp == cestBase)
                         return n;
 
@@ -114,12 +105,37 @@ namespace Escon.SisctNET.Repository.Implementation
                             return n;
                     }
 
-
                     if (cestBase != "" && cestBase != null && cestTemp != "")
                     {
                         if (cestTemp == cestBase)
                             return n;
                     }
+                }
+                else
+                {
+                    if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                    {
+                        if (n.Ncm.Equals(substring))
+                            return n;
+                    }
+                    else
+                    {
+                        if (n.Ncm.Equals(substring) && cestTemp == cestBase)
+                            return n;
+
+                        if (substring != "" && (n.Ncm != "" || n.Ncm != null))
+                        {
+                            if (n.Ncm.Equals(substring))
+                                return n;
+                        }
+
+                        if (cestBase != "" && cestBase != null && cestTemp != "")
+                        {
+                            if (cestTemp == cestBase)
+                                return n;
+                        }
+                    }
+
                 }
 
             }
