@@ -520,6 +520,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.IcmsApurado = null;
                         }
 
+                        prod.AliqInterna = aliqInterna;
                         prod.TaxationTypeId = taxationType;
                         prod.EBcr = entity.EBcr;
                         prod.Status = true;
@@ -707,6 +708,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 item.IcmsApurado = null;
                             }
 
+                            item.AliqInterna = aliqInterna;
                             item.TaxationTypeId = taxationType;
                             item.EBcr = entity.EBcr;
                             item.Status = true;
