@@ -768,13 +768,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
 
-                    var orig = prod.Picms;
+                    /*var orig = prod.Orig;
 
                     if (orig == 1 || orig == 2 || orig == 6 || orig == 7)
                     {
                         var state = _aliquotService.FindByUf(prod.Note.Uf, prod.Note.Company.County.State.UF, prod.Note.Dhemi) ;
                         aliquot = state.Aliquota.ToString();
-                    }
+                    }*/
 
                     string code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
 
