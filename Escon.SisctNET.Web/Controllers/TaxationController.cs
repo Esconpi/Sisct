@@ -60,9 +60,6 @@ namespace Escon.SisctNET.Web.Controllers
             {
 
                 var list_taxation = _taxationTypeService.FindAll(null).Where(_ => _.Active).OrderBy(_ => _.Description).ToList();
-
-                list_taxation.Insert(0, new TaxationType() { Description = "Nennhum item selecionado", Id = 0 });
-
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
                 ViewBag.TaxationTypeId = taxationtypes;
 

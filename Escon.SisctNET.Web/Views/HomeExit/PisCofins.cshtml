@@ -55,8 +55,7 @@
                             <!--
                                 <option value="resumoDevoNcmMono">Resumo Devolução NCM Monofásico</option>
                             -->
-
-                            @if (Model.CountingTypeId == 3)
+                            @if (Model.CountingType.Name.Equals("Simples Nacional"))
                             {
                                 <option value="relatorioSimples">Relatório Simples Nacional</option>
                             }
@@ -117,7 +116,7 @@
     </div>
 </div>
 
-@if (Model.CountingTypeId == 2)
+@if (Model.CountingType.Name.Equals("Lucro Presumido"))
 {
     <script type="text/javascript">
         function ativar_button() {

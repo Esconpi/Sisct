@@ -49,7 +49,7 @@
 
                             @if (Model.Incentive == true)
                             {
-                                @if (Model.AnnexId == 1 || Model.AnnexId == 3 || Model.AnnexId == 4)
+                                @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || Model.Annex.Description.Equals("ANEXO ÚNICO") || Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
                                 {
                                     <option value="resumoCfopAnexo">Resumo CFOP Dentro do Anexo</option>
                                     <option value="resumoCfopCstAnexo">Resumo CFOP/CST Dentro do Anexo</option>
@@ -67,7 +67,7 @@
                                     <option value="vendaContribuinte">Venda P/ Contribuinte</option>
                                     <option value="vendaNContribuinte">Venda P/ não Contribuinte</option>
                                 }
-                                else if (Model.ChapterId == 4)
+                                else if (Model.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 {
                                     <option value="resumoPorCfop">Resumo por CFOP</option>
                                     <option value="vendaContribuinte">Venda P/ Contribuinte</option>
@@ -96,7 +96,7 @@
 
                             @if (Model.Incentive == true)
                             {
-                                @if (Model.AnnexId != null)
+                                @if (!Model.Annex.Description.Equals("NENHUM"))
                                 {
                                     <option value="suspensao">Notas Suspensão</option>
                                 }
@@ -110,13 +110,13 @@
                                     <option value="incentivo">Incentivo</option>
                                 }
 
-                                @if (Model.AnnexId != null)
+                                @if (!Model.Annex.Description.Equals("NENHUM"))
                                 {
-                                    @if (Model.AnnexId == 1)
+                                    @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                                     {
                                         <option value="anexoAutoPecas">ANEXO CCCXVI</option>
                                     }
-                                    else if (Model.AnnexId == 3)
+                                    else if (Model.Annex.Description.Equals("ANEXO ÚNICO"))
                                     {
                                         <option value="anexoMedicamento">ANEXO CLIX</option>
                                     }
