@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model;
+﻿using DocumentFormat.OpenXml.Vml.Office;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Escon.SisctNET.Web.Controllers
@@ -755,8 +757,6 @@ namespace Escon.SisctNET.Web.Controllers
                         n.Updated = DateTime.Now;
                         n.DateEnd = Convert.ToDateTime(entity.DateStart).AddDays(-1);
 
-                        var lastId = _service.FindAll(null).Max(_ => _.Id);
-
                         TaxationNcm taxationNcm = new TaxationNcm();
 
                         taxationNcm.Created = DateTime.Now;
@@ -769,7 +769,6 @@ namespace Escon.SisctNET.Web.Controllers
                         taxationNcm.CstSaidaId = n.CstSaidaId;
                         taxationNcm.Status = true;
                         taxationNcm.CodeProduct = n.CodeProduct;
-                        taxationNcm.Id = lastId + 1;
                         taxationNcm.TaxationTypeNcmId = n.TaxationTypeNcmId;
                         taxationNcm.DateStart = entity.DateStart;
                         taxationNcm.Year = n.Year;
@@ -788,6 +787,60 @@ namespace Escon.SisctNET.Web.Controllers
                 _service.Create(createTributacoes, GetLog(OccorenceLog.Create));
 
                 return RedirectToAction("IndexAll", new { id = rst.CompanyId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        public IActionResult Transfer(long companyId)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxationNcm")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+
+                var ncms = _service.FindAll(null)
+                                          .Where(_ => _.CompanyId.Equals(companyId))
+                                          .ToList();
+
+
+                List<TaxationNcm> createTributacoes = new List<TaxationNcm>();
+
+                foreach (var ncm in ncms)
+                {
+                    TaxationNcm taxationNcm = new TaxationNcm();
+
+                    taxationNcm.Created = DateTime.Now;
+                    taxationNcm.Updated = taxationNcm.Created;
+                    taxationNcm.DateEnd = ncm.DateEnd;
+                    taxationNcm.CompanyId = 318;
+                    taxationNcm.NcmId = ncm.NcmId;
+                    taxationNcm.TypeNcmId = ncm.TypeNcmId;
+                    taxationNcm.CstEntradaId = ncm.CstEntradaId;
+                    taxationNcm.CstSaidaId = ncm.CstSaidaId;
+                    taxationNcm.Status = true;
+                    taxationNcm.CodeProduct = ncm.CodeProduct;
+                    taxationNcm.TaxationTypeNcmId = ncm.TaxationTypeNcmId;
+                    taxationNcm.DateStart = ncm.DateStart;
+                    taxationNcm.DateEnd = ncm.DateEnd;
+                    taxationNcm.Year = ncm.Year;
+                    taxationNcm.Month = ncm.Month;
+                    taxationNcm.Arquivo = ncm.Arquivo;
+                    taxationNcm.Pis = ncm.Pis;
+                    taxationNcm.Cofins = ncm.Cofins;
+                    taxationNcm.NatReceita = ncm.NatReceita;
+
+                    createTributacoes.Add(taxationNcm);
+
+                }
+
+                _service.Create(createTributacoes, GetLog(OccorenceLog.Create));
+
+                return RedirectToAction("IndexAll", new { id = companyId });
+
             }
             catch (Exception ex)
             {

@@ -153,6 +153,54 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        public IActionResult Transfer(long companyId)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Taxation")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+
+                var taxations = _service.FindAll(null)
+                                          .Where(_ => _.CompanyId.Equals(companyId))
+                                          .ToList();
+
+                List<Taxation> createTaxation = new List<Taxation>();
+
+                foreach (var taxation in taxations)
+                {
+                    Taxation taxationTemp = new Taxation();
+                    taxationTemp.Created = DateTime.Now;
+                    taxationTemp.Updated = taxationTemp.Created;
+                    taxationTemp.TaxationTypeId = taxation.TaxationTypeId;
+                    taxationTemp.NcmId = taxation.NcmId;
+                    taxationTemp.CompanyId = 318;
+                    taxationTemp.Code = "07476781000215" + taxation.Code.Substring(14);
+                    taxationTemp.Uf = taxation.Uf;
+                    taxationTemp.Cest = taxation.Cest;
+                    taxationTemp.Picms = taxation.Picms;
+                    taxationTemp.AliqInterna = taxation.AliqInterna;
+                    taxationTemp.MVA = taxation.MVA;
+                    taxationTemp.Fecop = taxation.Fecop;
+                    taxationTemp.BCR = taxation.BCR;
+                    taxationTemp.PercentualInciso = taxation.PercentualInciso;
+                    taxationTemp.EBcr = taxation.EBcr;
+                    taxationTemp.DateStart = taxation.DateStart;
+                    taxationTemp.DateEnd = taxation.DateEnd;
+
+                    createTaxation.Add(taxationTemp);
+                }
+
+                _service.Create(createTaxation, null);
+
+                return RedirectToAction("Index", new { id = companyId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Details(long id)
         {

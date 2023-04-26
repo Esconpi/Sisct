@@ -11,6 +11,17 @@
         <a asp-controller="Company" asp-action="Index" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
 
         <h3 class="box-title"><strong>Tributação</strong></h3>
+        <!--
+            <div class="btn-group pull-right">
+
+                <a asp-action="Transfer" asp-route-companyId="@SessionManager.GetCompanyIdInSession()" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-forward"></i>
+                    Transferir
+                </a>
+
+            </div>
+        -->
+
 
         <div style="width:100%; text-align:center;">
             <strong>@ViewBag.Company.SocialName</strong> <br />
