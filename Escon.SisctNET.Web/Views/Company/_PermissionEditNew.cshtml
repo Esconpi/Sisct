@@ -44,7 +44,7 @@
                 <label class="control-label">Icms %</label>
                 <input class="form-control money" name="Icms" value="@Model.Icms" />
             </div>
-            @if (Model.TipoApuracao == false && (Model.AnnexId == null || Model.AnnexId == 0))
+            @if (Model.TipoApuracao == false && Model.Annex.Description == "NENHUM")
             {
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label class="control-label">Icms Aliq. Superior 25  %</label>
@@ -93,7 +93,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.ChapterId == 4)
+                @if (Model.Chapter.Name == "CAPÍTULO IV-C")
                 {
                     <input class="form-control money" value="@Model.Transferencia" name="Transferencia" id="Transferencia"/>
                 }
@@ -104,7 +104,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.ChapterId == 4)
+                @if (Model.Chapter.Name == "CAPÍTULO IV-C")
                 {
                     <input class="form-control money" value="@Model.TransferenciaExcedente" name="TransferenciaExcedente" id="TransferenciaExcedente"/>
                 }
@@ -167,7 +167,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.Annex.Description == "ANEXO CCCXXVI (Art. 791 - A)"))
                 {
                     <input class="form-control money" value="@Model.VendaContribuinte" name="VendaContribuinte" id="VendaContribuinte"/>
                 }
@@ -178,7 +178,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.Annex.Description == "ANEXO CCCXXVI (Art. 791 - A)"))
                 {
                     <input class="form-control money" value="@Model.VendaContribuinteExcedente" name="VendaContribuinteExcedente" id="VendaContribuinteExcedente"/>
                 }
@@ -193,7 +193,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.Annex.Description == "ANEXO CCCXXVI (Art. 791 - A)"))
                 {
                     <input class="form-control money" value="@Model.VendaCpf" name="VendaCpf" id="VendaCpf" />
                 }
@@ -204,7 +204,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.AnnexId == 4))
+                @if (Model.TipoApuracao == true || (Model.TipoApuracao == false && Model.Annex.Description == "ANEXO CCCXXVI (Art. 791 - A)"))
                 {
                     <input class="form-control money" value="@Model.VendaCpfExcedente" name="VendaCpfExcedente"  id="VendaCpfExcedente"/>
                 }
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="row">
-            @if (Model.AnnexId == 3)
+            @if (Model.Annex.Description == "ANEXO ÚNICO")
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <label asp-for="AliqInterna" class="control-label" style="font-size:10px;"></label>
@@ -266,7 +266,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Limite %</label>
-                @if (Model.TipoApuracao == true && Model.ChapterId != 4)
+                @if (Model.TipoApuracao == true && Model.Chapter.Name != "CAPÍTULO IV-C")
                 {
                     <input class="form-control money" value="@Model.VendaAnexo" name="VendaAnexo" id="VendaAnexo" />
                 }
@@ -277,7 +277,7 @@
             </div>
             <div class="form-group col-lg-1 col-md-6 col-xs-12">
                 <label class="control-label" style="font-size:10px;">Excedente %</label>
-                @if (Model.TipoApuracao == true && Model.ChapterId != 4)
+                @if (Model.TipoApuracao == true && Model.Chapter.Name != "CAPÍTULO IV-C")
                 {
                     <input class="form-control money" value="@Model.VendaAnexoExcedente" name="VendaAnexoExcedente" id="VendaAnexoExcedente"/>
                 }
@@ -288,7 +288,7 @@
             </div>
         </div>
         <div class="row">
-            @if (Model.AnnexId == 3)
+            @if (Model.Annex.Description == "ANEXO ÚNICO")
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label asp-for="IncIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="font-size:10px;">Elencadas</span>
@@ -318,7 +318,7 @@
                 <br />
                 <strong style="font-size:10px;">Venda p/ Cliente Credenciado no Art. 781</strong>
             </div>
-            @if (Model.AnnexId == 3)
+            @if (Model.Annex.Description == "ANEXO ÚNICO")
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <br />
@@ -348,7 +348,7 @@
         </div>
 
         <div class="row">
-            @if (Model.AnnexId == 3)
+            @if (Model.Annex.Description == "ANEXO ÚNICO")
             {
                 <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label asp-for="IncIIInterna" class="control-label" style="font-size:10px;"></label><br /> <span style="color:red; font-size:10px;">Daselencadas</span>
@@ -379,7 +379,7 @@
                 <br />
                 <strong style="font-size:10px;">Faturamento (Permanência no Incetivo)</strong>
             </div>
-            @if (Model.ChapterId == 4)
+            @if (Model.Chapter.Name == "CAPÍTULO IV-C")
             {
                 <div class="form-group col-lg-1 col-md-6 col-xs-12">
                     <br />
@@ -408,7 +408,7 @@
         </div>
 
         <div class="row">
-            @if (Model.AnnexId == 4)
+            @if (Model.Annex.Description == "ANEXO CCCXXVI (Art. 791 - A)")
             {
                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label asp-for="CompraInterna" class="control-label" style="font-size:10px;"></label>

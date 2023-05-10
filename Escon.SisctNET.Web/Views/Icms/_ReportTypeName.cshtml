@@ -168,7 +168,12 @@
 
 @if (ViewBag.Type == "difal")
 {
-    <strong>Relatório ICMS DIFAL</strong>
+    <strong>ICMS DIFAL</strong>
+}
+
+@if (ViewBag.Type == "produtoRN")
+{
+    <strong>Produto que fazem parte do regime especial tributado normalmente</strong>
 }
 
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")

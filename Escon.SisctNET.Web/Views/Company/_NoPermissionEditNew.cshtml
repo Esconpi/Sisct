@@ -4,7 +4,7 @@
         <div class="row">
             <div class="form-group col-lg-8 col-md-8 col-xs-12">
                 <label asp-for="AnnexId" class="control-label"></label>
-                @if (Model.AnnexId != null && Model.AnnexId != 0)
+                @if (Model.Annex.Description != "NENHUM")
                 {
                     <input class="form-control" value="@Model.Annex.Description" disabled />
                 }
@@ -33,7 +33,7 @@
          <div class="row">
             <div class="form-group col-lg-12 col-md-12 col-xs-12">
                 <label asp-for="ChapterId" class="control-label"></label>
-                @if (Model.ChapterId != null && Model.ChapterId != 0)
+                @if (Model.Chapter.Name != "NENHUM")
                 {
                     <input class="form-control" value="@Model.Chapter.Name" disabled />
                 }
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="form-group col-lg-12 col-md-12 col-xs-12">
                 <label asp-for="SectionId" class="control-label"></label>
-                @if (Model.SectionId != null && Model.SectionId != 0)
+            @if (Model.Section.Name != "Nenhuma")
                 {
                     <input class="form-control" value="@Model.Section.Name" disabled />
                 }

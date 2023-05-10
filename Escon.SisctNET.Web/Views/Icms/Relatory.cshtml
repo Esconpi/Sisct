@@ -277,7 +277,7 @@
                 }
                 else
                 {
-                    <!-- Relatório ICMS Excedente-->
+                    <!-- Relatório ICMS Excedente -->
 
                     @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
                 }
@@ -290,7 +290,7 @@
                 }
                 else
                 {
-                    <!-- Relatório ICMS Sobre Saida-->
+                    <!-- Relatório ICMS Sobre Saida -->
                     if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
                     {
                         if (ViewBag.Company.TypeCompany == true)
@@ -326,10 +326,15 @@
                 }
                 else
                 {
-                    <!-- Relatório ICMS DIFAL-->
+                    <!-- ICMS DIFAL -->
 
                     @await Html.PartialAsync("_Difal", new ViewDataDictionary(ViewData))
                 }
+            }
+            else if (ViewBag.Type == "produtoRN")
+            {
+                <!-- Produto que fazem parte do regime especial tributado normalmente -->
+                @await Html.PartialAsync("_ProductRN", new ViewDataDictionary(ViewData))
             }
 
         </div>

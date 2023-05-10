@@ -2395,15 +2395,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
 
-                                    if (comp.AnnexId == null)
-                                        comp.Annex = null;
-
-                                    if (comp.ChapterId == null)
-                                        comp.Chapter = null;
-
-                                    if (comp.SectionId == null)
-                                        comp.Section = null;
-
                                     if (imp != null)
                                     {
                                         imp.Debito = debitosIcms;
@@ -2928,15 +2919,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             valoresNIncentivo.Add(percentual);
                                         }
                                     }
-
-                                    if (comp.AnnexId == null)
-                                        comp.Annex = null;
-
-                                    if (comp.ChapterId == null)
-                                        comp.Chapter = null;
-
-                                    if (comp.SectionId == null)
-                                        comp.Section = null;
 
                                     if (imp != null)
                                     {

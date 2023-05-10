@@ -27679,15 +27679,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 //  Percentual
                                 decimal percentualVendas = calculation.Percentual(vendasClienteCredenciado, vendas);
 
-                                if (comp.AnnexId == null)
-                                    comp.Annex = null;
-
-                                if (comp.ChapterId == null)
-                                    comp.Chapter = null;
-
-                                if (comp.SectionId == null)
-                                    comp.Section = null;
-
                                 var notifi = _notificationService.FindByCurrentMonth(companyId, month, year);
 
                                 if (percentualVendas < Convert.ToDecimal(comp.VendaArt781))
@@ -28257,6 +28248,136 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Estados = estados;
+                }
+                else if (type.Equals("produtoRN"))
+                {
+                    List<List<string>> products = new List<List<string>>();
+
+                    notes = importXml.NFeAll(directoryNfeExit);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string CFOP = "";
+                        decimal vProd = 0;
+                        int pos = -1;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
+                            {
+                                pos = -1;
+                                CFOP = notes[i][j]["CFOP"];
+
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    vProd = 0;
+                                    vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vFrete"]);
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                    vProd -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vOutro"]);
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                    vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                            }
+
+                            if (notes[i][j].ContainsKey("CST"))
+                            {
+
+                                for (int e = 0; e < products.Count(); e++)
+                                {
+                                    if (products[e][0].Equals(CFOP) && products[e][2].Equals(notes[i][j]["CST"]))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                    List<string> cc = new List<string>();
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(notes[i][j]["CST"]);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    products.Add(cc);
+                                    pos = products.Count() - 1;
+                                }
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                            }
+
+                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pICMS"))
+                            {
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                products[pos][6] = (Convert.ToDecimal(products[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+
+                            }
+
+                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pFCP"))
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+
+                            if (notes[i][j].ContainsKey("CSOSN"))
+                            {
+
+                                for (int e = 0; e < products.Count(); e++)
+                                {
+                                    if (products[e][0].Equals(CFOP) && products[e][2].Equals(notes[i][j]["CSOSN"]))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = _cfopService.FindByCode(CFOP);
+                                    List<string> cc = new List<string>();
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(notes[i][j]["CSOSN"]);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    products.Add(cc);
+                                    pos = products.Count() - 1;
+                                }
+                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                            }
+
+                            if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pICMS"))
+                            {
+                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                products[pos][6] = (Convert.ToDecimal(products[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+
+                            }
+
+                            if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pFCP"))
+                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                        }
+
+                    }
+
+                    ViewBag.Products = products;
                 }
 
                 //  Dar

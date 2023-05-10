@@ -4349,21 +4349,6 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalc = baseCalc;
                     ViewBag.Icms = icms;
                 }
-                else if (type.Equals(Model.Type.ProdutoRN))
-                {
-                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
-                        .Where(_ => !_.Cst.Equals("20") && _.Incentivo.Equals(true))
-                        .OrderBy(_ => _.Xprod)
-                        .ToList();
-                }
-                else if (type.Equals(Model.Type.ProdutoNR))
-                {
-                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
-                       .Where(_ => _.Cst.Equals("20") && _.Incentivo.Equals(false))
-                       .OrderBy(_ => _.Xprod)
-                       .ToList();
-                }
-
 
                 var dars = _darService.FindAll(null);
 

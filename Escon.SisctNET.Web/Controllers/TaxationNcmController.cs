@@ -81,7 +81,7 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var comp = _companyService.FindById(companyid, null);
 
-                if (comp.CountingTypeId == null)
+                if (comp.CountingType.Name == "Nenhum")
                 {
                     ViewBag.Erro = 1;
                     return View(comp);

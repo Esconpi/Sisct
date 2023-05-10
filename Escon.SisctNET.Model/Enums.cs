@@ -53,8 +53,6 @@ namespace Escon.SisctNET.Model
         [Display(Name = "GNRE de Fornecedor sem Inscrição Estadual")] GNRE,
         [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST,
         [Display(Name = "Icms Produtor Rural")] IcmsProdutor,
-        [Display(Name = "Produto que fazem parte do regime especial trbutado normalmente")] ProdutoRN,
-        [Display(Name = "Produto tributado normalmente mas fazem parte do regime especial")] ProdutoNR,
         [Display(Name = "Apuração Regime Especial Bebidas Alcoólicas")] RegimeBA,
         [Display(Name = "Resumo Geral")] Geral
     }
