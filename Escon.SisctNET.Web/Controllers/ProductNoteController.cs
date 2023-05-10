@@ -939,7 +939,8 @@ namespace Escon.SisctNET.Web.Controllers
                 List<List<string>> apuracao = new List<List<string>>();
 
                 if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.NotaI) || type.Equals(Model.Type.NotaNI) ||
-                    type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI))
+                    type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI) || 
+                    type.Equals(Model.Type.RegimeBA))
                 {                    
 
                     if (!type.Equals(Model.Type.Nota))
@@ -4348,6 +4349,21 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.BaseCalc = baseCalc;
                     ViewBag.Icms = icms;
                 }
+                else if (type.Equals(Model.Type.ProdutoRN))
+                {
+                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
+                        .Where(_ => !_.Cst.Equals("20") && _.Incentivo.Equals(true))
+                        .OrderBy(_ => _.Xprod)
+                        .ToList();
+                }
+                else if (type.Equals(Model.Type.ProdutoNR))
+                {
+                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
+                       .Where(_ => _.Cst.Equals("20") && _.Incentivo.Equals(false))
+                       .OrderBy(_ => _.Xprod)
+                       .ToList();
+                }
+
 
                 var dars = _darService.FindAll(null);
 
@@ -4461,6 +4477,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var substitoTributo = "0";
                     var substitoTributoLst = requestBarCode.RecipeCodeValues.Where(x => x.RecipeCode == item.Key.RecipeCode);
+
                     if (substitoTributoLst.Count() > 1)
                     {
                         substitoTributo = substitoTributoLst.First(x => x.Processed == 0).St.ToString();
@@ -4468,6 +4485,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                         substitoTributo = substitoTributoLst.First().St.ToString();
+
                     var st = int.Parse(substitoTributo);
                     var valueTotal = requestBarCode.RecipeCodeValues
                         .Where(x => x.RecipeCode.Equals(item.Key.RecipeCode) && !string.IsNullOrEmpty(x.Value) && x.St == st)

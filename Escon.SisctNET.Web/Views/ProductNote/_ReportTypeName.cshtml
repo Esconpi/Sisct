@@ -4,19 +4,22 @@
 {
     <strong>Agrupado Analítico -&nbsp;</strong>
 }
+
 @if (ViewBag.Type == "AgrupadoS")
 {
     <strong>Agrupado Sintético -&nbsp;</strong>
 }
+
 @if (ViewBag.Type == "Geral")
 {
     <strong>Resumo Geral</strong>
-    
+
     @if (ViewBag.IsPauta == false)
     {
         <strong>&nbsp;NFe</strong>
     }
 }
+
 @if (ViewBag.Type == "IcmsST")
 {
     <strong>Notas com Icms ST de Empresas sem IE -&nbsp;</strong>
@@ -42,7 +45,9 @@
     <strong>Nota Não Incentivada: @ViewBag.NotaNumber -&nbsp;</strong>
 }
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor")
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && 
+     ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor" && ViewBag.Type != "ProdutoRN" && ViewBag.Type != "ProdutoNR" &&
+     ViewBag.Type != "RegimeBA")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
@@ -91,7 +96,6 @@
     }
 }
 
-
 @if (ViewBag.Type == "ProdutoI")
 {
     <strong>&nbsp;- Produto Incentivado</strong>
@@ -102,12 +106,10 @@
     <strong>&nbsp;- Produto Não Incentivado</strong>
 }
 
-
 @if (ViewBag.Type == "ProdutoFP")
 {
     <strong>Produtos Sem Preço de Referência</strong>
 }
-
 
 @if (ViewBag.Type == "ProdutoP")
 {
@@ -122,4 +124,19 @@
 @if (ViewBag.Type == "GNRE")
 {
     <strong>GNRE de Fornecedor sem Inscrição Estadual</strong>
+}
+
+@if (ViewBag.Type == "ProdutoRN")
+{
+    <strong>Produto que fazem parte do regime especial trbutado normalmente</strong>
+}
+
+@if (ViewBag.Type == "ProdutoNR")
+{
+    <strong>Produto tributado normalmente mas fazem parte do regime especial</strong>
+}
+
+@if (ViewBag.Type == "RegimeBA")
+{
+    <strong>Apuração ICMS Regime Especial</strong>
 }

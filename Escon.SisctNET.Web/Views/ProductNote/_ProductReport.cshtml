@@ -7,7 +7,10 @@
             <th></th>
             <th>Nota</th>
             <th>Dia/Mês</th>
-            <th>V. <br /> Nota</th>
+            @if (ViewBag.Type != "RegimeBA")
+            {
+                <th>V. <br /> Nota</th>
+            }
             <th>Produto</th>
             <th>V. <br /> Produto</th>
             <th>Frete Nº</th>
@@ -42,7 +45,10 @@
 
                 <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
                 <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
+                @if (ViewBag.Type != "RegimeBA")
+                {
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
+                }
                 <td>
                     @if (item.Xprod.Length <= 30)
                     {

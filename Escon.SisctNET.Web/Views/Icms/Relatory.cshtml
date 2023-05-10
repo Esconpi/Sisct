@@ -3,335 +3,356 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="box box-primary">
-        <div class="box-header">
+<div class="box box-primary">
+    <div class="box-header">
+        <div style="width:100%; overflow:hidden; padding:20px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="~/img/sisCT.png" style="width:25%; height:60%; float:left;" />
+                    <img src="~/img/escon.png" style="width:20%; height:50%; float:right;" />
+                </div>
+            </div>
+
+        </div>
+
+        @if (ViewBag.Type != "anexoMedicamento" && ViewBag.Type != "anexoAutoPecas")
+        {
+            <div style="text-align:center;">
+                <strong>@ViewBag.Company.SocialName</strong> <br />
+                <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+            </div>
+
             <div style="width:100%; overflow:hidden; padding:20px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <img src="~/img/sisCT.png" style="width:25%; height:60%; float:left;" />
-                        <img src="~/img/escon.png" style="width:20%; height:50%; float:right;" />
-                    </div>
-                </div>
-
-            </div>
-
-            @if (ViewBag.Type != "anexoMedicamento" && ViewBag.Type != "anexoAutoPecas")
-            {
-                <div style="text-align:center;">
-                    <strong>@ViewBag.Company.SocialName</strong> <br />
-                    <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
-                </div>
-
-                <div style="width:100%; overflow:hidden; padding:20px;">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                                @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
-                            </div>
-                            <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
-                                <strong>Periodo: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
-                            </div>
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            @await Html.PartialAsync("_ReportTypeName", new ViewDataDictionary(ViewData))
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12" style="text-align:right;">
+                            <strong>Periodo: @SessionManager.GetMonthInSession()/@SessionManager.GetYearInSession()</strong>
                         </div>
                     </div>
                 </div>
+            </div>
+        }
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; padding:10px;" id="mainTable">
+
+            @if (ViewBag.Type == "resumoCfop")
+            {
+                @if (ViewBag.Opcao == "saida")
+                {
+                    <!-- Resumo CFOP Saida -->
+
+                    @await Html.PartialAsync("_CfopSummaryExit", new ViewDataDictionary(ViewData))
+                }
+                else
+                {
+                    <!-- Resumo CFOP Entrada -->
+
+                    @await Html.PartialAsync("_CfopSummaryEntry", new ViewDataDictionary(ViewData))
+                }
+
+            }
+            else if (ViewBag.Type == "resumoCfopCst")
+            {
+                <!-- Resumo CFOP/CST -->
+
+                @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopAliq")
+            {
+                <!-- Resumo CFOP/Aliquota -->
+
+                @await Html.PartialAsync("_CfopAliquotSummary", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoPorCfop")
+            {
+                <!-- Resumo Por CFOP -->
+
+                @if (ViewBag.Erro != 1)
+                {
+                    @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
+                }
+
+            }
+            else if (ViewBag.Type == "resumoCfopIcmsIcmsST")
+            {
+                <!-- Reusmo CFOP ICMS/ICMS ST -->
+
+                @await Html.PartialAsync("_SummaryCfopIcmsIcmsST", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopIcmsIcmsSTAnalitico")
+            {
+                <!-- Reusmo CFOP ICMS/ICMS ST Anilítico -->
+
+                @await Html.PartialAsync("_SummaryCfopIcmsIcmsSTAnalytical", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopAnexo")
+            {
+                <!-- Resumo CFOP Anexo -->
+
+                @await Html.PartialAsync("_SummaryCfopAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopCstAnexo")
+            {
+                <!-- Resumo CFOP/CST Anexo-->
+
+                @await Html.PartialAsync("_SummaryCfopCstAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopCstNcmAnexo")
+            {
+                <!-- Resumo CFOP/CST/NCM Anexo-->
+
+                @await Html.PartialAsync("_SummaryCfopCstNcmAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
+            {
+                <!-- Resumo CFOP Anexo Anilítico -->
+
+                @await Html.PartialAsync("_SummaryCfopAnalyticalAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopAnexoDC")
+            {
+                <!-- Resumo CFOP Anexo Débito e  Crédito -->
+
+                @await Html.PartialAsync("_SummaryCfopAttachmentDC", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopForaAnexo")
+            {
+                <!-- Resumo CFOP Fora do Anexo -->
+
+                @await Html.PartialAsync("_SummaryCfopFAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopCstForaAnexo")
+            {
+                <!-- Resumo CFOP/CST Fora Anexo-->
+
+                @await Html.PartialAsync("_SummaryCfopCstFAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopCstNcmForaAnexo")
+            {
+                <!-- Resumo CFOP/CST/NCM Fora Anexo-->
+
+                @await Html.PartialAsync("_SummaryCfopCstNcmFAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
+            {
+                <!-- Resumo CFOP Fora do Anexo Anilítico -->
+
+                @await Html.PartialAsync("_SummaryCfopAnalyticalFAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopForaAnexoDC")
+            {
+                <!-- Resumo CFOP Fora do Anexo Débito e Crédito -->
+
+                @await Html.PartialAsync("_SummaryCfopFAttachmentDC", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "anexo")
+            {
+                <!-- Vendas Anexo -->
+
+                @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "foraAnexo")
+            {
+                <!-- Vendas Fora do Anexo -->
+
+                @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "suspensao")
+            {
+                <!-- Resumo Notas no Periodo de Suspensão da Empresa -->
+
+                @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "produtoST")
+            {
+                <!-- Produtos Substituição Tributária -->
+
+                @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "debitoCredito")
+            {
+                <!-- Débito e Crédito -->
+
+                @await Html.PartialAsync("_DebitCredit", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "tributacaoDiveregente")
+            {
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
+                }
+                else if (ViewBag.Erro == 2)
+                {
+                    <p style="text-align:center; color:red;"><strong>O NCM @ViewBag.Ncm NÃO ESTAR CADASTRADO</strong></p>
+                }
+                else
+                {
+                    <!-- Tributação NCM Divergente -->
+
+                    @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
+                }
+            }
+            else if (ViewBag.Type == "vendaNContribuinte")
+            {
+                <!-- Vendas P/ não COntribuinte -->
+
+                @await Html.PartialAsync("_SalesNTaxpayers", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "vendaContribuinte")
+            {
+                <!-- Vendas P/ COntribuinte -->
+
+                @await Html.PartialAsync("_SalesTaxpayers", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "vendaProdutoSTNormal")
+            {
+                <!-- Venda de Produto ST como Normal -->
+
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
+                }
+
+                @await Html.PartialAsync("_SalesProductSTNormal", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "vendaProdutoSTNormalNote")
+            {
+                <!-- Venda de Produto ST como Normal por Nota -->
+
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
+                }
+
+                @await Html.PartialAsync("_SalesProductSTNormalNote", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "notaContigenciaIcms" || ViewBag.Type == "notaContigenciaNIcms")
+            {
+                @await Html.PartialAsync("_ContingencyNotes", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "anexoAutoPecas")
+            {
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ANEXO CCCXVI NÃO FORAM IMPORTADOS</strong></p>
+                }
+                else
+                {
+                    <!-- Relatório Anexo Auto Peças -->
+
+                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                    @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
+                }
+
+            }
+            else if (ViewBag.Type == "anexoMedicamento")
+            {
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>"HÁ CLIENTE NÃO IMPORTADO</strong></p>
+                }
+                else
+                {
+                    <!-- Relatório Anexo Medicamentos -->
+
+                    @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
+
+                    @await Html.PartialAsync("_MedicineAttachmentPart1", new ViewDataDictionary(ViewData))
+
+                    @await Html.PartialAsync("_MedicineAttachmentPart2", new ViewDataDictionary(ViewData))
+                }
+
+            }
+            else if (ViewBag.Type == "icmsExcedente")
+            {
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS EXCEDENTE NÃO FORAM IMPORTADO</strong></p>
+                }
+                else
+                {
+                    <!-- Relatório ICMS Excedente-->
+
+                    @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
+                }
+            }
+            else if (ViewBag.Type == "incentivo")
+            {
+                @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS NÃO FORAM IMPORTADO</strong></p>
+                }
+                else
+                {
+                    <!-- Relatório ICMS Sobre Saida-->
+                    if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
+                    {
+                        if (ViewBag.Company.TypeCompany == true)
+                        {
+                            <!-- Empresa/Produto -->
+
+                            @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
+                        }
+                        else
+                        {
+                            <!-- Empresa/Indústria -->
+
+                            @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
+                        }
+                    }
+                    else if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
+                    {
+                        if (ViewBag.Company.Section.Name.Equals("Seção II"))
+                        {
+                            <!-- Empresa/Medicamento Seção II -->
+
+                            @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
+                        }
+
+                    }
+                }
+            }
+            else if (ViewBag.Type == "difal")
+            {
+                    @if (ViewBag.Erro == 1)
+                {
+                    <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS DIFAL NÃO FORAM IMPORTADO</strong></p>
+                }
+                else
+                {
+                    <!-- Relatório ICMS DIFAL-->
+
+                    @await Html.PartialAsync("_Difal", new ViewDataDictionary(ViewData))
+                }
             }
 
         </div>
-        <div class="box-body">
-            <div style="width:100%; padding:10px;">
-
-                @if (ViewBag.Type == "resumoCfop")
-                {
-                    @if (ViewBag.Opcao == "saida")
-                    {
-                        <!-- Resumo CFOP Saida -->
-
-                        @await Html.PartialAsync("_CfopSummaryExit", new ViewDataDictionary(ViewData))
-                    }
-                    else
-                    {
-                        <!-- Resumo CFOP Entrada -->
-
-                        @await Html.PartialAsync("_CfopSummaryEntry", new ViewDataDictionary(ViewData))
-                    }
-
-                }
-                else if (ViewBag.Type == "resumoCfopCst")
-                {
-                    <!-- Resumo CFOP/CST -->
-
-                    @await Html.PartialAsync("_CfopCstSummary", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopAliq")
-                {
-                    <!-- Resumo CFOP/Aliquota -->
-
-                    @await Html.PartialAsync("_CfopAliquotSummary", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoPorCfop")
-                {
-                    <!-- Resumo Por CFOP -->
-
-                    @if (ViewBag.Erro != 1)
-                    {
-                        @await Html.PartialAsync("_SummaryByCfop", new ViewDataDictionary(ViewData))
-                    }
-
-                }
-                else if (ViewBag.Type == "resumoCfopIcmsIcmsST")
-                {
-                    <!-- Reusmo CFOP ICMS/ICMS ST -->
-
-                    @await Html.PartialAsync("_SummaryCfopIcmsIcmsST", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopIcmsIcmsSTAnalitico")
-                {
-                    <!-- Reusmo CFOP ICMS/ICMS ST Anilítico -->
-
-                    @await Html.PartialAsync("_SummaryCfopIcmsIcmsSTAnalytical", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopAnexo")
-                {
-                    <!-- Resumo CFOP Anexo -->
-
-                    @await Html.PartialAsync("_SummaryCfopAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopCstAnexo")
-                {
-                    <!-- Resumo CFOP/CST Anexo-->
-
-                    @await Html.PartialAsync("_SummaryCfopCstAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopCstNcmAnexo")
-                {
-                    <!-- Resumo CFOP/CST/NCM Anexo-->
-
-                    @await Html.PartialAsync("_SummaryCfopCstNcmAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
-                {
-                    <!-- Resumo CFOP Anexo Anilítico -->
-
-                    @await Html.PartialAsync("_SummaryCfopAnalyticalAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopAnexoDC")
-                {
-                    <!-- Resumo CFOP Anexo Débito e  Crédito -->
-
-                    @await Html.PartialAsync("_SummaryCfopAttachmentDC", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopForaAnexo")
-                {
-                    <!-- Resumo CFOP Fora do Anexo -->
-
-                    @await Html.PartialAsync("_SummaryCfopFAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopCstForaAnexo")
-                {
-                    <!-- Resumo CFOP/CST Fora Anexo-->
-
-                    @await Html.PartialAsync("_SummaryCfopCstFAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopCstNcmForaAnexo")
-                {
-                    <!-- Resumo CFOP/CST/NCM Fora Anexo-->
-
-                    @await Html.PartialAsync("_SummaryCfopCstNcmFAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
-                {
-                    <!-- Resumo CFOP Fora do Anexo Anilítico -->
-
-                    @await Html.PartialAsync("_SummaryCfopAnalyticalFAttachment", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "resumoCfopForaAnexoDC")
-                {
-                    <!-- Resumo CFOP Fora do Anexo Débito e Crédito -->
-
-                    @await Html.PartialAsync("_SummaryCfopFAttachmentDC", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "anexo")
-                {
-                    <!-- Vendas Anexo -->
-
-                    @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "foraAnexo")
-                {
-                    <!-- Vendas Fora do Anexo -->
-
-                    @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "suspensao")
-                {
-                    <!-- Resumo Notas no Periodo de Suspensão da Empresa -->
-
-                    @await Html.PartialAsync("_SuspensionNotes", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "produtoST")
-                {
-                    <!-- Produtos Substituição Tributária -->
-
-                    @await Html.PartialAsync("_ProdutoST", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "debitoCredito")
-                {
-                    <!-- Débito e Crédito -->
-
-                    @await Html.PartialAsync("_DebitCredit", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "tributacaoDiveregente")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
-                    }
-                    else if (ViewBag.Erro == 2)
-                    {
-                        <p style="text-align:center; color:red;"><strong>O NCM @ViewBag.Ncm NÃO ESTAR CADASTRADO</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Tributação NCM Divergente -->
-
-                        @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
-                    }
-                }
-                else if (ViewBag.Type == "vendaNContribuinte")
-                {
-                    <!-- Vendas P/ não COntribuinte -->
-
-                    @await Html.PartialAsync("_SalesNTaxpayers", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "vendaContribuinte")
-                {
-                    <!-- Vendas P/ COntribuinte -->
-
-                    @await Html.PartialAsync("_SalesTaxpayers", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "vendaProdutoSTNormal")
-                {
-                    <!-- Venda de Produto ST como Normal -->
-
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
-                    }
-
-                    @await Html.PartialAsync("_SalesProductSTNormal", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "vendaProdutoSTNormalNote")
-                {
-                    <!-- Venda de Produto ST como Normal por Nota -->
-
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>HÁ PRODUTO NÃO TRIBUTADO</strong></p>
-                    }
-
-                    @await Html.PartialAsync("_SalesProductSTNormalNote", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "notaContigenciaIcms" || ViewBag.Type == "notaContigenciaNIcms")
-                {
-                    @await Html.PartialAsync("_ContingencyNotes", new ViewDataDictionary(ViewData))
-                }
-                else if (ViewBag.Type == "anexoAutoPecas")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ANEXO CCCXVI NÃO FORAM IMPORTADOS</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Relatório Anexo Auto Peças -->
-
-                        @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
-
-                        @await Html.PartialAsync("_AutoPartsAttachment", new ViewDataDictionary(ViewData))
-                    }
-
-                }
-                else if (ViewBag.Type == "anexoMedicamento")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>"HÁ CLIENTE NÃO IMPORTADO</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Relatório Anexo Medicamentos -->
-
-                        @await Html.PartialAsync("_EstablishmentIdentification", new ViewDataDictionary(ViewData))
-
-                        @await Html.PartialAsync("_MedicineAttachmentPart1", new ViewDataDictionary(ViewData))
-
-                        @await Html.PartialAsync("_MedicineAttachmentPart2", new ViewDataDictionary(ViewData))
-                    }
-
-                }
-                else if (ViewBag.Type == "icmsExcedente")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS EXCEDENTE NÃO FORAM IMPORTADO</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Relatório ICMS Excedente-->
-
-                        @await Html.PartialAsync("_SurplusICMS", new ViewDataDictionary(ViewData))
-                    }
-                }
-                else if (ViewBag.Type == "incentivo")
-                {
-                    @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS NÃO FORAM IMPORTADO</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Relatório ICMS Sobre Saida-->
-                        if (!ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
-                        {
-                            if (ViewBag.Company.TypeCompany == true)
-                            {
-                                <!-- Empresa/Produto -->
-
-                                @await Html.PartialAsync("_ProductIncentive", new ViewDataDictionary(ViewData))
-                            }
-                            else
-                            {
-                                <!-- Empresa/Indústria -->
-
-                                @await Html.PartialAsync("_IndustryIncentive", new ViewDataDictionary(ViewData))
-                            }
-                        }
-                        else if (ViewBag.Company.Annex.Description.Equals("ANEXO ÚNICO"))
-                        {
-                            if (ViewBag.Company.Section.Name.Equals("Seção II"))
-                            {
-                                <!-- Empresa/Medicamento Seção II -->
-
-                                @await Html.PartialAsync("_IncentiveDrugsSectionI", new ViewDataDictionary(ViewData))
-                            }
-
-                        }
-                    }
-                }
-                else if (ViewBag.Type == "difal")
-                {
-                     @if (ViewBag.Erro == 1)
-                    {
-                        <p style="text-align:center; color:red;"><strong>OS DADOS PARA CALCULAR ICMS DIFAL NÃO FORAM IMPORTADO</strong></p>
-                    }
-                    else
-                    {
-                        <!-- Relatório ICMS DIFAL-->
-
-                        @await Html.PartialAsync("_Difal", new ViewDataDictionary(ViewData))
-                    }
-                }
-
+    </div>
+    <!--
+        <div class="box-footer no-print">
+            <div class=" pull-right">
+                <a class="btn btn-success" id="downloadLink" onclick="exportExcel(this)">Gerar Excel</a>
             </div>
         </div>
-    </div>
+    -->
+
+</div>
+
+
+<script type="text/javascript">
+    function exportExcel(elem) {
+        var archive = "@ViewBag.Company.SocialName" + "-" + @ViewBag.Company.Document + ".xls";
+        var table = document.getElementById("mainTable");
+        var html = table.outerHTML;
+        var url = 'data:application/vnd.ms-excel,' + escape(html);
+        elem.setAttribute("href", url);
+        elem.setAttribute("download", archive);
+        return false;
+    }
+</script>

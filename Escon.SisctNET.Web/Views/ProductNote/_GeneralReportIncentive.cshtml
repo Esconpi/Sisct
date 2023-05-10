@@ -236,77 +236,80 @@ else
     }
 }
 
+@if (ViewBag.Type != "RegimeBA")
+{
+    <div style="width:100%;">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
+            <strong>RESUMO DA APURAÇÃO DO INCENTIVO</strong>
+        </div>
+        <table class="table" style="border: 2px solid;">
+            <thead>
+                <tr style="border: 2px solid;">
+                    <th width="500px"></th>
+                    <th style="text-align:center">Valor do Imposto</th>
+                    <th style="text-align:center">Código DAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th style="text-align:center">ICMS Incentivo</th>
+                    <td style="text-align:right"> @string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
+                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
+                </tr>
 
-<div style="width:100%;">
-    <div class="col-lg-12 col-md-12 col-sm-12" style="border:2px solid; text-align:center;">
-        <strong>RESUMO DA APURAÇÃO DO INCENTIVO</strong>
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Type != "Nota")
+                {
+                    <tr>
+                        <th style="text-align:center">ICMS Excedente</th>
+                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalIcmsExcedente)</td>
+                        <td style="text-align:center">@ViewBag.DarIcms.Code</td>
+                    </tr>
+                }
+
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
+                {
+                    <tr>
+                        <th style="text-align:center">ICMS ANEXO CCCXVI</th>
+                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.IcmsAnexo)</td>
+                        <td style="text-align:center">@ViewBag.DarIcms.Code</td>
+                    </tr>
+                }
+
+                @if (!ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Type != "Nota")
+                {
+                    <tr>
+                        <th style="text-align:center">Adicional Suspensão</th>
+                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
+                        <td style="text-align:center">@ViewBag.DarIcms.Code</td>
+                    </tr>
+                }
+
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV"))
+                {
+                    <tr>
+                        <th style="text-align:center">Fecop Incentivo</th>
+                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
+                        <td style="text-align:center">@ViewBag.DarFecop.Code</td>
+                    </tr>
+                }
+
+                @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
+                {
+                    <tr>
+                        <th style="text-align:center">Fecop ANEXO CCCXVI</th>
+                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.FecopAnexo)</td>
+                        <td style="text-align:center">@ViewBag.DarFecop.Code</td>
+                    </tr>
+                }
+
+                <tr>
+                    <th style="text-align:center">Funef</th>
+                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef)</td>
+                    <td style="text-align:center">@ViewBag.DarFunef.Code</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="table" style="border: 2px solid;">
-        <thead>
-            <tr style="border: 2px solid;">
-                <th width="500px"></th>
-                <th style="text-align:center">Valor do Imposto</th>
-                <th style="text-align:center">Código DAR</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th style="text-align:center">ICMS Incentivo</th>
-                <td style="text-align:right"> @string.Format("{0:N}", ViewBag.ImpostoIcms)</td>
-                <td style="text-align:center">@ViewBag.DarIcms.Code</td>
-            </tr>
-            
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Type != "Nota")
-            {
-                <tr>
-                    <th style="text-align:center">ICMS Excedente</th>
-                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalIcmsExcedente)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
-                </tr>
-            }
 
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
-            {
-                <tr>
-                    <th style="text-align:center">ICMS ANEXO CCCXVI</th>
-                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.IcmsAnexo)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
-                </tr>
-            }
-
-            @if (!ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Type != "Nota")
-            {
-                <tr>
-                    <th style="text-align:center">Adicional Suspensão</th>
-                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
-                    <td style="text-align:center">@ViewBag.DarIcms.Code</td>
-                </tr>
-            }
-
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV"))
-            {
-                <tr>
-                    <th style="text-align:center">Fecop Incentivo</th>
-                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
-                    <td style="text-align:center">@ViewBag.DarFecop.Code</td>
-                </tr>
-            }
-
-            @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-B") && ViewBag.Type == "Geral")
-            {
-                <tr>
-                    <th style="text-align:center">Fecop ANEXO CCCXVI</th>
-                    <td style="text-align:right">@string.Format("{0:N}", ViewBag.FecopAnexo)</td>
-                    <td style="text-align:center">@ViewBag.DarFecop.Code</td>
-                </tr>
-            }
-
-            <tr>
-                <th style="text-align:center">Funef</th>
-                <td style="text-align:right">@string.Format("{0:N}", ViewBag.TaxaFunef)</td>
-                <td style="text-align:center">@ViewBag.DarFunef.Code</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+}
 
