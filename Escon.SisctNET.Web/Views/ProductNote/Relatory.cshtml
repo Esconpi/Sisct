@@ -81,8 +81,7 @@
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
                 else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" ||
-                         ViewBag.Type == "ProdutoFP" ||  ViewBag.Type == "ProdutoP"  || ViewBag.Type == "IcmsProdutor" ||
-                         ViewBag.Type == "ProdutoRN" || ViewBag.Type == "ProdutoNR")
+                         ViewBag.Type == "ProdutoFP" ||  ViewBag.Type == "ProdutoP"  || ViewBag.Type == "IcmsProdutor")
                 {
                     <table class="table" style="font-size:8px; border: 2px solid;">
                         @if (ViewBag.Type == "GNRE")
@@ -115,28 +114,18 @@
                             <!-- Relatório ICMS Produtor Rural -->
                             @await Html.PartialAsync("_IcmsProducer", Model, new ViewDataDictionary(ViewData))
                         }
-                        else if (ViewBag.Type == "ProdutoRN")
-                        {
-                            <!-- Produto que fazem parte do regime especial trbutado normalmente -->
-                            @await Html.PartialAsync("_ProductNR", Model, new ViewDataDictionary(ViewData))
-                        }
-                        else if (ViewBag.Type == "ProdutoNR")
-                        {
-                            <!-- Produto trbutado normalmente mas fazem parte do regime especial  -->
-                            @await Html.PartialAsync("_ProductRN", Model, new ViewDataDictionary(ViewData))
-                        }
                     </table>
                 }
                 else
                 {
                     @if (ViewBag.Type == "Produto" || ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "Nota" ||
-                         ViewBag.Type == "NotaI" || ViewBag.Type == "NotaNI" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" || 
-                         ViewBag.Type == "RegimeBA")
+                         ViewBag.Type == "NotaI" || ViewBag.Type == "NotaNI" || ViewBag.Type == "AgrupadoA" || ViewBag.Type == "AgrupadoS" ||
+                         ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
                     {
                         <table class="table" style="font-size:8px; border: 2px solid;">
 
                             @if (ViewBag.Type == "Produto" || ViewBag.Type == "Nota" || ViewBag.Type == "NotaI" || ViewBag.Type == "NotaNI" ||
-                                 ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "RegimeBA")
+                                ViewBag.Type == "ProdutoI" || ViewBag.Type == "ProdutoNI" || ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
                             {
                                 <!-- Produtos -->
                                 @await Html.PartialAsync("_ProductReport", Model, new ViewDataDictionary(ViewData))
@@ -165,13 +154,14 @@
                     }
 
                     @if (ViewBag.Company.Incentive == true && (!ViewBag.Company.Annex.Description.Equals("NENHUM") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
-                         ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" && ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI" || ViewBag.Type == "RegimeBA")
+                         ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" && ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI" || ViewBag.Type == "RegimeBA" ||
+                         ViewBag.Type == "RegimeBA2")
                     {
                         <!-- Resumo Imposto Incentivo -->
                         @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
                         {
                             @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
-                            @if (ViewBag.Type != "RegimeBA")
+                            @if (ViewBag.Type != "RegimeBA" || ViewBag.Type != "RegimeBA2")
                             {
                                 @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
                             }

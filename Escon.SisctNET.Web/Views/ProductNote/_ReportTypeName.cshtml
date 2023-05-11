@@ -47,7 +47,7 @@
 
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && 
      ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor" && ViewBag.Type != "ProdutoRN" && ViewBag.Type != "ProdutoNR" &&
-     ViewBag.Type != "RegimeBA")
+     ViewBag.Type != "RegimeBA" &&  ViewBag.Type != "RegimeBA2")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
@@ -139,4 +139,9 @@
 @if (ViewBag.Type == "RegimeBA")
 {
     <strong>Apuração ICMS Regime Especial</strong>
+}
+
+@if (ViewBag.Type == "RegimeBA2")
+{
+    <strong>ICMS Regime Especial</strong>
 }

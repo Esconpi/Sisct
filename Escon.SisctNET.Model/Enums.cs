@@ -54,6 +54,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Notas com Icms ST de Empresas sem IE")] IcmsST,
         [Display(Name = "Icms Produtor Rural")] IcmsProdutor,
         [Display(Name = "Apuração Regime Especial Bebidas Alcoólicas")] RegimeBA,
+        [Display(Name = "Regime Especial Bebidas Alcoólicas")] RegimeBA2,
         [Display(Name = "Resumo Geral")] Geral
     }
 

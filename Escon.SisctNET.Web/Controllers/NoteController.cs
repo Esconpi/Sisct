@@ -766,43 +766,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (dif_frete < 0)
                                         dif_frete = 0;
 
-                                    if (dataTemp < dataRef)
-                                    {
-                                        icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
-                                        icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
-                                    }
-                                    else
-                                    {
-                                        if (taxed.EBcr)
-                                        {
-                                            decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(aliquotConfaz)),
-                                                    base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(aliquotConfaz)),
-                                                    base2 = calculation.Base2(baseCalc - frete_prod, base1),
-                                                    base2CTe = calculation.Base2(frete_prod, base1CTe),
-                                                    base3 = calculation.Base3(base2, Convert.ToDecimal(internalAliquotConfaz)),
-                                                    base3CTe = calculation.Base3(base2CTe, Convert.ToDecimal(internalAliquotConfaz)),
-                                                    baseDifal = calculation.BaseDifal(base3, Convert.ToDecimal(internalAliquotConfaz)),
-                                                    baseDifalCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(internalAliquotConfaz));
-
-                                            icmsApu = calculation.Icms(baseDifal, base1);
-                                            icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
-                                        }
-                                        else
-                                        {
-                                            decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
-                                                    base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValid)),
-                                                    base2 = calculation.Base2(baseCalc - frete_prod, base1),
-                                                    base2CTe = calculation.Base2(frete_prod, base1CTe),
-                                                    base3 = calculation.Base3(base2, aliqInterna),
-                                                    base3CTe = calculation.Base3(base2CTe, aliqInterna),
-                                                    baseDifal = calculation.BaseDifal(base3, aliqInterna),
-                                                    baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
-
-                                            icmsApu = calculation.Icms(baseDifal, base1);
-                                            icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
-                                        }
-                                    }
-
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
+                                    icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
                                 else if (taxedtype.Type == "Normal" && !taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {
