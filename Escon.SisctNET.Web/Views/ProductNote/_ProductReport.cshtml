@@ -205,8 +205,17 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                         else
                         {
-                            @string.Format("{0:N}", (Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                            Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi)) * (Convert.ToDecimal(item.Diferencial) / 100))
+                            @if (ViewBag.DataTemp < ViewBag.DataRef)
+                            {
+                                @string.Format("{0:N}", (Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                                        Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi)) * 
+                                                        (Convert.ToDecimal(item.Diferencial) / 100))
+
+                            }
+                            else
+                            {
+                                @string.Format("{0:N}", Convert.ToDecimal(item.IcmsApurado))
+                            }
                         }
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>

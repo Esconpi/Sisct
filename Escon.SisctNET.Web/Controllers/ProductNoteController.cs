@@ -366,6 +366,10 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
+
+                    var dataRef = new DateTime(2023, 3, 30);
+                    var dataTemp = new DateTime(Convert.ToInt32(prod.Note.AnoRef), GetIntMonth(prod.Note.MesRef), 1);
+
                     if (Request.Form["produto"].ToString() == "2")
                     {
                         decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms),
@@ -446,9 +450,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
-                            var dataRef = new DateTime(Convert.ToInt32(prod.Note.AnoRef), GetIntMonth(prod.Note.MesRef), 1);
-
-                            if (prod.Note.Dhemi >= dataRef)
+                            if (dataTemp < dataRef)
                             {
                                 icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado));
                                 icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
@@ -460,28 +462,28 @@ namespace Escon.SisctNET.Web.Controllers
                                     decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.PicmsBCR)),
                                             base1CTe = calculation.Base1(Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.PicmsBCR)),
                                             base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), base1),
-                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1),
+                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1CTe),
                                             base3 = calculation.Base3(base2, Convert.ToDecimal(prod.AliqInternaBCR)),
                                             base3CTe = calculation.Base3(base2CTe, Convert.ToDecimal(prod.AliqInternaBCR)),
                                             baseDifal = calculation.BaseDifal(base3, Convert.ToDecimal(prod.AliqInternaBCR)),
                                             baseDifalCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(prod.AliqInternaBCR));
 
                                     icmsApu = calculation.Icms(baseDifal, base1);
-                                    icmsApu = calculation.Icms(baseDifalCTe, base1CTe);
+                                    icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
                                 }
                                 else
                                 {
                                     decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)),
                                             base1CTe = calculation.Base1(Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)),
                                             base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), base1),
-                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1),
+                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1CTe),
                                             base3 = calculation.Base3(base2, aliqInterna),
                                             base3CTe = calculation.Base3(base2CTe, aliqInterna),
                                             baseDifal = calculation.BaseDifal(base3, aliqInterna),
                                             baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
                                     icmsApu = calculation.Icms(baseDifal, base1);
-                                    icmsApu = calculation.Icms(baseDifalCTe, base1CTe);
+                                    icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
                                 }
                             }
 
@@ -514,8 +516,44 @@ namespace Escon.SisctNET.Web.Controllers
 
                             baseCalc = Vbasecalc;
 
-                            decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado)),
-                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
+                            decimal icmsApu = 0, icmsApuCTe = 0;
+
+                            if (dataTemp < dataRef)
+                            {
+                                icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado));
+                                icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
+                            }
+                            else
+                            {
+                                if (entity.EBcr)
+                                {
+                                    decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.PicmsBCR)),
+                                            base1CTe = calculation.Base1(Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.PicmsBCR)),
+                                            base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), base1),
+                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1CTe),
+                                            base3 = calculation.Base3(base2, Convert.ToDecimal(prod.AliqInternaBCR)),
+                                            base3CTe = calculation.Base3(base2CTe, Convert.ToDecimal(prod.AliqInternaBCR)),
+                                            baseDifal = calculation.BaseDifal(base3, Convert.ToDecimal(prod.AliqInternaBCR)),
+                                            baseDifalCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(prod.AliqInternaBCR));
+
+                                    icmsApu = calculation.Icms(baseDifal, base1);
+                                    icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                }
+                                else
+                                {
+                                    decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)),
+                                            base1CTe = calculation.Base1(Convert.ToDecimal(prod.Freterateado), aliquotaOrig),
+                                            base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), base1),
+                                            base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1CTe),
+                                            base3 = calculation.Base3(base2, aliqInterna),
+                                            base3CTe = calculation.Base3(base2CTe, aliqInterna),
+                                            baseDifal = calculation.BaseDifal(base3, aliqInterna),
+                                            baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
+
+                                    icmsApu = calculation.Icms(baseDifal, base1);
+                                    icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                }
+                            }
 
                             prod.AliqInterna = aliqInterna;
                             prod.Mva = null;
@@ -659,7 +697,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 baseCalc = Vbasecalc;
 
                                 if (entity.EBcr)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
 
                                 if (dif < 0)
                                     dif = 0;
@@ -667,8 +705,45 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (dif_frete < 0)
                                     dif_frete = 0;
 
-                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
-                                        icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
+                                decimal icmsApu = 0, icmsApuCTe = 0;
+
+                                if (dataTemp < dataRef)
+                                {
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado));
+                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
+                                }
+                                else
+                                {
+                                    if (entity.EBcr)
+                                    {
+                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.PicmsBCR)),
+                                                base1CTe = calculation.Base1(Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.PicmsBCR)),
+                                                base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), base1),
+                                                base2CTe = calculation.Base2(Convert.ToDecimal(item.Freterateado), base1),
+                                                base3 = calculation.Base3(base2, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                base3CTe = calculation.Base3(base2CTe, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                baseDifal = calculation.BaseDifal(base3, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                baseDifalCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(item.AliqInternaBCR));
+
+                                        icmsApu = calculation.Icms(baseDifal, base1);
+                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                    }
+                                    else
+                                    {
+                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                                base1CTe = calculation.Base1(Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                                base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), base1),
+                                                base2CTe = calculation.Base2(Convert.ToDecimal(item.Freterateado), base1),
+                                                base3 = calculation.Base3(base2, aliqInterna),
+                                                base3CTe = calculation.Base3(base2CTe, aliqInterna),
+                                                baseDifal = calculation.BaseDifal(base3, aliqInterna),
+                                                baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
+
+                                        icmsApu = calculation.Icms(baseDifal, base1);
+                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                    }
+                                }
+
 
                                 item.AliqInterna = aliqInterna;
                                 item.Diferencial = dif;
@@ -692,7 +767,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 baseCalc = Vbasecalc;
 
                                 if (entity.EBcr)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
 
                                 if (dif < 0)
                                     dif = 0;
@@ -700,8 +775,44 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (dif_frete < 0)
                                     dif_frete = 0;
 
-                                decimal icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado)),
-                                        icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
+                                decimal icmsApu = 0, icmsApuCTe = 0;
+
+                                if (dataTemp < dataRef)
+                                {
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado));
+                                    icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
+                                }
+                                else
+                                {
+                                    if (entity.EBcr)
+                                    {
+                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.PicmsBCR)),
+                                                base1CTe = calculation.Base1(Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.PicmsBCR)),
+                                                base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), base1),
+                                                base2CTe = calculation.Base2(Convert.ToDecimal(item.Freterateado), base1),
+                                                base3 = calculation.Base3(base2, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                base3CTe = calculation.Base3(base2CTe, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                baseDifal = calculation.BaseDifal(base3, Convert.ToDecimal(item.AliqInternaBCR)),
+                                                baseDifalCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(item.AliqInternaBCR));
+
+                                        icmsApu = calculation.Icms(baseDifal, base1);
+                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                    }
+                                    else
+                                    {
+                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                                base1CTe = calculation.Base1(Convert.ToDecimal(item.Freterateado), aliquotaOrig),
+                                                base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), base1),
+                                                base2CTe = calculation.Base2(Convert.ToDecimal(item.Freterateado), base1),
+                                                base3 = calculation.Base3(base2, aliqInterna),
+                                                base3CTe = calculation.Base3(base2CTe, aliqInterna),
+                                                baseDifal = calculation.BaseDifal(base3, aliqInterna),
+                                                baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
+
+                                        icmsApu = calculation.Icms(baseDifal, base1);
+                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                    }
+                                }
 
                                 item.AliqInterna = aliqInterna;
                                 item.Diferencial = dif;
@@ -971,6 +1082,12 @@ namespace Escon.SisctNET.Web.Controllers
                 var importMes = new Period.Month();
 
                 List<List<string>> apuracao = new List<List<string>>();
+
+                var dataRef = new DateTime(2023, 3, 30);
+                var dataTemp = new DateTime(Convert.ToInt32(year), GetIntMonth(month), 1);
+
+                ViewBag.DataRef = dataRef;
+                ViewBag.DataTemp = dataTemp;
 
                 if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.NotaI) || type.Equals(Model.Type.NotaNI) ||
                     type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI) || 
@@ -2347,16 +2464,28 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     if (Convert.ToDecimal(prod.Diferencial) > 0)
                                     {
-                                        var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                        decimal dif = 0;
-                                        if (typeTaxation.Equals(Model.TypeTaxation.AP))
-                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
-                                        else
-                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                        if (dataTemp < dataRef)
+                                        {
+                                            var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                            decimal dif = 0;
+                                            
+                                            if (typeTaxation.Equals(Model.TypeTaxation.AP))
+                                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
+                                            else
+                                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+                                           
+                                            if (prod.EBcr)
+                                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
 
-                                        if (dif < 0)
-                                            dif = 0;
-                                        totalIcmsFreteIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                            if (dif < 0)
+                                                dif = 0;
+
+                                            totalIcmsFreteIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                        }
+                                        else
+                                        {
+                                            totalIcmsFreteIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                        }
                                     }
                                 }
                             }
@@ -2500,10 +2629,23 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
-                                if (dif < 0)
-                                    dif = 0;
-                                totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                if (dataTemp < dataRef)
+                                {
+                                    var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), prod.Picms);
+
+                                    if (prod.EBcr)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                    if (dif < 0)
+                                        dif = 0;
+
+                                    totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                }
+                                else
+                                {
+                                    totalFreteAPIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                }
+
                             }
                         }
                     }
@@ -3741,9 +3883,20 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
-                                totalFreteCOIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                if (dataTemp < dataRef)
+                                {
+                                    var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                    var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+
+                                    if (prod.EBcr)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                    totalFreteCOIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                }
+                                else
+                                {
+                                    totalFreteCOIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                }
                             }
                         }
                     }
@@ -3819,9 +3972,20 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
-                                totalFreteCORIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                if (dataTemp < dataRef)
+                                {
+                                    var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                    var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+
+                                    if (prod.EBcr)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                    totalFreteCORIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                }
+                                else
+                                {
+                                    totalFreteCORIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                }
                             }
                         }
                     }
@@ -3881,9 +4045,23 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
-                                totalFreteIMIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                if (Convert.ToDecimal(prod.Diferencial) > 0)
+                                {
+                                    if (dataTemp < dataRef)
+                                    {
+                                        var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                        var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+
+                                        if (prod.EBcr)
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                        totalFreteIMIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                    }
+                                    else
+                                    {
+                                        totalFreteIMIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                    }
+                                }
                             }
                         }
                     }

@@ -27806,15 +27806,29 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal totalFreteAPIE = 0;
 
+                    var dataRef = new DateTime(2023, 30, 3);
+                    var dataTemp = new DateTime(Convert.ToInt32(year), GetIntMonth(month), 1);
+
                     foreach (var prod in products)
                     {
                         if (!prod.Note.Iest.Equals(""))
                         {
                             if (Convert.ToDecimal(prod.Diferencial) > 0)
                             {
-                                var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
-                                var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
-                                totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                if (dataTemp < dataRef)
+                                {
+                                    var aliquota = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms;
+                                    var dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(aliquota));
+
+                                    if (prod.EBcr)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+
+                                    totalFreteAPIE += calculation.IcmsApurado(dif, prod.Freterateado);
+                                }
+                                else
+                                {
+                                    totalFreteAPIE += Convert.ToDecimal(prod.IcmsApuradoCTe);
+                                }
                             }
                         }
                     }
@@ -28394,6 +28408,39 @@ namespace Escon.SisctNET.Web.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        private int GetIntMonth(string month)
+        {
+            switch (month.ToLowerInvariant())
+            {
+                case "janeiro":
+                    return 1;
+                case "fevereiro":
+                    return 2;
+                case "março":
+                    return 3;
+                case "abril":
+                    return 4;
+                case "maio":
+                    return 5;
+                case "junho":
+                    return 6;
+                case "julho":
+                    return 7;
+                case "agosto":
+                    return 8;
+                case "setembro":
+                    return 9;
+                case "outubro":
+                    return 10;
+                case "novembro":
+                    return 11;
+                case "dezembro":
+                    return 12;
+                default:
+                    return 0;
             }
         }
 
