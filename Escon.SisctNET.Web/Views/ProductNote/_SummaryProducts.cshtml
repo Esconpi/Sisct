@@ -1,15 +1,24 @@
 ﻿<table class="table" style="font-size:8px; border:2px solid;">
     @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST" && ViewBag.Type != "IcmsProdutor" &&
-    ViewBag.Type != "RegimeBA" && ViewBag.Type != "RegimeBA2")
+    ViewBag.Type != "RegimeBA")
     {
         @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
         {
             <thead style="font-size:10px">
                 <tr>
                     <th>Registros</th>
-                    <th>Total</th>
-                    <th>V. Produtos</th>
-                    <th>V. Frete CTe</th>
+                    @if (ViewBag.Type != "RegimeBA2")
+                    {
+                        <th>Total</th>
+                        <th>V. Produtos</th>
+                        <th>V. Frete CTe</th>
+                    }
+                    @if (ViewBag.Type == "RegimeBA2")
+                    {
+                        <th>V. Total</th>
+                        <th>Total ICMS</th>
+                        <th>Total FECOP</th>
+                    }
                     <th>B. Cálculo</th>
                     <th>BC. ICMS</th>
                     <th>BCR</th>
@@ -24,9 +33,18 @@
             <tbody style="font-size:11px">
                 <tr>
                     <td>@ViewBag.Registro</td>
-                    <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
-                    <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
-                    <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                    @if (ViewBag.Type != "RegimeBA2")
+                    {
+                        <td>@string.Format("{0:N}", ViewBag.TotalNotas)</td>
+                        <td>@string.Format("{0:N}", ViewBag.ValorProd)</td>
+                        <td>@string.Format("{0:N}", ViewBag.TotalFrete)</td>
+                    }
+                    @if (ViewBag.Type == "RegimeBA2")
+                    {
+                        <td>@string.Format("{0:N}", ViewBag.TotalP)</td>
+                        <td>@string.Format("{0:N}", ViewBag.IcmsP)</td>
+                        <td>@string.Format("{0:N}", ViewBag.FecopP)</td>
+                    }
                     <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalBCICMS)</td>
                     <td>@string.Format("{0:N}", ViewBag.TotalBCR)</td>

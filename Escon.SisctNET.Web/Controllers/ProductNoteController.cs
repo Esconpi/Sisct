@@ -1227,8 +1227,32 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalFecop1FreteIE = 0, totalFecop2FreteIE = 0, base1FecopFreteIE = 0, base2FecopFreteIE = 0,
                                 totalDarSTCO = 0, totalDarFecop = 0, totalDarIcms = 0, totalDarCotac = 0, totalDarFunef = 0;
 
+                        decimal totalP = 0,valorIcmsP = 0, valorFecopP = 0;
+
                         foreach (var prod in products)
                         {
+                            if (type.Equals(Model.Type.RegimeBA2)) 
+                            {
+                                if (prod.Qpauta != null)
+                                {
+                                    if (prod.Pautado)
+                                    {
+                                        totalP += Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price);
+                                        valorIcmsP += (Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price)) * ((Convert.ToDecimal(prod.AliqInterna) - Convert.ToDecimal(prod.Fecop)) / 100);
+                                        valorFecopP += (Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price)) * (Convert.ToDecimal(prod.Fecop) / 100);
+                                    }
+                                }
+                                else
+                                {
+                                    if (prod.Pautado)
+                                    {
+                                        totalP += Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price);
+                                        valorIcmsP += (Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price)) * ((Convert.ToDecimal(prod.AliqInterna) - Convert.ToDecimal(prod.Fecop)) / 100);
+                                        valorFecopP += (Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price)) * (Convert.ToDecimal(prod.Fecop) / 100);
+                                    }
+                                }
+                            }
+
                             if (!prod.Note.Iest.Equals(""))
                             {
                                 if (Convert.ToDecimal(prod.AliqInterna) > 0)
@@ -1259,6 +1283,10 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
                         }
+
+                        ViewBag.TotalP = totalP;
+                        ViewBag.IcmsP = valorIcmsP;
+                        ViewBag.FecopP = valorFecopP;
                        
                         //  ICMS
                         if (typeTaxation.Equals(Model.TypeTaxation.ST))
