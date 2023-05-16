@@ -819,7 +819,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Note> updateNote = new List<Note>();
 
-                notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.Company.Id), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
+                notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.CompanyId), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
 
                 foreach (var note in notes)
                 {

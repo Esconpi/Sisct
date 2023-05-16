@@ -321,7 +321,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         @item.AliqInterna
                     </td>
                     <td>
-                        @if (item.PicmsOrig > 0)
+                        @if (item.PicmsOrig > 0 && !item.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                         {
                             @Html.DisplayFor(modelItem => item.PicmsOrig)
                         }

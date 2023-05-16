@@ -27806,7 +27806,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal totalFreteAPIE = 0;
 
-                    var dataRef = new DateTime(2023, 30, 3);
+                    var dataRef = new DateTime(2023, 3, 30);
                     var dataTemp = new DateTime(Convert.ToInt32(year), GetIntMonth(month), 1);
 
                     foreach (var prod in products)
