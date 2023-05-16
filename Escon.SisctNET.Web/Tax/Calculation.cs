@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Escon.SisctNET.Model;
+using System;
 
 namespace Escon.SisctNET.Web.Tax
 {
@@ -132,6 +133,21 @@ namespace Escon.SisctNET.Web.Tax
         public decimal Icms(decimal baseDifal, decimal base1)
         {
             return baseDifal - base1;
+        }
+
+        public decimal BCR(decimal aliqBcr, decimal aliq)
+        {
+            return aliqBcr / (aliq / 100);
+        }
+
+        public decimal IcmsBCR(decimal baseCalcBR, decimal bcr)
+        {
+            return baseCalcBR * (bcr / 100);
+        }
+
+        public decimal IcmsBCRIntra(decimal baseCalcDifal, decimal bcr, decimal aliqInterna)
+        {
+            return baseCalcDifal * (bcr / 100) * (aliqInterna / 100);
         }
     }
 }

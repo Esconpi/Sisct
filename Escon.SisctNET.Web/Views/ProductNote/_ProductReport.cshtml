@@ -270,7 +270,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                                                 Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                     </td>
                     <td>
-                        @if (item.EBcr == true)
+                        @if (item.EBcr == true && item.AliqInternaBCR != null)
                         {
                             @item.AliqInternaBCR
                         }
@@ -280,7 +280,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                     </td>
                     <td>
-                        @if (item.EBcr == true)
+                        @if (item.EBcr == true && item.PicmsBCR != null)
                         {
                             @item.PicmsBCR
                         }
@@ -397,7 +397,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                             Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                     </td>
                     <td>
-                        @if (item.EBcr == true)
+                        @if (item.EBcr == true && item.AliqInternaBCR != null)
                         {
                             @item.AliqInternaBCR
                         }
@@ -407,7 +407,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                     </td>
                     <td>
-                        @if (item.EBcr == true)
+                        @if (item.EBcr == true && item.PicmsBCR != null)
                         {
                             @item.PicmsBCR
                         }

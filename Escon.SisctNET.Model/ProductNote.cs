@@ -91,7 +91,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Aliq. Fecop")]
         public decimal? Fecop { get; set; }
 
-        [Display(Name = "Aliq. Inter")]
+        [Display(Name = "Aliq. Interna")]
         public decimal? AliqInterna { get; set; }
 
         [Display(Name = "Aliq. Inter BCR")]

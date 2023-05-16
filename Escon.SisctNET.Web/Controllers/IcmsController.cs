@@ -25881,7 +25881,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalNcm = valorTotalNcm;
                     ViewBag.PercentualTotal = percentualTotal;
                     ViewBag.TotalVendas = totalVendas;
-                    ViewBag.ResumoNcm = ncm_list.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                    ViewBag.ResumoNcm = ncm_list;
 
                 }
                 else if (type.Equals("foraAnexo"))

@@ -264,7 +264,6 @@
                 $("input[name=Mva]").prop("disabled", false);
             } else {
                 $("input[name=Mva]").prop("disabled", true);
-                $("input[name=BCR]").prop("disabled", true);
             }
             if (taxacao == 10) {
                 document.getElementById('taxar').disabled = true;
@@ -284,7 +283,7 @@
     $("#taxaType").on("change", function () {
         if ($(this).val() == 5 || $(this).val() == 8) {
             $("input[name=Mva]").prop("disabled", false);
- 
+
             if (Dhemi < data) {
                 $("input[name=Fecop]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
@@ -385,27 +384,12 @@
         }
     }
 
-
-    function Enviar() {
-        $("#taxaType").children('option').each(function () {
-            if ($(this).val() === 10) {
-                alert('Selecione uma tributação');
-            }
-        });
-    }
-
     $("#pauta").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
             $("#productid").prop("disabled", false);
-            $("#product1id").prop("disabled", false);
-            $("#product2id").prop("disabled", false);
-            $("#product3id").prop("disabled", false);
             $("#quant").prop("disabled", false);
         } else {
             $("#productid").prop("disabled", true);
-            $("#product1id").prop("disabled", true);
-            $("#product2id").prop("disabled", true);
-            $("#product3id").prop("disabled", true);
             $("#quant").prop("disabled", true);
         }
     });
@@ -419,4 +403,13 @@
             $("input[name=BCR]").prop("value", "");
         }
     });
+
+    function Enviar() {
+        $("#taxaType").children('option').each(function () {
+            if ($(this).val() === 10) {
+                alert('Selecione uma tributação');
+            }
+        });
+    }
+
 </script>
