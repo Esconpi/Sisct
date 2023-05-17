@@ -22,9 +22,6 @@
             <th style="border:1px solid; text-align:center;">
                 Valor FECOP
             </th>
-            <th style="border:1px solid; text-align:center;">
-                Valor ICMS/ST
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -34,12 +31,12 @@
                 <td style="border:1px solid; padding-left:1%;">
                     @cfop[0] - @cfop[1]
                 </td>
-                <th style="border:1px solid; padding-left:1%;">
+                <td style="border:1px solid; padding-left:1%;">
                     @cfop[10]
-                </th>
-                <th style="border:1px solid; padding-left:1%;">
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
                     @cfop[2]
-                </th>
+                </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
@@ -51,9 +48,6 @@
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[7].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
-                </td>
-                <td style="border:1px solid; text-align:right; padding-right:1%;">
-                    <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[8].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>
                 </td>
             </tr>
         }
