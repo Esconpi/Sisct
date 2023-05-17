@@ -108,6 +108,11 @@
 
                 @await Html.PartialAsync("_SummaryCfopCstNcmAttachment", new ViewDataDictionary(ViewData))
             }
+            else if (ViewBag.Type == "resumoCfopNcmCestAnexo")
+            {
+                <!-- Resumo CFOP/NCM/CEST Anexo-->
+                @await Html.PartialAsync("_SummaryCfopNcmCestAttachment", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "resumoCfopAnexoAnalitico")
             {
                 <!-- Resumo CFOP Anexo Anilítico -->
@@ -137,6 +142,12 @@
                 <!-- Resumo CFOP/CST/NCM Fora Anexo-->
 
                 @await Html.PartialAsync("_SummaryCfopCstNcmFAttachment", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "resumoCfopNcmCestForaAnexo")
+            {
+                <!-- Resumo CFOP/NCM/CEST Fora Anexo-->
+
+                @await Html.PartialAsync("_SummaryCfopNcmCestFAttachment", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
             {

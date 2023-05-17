@@ -5,52 +5,62 @@
 
 @if (ViewBag.Type == "resumoCfopAnexo")
 {
-    <strong>Resumo CFOP Dentro do Anexo</strong>
+    <strong>Resumo CFOP Dentro do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopCstAnexo")
 {
-    <strong>Resumo CFOP/CST Dentro do Anexo</strong>
+    <strong>Resumo CFOP/CST Dentro do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopCstNcmAnexo")
 {
-    <strong>Resumo CFOP/CST/NCM Dentro do Anexo</strong>
+    <strong>Resumo CFOP/CST/NCM Dentro do Anexo - @ViewBag.Anexo</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopNcmCestAnexo")
+{
+    <strong>Resumo CFOP/NCM/CEST Dentro do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopAnexoAnalitico")
 {
-    <strong>Resumo CFOP Dentro do Anexo Analítico</strong>
+    <strong>Resumo CFOP Dentro do Anexo Analítico - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopAnexoDC")
 {
-    <strong>Resumo CFOP Dentro do Anexo Débito/Crédito</strong>
+    <strong>Resumo CFOP Dentro do Anexo Débito/Crédito - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopForaAnexo")
 {
-    <strong>Resumo CFOP Fora do Anexo</strong>
+    <strong>Resumo CFOP Fora do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopCstForaAnexo")
 {
-    <strong>Resumo CFOP/CST Fora do Anexo</strong>
+    <strong>Resumo CFOP/CST Fora do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopCstNcmForaAnexo")
 {
-    <strong>Resumo CFOP/CST/NCM Fora do Anexo</strong>
+    <strong>Resumo CFOP/CST/NCM Fora do Anexo - @ViewBag.Anexo</strong>
+}
+
+@if (ViewBag.Type == "resumoCfopNcmCestForaAnexo")
+{
+    <strong>Resumo CFOP/NCM/CEST Fora do Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopForaAnexoAnalitico")
 {
-    <strong>Resumo CFOP Fora do Anexo Analítico</strong>
+    <strong>Resumo CFOP Fora do Anexo Analítico - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopForaAnexoDC")
 {
-    <strong>Resumo CFOP Fora do Anexo Débito/Crédito</strong>
+    <strong>Resumo CFOP Fora do Anexo Débito/Crédito - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "resumoCfopCst")
@@ -92,12 +102,12 @@
 
 @if (ViewBag.Type == "anexo")
 {
-    <strong>Venda @ViewBag.Anexo </strong>
+    <strong>Venda Dentro do Anexo - @ViewBag.Anexo </strong>
 }
 
 @if (ViewBag.Type == "foraAnexo")
 {
-    <strong>Venda Fora Anexo</strong>
+    <strong>Venda Fora Anexo - @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "incentivo")
