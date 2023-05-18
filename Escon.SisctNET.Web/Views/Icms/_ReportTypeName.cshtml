@@ -102,12 +102,22 @@
 
 @if (ViewBag.Type == "anexo")
 {
-    <strong>Venda Dentro do Anexo - @ViewBag.Anexo </strong>
+    <strong>Venda Dentro do @ViewBag.Anexo </strong>
+}
+
+@if (ViewBag.Type == "anexoInterno")
+{
+    <strong>Venda Interna Dentro do @ViewBag.Anexo </strong>
 }
 
 @if (ViewBag.Type == "foraAnexo")
 {
-    <strong>Venda Fora Anexo - @ViewBag.Anexo</strong>
+    <strong>Venda Fora do @ViewBag.Anexo</strong>
+}
+
+@if (ViewBag.Type == "foraAnexoInterno")
+{
+    <strong>Venda Interna Fora do @ViewBag.Anexo</strong>
 }
 
 @if (ViewBag.Type == "incentivo")
