@@ -26134,9 +26134,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ResumoNcm = ncm_list;
 
                 }
-                else if (type.Equals("anexoInterno"))
+                else if (type.Equals("anexoInterna"))
                 {
-                    //  Resumo Vendas Fora do Anexo
+                    //  Resumo Vendas Interna Dentro do Anexo
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
@@ -26285,6 +26285,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
+                else if (type.Equals("anexoInternaNormal"))
+                {
+
                 }
                 else if (type.Equals("foraAnexo"))
                 {
@@ -26443,9 +26447,9 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.TotalVendas = totalVendas;
                     ViewBag.TotalNcm = valorTotalNcm;
                 }
-                else if (type.Equals("foraAnexoInterno"))
+                else if (type.Equals("foraAnexoInterna"))
                 {
-                    //  Resumo Vendas Fora do Anexo
+                    //  Resumo Vendas Interna Fora do Anexo
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
@@ -26594,6 +26598,10 @@ namespace Escon.SisctNET.Web.Controllers
                     }
 
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
+                else if (type.Equals("foraAnexoInternaNormal"))
+                {
+
                 }
                 else if (type.Equals("suspensao"))
                 {

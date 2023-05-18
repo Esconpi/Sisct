@@ -167,10 +167,17 @@
 
                 @await Html.PartialAsync("_AttachedSale", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Type == "anexoInterno")
+            else if (ViewBag.Type == "anexoInterna")
             {
                 <!-- Vendas Interna Anexo -->
+
                 @await Html.PartialAsync("_AttachedInternalSale", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "anexoInternaNormal")
+            {
+                <!-- Vendas Interna Normal Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalNormalSale", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "foraAnexo")
             {
@@ -178,10 +185,17 @@
 
                 @await Html.PartialAsync("_AttachedFSale", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Type == "foraAnexoInterno")
+            else if (ViewBag.Type == "foraAnexoInterna")
             {
                 <!-- Vendas Interna Fora do Anexo -->
+
                 @await Html.PartialAsync("_AttachedInternalFSale", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "foraAnexoInternaNormal")
+            {
+                <!-- Vendas Interna Normal Fora do Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalNormalFSale", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "suspensao")
             {
