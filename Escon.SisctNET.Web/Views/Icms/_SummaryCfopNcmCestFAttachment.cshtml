@@ -32,10 +32,14 @@
                     @cfop[0] - @cfop[1]
                 </td>
                 <td style="border:1px solid; padding-left:1%;">
-                    @cfop[10]
+                    @cfop[9]
                 </td>
                 <td style="border:1px solid; padding-left:1%;">
-                    @cfop[2]
+                    @if (cfop[2] != "")
+                    {
+                        @cfop[2]
+                        -@cfop[11]
+                    }
                 </td>
                 <td style="border:1px solid; text-align:right; padding-right:1%;">
                     <b>@string.Format("{0:N}", Convert.ToDecimal(cfop[4].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</b>

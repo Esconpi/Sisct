@@ -37,6 +37,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxSupplementService _taxSupplementService;
         private readonly IAliquotService _aliquotService;
         private readonly IInternalAliquotService _internalAliquotService;
+        private readonly ICestService _cestService;
 
         public IcmsController(
             ICompanyService companyService,
@@ -66,6 +67,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxSupplementService taxSupplementService,
             IAliquotService aliquotService,
             IInternalAliquotService internalAliquotService,
+            ICestService cestService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Company")
         {
@@ -95,6 +97,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxSupplementService = taxSupplementService;
             _aliquotService = aliquotService;
             _internalAliquotService = internalAliquotService;
+            _cestService = cestService;
             SessionManager.SetIHttpContextAccessor(httpContextAccessor);
         }
 
@@ -24468,7 +24471,7 @@ namespace Escon.SisctNET.Web.Controllers
                     notes = importXml.NFeAll(directoryNfeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
-
+                    var cestAll = _cestService.FindAll(null);
 
                     List<List<string>> cfops = new List<List<string>>();
 
@@ -24516,6 +24519,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
                                     var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
 
                                     List<string> cc = new List<string>();
 
@@ -24530,6 +24534,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add("0");
                                     cc.Add(NCM);
                                     cc.Add(nn.Description);
+                                    if (CEST != "")
+                                    {
+                                        cc.Add(cestTemp.Description);
+                                    }
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
                                 }
@@ -25438,7 +25446,7 @@ namespace Escon.SisctNET.Web.Controllers
                     notes = importXml.NFeAll(directoryNfeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
-
+                    var cestAll = _cestService.FindAll(null);
 
                     List<List<string>> cfops = new List<List<string>>();
 
@@ -25486,6 +25494,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
                                     var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
 
                                     List<string> cc = new List<string>();
 
@@ -25500,6 +25509,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add("0");
                                     cc.Add(NCM);
                                     cc.Add(nn.Description);
+                                    if (CEST != "")
+                                    {
+                                        cc.Add(cestTemp.Description);
+                                    }
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
                                 }
