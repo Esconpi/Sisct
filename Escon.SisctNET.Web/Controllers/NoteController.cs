@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Math;
-using DocumentFormat.OpenXml.Vml.Office;
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

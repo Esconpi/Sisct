@@ -4118,8 +4118,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     if (ncmAll.Contains(NCM))
                                                     {
-                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(NCM) && (_.TaxationTypeNcm.Description.Equals("Monofásico") || _.TaxationTypeNcm.Description.Equals("Aliquota Zero") ||
-                                                                                        _.TaxationTypeNcm.Description.Equals("S. Tributária") || _.TaxationTypeNcm.Description.Equals("Isento")))
+                                                        var ehMono = ncmsTaxation.Where(_ => _.Ncm.Code.Equals(NCM) && (_.TaxationTypeNcm.Description.Equals("Monofásico") || 
+                                                                                             _.TaxationTypeNcm.Description.Equals("Aliquota Zero") || _.TaxationTypeNcm.Description.Equals("S. Tributária") || 
+                                                                                             _.TaxationTypeNcm.Description.Equals("Isento")))
                                                                                  .FirstOrDefault();
 
                                                         if (exitNotes[i][j].ContainsKey("vProd"))
