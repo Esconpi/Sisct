@@ -26013,7 +26013,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = false;
-                        string CFOP = "", NCM = "", CEST = "";
+                        string CProd = "", XProd = "", CFOP = "", NCM = "", CEST = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -26022,9 +26022,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                CProd = notes[i][j]["cProd"];
+                                XProd = notes[i][j]["xProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
                                 status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
@@ -26036,7 +26038,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
                                     if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
-                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
+                                        cfops[e][12].Equals(CProd) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
                                         pos = e;
                                         break;
@@ -26066,8 +26068,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add(cestTemp.Description);
                                     else
                                         cc.Add("");
-                                    cc.Add(notes[i][j]["cProd"]);
-                                    cc.Add(notes[i][j]["xProd"]);
+                                    cc.Add(CProd);
+                                    cc.Add(XProd);
                                     cc.Add(notes[i][1]["nNF"]);
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
@@ -26506,7 +26508,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = true;
-                        string CFOP = "", NCM = "", CEST = "";
+                        string CProd = "", XProd = "", CFOP = "", NCM = "", CEST = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -26515,9 +26517,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                CProd = notes[i][j]["cProd"];
+                                XProd = notes[i][j]["xProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
                                 status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
@@ -26529,7 +26533,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
                                     if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
-                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
+                                        cfops[e][12].Equals(CProd) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
                                         pos = e;
                                         break;
@@ -26559,8 +26563,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         cc.Add(cestTemp.Description);
                                     else
                                         cc.Add("");
-                                    cc.Add(notes[i][j]["cProd"]);
-                                    cc.Add(notes[i][j]["xProd"]);
+                                    cc.Add(CProd);
+                                    cc.Add(XProd);
                                     cc.Add(notes[i][1]["nNF"]);
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
