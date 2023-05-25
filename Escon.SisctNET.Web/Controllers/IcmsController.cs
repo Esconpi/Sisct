@@ -25995,143 +25995,139 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
-                    var contNcm = ncmConvenio.Count();
-                    string[,] resumoAnexo = new string[contNcm, 4];
+                    var ncmsAll = _ncmService.FindAll(null);
+                    var cestAll = _cestService.FindAll(null);
 
-                    for (int i = 0; i < contNcm; i++)
-                    {
-                        resumoAnexo[i, 0] = ncmConvenio[i].Ncm;
-                        resumoAnexo[i, 1] = ncmConvenio[i].Description;
-                        resumoAnexo[i, 2] = "0";
-                        resumoAnexo[i, 3] = "0";
-                    }
+                    List<List<string>> cfops = new List<List<string>>();
 
-                    decimal totalVendas = 0;
+                    decimal valorContabil = 0, baseCalculo = 0, valorIcms = 0, valorFecop = 0;
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             notes.RemoveAt(i);
                             continue;
                         }
 
-                        int pos = 0;
-                        bool ncm = false;
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                        bool status = false;
+                        string CFOP = "", NCM = "", CEST = "";
+                        decimal vProd = 0;
+                        int pos = -1;
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
-                            if (notes[i][j].ContainsKey("NCM"))
+
+                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                ncm = false;
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
 
-                                for (int k = 0; k < ncmConvenio.Count; k++)
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
+
+                                pos = -1;
+                            }
+
+                            if (status)
+                            {
+                                for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    int tamanho = ncmConvenio[k].Ncm.Length;
-                                    string ncmTemp = "";
-
-                                    if (tamanho < 8)
-                                        ncmTemp = notes[i][j]["NCM"].Substring(0, tamanho);
-                                    else
-                                        ncmTemp = notes[i][j]["NCM"];
-
-                                    if (ncmConvenio[k].Ncm.Equals(ncmTemp))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
+                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
-                                        ncm = true;
-                                        pos = k;
+                                        pos = e;
                                         break;
                                     }
                                 }
-                            }
 
-                            if (ncm)
-                            {
+                                if (pos < 0)
+                                {
+                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                    var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
+
+                                    List<string> cc = new List<string>();
+
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(CEST);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add(NCM);
+                                    cc.Add(nn.Description);
+                                    if (CEST != "")
+                                        cc.Add(cestTemp.Description);
+                                    else
+                                        cc.Add("");
+                                    cc.Add(notes[i][j]["cProd"]);
+                                    cc.Add(notes[i][j]["xProd"]);
+                                    cc.Add(notes[i][1]["nNF"]);
+                                    cfops.Add(cc);
+                                    pos = cfops.Count() - 1;
+                                }
+
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
                                 }
 
                                 if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
                                 }
 
                                 if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    totalVendas -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
                                 }
 
                                 if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
                                 }
 
                                 if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
                                 {
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
                                 }
 
-                                if (notes[i][j].ContainsKey("vICMSST"))
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMS"))
                                 {
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                    resumoAnexo[pos, 2] = (Convert.ToDecimal(resumoAnexo[pos, 2]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
+                                    cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    baseCalculo += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
                                 }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pFCP"))
+                                {
+                                    cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
                             }
-                            else
-                            {
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vProd"]);
-
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vFrete"]);
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vOutro"]);
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vSeg"]);
-
-                                if (notes[i][j].ContainsKey("vICMSST"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                            }
-
                         }
                     }
 
-                    decimal percentualTotal = 0;
-                    decimal valorTotalNcm = 0;
-
-                    List<List<string>> ncm_list = new List<List<string>>();
-
-                    for (int i = 0; i < contNcm; i++)
-                    {
-                        if (resumoAnexo[i, 2] != "0")
-                        {
-                            resumoAnexo[i, 3] = ((Convert.ToDecimal(resumoAnexo[i, 2]) * 100) / totalVendas).ToString();
-                            valorTotalNcm += Convert.ToDecimal(resumoAnexo[i, 2]);
-                            percentualTotal += Convert.ToDecimal(resumoAnexo[i, 3]);
-
-                            List<string> ncm = new List<string>();
-                            ncm.Add(resumoAnexo[i, 0]);
-                            ncm.Add(resumoAnexo[i, 1]);
-                            ncm.Add(resumoAnexo[i, 2]);
-                            ncm.Add(resumoAnexo[i, 3]);
-                            ncm_list.Add(ncm);
-                        }
-                    }
-
-                    ViewBag.TotalNcm = valorTotalNcm;
-                    ViewBag.PercentualTotal = percentualTotal;
-                    ViewBag.TotalVendas = totalVendas;
-                    ViewBag.ResumoNcm = ncm_list;
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseCalculo = baseCalculo;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
 
                 }
                 else if (type.Equals("anexoInterna"))
@@ -26492,148 +26488,139 @@ namespace Escon.SisctNET.Web.Controllers
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
-                    List<List<string>> ncmsForaAnexo = new List<List<string>>();
-                    decimal totalVendas = 0;
-
                     var ncmsAll = _ncmService.FindAll(null);
+                    var cestAll = _cestService.FindAll(null);
+
+                    List<List<string>> cfops = new List<List<string>>();
+
+                    decimal valorContabil = 0, baseCalculo = 0, valorIcms = 0, valorFecop = 0;
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
-                        if (!notes[i][2]["CNPJ"].Equals(comp.Document) || notes[i].Count <= 5)
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
                         {
                             notes.RemoveAt(i);
                             continue;
                         }
+
                         var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
-                        string ncmTemp = "";
-                        bool ncm = false;
+                        bool status = true;
+                        string CFOP = "", NCM = "", CEST = "";
+                        decimal vProd = 0;
+                        int pos = -1;
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
-                            if (notes[i][j].ContainsKey("NCM"))
+
+                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                string CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
 
-                                ncm = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, notes[i][j]["NCM"], CEST, comp);
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
-                                ncmTemp = notes[i][j]["NCM"];
+                                pos = -1;
                             }
 
-
-                            if (!ncm)
+                            if (!status)
                             {
-                                List<string> ncmForaAnexo = new List<string>();
-                                int pos = -1;
-                                for (int k = 0; k < ncmsForaAnexo.Count(); k++)
+                                for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (ncmsForaAnexo[k][0].Equals(ncmTemp))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
+                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
-                                        pos = k;
+                                        pos = e;
+                                        break;
                                     }
                                 }
 
-                                if (!ncmTemp.Equals(""))
+                                if (pos < 0)
                                 {
-                                    if (pos < 0)
-                                    {
-                                        var nn = ncmsAll.Where(_ => _.Code.Equals(ncmTemp)).FirstOrDefault();
-                                        ncmForaAnexo.Add(ncmTemp);
-                                        ncmForaAnexo.Add("0");
-                                        ncmForaAnexo.Add("0");
-                                        ncmForaAnexo.Add(nn.Description);
-                                        ncmsForaAnexo.Add(ncmForaAnexo);
-                                        pos = ncmsForaAnexo.Count() - 1;
-                                    }
-                                    if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
-                                        totalVendas += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                    }
+                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                    var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
 
-                                    if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
-                                        totalVendas += Convert.ToDecimal(notes[i][j]["vFrete"]);
-                                    }
+                                    List<string> cc = new List<string>();
 
-                                    if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
-                                        totalVendas -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-                                    }
-
-                                    if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
-                                        totalVendas += Convert.ToDecimal(notes[i][j]["vOutro"]);
-                                    }
-
-                                    if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
-                                        totalVendas += Convert.ToDecimal(notes[i][j]["vSeg"]);
-                                    }
-
-                                    if (notes[i][j].ContainsKey("vICMSST"))
-                                    {
-                                        ncmsForaAnexo[pos][1] = (Convert.ToDecimal(ncmsForaAnexo[pos][1]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
-                                        totalVendas += Convert.ToDecimal(notes[i][j]["vICMSST"]);
-                                    }
-
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(CEST);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add(NCM);
+                                    cc.Add(nn.Description);
+                                    if (CEST != "")
+                                        cc.Add(cestTemp.Description);
+                                    else
+                                        cc.Add("");
+                                    cc.Add(notes[i][j]["cProd"]);
+                                    cc.Add(notes[i][j]["xProd"]);
+                                    cc.Add(notes[i][1]["nNF"]);
+                                    cfops.Add(cc);
+                                    pos = cfops.Count() - 1;
                                 }
 
-                            }
-                            else
-                            {
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
 
                                 if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
 
                                 if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
 
                                 if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
 
                                 if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
 
-                                if (notes[i][j].ContainsKey("vICMSST"))
-                                    totalVendas += Convert.ToDecimal(notes[i][j]["vICMSST"]);
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMS"))
+                                {
+                                    cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    baseCalculo += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pFCP"))
+                                {
+                                    cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
                             }
-
                         }
                     }
 
-                    decimal valorTotalNcm = 0, percentualTotal = 0;
-
-                    List<List<string>> ncmsForaAnexoList = new List<List<string>>();
-
-                    foreach (var ncm in ncmsForaAnexo)
-                    {
-                        if (!ncm[1].Equals("0"))
-                        {
-                            ncm[2] = ((Convert.ToDecimal(ncm[1]) * 100) / totalVendas).ToString();
-                            valorTotalNcm += Convert.ToDecimal(ncm[1]);
-                            percentualTotal += Convert.ToDecimal(ncm[2]);
-
-                            List<string> ncmFora = new List<string>();
-                            ncmFora.Add(ncm[0]);
-                            ncmFora.Add(ncm[1]);
-                            ncmFora.Add(ncm[2]);
-                            ncmFora.Add(ncm[3]);
-                            ncmsForaAnexoList.Add(ncmFora);
-
-                        }
-                    }
-
-                    ViewBag.Ncm = ncmsForaAnexoList.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
-                    ViewBag.PercentualTotal = percentualTotal;
-                    ViewBag.TotalVendas = totalVendas;
-                    ViewBag.TotalNcm = valorTotalNcm;
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseCalculo = baseCalculo;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
                 else if (type.Equals("foraAnexoInterna"))
                 {
