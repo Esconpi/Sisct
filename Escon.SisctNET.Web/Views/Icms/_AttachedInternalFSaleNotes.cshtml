@@ -2,6 +2,12 @@
     <thead>
         <tr style="border:1px solid;">
             <th style="border:1px solid; text-align:center;">
+                NFe
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Produto
+            </th>
+            <th style="border:1px solid; text-align:center;">
                 CFOP
             </th>
             <th style="border:1px solid; text-align:center;">
@@ -28,6 +34,12 @@
         @foreach (var cfop in ViewBag.Cfop)
         {
             <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @cfop[14]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @cfop[12] - @cfop[13]
+                </td>
                 <td style="border:1px solid; padding-left:1%;">
                     @cfop[0] - @cfop[1]
                 </td>
@@ -60,7 +72,7 @@
             </tr>
         }
         <tr>
-            <th style="border:1px solid; text-align:center;" colspan="3">Total</th>
+            <th style="border:1px solid; text-align:center;" colspan="5">Total</th>
             <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.valorContabil)</td>
             <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.baseCalculo)</td>
             <td style="text-align:right; border:1px solid;">@string.Format("{0:N}", ViewBag.valorIcms)</td>
