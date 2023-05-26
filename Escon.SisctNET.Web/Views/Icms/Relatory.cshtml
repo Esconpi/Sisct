@@ -173,6 +173,12 @@
 
                 @await Html.PartialAsync("_AttachedInternalSale", new ViewDataDictionary(ViewData))
             }
+            else if (ViewBag.Type == "notasAnexoInterna")
+            {
+                <!-- Notas | Vendas Interna Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalSaleNotes", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "anexoInternaNormal")
             {
                 <!-- Vendas Interna Normal Anexo -->
@@ -190,6 +196,12 @@
                 <!-- Vendas Interna Fora do Anexo -->
 
                 @await Html.PartialAsync("_AttachedInternalFSale", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "notasForaAnexoInterna")
+            {
+                <!-- Notas | Vendas Interna Fora do Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalFSaleNotes", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "foraAnexoInternaNormal")
             {
