@@ -26982,6 +26982,40 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
+                    //  Saida
+                    cfopsVenda = _cfopService.FindByCfopVenda(cfopAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaST = _cfopService.FindByCfopVendaST(cfopAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopAll)
+                         .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                         .Select(_ => _.Code)
+                         .Distinct()
+                         .ToList();
+
+                    //  Transferencia
+                    cfopsTransf = _cfopService.FindByCfopTransferencia(cfopAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsTransfST = _cfopService.FindByCfopTransferenciaST(cfopAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+
                     cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsTransf);
