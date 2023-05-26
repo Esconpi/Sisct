@@ -26037,8 +26037,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
-                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
                                     {
                                         pos = e;
                                         break;
@@ -26708,8 +26707,7 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
-                                        cfops[e][12].Equals(notes[i][j]["cProd"]) && cfops[e][14].Equals(notes[i][1]["nNF"]))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
                                     {
                                         pos = e;
                                         break;
