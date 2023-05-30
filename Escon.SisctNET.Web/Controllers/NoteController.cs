@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.Model;
+﻿using DocumentFormat.OpenXml.Math;
+using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -793,39 +794,83 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         if (taxed.EBcr && aliquotConfaz == null && internalAliquotConfaz == null)
                                         {
-                                           
-                                        }
-                                        else if (taxed.EBcr && aliquotConfaz != null && internalAliquotConfaz != null)
-                                        {
-                                            decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(prod.Picms)),
-                                                    bcrIntra = calculation.BCR(Convert.ToDecimal(internalAliquotConfaz), aliqInterna),
-                                                    bcrInter = calculation.BCR(Convert.ToDecimal(aliquotConfaz), Convert.ToDecimal(prod.Picms)),
-                                                    icmsInter = calculation.IcmsBCR(base1, bcrInter),
-                                                    baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna),
-                                                    icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
+                                            decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
+                                             bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
-                                            decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(prod.Picms)),
+                                            if (taxed.BCR != null)
+                                                bcrIntra = Convert.ToDecimal(taxed.BCR);
+
+                                            icmsInter = calculation.IcmsBCR(base1, bcrInter);
+
+                                            if (vICMS > 0)
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else if (CSOSN != "")
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
+
+                                            icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
+                                            icmsApu = calculation.Icms(icmsIntra, icmsInter);
+
+                                            decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
                                                     bcrIntraCTe = 100,
                                                     bcrInterCTe = 100,
                                                     icmsInterCTe = calculation.IcmsBCR(base1CTe, bcrInterCTe),
                                                     baseDifalCTe = calculation.Base3(frete_prod - icmsInterCTe, aliqInterna),
                                                     icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
 
+                                            icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
+                                        }
+                                        else if (taxed.EBcr && aliquotConfaz != null && internalAliquotConfaz != null)
+                                        {
+                                            decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
+                                                    bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
+
+                                            bcrIntra = calculation.BCR(Convert.ToDecimal(internalAliquotConfaz), aliqInterna);
+                                            bcrInter = calculation.BCR(Convert.ToDecimal(aliquotConfaz), Convert.ToDecimal(pICMSValid));
+                                            icmsInter = calculation.IcmsBCR(base1, bcrInter);
+                                            icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
+
+                                            if (prod.Vicms > 0)
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else if (prod.Csosn != "")
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
+
+                                            icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
                                             icmsApu = calculation.Icms(icmsIntra, icmsInter);
+
+                                            decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValid)),
+                                                    bcrIntraCTe = 100,
+                                                    bcrInterCTe = 100,
+                                                    icmsInterCTe = calculation.IcmsBCR(base1CTe, bcrInterCTe),
+                                                    baseDifalCTe = calculation.Base3(frete_prod - icmsInterCTe, aliqInterna),
+                                                    icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
+
                                             icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
                                         }
                                         else
                                         {
                                             decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
-                                                    base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
-                                                    base2 = calculation.Base2(baseCalc - frete_prod, base1),
+                                                    base2 = 0, base3 = 0, baseDifal = 0;
+
+                                            if (prod.Vicms > 0)
+                                                base2 = calculation.Base2(baseCalc - frete_prod, base1);
+                                            else if (prod.Csosn != "")
+                                                base2 = calculation.Base2(baseCalc - frete_prod, base1);
+                                            else
+                                                base2 = baseCalc - frete_prod;
+
+                                            base3 = calculation.Base3(base2, aliqInterna);
+                                            baseDifal = calculation.BaseDifal(base3, aliqInterna);
+                                            icmsApu = calculation.Icms(baseDifal, base1);
+
+                                            decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
                                                     base2CTe = calculation.Base2(frete_prod, base1CTe),
-                                                    base3 = calculation.Base3(base2, aliqInterna),
                                                     base3CTe = calculation.Base3(base2CTe, aliqInterna),
-                                                    baseDifal = calculation.BaseDifal(base3, aliqInterna),
                                                     baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
-                                            icmsApu = calculation.Icms(baseDifal, base1);
                                             icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
                                         }
                                     }
