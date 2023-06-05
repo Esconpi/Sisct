@@ -60,6 +60,36 @@ namespace Escon.SisctNET.Web.Controllers
 
         }
 
+
+        [HttpPost]
+        public IActionResult Index(long groupId)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("Product")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                List<Model.Group> lista_group = _groupService.FindAll(null);
+
+                foreach (var g in lista_group)
+                {
+                    g.Description = g.Item + " - " + g.Description;
+                }
+
+                lista_group.Insert(0, new Model.Group() { Description = "Nennhum grupo selecionado", Id = 0 });
+                SelectList groups = new SelectList(lista_group, "Id", "Description", null);
+                ViewBag.GroupId = groups;
+
+                SessionManager.SetGroupIdInSession(groupId);
+
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -365,7 +395,14 @@ namespace Escon.SisctNET.Web.Controllers
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
             var lenght = Convert.ToInt32(Request.Query["length"].ToString());
 
-            var productsAll = _service.FindByAllGroup(null).OrderBy(_ => _.Group.AttachmentId).ToList();
+            List<Product> productsAll = new List<Product>();
+
+            long groupId = SessionManager.GetGroupIdInSession();
+
+            if (groupId == 0)
+                productsAll = _service.FindAllByGroup(null).OrderBy(_ => _.Group.AttachmentId).ToList();
+            else
+                productsAll = _service.FindAllByGroup(groupId);
 
             if (!string.IsNullOrEmpty(Request.Query["search[value]"]))
             {

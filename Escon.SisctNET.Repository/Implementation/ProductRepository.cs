@@ -26,7 +26,7 @@ namespace Escon.SisctNET.Repository.Implementation
             return result;
         }
 
-        public List<Product> FindByAllGroup(Log log = null)
+        public List<Product> FindAllByGroup(Log log = null)
         {
             var rst = _context.Products.Where(_ => _.DateEnd == null)
                                        .Include(g => g.Group)
@@ -55,6 +55,15 @@ namespace Escon.SisctNET.Repository.Implementation
         public Product FindByProduct(string code, long grupoId, Log log = null)
         {
             var rst = _context.Products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId) && _.DateEnd == null).FirstOrDefault();
+            AddLog(log);
+            return rst;
+        }
+
+        public List<Product> FindAllByGroup(long groupid, Log log = null)
+        {
+            var rst = _context.Products.Where(_ => _.GroupId.Equals(groupid))
+                                    .Include(g => g.Group)
+                                    .ToList();
             AddLog(log);
             return rst;
         }

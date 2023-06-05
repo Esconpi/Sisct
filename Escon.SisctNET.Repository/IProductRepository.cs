@@ -13,6 +13,8 @@ namespace Escon.SisctNET.Repository
 
         List<Model.Product> FindAllInDate(DateTime data, Model.Log log = null);
 
-        List<Model.Product> FindByAllGroup(Model.Log log = null);
+        List<Model.Product> FindAllByGroup(long groupid, Model.Log log = null);
+
+        List<Model.Product> FindAllByGroup(Model.Log log = null);
     }
 }

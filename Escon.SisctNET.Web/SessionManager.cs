@@ -171,6 +171,16 @@ namespace Escon.SisctNET.Web
         {
             return _httpContextAccessor.HttpContext.Session.Get<List<string>>("KeysSisctNET");
         }
+
+        public static void SetGroupIdInSession(long groupId)
+        {
+            _httpContextAccessor.HttpContext.Session.Set<long>("GroupIdSisctNET", groupId);
+        }
+
+        public static long GetGroupIdInSession()
+        {
+            return _httpContextAccessor.HttpContext.Session.Get<long>("GroupIdSisctNET");
+        }
     }
 
 }

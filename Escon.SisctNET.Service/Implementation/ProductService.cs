@@ -79,9 +79,14 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindByGroup(groupid, log);
         }
 
-        public List<Product> FindByAllGroup(Log log = null)
+        public List<Product> FindAllByGroup(Log log = null)
         {
-            return _repository.FindByAllGroup(log);
+            return _repository.FindAllByGroup(log);
+        }
+
+        public List<Product> FindAllByGroup(long groupid, Log log = null)
+        {
+            return _repository.FindAllByGroup(groupid, log);   
         }
     }
 }
