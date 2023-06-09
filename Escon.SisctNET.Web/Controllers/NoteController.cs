@@ -757,8 +757,13 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
 
-                                    if (taxed.EBcr)
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
+                                    if (taxed.EBcr && aliquotConfaz != null && internalAliquotConfaz != null)
+                                    {
+                                        if(orig == 1 || orig == 2 || orig == 3 || orig == 8)
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(pICMSValid));
+                                        else
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
+                                    }
 
                                     if (dif < 0)
                                         dif = 0;
@@ -776,8 +781,13 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));
 
-                                    if (taxed.EBcr && aliquotConfaz == null && internalAliquotConfaz == null)
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
+                                    if (taxed.EBcr && aliquotConfaz != null && internalAliquotConfaz != null)
+                                    {
+                                        if (orig == 1 || orig == 2 || orig == 3 || orig == 8)
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(pICMSValid));
+                                        else
+                                            dif = calculation.DiferencialAliq(Convert.ToDecimal(internalAliquotConfaz), Convert.ToDecimal(aliquotConfaz));
+                                    }
 
                                     if (dif < 0)
                                         dif = 0;

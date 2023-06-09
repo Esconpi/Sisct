@@ -282,7 +282,14 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                     <td>
                         @if (item.EBcr == true && item.PicmsBCR != null)
                         {
-                            @item.PicmsBCR
+                            @if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
+                            {
+                                @item.Picms
+                            }
+                            else
+                            {
+                                @item.PicmsBCR
+                            }
                         }
                         else
                         {
@@ -409,7 +416,14 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                     <td>
                         @if (item.EBcr == true && item.PicmsBCR != null)
                         {
-                            @item.PicmsBCR
+                            @if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
+                            {
+                                @item.Picms
+                            }
+                            else
+                            {
+                                @item.PicmsBCR
+                            }
                         }
                         else
                         {

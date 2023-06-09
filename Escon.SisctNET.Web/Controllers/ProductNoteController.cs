@@ -436,8 +436,13 @@ namespace Escon.SisctNET.Web.Controllers
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms);
 
-                            if (entity.EBcr)
-                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                            if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
+                            {
+                                if (prod.Orig == 1 || prod.Orig == 2 || prod.Orig == 3 || prod.Orig == 8)
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
+                                else
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                            }
 
                             if (dif < 0)
                                 dif = 0;
@@ -471,7 +476,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
                             if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
-                                dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                            {
+                                if (prod.Orig == 1 || prod.Orig == 2 || prod.Orig == 3 || prod.Orig == 8)
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
+                                else
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                            }
 
                             if (dif < 0)
                                 dif = 0;
