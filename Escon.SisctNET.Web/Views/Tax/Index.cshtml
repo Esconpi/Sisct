@@ -150,7 +150,7 @@
                         else if (ViewBag.Company.TipoApuracao.Equals(false))
                         {
                             <!-- EMPRESA INCENTIVO SAÍDA -->
-                            @if (ViewBag.Company.AnnexId == null)
+                            @if (ViewBag.Company.Annex.Description.Equals("NENHUM"))
                             {
                                 @if (ViewBag.Company.TypeCompany.Equals(true))
                                 {

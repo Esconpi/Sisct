@@ -2018,14 +2018,15 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
                                         {
-                                            string CNPJ = exitNotes[i][3]["CNPJ"];
-                                            string indIEDest = exitNotes[i][3]["indIEDest"];
+                                            string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "escon";
                                             string IE = exitNotes[i][3]["IE"];
-                                            if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
-                                                posCliente = contribuintes.IndexOf(exitNotes[i][3]["CNPJ"]);
+
+                                            if (contribuintes.Contains(CNPJ))
+                                                posCliente = contribuintes.IndexOf(CNPJ);
 
                                             bool existe = false;
-                                            if (clientesAll.Contains(exitNotes[i][3]["CNPJ"]))
+                                            
+                                            if (clientesAll.Contains(CNPJ))
                                                 existe = true;
 
                                             if (!existe)
@@ -2036,6 +2037,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
 
                                         int posUf = -1;
+
                                         if (exitNotes[i][1]["idDest"].Equals("2"))
                                         {
                                             var UF = exitNotes[i][3].ContainsKey("UF") ? exitNotes[i][3]["UF"] : "";
@@ -2200,14 +2202,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         if (exitNotes[i][3].ContainsKey("CNPJ") && exitNotes[i][3].ContainsKey("indIEDest") && exitNotes[i][3].ContainsKey("IE"))
                                         {
-                                            string CNPJ = exitNotes[i][3]["CNPJ"];
-                                            string indIEDest = exitNotes[i][3]["indIEDest"];
+                                            string CNPJ = exitNotes[i][3].ContainsKey("CNPJ") ? exitNotes[i][3]["CNPJ"] : "escon";
                                             string IE = exitNotes[i][3]["IE"];
-                                            if (contribuintes.Contains(exitNotes[i][3]["CNPJ"]))
-                                                posCliente = contribuintes.IndexOf(exitNotes[i][3]["CNPJ"]);
+
+                                            if (contribuintes.Contains(CNPJ))
+                                                posCliente = contribuintes.IndexOf(CNPJ);
 
                                             bool existe = false;
-                                            if (clientesAll.Contains(exitNotes[i][3]["CNPJ"]))
+                                            if (clientesAll.Contains(CNPJ))
                                                 existe = true;
 
                                             if (!existe)

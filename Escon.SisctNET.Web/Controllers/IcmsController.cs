@@ -208,18 +208,11 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             int pos = -1;
-                            string cpf = "escon";
-                            string cnpj = "escon";
-                            string indIEDest = "escon";
 
-                            if (notes[i][3].ContainsKey("CPF"))
-                                cpf = notes[i][3]["CPF"];
-
-                            if (notes[i][3].ContainsKey("CNPJ"))
-                                cnpj = notes[i][3]["CNPJ"];
-
-                            if (notes[i][3].ContainsKey("indIEDest"))
-                                indIEDest = notes[i][3]["indIEDest"];
+                            string IE = notes[i][3].ContainsKey("IE") ? notes[i][3]["IE"] : "escon";
+                            string CPF = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "escon";
+                            string CNPJ = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "escon";
+                            string indIEDest = notes[i][3].ContainsKey("indIEDest") ? notes[i][3]["indIEDest"] : "escon";
 
                             for (int j = 0; j < notes[i].Count(); j++)
                             {
@@ -305,7 +298,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
                                     cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
 
-                                if (cpf != "escon" && cpf != "")
+                                if (CPF != "escon" && CPF != "")
                                 {
                                     // Com CPF
 
@@ -334,7 +327,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cfops[pos][9] = (Convert.ToDecimal(cfops[pos][9]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
 
                                 }
-                                else if ((cpf == "escon" || cpf == "") && cnpj == "escon")
+                                else if ((CPF == "escon" || CPF == "") && CNPJ == "escon")
                                 {
                                     // Sem CPF
 
@@ -362,7 +355,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (notes[i][j].ContainsKey("pFCP") && notes[i][j].ContainsKey("orig"))
                                         cfops[pos][13] = (Convert.ToDecimal(cfops[pos][13]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
                                 }
-                                else if (cnpj != "escon" && cnpj != "" && indIEDest == "1")
+                                else if (CNPJ != "escon" && CNPJ != "" && IE != "escon")
                                 {
                                     // Com CNPJ e com IE
 
@@ -391,7 +384,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         cfops[pos][17] = (Convert.ToDecimal(cfops[pos][17]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
 
                                 }
-                                else if (cnpj != "escon" && cnpj != "" && indIEDest != "1")
+                                else if (CNPJ != "escon" && CNPJ != "" && IE == "escon")
                                 {
                                     // Com CNPJ e sem IE
                                     if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
@@ -27799,6 +27792,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
                         bool contribuinte = false;
 
                         if (notes[i][3].ContainsKey("CNPJ") && notes[i][3].ContainsKey("IE") && notes[i][3].ContainsKey("indIEDest") && notes[i][1]["mod"].Equals("55"))
@@ -27906,6 +27905,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
                         bool contribuinte = false;
 
                         if (notes[i][3].ContainsKey("CNPJ") && notes[i][3].ContainsKey("IE") && notes[i][3].ContainsKey("indIEDest") && notes[i][1]["mod"].Equals("55"))
@@ -27924,9 +27929,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             if (contribuintes.Contains(CNPJ.Substring(0, 8)))
-                            {
                                 contribuinte = true;
-                            }
                         }
 
                         decimal vProd = 0;
