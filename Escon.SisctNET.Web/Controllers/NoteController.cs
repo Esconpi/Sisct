@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Math;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
@@ -268,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxationCompany = _taxationService.FindByCompanyActive(id);
             var ncmConvenio = _ncmConvenioService.FindByAnnex(null);
-            var ncmConvenioAnnex = ncmConvenio.Where(_ => _.AnnexId.Equals(Convert.ToInt64(comp.AnnexId))).ToList();
+            var ncmConvenioAnnex = ncmConvenio.Where(_ => _.AnnexId.Equals(comp.AnnexId)).ToList();
             var ncmConvenioBCR = ncmConvenio.Where(_ => _.Annex.Description.Equals("ANEXO I - MÁQUINAS, APARELHOS E EQUIPAMENTOS INDUSTRIAIS") ||
                                                         _.Annex.Description.Equals("ANEXO II - MÁQUINAS E IMPLEMENTOS AGRÍCOLA"))
                                             .ToList();
@@ -326,24 +326,24 @@ namespace Escon.SisctNET.Web.Controllers
                                IEST = notes[i][2].ContainsKey("IEST") ? notes[i][2]["IEST"] : "",
                                cnpj = notes[i][2].ContainsKey("CNPJ") ? notes[i][2]["CNPJ"] : notes[i][2]["CPF"];
 
-                        Model.Note note = new Model.Note();
-
-                        note.CompanyId = id;
-                        note.Chave = notes[i][0]["chave"];
-                        note.Nnf = notes[i][1]["nNF"];
-                        note.Dhemi = Convert.ToDateTime(notes[i][1]["dhEmi"]);
-                        note.Cnpj = cnpj;
-                        note.Crt = notes[i][2]["CRT"];
-                        note.Uf = notes[i][2]["UF"];
-                        note.Ie = notes[i][2]["IE"];
-                        note.Iest = IEST;
-                        note.Nct = nCT;
-                        note.Xnome = notes[i][2]["xNome"];
-                        note.Vnf = Convert.ToDecimal(notes[i][4]["vNF"]);
-                        note.IdDest = Convert.ToInt32(notes[i][1]["idDest"]);
-                        note.Status = false;
-                        note.AnoRef = year;
-                        note.MesRef = month;
+                        Model.Note note = new Model.Note()
+                        {
+                            CompanyId = id,
+                            Chave = notes[i][0]["chave"],
+                            Nnf = notes[i][1]["nNF"],
+                            Dhemi = Convert.ToDateTime(notes[i][1]["dhEmi"]),
+                            Cnpj = cnpj,
+                            Crt = notes[i][2]["CRT"],
+                            Uf = notes[i][2]["UF"],
+                            Ie = notes[i][2]["IE"],
+                            Iest = IEST,
+                            Nct = nCT,
+                            Xnome = notes[i][2]["xNome"],
+                            Vnf = Convert.ToDecimal(notes[i][4]["vNF"]),
+                            IdDest = Convert.ToInt32(notes[i][1]["idDest"]),
+                            AnoRef = year,
+                            MesRef = month
+                        };
 
                         nota = _service.Create(note, GetLog(Model.OccorenceLog.Create));
 
@@ -362,23 +362,24 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else
                 {
-                    Model.Note nTemp = new Model.Note();
-
-                    nTemp.Nnf = notaImport.Nnf;
-                    nTemp.Dhemi = notaImport.Dhemi;
-                    nTemp.Uf = notaImport.Uf;
-                    nTemp.Cnpj = notaImport.Cnpj;
-                    nTemp.Xnome = notaImport.Xnome;
-                    nTemp.Vnf = notaImport.Vnf;
-                    nTemp.MesRef = notaImport.MesRef;
-                    nTemp.AnoRef = notaImport.AnoRef;
+                    Model.Note nTemp = new Model.Note()
+                    {
+                        CompanyId = id,
+                        Nnf = notaImport.Nnf,
+                        Dhemi = notaImport.Dhemi,
+                        Uf = notaImport.Uf,
+                        Cnpj = notaImport.Cnpj,
+                        Xnome = notaImport.Xnome,
+                        Vnf = notaImport.Vnf,
+                        MesRef = notaImport.MesRef,
+                        AnoRef = notaImport.AnoRef
+                    };
 
                     if (!notaImport.MesRef.Equals(month) || !notaImport.AnoRef.Equals(year))
                         notas.Add(nTemp);
                 }
 
-                bool tributada = true;
-                int qtd = 0;
+                int qtd = 0, qtdTaxation = 0;
 
                 for (int j = 0; j < notes[i].Count; j++)
                 {
@@ -424,9 +425,6 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("qCom"))
                         det.Add("qCom", notes[i][j]["qCom"]);
 
-                    if (notes[i][j].ContainsKey("vICMS") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
-                        det.Add("vICMS", notes[i][j]["vICMS"]);
-
                     if (notes[i][j].ContainsKey("orig"))
                         det.Add("orig", notes[i][j]["orig"]);
 
@@ -438,6 +436,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("CSOSN"))
                         det.Add("CSOSN", notes[i][j]["CSOSN"]);
+
+                    if (notes[i][j].ContainsKey("vICMS") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
+                        det.Add("vICMS", notes[i][j]["vICMS"]);
 
                     if (notes[i][j].ContainsKey("vIPI") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vIPI", notes[i][j]["vIPI"]);
@@ -466,10 +467,10 @@ namespace Escon.SisctNET.Web.Controllers
                     if (notes[i][j].ContainsKey("vFCPSTRet") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vFCPSTRet", notes[i][j]["vFCPSTRet"]);
 
-                    if (notes[i][j].ContainsKey("vPIS") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vPIS") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vPIS", notes[i][j]["vPIS"]);
 
-                    if (notes[i][j].ContainsKey("vCOFINS") && notes[i][j].ContainsKey("CST"))
+                    if (notes[i][j].ContainsKey("vCOFINS") && (notes[i][j].ContainsKey("CST") || notes[i][j].ContainsKey("CSOSN")))
                         det.Add("vCOFINS", notes[i][j]["vCOFINS"]);
 
                     if (notes[i][j].ContainsKey("frete_prod"))
@@ -568,136 +569,61 @@ namespace Escon.SisctNET.Web.Controllers
                                     incentivo = true;
                             }
 
-                            Model.ProductNote prod = new Model.ProductNote();
-
                             decimal baseDeCalc = calculation.BaseCalc(vProd, vFrete, vSeg, vOutro, vDesc, vIPI, frete_prod);
+
+                            Model.ProductNote prod = new Model.ProductNote()
+                            {
+                                Cprod = det["cProd"],
+                                Ncm = NCM,
+                                Cest = CEST,
+                                Cfop = CFOP,
+                                Cst = CST,
+                                Csosn = CSOSN,
+                                Xprod = det["xProd"],
+                                Vprod = vProd,
+                                Qcom = Convert.ToDecimal(det["qCom"]),
+                                Ucom = det["uCom"],
+                                Vuncom = vUnCom,
+                                Vicms = vICMS,
+                                Picms = Convert.ToDecimal(pICMSValid),
+                                PicmsOrig = Convert.ToDecimal(pICMSValidOrig),
+                                PicmsBCR = aliquotConfaz,
+                                Vipi = vIPI,
+                                Vpis = vPIS,
+                                Vcofins = vCOFINS,
+                                Vbasecalc = baseDeCalc,
+                                Vfrete = vFrete,
+                                Vseg = vSeg,
+                                Voutro = vOutro,
+                                Vdesc = vDesc,
+                                IcmsST = vICMSST,
+                                VbcFcpSt = vBCFCPST,
+                                VbcFcpStRet = vBCFCPSTRet,
+                                pFCPST = pFCPST,
+                                pFCPSTRET = pFCPSTRet,
+                                VfcpST = vFCPST,
+                                VfcpSTRet = vFCPSTRet,
+                                IcmsCTe = freteIcms,
+                                Freterateado = frete_prod,
+                                Nitem = det["nItem"],
+                                Orig = orig,
+                                Incentivo = incentivo,
+                                EBcr = eBcr,
+                                Divergent = divergent,
+                                AliqInternaBCR = internalAliquotConfaz,
+                                DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1),
+                                TaxationTypeId = 10,
+                                NoteId = nota.Id,
+                                Created = DateTime.Now,
+                                Updated = DateTime.Now
+                            };
 
                             if (taxed == null)
                             {
-                                tributada = false;
-
-                                try
-                                {
-                                    prod.Cprod = det["cProd"];
-                                    prod.Ncm = NCM;
-                                    prod.Cest = CEST;
-                                    prod.Cfop = CFOP;
-                                    prod.Xprod = det["xProd"];
-                                    prod.Vprod = vProd;
-                                    prod.Qcom = Convert.ToDecimal(det["qCom"]);
-                                    prod.Ucom = det["uCom"];
-                                    prod.Vuncom = vUnCom;
-                                    prod.Vicms = vICMS;
-                                    prod.Picms = Convert.ToDecimal(pICMSValid);
-                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
-                                    prod.PicmsBCR = aliquotConfaz;
-                                    prod.Cst = CST;
-                                    prod.Csosn = CSOSN;
-                                    prod.Vipi = vIPI;
-                                    prod.Vpis = vPIS;
-                                    prod.Vcofins = vCOFINS;
-                                    prod.Vbasecalc = baseDeCalc;
-                                    prod.Vfrete = vFrete;
-                                    prod.Vseg = vSeg;
-                                    prod.Voutro = vOutro;
-                                    prod.Vdesc = vDesc;
-                                    prod.IcmsST = vICMSST;
-                                    prod.VbcFcpSt = vBCFCPST;
-                                    prod.VbcFcpStRet = vBCFCPSTRet;
-                                    prod.pFCPST = pFCPST;
-                                    prod.pFCPSTRET = pFCPSTRet;
-                                    prod.VfcpST = vFCPST;
-                                    prod.VfcpSTRet = vFCPSTRet;
-                                    prod.IcmsCTe = freteIcms;
-                                    prod.Freterateado = frete_prod;
-                                    prod.NoteId = nota.Id;
-                                    prod.Nitem = det["nItem"];
-                                    prod.Orig = orig;
-                                    prod.Incentivo = incentivo;
-                                    prod.Status = false;
-                                    prod.Pautado = false;
-                                    prod.PercentualInciso = null;
-                                    prod.EBcr = eBcr;
-                                    prod.Divergent = divergent;
-                                    prod.AliqInternaBCR = internalAliquotConfaz;
-                                    prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
-                                    prod.TaxationTypeId = 10;
-                                    prod.Created = DateTime.Now;
-                                    prod.Updated = DateTime.Now;
-
-                                }
-                                catch
-                                {
-                                    url = "Error";
-                                    erro = 1;
-                                    chave = notes[i][0]["chave"];
-                                    break;
-                                }
-
                                 det.Clear();
                             }
                             else if (taxed != null && eBcr != taxed.EBcr)
                             {
-                                tributada = false;
-
-                                try
-                                {
-                                    prod.Cprod = det["cProd"];
-                                    prod.Ncm = NCM;
-                                    prod.Cest = CEST;
-                                    prod.Cfop = CFOP;
-                                    prod.Xprod = det["xProd"];
-                                    prod.Vprod = vProd;
-                                    prod.Qcom = Convert.ToDecimal(det["qCom"]);
-                                    prod.Ucom = det["uCom"];
-                                    prod.Vuncom = vUnCom;
-                                    prod.Vicms = vICMS;
-                                    prod.Picms = Convert.ToDecimal(pICMSValid);
-                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
-                                    prod.PicmsBCR = aliquotConfaz;
-                                    prod.Cst = CST;
-                                    prod.Csosn = CSOSN;
-                                    prod.Vipi = vIPI;
-                                    prod.Vpis = vPIS;
-                                    prod.Vcofins = vCOFINS;
-                                    prod.Vbasecalc = baseDeCalc;
-                                    prod.Vfrete = vFrete;
-                                    prod.Vseg = vSeg;
-                                    prod.Voutro = vOutro;
-                                    prod.Vdesc = vDesc;
-                                    prod.IcmsST = vICMSST;
-                                    prod.VbcFcpSt = vBCFCPST;
-                                    prod.VbcFcpStRet = vBCFCPSTRet;
-                                    prod.pFCPST = pFCPST;
-                                    prod.pFCPSTRET = pFCPSTRet;
-                                    prod.VfcpST = vFCPST;
-                                    prod.VfcpSTRet = vFCPSTRet;
-                                    prod.IcmsCTe = freteIcms;
-                                    prod.Freterateado = frete_prod;
-                                    prod.NoteId = nota.Id;
-                                    prod.Nitem = det["nItem"];
-                                    prod.Orig = orig;
-                                    prod.Incentivo = incentivo;
-                                    prod.Status = false;
-                                    prod.Pautado = false;
-                                    prod.PercentualInciso = null;
-                                    prod.EBcr = eBcr;
-                                    prod.Divergent = divergent;
-                                    prod.AliqInternaBCR = internalAliquotConfaz;
-                                    prod.DateStart = new DateTime(nota.Dhemi.Year, nota.Dhemi.Month, 1);
-                                    prod.TaxationTypeId = 10;
-                                    prod.Created = DateTime.Now;
-                                    prod.Updated = DateTime.Now;
-
-                                }
-                                catch
-                                {
-                                    url = "Error";
-                                    erro = 1;
-                                    chave = notes[i][0]["chave"];
-                                    break;
-                                }
-
                                 det.Clear();
                             }
                             else
@@ -894,78 +820,31 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseCalc = baseDeCalc;
                                 }
 
-                                try
-                                {
-                                    prod.Cprod = det["cProd"];
-                                    prod.Ncm = NCM;
-                                    prod.Cest = CEST;
-                                    prod.Cfop = CFOP;
-                                    prod.Xprod = det["xProd"];
-                                    prod.Vprod = Convert.ToDecimal(det["vProd"]);
-                                    prod.Qcom = Convert.ToDecimal(det["qCom"]);
-                                    prod.Ucom = det["uCom"];
-                                    prod.Vuncom = vUnCom;
-                                    prod.Vicms = vICMS;
-                                    prod.Picms = Convert.ToDecimal(pICMSValid);
-                                    prod.PicmsOrig = Convert.ToDecimal(pICMSValidOrig);
-                                    prod.PicmsBCR = aliquotConfaz;
-                                    prod.Cst = CST;
-                                    prod.Csosn = CSOSN;
-                                    prod.Vipi = vIPI;
-                                    prod.Vpis = vPIS;
-                                    prod.Vcofins = vCOFINS;
-                                    prod.Vbasecalc = baseCalc;
-                                    prod.Vfrete = vFrete;
-                                    prod.Vseg = vSeg;
-                                    prod.Voutro = vOutro;
-                                    prod.Vdesc = vDesc;
-                                    prod.IcmsST = vICMSST;
-                                    prod.VbcFcpSt = vBCFCPST;
-                                    prod.VbcFcpStRet = vBCFCPSTRet;
-                                    prod.pFCPST = pFCPST;
-                                    prod.pFCPSTRET = pFCPSTRet;
-                                    prod.VfcpST = vFCPST;
-                                    prod.VfcpSTRet = vFCPSTRet;
-                                    prod.IcmsCTe = freteIcms;
-                                    prod.Freterateado = frete_prod;
-                                    prod.Valoragregado = valorAgreg;
-                                    prod.ValorBCR = valorbcr;
-                                    prod.ValorAC = valorAgreAliqInt;
-                                    prod.TotalICMS = totalIcms;
-                                    prod.TotalFecop = valorFecop;
-                                    prod.Diferencial = dif;
-                                    prod.IcmsApurado = icmsApu;
-                                    prod.IcmsApuradoCTe = icmsApuCTe;
-                                    prod.NoteId = nota.Id;
-                                    prod.Nitem = det["nItem"];
-                                    prod.Orig = orig;
-                                    prod.Incentivo = incentivo;
-                                    prod.Produto = "Normal";
-                                    prod.Status = true;
-                                    prod.Pautado = false;
-                                    prod.TaxationTypeId = taxed.TaxationTypeId;
-                                    prod.AliqInterna = aliqInterna;
-                                    prod.AliqInternaBCR = internalAliquotConfaz;
-                                    prod.Mva = taxed.MVA;
-                                    prod.EBcr = eBcr;
-                                    prod.Divergent = divergent;
-                                    prod.BCR = taxed.BCR;
-                                    prod.Fecop = taxed.Fecop;
-                                    prod.DateStart = Convert.ToDateTime(taxed.DateStart);
-                                    prod.PercentualInciso = taxed.PercentualInciso;
-                                    prod.DiferencialCTe = dif_frete;
-                                    prod.EBcr = taxed.EBcr;
-
-                                }
-                                catch
-                                {
-                                    url = "Error";
-                                    erro = 1;
-                                    chave = notes[i][0]["chave"];
-                                    break;
-                                }
+                                prod.Incentivo = incentivo;
+                                prod.Vbasecalc = baseCalc;
+                                prod.Valoragregado = valorAgreg;
+                                prod.ValorBCR = valorbcr;
+                                prod.ValorAC = valorAgreAliqInt;
+                                prod.TotalICMS = totalIcms;
+                                prod.TotalFecop = valorFecop;
+                                prod.Diferencial = dif;
+                                prod.IcmsApurado = icmsApu;
+                                prod.IcmsApuradoCTe = icmsApuCTe;
+                                prod.TaxationTypeId = taxed.TaxationTypeId;
+                                prod.AliqInterna = aliqInterna;
+                                prod.Mva = taxed.MVA;
+                                prod.Produto = "Normal";
+                                prod.Status = true;
+                                prod.BCR = taxed.BCR;
+                                prod.Fecop = taxed.Fecop;
+                                prod.DateStart = Convert.ToDateTime(taxed.DateStart);
+                                prod.PercentualInciso = taxed.PercentualInciso;
+                                prod.DiferencialCTe = dif_frete;
+                                prod.EBcr = taxed.EBcr;
 
                                 det.Clear();
+
+                                qtdTaxation += 1;
                             }
 
                             addProduct.Add(prod);
@@ -978,7 +857,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                 }
 
-                if (tributada == true && qtd > 0)
+                if (qtd > 0 && qtd.Equals(qtdTaxation))
                 {
                     nota.Status = true;
                     nota.Updated = DateTime.Now;

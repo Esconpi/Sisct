@@ -961,14 +961,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
 
-                    /*var orig = prod.Orig;
-
-                    if (orig == 1 || orig == 2 || orig == 6 || orig == 7)
-                    {
-                        var state = _aliquotService.FindByUf(prod.Note.Uf, prod.Note.Company.County.State.UF, prod.Note.Dhemi) ;
-                        aliquot = state.Aliquota.ToString();
-                    }*/
-
                     string code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
 
                     var taxationcm = _taxationService.FindByNcm(code, prod.Cest);
@@ -979,23 +971,24 @@ namespace Escon.SisctNET.Web.Controllers
                         _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
                     }
 
-                    Model.Taxation taxation = new Model.Taxation();
-
-                    taxation.CompanyId = Convert.ToInt64(prod.Note.CompanyId);
-                    taxation.Code = code;
-                    taxation.Cest = prod.Cest;
-                    taxation.AliqInterna = aliqInterna;
-                    taxation.PercentualInciso = inciso;
-                    taxation.MVA = mva;
-                    taxation.BCR = bcr;
-                    taxation.Fecop = fecop;
-                    taxation.TaxationTypeId = taxationType;
-                    taxation.NcmId = ncm == null ? 16427 : ncm.Id;
-                    taxation.Picms = prod.Picms;
-                    taxation.Uf = prod.Note.Uf;
-                    taxation.EBcr = entity.EBcr;
-                    taxation.DateStart = dateStart;
-                    taxation.DateEnd = null;
+                    Model.Taxation taxation = new Model.Taxation()
+                    {
+                        CompanyId = prod.Note.CompanyId,
+                        Code = code,
+                        Cest = prod.Cest,
+                        AliqInterna = aliqInterna,
+                        PercentualInciso = inciso,
+                        MVA = mva,
+                        BCR = bcr,
+                        Fecop = fecop,
+                        TaxationTypeId = taxationType,
+                        NcmId = ncm == null ? 16427 : ncm.Id,
+                        Picms = prod.Picms,
+                        Uf = prod.Note.Uf,
+                        EBcr = entity.EBcr,
+                        DateStart = dateStart,
+                        DateEnd = null
+                    };
 
                     _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
                 }       

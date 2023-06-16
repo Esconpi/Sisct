@@ -126,7 +126,6 @@ namespace Escon.SisctNET.Web.Controllers
                        
                     }
                    
-
                     if (ordem.Equals(Model.Ordem.DifereValor) || ordem.Equals(Model.Ordem.SisCTXS) || ordem.Equals(Model.Ordem.SisCTXE) || 
                         ordem.Equals(Model.Ordem.DifereIcms) || ordem.Equals(Model.Ordem.DifereValorSefaz) || ordem.Equals(Model.Ordem.DifereValorEmpresa))
                     {

@@ -10,7 +10,7 @@ namespace Escon.SisctNET.Model
     {
         [Display(Name = "Empresa")]
         [ForeignKey("Company")]
-        public Nullable<long> CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
 
