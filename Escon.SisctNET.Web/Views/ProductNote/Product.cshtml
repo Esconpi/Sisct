@@ -201,23 +201,23 @@
                         </div>
                          <div class="form-group col-lg-2 col-md-4 col-xs-4">
                             <label class="control-label">Produto</label>
-                            <select class="form-control selectoption" name="produto">
+                            <select asp-for="Produto" class="form-control selectoption" name="produto">
                                 @if (Model.Produto == null)
                                 {
-                                    <option value="1" selected>Normal</option>
-                                    <option value="2">Especial</option>
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="Especial">Especial</option>
                                 }
                                 else
                                 {
                                     @if (Model.Produto.Equals("Especial"))
                                     {
-                                        <option value="1">Normal</option>
-                                        <option value="2" selected>Especial</option>
+                                        <option value="Normal">Normal</option>
+                                        <option value="Especial" selected>Especial</option>
                                     }
                                     else
                                     {
-                                        <option value="1" selected>Normal</option>
-                                        <option value="2">Especial</option>
+                                        <option value="Normal" selected>Normal</option>
+                                        <option value="Especial">Especial</option>
                                     }
                                 }
                             </select>

@@ -113,6 +113,7 @@ namespace Escon.SisctNET.Repository.Implementation
             var ent = FindById(id, null);
             if (ent == null) return null;
 
+            entity.Created = ent.Created;
             entity.Updated = DateTime.Now;
             _context.Entry(ent).CurrentValues.SetValues(entity);
             AddLog(log);

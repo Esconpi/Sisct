@@ -17,5 +17,8 @@ namespace Escon.SisctNET.Model
         [Required(ErrorMessage = "Obrigatório!")]
         [Display(Name = "UF")]
         public string UF { get; set; }
+
+        [Display(Name = "DIFAL")]
+        public string Difal { get; set; }
     }
 }

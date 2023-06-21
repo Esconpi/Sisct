@@ -20,25 +20,40 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
-                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                    <div class="form-group col-lg-2 col-md-4 col-xs-12">
                         <label asp-for="Code" class="control-label"></label>
                         <input asp-for="Code" class="form-control" />
                         <span asp-validation-for="Code" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-7 col-md-7 col-xs-12">
+                    <div class="form-group col-lg-6 col-md-8 col-xs-12">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-xs-12">
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
                         <label asp-for="UF" class="control-label"></label>
                         <input asp-for="UF" class="form-control" />
                         <span asp-validation-for="UF" class="text-danger"></span>
                     </div>
+                    <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                        <label asp-for="Difal" class="control-label"></label>
+                        <select asp-for="Difal" class="form-control selectoption" name="Difal">
+                            @if (Model.Difal.Equals("Base Única"))
+                            {
+                                <option value="Base Única" selected>Base Única</option>
+                                <option value="Base Dupla">Base Dupla</option>
+                            }
+                            else
+                            {
+                                <option value="Base Única" selected>Base Única</option>
+                                <option value="Base Dupla">Base Dupla</option>
+                            }
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
+                    <input type="submit" value="Confirmar" class="btn btn-success pull-right" />
                 </div>
 
             </form>

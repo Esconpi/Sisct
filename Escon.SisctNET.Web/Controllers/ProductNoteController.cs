@@ -3,7 +3,6 @@ using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.DarWebWs;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Email;
-using Escon.SisctNET.Web.Tax;
 using Escon.SisctNET.Web.ViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -223,20 +222,22 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var prod = _service.FindByProduct(id);
                 var calculation = new Tax.Calculation();
 
-                long taxationType = Convert.ToInt64(entity.TaxationTypeId);
+                var prod = _service.FindByProduct(id);
+                var comp = _companyService.FindById(prod.Note.CompanyId, null);
 
+                long taxationType = entity.TaxationTypeId;
                 decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta, inciso = entity.PercentualInciso, dif = null;
                 decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, valorFecop = 0;
+                string productType = entity.Produto;
+
+                DateTime dateStart = Convert.ToDateTime(entity.DateStart);
 
                 if (bcr != null)
                     bcr = Convert.ToDecimal(bcr);
 
-                DateTime dateStart = Convert.ToDateTime(entity.DateStart);
-
-                var notes = _noteService.FindByUf(Convert.ToInt64(prod.Note.CompanyId), prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
+                var notes = _noteService.FindByUf(prod.Note.CompanyId, prod.Note.AnoRef, prod.Note.MesRef, prod.Note.Uf);
                 var products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest);
                 //products = _service.FindByNcmUfAliq(notes, prod.Ncm, prod.Picms, prod.Cest).Where(_ => _.NoteId.Equals(prod.NoteId)).ToList();
                 var taxedtype = _taxationTypeService.FindById(taxationType, null);
@@ -369,7 +370,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var dataRef = new DateTime(2023, 3, 30);
                     var dataTemp = new DateTime(Convert.ToInt32(prod.Note.AnoRef), GetIntMonth(prod.Note.MesRef), 1);
 
-                    if (Request.Form["produto"].ToString() == "2")
+                    if (productType == "Especial")
                     {
                         decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms),
                                 Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
@@ -572,14 +573,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     base3 = calculation.Base3(base2, aliqInterna);
                                     baseDifal = calculation.BaseDifal(base3, aliqInterna);
-                                    icmsApu = calculation.Icms(baseDifal, base1);
+
+                                    if (comp.County.State.Difal.Equals("Base Única"))
+                                        icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                    else
+                                        icmsApu = calculation.Icms(baseDifal, base1);
 
                                     decimal base1CTe = calculation.Base1(Convert.ToDecimal(prod.Freterateado), aliquotaOrig),
                                             base2CTe = calculation.Base2(Convert.ToDecimal(prod.Freterateado), base1CTe),
                                             base3CTe = calculation.Base3(base2CTe, aliqInterna),
                                             baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
                                     
-                                    icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                    if (comp.County.State.Difal.Equals("Base Única"))
+                                        icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                    else
+                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
 
                                 }
                             }
@@ -850,14 +858,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         base3 = calculation.Base3(base2, aliqInterna);
                                         baseDifal = calculation.BaseDifal(base3, aliqInterna);
-                                        icmsApu = calculation.Icms(baseDifal, base1);
+
+                                        if (comp.County.State.Difal.Equals("Base Única"))
+                                            icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                        else
+                                            icmsApu = calculation.Icms(baseDifal, base1);
 
                                         decimal base1CTe = calculation.Base1(Convert.ToDecimal(item.Freterateado), aliquotaOrig),
                                                 base2CTe = calculation.Base2(Convert.ToDecimal(item.Freterateado), base1CTe),
                                                 base3CTe = calculation.Base3(base2CTe, aliqInterna),
                                                 baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
-                                        icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                        if (comp.County.State.Difal.Equals("Base Única"))
+                                            icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                        else
+                                            icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
 
                                     }
                                 }
@@ -955,14 +970,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _noteService.Update(updateNote, GetLog(OccorenceLog.Update));
 
-                if (Request.Form["produto"].ToString() == "1" && entity.Pautado == false && entity.Divergent == false)
+                if (productType == "Normal" && entity.Pautado == false && entity.Divergent == false)
                 {
-                    string aliquot = prod.Picms.ToString();
-
                     var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
-
-                    string code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
-
+                    string aliquot = prod.Picms.ToString(),
+                           code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
                     var taxationcm = _taxationService.FindByNcm(code, prod.Cest);
 
                     if (taxationcm != null)
@@ -1031,22 +1043,28 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetMonthInSession(month);
                 SessionManager.SetYearInSession(year);
 
-                var calculation = new Calculation();
-                var check = new Check();
+                var comp = _companyService.FindById(id, null); 
                 var importXml = new Xml.Import();
                 var importDir = new Diretorio.Import();
+                var importMes = new Period.Month();
+                var calculation = new Tax.Calculation();
+                var check = new Tax.Check();
 
-                var comp = _companyService.FindById(id, null);
-                var isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false;
-                var isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
+                bool isCTe = Request.Form["isCTe"].ToString() == "on" ? true : false,
+                     isPauta = Request.Form["isPauta"].ToString() == "on" ? true : false;
+
+                DateTime dataRef = new DateTime(2023, 3, 30),
+                         dataTemp = new DateTime(Convert.ToInt32(year), GetIntMonth(month), 1);
 
                 ViewBag.Company = comp;
                 ViewBag.TypeTaxation = typeTaxation.ToString();
                 ViewBag.Type = type.ToString();
                 ViewBag.IsCTe = isCTe;
                 ViewBag.IsPauta = isPauta;
+                ViewBag.DataRef = dataRef;
+                ViewBag.DataTemp = dataTemp;
                 ViewBag.PeriodReferenceDarWs = $"{year}{GetIntMonth(month).ToString("00")}";
-                
+
                 var confDBSisctNfe = _configurationService.FindByName("NFe", null);
 
                 string directoryNfe = importDir.Entrada(comp, confDBSisctNfe.Value, year, month);
@@ -1108,9 +1126,9 @@ namespace Escon.SisctNET.Web.Controllers
                     .ToList();
 
                 var total = notas.Sum(_ => _.Vnf);
-                //  Notas Sem Inscrição Estasual
+                //  Notas Sem Inscrição Estadual
                 var notesS = notes.Where(_ => _.Iest == "").ToList();
-                //  Notas Com Inscrição Estasual
+                //  Notas Com Inscrição Estadual
                 var notesI = notes.Where(_ => _.Iest != "").ToList();
 
                 decimal icmsStnoteSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.IcmsST).Sum()),
@@ -1120,19 +1138,12 @@ namespace Escon.SisctNET.Web.Controllers
                 var impAnexo = _taxAnexoService.FindByMonth(id, month, year);
                 var impProdutor = _taxProducerService.FindByTaxs(id, month, year);
 
-                var importMes = new Period.Month();
-
                 List<List<string>> apuracao = new List<List<string>>();
 
-                var dataRef = new DateTime(2023, 3, 30);
-                var dataTemp = new DateTime(Convert.ToInt32(year), GetIntMonth(month), 1);
-
-                ViewBag.DataRef = dataRef;
-                ViewBag.DataTemp = dataTemp;
-
-                if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.NotaI) || type.Equals(Model.Type.NotaNI) ||
-                    type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI) || 
-                    type.Equals(Model.Type.RegimeBA) || type.Equals(Model.Type.RegimeBA2))
+                if (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.Nota) || type.Equals(Model.Type.NotaI) || 
+                    type.Equals(Model.Type.NotaNI) || type.Equals(Model.Type.AgrupadoA) || type.Equals(Model.Type.AgrupadoS) || 
+                    type.Equals(Model.Type.ProdutoI) || type.Equals(Model.Type.ProdutoNI) || type.Equals(Model.Type.RegimeBA) || 
+                    type.Equals(Model.Type.RegimeBA2))
                 {                    
 
                     if (!type.Equals(Model.Type.Nota))

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.ExtendedProperties;
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -800,14 +799,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             base3 = calculation.Base3(base2, aliqInterna);
                                             baseDifal = calculation.BaseDifal(base3, aliqInterna);
-                                            icmsApu = calculation.Icms(baseDifal, base1);
+
+                                            if (comp.County.State.Difal.Equals("Base Única"))
+                                                icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                            else
+                                                icmsApu = calculation.Icms(baseDifal, base1);
 
                                             decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
                                                     base2CTe = calculation.Base2(frete_prod, base1CTe),
                                                     base3CTe = calculation.Base3(base2CTe, aliqInterna),
                                                     baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
-                                            icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
+                                            if (comp.County.State.Difal.Equals("Base Única"))
+                                                icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                            else
+                                                icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
                                         }
                                     }
                                 }
@@ -866,7 +872,7 @@ namespace Escon.SisctNET.Web.Controllers
             }
 
             _service.Update(updateNote, GetLog(Model.OccorenceLog.Update));
-            _itemService.Create(addProduct, GetLog(OccorenceLog.Create));
+            _itemService.Create(addProduct, GetLog(Model.OccorenceLog.Create));
 
             if (notas.Count() > 0 && erro == 0)
             {
