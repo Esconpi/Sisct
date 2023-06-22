@@ -49,6 +49,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly ITaxProducerService _taxProducerService;
         private readonly ITaxSupplementService _taxSupplementService;
         private readonly IInternalAliquotService _internalAliquotService;
+        private readonly ITaxationPService _taxationPService;
 
         public ProductNote(
             IConfiguration configuration,
@@ -84,6 +85,7 @@ namespace Escon.SisctNET.Web.Controllers
             ITaxProducerService taxProducerService,
             ITaxSupplementService taxSupplementService,
             IInternalAliquotService internalAliquotService,
+            ITaxationPService taxationPService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "ProductNote")
         {
@@ -120,6 +122,7 @@ namespace Escon.SisctNET.Web.Controllers
             _taxProducerService = taxProducerService;
             _taxSupplementService = taxSupplementService;
             _internalAliquotService = internalAliquotService;
+            _taxationPService = taxationPService;
         }
 
         public IActionResult Index(long noteId)

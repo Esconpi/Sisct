@@ -1,5 +1,4 @@
-﻿using Escon.SisctNET.Model;
-using System;
+﻿using System;
 
 namespace Escon.SisctNET.Web.Tax
 {
@@ -12,9 +11,13 @@ namespace Escon.SisctNET.Web.Tax
             return document + ncm + uf + aliquot;
         }
 
+        public string CodeP(string document, string document2, string product, string ncm, string uf, string aliquot)
+        {
+            return document + document2 + product + ncm + uf + aliquot;
+        }
 
         // Cálculos Tributação dos Produtos na Entrada
-        
+
         public decimal BaseCalc(decimal vProd, decimal vFrete, decimal vSeg, decimal vOutro, decimal vDesc, decimal vIPI, decimal frete_prod)
         {
             return vProd + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;

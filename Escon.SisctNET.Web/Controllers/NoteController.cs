@@ -22,6 +22,7 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IInternalAliquotService _internalAliquotService;
         private readonly IAliquotConfazService _aliquotConfazService;
         private readonly IInternalAliquotConfazService _internalAliquotConfazService;
+        private readonly ITaxationPService _taxationPService;
 
 
         public NoteController(
@@ -38,9 +39,11 @@ namespace Escon.SisctNET.Web.Controllers
             IInternalAliquotService internalAliquotService,
             IAliquotConfazService aliquotConfazService,
             IInternalAliquotConfazService internalAliquotConfazService,
+            ITaxationPService taxationPService,
             IHttpContextAccessor httpContextAccessor)
             : base(functionalityService, "Note")
         {
+            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
             _service = service;
             _companyService = companyService;
             _configurationService = configurationService;
@@ -53,7 +56,7 @@ namespace Escon.SisctNET.Web.Controllers
             _internalAliquotService = internalAliquotService;
             _aliquotConfazService = aliquotConfazService;
             _internalAliquotConfazService = internalAliquotConfazService;
-            SessionManager.SetIHttpContextAccessor(httpContextAccessor);
+            _taxationPService = taxationPService;
         }
 
         public IActionResult Index(long id, string year, string month)
@@ -265,7 +268,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             notes = importXml.NFeAll(directoryNfe, directotyCte, comp);
 
-            var taxationCompany = _taxationService.FindByCompanyActive(id);
+            var taxationsCompany = _taxationService.FindByCompanyActive(id);
             var ncmConvenio = _ncmConvenioService.FindByAnnex(null);
             var ncmConvenioAnnex = ncmConvenio.Where(_ => _.AnnexId.Equals(comp.AnnexId)).ToList();
             var ncmConvenioBCR = ncmConvenio.Where(_ => _.Annex.Description.Equals("ANEXO I - MÁQUINAS, APARELHOS E EQUIPAMENTOS INDUSTRIAIS") ||
@@ -274,6 +277,11 @@ namespace Escon.SisctNET.Web.Controllers
             var aliquotas = _aliquotService.FindByAllState(null);
             var aliquotasConfaz = _aliquotConfazService.FindByAllState(null);
             var aliquotasinternaConfaz = _internalAliquotConfazService.FindByAllState(null);
+
+            List<TaxationP> taxationsPCompany = new List<TaxationP>();
+
+            if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+                taxationsPCompany = _taxationPService.FindByCompanyActive(id);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
 
@@ -530,7 +538,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             var code = calculation.Code(comp.Document, NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
-                            var taxed = _taxationService.FindByCode(taxationCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+                            var taxed = _taxationService.FindByCode(taxationsCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                             bool incentivo = false, eBcr = false, divergent = false;
 
@@ -619,6 +627,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (taxed == null)
                             {
+                                if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+                                {
+                                    var codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct,  NCM, notes[i][2]["UF"], pICMSValid.Replace(".", ","));
+                                    //var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+                                }
+
                                 det.Clear();
                             }
                             else if (taxed != null && eBcr != taxed.EBcr)

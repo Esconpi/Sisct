@@ -1,16 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Escon.SisctNET.Model
 {
-    [Table("taxation")]
-    public class Taxation : EntityBase
+    [Table("taxationp")]
+    public class TaxationP : EntityBase
     {
         public ILazyLoader LazyLoader { get; set; }
 
         public string Code { get; set; }
+
+        [Display(Name = "Produto")]
+        public string Product { get; set; }
 
         [Display(Name = "CEST")]
         public string Cest { get; set; }
@@ -45,6 +48,7 @@ namespace Escon.SisctNET.Model
 
         public bool EBcr { get; set; }
 
+
         [Display(Name = "Tipo de Tributação")]
         [ForeignKey("TaxationType")]
         public long TaxationTypeId { get; set; }
@@ -78,6 +82,18 @@ namespace Escon.SisctNET.Model
         {
             get => LazyLoader.Load(this, ref ncm);
             set => ncm = value;
+        }
+
+        [Display(Name = "Grupo")]
+        [ForeignKey("Group")]
+        public long GroupId { get; set; }
+
+        private Group group;
+        public Group Group
+
+        {
+            get => LazyLoader.Load(this, ref group);
+            set => group = value;
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Escon.SisctNET.Repository.Implementation
     {
         private readonly ContextDataBase _context;
         
-
         public TaxationRepository(ContextDataBase context, IConfiguration configuration) 
             : base(context, configuration)
         {
@@ -47,9 +46,9 @@ namespace Escon.SisctNET.Repository.Implementation
         public List<Taxation> FindByCompany(long companyId, Log log = null)
         {
             var rst = _context.Taxations
-               .Where(_ => _.CompanyId.Equals(companyId))
-               .Include(n => n.Ncm)
-               .ToList();
+                           .Where(_ => _.CompanyId.Equals(companyId))
+                           .Include(n => n.Ncm)
+                           .ToList();
             AddLog(log);
             return rst;
         }
@@ -57,9 +56,9 @@ namespace Escon.SisctNET.Repository.Implementation
         public List<Taxation> FindByCompanyActive(long companyId, Log log = null)
         {
             var rst = _context.Taxations
-                .Where(_ => _.CompanyId.Equals(companyId) && (Convert.ToDateTime(_.DateStart) < Convert.ToDateTime(_.DateEnd) || _.DateEnd.Equals(null)))
-                .Include(n => n.Ncm)
-                .ToList();
+                            .Where(_ => _.CompanyId.Equals(companyId) && (Convert.ToDateTime(_.DateStart) < Convert.ToDateTime(_.DateEnd) || _.DateEnd.Equals(null)))
+                            .Include(n => n.Ncm)
+                            .ToList();
             AddLog(log);
             return rst;
         }
