@@ -278,11 +278,6 @@ namespace Escon.SisctNET.Web.Controllers
             var aliquotasConfaz = _aliquotConfazService.FindByAllState(null);
             var aliquotasinternaConfaz = _internalAliquotConfazService.FindByAllState(null);
 
-            List<TaxationP> taxationsPCompany = new List<TaxationP>();
-
-            if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
-                taxationsPCompany = _taxationPService.FindByCompanyActive(id);
-
             Dictionary<string, string> det = new Dictionary<string, string>();
 
             int erro = 0;
@@ -290,10 +285,19 @@ namespace Escon.SisctNET.Web.Controllers
 
             var taxedtypes = _taxationTypeService.FindAll(null);
 
-            List<Model.NcmConvenio> ncmConvenioAnnexTemp = new List<Model.NcmConvenio>();
-            List<Model.NcmConvenio> ncmConvenioBCRTemp = new List<Model.NcmConvenio>();
-            List<Model.Note> updateNote = new List<Model.Note>();
+            List<Product> products = new List<Product>();
+            List<TaxationP> taxationsPCompany = new List<TaxationP>();
+            List<NcmConvenio> ncmConvenioAnnexTemp = new List<NcmConvenio>();
+            List<NcmConvenio> ncmConvenioBCRTemp = new List<NcmConvenio>();
+            List<Note> updateNote = new List<Note>();
             List<Model.ProductNote> addProduct = new List<Model.ProductNote>();
+
+            if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+            {
+                products = _productService.FindAll(null);
+                taxationsPCompany = _taxationPService.FindByCompanyActive(id);
+            }
+
 
             for (int i = notes.Count - 1; i >= 0; i--)
             {
