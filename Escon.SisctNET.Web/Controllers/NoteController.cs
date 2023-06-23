@@ -751,7 +751,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.Vbasecalc = baseCalc;
                                             //prod.Incentivo = true;
                                             prod.DateStart = Convert.ToDateTime(taxedP.DateStart);
-                                            prod.Produto = "Normal";
+                                            prod.Produto = "Especial";
                                             prod.PercentualInciso = taxedP.PercentualInciso;
                                         }
                                     }

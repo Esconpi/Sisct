@@ -348,7 +348,7 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Vbasecalc = baseCalc;
                     //prod.Incentivo = true;
                     prod.DateStart = dateStart;
-                    prod.Produto = "Normal";
+                    prod.Produto = "Especial";
                     prod.PercentualInciso = inciso;
 
                     updateProducts.Add(prod);
@@ -1015,7 +1015,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (taxationcm != null)
                     {
                         taxationcm.DateEnd = dateStart.AddDays(-1);
-                        //_taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                        _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
                     }
 
                     Model.Taxation taxation = new Model.Taxation()
@@ -1037,7 +1037,7 @@ namespace Escon.SisctNET.Web.Controllers
                         DateEnd = null
                     };
 
-                    //_taxationService.Create(taxation, GetLog(OccorenceLog.Create));
+                    _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
                 }       
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });
