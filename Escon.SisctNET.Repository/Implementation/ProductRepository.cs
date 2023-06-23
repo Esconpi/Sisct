@@ -19,11 +19,11 @@ namespace Escon.SisctNET.Repository.Implementation
 
         public List<Product> FindAllInDate(DateTime data, Log log = null)
         {
-            var result = _context.Products.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
-                                                      (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0))
-                                          .ToList();
+            var rst = _context.Products.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                                   (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0))
+                                       .ToList();
             AddLog(log);
-            return result;
+            return rst;
         }
 
         public List<Product> FindAllByGroup(Log log = null)
@@ -35,9 +35,9 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<Product> FindByGroup(long groupid, Log log = null)
+        public List<Product> FindByGroup(long grupoId, Log log = null)
         {
-            var rst = _context.Products.Where(_ => _.GroupId.Equals(groupid) && _.DateEnd == null).ToList();
+            var rst = _context.Products.Where(_ => _.GroupId.Equals(grupoId) && _.DateEnd == null).ToList();
             AddLog(log);
             return rst;
         }
@@ -59,11 +59,21 @@ namespace Escon.SisctNET.Repository.Implementation
             return rst;
         }
 
-        public List<Product> FindAllByGroup(long groupid, Log log = null)
+        public List<Product> FindAllByGroup(long grupoId, Log log = null)
         {
-            var rst = _context.Products.Where(_ => _.GroupId.Equals(groupid))
+            var rst = _context.Products.Where(_ => _.GroupId.Equals(grupoId))
                                     .Include(g => g.Group)
                                     .ToList();
+            AddLog(log);
+            return rst;
+        }
+
+        public Product FindByProduct(List<Product> products, string code, long grupoId, DateTime data, Log log = null)
+        {
+            var codes = products.Where(_ => _.Code.Equals(code) && _.GroupId.Equals(grupoId)).ToList();
+            var rst = codes.Where(_ => (DateTime.Compare(_.DateStart, data) <= 0 && _.DateEnd == null) ||
+                                       (DateTime.Compare(_.DateStart, data) <= 0 && DateTime.Compare(Convert.ToDateTime(_.DateEnd), data) >= 0))
+                           .FirstOrDefault();
             AddLog(log);
             return rst;
         }

@@ -1,5 +1,6 @@
 ﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Escon.SisctNET.Service.Implementation
@@ -43,6 +44,11 @@ namespace Escon.SisctNET.Service.Implementation
             return _repository.FindAll(page, countrow, log);
         }
 
+        public TaxationP FindByCode(List<TaxationP> taxations, string code, string cest, DateTime data, Log log = null)
+        {
+            return _repository.FindByCode(taxations, code, cest, data, log); 
+        }
+
         public List<TaxationP> FindByCompany(long companyId, Log log = null)
         {
             return _repository.FindByCompany(companyId, log);   
@@ -56,6 +62,11 @@ namespace Escon.SisctNET.Service.Implementation
         public TaxationP FindById(long id, Log log)
         {
             return _repository.FindById(id, log);   
+        }
+
+        public TaxationP FindByNcm(string code, string cest, Log log = null)
+        {
+            return _repository.FindByNcm(code, cest, log);
         }
 
         public TaxationP Update(TaxationP entity, Log log)

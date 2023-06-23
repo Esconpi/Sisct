@@ -1,4 +1,5 @@
-﻿using Escon.SisctNET.IntegrationDarWeb;
+﻿using DocumentFormat.OpenXml.EMMA;
+using Escon.SisctNET.IntegrationDarWeb;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.DarWebWs;
 using Escon.SisctNET.Service;
@@ -156,24 +157,14 @@ namespace Escon.SisctNET.Web.Controllers
             {
                 var product = _service.FindByProduct(id);
                 var ncm = _ncmService.FindByCode(product.Ncm.Trim());
-                
-                string description = "";
 
-                if(product.Ncm.Length == 8)
+                if (ncm == null)
                 {
-                    if (ncm == null)
-                    {
-                        ViewBag.Erro = 1;
-                        return View(product);
-                    }
-                    description = ncm.Description;
+                    ViewBag.Erro = 1;
+                    return View(product);
                 }
-                else
-                {
-                    description = "Sem NCM";
-                }
-                              
-                ViewBag.DescriptionNCM = description;
+
+                ViewBag.Ncm = ncm;
 
                 var list_taxation = _taxationTypeService.FindAll(null).Where(_ => _.Active).OrderBy(_ => _.Description).ToList();
                 SelectList taxationtypes = new SelectList(list_taxation, "Id", "Description", null);
@@ -230,7 +221,7 @@ namespace Escon.SisctNET.Web.Controllers
                 var prod = _service.FindByProduct(id);
                 var comp = _companyService.FindById(prod.Note.CompanyId, null);
 
-                long taxationType = entity.TaxationTypeId;
+                long taxationType = entity.TaxationTypeId, ncmId = Convert.ToInt64(Request.Form["ncmId"]);
                 decimal ? mva = entity.Mva, fecop = entity.Fecop, bcr = entity.BCR, quantPauta = entity.Qpauta, inciso = entity.PercentualInciso, dif = null;
                 decimal aliqInterna = Convert.ToDecimal(entity.AliqInterna), valorAgreg = 0, valorFecop = 0;
                 string productType = entity.Produto;
@@ -250,11 +241,7 @@ namespace Escon.SisctNET.Web.Controllers
                 if (entity.Pautado == true)
                 {
                     var product = _productService.FindByProduct(Convert.ToInt64(entity.ProductId), null);
-                    decimal precoPauta = Convert.ToDecimal(product.Price);
-
-                    decimal baseCalc = 0;
-                    decimal valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
-
+                    decimal precoPauta = Convert.ToDecimal(product.Price), baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
                     decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
                                                              Convert.ToDecimal(prod.Voutro), Convert.ToDecimal(prod.Vdesc), Convert.ToDecimal(prod.Vipi),
                                                              Convert.ToDecimal(prod.Freterateado));
@@ -346,8 +333,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                     }
 
-                    prod.Pautado = true;
-
                     if (product != null)
                     {
                         prod.ProductId = product.Id;
@@ -356,16 +341,51 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Incentivo = true;
                     }
 
+                    prod.Pautado = true;
                     prod.TaxationTypeId = taxationType;
                     prod.EBcr = entity.EBcr;
                     prod.Status = true;
                     prod.Vbasecalc = baseCalc;
-                    prod.Incentivo = true;
+                    //prod.Incentivo = true;
                     prod.DateStart = dateStart;
                     prod.Produto = "Especial";
                     prod.PercentualInciso = inciso;
 
                     updateProducts.Add(prod);
+
+                    string aliquot = prod.Picms.ToString(),
+                           code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
+                    var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
+
+                    if (taxationcm != null)
+                    {
+                        taxationcm.DateEnd = dateStart.AddDays(-1);
+                        _taxationPService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                    }
+
+
+                    Model.TaxationP taxation = new Model.TaxationP()
+                    {
+                        CompanyId = prod.Note.CompanyId,
+                        GroupId = prod.Product.GroupId,
+                        Product = prod.Product.Code,
+                        Code = code,
+                        Cest = prod.Cest,
+                        AliqInterna = aliqInterna,
+                        PercentualInciso = inciso,
+                        MVA = mva,
+                        BCR = bcr,
+                        Fecop = fecop,
+                        TaxationTypeId = taxationType,
+                        NcmId = ncmId,
+                        Picms = prod.Picms,
+                        Uf = prod.Note.Uf,
+                        EBcr = entity.EBcr,
+                        DateStart = dateStart,
+                        DateEnd = null
+                    };
+
+                    _taxationPService.Create(taxation, GetLog(OccorenceLog.Create));
                 }
                 else
                 {
@@ -975,7 +995,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (productType == "Normal" && entity.Pautado == false && entity.Divergent == false)
                 {
-                    var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
+                    //var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
                     string aliquot = prod.Picms.ToString(),
                            code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
                     var taxationcm = _taxationService.FindByNcm(code, prod.Cest);
@@ -997,7 +1017,7 @@ namespace Escon.SisctNET.Web.Controllers
                         BCR = bcr,
                         Fecop = fecop,
                         TaxationTypeId = taxationType,
-                        NcmId = ncm == null ? 16427 : ncm.Id,
+                        NcmId = ncmId,
                         Picms = prod.Picms,
                         Uf = prod.Note.Uf,
                         EBcr = entity.EBcr,

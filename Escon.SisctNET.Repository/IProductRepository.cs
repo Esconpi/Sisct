@@ -9,11 +9,13 @@ namespace Escon.SisctNET.Repository
 
         Model.Product FindByProduct(string code, long grupoId, Model.Log log = null);
 
-        List<Model.Product> FindByGroup(long groupid, Model.Log log = null);
+        Model.Product FindByProduct(List<Model.Product> products, string code, long grupoId, DateTime data, Model.Log log = null);
+
+        List<Model.Product> FindByGroup(long grupoId, Model.Log log = null);
 
         List<Model.Product> FindAllInDate(DateTime data, Model.Log log = null);
 
-        List<Model.Product> FindAllByGroup(long groupid, Model.Log log = null);
+        List<Model.Product> FindAllByGroup(long grupoId, Model.Log log = null);
 
         List<Model.Product> FindAllByGroup(Model.Log log = null);
     }
