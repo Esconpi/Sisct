@@ -348,44 +348,46 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Vbasecalc = baseCalc;
                     //prod.Incentivo = true;
                     prod.DateStart = dateStart;
-                    prod.Produto = "Especial";
+                    prod.Produto = "Normal";
                     prod.PercentualInciso = inciso;
 
                     updateProducts.Add(prod);
 
-                    string aliquot = prod.Picms.ToString(),
-                           code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
-                    var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
-
-                    if (taxationcm != null)
+                    if (prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND"))
                     {
-                        taxationcm.DateEnd = dateStart.AddDays(-1);
-                        _taxationPService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                        string aliquot = prod.Picms.ToString(),
+                               code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
+                        var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
+
+                        if (taxationcm != null)
+                        {
+                            taxationcm.DateEnd = dateStart.AddDays(-1);
+                            _taxationPService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                        }
+
+                        Model.TaxationP taxation = new Model.TaxationP()
+                        {
+                            CompanyId = prod.Note.CompanyId,
+                            GroupId = prod.Product.GroupId,
+                            Product = prod.Product.Code,
+                            Code = code,
+                            Cest = prod.Cest,
+                            AliqInterna = aliqInterna,
+                            PercentualInciso = inciso,
+                            MVA = mva,
+                            BCR = bcr,
+                            Fecop = fecop,
+                            TaxationTypeId = taxationType,
+                            NcmId = ncmId,
+                            Picms = prod.Picms,
+                            Uf = prod.Note.Uf,
+                            EBcr = entity.EBcr,
+                            DateStart = dateStart,
+                            DateEnd = null
+                        };
+
+                        _taxationPService.Create(taxation, GetLog(OccorenceLog.Create));
                     }
-
-
-                    Model.TaxationP taxation = new Model.TaxationP()
-                    {
-                        CompanyId = prod.Note.CompanyId,
-                        GroupId = prod.Product.GroupId,
-                        Product = prod.Product.Code,
-                        Code = code,
-                        Cest = prod.Cest,
-                        AliqInterna = aliqInterna,
-                        PercentualInciso = inciso,
-                        MVA = mva,
-                        BCR = bcr,
-                        Fecop = fecop,
-                        TaxationTypeId = taxationType,
-                        NcmId = ncmId,
-                        Picms = prod.Picms,
-                        Uf = prod.Note.Uf,
-                        EBcr = entity.EBcr,
-                        DateStart = dateStart,
-                        DateEnd = null
-                    };
-
-                    _taxationPService.Create(taxation, GetLog(OccorenceLog.Create));
                 }
                 else
                 {
@@ -757,8 +759,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 baseCalc = Vbasecalc;
 
-                                if (entity.EBcr)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
+                                {
+                                    if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), item.Picms);
+                                    else
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                }
 
                                 if (dif < 0)
                                     dif = 0;
@@ -791,8 +798,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 baseCalc = Vbasecalc;
 
-                                if (entity.EBcr && item.PicmsBCR == null && item.AliqInternaBCR == null)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
+                                {
+                                    if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), item.Picms);
+                                    else
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                }
 
                                 if (dif < 0)
                                     dif = 0;
@@ -1003,7 +1015,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (taxationcm != null)
                     {
                         taxationcm.DateEnd = dateStart.AddDays(-1);
-                        _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                        //_taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
                     }
 
                     Model.Taxation taxation = new Model.Taxation()
@@ -1025,7 +1037,7 @@ namespace Escon.SisctNET.Web.Controllers
                         DateEnd = null
                     };
 
-                    _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
+                    //_taxationService.Create(taxation, GetLog(OccorenceLog.Create));
                 }       
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });
