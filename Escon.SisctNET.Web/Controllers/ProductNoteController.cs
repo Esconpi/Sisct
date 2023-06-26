@@ -348,12 +348,13 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.Vbasecalc = baseCalc;
                     //prod.Incentivo = true;
                     prod.DateStart = dateStart;
-                    prod.Produto = "Especial";
+                    prod.Produto = productType;
                     prod.PercentualInciso = inciso;
 
                     updateProducts.Add(prod);
 
-                    if (prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND"))
+                    if (productType == "Normal" && prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
+                        prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
                     {
                         string aliquot = prod.Picms.ToString(),
                                code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
@@ -681,7 +682,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                         prod.Qpauta = null;
-                        prod.Produto = "Especial";
+                        prod.Produto = productType;
 
                         updateProducts.Add(prod);
                     }
@@ -975,7 +976,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             item.Qpauta = null;
-                            item.Produto = "Normal";
+                            item.Produto = productType;
 
                             updateProducts.Add(item);
                         }

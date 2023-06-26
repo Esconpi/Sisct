@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Math;
-using DocumentFormat.OpenXml.Vml.Office;
-using Escon.SisctNET.Model;
+﻿using Escon.SisctNET.Model;
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +23,6 @@ namespace Escon.SisctNET.Web.Controllers
         private readonly IAliquotConfazService _aliquotConfazService;
         private readonly IInternalAliquotConfazService _internalAliquotConfazService;
         private readonly ITaxationPService _taxationPService;
-
 
         public NoteController(
             INoteService service,
@@ -639,7 +636,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct,  NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
-                                    if(prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND"))
+                                    if(prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
+                                       prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
                                     {
                                         if (taxedP != null)
                                         {
@@ -751,7 +749,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.Vbasecalc = baseCalc;
                                             //prod.Incentivo = true;
                                             prod.DateStart = Convert.ToDateTime(taxedP.DateStart);
-                                            prod.Produto = "Especial";
+                                            prod.Produto = "Normal";
                                             prod.PercentualInciso = taxedP.PercentualInciso;
                                         }
                                     }
