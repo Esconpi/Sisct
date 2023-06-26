@@ -643,8 +643,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
-                                            decimal baseCalc = 0;
-                                            decimal valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
+                                            decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
 
                                             decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
                                                                                      Convert.ToDecimal(prod.Voutro), Convert.ToDecimal(prod.Vdesc), Convert.ToDecimal(prod.Vipi),
@@ -655,7 +654,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
 
                                                 decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,
-                                                        totalIcms = 0, quantParaCalc = 0, valorAgreg = 0, valorFecop = 0;
+                                                        totalIcms = 0, quantParaCalc = 0, valorAgreg = 0, valorFecop = 0, valorFecopPauta = 0;
 
                                                 quantParaCalc = Convert.ToDecimal(prod.Qcom);
                                                 baseCalc = Vbasecalc;
@@ -671,14 +670,11 @@ namespace Escon.SisctNET.Web.Controllers
                                                     vAgre = vAgre2;
 
                                                 if (taxedP.Fecop != null)
-                                                {
-                                                    prod.Fecop = Convert.ToDecimal(taxedP.Fecop);
-                                                    valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), vAgre);
-                                                }
+                                                    valorFecopPauta = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), vAgre);
 
                                                 decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxedP.AliqInterna), Convert.ToDecimal(taxedP.Fecop), vAgre);
                                                 decimal icmsPauta = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
-                                                totalIcmsPauta = calculation.TotalIcmsPauta(icmsPauta, valorFecop);
+                                                //totalIcmsPauta = calculation.TotalIcmsPauta(icmsPauta, valorFecop);
 
                                                 if (taxedP.MVA != null)
                                                 {
@@ -709,7 +705,11 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     prod.Fecop = Convert.ToDecimal(taxedP.Fecop);
                                                     valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), valorAgreg);
-                                                    prod.TotalFecop = valorFecop;
+
+                                                    if (valorFecop > valorFecopPauta)
+                                                        prod.TotalFecop = valorFecop;
+                                                    else
+                                                        prod.TotalFecop = valorFecopPauta;
                                                 }
                                                 else
                                                 {
@@ -724,10 +724,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 //decimal total = Convert.ToDecimal(entity.TotalICMS) + valorFecop;
 
-                                                if (totalIcms > totalIcmsPauta)
+                                                if (totalIcms > icmsPauta)
                                                     prod.TotalICMS = totalIcms;
                                                 else
-                                                    prod.TotalICMS = totalIcmsPauta;
+                                                    prod.TotalICMS = icmsPauta;
 
                                                 if (totalIcms < 0)
                                                     totalIcms = 0;

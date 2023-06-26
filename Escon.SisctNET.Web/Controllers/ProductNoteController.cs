@@ -249,7 +249,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (taxedtype.Type == "ST")
                     {
-                        decimal totalIcmsPauta = 0, totalIcms = 0, quantParaCalc = 0;
+                        decimal totalIcmsPauta = 0, valorFecopPauta = 0, totalIcms = 0, quantParaCalc = 0;
 
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
                         baseCalc = Vbasecalc;
@@ -260,6 +260,7 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Qpauta = Convert.ToDecimal(quantPauta);
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
+                        
                         // Primeiro PP feito pela tabela
                         decimal vAgre = calculation.ValorAgregadoPautaAto(Convert.ToDecimal(quantParaCalc), precoPauta);
 
@@ -270,14 +271,11 @@ namespace Escon.SisctNET.Web.Controllers
                             vAgre = vAgre2;
 
                         if (fecop != null)
-                        {
-                            prod.Fecop = Convert.ToDecimal(fecop);
-                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(fecop), vAgre);
-                        }
+                            valorFecopPauta = calculation.ValorFecop(Convert.ToDecimal(fecop), vAgre);
 
                         decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), vAgre);
                         decimal icmsPauta = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
-                        totalIcmsPauta = calculation.TotalIcmsPauta(icmsPauta, valorFecop);
+                        //totalIcmsPauta = calculation.TotalIcmsPauta(icmsPauta, valorFecop);
 
                         if (mva != null)
                         {
@@ -308,7 +306,11 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             prod.Fecop = Convert.ToDecimal(fecop);
                             valorFecop = calculation.ValorFecop(Convert.ToDecimal(fecop), valorAgreg);
-                            prod.TotalFecop = valorFecop;
+
+                            if (valorFecop > valorFecopPauta)
+                                prod.TotalFecop = valorFecop;
+                            else
+                                prod.TotalFecop = valorFecopPauta;
                         }
                         else
                         {
@@ -323,10 +325,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //decimal total = Convert.ToDecimal(entity.TotalICMS) + valorFecop;
 
-                        if (totalIcms > totalIcmsPauta)
+                        if (totalIcms > icmsPauta)
                             prod.TotalICMS = totalIcms;
                         else
-                            prod.TotalICMS = totalIcmsPauta;
+                            prod.TotalICMS = icmsPauta;
 
                         if (totalIcms < 0)
                             totalIcms = 0;
