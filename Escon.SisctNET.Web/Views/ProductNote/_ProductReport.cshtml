@@ -163,7 +163,12 @@
                 <td>@Html.DisplayFor(modelItem => item.Mva)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
                 <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                <td>
+                    @if (Convert.ToDecimal(item.BCR) > 0)
+                    {
+                        @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
+                    }
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe) + Convert.ToDecimal(item.Vicms))</td>                
@@ -171,14 +176,12 @@
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
-                @if (item.Pautado == true)
-                {
-                    <td>P</td>
-                }
-                else
-                {
-                    <td></td>
-                }
+                <td>
+                    @if (item.Pautado == true)
+                    {
+                        <span>P</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>

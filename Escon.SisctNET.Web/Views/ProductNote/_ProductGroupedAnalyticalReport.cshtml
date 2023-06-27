@@ -414,7 +414,12 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         <td>@item.Mva</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
                                         <td>@item.BCR</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))</td>
+                                        <td>
+                                            @if (Convert.ToDecimal(item.BCR) > 0)
+                                            {
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
+                                            }
+                                        </td>
                                         <td>@item.AliqInterna</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
@@ -422,14 +427,12 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
-                                        @if (item.Pautado == true)
-                                        {
-                                            <td>P</td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
+                                        <td>
+                                            @if (item.Pautado == true)
+                                            {
+                                                <span>P</span>
+                                            }
+                                        </td>
                                     </tr>
                                 }
                             }

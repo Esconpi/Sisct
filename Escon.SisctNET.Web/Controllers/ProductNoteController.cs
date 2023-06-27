@@ -358,8 +358,8 @@ namespace Escon.SisctNET.Web.Controllers
                     if (productType == "Normal" && (prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
                         prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR")))
                     {
-                        string aliquot = prod.Picms.ToString(),
-                               code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
+                        string aliquot = prod.Picms.ToString(), codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2),
+                               code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, codeProduct, prod.Ncm, prod.Note.Uf, aliquot);
                         var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
 
                         if (taxationcm != null)
@@ -371,8 +371,8 @@ namespace Escon.SisctNET.Web.Controllers
                         Model.TaxationP taxation = new Model.TaxationP()
                         {
                             CompanyId = prod.Note.CompanyId,
-                            GroupId = prod.Product.GroupId,
-                            Product = prod.Product.Code,
+                            GroupId = product.GroupId,
+                            Product = product.Code,
                             Code = code,
                             Cest = prod.Cest,
                             AliqInterna = aliqInterna,
