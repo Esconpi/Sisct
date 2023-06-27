@@ -643,12 +643,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
-                                            decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
-
-                                            decimal Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
-                                                                                     Convert.ToDecimal(prod.Voutro), Convert.ToDecimal(prod.Vdesc), Convert.ToDecimal(prod.Vipi),
-                                                                                     Convert.ToDecimal(prod.Freterateado));
-
+                                            decimal baseCalc = baseDeCalc, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
 
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
@@ -657,7 +652,6 @@ namespace Escon.SisctNET.Web.Controllers
                                                         totalIcms = 0, quantParaCalc = 0, valorAgreg = 0, valorFecop = 0, valorFecopPauta = 0;
 
                                                 quantParaCalc = Convert.ToDecimal(prod.Qcom);
-                                                baseCalc = Vbasecalc;
                                                 //baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
 
                                                 // Primeiro PP feito pela tabela
@@ -783,34 +777,187 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (taxedtype.Type == "ST")
                                 {
                                     baseCalc = baseDeCalc;
-
-                                    if (taxed.MVA != null)
-                                        valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
-
-                                    if (taxed.EBcr && taxed.BCR != null)
+                                   
+                                    if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
                                     {
-                                        valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), Convert.ToDecimal(valorAgreg));
-                                        valorIcms = 0;
+                                        var codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                        var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
+                                        var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
+
+                                        if (taxedP == null)
+                                        {
+                                            if (taxed.MVA != null)
+                                                valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
+
+                                            if (taxed.EBcr && taxed.BCR != null)
+                                            {
+                                                valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), Convert.ToDecimal(valorAgreg));
+                                                valorIcms = 0;
+                                            }
+
+                                            decimal percentFecop = 0;
+
+                                            if (taxed.Fecop != null)
+                                            {
+                                                percentFecop = Convert.ToDecimal(taxed.Fecop);
+                                                valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgreg));
+                                            }
+
+                                            valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorAgreg));
+
+                                            if (valorbcr > 0)
+                                                valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorbcr));
+
+                                            totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
+
+                                            if (totalIcms < 0)
+                                                totalIcms = 0;
+
+                                        }
+                                        else
+                                        {
+                                            if (prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") ||
+                                                prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
+                                            {
+                                                if (taxedP != null)
+                                                {
+                                                    var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
+
+                                                    if (taxedP.TaxationType.Type == "ST")
+                                                    {
+
+                                                        decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,
+                                                                quantParaCalc = 0, valorFecopPauta = 0;
+
+                                                        quantParaCalc = Convert.ToDecimal(prod.Qcom);
+                                                        //baseCalc = calculation.BaseCalc(Vbasecalc, prod.Vdesc);
+
+                                                        // Primeiro PP feito pela tabela
+                                                        decimal vAgre = calculation.ValorAgregadoPautaAto(Convert.ToDecimal(quantParaCalc), precoPauta);
+
+                                                        // Segundo PP feito com os dados do produto
+                                                        decimal vAgre2 = calculation.ValorAgregadoPautaProd(baseCalc, quantParaCalc);
+
+                                                        if (vAgre2 > vAgre)
+                                                            vAgre = vAgre2;
+
+                                                        if (taxedP.Fecop != null)
+                                                            valorFecopPauta = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), vAgre);
+
+                                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxedP.AliqInterna), Convert.ToDecimal(taxedP.Fecop), vAgre);
+                                                        decimal icmsPauta = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
+                                                        //totalIcmsPauta = calculation.TotalIcmsPauta(icmsPauta, valorFecop);
+
+                                                        if (taxedP.MVA != null)
+                                                        {
+                                                            valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxedP.MVA));
+                                                            prod.Valoragregado = valorAgreg;
+                                                            prod.Mva = Convert.ToDecimal(taxedP.MVA);
+                                                        }
+                                                        else
+                                                        {
+                                                            prod.Valoragregado = null;
+                                                            prod.Mva = null;
+                                                        }
+
+                                                        if (taxedP.EBcr && taxedP.BCR != null)
+                                                        {
+                                                            valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxedP.BCR), Convert.ToDecimal(valorAgreg));
+                                                            prod.ValorBCR = valorAgreg;
+                                                            prod.BCR = Convert.ToDecimal(taxedP.BCR);
+                                                            valorIcms = 0;
+                                                        }
+                                                        else
+                                                        {
+                                                            prod.ValorBCR = null;
+                                                            prod.BCR = null;
+                                                        }
+
+                                                        if (taxedP.Fecop != null)
+                                                        {
+                                                            prod.Fecop = Convert.ToDecimal(taxedP.Fecop);
+                                                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(valorAgreg));
+
+                                                            if (valorFecop > valorFecopPauta)
+                                                                prod.TotalFecop = valorFecop;
+                                                            else
+                                                                prod.TotalFecop = valorFecopPauta;
+                                                        }
+                                                        else
+                                                        {
+                                                            prod.Fecop = null;
+                                                            prod.TotalFecop = null;
+                                                        }
+
+                                                        prod.AliqInterna = taxedP.AliqInterna;
+                                                        decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), Convert.ToDecimal(valorAgreg));
+                                                        prod.ValorAC = valorAgre_AliqInt;
+                                                        totalIcms = calculation.TotalIcms(valorAgre_AliqInt, valorIcms);
+
+                                                        //decimal total = Convert.ToDecimal(entity.TotalICMS) + valorFecop;
+
+                                                        if (totalIcms > icmsPauta)
+                                                            prod.TotalICMS = totalIcms;
+                                                        else
+                                                            prod.TotalICMS = icmsPauta;
+
+                                                        if (totalIcms < 0)
+                                                            totalIcms = 0;
+
+                                                    }
+
+                                                    if (product != null)
+                                                    {
+                                                        prod.ProductId = product.Id;
+
+                                                        if (product.Group.Active.Equals(true))
+                                                            prod.Incentivo = true;
+                                                    }
+
+                                                    prod.Pautado = true;
+                                                    prod.TaxationTypeId = taxedP.TaxationTypeId;
+                                                    prod.EBcr = taxedP.EBcr;
+                                                    prod.Status = true;
+                                                    prod.Vbasecalc = baseCalc;
+                                                    //prod.Incentivo = true;
+                                                    prod.DateStart = Convert.ToDateTime(taxedP.DateStart);
+                                                    prod.Produto = "Normal";
+                                                    prod.PercentualInciso = taxedP.PercentualInciso;
+                                                }
+                                            }
+
+                                        }
                                     }
-
-                                    decimal percentFecop = 0;
-
-                                    if (taxed.Fecop != null)
+                                    else
                                     {
-                                        percentFecop = Convert.ToDecimal(taxed.Fecop);
-                                        valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgreg));
+                                        if (taxed.MVA != null)
+                                            valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
+
+                                        if (taxed.EBcr && taxed.BCR != null)
+                                        {
+                                            valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), Convert.ToDecimal(valorAgreg));
+                                            valorIcms = 0;
+                                        }
+
+                                        decimal percentFecop = 0;
+
+                                        if (taxed.Fecop != null)
+                                        {
+                                            percentFecop = Convert.ToDecimal(taxed.Fecop);
+                                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgreg));
+                                        }
+
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorAgreg));
+
+                                        if (valorbcr > 0)
+                                            valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorbcr));
+
+                                        totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
+
+                                        if (totalIcms < 0)
+                                            totalIcms = 0;
+
                                     }
-
-                                    valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorAgreg));
-
-                                    if (valorbcr > 0)
-                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, percentFecop, Convert.ToDecimal(valorbcr));
-
-                                    totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
-
-                                    if (totalIcms < 0)
-                                        totalIcms = 0;
-
                                 }
                                 else if (taxedtype.Type == "Normal" && taxedtype.Description.Equals("1  AP - Antecipação parcial"))
                                 {
