@@ -623,13 +623,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (taxed == null)
                             {
-                                var codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
-                                var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct,  NCM, nota.Uf, pICMSValid.Replace(".", ","));
-                                var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
-
                                 if(prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
-                                    prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
+                                   prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
                                 {
+                                    var codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
+                                    var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
+
                                     if (taxedP != null)
                                     {
                                         var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
@@ -721,10 +721,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         prod.ProductId = product.Id;
 
-                                        if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && product.Group.Active.Equals(true))
+                                        if (comp.Incentive && product.Group.Active.Equals(true))
                                             prod.Incentivo = true;
-                                        else
-                                            prod.Incentivo = false; 
 
                                         prod.Pautado = true;
                                         prod.TaxationTypeId = taxedP.TaxationTypeId;
@@ -900,10 +898,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             prod.ProductId = product.Id;
 
-                                            if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && product.Group.Active.Equals(true))
+                                            if (comp.Incentive && product.Group.Active.Equals(true))
                                                 incentivo = true;
-                                            else
-                                                incentivo = false;
 
                                             prod.Pautado = true;
                                             taxationTypeId = taxedP.TaxationTypeId;
