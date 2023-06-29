@@ -276,15 +276,14 @@ namespace Escon.SisctNET.Web.Controllers
             var aliquotas = _aliquotService.FindByAllState(null);
             var aliquotasConfaz = _aliquotConfazService.FindByAllState(null);
             var aliquotasinternaConfaz = _internalAliquotConfazService.FindByAllState(null);
+            //var taxedtypes = _taxationTypeService.FindAll(null);
+            var products = _productService.FindAll(null);
+            var taxationsPCompany = _taxationPService.FindByCompanyActive(id);
 
             Dictionary<string, string> det = new Dictionary<string, string>();
 
             int erro = 0;
             string url = "Index", chave = "";
-
-            var taxedtypes = _taxationTypeService.FindAll(null);
-            var products = _productService.FindAll(null);
-            var taxationsPCompany = _taxationPService.FindByCompanyActive(id);
 
             List<NcmConvenio> ncmConvenioAnnexTemp = new List<NcmConvenio>();
             List<NcmConvenio> ncmConvenioBCRTemp = new List<NcmConvenio>();
@@ -752,7 +751,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         incentivo = true;
                                 }
 
-                                var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
+                                //var taxedtype = taxedtypes.Where(_ => _.Id.Equals(taxed.TaxationTypeId)).FirstOrDefault();
 
                                 decimal? valorAgreg = null, valorFecop = null, valorbcr = null, valorAgreAliqInt = null, dif = null,
                                          dif_frete = null, icmsApu = null, icmsApuCTe = null, percentualInciso = taxed.PercentualInciso,
@@ -767,7 +766,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 DateTime dateStart = Convert.ToDateTime(taxed.DateStart), dataRef = new DateTime(2023, 3, 30),
                                          dataTemp = new DateTime(Convert.ToInt32(nota.AnoRef), GetIntMonth(nota.MesRef), 1);
 
-                                if (taxedtype.Type == "ST")
+                                if (taxed.TaxationType.Type == "ST")
                                 {
                                     baseCalc = baseDeCalc;
 
@@ -910,7 +909,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     }
                                 }
-                                else if (taxedtype.Type == "Normal" && taxedtype.Description.Equals("1  AP - Antecipação parcial"))
+                                else if (taxed.TaxationType.Type == "Normal" && taxed.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                                 {
                                     baseCalc = baseDeCalc;
 
@@ -934,7 +933,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - frete_prod);
                                     icmsApuCTe = calculation.IcmsApurado(Convert.ToDecimal(dif_frete), frete_prod);
                                 }
-                                else if (taxedtype.Type == "Normal" && !taxedtype.Description.Equals("1  AP - Antecipação parcial"))
+                                else if (taxed.TaxationType.Type == "Normal" && !taxed.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                                 {
                                     baseCalc = baseDeCalc;
 
@@ -1052,11 +1051,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         }
                                     }
                                 }
-                                else if (taxedtype.Type == "Isento")
+                                else if (taxed.TaxationType.Type == "Isento")
                                 {
                                     baseCalc = baseDeCalc;
                                 }
-                                else if (taxedtype.Type == "NT")
+                                else if (taxed.TaxationType.Type == "NT")
                                 {
                                     baseCalc = baseDeCalc;
                                 }
