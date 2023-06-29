@@ -631,6 +631,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     if (taxedP != null)
                                     {
+                                        if (comp.Incentive)
+                                        {
+                                            if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxedP.PercentualInciso == null)
+                                                prod.Incentivo = false;
+                                            else if (comp.Chapter.Name.Equals("CAPÍTULO IV-C") && taxedP.PercentualInciso != null)
+                                                prod.Incentivo = true;
+                                        }
+
                                         var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
                                         decimal baseCalc = baseDeCalc, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
