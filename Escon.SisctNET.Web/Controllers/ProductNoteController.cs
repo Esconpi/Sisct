@@ -260,10 +260,10 @@ namespace Escon.SisctNET.Web.Controllers
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
                         
-                        // Primeiro PP feito pela tabela
-                        decimal vAgre = calculation.ValorAgregadoPautaAto(Convert.ToDecimal(quantParaCalc), precoPauta);
+                        // PP feito com os dados da tabela do Ato Normativo
+                        decimal vAgre = calculation.ValorAgregadoPautaAto(precoPauta, Convert.ToDecimal(quantParaCalc));
 
-                        // Segundo PP feito com os dados do produto
+                        // PP feito com os dados do produto
                         decimal vAgre2 = calculation.ValorAgregadoPautaProd(baseCalc, quantParaCalc);
 
                         if (vAgre2 > vAgre)
@@ -319,7 +319,6 @@ namespace Escon.SisctNET.Web.Controllers
                         
                         prod.AliqInterna = aliqInterna;
                         decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
-                        prod.ValorAC = valorAgre_AliqInt;
                         totalIcms = calculation.TotalIcms(valorAgre_AliqInt, valorIcms);
 
                         //decimal total = Convert.ToDecimal(entity.TotalICMS) + valorFecop;
@@ -327,10 +326,20 @@ namespace Escon.SisctNET.Web.Controllers
                         if (totalIcms < 0)
                             totalIcms = 0;
 
+                        if (icmsPauta < 0)
+                            icmsPauta = 0;
+
                         if (totalIcms > icmsPauta)
+                        {
+                            prod.ValorAC = valorAgre_AliqInt;
                             prod.TotalICMS = totalIcms;
+                        }
                         else
+                        {
+                            prod.ValorAC = valorAgreAliqInt;
                             prod.TotalICMS = icmsPauta;
+                        }
+
                     }
 
                     prod.ProductId = product.Id;

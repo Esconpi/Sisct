@@ -43,9 +43,9 @@ namespace Escon.SisctNET.Web.Tax
             return (bcr / 100) * valorAgregado ;
         }
 
-        public decimal ValorAgregadoAliqInt(decimal aliqInterna, decimal valorFecop,decimal valorAgregado)
+        public decimal ValorAgregadoAliqInt(decimal aliqInterna, decimal fecop,decimal valorAgregado)
         {
-            return ((aliqInterna - valorFecop) / 100) * valorAgregado;
+            return ((aliqInterna - fecop) / 100) * valorAgregado;
         }
 
         public decimal ValorFecop(decimal fecop, decimal valorAgregado)
@@ -53,9 +53,9 @@ namespace Escon.SisctNET.Web.Tax
             return (fecop / 100) * valorAgregado;
         }
 
-        public decimal DiferencialAliq(decimal aliIntena, decimal aliquota)
+        public decimal DiferencialAliq(decimal aliqIntena, decimal aliquota)
         {
-            return aliIntena - aliquota;
+            return aliqIntena - aliquota;
         }
 
         public decimal IcmsApurado(decimal dif, decimal baseCalc)
@@ -63,14 +63,14 @@ namespace Escon.SisctNET.Web.Tax
             return (dif / 100) * baseCalc;
         }
 
-        public decimal ValorAgregadoPautaProd(decimal baseCalc, decimal quantParaCalc)
+        public decimal ValorAgregadoPautaProd(decimal baseCalc, decimal qtd)
         {
-            return baseCalc / quantParaCalc;
+            return baseCalc / qtd;
         }
 
-        public decimal ValorAgregadoPautaAto(decimal qtd, decimal price)
+        public decimal ValorAgregadoPautaAto(decimal price, decimal qtd)
         {
-            return qtd * price;
+            return price * qtd;
         }
 
         public decimal TotalIcms(decimal valorAgregadoAliqInt, decimal valorIcms)
