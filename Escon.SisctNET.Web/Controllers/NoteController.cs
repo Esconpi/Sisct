@@ -625,7 +625,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 if(prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
                                    prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR"))
                                 {
-                                    var codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    string codeProduct = "";
+
+                                    if (prod.Cprod.Length > 2)
+                                        codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    else
+                                        codeProduct = prod.Cprod;
+
                                     var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
@@ -787,7 +793,13 @@ namespace Escon.SisctNET.Web.Controllers
                                 {
                                     baseCalc = baseDeCalc;
 
-                                    string codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    string codeProduct = "";
+
+                                    if(prod.Cprod.Length > 2)
+                                        codeProduct = prod.Cprod.Substring(0, prod.Cprod.Length - 2);
+                                    else
+                                        codeProduct = prod.Cprod;
+
                                     code = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
