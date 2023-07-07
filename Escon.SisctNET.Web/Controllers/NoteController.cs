@@ -632,7 +632,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     else
                                         codeProduct = prod.Cprod;
 
-                                    var codeP = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
+                                    var codeP = calculation.CodeP(comp.Document, nota.Cnpj, prod.Cprod, NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
                                     if (taxedP != null)
@@ -800,7 +800,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     else
                                         codeProduct = prod.Cprod;
 
-                                    code = calculation.CodeP(comp.Document, nota.Cnpj, codeProduct, NCM, nota.Uf, pICMSValid.Replace(".", ","));
+                                    code = calculation.CodeP(comp.Document, nota.Cnpj, prod.Cprod, NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
                                     if (taxedP == null)

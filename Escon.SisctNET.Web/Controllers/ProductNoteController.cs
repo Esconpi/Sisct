@@ -369,7 +369,7 @@ namespace Escon.SisctNET.Web.Controllers
                         else
                             codeProduct = prod.Cprod;
 
-                        string aliquot = prod.Picms.ToString(), code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, codeProduct, prod.Ncm, prod.Note.Uf, aliquot);
+                        string aliquot = prod.Picms.ToString(), code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
                         var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
 
                         if (taxationcm != null)
