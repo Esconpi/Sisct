@@ -3826,7 +3826,7 @@ namespace Escon.SisctNET.Web.Sped
             return products;
         }
 
-        public List<List<string>> NFeDevolution(string directorySped, List<string> cfopsDevo, List<string> cfopsDevoST, 
+        public List<List<string>> NFeDevolution(string directorySped, List<string> products, List<string> cfopsDevo, List<string> cfopsDevoST, 
             List<Model.NcmConvenio> ncmConvenio, Company comp)
         {
             List<List<string>> spedDevo = new List<List<string>>();
@@ -3840,22 +3840,17 @@ namespace Escon.SisctNET.Web.Sped
             devo12.Add("0");
             spedDevo.Add(devo12);
 
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
-
             List<string> cfops = new List<string>();
             cfops.AddRange(cfopsDevo);
             cfops.AddRange(cfopsDevoST);
 
-            var ncms = NFe0200(directorySped);
             var notes = NFeC100C170Interstate(directorySped, cfops, "0");
-
-            string line;
 
             try
             {
-                foreach (var n in ncms)
+                foreach (var product in products)
                 {
-                    string[] linha = n.Split('|');
+                    string[] linha = product.Split('|');
 
                     DateTime dateNote = new DateTime();
                     bool ncm = false;
@@ -3863,7 +3858,8 @@ namespace Escon.SisctNET.Web.Sped
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
                         if (notes[i][1].Equals("C100"))
-                            dateNote = Convert.ToDateTime(notes[i][10].Substring(0, 2) + "/" + notes[i][10].Substring(2, 2) + "/" + notes[i][10].Substring(4, 4));
+                            if(!notes[i][10].Equals(""))
+                                dateNote = Convert.ToDateTime(notes[i][10].Substring(0, 2) + "/" + notes[i][10].Substring(2, 2) + "/" + notes[i][10].Substring(4, 4));
 
                         if (notes[i][1].Equals("C170") && !notes[i][13].Equals("") && !notes[i][14].Equals("") &&
                             !notes[i][15].Equals("") && (cfopsDevo.Contains(notes[i][11]) || cfopsDevoST.Contains(notes[i][11])) &&
@@ -3899,23 +3895,17 @@ namespace Escon.SisctNET.Web.Sped
             {
                 Console.Out.WriteLine(ex.Message);
             }
-            finally
-            {
-                archiveSped.Close();
-            }
 
             return spedDevo;
         }
 
-        public List<List<List<string>>> NFeInternal(string directorySped, List<string> cfopsCompra, List<string> cfopsBonifi, List<string> cfopsTransf,
-                                                    List<string> cfopsDevo, List<Model.NcmConvenio> ncmConvenio, Company comp)
+        public List<List<List<string>>> NFeInternal(string directorySped, List<string> products, List<string> cfopsCompra, List<string> cfopsBonifi, 
+                                                    List<string> cfopsTransf, List<string> cfopsDevo, List<Model.NcmConvenio> ncmConvenio, Company comp)
         {
             List<List<List<string>>> spedInterna = new List<List<List<string>>>();
 
             List<List<string>> spedCompra = new List<List<string>>();
             List<List<string>> spedDevo = new List<List<string>>();
-
-            StreamReader archiveSped = new StreamReader(directorySped, Encoding.GetEncoding("ISO-8859-1"));
 
             List<string> cfops = new List<string>();
             cfops.AddRange(cfopsCompra);
@@ -3923,17 +3913,14 @@ namespace Escon.SisctNET.Web.Sped
             cfops.AddRange(cfopsTransf);
             cfops.AddRange(cfopsDevo);
 
-            var ncms = NFe0200(directorySped);
             var notes = NFeC100C170Internal(directorySped, cfops, "0");
-
-            string line;
 
             try
             {
 
-                foreach (var n in ncms)
+                foreach (var product in products)
                 {
-                    string[] linha = n.Split('|');
+                    string[] linha = product.Split('|');
 
                     bool ncm = false;
                     DateTime dateNote = new DateTime();
@@ -3941,10 +3928,8 @@ namespace Escon.SisctNET.Web.Sped
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
                         if (notes[i][1].Equals("C100"))
-                        {
                             if (!notes[i][10].Equals(""))
                                 dateNote = Convert.ToDateTime(notes[i][10].Substring(0, 2) + "/" + notes[i][10].Substring(2, 2) + "/" + notes[i][10].Substring(4, 4));
-                        }
 
                         if (notes[i][1].Equals("C170"))
                         {
@@ -4025,10 +4010,6 @@ namespace Escon.SisctNET.Web.Sped
             catch (Exception ex)
             {
                 Console.Out.WriteLine(ex.Message);
-            }
-            finally
-            {
-                archiveSped.Close();
             }
 
             spedInterna.Add(spedCompra);

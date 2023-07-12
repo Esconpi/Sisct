@@ -385,8 +385,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                                             cfopsDevoCompra.Contains(_.Cfop)))
                                                                     .Sum(_ => _.Vicms);
 
-                        var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncmConvenio, comp);
-                        var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, cfopsDevoVenda, cfopsDevoVendaST, ncmConvenio, comp);
+                        var produtos = importSped.NFe0200(caminhoDestinoArquivoOriginal);
+                        var entradasInterna = importSped.NFeInternal(caminhoDestinoArquivoOriginal, produtos, cfopsCompra, cfopsBoniCompra, cfopsTransf, cfopsDevoVenda, ncmConvenio, comp);
+                        var devolucoesInterestadual = importSped.NFeDevolution(caminhoDestinoArquivoOriginal, produtos, cfopsDevoVenda, cfopsDevoVendaST, ncmConvenio, comp);
 
                         if (imp != null)
                         {
