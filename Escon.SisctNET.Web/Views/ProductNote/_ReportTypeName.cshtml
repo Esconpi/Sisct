@@ -46,8 +46,8 @@
 }
 
 @if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && 
-     ViewBag.Type != "ProdutoFI" && ViewBag.Type != "IcmsProdutor" && ViewBag.Type != "ProdutoRN" && ViewBag.Type != "ProdutoNR" &&
-     ViewBag.Type != "RegimeBA" &&  ViewBag.Type != "RegimeBA2")
+     ViewBag.Type != "IcmsProdutor" && ViewBag.Type != "ProdutoRN" && ViewBag.Type != "ProdutoNR" && ViewBag.Type != "RegimeBA" && 
+     ViewBag.Type != "RegimeBA2")
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
@@ -118,7 +118,7 @@
 
 @if (ViewBag.Type == "ProdutoFI")
 {
-    <strong>Produtos Fora do Incentivo (Exceto ST)</strong>
+    <strong>&nbsp;- Produto Fora do Incentivo</strong>
 }
 
 @if (ViewBag.Type == "GNRE")

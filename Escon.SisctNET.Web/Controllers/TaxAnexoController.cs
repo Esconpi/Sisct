@@ -358,7 +358,7 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                     {
                         var notes = _noteService.FindByNotes(companyid, year, month);
-                        var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => (_.TaxationType.Description.Equals("1  AP - Antecipação parcial") || _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota")) && _.Incentivo.Equals(false)).ToList();
+                        var products = _productNoteService.FindByProductsType(notes, Model.TypeTaxation.Nenhum).Where(_ => (_.TaxationType.Description.Equals("1  AP - Antecipação parcial")) && _.Incentivo.Equals(false)).ToList();
 
                         decimal baseCalcCompraInterestadual4 = products.Where(_ => _.Picms.Equals(4) && (cfopsVenda.Contains(_.Cfop) ||
                                                                             cfopsBoniVenda.Contains(_.Cfop) || cfopsTransf.Contains(_.Cfop) ||

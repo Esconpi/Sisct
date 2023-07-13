@@ -4662,9 +4662,24 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals(Model.Type.ProdutoFI))
                 {
-                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
-                        .Where(_ => !_.TaxationType.Type.Equals("ST") && _.Incentivo.Equals(false))
+                    products = _service.FindByProductsType(notes, typeTaxation)
+                        .Where(_ => _.Incentivo.Equals(false))
                         .ToList();
+
+                    decimal vprod = products.Select(_ => _.Vprod).Sum() + products.Select(_ => _.Vseg).Sum() + 
+                                    products.Select(_ => _.Voutro).Sum() + products.Select(_ => _.Vfrete).Sum() -
+                                    products.Select(_ => _.Vdesc).Sum() + products.Select(_ => _.Vipi).Sum(),
+                            baseCalc = products.Select(_ => _.Vbasecalc).Sum(),
+                            vIcms = products.Select(_ => _.Vicms).Sum(),
+                            icmsApurado = Convert.ToDecimal(products.Select(_ => _.IcmsApurado).Sum());
+
+                    if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
+                        icmsApurado = Convert.ToDecimal(products.Select(_ => _.TotalICMS).Sum());
+
+                    ViewBag.Vprod = vprod;
+                    ViewBag.BaseCalc = baseCalc;
+                    ViewBag.VIcms = vIcms;
+                    ViewBag.IcmsApurado = icmsApurado;
                 }
                 else if (type.Equals(Model.Type.IcmsProdutor))
                 {
