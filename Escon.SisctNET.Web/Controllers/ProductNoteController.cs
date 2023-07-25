@@ -569,7 +569,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     bcrIntra = calculation.BCR(Convert.ToDecimal(prod.AliqInternaBCR), aliqInterna);
                                     bcrInter = calculation.BCR(Convert.ToDecimal(prod.PicmsBCR), Convert.ToDecimal(prod.Picms));
                                     icmsInter = calculation.IcmsBCR(base1, bcrInter);
-                                    icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
 
                                     if (prod.Vicms > 0)
                                         baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado) - icmsInter, aliqInterna);
@@ -606,7 +605,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     baseDifal = calculation.BaseDifal(base3, aliqInterna);
 
                                     if (comp.County.State.Difal.Equals("Base Única"))
-                                        icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                        icmsApu = calculation.BaseDifal(base3, Convert.ToDecimal(dif));
                                     else
                                         icmsApu = calculation.Icms(baseDifal, base1);
 
@@ -616,7 +615,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
                                     
                                     if (comp.County.State.Difal.Equals("Base Única"))
-                                        icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                        icmsApuCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(dif_frete));
                                     else
                                         icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
 
@@ -864,7 +863,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         bcrIntra = calculation.BCR(Convert.ToDecimal(item.AliqInternaBCR), aliqInterna);
                                         bcrInter = calculation.BCR(Convert.ToDecimal(item.PicmsBCR), Convert.ToDecimal(item.Picms));
                                         icmsInter = calculation.IcmsBCR(base1, bcrInter);
-                                        icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
 
                                         if (item.Vicms > 0)
                                             baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado) - icmsInter, aliqInterna);
@@ -901,7 +899,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         baseDifal = calculation.BaseDifal(base3, aliqInterna);
 
                                         if (comp.County.State.Difal.Equals("Base Única"))
-                                            icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                            icmsApu = calculation.BaseDifal(base3, Convert.ToDecimal(dif));
                                         else
                                             icmsApu = calculation.Icms(baseDifal, base1);
 
@@ -911,7 +909,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                 baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
                                         if (comp.County.State.Difal.Equals("Base Única"))
-                                            icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                            icmsApuCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(dif_frete));
                                         else
                                             icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
 

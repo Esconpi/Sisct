@@ -984,10 +984,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
+
                                         if (taxed.EBcr && aliquotConfaz == null && internalAliquotConfaz == null)
                                         {
                                             decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
-                                             bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
+                                                    bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
                                             if (taxed.BCR != null)
                                                 bcrIntra = Convert.ToDecimal(taxed.BCR);
@@ -1021,7 +1022,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             bcrIntra = calculation.BCR(Convert.ToDecimal(internalAliquotConfaz), aliqInterna);
                                             bcrInter = calculation.BCR(Convert.ToDecimal(aliquotConfaz), Convert.ToDecimal(pICMSValid));
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
-                                            icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
 
                                             if (prod.Vicms > 0)
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
@@ -1058,7 +1058,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             baseDifal = calculation.BaseDifal(base3, aliqInterna);
 
                                             if (comp.County.State.Difal.Equals("Base Única"))
-                                                icmsApu = calculation.BaseDifal(baseDifal, Convert.ToDecimal(dif));
+                                                icmsApu = calculation.BaseDifal(base3, Convert.ToDecimal(dif));
                                             else
                                                 icmsApu = calculation.Icms(baseDifal, base1);
 
@@ -1068,7 +1068,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
                                             if (comp.County.State.Difal.Equals("Base Única"))
-                                                icmsApuCTe = calculation.BaseDifal(baseDifalCTe, Convert.ToDecimal(dif_frete));
+                                                icmsApuCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(dif_frete));
                                             else
                                                 icmsApuCTe = calculation.Icms(baseDifalCTe, base1CTe);
                                         }
