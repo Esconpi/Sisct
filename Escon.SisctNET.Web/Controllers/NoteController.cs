@@ -996,9 +996,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                             if (vICMS > 0)
-                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
-                                            else if (CSOSN != "")
-                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - prod.Vicms, aliqInterna);
                                             else
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
 
@@ -1024,9 +1022,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                             if (prod.Vicms > 0)
-                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
-                                            else if (prod.Csosn != "")
-                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - prod.Vicms, aliqInterna);
                                             else
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
 
@@ -1048,9 +1044,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     base2 = 0, base3 = 0, baseDifal = 0;
 
                                             if (prod.Vicms > 0)
-                                                base2 = calculation.Base2(baseCalc - frete_prod, base1);
-                                            else if (prod.Csosn != "")
-                                                base2 = calculation.Base2(baseCalc - frete_prod, base1);
+                                                base2 = calculation.Base2(baseCalc - frete_prod, prod.Vicms);
                                             else
                                                 base2 = baseCalc - frete_prod;
 
