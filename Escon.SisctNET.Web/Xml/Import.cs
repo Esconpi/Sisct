@@ -33,8 +33,12 @@ namespace Escon.SisctNET.Web.Xml
         public List<Dictionary<string, string>> NFeClient(string directoryNfe)
         {
             List<Dictionary<string, string>> dets = new List<Dictionary<string, string>>();
+            
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -135,6 +139,9 @@ namespace Escon.SisctNET.Web.Xml
            
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -231,8 +238,12 @@ namespace Escon.SisctNET.Web.Xml
         public List<Dictionary<string, string>> NFeProduct(string directoryNfe)
         {
             List<Dictionary<string, string>> products = new List<Dictionary<string, string>>();
+           
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -332,8 +343,12 @@ namespace Escon.SisctNET.Web.Xml
         public List<List<string>> NFeNCM(string directoryNfe)
         {
             List<List<string>> ncms = new List<List<string>>();
+            
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -434,6 +449,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -735,8 +753,12 @@ namespace Escon.SisctNET.Web.Xml
         public List<List<Dictionary<string, string>>> NFeResumeEmit(string directoryNfe)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+            
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -888,6 +910,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
@@ -1292,8 +1317,12 @@ namespace Escon.SisctNET.Web.Xml
         public List<List<Dictionary<string, string>>> NFeAll(string directoryNfe, List<string> cfops)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -1620,14 +1649,17 @@ namespace Escon.SisctNET.Web.Xml
         public List<List<Dictionary<string, string>>> NFeCFOP(string directoryNfe, string codeCfop)
         {
             List<List<Dictionary<string, string>>> notes = new List<List<Dictionary<string, string>>>();
+
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
 
                 bool infCte = false;
-
 
                 for (int i = 0; i < archivesNfes.Count(); i++)
                 {
@@ -1947,6 +1979,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -2080,6 +2115,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -2184,6 +2222,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -2242,6 +2283,9 @@ namespace Escon.SisctNET.Web.Xml
 
             try
             {
+                if (!Directory.Exists(directotyCte))
+                    Directory.CreateDirectory(directotyCte);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesCtes = Directory.GetFiles(directotyCte);
@@ -2351,19 +2395,18 @@ namespace Escon.SisctNET.Web.Xml
             return ctes;
         }
 
-        public List<List<Dictionary<string, string>>> CTeAll(string directory, string cnpj)
+        public List<List<Dictionary<string, string>>> CTeAll(string directotyCte, string cnpj)
         {
             List<List<Dictionary<string, string>>> ctes = new List<List<Dictionary<string, string>>>();
 
             try
             {
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                if (!Directory.Exists(directotyCte))
+                    Directory.CreateDirectory(directotyCte);
 
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-                string[] archivesCtes = Directory.GetFiles(directory);
+
+                string[] archivesCtes = Directory.GetFiles(directotyCte);
 
                 for (int i = 0; i < archivesCtes.Count(); i++)
                 {
