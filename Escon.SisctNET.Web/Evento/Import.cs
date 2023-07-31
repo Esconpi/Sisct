@@ -15,6 +15,9 @@ namespace Escon.SisctNET.Web.Evento
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -110,6 +113,9 @@ namespace Escon.SisctNET.Web.Evento
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);
@@ -249,6 +255,9 @@ namespace Escon.SisctNET.Web.Evento
 
             try
             {
+                if (!Directory.Exists(directoryNfe))
+                    Directory.CreateDirectory(directoryNfe);
+
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
                 string[] archivesNfes = Directory.GetFiles(directoryNfe);

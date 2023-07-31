@@ -997,7 +997,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _noteService.Update(updateNote, GetLog(OccorenceLog.Update));
 
-                if (productType == "Normal" && entity.Pautado == false && entity.Divergent == false)
+                if (productType == "Normal" && entity.Pautado == false && prod.Divergent == false)
                 {
                     //var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
                     string aliquot = prod.Picms.ToString(),
