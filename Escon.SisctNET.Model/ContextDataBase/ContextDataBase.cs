@@ -146,5 +146,7 @@ namespace Escon.SisctNET.Model.ContextDataBase
         public DbSet<InternalAliquotConfaz> InternalAliquotConfazs { get; set; }
 
         public DbSet<TaxationP> TaxationsP { get; set; }
+
+        public DbSet<TaxRule> TaxRules { get; set; }
     }
 }
