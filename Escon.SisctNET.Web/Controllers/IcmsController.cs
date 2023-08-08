@@ -495,6 +495,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
 
                     }
+                   
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
 
                 }
@@ -27773,6 +27774,176 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Divergentes = divergentes.OrderBy(_ => _[0]).ThenBy(_ => _[5]).ToList();
                 }
+                else if (type.Equals("vendaPF"))
+                {
+                    //  Venda P/ Pessoa Física
+                    List<List<string>> vendasPF = new List<List<string>>();
+
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    decimal total = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        bool exist = false;
+
+                        if (notes[i][3].ContainsKey("CPF"))
+                            exist = true;
+
+                        decimal vProd = 0;
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+
+                            if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vProd"]);
+
+                            if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vFrete"]);
+
+                            if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
+                                vProd -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+
+                            if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vOutro"]);
+
+                            if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vSeg"]);
+
+                        }
+
+
+                        if (exist)
+                        {
+                            string document = notes[i][3].ContainsKey("CPF") ? notes[i][3]["CPF"] : "",
+                                   xNome = notes[i][3].ContainsKey("xNome") ? notes[i][3]["xNome"] : "";
+                            int pos = -1;
+
+                            for (int e = 0; e < vendasPF.Count(); e++)
+                            {
+                                if (vendasPF[e][0].Equals(document))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                List<string> venda = new List<string>();
+                                venda.Add(document);
+                                venda.Add(xNome);
+                                venda.Add(vProd.ToString());
+                                vendasPF.Add(venda);
+                            }
+                            else
+                            {
+                                vendasPF[pos][2] = (Convert.ToDecimal(vendasPF[pos][2]) + vProd).ToString();
+                            }
+
+                            total += vProd;
+                        }
+                    }
+
+                    ViewBag.Vendas = vendasPF.OrderByDescending(_ => Convert.ToDecimal(_[2])).ToList();
+                    ViewBag.Total = total;
+                }
+                else if (type.Equals("vendaPJ"))
+                {
+                    //  Venda P/ Pessoa Jurídica
+                    List<List<string>> vendasPJ = new List<List<string>>();
+
+                    cfopsVenda.AddRange(cfopsVendaST);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    decimal total = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        bool exist = false;
+
+                        if (notes[i][3].ContainsKey("CNPJ"))
+                            exist = true;
+
+                        decimal vProd = 0;
+
+                        for (int k = 0; k < notes[i].Count(); k++)
+                        {
+
+                            if (notes[i][k].ContainsKey("vProd") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vProd"]);
+
+                            if (notes[i][k].ContainsKey("vFrete") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vFrete"]);
+
+                            if (notes[i][k].ContainsKey("vDesc") && notes[i][k].ContainsKey("cProd"))
+                                vProd -= Convert.ToDecimal(notes[i][k]["vDesc"]);
+
+                            if (notes[i][k].ContainsKey("vOutro") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vOutro"]);
+
+                            if (notes[i][k].ContainsKey("vSeg") && notes[i][k].ContainsKey("cProd"))
+                                vProd += Convert.ToDecimal(notes[i][k]["vSeg"]);
+
+                        }
+
+
+                        if (exist)
+                        {
+                            string document = notes[i][3].ContainsKey("CNPJ") ? notes[i][3]["CNPJ"] : "",
+                                   xNome = notes[i][3].ContainsKey("xNome") ? notes[i][3]["xNome"] : "";
+                            int pos = -1;
+
+                            for (int e = 0; e < vendasPJ.Count(); e++)
+                            {
+                                if (vendasPJ[e][0].Equals(document))
+                                {
+                                    pos = e;
+                                    break;
+                                }
+                            }
+
+                            if (pos < 0)
+                            {
+                                List<string> venda = new List<string>();
+                                venda.Add(document);
+                                venda.Add(xNome);
+                                venda.Add(vProd.ToString());
+                                vendasPJ.Add(venda);
+                            }
+                            else
+                            {
+                                vendasPJ[pos][2] = (Convert.ToDecimal(vendasPJ[pos][2]) + vProd).ToString();
+                            }
+
+                            total += vProd;
+                        }
+                    }
+
+                    ViewBag.Vendas = vendasPJ.OrderByDescending (_ => Convert.ToDecimal(_[2])).ToList();
+                    ViewBag.Total = total;
+                }
                 else if (type.Equals("vendaNContribuinte"))
                 {
                     //  Venda P/ não Contribuinte
@@ -27883,7 +28054,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    ViewBag.Vendas = vendasNContribuinte;
+                    ViewBag.Vendas = vendasNContribuinte.OrderBy(_ => Convert.ToDecimal(_[2])).ToList();
                     ViewBag.Total = total;
                 }
                 else if (type.Equals("vendaContribuinte"))
@@ -27993,7 +28164,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                     }
 
-                    ViewBag.Vendas = vendasContribuinte;
+                    ViewBag.Vendas = vendasContribuinte.OrderBy(_ => Convert.ToDecimal(_[2])).ToList();
                     ViewBag.Total = total;
                 }
                 else if (type.Equals("vendaProdutoSTNormal"))

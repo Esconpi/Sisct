@@ -244,15 +244,26 @@
                     @await Html.PartialAsync("_DivergentTaxation", new ViewDataDictionary(ViewData))
                 }
             }
+            else if (ViewBag.Type == "vendaPF")
+            {
+                <!-- Vendas P/ Pessoa Física -->
+
+                @await Html.PartialAsync("_SalesPF", new ViewDataDictionary(ViewData))
+            }
+            else if (ViewBag.Type == "vendaPJ")
+            {
+                <!-- Vendas P/ Pessoa Jurídica -->
+                @await Html.PartialAsync("_SalesPJ", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "vendaNContribuinte")
             {
-                <!-- Vendas P/ não COntribuinte -->
+                <!-- Vendas P/ não Contribuinte -->
 
                 @await Html.PartialAsync("_SalesNTaxpayers", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "vendaContribuinte")
             {
-                <!-- Vendas P/ COntribuinte -->
+                <!-- Vendas P/ Contribuinte -->
 
                 @await Html.PartialAsync("_SalesTaxpayers", new ViewDataDictionary(ViewData))
             }
