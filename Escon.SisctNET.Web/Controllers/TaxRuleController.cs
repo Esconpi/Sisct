@@ -84,6 +84,45 @@ namespace Escon.SisctNET.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxRule")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                ViewBag.TaxationTypeNcmId = new SelectList(_taxationTypeNcmService.FindAll(null), "Id", "Description", null);
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(long id, Model.TaxRule entity)
+        {
+            if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("TaxRule")).FirstOrDefault().Active)
+                return Unauthorized();
+
+            try
+            {
+                var result = _service.FindById(id, null);
+
+                entity.CompanyId = result.CompanyId;
+                _service.Create(entity, GetLog(OccorenceLog.Create));
+
+                return RedirectToAction("Index", new { id = SessionManager.GetCompanyIdInSession() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = 500, message = ex.Message });
+            }
+        }
+
         public IActionResult GetAll(int draw, int start)
         {
             var query = System.Net.WebUtility.UrlDecode(Request.QueryString.ToString()).Split('&');
