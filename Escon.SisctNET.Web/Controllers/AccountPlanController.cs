@@ -85,14 +85,14 @@ namespace Escon.SisctNET.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(long companyId)
+        public IActionResult Index(long id)
         {
             if (SessionManager.GetAccessesInSession() == null || !SessionManager.GetAccessesInSession().Where(_ => _.Functionality.Name.Equals("AccountPlan")).FirstOrDefault().Active)
                 return Unauthorized();
 
             try
             {
-                var company = _companyService.FindById(companyId, null);
+                var company = _companyService.FindById(id, null);
 
                 SessionManager.SetCompanyInSession(company);
 
@@ -110,7 +110,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (company.AccountPlans.Count == 0)
                 {
-                    var accounts = _accountPlanService.FindByCompanyId(companyId);
+                    var accounts = _accountPlanService.FindByCompanyId(id);
                     accounts.ForEach(a =>
                     {
                         var account = new Model.AccountPlan()

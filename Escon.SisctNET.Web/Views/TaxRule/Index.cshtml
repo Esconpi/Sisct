@@ -1,8 +1,179 @@
-﻿
+﻿@model IEnumerable<Escon.SisctNET.Model.TaxRule>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" asp-controller="Company" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+
+        <h3 class="box-title"><strong>Regra Fiscal</strong></h3>
+        <div class="btn-group pull-right">
+
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fa fa-plus"></i>
+                Nova Regra Fiscal
+            </a>
+
+        </div>
+        <br />
+
+        <div style="width: 100%; text-align: center; padding-top:20px;">
+            <strong>@ViewBag.Company.SocialName</strong> <br />
+            <b>CNPJ: </b>@ViewBag.Company.Document <b>Insc. Estadual: </b> @ViewBag.Company.Ie
+        </div>
+
+    </div>
+    <div class="box-body">
+        <div style="width:100%; overflow:hidden; overflow-x:scroll; padding:20px;">
+
+            <table class="table table-striped table-bordered" id="tblTaxRule" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            NCM
+                        </th>
+                        <th>
+                            Ex.
+                        </th>
+                        <th>
+                            Tipo Tributação
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateStart)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateEnd)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+    <div class="box-footer"></div>
+</div>
+
+@if (SessionManager.GetPersonInSession().Profile.Name.Equals("Master"))
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblTaxRule').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
+                "ajax": "/TaxRule/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "ncm" },
+                    { "data": "ex" },
+                    { "data": "type" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            } else {
+                                return data
+                            }
+                        }
+                    },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='/TaxRule/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Regra Fiscal' /> " +
+                                "<a href='/TaxRule/Delete/" + data + "' class = 'glyphicon glyphicon-trash pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblTaxRule').DataTable({
+                searchDelay: 300,
+                "fnDrawCallback": function (oSettings) {
+                    $('.showDetail').off();
+                    $('.showProduct').off();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $("input[type='checkbox']").bootstrapToggle();
+                },
+                "processing": true,
+                "ordering": false,
+                "serverSide": true,
+                "oLanguage": {
+                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
+                    "sLengthMenu": "Mostrar _MENU_ registros por pagina",
+                    "sZeroRecords": "Nenhum registro disponível",
+                    "sInfoEmpty": "Exibindo 0 a 0 de 0 registros",
+                    "sInfo": "Exibindo de _START_ a _END_ de _TOTAL_ registros",
+                    "sInfoFiltered": "",
+                    "sSearch": "Buscar",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    }
+                },
+                "ajax": "/TaxRule/GetAll",
+                "initComplete": function (settings, json) {
+                },
+                "columns": [
+                    { "data": "ncm" },
+                    { "data": "ex" },
+                    { "data": "type" },
+                    { "data": "inicio" },
+                    {
+                        "mData": "fim",
+                        "mRender": function (data, type, row) {
+                            if (data == "01/01/0001") {
+                                return ""
+                            } else {
+                                return data
+                            }
+                        }
+                    },
+                    {
+                        "mData": "id",
+                        "mRender": function (data, type, row) {
+                            return "<a href='/TaxRule/Edit/" + data + "' class = 'glyphicon glyphicon-pencil pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Editar Regra Fiscal' /> "
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
 

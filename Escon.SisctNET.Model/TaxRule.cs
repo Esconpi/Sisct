@@ -11,12 +11,15 @@ namespace Escon.SisctNET.Model
         public ILazyLoader LazyLoader { get; set; }
 
         [Display(Name = "Ncm")]
-        public string Ncm { get; set; }
+        public string CodeNcm { get; set; }
+
+        [Display(Name = "Descrição Ncm")]
+        public string DescriptionNcm { get; set; }
 
         [Display(Name = "Ex.")]
         public string CodeException { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome Ex.")]
         public string NameException { get; set; }
 
         [Display(Name = "Data Inicial")]
@@ -36,6 +39,18 @@ namespace Escon.SisctNET.Model
         {
             get => LazyLoader.Load(this, ref company);
             set => company = value;
+        }
+
+        [Display(Name = "Tipo de Tributação")]
+        [ForeignKey("TaxationTypeNcm")]
+        [Required(ErrorMessage = "Obrigatório")]
+        public long TaxationTypeNcmId { get; set; }
+
+        private TaxationTypeNcm taxationTypeNcm;
+        public TaxationTypeNcm TaxationTypeNcm
+        {
+            get => LazyLoader.Load(this, ref taxationTypeNcm);
+            set => taxationTypeNcm = value;
         }
     }
 }

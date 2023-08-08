@@ -448,9 +448,9 @@
                                 "<a href='/Suspension/Index/" + data + "' class = 'fa fa-calendar-minus-o pull-left' style = 'margin-left:10px; margin-bottom:10px; color:red;' data-toggle='tooltip' data-placement='top' title='Visualizar Suspensões' /> " +
                                 "<a href='/Incentive/Index/" + data + "' class = 'fa fa-calendar pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Incentivos' /> " +
                                 "<a href='/Notification/Index/" + data + "' class = 'fa fa-exclamation-triangle pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Notificaçõas' /> " +
-                                "<a href='/AccountPlan/Index?companyId=" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar plano de contas' />" +
-                                "<a href='/Company/Balancete/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Declaração de Informação' /> "
-
+                                "<a href='/AccountPlan/Index/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar plano de contas' />" +
+                                "<a href='/TaxRule/Index/" + data + "' class = 'glyphicon glyphicon-cog pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Regra Fiscal' />" +
+                                "<a href='/Company/Balancete/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Declaração de Informação' />" 
                         }
                         else {
                             
@@ -458,7 +458,8 @@
                                 "<a href='#" + data + "' class = 'showFormResponsible fa fa-envelope pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Responsáveis pelos boletos' id='" + row.id + "' data-company='" + row.socialName + "' /> " +
                                 "<a href='/Taxation/Index/" + data + "' class = 'glyphicon glyphicon-folder-close pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Tributação' /> " +
                                 "<a href='/Company/Tax/" + data + "' class = 'glyphicon glyphicon-tasks pull-left' style = 'margin-left:10px; margin-bottom:10px; color:green;' data-toggle='tooltip' data-placement='top' title='Visualizar Percentuais PIS/COFINS' /> " +
-                                "<a href='/AccountPlan/Index?companyId=" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar plano de contas' />" +
+                                "<a href='/AccountPlan/Index/" + data + "' class = 'glyphicon glyphicon-briefcase pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar plano de contas' />" +
+                                "<a href='/TaxRule/Index/" + data + "' class = 'glyphicon glyphicon-cog pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Visualizar Regra Fiscal' />" +
                                 "<a href='/Company/Balancete/" + data + "' class = 'fa fa-file pull-left' style = 'margin-left:10px; margin-bottom:10px;' data-toggle='tooltip' data-placement='top' title='Declaração de Informação' /> "
                         }
 

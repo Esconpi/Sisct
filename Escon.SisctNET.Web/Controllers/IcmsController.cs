@@ -115,9 +115,10 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetYearInSession(year);
                 SessionManager.SetMonthInSession(month);
 
-                var NfeEntry = _configurationService.FindByName("NFe", null);
-                var NfeExit = _configurationService.FindByName("NFe Saida", null);
-                var dataDifal = _configurationService.FindByName("DIFAL", null);
+                var configurations = _configurationService.FindAll(null);
+                var NfeEntry = configurations.Where(_ => _.Name.Equals("NFe")).FirstOrDefault();
+                var NfeExit = configurations.Where(_ => _.Name.Equals("NFe Saida")).FirstOrDefault();
+                var dataDifal = configurations.Where(_ => _.Name.Equals("DIFAL")).FirstOrDefault();
 
                 var importXml = new Xml.Import(_cfopService);
                 var importSped = new Sped.Import(_cfopService);
@@ -783,6 +784,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Resumo por CFOP
                     var cfop = _cfopService.FindById(cfopid, null);
+                    
                     if (cfop == null)
                     {
                         ViewBag.Erro = 1;

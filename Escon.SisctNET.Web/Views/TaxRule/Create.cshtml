@@ -1,0 +1,67 @@
+﻿@model Escon.SisctNET.Model.TaxRule
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-primary">
+    <div class="box-header">
+        <a asp-action="Index" asp-route-id="@SessionManager.GetCompanyIdInSession()" size="large" class="glyphicon glyphicon-circle-arrow-left pull-left"></a>
+        <h3 class="box-title">
+            <strong>Nova Regra Fiscal</strong>
+        </h3>
+
+    </div>
+    <hr />
+    <div class="box-body">
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="CodeNcm" class="control-label"></label>
+                        <input asp-for="CodeNcm" class="form-control" />
+                        <span asp-validation-for="CodeNcm" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-8 col-md-8 col-xs-12">
+                        <label asp-for="DescriptionNcm" class="control-label"></label>
+                        <input asp-for="DescriptionNcm" class="form-control" />
+                        <span asp-validation-for="DescriptionNcm" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-3 col-xs-12">
+                        <label asp-for="CodeException" class="control-label"></label>
+                        <input asp-for="CodeException" class="form-control" />
+                        <span asp-validation-for="CodeException" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-9 col-md-9 col-xs-12">
+                        <label asp-for="NameException" class="control-label"></label>
+                        <input asp-for="NameException" class="form-control" />
+                        <span asp-validation-for="NameException" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-8 col-md-8 col-xs-12">
+                        <label class="control-label">Tipo de Tributação</label>
+                        <select asp-items="@ViewBag.TaxationTypeNcmId" name="TaxationTypeNcmId" class="form-control selectoption"></select>
+                        <span asp-validation-for="TaxationTypeNcmId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                        <label asp-for="DateStart" class="control-label"></label>
+                        <input asp-for="DateStart" class="form-control" />
+                        <span asp-validation-for="DateStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <input type="submit" value="Cadastrar" class="btn btn-success pull-right" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="box-footer">
+    </div>
+</div>
