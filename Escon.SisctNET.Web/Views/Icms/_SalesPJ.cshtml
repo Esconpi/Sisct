@@ -1,0 +1,36 @@
+﻿<table class="table" style="font-size:11px; border:1px solid">
+    <thead>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">
+                Cliente
+            </th>
+            <th style="border: 1px solid; text-align: center;">
+                CPF/CNPJ
+            </th>
+            <th style="border:1px solid; text-align:center;">
+                Valor Contábil
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var venda in ViewBag.Vendas)
+        {
+            <tr style="border:1px solid;">
+                <td style="border:1px solid; padding-left:1%;">
+                    @venda[1]
+                </td>
+                <td style="border:1px solid; padding-left:1%;">
+                    @venda[0]
+                </td>
+                <td style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", Convert.ToDecimal(venda[2].Replace(',', '*').Replace('.', ',').Replace('*', '.')))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="border: 1px solid; text-align: center;" colspan="2">Total</th>
+            <th style="padding-right:1%; text-align:right; border: 1px solid;">@string.Format("{0:N}", ViewBag.Total)</th>
+        </tr>
+    </tfoot>
+</table>
+
