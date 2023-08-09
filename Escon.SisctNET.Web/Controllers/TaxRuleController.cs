@@ -136,23 +136,34 @@ namespace Escon.SisctNET.Web.Controllers
 
                 var filter = Helpers.CharacterEspecials.RemoveDiacritics(Request.Query["search[value]"].ToString());
 
-                var ids = taxationAll.Select(s => s.Id).ToList();
+                List<TaxRule> taxs = new List<TaxRule>();
+
+                taxationAll.ToList().ForEach(s =>
+                {
+                    s.DescriptionNcm = Helpers.CharacterEspecials.RemoveDiacritics(s.DescriptionNcm);
+                    taxs.Add(s);
+                });
+
+                var ids = taxs.Where(c =>
+                        c.CodeNcm.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                        c.DescriptionNcm.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                    .Select(s => s.Id).ToList();
 
                 taxation = taxationAll.Where(a => ids.ToArray().Contains(a.Id)).ToList();
 
-                var cfop = from r in taxation
-                           where ids.ToArray().Contains(r.Id)
-                           select new
-                           {
-                               Id = r.Id.ToString(),
-                               Ncm = r.CodeNcm + " - " + r.DescriptionNcm,
-                               Ex = r.CodeException + " - " + r.NameException,
-                               Type = r.TaxationTypeNcm.Description,
-                               Inicio = r.DateStart.ToString("dd/MM/yyyy"),
-                               Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
-                           };
+                var result = from r in taxation
+                             where ids.ToArray().Contains(r.Id)
+                             select new
+                             {
+                                 Id = r.Id.ToString(),
+                                 Ncm = r.CodeNcm + " - " + r.DescriptionNcm,
+                                 Ex = r.CodeException + " - " + r.NameException,
+                                 Type = r.TaxationTypeNcm.Description,
+                                 Inicio = r.DateStart.ToString("dd/MM/yyyy"),
+                                 Fim = Convert.ToDateTime(r.DateEnd).ToString("dd/MM/yyyy")
+                             };
 
-                return Ok(new { draw = draw, recordsTotal = taxation.Count(), recordsFiltered = taxation.Count(), data = cfop.Skip(start).Take(lenght) });
+                return Ok(new { draw = draw, recordsTotal = taxation.Count(), recordsFiltered = taxation.Count(), data = result.Skip(start).Take(lenght) });
 
             }
             else
