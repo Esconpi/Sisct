@@ -1,6 +1,4 @@
-﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
-
-<thead>
+﻿<thead>
     <tr style="font-size:12px;">
         <th>NFe</th>
         <th>Cod. Produto</th>
@@ -16,10 +14,10 @@
     </tr>
 </thead>
 <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in ViewBag.Products)
     {
         <tr style="font-size:10px;">
-            <td>@item.Note.Nnf</td>
+            <td>@item[0]</td>
             <td>@item.Cprod</td>
             <td>@item.Xprod</td>
             <td>@item.Ncm</td>
@@ -29,6 +27,7 @@
             <td>@item.Vprod</td>
             <td>@item.Vbasecalc</td>
             <td>@item.Vicms</td>
+            <td style="text-align:right; padding-right:1%">@string.Format("{0:N}", Convert.ToDecimal(item[4].Replace(".", ",")))</td>
         </tr>
     }
 </tbody>

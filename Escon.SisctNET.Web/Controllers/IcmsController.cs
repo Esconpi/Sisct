@@ -29741,7 +29741,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        string CFOP = "";
+                        string cProd = "", xProd = "", NCM = "", CFOP = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -29751,6 +29751,9 @@ namespace Escon.SisctNET.Web.Controllers
                             if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
                             {
                                 pos = -1;
+                                cProd = notes[i][j]["cProd"];
+                                xProd = notes[i][j]["xProd"];
+                                NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
 
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
@@ -29777,7 +29780,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int e = 0; e < products.Count(); e++)
                                 {
-                                    if (products[e][0].Equals(CFOP) && products[e][2].Equals(notes[i][j]["CST"]))
+                                    if (products[e][8].Equals(cProd) && products[e][10].Equals(NCM) && products[e][0].Equals(CFOP) && 
+                                        products[e][2].Equals(notes[i][j]["CST"]))
                                     {
                                         pos = e;
                                         break;
@@ -29796,6 +29800,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add("0");
                                     cc.Add("0");
                                     cc.Add("0");
+                                    cc.Add(cProd);
+                                    cc.Add(xProd);
+                                    cc.Add(NCM);
+                                    cc.Add(notes[i][1]["nNF"]);
                                     products.Add(cc);
                                     pos = products.Count() - 1;
                                 }
@@ -29817,7 +29825,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int e = 0; e < products.Count(); e++)
                                 {
-                                    if (products[e][0].Equals(CFOP) && products[e][2].Equals(notes[i][j]["CSOSN"]))
+                                    if (products[e][8].Equals(cProd) && products[e][10].Equals(NCM) && products[e][0].Equals(CFOP) &&
+                                        products[e][2].Equals(notes[i][j]["CSOSN"]))
                                     {
                                         pos = e;
                                         break;
@@ -29836,6 +29845,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add("0");
                                     cc.Add("0");
                                     cc.Add("0");
+                                    cc.Add(cProd);
+                                    cc.Add(xProd);
+                                    cc.Add(NCM);
+                                    cc.Add(notes[i][1]["nNF"]);
                                     products.Add(cc);
                                     pos = products.Count() - 1;
                                 }
