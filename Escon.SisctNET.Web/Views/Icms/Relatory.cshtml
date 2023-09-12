@@ -173,17 +173,23 @@
 
                 @await Html.PartialAsync("_AttachedInternalSale", new ViewDataDictionary(ViewData))
             }
+            else if (ViewBag.Type == "anexoInternaNormal")
+            {
+                <!-- Vendas Interna Normal Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalNormalSale", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "notasAnexoInterna")
             {
                 <!-- Notas | Vendas Interna Anexo -->
 
                 @await Html.PartialAsync("_AttachedInternalSaleNotes", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Type == "anexoInternaNormal")
+            else if (ViewBag.Type == "notasAnexoInter")
             {
-                <!-- Vendas Interna Normal Anexo -->
+                <!-- Notas | Vendas Interestadual Anexo -->
 
-                @await Html.PartialAsync("_AttachedInternalNormalSale", new ViewDataDictionary(ViewData))
+                @await Html.PartialAsync("_AttachedInterstateSaleNotes", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "foraAnexo")
             {
@@ -197,17 +203,23 @@
 
                 @await Html.PartialAsync("_AttachedInternalFSale", new ViewDataDictionary(ViewData))
             }
+            else if (ViewBag.Type == "foraAnexoInternaNormal")
+            {
+                <!-- Vendas Interna Normal Fora do Anexo -->
+
+                @await Html.PartialAsync("_AttachedInternalNormalFSale", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "notasForaAnexoInterna")
             {
                 <!-- Notas | Vendas Interna Fora do Anexo -->
 
                 @await Html.PartialAsync("_AttachedInternalFSaleNotes", new ViewDataDictionary(ViewData))
             }
-            else if (ViewBag.Type == "foraAnexoInternaNormal")
+            else if (ViewBag.Type == "notasForaAnexoInter")
             {
-                <!-- Vendas Interna Normal Fora do Anexo -->
+                <!-- Notas | Vendas Interestadual Fora do Anexo -->
 
-                @await Html.PartialAsync("_AttachedInternalNormalFSale", new ViewDataDictionary(ViewData))
+                @await Html.PartialAsync("_AttachedInterstateFSaleNotes", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "suspensao")
             {

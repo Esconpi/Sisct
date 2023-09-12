@@ -26301,6 +26301,172 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorFecop = valorFecop;
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
+                else if (type.Equals("anexoInternaNormal"))
+                {
+                    //  Resumo Vendas Interna Normal Dentro do Anexo
+
+                    ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
+
+                    //  Saida
+                    cfopsVenda = _cfopService.FindByCfopVenda(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopsAll)
+                         .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                         .Select(_ => _.Code)
+                         .Distinct()
+                         .ToList();
+
+                    //  Transferencia
+                    cfopsTransf = _cfopService.FindByCfopTransferencia(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+
+                    cfopsVenda.AddRange(cfopsVendaIM);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var ncmsAll = _ncmService.FindAll(null);
+                    var cestAll = _cestService.FindAll(null);
+
+                    List<List<string>> cfops = new List<List<string>>();
+
+                    decimal valorContabil = 0, baseCalculo = 0, valorIcms = 0, valorFecop = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                        bool status = false;
+                        string CFOP = "", NCM = "", CEST = "";
+                        decimal vProd = 0;
+                        int pos = -1;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
+                            {
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
+
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
+
+                                pos = -1;
+                            }
+
+                            if (status)
+                            {
+                                for (int e = 0; e < cfops.Count(); e++)
+                                {
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                    var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
+
+                                    List<string> cc = new List<string>();
+
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(CEST);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add(NCM);
+                                    cc.Add(nn.Description);
+                                    if (CEST != "")
+                                    {
+                                        cc.Add(cestTemp.Description);
+                                    }
+                                    cfops.Add(cc);
+                                    pos = cfops.Count() - 1;
+                                }
+
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMS"))
+                                {
+                                    cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    baseCalculo += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pFCP"))
+                                {
+                                    cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
+                            }
+                        }
+                    }
+
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseCalculo = baseCalculo;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
                 else if (type.Equals("notasAnexoInterna"))
                 {
                     //  Resumo Notas | Interna Dentro do Anexo
@@ -26479,39 +26645,45 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorFecop = valorFecop;
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
-                else if (type.Equals("anexoInternaNormal"))
+                else if (type.Equals("notasAnexoInter"))
                 {
-                    //  Resumo Vendas Interna Normal Dentro do Anexo
+                    //  Resumo Notas | Interestadual Dentro do Anexo
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
                     //  Saida
                     cfopsVenda = _cfopService.FindByCfopVenda(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
                     cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaST = _cfopService.FindByCfopVendaST(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
                     cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopsAll)
-                         .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                         .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                          .Select(_ => _.Code)
                          .Distinct()
                          .ToList();
 
                     //  Transferencia
                     cfopsTransf = _cfopService.FindByCfopTransferencia(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
-
-                    cfopsVenda.AddRange(cfopsVendaIM);
-                    cfopsVenda.AddRange(cfopsTransf);
-                    cfopsVenda.AddRange(cfopsBoniVenda);
+                    cfopsTransfST = _cfopService.FindByCfopTransferenciaST(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
 
@@ -26533,7 +26705,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = false;
-                        string CFOP = "", NCM = "", CEST = "";
+                        string CProd = "", XProd = "", CFOP = "", NCM = "", CEST = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -26542,9 +26714,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                CProd = notes[i][j]["cProd"];
+                                XProd = notes[i][j]["xProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
                                 status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
@@ -26555,7 +26729,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
+                                        cfops[e][12].Equals(CProd) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
                                         pos = e;
                                         break;
@@ -26582,9 +26757,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add(NCM);
                                     cc.Add(nn.Description);
                                     if (CEST != "")
-                                    {
                                         cc.Add(cestTemp.Description);
-                                    }
+                                    else
+                                        cc.Add("");
+                                    cc.Add(CProd);
+                                    cc.Add(XProd);
+                                    cc.Add(notes[i][1]["nNF"]);
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
                                 }
@@ -26970,6 +27148,172 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorFecop = valorFecop;
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
+                else if (type.Equals("foraAnexoInternaNormal"))
+                {
+                    //  Resumo Vendas Interna Normal Fora do Anexo
+
+                    ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
+
+                    //  Saida
+                    cfopsVenda = _cfopService.FindByCfopVenda(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopsAll)
+                         .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                         .Select(_ => _.Code)
+                         .Distinct()
+                         .ToList();
+
+                    //  Transferencia
+                    cfopsTransf = _cfopService.FindByCfopTransferencia(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+
+                    cfopsVenda.AddRange(cfopsVendaIM);
+                    cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsBoniVenda);
+
+                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+
+                    var ncmsAll = _ncmService.FindAll(null);
+                    var cestAll = _cestService.FindAll(null);
+
+                    List<List<string>> cfops = new List<List<string>>();
+
+                    decimal valorContabil = 0, baseCalculo = 0, valorIcms = 0, valorFecop = 0;
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                        bool status = true;
+                        string CFOP = "", NCM = "", CEST = "";
+                        decimal vProd = 0;
+                        int pos = -1;
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
+                            {
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
+
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
+
+                                pos = -1;
+                            }
+
+                            if (!status)
+                            {
+                                for (int e = 0; e < cfops.Count(); e++)
+                                {
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
+                                    {
+                                        pos = e;
+                                        break;
+                                    }
+                                }
+
+                                if (pos < 0)
+                                {
+                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
+                                    var nn = ncmsAll.Where(_ => _.Code.Equals(NCM)).FirstOrDefault();
+                                    var cestTemp = cestAll.Where(_ => _.Code.Equals(CEST)).FirstOrDefault();
+
+                                    List<string> cc = new List<string>();
+
+                                    cc.Add(CFOP);
+                                    cc.Add(cfp.Description);
+                                    cc.Add(CEST);
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add("0");
+                                    cc.Add(NCM);
+                                    cc.Add(nn.Description);
+                                    if (CEST != "")
+                                    {
+                                        cc.Add(cestTemp.Description);
+                                    }
+                                    cfops.Add(cc);
+                                    pos = cfops.Count() - 1;
+                                }
+
+                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vProd"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vProd"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vFrete"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vFrete"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) - Convert.ToDecimal(notes[i][j]["vDesc"])).ToString();
+                                    valorContabil -= Convert.ToDecimal(notes[i][j]["vDesc"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vOutro"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vOutro"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
+                                {
+                                    cfops[pos][4] = (Convert.ToDecimal(cfops[pos][4]) + Convert.ToDecimal(notes[i][j]["vSeg"])).ToString();
+                                    valorContabil += Convert.ToDecimal(notes[i][j]["vSeg"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMS"))
+                                {
+                                    cfops[pos][5] = (Convert.ToDecimal(cfops[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
+                                    cfops[pos][6] = (Convert.ToDecimal(cfops[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                    baseCalculo += Convert.ToDecimal(notes[i][j]["vBC"]);
+                                    valorIcms += Convert.ToDecimal(notes[i][j]["vICMS"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pFCP"))
+                                {
+                                    cfops[pos][7] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
+                                    valorFecop += Convert.ToDecimal(notes[i][j]["vFCP"]);
+                                }
+
+                                if (notes[i][j].ContainsKey("orig") && notes[i][j].ContainsKey("pICMSST"))
+                                    cfops[pos][8] = (Convert.ToDecimal(cfops[pos][7]) + Convert.ToDecimal(notes[i][j]["vICMSST"])).ToString();
+                            }
+                        }
+                    }
+
+                    ViewBag.ValorContabil = valorContabil;
+                    ViewBag.BaseCalculo = baseCalculo;
+                    ViewBag.ValorIcms = valorIcms;
+                    ViewBag.ValorFecop = valorFecop;
+                    ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
+                }
                 else if (type.Equals("notasForaAnexoInterna"))
                 {
                     //  Resumo Notas | Vendas Interna Fora do Anexo
@@ -27154,38 +27498,50 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorFecop = valorFecop;
                     ViewBag.Cfop = cfops.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
                 }
-                else if (type.Equals("foraAnexoInternaNormal"))
+                else if (type.Equals("notasForaAnexoInter"))
                 {
-                    //  Resumo Vendas Interna Normal Fora do Anexo
+                    //  Resumo Notas | Vendas Interestadual Fora do Anexo
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
                     //  Saida
                     cfopsVenda = _cfopService.FindByCfopVenda(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
                     cfopsVendaIM = _cfopService.FindByCfopVendaIM(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsVendaST = _cfopService.FindByCfopVendaST(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
                     cfopsBoniVenda = _cfopService.FindByCfopBonificacaoVenda(cfopsAll)
-                         .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                         .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                          .Select(_ => _.Code)
                          .Distinct()
                          .ToList();
 
                     //  Transferencia
                     cfopsTransf = _cfopService.FindByCfopTransferencia(cfopsAll)
-                        .Where(_ => _.Code.Substring(0, 1).Equals("5"))
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
+                        .Select(_ => _.Code)
+                        .Distinct()
+                        .ToList();
+                    cfopsTransfST = _cfopService.FindByCfopTransferenciaST(cfopsAll)
+                        .Where(_ => _.Code.Substring(0, 1).Equals("6") || _.Code.Substring(0, 1).Equals("7"))
                         .Select(_ => _.Code)
                         .Distinct()
                         .ToList();
 
+                    cfopsVenda.AddRange(cfopsVendaST);
                     cfopsVenda.AddRange(cfopsVendaIM);
                     cfopsVenda.AddRange(cfopsTransf);
+                    cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
                     notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
@@ -27208,7 +27564,7 @@ namespace Escon.SisctNET.Web.Controllers
                         var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         bool status = true;
-                        string CFOP = "", NCM = "", CEST = "";
+                        string CProd = "", XProd = "", CFOP = "", NCM = "", CEST = "";
                         decimal vProd = 0;
                         int pos = -1;
 
@@ -27217,9 +27573,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM"))
                             {
-                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+                                CProd = notes[i][j]["cProd"];
+                                XProd = notes[i][j]["xProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
                                 status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
@@ -27230,7 +27588,8 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 for (int e = 0; e < cfops.Count(); e++)
                                 {
-                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM))
+                                    if (cfops[e][0].Equals(CFOP) && cfops[e][2].Equals(CEST) && cfops[e][9].Equals(NCM) &&
+                                        cfops[e][12].Equals(CProd) && cfops[e][14].Equals(notes[i][1]["nNF"]))
                                     {
                                         pos = e;
                                         break;
@@ -27257,9 +27616,12 @@ namespace Escon.SisctNET.Web.Controllers
                                     cc.Add(NCM);
                                     cc.Add(nn.Description);
                                     if (CEST != "")
-                                    {
                                         cc.Add(cestTemp.Description);
-                                    }
+                                    else
+                                        cc.Add("");
+                                    cc.Add(CProd);
+                                    cc.Add(XProd);
+                                    cc.Add(notes[i][1]["nNF"]);
                                     cfops.Add(cc);
                                     pos = cfops.Count() - 1;
                                 }
