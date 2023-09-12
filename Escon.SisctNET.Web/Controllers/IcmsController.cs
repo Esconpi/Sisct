@@ -142,9 +142,6 @@ namespace Escon.SisctNET.Web.Controllers
                         directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
                 }
 
-                var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
-                var impAnexo = _taxAnexoService.FindByMonth(companyId, month, year);
-
                 var cfopsAll = _cfopService.FindByType(null);
 
                 //  Saida
@@ -28631,6 +28628,8 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Imposto ICMS Excedente
 
+                    var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
+
                     if (imp == null)
                     {
                         ViewBag.Erro = 1;
@@ -28836,6 +28835,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("incentivo"))
                 {
                     //  Imposto Sobre Saida 
+
+                    var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
 
                     if (imp == null)
                     {
@@ -29255,6 +29256,8 @@ namespace Escon.SisctNET.Web.Controllers
                 else if (type.Equals("anexoAutoPecas"))
                 {
                     //  Relatório Anexo Auto Peças
+
+                    var impAnexo = _taxAnexoService.FindByMonth(companyId, month, year);
 
                     if (impAnexo == null)
                     {
@@ -29680,6 +29683,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("difal"))
                 {
+                    var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
+
                     if (imp == null)
                     {
                         ViewBag.Erro = 1;
