@@ -293,7 +293,8 @@ namespace Escon.SisctNET.Web.Controllers
                             valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
                             prod.ValorBCR = valorAgreg;
                             prod.BCR = Convert.ToDecimal(bcr);
-                            valorIcms = 0;
+                            if (prod.Picms.Equals(12))
+                                valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                         }
                         else
                         {
@@ -431,7 +432,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
                                 prod.ValorBCR = valorAgreg;
                                 //prod.BCR = Convert.ToDecimal(bcr);
-                                valorIcms = 0;
+                                if (prod.Vicms.Equals(12))
+                                    valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                             }
                             else
                             {
@@ -1284,8 +1286,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     bcIcms = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Valoragregado).Sum()),
                                     bcr = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.ValorBCR).Sum()),
                                     vAC = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.ValorAC).Sum()),
-                                    nfecte = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.Vicms).Sum()) +
-                                             Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsCTe).Sum()),
+                                    nfecte = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id) && _.EBcr.Equals(false)).Select(_ => _.Vicms).Sum()) +
+                                             Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id) && _.EBcr.Equals(false)).Select(_ => _.IcmsCTe).Sum()),
                                     cte = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsCTe).Sum()),
                                     icms = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsST).Sum()),
                                     icmsTotal = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.TotalICMS).Sum()),
@@ -1294,6 +1296,16 @@ namespace Escon.SisctNET.Web.Controllers
                                                   Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.IcmsApuradoCTe).Sum()),
                                     fecopST = Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpST).Sum()) +
                                               Convert.ToDecimal(products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id)).Select(_ => _.VfcpSTRet).Sum());
+
+                            foreach (var pp in products.Where(_ => _.NoteId.Equals(notasTaxation[i].Id) && _.EBcr.Equals(true)))
+                            {
+                                if (pp.Picms.Equals(12))
+                                    nfecte += (calculation.BaseCalc(Convert.ToDecimal(pp.Vprod), Convert.ToDecimal(pp.Vfrete), Convert.ToDecimal(pp.Vseg),
+                                                             Convert.ToDecimal(pp.Voutro), Convert.ToDecimal(pp.Vdesc), Convert.ToDecimal(pp.Vipi),
+                                                             Convert.ToDecimal(pp.Freterateado)) * 7 / 100) + pp.IcmsCTe;
+                                else
+                                    nfecte += pp.Vicms + pp.IcmsCTe;
+                            }
 
                             List<string> notesAgrup = new List<string>();
                             notesAgrup.Add(notasTaxation[i].Nnf.ToString());

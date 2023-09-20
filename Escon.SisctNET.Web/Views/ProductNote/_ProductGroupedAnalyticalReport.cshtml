@@ -422,7 +422,18 @@ else if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
                                         </td>
                                         <td>@item.AliqInterna</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
-                                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.Vicms) + Convert.ToDecimal(item.IcmsCTe))</td>
+                                        <td>
+                                            @if (item.Picms.Equals(12))
+                                            {
+                                                @string.Format("{0:N}", (Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                                                        Convert.ToDecimal(item.Vfrete) + Convert.ToDecimal(item.Vipi) + Convert.ToDecimal(item.Freterateado) -
+                                                                        Convert.ToDecimal(item.Vdesc)) * 7 / 100)
+                                            }
+                                            else
+                                            {
+                                                @string.Format("{0:N}", Convert.ToDecimal(item.IcmsCTe) + Convert.ToDecimal(item.Vicms))
+                                            }
+                                        </td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
                                         <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>

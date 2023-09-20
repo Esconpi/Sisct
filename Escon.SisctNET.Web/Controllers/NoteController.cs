@@ -684,7 +684,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                 valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxedP.BCR), valorAgreg);
                                                 prod.ValorBCR = valorAgreg;
                                                 prod.BCR = Convert.ToDecimal(taxedP.BCR);
-                                                valorIcms = 0;
+                                                if (prod.Picms.Equals(12))
+                                                    valorIcms = baseCalc * 7 / 100;
                                             }
                                             else
                                             {
@@ -797,7 +798,8 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.EBcr && taxed.BCR != null)
                                         {
                                             valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxed.BCR), Convert.ToDecimal(valorAgreg));
-                                            valorIcms = 0;
+                                            if (prod.Picms.Equals(12))
+                                                valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                                         }
 
                                         decimal percentFecop = 0;
@@ -869,7 +871,8 @@ namespace Escon.SisctNET.Web.Controllers
                                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(taxedP.BCR), Convert.ToDecimal(valorAgreg));
                                                     prod.ValorBCR = valorAgreg;
                                                     bcr = Convert.ToDecimal(taxedP.BCR);
-                                                    valorIcms = 0;
+                                                    if (prod.Picms.Equals(12))
+                                                        valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                                                 }
                                                 else
                                                 {
