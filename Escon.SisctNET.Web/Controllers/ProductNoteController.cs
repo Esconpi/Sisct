@@ -432,7 +432,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
                                 prod.ValorBCR = valorAgreg;
                                 //prod.BCR = Convert.ToDecimal(bcr);
-                                if (prod.Vicms.Equals(12))
+                                if (prod.Picms.Equals(12))
                                     valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                             }
                             else
@@ -717,7 +717,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
                                     item.ValorBCR = valorAgreg;
                                     //item.BCR = Convert.ToDecimal(bcr);
-                                    valorIcms = 0;
+                                    if (item.Picms.Equals(12))
+                                        valorIcms = (baseCalc * 7 / 100) + item.IcmsCTe;
                                 }
                                 else
                                 {
