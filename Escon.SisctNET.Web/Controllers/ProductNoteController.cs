@@ -2182,7 +2182,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalDarFecop += Math.Round(impostoFecop, 2);
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
+                            else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO") ) && 
+                                    comp.Chapter.Name.Equals("CAPÍTULO II – A"))
                             {
                                 //var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
                                 var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList(); 
@@ -3374,7 +3375,8 @@ namespace Escon.SisctNET.Web.Controllers
                             impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
                             impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (fecop / 100)), 2);
                         }
-                        else if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
+                        else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO")) && 
+                                comp.Chapter.Name.Equals("CAPÍTULO II – A"))
                         {
                             //var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
                             var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();

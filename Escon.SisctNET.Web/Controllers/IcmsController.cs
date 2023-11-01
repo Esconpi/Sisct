@@ -30109,9 +30109,12 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        string cProd = "", xProd = "", NCM = "", CFOP = "";
+                        string cProd = "", xProd = "", NCM = "", CFOP = "", CEST = "", CST = "";
                         decimal vProd = 0;
                         int pos = -1;
+                        bool status = false;
+
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
 
                         for (int j = 0; j < notes[i].Count(); j++)
                         {
@@ -30123,6 +30126,9 @@ namespace Escon.SisctNET.Web.Controllers
                                 xProd = notes[i][j]["xProd"];
                                 NCM = notes[i][j]["NCM"];
                                 CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
 
                                 if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
                                 {
@@ -30148,8 +30154,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 for (int e = 0; e < products.Count(); e++)
                                 {
-                                    if (products[e][8].Equals(cProd) && products[e][10].Equals(NCM) && products[e][0].Equals(CFOP) && 
-                                        products[e][2].Equals(notes[i][j]["CST"]))
+                                    if (products[e][0].Equals(cProd) && products[e][2].Equals(NCM) && 
+                                        products[e][3].Equals(notes[i][j]["CST"]))
                                     {
                                         pos = e;
                                         break;
@@ -30158,20 +30164,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (pos < 0)
                                 {
-                                    var cfp = cfopsAll.Where(_ => _.Code.Equals(CFOP)).FirstOrDefault();
                                     List<string> cc = new List<string>();
-                                    cc.Add(CFOP);
-                                    cc.Add(cfp.Description);
-                                    cc.Add(notes[i][j]["CST"]);
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
                                     cc.Add(cProd);
                                     cc.Add(xProd);
                                     cc.Add(NCM);
-                                    cc.Add(notes[i][1]["nNF"]);
+                                    cc.Add(notes[i][j]["CST"]);
+                                    cc.Add("0");
                                     products.Add(cc);
                                     pos = products.Count() - 1;
                                 }
@@ -30184,54 +30182,6 @@ namespace Escon.SisctNET.Web.Controllers
                                 products[pos][6] = (Convert.ToDecimal(products[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
 
                             }
-
-                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pFCP"))
-                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
-
-                            if (notes[i][j].ContainsKey("CSOSN"))
-                            {
-
-                                for (int e = 0; e < products.Count(); e++)
-                                {
-                                    if (products[e][8].Equals(cProd) && products[e][10].Equals(NCM) && products[e][0].Equals(CFOP) &&
-                                        products[e][2].Equals(notes[i][j]["CSOSN"]))
-                                    {
-                                        pos = e;
-                                        break;
-                                    }
-                                }
-
-                                if (pos < 0)
-                                {
-                                    var cfp = _cfopService.FindByCode(CFOP);
-                                    List<string> cc = new List<string>();
-                                    cc.Add(CFOP);
-                                    cc.Add(cfp.Description);
-                                    cc.Add(notes[i][j]["CSOSN"]);
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add("0");
-                                    cc.Add(cProd);
-                                    cc.Add(xProd);
-                                    cc.Add(NCM);
-                                    cc.Add(notes[i][1]["nNF"]);
-                                    products.Add(cc);
-                                    pos = products.Count() - 1;
-                                }
-                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
-                            }
-
-                            if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pICMS"))
-                            {
-                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                products[pos][6] = (Convert.ToDecimal(products[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
-
-                            }
-
-                            if (notes[i][j].ContainsKey("CSOSN") && notes[i][j].ContainsKey("pFCP"))
-                                products[pos][7] = (Convert.ToDecimal(products[pos][7]) + Convert.ToDecimal(notes[i][j]["vFCP"])).ToString();
                         }
 
                     }
