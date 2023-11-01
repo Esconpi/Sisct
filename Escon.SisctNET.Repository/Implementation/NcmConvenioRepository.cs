@@ -113,7 +113,8 @@ namespace Escon.SisctNET.Repository.Implementation
                 }
                 else
                 {
-                    if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                    if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || 
+                        comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                     {
                         if (n.Ncm.Equals(substring))
                             return n;
@@ -168,7 +169,8 @@ namespace Escon.SisctNET.Repository.Implementation
                 if (n.Cest == null || n.Cest == "")
                     cestTemp = null;
 
-                if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                if (comp.Annex.Description.Equals("ANEXO ÚNICO") || comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || 
+                    comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                 {
                     if (n.Ncm.Equals(substring))
                         return true;

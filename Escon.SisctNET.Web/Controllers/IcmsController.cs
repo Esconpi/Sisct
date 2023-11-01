@@ -30109,8 +30109,7 @@ namespace Escon.SisctNET.Web.Controllers
                             continue;
                         }
 
-                        string cProd = "", xProd = "", NCM = "", CFOP = "", CEST = "", CST = "";
-                        decimal vProd = 0;
+                        string cProd = "", xProd = "", NCM = "", CFOP = "", CEST = "";
                         int pos = -1;
                         bool status = false;
 
@@ -30129,58 +30128,99 @@ namespace Escon.SisctNET.Web.Controllers
                                 CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
 
                                 status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
-
-                                if (notes[i][j].ContainsKey("vProd") && notes[i][j].ContainsKey("cProd"))
-                                {
-                                    vProd = 0;
-                                    vProd += Convert.ToDecimal(notes[i][j]["vProd"]);
-                                }
-
-                                if (notes[i][j].ContainsKey("vFrete") && notes[i][j].ContainsKey("cProd"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vFrete"]);
-
-                                if (notes[i][j].ContainsKey("vDesc") && notes[i][j].ContainsKey("cProd"))
-                                    vProd -= Convert.ToDecimal(notes[i][j]["vDesc"]);
-
-                                if (notes[i][j].ContainsKey("vOutro") && notes[i][j].ContainsKey("cProd"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vOutro"]);
-
-                                if (notes[i][j].ContainsKey("vSeg") && notes[i][j].ContainsKey("cProd"))
-                                    vProd += Convert.ToDecimal(notes[i][j]["vSeg"]);
                             }
 
-                            if (notes[i][j].ContainsKey("CST"))
+                            if (notes[i][j].ContainsKey("CST") && status)
                             {
-
-                                for (int e = 0; e < products.Count(); e++)
+                                if (notes[i][j]["CST"].Equals("00"))
                                 {
-                                    if (products[e][0].Equals(cProd) && products[e][2].Equals(NCM) && 
-                                        products[e][3].Equals(notes[i][j]["CST"]))
+                                    for (int e = 0; e < products.Count(); e++)
                                     {
-                                        pos = e;
-                                        break;
+                                        if (products[e][0].Equals(cProd) && products[e][2].Equals(NCM) &&
+                                            products[e][3].Equals(notes[i][j]["CST"]))
+                                        {
+                                            pos = e;
+                                            break;
+                                        }
+                                    }
+
+                                    if (pos < 0)
+                                    {
+                                        List<string> cc = new List<string>();
+                                        cc.Add(cProd);
+                                        cc.Add(xProd);
+                                        cc.Add(NCM);
+                                        cc.Add(notes[i][j]["CST"]);
+                                        products.Add(cc);
                                     }
                                 }
+                            }
+                        }
 
-                                if (pos < 0)
-                                {
-                                    List<string> cc = new List<string>();
-                                    cc.Add(cProd);
-                                    cc.Add(xProd);
-                                    cc.Add(NCM);
-                                    cc.Add(notes[i][j]["CST"]);
-                                    cc.Add("0");
-                                    products.Add(cc);
-                                    pos = products.Count() - 1;
-                                }
-                                products[pos][4] = (Convert.ToDecimal(products[pos][4]) + vProd).ToString();
+                    }
+
+                    ViewBag.Products = products;
+                }
+                else if (type.Equals("produtoNR"))
+                {
+                    List<List<string>> products = new List<List<string>>();
+
+                    notes = importXml.NFeAll(directoryNfeExit);
+
+                    for (int i = notes.Count - 1; i >= 0; i--)
+                    {
+                        if (!notes[i][2]["CNPJ"].Equals(comp.Document))
+                        {
+                            notes.RemoveAt(i);
+                            continue;
+                        }
+
+                        string cProd = "", xProd = "", NCM = "", CFOP = "", CEST = "";
+                        int pos = -1;
+                        bool status = false;
+
+                        var ncmConvenioTemp = _ncmConvenioService.FindAllInDate(ncmConvenio, Convert.ToDateTime(notes[i][1]["dhEmi"]));
+
+                        for (int j = 0; j < notes[i].Count(); j++)
+                        {
+
+                            if ((notes[i][j].ContainsKey("cProd") && notes[i][j].ContainsKey("NCM")))
+                            {
+                                pos = -1;
+                                cProd = notes[i][j]["cProd"];
+                                xProd = notes[i][j]["xProd"];
+                                NCM = notes[i][j]["NCM"];
+                                CFOP = notes[i][j]["CFOP"];
+                                CEST = notes[i][j].ContainsKey("CEST") ? notes[i][j]["CEST"] : "";
+
+                                status = _ncmConvenioService.FindByNcmExists(ncmConvenioTemp, NCM, CEST, comp);
                             }
 
-                            if (notes[i][j].ContainsKey("CST") && notes[i][j].ContainsKey("pICMS"))
+                            if (notes[i][j].ContainsKey("CST") && !status)
                             {
-                                products[pos][5] = (Convert.ToDecimal(products[pos][5]) + Convert.ToDecimal(notes[i][j]["vBC"])).ToString();
-                                products[pos][6] = (Convert.ToDecimal(products[pos][6]) + Convert.ToDecimal(notes[i][j]["vICMS"])).ToString();
+                                if (notes[i][j]["CST"].Equals("20"))
+                                {
+                                    for (int e = 0; e < products.Count(); e++)
+                                    {
+                                        if (products[e][0].Equals(cProd) && products[e][2].Equals(NCM) &&
+                                            products[e][3].Equals(notes[i][j]["CST"]))
+                                        {
+                                            pos = e;
+                                            break;
+                                        }
+                                    }
 
+                                    if (pos < 0)
+                                    {
+                                        List<string> cc = new List<string>();
+                                        cc.Add(cProd);
+                                        cc.Add(xProd);
+                                        cc.Add(NCM);
+                                        cc.Add(notes[i][j]["CST"]);
+                                        products.Add(cc);
+                                        pos = products.Count() - 1;
+                                    }
+                                }
                             }
                         }
 

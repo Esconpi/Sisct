@@ -226,6 +226,11 @@
     <strong>Produto que fazem parte do regime especial tributado normalmente</strong>
 }
 
+@if (ViewBag.Type == "produtoNR")
+{
+    <strong>Produto que não fazem parte do regime especial tributado dentro do regime</strong>
+}
+
 @if (ViewBag.Type != "anexoAutoPecas" || ViewBag.Type != "incentivo" || ViewBag.Type != "venda")
 {
     @if (ViewBag.Arquivo == "xmlS")
