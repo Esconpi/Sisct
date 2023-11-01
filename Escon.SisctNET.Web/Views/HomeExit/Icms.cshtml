@@ -49,7 +49,8 @@
 
                             @if (Model.Incentive == true)
                             {
-                                @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || Model.Annex.Description.Equals("ANEXO ÚNICO") || Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                                @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || Model.Annex.Description.Equals("ANEXO ÚNICO") ||
+                                    Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                                 {
                                     <option value="resumoCfopAnexo">Resumo CFOP Dentro do Anexo</option>
                                     <option value="resumoCfopCstAnexo">Resumo CFOP/CST Dentro do Anexo</option>
@@ -78,8 +79,13 @@
                                     <option value="foraAnexoInternaNormal">Venda Interna Normal Fora do Anexo</option>
                                     <option value="notasForaAnexoInterna">Notas | Venda Interna Fora do Anexo</option>
                                     <option value="notasForaAnexoInter">Notas | Venda Interestadual Fora do Anexo</option>
-                                    <option value="produtoRN">Produto que fazem parte do regime especial tributado normalmente</option>
-                                    <option value="produtoNR">Produto que não fazem parte do regime especial tributado dentro do regime</option>
+
+                                    @if (Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
+                                    {
+                                        <option value="produtoRN">Produtos que fazem parte do regime especial tributado normalmente</option>
+                                        <option value="produtoNR">Produtos tributado no regime que não faz parte do mesmo</option>
+                                    }
+
                                 }
                                 else if (Model.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 {

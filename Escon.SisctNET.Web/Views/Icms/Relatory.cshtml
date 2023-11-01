@@ -403,13 +403,13 @@
             }
             else if (ViewBag.Type == "produtoRN")
             {
-                <!-- Produto que fazem parte do regime especial tributado normalmente -->
+                <!-- Produtos que fazem parte do regime especial tributado normalmente -->
 
                 @await Html.PartialAsync("_ProductRN", new ViewDataDictionary(ViewData))
             }
             else if (ViewBag.Type == "produtoNR")
             {
-                <!-- Produto que não fazem parte do regime especial tributado dentro do regime -->
+                <!-- Produtos tributado no regime que não faz parte do mesmo -->
 
                 @await Html.PartialAsync("_ProductNR", new ViewDataDictionary(ViewData))
             }

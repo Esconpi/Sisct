@@ -1,19 +1,21 @@
-﻿<thead>
-    <tr style="font-size:12px;">
-        <th>Cod. Produto</th>
-        <th>Produto</th>
-        <th>NCM</th>
-        <th>CST</th>
-    </tr>
-</thead>
-<tbody>
-    @foreach (var item in ViewBag.Products)
-    {
-        <tr style="font-size:10px;">
-            <td>@item[0]</td>
-            <td>@item[1]</td>
-            <td>@item[2]</td>
-            <td>@item[3]</td>
+﻿<table class="table" style="border:1px solid">
+    <thead>
+        <tr>
+            <th style="border: 1px solid; text-align: center;">Cod. Produto</th>
+            <th style="border: 1px solid; text-align: center;">Produto</th>
+            <th style="border: 1px solid; text-align: center;">NCM</th>
+            <th style="border: 1px solid; text-align: center;">CST</th>
         </tr>
-    }
-</tbody>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Products)
+        {
+            <tr style="font-size:10px;">
+                <td style="border:1px solid; padding-left:1%;">@item[0]</td>
+                <td style="border:1px solid; padding-left:1%;">@item[1]</td>
+                <td style="border:1px solid; padding-left:1%;">@item[2]</td>
+                <td style="border:1px solid; padding-left:1%;">@item[3]</td>
+            </tr>
+        }
+    </tbody>
+</table>
