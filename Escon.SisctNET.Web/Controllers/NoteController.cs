@@ -1007,12 +1007,16 @@ namespace Escon.SisctNET.Web.Controllers
                                             icmsApu = calculation.Icms(icmsIntra, icmsInter);
 
                                             decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
-                                                    bcrIntraCTe = 100,
-                                                    bcrInterCTe = 100,
+                                                    bcrIntraCTe = 100, bcrInterCTe = 100,
                                                     icmsInterCTe = calculation.IcmsBCR(base1CTe, bcrInterCTe),
-                                                    baseDifalCTe = calculation.Base3(frete_prod - icmsInterCTe, aliqInterna),
-                                                    icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
+                                                    baseDifalCTe = 0, icmsIntraCTe = 0;
 
+                                            if (freteIcms > 0)
+                                                baseDifalCTe = calculation.Base3(frete_prod - freteIcms, aliqInterna);
+                                            else
+                                                baseDifalCTe = calculation.Base3(frete_prod, aliqInterna);
+
+                                            icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
                                             icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
                                         }
                                         else if (taxed.EBcr && aliquotConfaz != null && internalAliquotConfaz != null)
@@ -1033,12 +1037,16 @@ namespace Escon.SisctNET.Web.Controllers
                                             icmsApu = calculation.Icms(icmsIntra, icmsInter);
 
                                             decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValid)),
-                                                    bcrIntraCTe = 100,
-                                                    bcrInterCTe = 100,
+                                                    bcrIntraCTe = 100, bcrInterCTe = 100,
                                                     icmsInterCTe = calculation.IcmsBCR(base1CTe, bcrInterCTe),
-                                                    baseDifalCTe = calculation.Base3(frete_prod - icmsInterCTe, aliqInterna),
-                                                    icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
+                                                    baseDifalCTe = 0, icmsIntraCTe = 0;
 
+                                            if (freteIcms > 0)
+                                                baseDifalCTe = calculation.Base3(frete_prod - freteIcms, aliqInterna);
+                                            else
+                                                baseDifalCTe = calculation.Base3(frete_prod, aliqInterna);
+
+                                            icmsIntraCTe = calculation.IcmsBCRIntra(baseDifalCTe, bcrIntraCTe, aliqInterna);
                                             icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
                                         }
                                         else
@@ -1060,9 +1068,15 @@ namespace Escon.SisctNET.Web.Controllers
                                                 icmsApu = calculation.Icms(baseDifal, base1);
 
                                             decimal base1CTe = calculation.Base1(frete_prod, Convert.ToDecimal(pICMSValidOrig)),
-                                                    base2CTe = calculation.Base2(frete_prod, base1CTe),
-                                                    base3CTe = calculation.Base3(base2CTe, aliqInterna),
-                                                    baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
+                                                base2CTe = 0, base3CTe = 0, baseDifalCTe = 0;
+
+                                            if (freteIcms > 0)
+                                                base2CTe = calculation.Base2(frete_prod, freteIcms);
+                                            else
+                                                base2CTe = frete_prod;
+
+                                            base3CTe = calculation.Base3(base2CTe, aliqInterna);
+                                            baseDifalCTe = calculation.BaseDifal(base3CTe, aliqInterna);
 
                                             if (comp.County.State.Difal.Equals("Base Única"))
                                                 icmsApuCTe = calculation.BaseDifal(base3CTe, Convert.ToDecimal(dif_frete));
