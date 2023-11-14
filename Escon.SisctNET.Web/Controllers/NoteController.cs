@@ -2,6 +2,7 @@
 using Escon.SisctNET.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -998,7 +999,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
-                                            if (vICMS > 0)
+                                            if (prod.Csosn != null)
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else if (vICMS > 0)
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod - prod.Vicms, aliqInterna);
                                             else
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
@@ -1028,7 +1031,9 @@ namespace Escon.SisctNET.Web.Controllers
                                             bcrInter = calculation.BCR(Convert.ToDecimal(aliquotConfaz), Convert.ToDecimal(pICMSValid));
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
-                                            if (prod.Vicms > 0)
+                                            if (prod.Csosn != null)
+                                                baseDifal = calculation.Base3(baseCalc - frete_prod - icmsInter, aliqInterna);
+                                            else if (prod.Vicms > 0)
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod - prod.Vicms, aliqInterna);
                                             else
                                                 baseDifal = calculation.Base3(baseCalc - frete_prod, aliqInterna);
@@ -1054,7 +1059,9 @@ namespace Escon.SisctNET.Web.Controllers
                                             decimal base1 = calculation.Base1(baseCalc - frete_prod, Convert.ToDecimal(pICMSValid)),
                                                     base2 = 0, base3 = 0, baseDifal = 0;
 
-                                            if (prod.Vicms > 0)
+                                            if (prod.Csosn != null)
+                                                base2 = calculation.Base2(baseCalc - frete_prod, base1);
+                                            else if (prod.Vicms > 0)
                                                 base2 = calculation.Base2(baseCalc - frete_prod, prod.Vicms);
                                             else
                                                 base2 = baseCalc - frete_prod;

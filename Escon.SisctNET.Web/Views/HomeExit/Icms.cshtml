@@ -122,7 +122,8 @@
                             -->
                             <option value="debitoCredito">Débito/Crédito</option>
 
-                            @if (Model.Incentive == true)
+                            @if (Model.Incentive == true && !Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") &&
+                                !Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                             {
                                 @if (!Model.Annex.Description.Equals("NENHUM"))
                                 {
