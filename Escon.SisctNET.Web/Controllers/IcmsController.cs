@@ -116,8 +116,9 @@ namespace Escon.SisctNET.Web.Controllers
                 SessionManager.SetMonthInSession(month);
 
                 var configurations = _configurationService.FindAll(null);
-                var NfeEntry = configurations.Where(_ => _.Name.Equals("NFe")).FirstOrDefault();
-                var NfeExit = configurations.Where(_ => _.Name.Equals("NFe Saida")).FirstOrDefault();
+                var NFeEntry = configurations.Where(_ => _.Name.Equals("NFe")).FirstOrDefault();
+                var NFeExit = configurations.Where(_ => _.Name.Equals("NFe Saida")).FirstOrDefault();
+                var CTeExit = configurations.Where(_ => _.Name.Equals("CTe Saida")).FirstOrDefault();
                 var dataDifal = configurations.Where(_ => _.Name.Equals("DIFAL")).FirstOrDefault();
 
                 var importXml = new Xml.Import(_cfopService);
@@ -131,15 +132,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                 DateTime data = Convert.ToDateTime("01" + "/" + mes + "/" + year);
 
-                string directoryNfeExit = "", directoryNfeEntry = importDir.Entrada(comp, NfeEntry.Value, year, month),
+                string directoryNFeExit = "", directoryNFeEntry = importDir.Entrada(comp, NFeEntry.Value, year, month), directoryCTeExit = "",
                        icms = Request.Form["icms"].ToString(), icmsST = Request.Form["icmsST"].ToString(), mva = Request.Form["mva"].ToString();
 
                 if (arquivo != null)
                 {
                     if (arquivo.Equals("xmlE"))
-                        directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, year, month);
+                    {
+                        directoryNFeExit = importDir.SaidaEmpresa(comp, NFeExit.Value, year, month);
+                        directoryCTeExit = importDir.SaidaEmpresa(comp, CTeExit.Value, year, month);
+                    }
                     else
-                        directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, year, month);
+                    {
+                        directoryNFeExit = importDir.SaidaSefaz(comp, NFeExit.Value, year, month);
+                        directoryCTeExit = importDir.SaidaSefaz(comp, CTeExit.Value, year, month);
+                    }
+                       
                 }
 
                 var cfopsAll = _cfopService.FindByType(null);
@@ -191,7 +199,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (opcao.Equals("saida"))
                     {
-                        notes = importXml.NFeAll(directoryNfeExit);
+                        notes = importXml.NFeAll(directoryNFeExit);
 
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
@@ -412,7 +420,7 @@ namespace Escon.SisctNET.Web.Controllers
                     }
                     else
                     {
-                        notes = importXml.NFeAll(directoryNfeEntry);
+                        notes = importXml.NFeAll(directoryNFeEntry);
 
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
@@ -499,7 +507,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> cfops = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -631,7 +639,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> cfops = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -788,9 +796,9 @@ namespace Escon.SisctNET.Web.Controllers
                     opcao = "saida";
 
                     if (opcao.Equals("saida"))
-                        notes = importXml.NFeCFOP(directoryNfeExit, cfop.Code);
+                        notes = importXml.NFeCFOP(directoryNFeExit, cfop.Code);
                     else
-                        notes = importXml.NFeCFOP(directoryNfeEntry, cfop.Code);
+                        notes = importXml.NFeCFOP(directoryNFeEntry, cfop.Code);
 
 
                     List<List<string>> resumoNote = new List<List<string>>();
@@ -920,7 +928,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (cfopid == 0 && cstId == 0 && csosnId == 0 && stateId == 0 && icms == "" && icmsST == "" && mva == "")
                     {
-                        notes = importXml.NFeAll(directoryNfeExit);
+                        notes = importXml.NFeAll(directoryNFeExit);
 
                         for (int i = notes.Count - 1; i >= 0; i--)
                         {
@@ -1189,7 +1197,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             var cfop = cfopsAll.Where(_ => _.Id.Equals(cfopid)).FirstOrDefault();
 
-                            notes = importXml.NFeCFOP(directoryNfeExit, cfop.Code);
+                            notes = importXml.NFeCFOP(directoryNFeExit, cfop.Code);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -12407,7 +12415,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (cstId != 0)
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -16241,7 +16249,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (csosnId != 0)
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -20075,7 +20083,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (stateId != 0)
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -21785,7 +21793,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (icms != "")
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -22732,7 +22740,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (icmsST != "")
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -23210,7 +23218,7 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         else if (mva != "")
                         {
-                            notes = importXml.NFeAll(directoryNfeExit);
+                            notes = importXml.NFeAll(directoryNFeExit);
 
                             for (int i = notes.Count - 1; i >= 0; i--)
                             {
@@ -23478,7 +23486,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     decimal vContabil = 0, vBaseCalc = 0, vIcms = 0, vFecop = 0, vBaseCalcST = 0, vIcmsST = 0, vFecopST = 0;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var stateAll = _stateService.FindAll(null);
                     var state = stateAll.Where(_ => _.Id.Equals(stateId)).FirstOrDefault();
@@ -24026,7 +24034,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfopsAnexo = new List<List<string>>();
 
@@ -24149,7 +24157,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfops = new List<List<string>>();
 
@@ -24299,7 +24307,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
 
@@ -24462,7 +24470,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -24574,7 +24582,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfopsAnexo = new List<List<string>>();
                     List<List<string>> produtos = new List<List<string>>();
@@ -24760,7 +24768,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal valorContabil = 0, valorBC = 0, valorIcms = 0, valorFecop = 0;
 
                     // Entrada
-                    notes = importXml.NFeAll(directoryNfeEntry);
+                    notes = importXml.NFeAll(directoryNFeEntry);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -24891,7 +24899,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.CfopAnexoEntry = cfopsAnexoEntry.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
 
                     // Saida 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -25007,7 +25015,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfopsForaAnexo = new List<List<string>>();
 
@@ -25126,7 +25134,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfops = new List<List<string>>();
 
@@ -25275,7 +25283,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
 
@@ -25437,7 +25445,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -25549,7 +25557,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Anexo = comp.Annex.Description + " - " + comp.Annex.Convenio;
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     List<List<string>> cfopsForaAnexo = new List<List<string>>();
                     List<List<string>> produtos = new List<List<string>>();
@@ -25734,7 +25742,7 @@ namespace Escon.SisctNET.Web.Controllers
                     decimal valorContabil = 0, valorBC = 0, valorIcms = 0, valorFecop = 0;
 
                     //  Entrada
-                    notes = importXml.NFeAll(directoryNfeEntry);
+                    notes = importXml.NFeAll(directoryNFeEntry);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -25844,7 +25852,7 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.CfopForaAnexoEntry = cfopsForaAnexoEntry.OrderBy(_ => Convert.ToInt32(_[0])).ToList();
 
                     //  Saida
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -25987,7 +25995,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -26169,7 +26177,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -26335,7 +26343,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -26507,7 +26515,7 @@ namespace Escon.SisctNET.Web.Controllers
                         .Distinct()
                         .ToList();
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -26685,7 +26693,7 @@ namespace Escon.SisctNET.Web.Controllers
                         .Distinct()
                         .ToList();
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -26835,7 +26843,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -27016,7 +27024,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -27182,7 +27190,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -27360,7 +27368,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -27544,7 +27552,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var ncmsAll = _ncmService.FindAll(null);
                     var cestAll = _cestService.FindAll(null);
@@ -27695,7 +27703,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransfST);
                     cfopsVenda.AddRange(cfopsBoniVenda);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     decimal valorTotal = 0;
 
@@ -27793,7 +27801,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Resumo Produtos ST
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var codeProd = _productIncentivoService.FindByAllProducts(companyId).Select(_ => _.Code).ToList();
                     var codeProdST = _productIncentivoService.FindByAllProducts(companyId).Where(_ => _.TypeTaxation.Equals("ST")).Select(_ => _.Code).ToList();
@@ -27949,7 +27957,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                     List<List<string>> prodsXml = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var prodsAllCompany = _productIncentivoService.FindByAllProducts(comp.Document);
                     var prodsAll = _productIncentivoService.FindByDate(prodsAllCompany, data);
@@ -28146,7 +28154,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     decimal total = 0;
 
@@ -28231,7 +28239,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     decimal total = 0;
 
@@ -28316,7 +28324,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
                     var contribuintes = _clientService.FindByContribuinte(companyId, "raiz");
@@ -28429,7 +28437,7 @@ namespace Escon.SisctNET.Web.Controllers
                     cfopsVenda.AddRange(cfopsTransf);
                     cfopsVenda.AddRange(cfopsTransfST);
 
-                    notes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                    notes = importXml.NFeAll(directoryNFeExit, cfopsVenda);
 
                     var clientesAll = _clientService.FindByCompany(companyId).Select(_ => _.Document).ToList();
                     var contribuintes = _clientService.FindByContribuinte(companyId, "raiz");
@@ -28534,7 +28542,7 @@ namespace Escon.SisctNET.Web.Controllers
                     // Venda de Produto ST como Normal
                     List<List<string>> vendas = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var prodsAll = _productIncentivoService.FindByAllProducts(companyId);
                     List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
@@ -28703,7 +28711,7 @@ namespace Escon.SisctNET.Web.Controllers
                     // Venda de Produto ST como Normal Nota
                     List<List<string>> vendas = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     var prodsAll = _productIncentivoService.FindByAllProducts(companyId);
                     List<Model.ProductIncentivo> prodsTemp = new List<ProductIncentivo>();
@@ -28873,7 +28881,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     //  Débito/Crédito
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     decimal vendas = 0, devolucaoVendaa = 0, debito = 0, devolucaoDebito = 0;
 
@@ -28947,12 +28955,12 @@ namespace Escon.SisctNET.Web.Controllers
                     if (arquivo != null)
                     {
                         if (arquivo.Equals("xmlE"))
-                            directoryNfeExit = importDir.SaidaEmpresa(comp, NfeExit.Value, ano, mesName);
+                            directoryNFeExit = importDir.SaidaEmpresa(comp, NFeExit.Value, ano, mesName);
                         else
-                            directoryNfeExit = importDir.SaidaSefaz(comp, NfeExit.Value, ano, mesName);
+                            directoryNFeExit = importDir.SaidaSefaz(comp, NFeExit.Value, ano, mesName);
                     }
 
-                    notes = importXml.NFeResumeEmit(directoryNfeExit);
+                    notes = importXml.NFeResumeEmit(directoryNFeExit);
 
                     decimal total = 0, totalIcms = 0;
 
@@ -29852,7 +29860,7 @@ namespace Escon.SisctNET.Web.Controllers
                     List<List<string>> daselencadaInterna = new List<List<string>>();
                     List<List<string>> daselencadaInterestadual = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     decimal valorElencadaInterna = 0, valorElencadaInterestadual = 0, valorDaselencadaInterna = 0, valorDaselencadaInterestadual = 0;
 
@@ -30099,7 +30107,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<string>> products = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
@@ -30165,7 +30173,7 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     List<List<string>> products = new List<List<string>>();
 
-                    notes = importXml.NFeAll(directoryNfeExit);
+                    notes = importXml.NFeAll(directoryNFeExit);
 
                     for (int i = notes.Count - 1; i >= 0; i--)
                     {
