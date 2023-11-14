@@ -30228,6 +30228,10 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Products = products;
                 }
+                else if (type.Equals("cteNotaDuplicada"))
+                {
+
+                }
 
                 //  Dar
                 var dars = _darService.FindAll(null);

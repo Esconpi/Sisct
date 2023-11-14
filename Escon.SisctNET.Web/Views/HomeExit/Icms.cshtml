@@ -41,95 +41,92 @@
                     <div class="form-group col-lg-6 col-md-6 col-xs-12">
                         <label class="control-label">Tipo</label>
                         <select name="type" class="form-control selectoption" id="status" onchange="ativar_button()">
-                            <option value="resumoCfop" selected>Resumo CFOP</option>
-                            <option value="resumoCfopCst">Resumo CFOP/CST</option>
-                            <option value="resumoCfopAliq">Resumo CFOP/Aliquota</option>
-                            <option value="resumoCfopIcmsIcmsST">Resumo CFOP ICMS/ICMS ST</option>
-                            <option value="resumoCfopIcmsIcmsSTAnalitico">Resumo CFOP ICMS/ICMS ST Analítico</option>
+                            <option value="resumoCfop">NFe - Resumo CFOP</option>
+                            <option value="resumoCfopCst">NFe - Resumo CFOP/CST</option>
+                            <option value="resumoCfopAliq">NFe - Resumo CFOP/Aliquota</option>
+                            <option value="resumoCfopIcmsIcmsST">NFe - Resumo CFOP ICMS/ICMS ST</option>
+                            <option value="resumoCfopIcmsIcmsSTAnalitico">NFe - Resumo CFOP ICMS/ICMS ST Analítico</option>
 
                             @if (Model.Incentive == true)
                             {
                                 @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || Model.Annex.Description.Equals("ANEXO ÚNICO") ||
                                     Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                                 {
-                                    <option value="resumoCfopAnexo">Resumo CFOP Dentro do Anexo</option>
-                                    <option value="resumoCfopCstAnexo">Resumo CFOP/CST Dentro do Anexo</option>
-                                    <option value="resumoCfopCstNcmAnexo">Resumo CFOP/CST/NCM Dentro do Anexo</option>
-                                    <option value="resumoCfopNcmCestAnexo">Resumo CFOP/NCM/CEST Dentro do Anexo</option>
-                                    <option value="resumoCfopAnexoAnalitico">Resumo CFOP Dentro Anexo do Analítico</option>
-                                    <option value="resumoCfopAnexoDC">Resumo CFOP Dentro do Anexo Débito/Crédito</option>
-                                    <option value="resumoCfopForaAnexo">Resumo CFOP Fora do Anexo</option>
-                                    <option value="resumoCfopCstForaAnexo">Resumo CFOP/CST Fora do Anexo</option>
-                                    <option value="resumoCfopCstNcmForaAnexo">Resumo CFOP/CST/NCM Fora do Anexo</option>
-                                    <option value="resumoCfopNcmCestForaAnexo">Resumo CFOP/NCM/CEST Fora do Anexo</option>
-                                    <option value="resumoCfopForaAnexoAnalitico">Resumo CFOP Fora do Anexo Analítico</option>
-                                    <option value="resumoCfopForaAnexoDC">Resumo CFOP Fora Anexo Débito/Crédito</option>
-                                    <option value="resumoPorCfop">Resumo por CFOP</option>
-                                    <option value="vendaPF">Venda P/ Pessoa Física</option>
-                                    <option value="vendaPJ">Venda P/ Pessoa Jurídica</option>
-                                    <option value="vendaContribuinte">Venda P/ Contribuinte</option>
-                                    <option value="vendaNContribuinte">Venda P/ não Contribuinte</option>
-                                    <option value="anexo">Venda Dentro Anexo</option>
-                                    <option value="anexoInterna">Venda Interna Dentro Anexo</option>
-                                    <option value="anexoInternaNormal">Venda Interna Normal Dentro Anexo</option>
-                                    <option value="notasAnexoInterna">Notas | Venda Interna Dentro Anexo</option>
-                                    <option value="notasAnexoInter">Notas | Venda Interestadual Dentro Anexo</option>
-                                    <option value="foraAnexo">Venda Fora do Anexo</option>
-                                    <option value="foraAnexoInterna">Venda Interna Fora do Anexo</option>
-                                    <option value="foraAnexoInternaNormal">Venda Interna Normal Fora do Anexo</option>
-                                    <option value="notasForaAnexoInterna">Notas | Venda Interna Fora do Anexo</option>
-                                    <option value="notasForaAnexoInter">Notas | Venda Interestadual Fora do Anexo</option>
+                                    <option value="resumoCfopAnexo">NFe - Resumo CFOP Dentro do Anexo</option>
+                                    <option value="resumoCfopCstAnexo">NFe - Resumo CFOP/CST Dentro do Anexo</option>
+                                    <option value="resumoCfopCstNcmAnexo">NFe - Resumo CFOP/CST/NCM Dentro do Anexo</option>
+                                    <option value="resumoCfopNcmCestAnexo">NFe - Resumo CFOP/NCM/CEST Dentro do Anexo</option>
+                                    <option value="resumoCfopAnexoAnalitico">NFe - Resumo CFOP Dentro Anexo do Analítico</option>
+                                    <option value="resumoCfopAnexoDC">NFe - Resumo CFOP Dentro do Anexo Débito/Crédito</option>
+                                    <option value="resumoCfopForaAnexo">NFe - Resumo CFOP Fora do Anexo</option>
+                                    <option value="resumoCfopCstForaAnexo">NFe - Resumo CFOP/CST Fora do Anexo</option>
+                                    <option value="resumoCfopCstNcmForaAnexo">NFe - Resumo CFOP/CST/NCM Fora do Anexo</option>
+                                    <option value="resumoCfopNcmCestForaAnexo">NFe - Resumo CFOP/NCM/CEST Fora do Anexo</option>
+                                    <option value="resumoCfopForaAnexoAnalitico">NFe - Resumo CFOP Fora do Anexo Analítico</option>
+                                    <option value="resumoCfopForaAnexoDC">NFe - Resumo CFOP Fora Anexo Débito/Crédito</option>
+                                    <option value="resumoPorCfop">NFe - Resumo por CFOP</option>
+                                    <option value="vendaPF">NFe - Venda P/ Pessoa Física</option>
+                                    <option value="vendaPJ">NFe - Venda P/ Pessoa Jurídica</option>
+                                    <option value="vendaContribuinte">NFe - Venda P/ Contribuinte</option>
+                                    <option value="vendaNContribuinte">NFe - Venda P/ não Contribuinte</option>
+                                    <option value="anexo">NFe - Venda Dentro Anexo</option>
+                                    <option value="anexoInterna">NFe - Venda Interna Dentro Anexo</option>
+                                    <option value="anexoInternaNormal">NFe - Venda Interna Normal Dentro Anexo</option>
+                                    <option value="notasAnexoInterna">NFe - Notas | Venda Interna Dentro Anexo</option>
+                                    <option value="notasAnexoInter">NFe - Notas | Venda Interestadual Dentro Anexo</option>
+                                    <option value="foraAnexo">NFe - Venda Fora do Anexo</option>
+                                    <option value="foraAnexoInterna">NFe - Venda Interna Fora do Anexo</option>
+                                    <option value="foraAnexoInternaNormal">NFe - Venda Interna Normal Fora do Anexo</option>
+                                    <option value="notasForaAnexoInterna">NFe - Notas | Venda Interna Fora do Anexo</option>
+                                    <option value="notasForaAnexoInter">NFe - Notas | Venda Interestadual Fora do Anexo</option>
 
                                     @if (Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                                     {
-                                        <option value="produtoRN">Produtos que fazem parte do regime especial tributado normalmente</option>
-                                        <option value="produtoNR">Produtos tributado no regime que não faz parte do mesmo</option>
+                                        <option value="produtoRN">NFe - Produtos que fazem parte do regime especial tributado normalmente</option>
+                                        <option value="produtoNR">NFe - Produtos tributado no regime que não faz parte do mesmo</option>
                                     }
 
                                 }
                                 else if (Model.Chapter.Name.Equals("CAPÍTULO IV-C"))
                                 {
-                                    <option value="resumoPorCfop">Resumo por CFOP</option>
-                                    <option value="vendaPF">Venda P/ Pessoa Física</option>
-                                    <option value="vendaPJ">Venda P/ Pessoa Jurídica</option>
-                                    <option value="vendaContribuinte">Venda P/ Contribuinte</option>
-                                    <option value="vendaNContribuinte">Venda P/ não Contribuinte</option>
+                                    <option value="resumoPorCfop">NFe - Resumo por CFOP</option>
+                                    <option value="vendaPF">NFe - Venda P/ Pessoa Física</option>
+                                    <option value="vendaPJ">NFe - Venda P/ Pessoa Jurídica</option>
+                                    <option value="vendaContribuinte">NFe - Venda P/ Contribuinte</option>
+                                    <option value="vendaNContribuinte">NFe - Venda P/ não Contribuinte</option>
                                 }
                                 else
                                 {
-                                    <option value="resumoPorCfop">Resumo por CFOP</option>
-                                    <option value="vendaPF">Venda P/ Pessoa Física</option>
-                                    <option value="vendaPJ">Venda P/ Pessoa Jurídica</option>
-                                    <option value="vendaContribuinte">Venda P/ Contribuinte</option>
-                                    <option value="vendaNContribuinte">Venda P/ não Contribuinte</option>
-                                    <option value="vendaProdutoSTNormal">Venda de Produto ST como Normal</option>
-                                    <option value="vendaProdutoSTNormalNote">Venda de Produto ST como Normal por Nota</option>
+                                    <option value="resumoPorCfop">NFe - Resumo por CFOP</option>
+                                    <option value="vendaPF">NFe - Venda P/ Pessoa Física</option>
+                                    <option value="vendaPJ">NFe - Venda P/ Pessoa Jurídica</option>
+                                    <option value="vendaContribuinte">NFe - Venda P/ Contribuinte</option>
+                                    <option value="vendaNContribuinte">NFe - Venda P/ não Contribuinte</option>
+                                    <option value="vendaProdutoSTNormal">NFe - Venda de Produto ST como Normal</option>
+                                    <option value="vendaProdutoSTNormalNote">NFe - Venda de Produto ST como Normal por Nota</option>
                                 }
 
                             }
                             else
                             {
-                                <option value="resumoPorCfop">Resumo por CFOP</option>
-                                <option value="vendaPF">Venda P/ Pessoa Física</option>
-                                <option value="vendaPJ">Venda P/ Pessoa Jurídica</option>
+                                <option value="resumoPorCfop">NFe - Resumo por CFOP</option>
+                                <option value="vendaPF">NFe - Venda P/ Pessoa Física</option>
+                                <option value="vendaPJ">NFe - Venda P/ Pessoa Jurídica</option>
                             }
 
-                            <option value="produtoST">Produtos ST com Base de Cálculo</option>
-                            <option value="notaContigenciaIcms">Notas Contigência com ICMS</option>
-                            <option value="notaContigenciaNIcms">Notas Contigência sem ICMS</option>
+                            <option value="produtoST">NFe - Produtos ST com Base de Cálculo</option>
+                            <option value="notaContigenciaIcms">NFe - Notas Contigência com ICMS</option>
+                            <option value="notaContigenciaNIcms">NFe - Notas Contigência sem ICMS</option>
+                            <option value="suspensao">NFe - Notas Suspensão</option>
                             <!--
                                 <option value="tributacaoDiveregente">Tributação Divergente</option>
                             -->
-                            <option value="debitoCredito">Débito/Crédito</option>
+                            <option value="debitoCredito">NFe - Débito/Crédito</option>
+                            <option value="cteNotaDuplicada">CTe - Relatorio com Pendência</option>
 
                             @if (Model.Incentive == true && !Model.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") &&
                                 !Model.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                             {
-                                @if (!Model.Annex.Description.Equals("NENHUM"))
-                                {
-                                    <option value="suspensao">Notas Suspensão</option>
-                                }
-
                                 @if (Model.TipoApuracao == true)
                                 {
                                     <option value="icmsExcedente">Icms Excedente</option>
@@ -139,19 +136,15 @@
                                     <option value="incentivo">Incentivo</option>
                                 }
 
-                                @if (!Model.Annex.Description.Equals("NENHUM"))
+                                @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
                                 {
-                                    @if (Model.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
-                                    {
-                                        <option value="anexoAutoPecas">ANEXO CCCXVI</option>
-                                    }
-                                    else if (Model.Annex.Description.Equals("ANEXO ÚNICO"))
-                                    {
-                                        <option value="anexoMedicamento">ANEXO CLIX</option>
-                                    }
+                                    <option value="anexoAutoPecas">ANEXO CCCXVI</option>
+                                }
+                                else if (Model.Annex.Description.Equals("ANEXO ÚNICO"))
+                                {
+                                    <option value="anexoMedicamento">ANEXO CLIX</option>
                                 }
                             }
-
                             <option value="difal">DIFAL</option>
                         </select>
                     </div>
