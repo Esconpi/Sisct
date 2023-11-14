@@ -2304,6 +2304,7 @@ namespace Escon.SisctNET.Web.Xml
                         Dictionary<string, string> dest = new Dictionary<string, string>();
                         Dictionary<string, string> vPrest = new Dictionary<string, string>();
                         Dictionary<string, string> infCarga = new Dictionary<string, string>();
+                        Dictionary<string, string> receb = new Dictionary<string, string>();
                         Dictionary<string, string> ide = new Dictionary<string, string>();
 
                         using (XmlReader reader = XmlReader.Create(new StreamReader(archivesCtes[i], Encoding.UTF8)))
@@ -2344,6 +2345,11 @@ namespace Escon.SisctNET.Web.Xml
                                             cte.Add(ide);
                                             break;
 
+                                        case "toma":
+                                            toma.Add(reader.Name, reader.ReadString());
+                                            cte.Add(toma);
+                                            break;
+
                                         case "emit":
                                             reader.Read();
                                             while (reader.Name.ToString() != "emit")
@@ -2370,9 +2376,24 @@ namespace Escon.SisctNET.Web.Xml
                                             cte.Add(dest);
                                             break;
 
+                                        case "receb":
+                                            reader.Read();
+                                            while (reader.Name.Equals(""))
+                                            {
+                                                reader.Read();
+                                            }
+                                            receb.Add("cnpjreceb", reader.ReadString());
+                                            cte.Add(receb);
+                                            break;
+
                                         case "vTPrest":
                                             vPrest.Add(reader.Name, reader.ReadString());
                                             cte.Add(vPrest);
+                                            break;
+
+                                        case "vCarga":
+                                            infCarga.Add(reader.Name, reader.ReadString());
+                                            cte.Add(infCarga);
                                             break;
                                     }
                                 }

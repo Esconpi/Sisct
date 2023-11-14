@@ -30238,7 +30238,7 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("cteNotaDuplicada"))
                 {
-
+                    ctes = importXml.CTeAll(directoryCTeExit);
                 }
 
                 //  Dar
