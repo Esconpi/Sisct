@@ -85,8 +85,8 @@
                 </tr>
             }
 
-            @if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || ViewBag.Company.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO")) &&
-                ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A"))
+            @if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A")) || 
+                ViewBag.Company.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
             {
                 <tr>
                     <th>
@@ -155,8 +155,8 @@
                 }
             }
 
-            @if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") || ViewBag.Company.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO")) &&
-                ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A"))
+            @if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A")) || 
+                ViewBag.Company.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
             {
                 <tr>
                     <th>

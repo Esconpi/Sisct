@@ -304,8 +304,6 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                var result = _service.FindById(id, null);
-
                 var list_annex = _annexService.FindAll(null);
                 foreach (var annex in list_annex)
                 {
@@ -332,6 +330,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 SelectList sections = new SelectList(list_sections, "Id", "Name", null);
                 ViewBag.SectionId = sections;
+
+                var result = _service.FindById(id, null);
 
                 return View(result);
             }
