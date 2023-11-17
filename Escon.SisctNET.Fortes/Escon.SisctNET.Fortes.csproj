@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Escon.SisctNET.API\Escon.SisctNET.API.csproj" />
     <ProjectReference Include="..\Escon.SisctNET.Model\Escon.SisctNET.Model.csproj" />
   </ItemGroup>
 

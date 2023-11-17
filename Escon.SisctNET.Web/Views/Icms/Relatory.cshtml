@@ -413,9 +413,17 @@
 
                 @await Html.PartialAsync("_ProductNR", new ViewDataDictionary(ViewData))
             }
+            else if (ViewBag.Type == "ctePendencia")
+            {
+                <!-- CTes Pendências -->
+
+                @await Html.PartialAsync("_CtePendency", new ViewDataDictionary(ViewData))
+            }
             else if (ViewBag.Type == "cteNotaDuplicada")
             {
-                <!-- CTes com notas duplicadas -->
+                <!-- CTes com Notas Duplicadas -->
+
+                @await Html.PartialAsync("_CteDuplicateNote", new ViewDataDictionary(ViewData))
             }
 
         </div>

@@ -30053,6 +30053,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("difal"))
                 {
+                    //  Difal
+
                     var imp = _taxService.FindByMonth(companyId, month, year, "Icms");
 
                     if (imp == null)
@@ -30105,6 +30107,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("produtoRN"))
                 {
+                    // Peoduto Regime Triburado Normalmente
+
                     List<List<string>> products = new List<List<string>>();
 
                     notes = importXml.NFeAll(directoryNFeExit);
@@ -30171,6 +30175,8 @@ namespace Escon.SisctNET.Web.Controllers
                 }
                 else if (type.Equals("produtoNR"))
                 {
+                    //  Produto Tributado no Regime que não faz parte do mesmo
+
                     List<List<string>> products = new List<List<string>>();
 
                     notes = importXml.NFeAll(directoryNFeExit);
@@ -30236,9 +30242,179 @@ namespace Escon.SisctNET.Web.Controllers
 
                     ViewBag.Products = products;
                 }
+                else if (type.Equals("ctePendencia"))
+                {
+                    //  CTes Pendências
+
+                    var ctes = importXml.CTeAll(directoryCTeExit);
+
+                    List<List<string>> notas = new List<List<string>>();
+                    List<List<string>> notasPendencia = new List<List<string>>();
+
+                    decimal vTotal = 0, baseCalcTotal = 0, totalIcms = 0;
+
+                    for (int i = ctes.Count - 1; i >= 0; i--)
+                    {
+                        bool achou = false;
+                        string vTPrest = "0", vCarga = "0", CST = "", vBC = "0", vICMS = "0";
+
+                        for (int j = 0; j < ctes[i].Count(); j++)
+                        {
+
+                            if (ctes[i][j].ContainsKey("vTPrest"))
+                                vTPrest = ctes[i][j]["vTPrest"];
+
+                            if (ctes[i][j].ContainsKey("vCarga"))
+                                vCarga = ctes[i][j]["vCarga"];
+
+                            if (ctes[i][j].ContainsKey("CST"))
+                                CST = ctes[i][j]["CST"];
+
+                            if (ctes[i][j].ContainsKey("CST") && ctes[i][j].ContainsKey("vBC"))
+                                vBC = ctes[i][j]["vBC"];
+
+                            if (ctes[i][j].ContainsKey("CST") && ctes[i][j].ContainsKey("vICMS"))
+                                vICMS = ctes[i][j]["vICMS"];
+
+                            if (ctes[i][j].ContainsKey("chave"))
+                            {
+                                List<string> cc = new List<string>();
+                                cc.Add(ctes[i][j]["chave"]);
+                                cc.Add(ctes[i][j]["chave"].Substring(25, 9));
+                                cc.Add(ctes[i][j]["chave"].Substring(6, 14));
+                                cc.Add(ctes[i][1]["nCT"]);
+                                cc.Add(vCarga);
+                                cc.Add(CST);
+                                cc.Add(vBC);
+                                cc.Add(vICMS);
+                                cc.Add(vTPrest);
+                                notas.Add(cc);
+                            }
+                        }
+                    }
+
+                    for(int i = 0; i < notas.Count(); i++)
+                    {
+                        int cont = 0;
+
+                        for (int j = 0; j < notas.Count(); j++)
+                        {
+                            if (notas[i][0].Equals(notas[j][0]) && notas[i][4].Equals(notas[j][4]))
+                                cont++;
+                        }
+
+                        if (cont > 1)
+                        {
+                            notasPendencia.Add(notas[i]);
+                            vTotal += Convert.ToDecimal(notas[i][8]);
+                            baseCalcTotal += Convert.ToDecimal(notas[i][6]);
+                            totalIcms += Convert.ToDecimal(notas[i][7]);
+                        }
+                    }
+
+                    ViewBag.Notas = notasPendencia.OrderBy(_ => Convert.ToInt32(_[1])).ToList();
+                    ViewBag.VTotal = vTotal;
+                    ViewBag.BaseCalc = baseCalcTotal;
+                    ViewBag.Icms = totalIcms;
+                }
                 else if (type.Equals("cteNotaDuplicada"))
                 {
-                    ctes = importXml.CTeAll(directoryCTeExit);
+                    //  CTes com Notas Duplicadas
+
+                    var ctes = importXml.CTeAll(directoryCTeExit);
+
+                    List<List<string>> notas = new List<List<string>>();
+                    List<List<string>> notasPendencia = new List<List<string>>();
+                    List<List<string>> notasDuplicada = new List<List<string>>();
+
+                    decimal vTotal = 0, baseCalcTotal = 0, totalIcms = 0;
+
+                    for (int i = ctes.Count - 1; i >= 0; i--)
+                    {
+                        bool achou = false;
+                        string vTPrest = "0", vCarga = "0", CST = "", vBC = "0", vICMS = "0";
+
+                        for (int j = 0; j < ctes[i].Count(); j++)
+                        {
+
+                            if (ctes[i][j].ContainsKey("vTPrest"))
+                                vTPrest = ctes[i][j]["vTPrest"];
+
+                            if (ctes[i][j].ContainsKey("vCarga"))
+                                vCarga = ctes[i][j]["vCarga"];
+
+                            if (ctes[i][j].ContainsKey("CST"))
+                                CST = ctes[i][j]["CST"];
+
+                            if (ctes[i][j].ContainsKey("CST") && ctes[i][j].ContainsKey("vBC"))
+                                vBC = ctes[i][j]["vBC"];
+
+                            if (ctes[i][j].ContainsKey("CST") && ctes[i][j].ContainsKey("vICMS"))
+                                vICMS = ctes[i][j]["vICMS"];
+
+                            if (ctes[i][j].ContainsKey("chave"))
+                            {
+                                List<string> cc = new List<string>();
+                                cc.Add(ctes[i][j]["chave"]);
+                                cc.Add(ctes[i][j]["chave"].Substring(25, 9));
+                                cc.Add(ctes[i][j]["chave"].Substring(6, 14));
+                                cc.Add(ctes[i][1]["nCT"]);
+                                cc.Add(vCarga);
+                                cc.Add(CST);
+                                cc.Add(vBC);
+                                cc.Add(vICMS);
+                                cc.Add(vTPrest);
+                                notas.Add(cc);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < notas.Count(); i++)
+                    {
+                        int cont = 0;
+                        
+                        for (int j = 0; j < notas.Count(); j++)
+                        {
+                            if (notas[i][0].Equals(notas[j][0]) && notas[i][4].Equals(notas[j][4]))
+                                cont++;
+                        }
+
+                        if (cont > 1)
+                            notasPendencia.Add(notas[i]);
+                    }
+
+                    for (int i = 0; i < notasPendencia.Count(); i++)
+                    {
+                        bool achou = false;
+                        int nCT = Convert.ToInt32(notasPendencia[i][3]);
+
+                        for (int j = 0; j < notasPendencia.Count(); j++)
+                        {
+                            if (notasPendencia[i][0].Equals(notasPendencia[j][0]))
+                            {
+                                int nCTTemp = Convert.ToInt32(notasPendencia[j][3]);
+
+                                if (nCT > nCTTemp)
+                                {
+                                    achou = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (achou)
+                        {
+                            notasDuplicada.Add(notasPendencia[i]);
+                            vTotal += Convert.ToDecimal(notasPendencia[i][8]);
+                            baseCalcTotal += Convert.ToDecimal(notasPendencia[i][6]);
+                            totalIcms += Convert.ToDecimal(notasPendencia[i][7]);
+                        }
+                    }
+
+                    ViewBag.Notas = notasDuplicada.OrderBy(_ => Convert.ToInt32(_[1])).ToList();
+                    ViewBag.VTotal = vTotal;
+                    ViewBag.BaseCalc = baseCalcTotal;
+                    ViewBag.Icms = totalIcms;
                 }
 
                 //  Dar

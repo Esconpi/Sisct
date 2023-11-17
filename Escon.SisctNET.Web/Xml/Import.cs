@@ -2395,6 +2395,52 @@ namespace Escon.SisctNET.Web.Xml
                                             infCarga.Add(reader.Name, reader.ReadString());
                                             cte.Add(infCarga);
                                             break;
+
+
+                                        case "ICMS00":
+                                        case "ICMS20":
+                                        case "ICMS45":
+                                        case "ICMS60":
+                                        case "ICMS90":
+                                        case "ICMSOutraUF":
+                                        case "ICMSSN":
+                                            Dictionary<string, string> icms = new Dictionary<string, string>();
+                                            reader.Read();
+                                            while (reader.Name != "ICMS")
+                                            {
+
+                                                if (reader.NodeType.ToString() != "EndElement" && reader.Name != "")
+                                                {
+                                                    icms.Add(reader.Name, reader.ReadString());
+                                                }
+
+                                                reader.Read();
+                                            }
+                                            cte.Add(icms);
+                                            break;
+
+                                        case "infNFe":
+                                            reader.Read();
+
+                                            while (reader.Name != "infNFe")
+                                            {
+                                                if (reader.Name != "")
+                                                {
+                                                    Dictionary<string, string> infNFe = new Dictionary<string, string>();
+                                                    infNFe.Add(reader.Name, reader.ReadString());
+                                                    cte.Add(infNFe);
+                                                }
+                                                reader.Read();
+                                            }
+
+                                            break;
+
+                                        case "infCteComp":
+                                            reader.Read();
+                                            Dictionary<string, string> chCte = new Dictionary<string, string>();
+                                            chCte.Add(reader.Name, reader.ReadString());
+                                            cte.Add(chCte);
+                                            break;
                                     }
                                 }
 
@@ -2413,6 +2459,7 @@ namespace Escon.SisctNET.Web.Xml
             {
                 Console.Out.WriteLine(ex.Message);
             }
+
             return ctes;
         }
 

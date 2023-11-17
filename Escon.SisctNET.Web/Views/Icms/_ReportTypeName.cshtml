@@ -231,9 +231,14 @@
     <strong>NFe - Produtos tributado no regime que não faz parte do mesmo</strong>
 }
 
-@if (ViewBag.Type == "cteNotaDuplicada")
+@if (ViewBag.Type == "ctePendencia")
 {
     <strong>CTe - Relatorio com Pendência</strong>
+}
+
+@if (ViewBag.Type == "cteNotaDuplicada")
+{
+    <strong>CTe - Relatorio com Pendência com NFe Duplicada</strong>
 }
 
 
