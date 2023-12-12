@@ -55,12 +55,10 @@ namespace Escon.SisctNET.Repository.Implementation
                     n.Ncm = "";
 
                 int contaChar = n.Ncm.Length;
-                string substring = "";
+                string substring = ncm;
 
                 if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                else
-                    substring = ncm;
 
                 if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
                     return n;
@@ -82,12 +80,10 @@ namespace Escon.SisctNET.Repository.Implementation
                     n.Ncm = "";
 
                 int contaChar = n.Ncm.Length;
-                string substring = "";
+                string substring = ncm;
 
                 if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                else
-                    substring = ncm;
 
                 string cestTemp = n.Cest;
 
@@ -99,11 +95,8 @@ namespace Escon.SisctNET.Repository.Implementation
                     if (n.Ncm.Equals(substring) && cestTemp == cestBase)
                         return n;
 
-                    if (substring != "" && (n.Ncm != "" || n.Ncm != null))
-                    {
-                        if (n.Ncm.Equals(substring))
-                            return n;
-                    }
+                    if (n.Ncm.Equals(substring))
+                        return n;
 
                     if (cestBase != "" && cestBase != null && cestTemp != "")
                     {
@@ -124,11 +117,8 @@ namespace Escon.SisctNET.Repository.Implementation
                         if (n.Ncm.Equals(substring) && cestTemp == cestBase)
                             return n;
 
-                        if (substring != "" && (n.Ncm != "" || n.Ncm != null))
-                        {
-                            if (n.Ncm.Equals(substring))
-                                return n;
-                        }
+                        if (n.Ncm.Equals(substring))
+                            return n;
 
                         if (cestBase != "" && cestBase != null && cestTemp != "")
                         {
@@ -157,12 +147,10 @@ namespace Escon.SisctNET.Repository.Implementation
                     n.Ncm = "";
 
                 int contaChar = n.Ncm.Length;
-                string substring = "";
+                string substring = ncm;
 
                 if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                else
-                    substring = ncm;
 
                 string cestTemp = n.Cest;
 
@@ -181,12 +169,8 @@ namespace Escon.SisctNET.Repository.Implementation
                     if (n.Ncm.Equals(substring) && cestTemp == cestBase)
                         return true;
 
-                    if (substring != "" && (n.Ncm != "" || n.Ncm != null))
-                    {
-                        if (n.Ncm.Equals(substring))
-                            return true;
-                    }
-
+                    if (n.Ncm.Equals(substring))
+                        return true;
                    
                     if (cestBase != "" && cestBase != null && cestTemp != "")
                     {
@@ -205,12 +189,10 @@ namespace Escon.SisctNET.Repository.Implementation
             foreach (var n in ncms)
             {
                 int contaChar = n.Ncm.Length;
-                string substring = "";
+                string substring = ncm;
 
                 if (contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
-                else
-                    substring = ncm;
 
                 if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
                     return true;
