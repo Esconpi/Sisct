@@ -161,7 +161,8 @@
                                     @await Html.PartialAsync("_IndustryData", Model, new ViewDataDictionary(ViewData))
                                 }
                             }
-                            else if (ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                            else if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO II – A")) ||
+                                ViewBag.Company.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                             {
                                  <!-- EMPRESA DE MEDICAMENTO -->
                                  @await Html.PartialAsync("_PharmaceuticalData", Model, new ViewDataDictionary(ViewData))

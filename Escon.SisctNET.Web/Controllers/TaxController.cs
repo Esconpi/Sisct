@@ -3279,7 +3279,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 }
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)"))
+                            else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
+                                comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                             {
                                 exitNotes = importXml.NFeAll(directoryNfeExit);
 

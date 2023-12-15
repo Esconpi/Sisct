@@ -2238,6 +2238,12 @@ namespace Escon.SisctNET.Web.Controllers
                             else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)")  && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
                                     comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                             {
+                                if (imp == null)
+                                {
+                                    ViewBag.Erro = 1;
+                                    return View(null);
+                                }
+
                                 //var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
                                 var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList(); 
                                 var productsInter = prodsAll.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();
@@ -3438,6 +3444,12 @@ namespace Escon.SisctNET.Web.Controllers
                         else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
                                 comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                         {
+                            if (imp == null)
+                            {
+                                ViewBag.Erro = 1;
+                                return View(null);
+                            }
+
                             //var productsInterna = products.Where(_ => _.Note.Uf.Equals(comp.County.State.UF)).ToList();
                             var productsInterna = prodsAll.Where(_ => _.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();
                             var productsInter = prodsAll.Where(_ => !_.Note.Uf.Equals(comp.County.State.UF) && _.Incentivo).ToList();
