@@ -80,8 +80,8 @@
                     <!-- Relatório Geral dos Impostos -->
                     @await Html.PartialAsync("_GeneralReport", new ViewDataDictionary(ViewData))
                 }
-                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" ||
-                         ViewBag.Type == "ProdutoFP" ||  ViewBag.Type == "ProdutoP"  || ViewBag.Type == "IcmsProdutor")
+                else if (ViewBag.Type == "GNRE" || ViewBag.Type == "IcmsST" || ViewBag.Type == "ProdutoFI" || 
+                    ViewBag.Type == "ProdutoFP" || ViewBag.Type == "ProdutoP" || ViewBag.Type == "ProdutoPMC" || ViewBag.Type == "IcmsProdutor")
                 {
                     <table class="table" style="font-size:8px; border: 2px solid;">
                         @if (ViewBag.Type == "GNRE")
@@ -108,6 +108,11 @@
                         {
                             <!-- Relatório Produtos Dentro da Pauta -->
                             @await Html.PartialAsync("_ProductPautaReport", Model, new ViewDataDictionary(ViewData))
+                        }
+                        else if (ViewBag.Type == "ProdutoPMC")
+                        {
+                            <!-- Relatório Produtos Preço da Pauta Menor que o Preço de Custo -->
+                            @await Html.PartialAsync("_ProductPautaMCostReport", Model, new ViewDataDictionary(ViewData))
                         }
                         else if (ViewBag.Type == "IcmsProdutor")
                         {

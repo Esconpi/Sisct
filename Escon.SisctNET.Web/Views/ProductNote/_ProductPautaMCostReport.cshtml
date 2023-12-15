@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
+
+<thead>
+    <tr style="font-size:12px;">
+        <th colspan="3">Nota Fiscal</th>
+        <th colspan="3">Ato Normativo</th>
+    </tr>
+    <tr style="font-size:12px;">
+        <th>Cod. Produto</th>
+        <th>Produto</th>
+        <th>Valor</th>
+        <th>Cod. Produto</th>
+        <th>Produto</th>
+        <th>Valor</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr style="font-size:10px;">
+            <td>@item.Cprod</td>
+            <td>@item.Xprod</td>
+            <td>@item.Vuncom</td>
+            <td>@item.Product.Code</td>
+            <td>@item.Product.Description</td>
+            <td>@item.Product.Price</td>
+        </tr>
+    }
+</tbody>

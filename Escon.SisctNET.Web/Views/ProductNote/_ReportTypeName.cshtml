@@ -45,7 +45,7 @@
     <strong>Nota Não Incentivada: @ViewBag.NotaNumber -&nbsp;</strong>
 }
 
-@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && 
+@if (ViewBag.Type != "GNRE" && ViewBag.Type != "Geral" && ViewBag.Type != "ProdutoFP" && ViewBag.Type != "ProdutoP" && ViewBag.Type != "ProdutoPMC" &&
      ViewBag.Type != "IcmsProdutor" && ViewBag.Type != "ProdutoRN" && ViewBag.Type != "ProdutoNR" && ViewBag.Type != "RegimeBA" && 
      ViewBag.Type != "RegimeBA2")
 {
@@ -108,12 +108,17 @@
 
 @if (ViewBag.Type == "ProdutoFP")
 {
-    <strong>Produtos Sem Preço de Referência</strong>
+    <strong>Produtos Sem Preço de Pauta</strong>
 }
 
 @if (ViewBag.Type == "ProdutoP")
 {
-    <strong>Produtos Com Preço de Referência</strong>
+    <strong>Produtos Com Preço de Pauta</strong>
+}
+
+@if (ViewBag.Type == "ProdutoPMC")
+{
+    <strong>Produtos Com Preço de Pauta Menor que o Preço de Custo</strong>
 }
 
 @if (ViewBag.Type == "ProdutoFI")

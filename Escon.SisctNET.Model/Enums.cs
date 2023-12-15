@@ -43,6 +43,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Produto Incentivado")] ProdutoI,
         [Display(Name = "Produto Não Incentivado")] ProdutoNI,
         [Display(Name = "Produto Dentro da Pauta")] ProdutoP,
+        [Display(Name = "Produto Preço de Pauta Menor que o Preço de Custo")] ProdutoPMC,
         [Display(Name = "Produto Fora da Pauta")] ProdutoFP,
         [Display(Name = "Produto Fora do Incentivo")] ProdutoFI,
         [Display(Name = "Nota")] Nota,

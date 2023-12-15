@@ -4,8 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModelV2>InProcess</AspNetCoreHostingModelV2>
     <UserSecretsId>59fba2af-8001-416f-88a6-5527dc1bbe5b</UserSecretsId>
+	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <Compile Remove="PisCofins\**" />
     <Compile Remove="Views\Aliquot\NewFolder\**" />

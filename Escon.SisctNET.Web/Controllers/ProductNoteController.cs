@@ -402,7 +402,7 @@ namespace Escon.SisctNET.Web.Controllers
                     var dataRef = new DateTime(2023, 3, 30);
                     var dataTemp = new DateTime(Convert.ToInt32(prod.Note.AnoRef), GetIntMonth(prod.Note.MesRef), 1);
 
-                    if (productType == "Especial")
+                    if (productType == "Especial" || prod.Pautado)
                     {
                         decimal baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms),
                                 Vbasecalc = calculation.BaseCalc(Convert.ToDecimal(prod.Vprod), Convert.ToDecimal(prod.Vfrete), Convert.ToDecimal(prod.Vseg),
@@ -2773,6 +2773,13 @@ namespace Escon.SisctNET.Web.Controllers
                 {
                     products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
                         .Where(_ => _.Pautado.Equals(true))
+                        .OrderBy(_ => _.Xprod)
+                        .ToList();
+                }
+                else if (type.Equals(Model.Type.ProdutoPMC))
+                {
+                    products = _service.FindByProductsType(notes, Model.TypeTaxation.Nenhum)
+                        .Where(_ => _.Pautado.Equals(true) && _.Vuncom > _.Product.Price)
                         .OrderBy(_ => _.Xprod)
                         .ToList();
                 }
