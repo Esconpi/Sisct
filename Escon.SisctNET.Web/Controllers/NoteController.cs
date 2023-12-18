@@ -564,7 +564,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (comp.Annex.Description.Equals("ANEXO ÚNICO") && comp.Chapter.Name.Equals("CAPÍTULO II"))
                                     incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
-                                if (comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A"))
+                                if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)") && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
+                                    comp.Annex.Description.Equals("ANEXO VII (Art. 59 Parte 1) - REGIMES ESPECIAIS DE TRIBUTAÇÃO"))
                                     incentivo = _ncmConvenioService.FindByNcmExists(ncmConvenioAnnexTemp, NCM, CEST, comp);
 
                                 if (comp.Chapter.Name.Equals("CAPÍTULO IV-C"))
