@@ -310,9 +310,8 @@
                 $("input[name=Fecop]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("value", "1");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
-                    $("input[name=Fecop]").prop("value", "2");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+                } else if (parseFloat($("input[name=AliqInterna]").val()) === 19 || parseFloat($("input[name=AliqInterna]").val()) === 23 ||
+                        parseFloat($("input[name=AliqInterna]").val()) === 29) {
                     $("input[name=Fecop]").prop("value", "2");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
                     $("input[name=Fecop]").prop("disabled", true);
@@ -326,7 +325,7 @@
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
                     $("input[name=Fecop]").prop("disabled", true);
                     $("input[name=Fecop]").prop("value", "2");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+                } else if (parseFloat($("input[name=AliqInterna]").val()) === 23 || parseFloat($("input[name=AliqInterna]").val()) === 29) {
                     $("input[name=Fecop]").prop("disabled", false);
                     $("input[name=Fecop]").prop("value", "2");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
@@ -342,9 +341,8 @@
                 $("input[name=Fecop]").prop("disabled", false);
                 if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                     $("input[name=Fecop]").prop("value", "1");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
-                    $("input[name=Fecop]").prop("value", "2");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+                } else if (parseFloat($("input[name=AliqInterna]").val()) === 19 || parseFloat($("input[name=AliqInterna]").val()) === 23 || 
+                        parseFloat($("input[name=AliqInterna]").val()) === 29) {
                     $("input[name=Fecop]").prop("value", "2");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
                     $("input[name=Fecop]").prop("disabled", true);
@@ -357,8 +355,9 @@
                     $("input[name=Fecop]").prop("disabled", true);
                     $("input[name=Fecop]").prop("value", "");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
-                    $("input[name=Fecop]").prop("value", "2");
-                } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+                    $("input[name=Fecop]").prop("disabled", true);
+                    $("input[name=Fecop]").prop("value", "");
+                } else if (parseFloat($("input[name=AliqInterna]").val()) === 23 || parseFloat($("input[name=AliqInterna]").val()) === 29) {
                     $("input[name=Fecop]").prop("value", "2");
                 } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
                     $("input[name=Fecop]").prop("disabled", true);
@@ -382,9 +381,8 @@
         if (Dhemi < data) {
             if (parseFloat($("input[name=AliqInterna]").val()) === 18) {
                 $("input[name=Fecop]").prop("value", "1");
-            } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
-                $("input[name=Fecop]").prop("value", "2");
-            } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+            } else if (parseFloat($("input[name=AliqInterna]").val()) === 19 || parseFloat($("input[name=AliqInterna]").val()) === 23 || 
+                    parseFloat($("input[name=AliqInterna]").val()) === 29) {
                 $("input[name=Fecop]").prop("value", "2");
             } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
                 $("input[name=Fecop]").prop("value", "");
@@ -396,8 +394,8 @@
                 $("input[name=Fecop]").prop("disabled", true);
             } else if (parseFloat($("input[name=AliqInterna]").val()) === 19) {
                 $("input[name=Fecop]").prop("disabled", true);
-                $("input[name=Fecop]").prop("value", "2");
-            } else if (parseFloat($("input[name=AliqInterna]").val()) === 29) {
+                $("input[name=Fecop]").prop("value", "");
+            } else if (parseFloat($("input[name=AliqInterna]").val()) === 23 || parseFloat($("input[name=AliqInterna]").val()) === 29) {
                 $("input[name=Fecop]").prop("disabled", false);
                 $("input[name=Fecop]").prop("value", "2");
             } else if (parseFloat($("input[name=AliqInterna]").val()) === 12) {
