@@ -361,7 +361,7 @@ namespace Escon.SisctNET.Web.Controllers
                     updateProducts.Add(prod);
 
                     if (productType == "Normal" && (prod.Ucom.ToUpper().Equals("UN") || prod.Ucom.ToUpper().Equals("UND") || 
-                        prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR")))
+                        prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR") || prod.Ucom.ToUpper().Equals("QT")))
                     {
                         string aliquot = prod.Picms.ToString(), code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
                         var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
