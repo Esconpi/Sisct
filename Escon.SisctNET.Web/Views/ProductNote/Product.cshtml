@@ -174,7 +174,7 @@
                             <label class="control-label">BCR (%)</label>
                             @if(Model.EBcr == true)
                             {
-                                <input type="text" name="BCR" id="BCR" class="form-control money" value="@Model.BCR" />
+                                <input type="text" name="BCR" id="BCR" class="form-control money" value="@Model.BCR" required />
                             }
                             else
                             {
@@ -313,14 +313,15 @@
 
             if (taxacao === 5 || taxacao === 6 || taxacao === 8) {
                 $("#Mva").prop("disabled", false);
+                $("#Mva").prop('required', true);
             } else {
                 $("#Mva").prop("disabled", true);
+                $("#Mva").prop('required', false);
             }
 
             if (taxacao == 10) {
                 document.getElementById('taxar').disabled = true;
-            }
-            else {
+            } else {
                 document.getElementById('taxar').disabled = false;
             }
         }
@@ -328,14 +329,13 @@
 
     var Dhemi = $("#Dhemi").val();
     var data = "2022/12/08"
-    console.log(Dhemi)
-    console.log(data)
 
     $("#taxaType").on("change", function () {
         var aliqInterna = parseFloat($("#AliqInterna").val());
 
         if ($(this).val() == 5 || $(this).val() == 6 || $(this).val() == 8) {
             $("#Mva").prop("disabled", false);
+            $("#Mva").prop('required', true);
 
             if ($(this).val() == 6) {
                 $("#BCR").prop("disabled", false);
@@ -348,30 +348,38 @@
             if (Dhemi < data) {
                 if (aliqInterna === 18) {
                     $("#Fecop").prop("disabled", false);
+                    $("#Fecop").prop('required', true);
                     $("#Fecop").prop("value", "1");
                 } else if (aliqInterna === 19 || aliqInterna === 23 || aliqInterna === 29) {
                     $("#Fecop").prop("disabled", false);
+                    $("#Fecop").prop('required', true);
                     $("#Fecop").prop("value", "2");
                 } else {
                     $("#Fecop").prop("value", "");
+                    $("#Fecop").prop('required', false);
                     $("#Fecop").prop("disabled", true);
                 }
             } else {
                 if (aliqInterna === 23 || aliqInterna === 29) {
                     $("#Fecop").prop("disabled", false);
+                    $("#Fecop").prop('required', true);
                     $("#Fecop").prop("value", "2");
                 } else {
                     $("#Fecop").prop("value", "");
+                    $("#Fecop").prop('required', false);
                     $("#Fecop").prop("disabled", true);
                 }
             }
         } else {
             $("#Mva").prop("value", "");
             $("#Mva").prop("disabled", true);
+            $("#Mva").prop('required', false);
             $("#BCR").prop("value", "");
             $("#BCR").prop("disabled", true);
+            $("#BCR").prop('required', false);
             $("#Fecop").prop("value", "");
             $("#Fecop").prop("disabled", true);
+            $("#Fecop").prop('required', false);
         }
 
     });
@@ -381,19 +389,24 @@
 
         if (Dhemi < data) {
             if (aliqInterna === 18) {
+                $("#Fecop").prop('required', true);
                 $("#Fecop").prop("value", "1");
             } else if (aliqInterna === 19 || aliqInterna === 23 || aliqInterna === 29) {
+                $("#Fecop").prop('required', true);
                 $("#Fecop").prop("value", "2");
             } else {
                 $("#Fecop").prop("value", "");
+                $("#Fecop").prop('required', false);
                 $("#Fecop").prop("disabled", true);
             }
         } else {
             if (aliqInterna === 23 || aliqInterna === 29) {
                 $("#Fecop").prop("disabled", false);
+                $("#Fecop").prop('required', true);
                 $("#Fecop").prop("value", "2");
             } else {
                 $("#Fecop").prop("value", "");
+                $("#Fecop").prop('required', false);
                 $("#Fecop").prop("disabled", true);
             }
         }
@@ -416,9 +429,11 @@
     $("#eBcr").on("change", "input[type='checkbox']", function () {
         if ($(this).prop("checked")) {
             $("#BCR").prop("disabled", false);
+            $("#BCR").prop('required', true);
             $("#BCR").prop("value", "");
         } else {
             $("#BCR").prop("value", "");
+            $("#BCR").prop('required', false);
             $("#BCR").prop("disabled", true);
         }
     });
