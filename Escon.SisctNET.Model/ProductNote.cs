@@ -171,7 +171,7 @@ namespace Escon.SisctNET.Model
             set => taxationType = value;
         }
 
-        [Display(Name = "Produto")]
+        [Display(Name = "Produto Pauta")]
         [ForeignKey("Product")]
         public long? ProductId { get; set; }
 
