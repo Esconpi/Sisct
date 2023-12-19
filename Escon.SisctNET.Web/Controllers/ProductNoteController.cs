@@ -353,7 +353,6 @@ namespace Escon.SisctNET.Web.Controllers
                     prod.EBcr = entity.EBcr;
                     prod.Status = true;
                     prod.Vbasecalc = baseCalc;
-                    //prod.Incentivo = true;
                     prod.DateStart = dateStart;
                     prod.Produto = productType;
                     prod.PercentualInciso = inciso;
@@ -364,15 +363,15 @@ namespace Escon.SisctNET.Web.Controllers
                         prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR") || prod.Ucom.ToUpper().Equals("QT")))
                     {
                         string aliquot = prod.Picms.ToString(), code = calculation.CodeP(prod.Note.Company.Document, prod.Note.Cnpj, prod.Cprod, prod.Ncm, prod.Note.Uf, aliquot);
-                        var taxationcm = _taxationPService.FindByNcm(code, prod.Cest);
+                        var taxationP = _taxationPService.FindByNcm(code, prod.Cest);
 
-                        if (taxationcm != null)
+                        if (taxationP != null)
                         {
-                            taxationcm.DateEnd = dateStart.AddDays(-1);
-                            _taxationPService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                            taxationP.DateEnd = dateStart.AddDays(-1);
+                            _taxationPService.Update(taxationP, GetLog(OccorenceLog.Update));
                         }
 
-                        Model.TaxationP taxation = new Model.TaxationP()
+                        Model.TaxationP addTaxationP = new Model.TaxationP()
                         {
                             CompanyId = prod.Note.CompanyId,
                             GroupId = product.GroupId,
@@ -393,7 +392,7 @@ namespace Escon.SisctNET.Web.Controllers
                             DateEnd = null
                         };
 
-                        _taxationPService.Create(taxation, GetLog(OccorenceLog.Create));
+                        _taxationPService.Create(addTaxationP, GetLog(OccorenceLog.Create));
                     }
                 }
                 else
@@ -1055,18 +1054,17 @@ namespace Escon.SisctNET.Web.Controllers
 
                 if (productType == "Normal" && entity.Pautado == false && prod.Divergent == false)
                 {
-                    //var ncm = _ncmService.FindByCode(prod.Ncm.Trim());
                     string aliquot = prod.Picms.ToString(),
                            code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
-                    var taxationcm = _taxationService.FindByNcm(code, prod.Cest);
+                    var taxation = _taxationService.FindByNcm(code, prod.Cest);
 
-                    if (taxationcm != null)
+                    if (taxation != null)
                     {
-                        taxationcm.DateEnd = dateStart.AddDays(-1);
-                        _taxationService.Update(taxationcm, GetLog(OccorenceLog.Update));
+                        taxation.DateEnd = dateStart.AddDays(-1);
+                        _taxationService.Update(taxation, GetLog(OccorenceLog.Update));
                     }
 
-                    Model.Taxation taxation = new Model.Taxation()
+                    Model.Taxation addTaxation = new Model.Taxation()
                     {
                         CompanyId = prod.Note.CompanyId,
                         Code = code,
@@ -1085,7 +1083,7 @@ namespace Escon.SisctNET.Web.Controllers
                         DateEnd = null
                     };
 
-                    _taxationService.Create(taxation, GetLog(OccorenceLog.Create));
+                    _taxationService.Create(addTaxation, GetLog(OccorenceLog.Create));
                 }       
 
                 return RedirectToAction("Index", new { noteId = prod.NoteId });
