@@ -21,13 +21,22 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             decimal icmsTotalSt = 0;
 
-            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.AT))
+            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
+                taxationType.Equals(Model.TypeTaxation.STMPAUTA))
             {
                 foreach (var note in notes)
                 {
                     icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("2  ST - Subs.Tributária") ||
-                                                                                      _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida") ||
-                                                                                      _.TaxationType.Description.Equals("2 AT - Antecipacao Total")))
+                                                                                      _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida")))
+                                                                          .Select(_ => _.IcmsST)
+                                                                          .Sum());
+                }
+            }
+            if (taxationType.Equals(Model.TypeTaxation.AT))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("2 AT - Antecipacao Total")))
                                                                           .Select(_ => _.IcmsST)
                                                                           .Sum());
                 }
@@ -112,7 +121,8 @@ namespace Escon.SisctNET.Repository.Implementation
                         .ToList();
                     products.AddRange(rst);
                 }
-                else if (taxationType.Equals(Model.TypeTaxation.ST))
+                else if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
+                        taxationType.Equals(Model.TypeTaxation.STMPAUTA))
                 {
                     var rst = note.Products
                         .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))
@@ -183,7 +193,8 @@ namespace Escon.SisctNET.Repository.Implementation
                     .ToList();
                 products.AddRange(rst);
             }
-            else if (taxationType.Equals(Model.TypeTaxation.ST))
+            else if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
+                     taxationType.Equals(Model.TypeTaxation.STMPAUTA))
             {
                 var rst = productNotes
                     .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))

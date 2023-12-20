@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
 
-@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA" ||
+    ViewBag.TypeTaxation == "AT")
 {
     <thead style="font-size:8px;">
         <tr>
@@ -10,6 +11,10 @@
             @if (ViewBag.Type != "RegimeBA" && ViewBag.Type != "RegimeBA2")
             {
                 <th>V. <br /> Nota</th>
+            }
+            @if (ViewBag.TypeTaxation == "STMPAUTA")
+            {
+                <th>Cod. Produto Pauta</th>
             }
             <th>Produto</th>
             @if (ViewBag.Type == "RegimeBA2")
@@ -29,10 +34,13 @@
                 <th>V. <br /> Frete</th>
             }
             <th>B. <br /> Cálculo</th>
-            <th>MVA(%)</th>
-            <th>BC. <br /> ICMS</th>
-            <th>BCR(%)</th>
-            <th>BCR</th>
+            @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+            {
+                <th>MVA(%)</th>
+                <th>BC. <br /> ICMS</th>
+                <th>BCR(%)</th>
+                <th>BCR</th>
+            }
             <th>Aliq Int(%)</th>
             <th>V. <br /> Imp. AC</th>
             <th>ICMS</th>
@@ -58,10 +66,17 @@
 
                 <td style="font-size:7px;">@Html.DisplayFor(modelItem => item.Note.Nnf)</td>
                 <td>@Convert.ToDateTime(item.Note.Dhemi).ToString("dd/MM")</td>
+
                 @if (ViewBag.Type != "RegimeBA" && ViewBag.Type != "RegimeBA2")
                 {
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
                 }
+
+                @if (ViewBag.TypeTaxation == "STMPAUTA")
+                {
+                    @Html.DisplayFor(modelItem => item.Product.Code)
+                }
+
                 <td>
                     @if (item.Xprod.Length <= 30)
                     {
@@ -160,15 +175,18 @@
                                             Convert.ToDecimal(item.Vfrete) + Convert.ToDecimal(item.Vipi) + Convert.ToDecimal(item.Freterateado) -
                                             Convert.ToDecimal(item.Vdesc))
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Mva)</td>
-                <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
-                <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                <td>
-                    @if (Convert.ToDecimal(item.BCR) > 0)
-                    {
-                        @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
-                    }
-                </td>
+                @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+                {
+                    <td>@Html.DisplayFor(modelItem => item.Mva)</td>
+                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
+                    <td>@Html.DisplayFor(modelItem => item.BCR)</td>
+                    <td>
+                        @if (Convert.ToDecimal(item.BCR) > 0)
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
+                        }
+                    </td>
+                }
                 <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
                 <td>

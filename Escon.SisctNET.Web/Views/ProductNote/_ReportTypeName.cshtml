@@ -51,11 +51,24 @@
 {
     @if (ViewBag.TypeTaxation == "ST")
     {
-        <strong>Substituição Tributária por MVA</strong>
+        <strong>Substituição Tributária</strong>
 
         @if (ViewBag.IsPauta == false)
         {
              <strong>&nbsp;NFe</strong>
+        }
+    }
+    @if (ViewBag.TypeTaxation == "STMVA")
+    {
+        <strong>Substituição Tributária po MVA</strong>
+    }
+    @if (ViewBag.TypeTaxation == "STMPAUTA")
+    {
+        <strong>Substituição Tributária por Pauta</strong>
+
+        @if (ViewBag.IsPauta == false)
+        {
+            <strong>&nbsp;NFe</strong>
         }
     }
     else if (ViewBag.TypeTaxation == "AP")
