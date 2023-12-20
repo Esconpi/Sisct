@@ -164,7 +164,7 @@
                     {
                         <!-- Resumo Imposto Incentivo -->
                         @if ((ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA") &&
-                       ViewBag.Type != "ProdutoI")
+                            ViewBag.Type != "ProdutoI")
                         {
                             @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
                             @if (ViewBag.Type != "RegimeBA" || ViewBag.Type != "RegimeBA2")

@@ -249,36 +249,34 @@ namespace Escon.SisctNET.Web.Controllers
 
                     if (taxedtype.Type == "ST")
                     {
-                        decimal totalIcmsPauta = 0, valorFecopPauta = 0, totalIcms = 0, quantParaCalc = 0;
+                        decimal totalIcmsPauta = 0, valorAgregado = 0, valorBcr = 0, valorFecopPauta = 0, totalIcms = 0, quantParaCalc = 0;
 
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
-                        baseCalc = Vbasecalc;
+                        baseCalc = prod.Vprod;
 
                         if (quantPauta != null)
                         {
                             prod.Qpauta = Convert.ToDecimal(quantPauta);
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
-                        
-                        // PP feito com os dados da tabela do Ato Normativo
-                        decimal vAgre = calculation.ValorAgregadoPautaAto(precoPauta, Convert.ToDecimal(quantParaCalc));
 
                         // PP feito com os dados do produto
-                        decimal vAgre2 = calculation.ValorAgregadoPautaProd(baseCalc, quantParaCalc);
+                        decimal vAgre = baseCalc;
+
+                        // PP feito com os dados da tabela do Ato Normativo
+                        decimal vAgre2 = precoPauta * quantParaCalc;
 
                         if (vAgre2 > vAgre)
+                        {
                             vAgre = vAgre2;
-
-                        if (fecop != null)
-                            valorFecopPauta = calculation.ValorFecop(Convert.ToDecimal(fecop), vAgre);
-
-                        decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), vAgre);
-                        decimal icmsPauta = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
+                            prod.TributoPauta = true;
+                        }
 
                         if (mva != null)
                         {
-                            valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
-                            prod.Valoragregado = valorAgreg;
+                            valorAgregado = calculation.ValorAgregadoMva(vAgre, Convert.ToDecimal(mva));
+                            valorAgreg = valorAgregado;
+                            prod.Valoragregado = valorAgregado;
                             prod.Mva = Convert.ToDecimal(mva);
                         }
                         else
@@ -289,11 +287,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                         if (entity.EBcr && bcr != null)
                         {
-                            valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
-                            prod.ValorBCR = valorAgreg;
+                            valorBcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
+                            valorAgreg = valorBcr;
+                            prod.ValorBCR = valorBcr;
                             prod.BCR = Convert.ToDecimal(bcr);
                             if (prod.Picms.Equals(12))
-                                valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
+                                valorIcms = (baseCalc * 7 / 100);
                         }
                         else
                         {
@@ -305,11 +304,7 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             prod.Fecop = Convert.ToDecimal(fecop);
                             valorFecop = calculation.ValorFecop(Convert.ToDecimal(fecop), valorAgreg);
-
-                            if (valorFecop > valorFecopPauta)
-                                prod.TotalFecop = valorFecop;
-                            else
-                                prod.TotalFecop = valorFecopPauta;
+                            prod.TotalFecop = valorFecop;
                         }
                         else
                         {
@@ -318,27 +313,14 @@ namespace Escon.SisctNET.Web.Controllers
                         }
                         
                         prod.AliqInterna = aliqInterna;
-                        decimal valorAgre_AliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
-                        totalIcms = calculation.TotalIcms(valorAgre_AliqInt, valorIcms);
+                        decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
+                        totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
 
                         if (totalIcms < 0)
                             totalIcms = 0;
 
-                        if (icmsPauta < 0)
-                            icmsPauta = 0;
-
-                        if (totalIcms > icmsPauta)
-                        {
-                            prod.ValorAC = valorAgre_AliqInt;
-                            prod.TotalICMS = totalIcms;
-                            prod.TributoPauta = false;
-                        }
-                        else
-                        {
-                            prod.ValorAC = valorAgreAliqInt;
-                            prod.TotalICMS = icmsPauta;
-                            prod.TributoPauta = true;
-                        }
+                        prod.ValorAC = valorAgreAliqInt;
+                        prod.TotalICMS = totalIcms;
 
                     }
 
@@ -410,6 +392,7 @@ namespace Escon.SisctNET.Web.Controllers
                         if (taxedtype.Type == "ST")
                         {
                             decimal? totalIcms = null, valorAgre_AliqInt = null;
+                            decimal valorAgregado = 0, valorBcr = 0;
 
                             baseCalc = Vbasecalc;
 
@@ -420,15 +403,17 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else
                             {
-                                valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
-                                prod.Valoragregado = valorAgreg;
+                                valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
+                                valorAgreg = valorAgregado;
+                                prod.Valoragregado = valorAgregado;
                                 prod.Mva = Convert.ToDecimal(mva);
                             }
 
                             if (entity.EBcr && bcr != null)
                             {
-                                valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
-                                prod.ValorBCR = valorAgreg;
+                                valorBcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
+                                valorAgreg = valorBcr;
+                                prod.ValorBCR = valorBcr;
                                 if (prod.Picms.Equals(12))
                                     valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
                             }
@@ -719,14 +704,16 @@ namespace Escon.SisctNET.Web.Controllers
                                                                      Convert.ToDecimal(item.Freterateado));
                             if (taxedtype.Type == "ST")
                             {
-                                decimal totalIcms = 0;
+                                decimal totalIcms = 0, valorAgregado = 0, valorBcr = 0;
+
                                 baseCalc = Vbasecalc;
                                 //baseCalc = calculation.BaseCalc(Vbasecalc, item.Vdesc);
 
                                 if (mva != null)
                                 {
-                                    valorAgreg = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
-                                    item.Valoragregado = valorAgreg;
+                                    valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
+                                    valorAgreg = valorAgregado;
+                                    item.Valoragregado = valorAgregado;
                                     item.Mva = Convert.ToDecimal(mva);
                                 }
                                 else
@@ -737,8 +724,9 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (entity.EBcr && bcr != null)
                                 {
-                                    valorAgreg = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
-                                    item.ValorBCR = valorAgreg;
+                                    valorBcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), valorAgreg);
+                                    valorAgreg = valorBcr;
+                                    item.ValorBCR = valorBcr;
                                     //item.BCR = Convert.ToDecimal(bcr);
                                     if (item.Picms.Equals(12))
                                         valorIcms = (baseCalc * 7 / 100) + item.IcmsCTe;
