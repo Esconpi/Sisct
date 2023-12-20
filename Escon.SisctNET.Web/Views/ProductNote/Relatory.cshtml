@@ -159,8 +159,8 @@
                     }
 
                     @if (ViewBag.Company.Incentive == true && (!ViewBag.Company.Annex.Description.Equals("NENHUM") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
-                         ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" && ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI" || ViewBag.Type == "RegimeBA" ||
-                         ViewBag.Type == "RegimeBA2")
+                         ViewBag.Type != "ProdutoNI" && (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA") && ViewBag.Type != "Nota" &&
+                         ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI" || ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
                     {
                         <!-- Resumo Imposto Incentivo -->
                         @if ((ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA") &&
