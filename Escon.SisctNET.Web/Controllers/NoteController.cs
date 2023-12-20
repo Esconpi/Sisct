@@ -654,16 +654,18 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             decimal? valorAgreg = null, valorAgregado = null, valorBcr = null;
 
-                                            // PP feito com os dados do produto
-                                            decimal vAgre = baseCalc;
-
                                             // PP feito com os dados da tabela do Ato Normativo
-                                            decimal vAgre2 = precoPauta * quantParaCalc;
+                                            decimal vAgre = precoPauta * quantParaCalc;
+
+                                            // PP feito com os dados do produto
+                                            decimal vAgre2 = baseCalc;
+
+                                            prod.TributoPauta = true;
 
                                             if (vAgre2 > vAgre)
                                             {
                                                 vAgre = vAgre2;
-                                                prod.TributoPauta = true;
+                                                prod.TributoPauta = false;
                                             }
 
                                             if (taxedP.MVA != null)
@@ -762,7 +764,10 @@ namespace Escon.SisctNET.Web.Controllers
                                     if (taxedP == null)
                                     {
                                         if (taxed.MVA != null)
+                                        {
                                             valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxed.MVA));
+                                            valorAgreg = valorAgregado;
+                                        }
 
                                         if (taxed.EBcr && taxed.BCR != null)
                                         {
@@ -775,7 +780,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.Fecop != null)
                                         {
                                             fecop = Convert.ToDecimal(taxed.Fecop);
-                                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgregado));
+                                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxed.Fecop), Convert.ToDecimal(valorAgreg));
                                         }
 
                                         valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), Convert.ToDecimal(valorAgreg));
@@ -803,21 +808,24 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 quantParaCalc = Convert.ToDecimal(prod.Qcom);
 
-                                                // PP feito com os dados do produto
-                                                decimal vAgre = baseCalc;
-
                                                 // PP feito com os dados da tabela do Ato Normativo
-                                                decimal vAgre2 = precoPauta * quantParaCalc;
+                                                decimal vAgre = precoPauta * quantParaCalc;
+
+                                                // PP feito com os dados do produto
+                                                decimal vAgre2 = baseCalc;
+
+                                                tributoPauta = true;
 
                                                 if (vAgre2 > vAgre)
                                                 {
                                                     vAgre = vAgre2;
-                                                    tributoPauta = true;
+                                                    tributoPauta = false;
                                                 }
 
                                                 if (taxedP.MVA != null)
                                                 {
                                                     valorAgregado = calculation.ValorAgregadoMva(vAgre, Convert.ToDecimal(taxedP.MVA));
+                                                    valorAgreg = valorAgregado;
                                                     mva = Convert.ToDecimal(taxedP.MVA);
                                                 }
 

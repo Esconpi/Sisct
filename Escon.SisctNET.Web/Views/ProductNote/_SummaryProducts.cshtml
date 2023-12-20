@@ -2,7 +2,8 @@
     @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST" && ViewBag.Type != "IcmsProdutor" &&
     ViewBag.Type != "RegimeBA")
     {
-        @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+        @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA" || 
+            ViewBag.TypeTaxation == "AT")
         {
             <thead style="font-size:10px">
                 <tr>

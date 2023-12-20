@@ -6,7 +6,7 @@
 
     @if (ViewBag.TypeTaxation != "Isento" && ViewBag.TypeTaxation != "Nenhum" && ViewBag.TypeTaxation != "NT")
     {
-        if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
+        if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA" || ViewBag.TypeTaxation == "AT")
         {
             <thead>
                 <tr>
@@ -19,7 +19,7 @@
                 <tr>
                     <td class="col-lg-4 col-sm-4">
                         <table>
-                            @if (ViewBag.TypeTaxation == "ST")
+                            @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA")
                             {
                                 <tr>
                                     <td class="col-lg-9 col-sm-9 col-md-9" style="text-align:right">ICMS Substituição Tributária MVA</td>

@@ -1,7 +1,6 @@
 ﻿using Escon.SisctNET.IntegrationDarWeb;
 using Escon.SisctNET.Model;
 using Escon.SisctNET.Model.DarWebWs;
-using Escon.SisctNET.Repository.Implementation;
 using Escon.SisctNET.Service;
 using Escon.SisctNET.Web.Email;
 using Escon.SisctNET.Web.ViewsModel;
@@ -260,16 +259,18 @@ namespace Escon.SisctNET.Web.Controllers
                             quantParaCalc = Convert.ToDecimal(quantPauta);
                         }
 
-                        // PP feito com os dados do produto
-                        decimal vAgre = baseCalc;
-
                         // PP feito com os dados da tabela do Ato Normativo
-                        decimal vAgre2 = precoPauta * quantParaCalc;
+                        decimal vAgre = precoPauta * quantParaCalc;
+
+                        // PP feito com os dados do produto
+                        decimal vAgre2 = baseCalc;
+
+                        prod.TributoPauta = true;
 
                         if (vAgre2 > vAgre)
                         {
                             vAgre = vAgre2;
-                            prod.TributoPauta = true;
+                            prod.TributoPauta = false;
                         }
 
                         if (mva != null)
@@ -1384,10 +1385,10 @@ namespace Escon.SisctNET.Web.Controllers
                         products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
 
                     if(typeTaxation.Equals(Model.TypeTaxation.STMVA))
-                        products = products.Where(_ => _.TributoPauta.Equals(false)).ToList();
+                        products = products.Where(_ => !_.TributoPauta).ToList();
 
                     if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                        products = products.Where(_ => _.TributoPauta.Equals(true)).ToList();
+                        products = products.Where(_ => _.TributoPauta).ToList();
 
                     int registro = products.Count();
                     decimal vProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
@@ -1414,7 +1415,8 @@ namespace Escon.SisctNET.Web.Controllers
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || 
                         typeTaxation.Equals(Model.TypeTaxation.STMPAUTA) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
-                        if (typeTaxation.Equals(Model.TypeTaxation.ST))
+                        if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) ||
+                            typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
                         {
                             apuracao = check.ApuracaoST(notasTaxation, products);
 
@@ -1513,15 +1515,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                         totalIcmsPagoIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => !_.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
                         totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
-
-                        /*if (valorDiefIE >= totalIcmsPagoIE)
-                            totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);*/
-
                         totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
-
-                        /*if (valorDiefSIE >= totalIcmsPagoSIE)
-                            totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);*/
-
                         totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
                         // FECOP
@@ -1596,13 +1590,18 @@ namespace Escon.SisctNET.Web.Controllers
                             totalfecop2SIE = difvalor2SIE - base2fecopSIE;
 
                         //  Relatorio das Empresas Incentivadas
-                        if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && typeTaxation.Equals(Model.TypeTaxation.ST))
+                        if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
+                            (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || typeTaxation.Equals(Model.TypeTaxation.STMPAUTA)))
                         {
                             var productsAll = _service.FindByProductsType(prodsAll, typeTaxation);
 
                             //Produtos não incentivados
-                            var productsNormal = productsAll.Where(_ => _.Incentivo.Equals(false)).ToList();
+                            var productsNormal = productsAll.Where(_ => !_.Incentivo || !_.TributoPauta).ToList();
                             var notasTaxationNormal = productsNormal.Select(_ => _.Note).Distinct().ToList();
+
+                            if ((!comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && 
+                                !comp.Chapter.Name.Equals("CAPÍTULO IV")) || typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
+                                productsNormal = productsNormal.Where(_ => !_.Incentivo).ToList();
 
                             apuracao = check.ApuracaoST(notasTaxationNormal, productsNormal);
 
@@ -1674,13 +1673,7 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsPagoIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => !_.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
                             totalIcmsPagoSIE = Math.Round(Convert.ToDecimal(notasTaxationNormal.Where(_ => _.Iest.Equals("")).Select(_ => _.IcmsSt).Sum()), 2);
 
-                            /*if (valorDiefIE >= totalIcmsPagoIE)
-                                totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);*/
-
                             totalIcmsPagarIE = Math.Round(valorDiefIE - totalIcmsPagoIE, 2);
-
-                            /*if (valorDiefSIE >= totalIcmsPagoSIE)
-                                totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);*/
 
                             totalIcmsPagarSIE = Math.Round(valorDiefSIE - totalIcmsPagoSIE, 2);
 
@@ -2322,7 +2315,7 @@ namespace Escon.SisctNET.Web.Controllers
                             else if (typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.ProdutoI))
                                 ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo;
 
-                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && 
+                            if (!type.Equals(Model.Type.ProdutoI) && !type.Equals(Model.Type.ProdutoNI) && typeTaxation.Equals(Model.TypeTaxation.ST) &&
                                 (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
                                  comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && !type.Equals(Model.Type.Nota) && !type.Equals(Model.Type.NotaI) && !type.Equals(Model.Type.NotaNI))
                             {
@@ -2993,9 +2986,12 @@ namespace Escon.SisctNET.Web.Controllers
                     if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")))
                     {
                         //Produtos não incentivados
-                        var productsSTNormal = produtosST.Where(_ => !_.Incentivo).ToList();
+                        var productsSTNormal = produtosST.Where(_ => !_.Incentivo || !_.TributoPauta).ToList();
                         notesST = productsSTNormal.Select(_ => _.Note).Distinct().ToList();
 
+                        if (!comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && !comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                            productsSTNormal = productsSTNormal.Where(_ => !_.Incentivo).ToList();
+                       
                         apuracao = check.ApuracaoST(notesST, productsSTNormal);
 
                         if (apuracao.Count() > 0)

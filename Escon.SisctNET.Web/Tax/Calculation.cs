@@ -23,11 +23,6 @@ namespace Escon.SisctNET.Web.Tax
             return vProd + vFrete + vSeg + vOutro - vDesc + vIPI + frete_prod;
         }
 
-        public decimal BaseCalc(decimal vBaseCalc, decimal vDesc)
-        {
-            return vBaseCalc + vDesc;
-        }
-
         public decimal ValorIcms(decimal icmsCTe , decimal vIcms)
         {
             return icmsCTe + vIcms;
@@ -63,24 +58,9 @@ namespace Escon.SisctNET.Web.Tax
             return (dif / 100) * baseCalc;
         }
 
-        public decimal ValorAgregadoPautaProd(decimal baseCalc, decimal qtd)
-        {
-            return baseCalc / qtd;
-        }
-
-        public decimal ValorAgregadoPautaAto(decimal price, decimal qtd)
-        {
-            return price * qtd;
-        }
-
         public decimal TotalIcms(decimal valorAgregadoAliqInt, decimal valorIcms)
         {
             return valorAgregadoAliqInt - valorIcms;
-        }
-
-        public decimal TotalIcmsPauta(decimal icmsPauta, decimal valorFecop)
-        {
-            return icmsPauta + valorFecop;
         }
 
         public decimal Limite(decimal baseCalc, decimal percentual)
