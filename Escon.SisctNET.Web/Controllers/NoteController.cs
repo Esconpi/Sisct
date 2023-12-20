@@ -655,22 +655,11 @@ namespace Escon.SisctNET.Web.Controllers
                                             decimal? valorAgreg = null, valorAgregado = null, valorBcr = null;
 
                                             // PP feito com os dados da tabela do Ato Normativo
-                                            decimal vAgre = precoPauta * quantParaCalc;
-
-                                            // PP feito com os dados do produto
-                                            decimal vAgre2 = baseCalc;
-
-                                            prod.TributoPauta = true;
-
-                                            if (vAgre2 > vAgre)
-                                            {
-                                                vAgre = vAgre2;
-                                                prod.TributoPauta = false;
-                                            }
+                                            decimal baseCalcPauta = precoPauta * quantParaCalc;
 
                                             if (taxedP.MVA != null)
                                             {
-                                                valorAgregado = calculation.ValorAgregadoMva(vAgre, Convert.ToDecimal(taxedP.MVA));
+                                                valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxedP.MVA));
                                                 valorAgreg = valorAgregado;
                                                 prod.Valoragregado = valorAgregado;
                                                 prod.Mva = Convert.ToDecimal(taxedP.MVA);
@@ -690,19 +679,38 @@ namespace Escon.SisctNET.Web.Controllers
                                             {
                                                 prod.Fecop = Convert.ToDecimal(taxedP.Fecop);
                                                 valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(valorAgreg));
+                                                decimal valorFecop2 = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(baseCalcPauta));
                                                 prod.TotalFecop = valorFecop;
+
+                                                if (valorFecop2 > valorFecop)
+                                                    prod.TotalFecop = valorFecop2;
                                             }
 
                                             prod.AliqInterna = taxedP.AliqInterna;
                                             decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), Convert.ToDecimal(valorAgreg));
+                                            decimal valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), Convert.ToDecimal(baseCalcPauta));
                                             prod.ValorAC = valorAgreAliqInt;
+                                           
+                                            if(valorAgreAliqInt2 > valorAgreAliqInt)
+                                                prod.ValorAC = valorAgreAliqInt2;
+                                           
                                             totalIcms = calculation.TotalIcms(valorAgreAliqInt, valorIcms);
-
+                                            decimal totalIcms2 = calculation.TotalIcms(valorAgreAliqInt2, valorIcms);
+                                           
                                             if (totalIcms < 0)
                                                 totalIcms = 0;
 
+                                            if (totalIcms2 < 0)
+                                                totalIcms2 = 0;
+
                                             prod.TotalICMS = totalIcms;
 
+                                            if(totalIcms2 > totalIcms)
+                                            {
+                                                prod.TotalICMS = totalIcms2;
+                                                prod.TributoPauta = true;
+
+                                            }
                                         }
 
                                         prod.ProductId = product.Id;
@@ -809,22 +817,11 @@ namespace Escon.SisctNET.Web.Controllers
                                                 quantParaCalc = Convert.ToDecimal(prod.Qcom);
 
                                                 // PP feito com os dados da tabela do Ato Normativo
-                                                decimal vAgre = precoPauta * quantParaCalc;
-
-                                                // PP feito com os dados do produto
-                                                decimal vAgre2 = baseCalc;
-
-                                                tributoPauta = true;
-
-                                                if (vAgre2 > vAgre)
-                                                {
-                                                    vAgre = vAgre2;
-                                                    tributoPauta = false;
-                                                }
+                                                decimal baseCalcPauta = precoPauta * quantParaCalc;
 
                                                 if (taxedP.MVA != null)
                                                 {
-                                                    valorAgregado = calculation.ValorAgregadoMva(vAgre, Convert.ToDecimal(taxedP.MVA));
+                                                    valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(taxedP.MVA));
                                                     valorAgreg = valorAgregado;
                                                     mva = Convert.ToDecimal(taxedP.MVA);
                                                 }
@@ -842,15 +839,32 @@ namespace Escon.SisctNET.Web.Controllers
                                                 {
                                                     fecop = Convert.ToDecimal(taxedP.Fecop);
                                                     valorFecop = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(valorAgreg));
-                                                    prod.TotalFecop = valorFecop;
+                                                    decimal valorFecop2 = calculation.ValorFecop(Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(baseCalcPauta));
+                                                    
+                                                    if (valorFecop2 > valorFecop)
+                                                    {
+                                                        valorFecop = valorFecop2;
+                                                    }
                                                 }
 
                                                 prod.AliqInterna = taxedP.AliqInterna;
                                                 valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), Convert.ToDecimal(valorAgreg));
+                                                decimal valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(prod.AliqInterna), Convert.ToDecimal(prod.Fecop), baseCalcPauta);
+
                                                 totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
+                                                decimal totalIcms2 = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt2), valorIcms);
 
                                                 if (totalIcms < 0)
                                                     totalIcms = 0;
+
+                                                if (totalIcms2 < 0)
+                                                    totalIcms2 = 0;
+
+                                                if(totalIcms2 > totalIcms)
+                                                {
+                                                    totalIcms = totalIcms2;
+                                                    tributoPauta = true;
+                                                }
                                             }
 
                                             prod.ProductId = product.Id;
