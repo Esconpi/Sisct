@@ -627,7 +627,7 @@ namespace Escon.SisctNET.Web.Controllers
                                    prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR") || 
                                    prod.Ucom.ToUpper().Equals("QT"))
                                 {
-                                    var codeP = calculation.CodeP(comp.Document, nota.Cnpj, prod.Cprod, NCM, nota.Uf, pICMSValid.Replace(".", ","));
+                                    code = calculation.CodeP(comp.Document, nota.Cnpj, prod.Cprod, NCM, nota.Uf, pICMSValid.Replace(".", ","));
                                     var taxedP = _taxationPService.FindByCode(taxationsPCompany, code, CEST, nota.Dhemi);
 
                                     if (taxedP != null)
