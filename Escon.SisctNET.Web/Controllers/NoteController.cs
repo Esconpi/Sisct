@@ -826,7 +826,16 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR") || 
                                             prod.Ucom.ToUpper().Equals("QT"))
                                         {
+                                            var data = nota.Dhemi;
+
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
+
+                                            if (product == null)
+                                            {
+                                                data.AddMonths(1);
+                                                product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, data);
+                                            }
+
 
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
