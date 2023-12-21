@@ -1401,14 +1401,13 @@ namespace Escon.SisctNET.Web.Controllers
                         products = products.Where(_ => _.TributoPauta).ToList();
 
                     int registro = products.Count();
-                    decimal vProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
-                                    Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum()) +
-                                    Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum())),
+                    var productsP = products.Where(_ => _.Pautado);
+                    var productsFP = products.Where(_ => !_.Pautado);
+                    decimal vProd = Convert.ToDecimal(productsFP.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsFP.Select(_ => _.Voutro).Sum()) +
+                                    Convert.ToDecimal(productsFP.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(productsFP.Select(_ => _.Vdesc).Sum()) +
+                                    Convert.ToDecimal(productsFP.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(productsFP.Select(_ => _.Vipi).Sum())),
                             freterateado = Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()),
-                            baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
-                                          Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) +
-                                          Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum()) -
-                                          Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum())),
+                            baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vbasecalc).Sum()),
                             baseCalcIcms = Convert.ToDecimal(products.Select(_ => _.Valoragregado).Sum()),
                             baseCalcBCR = Convert.ToDecimal(products.Select(_ => _.ValorBCR).Sum()),
                             totalAC = Convert.ToDecimal(products.Select(_ => _.ValorAC).Sum()),
@@ -1422,6 +1421,7 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsIE = 0, totalIcmsSIE = 0, totalIcmsFreteIE = 0, gnrePagaIE = 0, gnrePagaSIE = 0, gnreNPagaSIE = 0, gnreNPagaIE = 0,
                             valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0, totalIcmsPagarIE = 0, totalIcmsPagarSIE = 0;
 
+                    vProd += Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum());
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || 
                         typeTaxation.Equals(Model.TypeTaxation.STMPAUTA) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
@@ -1606,7 +1606,7 @@ namespace Escon.SisctNET.Web.Controllers
                             var productsAll = _service.FindByProductsType(prodsAll, typeTaxation);
 
                             //Produtos não incentivados
-                            var productsNormal = productsAll.Where(_ => !_.Incentivo || !_.TributoPauta).ToList();
+                            var productsNormal = productsAll.Where(_ => !_.Incentivo).ToList();
                             var notasTaxationNormal = productsNormal.Select(_ => _.Note).Distinct().ToList();
 
                             if ((!comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && 
@@ -1786,9 +1786,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                             //Produto incentivados
                             var productsIncentivado = productsAll.Where(_ => _.Incentivo).ToList();
-
-                            if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
-                                productsIncentivado = productsIncentivado.Where(_ => _.TributoPauta).ToList();
 
                             if (type.Equals(Model.Type.ProdutoNI))
                             {
@@ -3104,9 +3101,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //Produto incentivados
                         var productsSTIncentivado = produtosST.Where(_ => _.Incentivo).ToList();
-
-                        if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
-                            productsSTIncentivado = productsSTIncentivado.Where(_ => _.TributoPauta).ToList();
 
                         decimal aliqInterna = Convert.ToDecimal(comp.AliqInterna),
                                 icms = Convert.ToDecimal(comp.Icms),
