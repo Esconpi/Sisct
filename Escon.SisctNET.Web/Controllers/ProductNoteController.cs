@@ -251,7 +251,7 @@ namespace Escon.SisctNET.Web.Controllers
                         decimal totalIcmsPauta = 0, valorAgregado = 0, valorBcr = 0, valorFecopPauta = 0, totalIcms = 0, quantParaCalc = 0;
 
                         quantParaCalc = Convert.ToDecimal(prod.Qcom);
-                        baseCalc = prod.Vprod;
+                        baseCalc = Vbasecalc;
 
                         if (quantPauta != null)
                         {
@@ -1366,11 +1366,9 @@ namespace Escon.SisctNET.Web.Controllers
                         products = products.Where(_ => _.TributoPauta).ToList();
 
                     int registro = products.Count();
-                    var productsP = products.Where(_ => _.Pautado);
-                    var productsFP = products.Where(_ => !_.Pautado);
-                    decimal vProd = Convert.ToDecimal(productsFP.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(productsFP.Select(_ => _.Voutro).Sum()) +
-                                    Convert.ToDecimal(productsFP.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(productsFP.Select(_ => _.Vdesc).Sum()) +
-                                    Convert.ToDecimal(productsFP.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(productsFP.Select(_ => _.Vipi).Sum())),
+                    decimal vProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
+                                    Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum()) +
+                                    Convert.ToDecimal(products.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(products.Select(_ => _.Vipi).Sum())),
                             freterateado = Convert.ToDecimal(products.Select(_ => _.Freterateado).Sum()),
                             baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vbasecalc).Sum()),
                             baseCalcIcms = Convert.ToDecimal(products.Select(_ => _.Valoragregado).Sum()),
@@ -1386,7 +1384,6 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsIE = 0, totalIcmsSIE = 0, totalIcmsFreteIE = 0, gnrePagaIE = 0, gnrePagaSIE = 0, gnreNPagaSIE = 0, gnreNPagaIE = 0,
                             valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0, totalIcmsPagarIE = 0, totalIcmsPagarSIE = 0;
 
-                    vProd += Convert.ToDecimal(productsP.Select(_ => _.Vprod).Sum());
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || 
                         typeTaxation.Equals(Model.TypeTaxation.STMPAUTA) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {

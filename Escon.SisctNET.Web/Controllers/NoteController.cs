@@ -642,7 +642,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
-                                        decimal baseCalc = prod.Vprod, valorIcms = prod.Vicms;
+                                        decimal baseCalc = baseDeCalc, valorIcms = vICMS + freteIcms;
 
                                         if (taxedP.TaxationType.Type == "ST")
                                         {
@@ -826,9 +826,6 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.Ucom.ToUpper().Equals("GF") || prod.Ucom.ToUpper().Equals("GR") || 
                                             prod.Ucom.ToUpper().Equals("QT"))
                                         {
-                                            baseCalc = prod.Vprod;
-                                            valorIcms = vICMS;
-
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
                                             if (taxedP.TaxationType.Type == "ST")

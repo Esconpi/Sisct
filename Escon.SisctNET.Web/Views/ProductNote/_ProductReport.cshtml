@@ -161,16 +161,8 @@
                 @if (ViewBag.Type != "RegimeBA2")
                 {
                     <td>
-                        @if (item.Pautado == true)
-                        {
-                            @string.Format("{0:N}", Convert.ToDecimal(item.Vprod))
-                        }
-                        else
-                        {
-                            @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                     Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
-                        }
-
+                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
+                                    Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
                     <td>
