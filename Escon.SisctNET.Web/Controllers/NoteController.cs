@@ -827,7 +827,10 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.Ucom.ToUpper().Equals("QT"))
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
-    
+
+                                            if(product == null)
+                                                product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi.AddMonths(1));
+
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
                                                 decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,
@@ -862,7 +865,7 @@ namespace Escon.SisctNET.Web.Controllers
                                                     
                                                     if (valorFecop2 > valorFecop)
                                                     {
-                                                        valorFecop = valorFecop2;
+                                                        //valorFecop = valorFecop2;
                                                     }
                                                 }
 
@@ -881,8 +884,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                                 if(totalIcms2 > totalIcms)
                                                 {
-                                                    totalIcms = totalIcms2;
-                                                    tributoPauta = true;
+                                                    //totalIcms = totalIcms2;
+                                                    //tributoPauta = true;
                                                 }
                                             }
 
