@@ -302,8 +302,10 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             prod.Fecop = null;
                             prod.TotalFecop = null;
+                            prod.TotalFecop2 = null;
+
                         }
-                        
+
                         prod.AliqInterna = aliqInterna;
                         decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
                         decimal valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), baseCalcPauta);
