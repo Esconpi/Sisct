@@ -56,8 +56,8 @@
                         <!-- checkbox -->
                         <div class="form-group clearfix">
                             <div class="icheck-primary d-inline">
-                                @if(Model.AnnexId == 2){
-                                    <input class="form-check-input" type="checkbox" id="isPauta" name="isPauta" checked>
+                                @if (Model.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && Model.Chapter.Name.Equals("CAPÍTULO IV")){
+                                    <input class="form-check-input" type="checkbox" id="isPauta" name="isPauta" checked disabled>
                                 }
                                 else{
                                   <input class="form-check-input" type="checkbox" id="isPauta" name="isPauta" disabled>

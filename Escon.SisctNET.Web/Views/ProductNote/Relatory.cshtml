@@ -159,11 +159,10 @@
                     }
 
                     @if (ViewBag.Company.Incentive == true && (!ViewBag.Company.Annex.Description.Equals("NENHUM") || ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
-                         ViewBag.Type != "ProdutoNI" && ViewBag.TypeTaxation == "ST" && ViewBag.Type != "Nota" &&
-                         ViewBag.Type != "NotaI" && ViewBag.Type != "NotaNI" || ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
+                        ViewBag.TypeTaxation == "ST" && ViewBag.Type == "Produto" || ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
                     {
                         <!-- Resumo Imposto Incentivo -->
-                        @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type != "ProdutoI")
+                        @if (ViewBag.TypeTaxation == "ST" && ViewBag.Type == "Produto" || ViewBag.Type == "RegimeBA" || ViewBag.Type == "RegimeBA2")
                         {
                             @await Html.PartialAsync("_GeneralReportIncentive", new ViewDataDictionary(ViewData))
                             @if (ViewBag.Type != "RegimeBA" || ViewBag.Type != "RegimeBA2")
@@ -171,11 +170,7 @@
                                 @await Html.PartialAsync("_GeneralSummaryTaxIncentive", new ViewDataDictionary(ViewData))
                             }
                         }
-                        else if (ViewBag.TypeTaxation == "ST")
-                        {
-                            @await Html.PartialAsync("_IncentiveTaxSummary", new ViewDataDictionary(ViewData))
-                        }
-
+                        
                     }
                 }
             }

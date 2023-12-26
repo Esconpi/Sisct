@@ -11,6 +11,7 @@
             {
                 <th>V. <br /> Nota</th>
             }
+           
             @if (ViewBag.Type == "ProdutoI")
             {
                 <th>Cod. Produto Pauta</th>
@@ -26,6 +27,7 @@
                 <th>Total <br /> ICMS</th>
                 <th>Total <br /> Fecop</th>
             }
+           
             @if (ViewBag.Type != "RegimeBA2")
             {
                 <th>V. <br /> Produto</th>
@@ -115,19 +117,9 @@
                         }
                     </td>
                     <td>
-                        @if (item.Qpauta != null)
+                        @if (item.Pautado)
                         {
-                            @if (item.Pautado)
-                            {
-                                @string.Format("{0:N}", Convert.ToDecimal(item.Qpauta) * Convert.ToDecimal(item.Product.Price))
-                            }
-                        }
-                        else
-                        {
-                            @if (item.Pautado)
-                            {
-                                @string.Format("{0:N}", Convert.ToDecimal(item.Qcom) * Convert.ToDecimal(item.Product.Price))
-                            }
+                            @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc2))
                         }
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
@@ -209,19 +201,53 @@
                 else
                 {
                     <td>
-                        @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.Mva)</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))</td>
-                    <td>@Html.DisplayFor(modelItem => item.BCR)</td>
-                    <td>
-                        @if (Convert.ToDecimal(item.BCR) > 0)
+                        @if (item.Pautado)
                         {
-                            @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
+                            @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc2))
+                        }
+                        else
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))
+                        }
+                    </td>
+                    <td>
+                        @if (!item.Pautado)
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.Mva))
+                        }
+                    </td>
+                    <td>
+                        @if (!item.Pautado)
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.Valoragregado))
+                        }
+                    </td>
+                    <td>
+                        @if (!item.Pautado)
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.BCR))
+                        }
+                    </td>
+                    <td>
+                        @if (!item.Pautado)
+                        {
+                            @if (Convert.ToDecimal(item.BCR) > 0)
+                            {
+                                @string.Format("{0:N}", Convert.ToDecimal(item.ValorBCR))
+                            }
                         }
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.AliqInterna)</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))</td>
+                    <td>
+                        @if (item.Pautado)
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.ValorAC2))
+                        }
+                        else
+                        {
+                            @string.Format("{0:N}", Convert.ToDecimal(item.ValorAC))
+                        }
+                    </td>
                 }
 
                 <td>
@@ -252,8 +278,17 @@
                 }
                 else
                 {
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
-                    <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
+                    @if (item.Pautado)
+                    {
+                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS2))</td>
+                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop2))</td>
+                    }
+                    else
+                    {
+                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS))</td>
+                        <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop))</td>
+                    }
+                  
                 }
 
                 <td>
