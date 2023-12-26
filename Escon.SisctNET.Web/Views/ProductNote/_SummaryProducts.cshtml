@@ -2,8 +2,7 @@
     @if (ViewBag.Type != "Geral" && ViewBag.Type != "GNRE" && ViewBag.Type != "IcmsST" && ViewBag.Type != "IcmsProdutor" &&
     ViewBag.Type != "RegimeBA")
     {
-        @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA" || 
-            ViewBag.TypeTaxation == "AT")
+        @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
         {
             <thead style="font-size:10px">
                 <tr>
@@ -21,7 +20,7 @@
                         <th>Total FECOP</th>
                     }
                     <th>B. Cálculo</th>
-                    @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+                    @if (ViewBag.Type != "ProdutoI")
                     {
                         <th>BC. ICMS</th>
                         <th>BCR</th>
@@ -50,7 +49,7 @@
                         <td>@string.Format("{0:N}", ViewBag.FecopP)</td>
                     }
                     <td>@string.Format("{0:N}", ViewBag.TotalBC)</td>
-                    @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+                    @if (ViewBag.Type != "ProdutoI")
                     {
                         <td>@string.Format("{0:N}", ViewBag.TotalBCICMS)</td>
                         <td>@string.Format("{0:N}", ViewBag.TotalBCR)</td>

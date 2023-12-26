@@ -27,8 +27,6 @@ namespace Escon.SisctNET.Model
     {
         [Display(Name = "Nenhum")] Nenhum,
         [Display(Name = "Substituição Tributária")] ST,
-        [Display(Name = "Substituição Tributária por MVA")] STMVA,
-        [Display(Name = "Substituição Tributária por Pauta")] STMPAUTA,
         [Display(Name = "Antecipação Parcial")] AP,
         [Display(Name = "Antecipação Total")] AT,
         [Display(Name = "Consumo")] CO,

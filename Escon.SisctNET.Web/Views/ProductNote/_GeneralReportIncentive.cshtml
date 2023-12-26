@@ -221,17 +221,13 @@ else if ((ViewBag.Company.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)
 }
 else
 {
-    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS"))
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
     {
         @await Html.PartialAsync("_AutoParts", new ViewDataDictionary(ViewData))
     }
     else if (ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV-C"))
     {
         @await Html.PartialAsync("_MotorcycleAutoParts", new ViewDataDictionary(ViewData))
-    }
-    else
-    {
-        @await Html.PartialAsync("_Wholesaler", new ViewDataDictionary(ViewData))
     }
 
     @if (ViewBag.Type != "Nota")
@@ -286,15 +282,6 @@ else
                         <th style="text-align:center">Adicional Suspensão</th>
                         <td style="text-align:right">@string.Format("{0:N}", ViewBag.TotalSuspensao)</td>
                         <td style="text-align:center">@ViewBag.DarIcms.Code</td>
-                    </tr>
-                }
-
-                @if (ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && ViewBag.Company.Chapter.Name.Equals("CAPÍTULO IV"))
-                {
-                    <tr>
-                        <th style="text-align:center">Fecop Incentivo</th>
-                        <td style="text-align:right">@string.Format("{0:N}", ViewBag.ImpostoFecop)</td>
-                        <td style="text-align:center">@ViewBag.DarFecop.Code</td>
                     </tr>
                 }
 

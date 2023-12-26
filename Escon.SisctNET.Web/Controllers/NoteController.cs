@@ -820,9 +820,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
-                                            if(product == null)
-                                                product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi.AddMonths(1));
-
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
                                                 decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,

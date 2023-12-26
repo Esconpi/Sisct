@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Escon.SisctNET.Model.ProductNote>
 
-@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA" || ViewBag.TypeTaxation == "STMPAUTA" ||
-    ViewBag.TypeTaxation == "AT")
+@if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "AT")
 {
     <thead style="font-size:8px;">
         <tr>
@@ -12,7 +11,7 @@
             {
                 <th>V. <br /> Nota</th>
             }
-            @if (ViewBag.TypeTaxation == "STMPAUTA")
+            @if (ViewBag.Type == "ProdutoI")
             {
                 <th>Cod. Produto Pauta</th>
             }
@@ -30,19 +29,19 @@
             @if (ViewBag.Type != "RegimeBA2")
             {
                 <th>V. <br /> Produto</th>
-                @if (ViewBag.TypeTaxation == "STMPAUTA")
+                @if (ViewBag.Type == "ProdutoI")
                 {
                     <th>V. Produto Pauta</th>
                     <th>Q. Produto</th>
                 }
-                @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+                @if (ViewBag.Type != "ProdutoI")
                 {
                     <th>Frete Nº</th>
                     <th>V. <br /> Frete</th>
                 }
             }
             <th>B. <br /> Cálculo</th>
-            @if (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA")
+            @if (ViewBag.Type != "ProdutoI")
             {
                 <th>MVA(%)</th>
                 <th>BC. <br /> ICMS</th>
@@ -80,7 +79,7 @@
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.Note.Vnf))</td>
                 }
 
-                @if (ViewBag.TypeTaxation == "STMPAUTA")
+                @if (ViewBag.Type == "ProdutoI")
                 {
                     <td>@Html.DisplayFor(modelItem => item.Product.Code)</td>
                 }
@@ -172,7 +171,7 @@
                         @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
                                     Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
                     </td>
-                    @if (ViewBag.TypeTaxation == "STMPAUTA")
+                    @if (ViewBag.Type == "ProdutoI")
                     {
                         <td> @string.Format("{0:N}", Convert.ToDecimal(item.Product.Price))</td>
                         <td>
@@ -198,8 +197,8 @@
                         </td>
                     }
                 }
-               
-                @if (ViewBag.TypeTaxation == "STMPAUTA")
+
+                @if (ViewBag.Type == "ProdutoI")
                 {
                     <td>
                         @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc2))
@@ -226,7 +225,7 @@
                 }
 
                 <td>
-                    @if (item.EBcr && (ViewBag.TypeTaxation == "ST" || ViewBag.TypeTaxation == "STMVA"))
+                    @if (item.EBcr)
                     {
                         @if (item.Picms.Equals(12))
                         {
@@ -246,7 +245,7 @@
                 </td>                
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.IcmsST))</td>
                 <td>@string.Format("{0:N}", Convert.ToDecimal(item.VfcpST) + Convert.ToDecimal(item.VfcpSTRet))</td>
-                @if (ViewBag.TypeTaxation == "STMPAUTA")
+                @if (ViewBag.Type == "ProdutoI")
                 {
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalICMS2))</td>
                     <td>@string.Format("{0:N}", Convert.ToDecimal(item.TotalFecop2))</td>

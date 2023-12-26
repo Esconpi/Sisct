@@ -1371,12 +1371,6 @@ namespace Escon.SisctNET.Web.Controllers
                     if (type.Equals(Model.Type.ProdutoNI))
                         products = products.Where(_ => _.Incentivo.Equals(false)).ToList();
 
-                    if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                        products = products.Where(_ => _.Pautado).ToList();
-
-                    if (typeTaxation.Equals(Model.TypeTaxation.STMVA))
-                        products = products.Where(_ => !_.Pautado).ToList();
-
                     int registro = products.Count();
                     decimal vProd = Convert.ToDecimal(products.Select(_ => _.Vprod).Sum() + Convert.ToDecimal(products.Select(_ => _.Voutro).Sum()) +
                                     Convert.ToDecimal(products.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(products.Select(_ => _.Vdesc).Sum()) +
@@ -1396,20 +1390,25 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsIE = 0, totalIcmsSIE = 0, totalIcmsFreteIE = 0, gnrePagaIE = 0, gnrePagaSIE = 0, gnreNPagaSIE = 0, gnreNPagaIE = 0,
                             valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0, totalIcmsPagarIE = 0, totalIcmsPagarSIE = 0;
 
-                    if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
+                    var productsPauta = products.Where(_ => _.Incentivo).ToList();
+
+                    decimal baseCalculo2 = Convert.ToDecimal(productsPauta.Select(_ => _.Vbasecalc2).Sum()),
+                    totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum()),
+                    totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum()),
+                    totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
+
+                    if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.ProdutoI))
                     {
-                        baseCalculo = Convert.ToDecimal(products.Select(_ => _.Vbasecalc2).Sum());
-                        totalAC = Convert.ToDecimal(products.Select(_ => _.ValorAC2).Sum());
-                        totalGeralIcms = Convert.ToDecimal(products.Select(_ => _.TotalICMS2).Sum());
-                        totalFecop = Convert.ToDecimal(products.Select(_ => _.TotalFecop2).Sum());
+                        baseCalculo = baseCalculo2;
+                        totalAC = totalAC2;
+                        totalGeralIcms = totalGeralIcms2;
+                        totalFecop = totalFecop2;
 
                     }
 
-                    if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || 
-                        typeTaxation.Equals(Model.TypeTaxation.STMPAUTA) || typeTaxation.Equals(Model.TypeTaxation.AT))
+                    if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
                     {
-                        if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) ||
-                            typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
+                        if (typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             apuracao = check.ApuracaoST(notasTaxation, products);
 
@@ -1501,12 +1500,6 @@ namespace Escon.SisctNET.Web.Controllers
                         totalIcmsIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum());
                         totalIcmsSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.TotalICMS).Sum());
 
-                        if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                        {
-                            totalIcmsIE = Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("")).Select(_ => _.TotalICMS2).Sum());
-                            totalIcmsSIE = Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("")).Select(_ => _.TotalICMS2).Sum());
-                        }
-
                         totalGeralIcms = totalIcmsIE + totalIcmsSIE;
 
                         valorDiefIE = Convert.ToDecimal(totalIcmsIE - icmsGeralStIE - gnrePagaIE + gnreNPagaIE - totalIcmsFreteIE);
@@ -1528,12 +1521,6 @@ namespace Escon.SisctNET.Web.Controllers
                         base1SIE += Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1 && !_.EBcr).Select(_ => _.Valoragregado).Sum()), 2);
                         base1IE += Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1 && !_.EBcr).Select(_ => _.Valoragregado).Sum()), 2);
 
-                        if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                        {
-                            base1SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Vbasecalc2).Sum()), 2);
-                            base1IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 1).Select(_ => _.Vbasecalc2).Sum()), 2);
-                        }
-
                         decimal base2IE = Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2 && _.EBcr).Select(_ => _.ValorBCR).Sum()), 2),
                                 base2SIE = Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2 && _.EBcr).Select(_ => _.ValorBCR).Sum()), 2),
                                 base2fecopIE = Math.Round(Convert.ToDecimal(notasTaxation.Where(_ => !_.Iest.Equals("")).Select(_ => _.Fecop2).Sum()), 2),
@@ -1543,12 +1530,6 @@ namespace Escon.SisctNET.Web.Controllers
 
                         base2IE += Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2 && !_.EBcr).Select(_ => _.Valoragregado).Sum()), 2);
                         base2SIE += Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2 && !_.EBcr).Select(_ => _.Valoragregado).Sum()), 2);
-
-                        if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                        {
-                            base2IE += Math.Round(Convert.ToDecimal(products.Where(_ => !_.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.Vbasecalc2).Sum()), 2);
-                            base2SIE += Math.Round(Convert.ToDecimal(products.Where(_ => _.Note.Iest.Equals("") && _.Fecop == 2).Select(_ => _.Vbasecalc2).Sum()), 2);
-                        }
 
                         decimal totalBaseFecopIE = base1fecopIE + base2fecopIE,
                                 totalBaseFecopSIE = base1fecopSIE + base2fecopSIE,
@@ -1602,16 +1583,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                         //  Relatorio das Empresas Incentivadas
                         if (comp.Incentive && (!comp.Annex.Description.Equals("NENHUM") || comp.Chapter.Name.Equals("CAPÍTULO IV-C")) &&
-                            (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.STMVA) || typeTaxation.Equals(Model.TypeTaxation.STMPAUTA)))
+                           typeTaxation.Equals(Model.TypeTaxation.ST))
                         {
                             var productsAll = _service.FindByProductsType(prodsAll, typeTaxation);
 
                             //Produtos não incentivados
                             var productsNormal = productsAll.Where(_ => !_.Incentivo).ToList();
                             var notasTaxationNormal = productsNormal.Select(_ => _.Note).Distinct().ToList();
-
-                            if (typeTaxation.Equals(Model.TypeTaxation.STMPAUTA))
-                                productsNormal = productsNormal.Where(_ => _.Pautado).ToList();
 
                             apuracao = check.ApuracaoST(notasTaxationNormal, productsNormal);
 
@@ -1816,9 +1794,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         Convert.ToDecimal(productsIncentivado.Select(_ => _.Vseg).Sum()) - Convert.ToDecimal(productsIncentivado.Select(_ => _.Vdesc).Sum()) +
                                         Convert.ToDecimal(productsIncentivado.Select(_ => _.Vfrete).Sum()) + Convert.ToDecimal(productsIncentivado.Select(_ => _.Vipi).Sum()));
                                 freterateado = Convert.ToDecimal(productsIncentivado.Select(_ => _.Freterateado).Sum());
-                                baseCalculo = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
-                                                productsIncentivado.Select(_ => _.Vseg).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
-                                                productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                baseCalculo = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc).Sum());
                                 baseCalcIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Valoragregado).Sum());
                                 baseCalcBCR = Convert.ToDecimal(productsIncentivado.Select(_ => _.ValorBCR).Sum());
                                 totalAC = Convert.ToDecimal(productsIncentivado.Select(_ => _.ValorAC).Sum());
@@ -1827,6 +1803,14 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalFecopST = Convert.ToDecimal(productsIncentivado.Select(_ => _.VfcpST).Sum()) + Convert.ToDecimal(productsIncentivado.Select(_ => _.VfcpSTRet).Sum());
                                 totalGeralIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS).Sum());
                                 totalFecop = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop).Sum());
+
+                                if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                                {
+                                    baseCalculo = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc2).Sum());
+                                    totalAC = Convert.ToDecimal(productsIncentivado.Select(_ => _.ValorAC2).Sum());
+                                    totalGeralIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS2).Sum());
+                                    totalFecop = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop2).Sum());
+                                }
                             }
 
                             decimal? impostoGeral = 0, totalIcmsNormal = 0, totalFecopNormal = 0, totalIcmsIncentivo = 0, totalFecopIncentivo = 0;
@@ -2203,31 +2187,22 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
-                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
+                            else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && 
+                                !type.Equals(Model.Type.ProdutoNI))
                             {
                                 if (isPauta)
                                 {
-                                    foreach(var p in productsIncentivado)
-                                    {
-                                        decimal qtd = p.Qpauta == null ? Convert.ToDecimal(p.Qcom) : Convert.ToDecimal(p.Qpauta), price = 0;
-
-                                        if (p.Product != null)
-                                            price = Convert.ToDecimal(p.Product.Price);
-
-                                        baseIcms += (qtd * price);
-                                    }
+                                    baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc2).Sum());
                                 }
                                 else
                                 {
-                                    baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
-                                        productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
-                                        productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                    baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc).Sum());
                                 }
                         
                                 impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
-                                impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (fecop / 100)), 2);
+                                //impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (fecop / 100)), 2);
 
-                                totalDarFecop += Math.Round(impostoFecop, 2);
+                                //totalDarFecop += Math.Round(impostoFecop, 2);
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
                             else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)")  && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
@@ -2733,15 +2708,19 @@ namespace Escon.SisctNET.Web.Controllers
                     ViewBag.ValorProd = vProd;
                     ViewBag.TotalFrete = freterateado;
                     ViewBag.TotalBC = baseCalculo;
+                    ViewBag.TotalBC2 = baseCalculo2;
                     ViewBag.TotalBCICMS = baseCalcIcms;
                     ViewBag.TotalBCR = baseCalcBCR;
                     ViewBag.TotalAC = totalAC;
+                    ViewBag.TotalAC2 = totalAC2;
                     ViewBag.TotalICMSNfeCte = totalIcmsNFeCTe;
                     ViewBag.TotalICMSST = totalGeralIcmsST;
                     ViewBag.FecopST = totalFecopST;
                     ViewBag.TotalICMSGeral = totalGeralIcms;
                     ViewBag.TotalICMS = totalGeralIcms;
                     ViewBag.TotalFecop = totalFecop;
+                    ViewBag.TotalFecop2 = totalFecop2;
+
 
                     //      Resumo dos Impostos
 

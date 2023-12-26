@@ -21,8 +21,7 @@ namespace Escon.SisctNET.Repository.Implementation
         {
             decimal icmsTotalSt = 0;
 
-            if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
-                taxationType.Equals(Model.TypeTaxation.STMPAUTA))
+            if (taxationType.Equals(Model.TypeTaxation.ST))
             {
                 foreach (var note in notes)
                 {
@@ -32,7 +31,7 @@ namespace Escon.SisctNET.Repository.Implementation
                                                                           .Sum());
                 }
             }
-            if (taxationType.Equals(Model.TypeTaxation.AT))
+            else if (taxationType.Equals(Model.TypeTaxation.AT))
             {
                 foreach (var note in notes)
                 {
@@ -41,15 +40,38 @@ namespace Escon.SisctNET.Repository.Implementation
                                                                           .Sum());
                 }
             }
-            else if (taxationType.Equals(Model.TypeTaxation.AP) || taxationType.Equals(Model.TypeTaxation.CO) ||
-                    taxationType.Equals(Model.TypeTaxation.COR) || taxationType.Equals(Model.TypeTaxation.IM))
+            else if (taxationType.Equals(Model.TypeTaxation.AP))
             {
                 foreach (var note in notes)
                 {
-                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && (_.TaxationType.Description.Equals("1  AP - Antecipação parcial") ||
-                                                                                      _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota") ||
-                                                                                      _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota") ||
-                                                                                      _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota")))
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
+                                                                           .Select(_ => _.IcmsST)
+                                                                           .Sum());
+                }
+            }
+            else if (taxationType.Equals(Model.TypeTaxation.CO))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) &&  _.TaxationType.Description.Equals("1  CO - Consumo-Dif. Aliquota"))
+                                                                           .Select(_ => _.IcmsST)
+                                                                           .Sum());
+                }
+            }
+            else if (taxationType.Equals(Model.TypeTaxation.COR))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.TaxationType.Description.Equals("1  CR - Consumo/Revenda-Dif.Aliquota"))
+                                                                           .Select(_ => _.IcmsST)
+                                                                           .Sum());
+                }
+            }
+            else if (taxationType.Equals(Model.TypeTaxation.IM))
+            {
+                foreach (var note in notes)
+                {
+                    icmsTotalSt += Convert.ToDecimal(_context.ProductNotes.Where(_ => _.NoteId.Equals(note.Id) && _.TaxationType.Description.Equals("1  IM - Imobilizado-Dif. Aliquota"))
                                                                            .Select(_ => _.IcmsST)
                                                                            .Sum());
                 }
@@ -121,8 +143,7 @@ namespace Escon.SisctNET.Repository.Implementation
                         .ToList();
                     products.AddRange(rst);
                 }
-                else if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
-                        taxationType.Equals(Model.TypeTaxation.STMPAUTA))
+                else if (taxationType.Equals(Model.TypeTaxation.ST))
                 {
                     var rst = note.Products
                         .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))
@@ -193,8 +214,7 @@ namespace Escon.SisctNET.Repository.Implementation
                     .ToList();
                 products.AddRange(rst);
             }
-            else if (taxationType.Equals(Model.TypeTaxation.ST) || taxationType.Equals(Model.TypeTaxation.STMVA) ||
-                     taxationType.Equals(Model.TypeTaxation.STMPAUTA))
+            else if (taxationType.Equals(Model.TypeTaxation.ST))
             {
                 var rst = productNotes
                     .Where(_ => _.TaxationType.Description.Equals("2  ST - Subs.Tributária") || _.TaxationType.Description.Equals("2  Base de Cálculo Reduzida"))
