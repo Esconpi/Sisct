@@ -31,6 +31,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Valor")]
         public decimal Vprod { get; set; }
 
+        [Display(Name = "Valor Pauta")]
+        public decimal Vprod2 { get; set; }
+
         [Display(Name = "Quantidade")]
         public decimal ? Qcom { get; set; }
 
@@ -72,6 +75,9 @@ namespace Escon.SisctNET.Model
 
         [Display(Name = "Base de Cálculo")]
         public decimal Vbasecalc { get; set; }
+
+        [Display(Name = "Base de Cálculo Pauta")]
+        public decimal Vbasecalc2 { get; set; }
 
         [Display(Name = "Valor Frete")]
         public decimal Vfrete { get; set; }
@@ -138,6 +144,9 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Valor do Imp. Antes Credito")]
         public decimal? ValorAC { get; set; }
 
+        [Display(Name = "Valor do Imp. Antes Credito Pauta")]
+        public decimal? ValorAC2 { get; set; }
+
         [Display(Name = "Produto Pautado")]
         public bool Pautado { get; set; }
 
@@ -153,8 +162,14 @@ namespace Escon.SisctNET.Model
         [Display(Name = "Total ICMS")]
         public decimal? TotalICMS { get; set; }
 
+        [Display(Name = "Total ICMS Pauta")]
+        public decimal? TotalICMS2 { get; set; }
+
         [Display(Name = "Total FECOP")]
         public decimal? TotalFecop { get; set; }
+
+        [Display(Name = "Total FECOP Pauta")]
+        public decimal? TotalFecop2 { get; set; }
 
         [Display(Name = "Valor Frete")]
         public decimal Freterateado { get; set; }
@@ -212,7 +227,5 @@ namespace Escon.SisctNET.Model
         public decimal? DiferencialCTe { get; set; }
 
         public bool Divergent { get; set;  }
-
-        public bool TributoPauta { get; set; }
     }
 }
