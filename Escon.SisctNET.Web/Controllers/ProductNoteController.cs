@@ -1391,7 +1391,7 @@ namespace Escon.SisctNET.Web.Controllers
                             valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0, totalIcmsPagarIE = 0, totalIcmsPagarSIE = 0;
 
                     var productsPauta = products.Where(_ => _.Incentivo).ToList();
-                    var productsFPauta = products.Where(_ => _.Incentivo).ToList();
+                    var productsFPauta = products.Where(_ => !_.Incentivo).ToList();
 
                     baseCalculo = Convert.ToDecimal(productsFPauta.Select(_ => _.Vbasecalc).Sum());
                     totalAC = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorAC).Sum());
@@ -1409,6 +1409,8 @@ namespace Escon.SisctNET.Web.Controllers
                         totalAC += totalAC2;
                         totalGeralIcms += totalGeralIcms2;
                         totalFecop += totalFecop2;
+                        baseCalcIcms = Convert.ToDecimal(productsFPauta.Select(_ => _.Valoragregado).Sum());
+                        baseCalcBCR = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorBCR).Sum());
 
                     }
                     else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.ProdutoI))
@@ -1446,23 +1448,11 @@ namespace Escon.SisctNET.Web.Controllers
                         {
                             if (type.Equals(Model.Type.RegimeBA2)) 
                             {
-                                if (prod.Qpauta != null)
+                                if (prod.Pautado)
                                 {
-                                    if (prod.Pautado)
-                                    {
-                                        totalP += Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price);
-                                        valorIcmsP += (Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price)) * ((Convert.ToDecimal(prod.AliqInterna) - Convert.ToDecimal(prod.Fecop)) / 100);
-                                        valorFecopP += (Convert.ToDecimal(prod.Qpauta) * Convert.ToDecimal(prod.Product.Price)) * (Convert.ToDecimal(prod.Fecop) / 100);
-                                    }
-                                }
-                                else
-                                {
-                                    if (prod.Pautado)
-                                    {
-                                        totalP += Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price);
-                                        valorIcmsP += (Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price)) * ((Convert.ToDecimal(prod.AliqInterna) - Convert.ToDecimal(prod.Fecop)) / 100);
-                                        valorFecopP += (Convert.ToDecimal(prod.Qcom) * Convert.ToDecimal(prod.Product.Price)) * (Convert.ToDecimal(prod.Fecop) / 100);
-                                    }
+                                    totalP += Convert.ToDecimal(prod.Vbasecalc2);
+                                    valorIcmsP += Convert.ToDecimal(prod.TotalICMS2);
+                                    valorFecopP += Convert.ToDecimal(prod.TotalFecop2);
                                 }
                             }
 
@@ -1826,12 +1816,21 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                             }
 
-                            decimal? impostoGeral = 0, totalIcmsNormal = 0, totalFecopNormal = 0, totalIcmsIncentivo = 0, totalFecopIncentivo = 0;
+                            decimal impostoGeral = 0, totalIcmsNormal = 0, totalFecopNormal = 0, totalIcmsIncentivo = 0, totalFecopIncentivo = 0;
            
                             totalIcmsNormal = Convert.ToDecimal(productsNormal.Select(_ => _.TotalICMS).Sum());
                             totalIcmsIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS).Sum());
                             totalFecopNormal = Convert.ToDecimal(productsNormal.Select(_ => _.TotalFecop).Sum());
                             totalFecopIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop).Sum());
+
+                            if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.Produto))
+                            {
+                                totalIcmsIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS2).Sum());
+                                totalFecopIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop2).Sum());
+
+                                totalGeralIcms = totalIcmsNormal + totalIcmsIncentivo;
+                                totalFecop = totalFecopNormal + totalFecopIncentivo;
+                            }
 
                             impostoGeral = totalIcmsNormal + totalIcmsIncentivo + totalFecopNormal + totalFecopIncentivo;
 
@@ -2252,7 +2251,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         impostoIcmsInter = (baseCalculoInter * percentualInter) / 100,
                                         impostoSaida = (baseSaida * percentualSainda) / 100;
 
-                                decimal? impostoEntradaGeral = totalIcmsNormal + totalIcmsIncentivo + totalFecopNormal + totalFecopIncentivo,
+                                decimal impostoEntradaGeral = totalIcmsNormal + totalIcmsIncentivo + totalFecopNormal + totalFecopIncentivo,
                                         impostoSaidaGeral = 0;
 
                                 baseIcms = baseCalculoInterna + baseCalculoInter + baseSaida;

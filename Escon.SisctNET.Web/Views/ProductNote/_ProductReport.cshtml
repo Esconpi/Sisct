@@ -225,7 +225,10 @@
                     <td>
                         @if (!item.Pautado)
                         {
-                            @string.Format("{0:N}", Convert.ToDecimal(item.BCR))
+                            @if (Convert.ToDecimal(item.BCR) > 0)
+                            {
+                                @string.Format("{0:N}", Convert.ToDecimal(item.BCR))
+                            }
                         }
                     </td>
                     <td>
