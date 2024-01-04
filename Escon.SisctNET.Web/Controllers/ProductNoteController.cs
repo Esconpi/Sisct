@@ -303,8 +303,10 @@ namespace Escon.SisctNET.Web.Controllers
                             prod.Fecop = null;
                             prod.TotalFecop = null;
                             prod.TotalFecop2 = null;
-
                         }
+
+                        if (baseCalcPauta >= valorAgreg)
+                            prod.TaxationPauta = true;
 
                         prod.AliqInterna = aliqInterna;
                         decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(prod.Fecop), valorAgreg);
@@ -1390,7 +1392,8 @@ namespace Escon.SisctNET.Web.Controllers
                             totalIcmsIE = 0, totalIcmsSIE = 0, totalIcmsFreteIE = 0, gnrePagaIE = 0, gnrePagaSIE = 0, gnreNPagaSIE = 0, gnreNPagaIE = 0,
                             valorDiefIE = 0, valorDiefSIE = 0, totalIcmsPagoIE = 0, totalIcmsPagoSIE = 0, totalIcmsPagarIE = 0, totalIcmsPagarSIE = 0;
 
-                    var productsPauta = products.Where(_ => _.Incentivo).ToList();
+                    var productsPauta = products.Where(_ => _.Incentivo && _.TaxationPauta).ToList();
+                    var productsPautaMVA = products.Where(_ => _.Incentivo && !_.TaxationPauta).ToList();
                     var productsFPauta = products.Where(_ => !_.Incentivo).ToList();
 
                     baseCalculo = Convert.ToDecimal(productsFPauta.Select(_ => _.Vbasecalc).Sum());
@@ -1399,18 +1402,23 @@ namespace Escon.SisctNET.Web.Controllers
                     totalFecop = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalFecop).Sum());
 
                     decimal baseCalculo2 = Convert.ToDecimal(productsPauta.Select(_ => _.Vbasecalc2).Sum()),
-                    totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum()),
-                    totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum()),
-                    totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
+                        totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum()),
+                        totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum()),
+                        totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
+
+                    decimal baseCalculo3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.Vbasecalc).Sum()),
+                       totalAC3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.ValorAC).Sum()),
+                       totalGeralIcms3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalICMS).Sum()),
+                       totalFecop3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalFecop).Sum());
 
                     if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.Produto))
                     {
-                        baseCalculo += baseCalculo2;
-                        totalAC += totalAC2;
-                        totalGeralIcms += totalGeralIcms2;
-                        totalFecop += totalFecop2;
-                        baseCalcIcms = Convert.ToDecimal(productsFPauta.Select(_ => _.Valoragregado).Sum());
-                        baseCalcBCR = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorBCR).Sum());
+                        baseCalculo += baseCalculo2 + baseCalculo3;
+                        totalAC += totalAC2 + totalAC3;
+                        totalGeralIcms += totalGeralIcms2 + totalGeralIcms3;
+                        totalFecop += totalFecop2 + totalFecop3;
+                        baseCalcIcms = Convert.ToDecimal(productsFPauta.Select(_ => _.Valoragregado).Sum()) + Convert.ToDecimal(productsPautaMVA.Select(_ => _.Valoragregado).Sum());
+                        baseCalcBCR = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorBCR).Sum()) + Convert.ToDecimal(productsPautaMVA.Select(_ => _.ValorBCR).Sum());
 
                     }
                     else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.ProdutoI))
@@ -1825,8 +1833,11 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if(comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.Produto))
                             {
-                                totalIcmsIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalICMS2).Sum());
-                                totalFecopIncentivo = Convert.ToDecimal(productsIncentivado.Select(_ => _.TotalFecop2).Sum());
+                                totalIcmsIncentivo = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.TotalICMS2).Sum());
+                                totalFecopIncentivo = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.TotalFecop2).Sum());
+
+                                totalIcmsIncentivo += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.TotalICMS).Sum());
+                                totalFecopIncentivo += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.TotalFecop).Sum());
 
                                 totalGeralIcms = totalIcmsNormal + totalIcmsIncentivo;
                                 totalFecop = totalFecopNormal + totalFecopIncentivo;
@@ -2206,7 +2217,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (isPauta)
                                 {
-                                    baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc2).Sum());
+                                    baseIcms = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                    baseIcms += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc).Sum());
                                 }
                                 else
                                 {

@@ -227,5 +227,7 @@ namespace Escon.SisctNET.Model
         public decimal? DiferencialCTe { get; set; }
 
         public bool Divergent { get; set;  }
+
+        public bool TaxationPauta { get; set; }
     }
 }

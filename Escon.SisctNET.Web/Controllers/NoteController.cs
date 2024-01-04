@@ -684,6 +684,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                 prod.TotalFecop2 = valorFecop2;
                                             }
 
+                                            if (baseCalcPauta >= valorAgreg)
+                                                prod.TaxationPauta = false;
+
                                             prod.AliqInterna = taxedP.AliqInterna;
                                             decimal valorAgreAliqInt = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxedP.AliqInterna), Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(valorAgreg));
                                             decimal valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(Convert.ToDecimal(taxedP.AliqInterna), Convert.ToDecimal(taxedP.Fecop), Convert.ToDecimal(baseCalcPauta));
@@ -744,7 +747,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal valorIcms = vICMS + freteIcms, totalIcms = 0, totalIcms2 = 0, baseCalc = 0, baseCalc2 = 0,
                                     aliqInterna = Convert.ToDecimal(taxed.AliqInterna);
 
-                                bool ehBcr = taxed.EBcr, tributoPauta = false;
+                                bool ehBcr = taxed.EBcr, tributoPauta = false, taxationPauta = false;
                                 
                                 long taxationTypeId = taxed.TaxationTypeId;
 
@@ -820,6 +823,9 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
+                                            if(product == null)
+                                                product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi.AddMonths(1));
+
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
                                                 decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,
@@ -852,6 +858,9 @@ namespace Escon.SisctNET.Web.Controllers
                                                     valorFecop = calculation.ValorFecop((decimal)fecop, Convert.ToDecimal(valorAgreg));
                                                     valorFecop2 = calculation.ValorFecop((decimal)fecop, Convert.ToDecimal(baseCalc2));
                                                 }
+
+                                                if (baseCalc2 >= valorAgreg)
+                                                    taxationPauta = true;
 
                                                 aliqInterna = Convert.ToDecimal(taxedP.AliqInterna);
                                                 valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, (decimal)fecop, Convert.ToDecimal(valorAgreg));
@@ -899,6 +908,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             prod.DateStart = dateStart;
                                             prod.PercentualInciso = percentualInciso;
                                             prod.EBcr = ehBcr;
+                                            prod.TaxationPauta = taxationPauta;
 
                                             qtdTaxation += 1;
                                         }
