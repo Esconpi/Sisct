@@ -1843,7 +1843,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 totalFecop = totalFecopNormal + totalFecopIncentivo;
                             }
 
-                            impostoGeral = totalIcmsNormal + totalIcmsIncentivo + totalFecopNormal + totalFecopIncentivo;
+                            impostoGeral = totalIcmsIncentivo + totalFecopIncentivo;
 
                             decimal aliqInterna = Convert.ToDecimal(comp.AliqInterna),
                                     icms = Convert.ToDecimal(comp.Icms),
@@ -2263,7 +2263,7 @@ namespace Escon.SisctNET.Web.Controllers
                                         impostoIcmsInter = (baseCalculoInter * percentualInter) / 100,
                                         impostoSaida = (baseSaida * percentualSainda) / 100;
 
-                                decimal impostoEntradaGeral = totalIcmsNormal + totalIcmsIncentivo + totalFecopNormal + totalFecopIncentivo,
+                                decimal impostoEntradaGeral = totalIcmsIncentivo + totalFecopIncentivo,
                                         impostoSaidaGeral = 0;
 
                                 baseIcms = baseCalculoInterna + baseCalculoInter + baseSaida;

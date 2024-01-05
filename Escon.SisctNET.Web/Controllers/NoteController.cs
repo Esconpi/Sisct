@@ -768,14 +768,14 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.MVA != null)
                                         {
                                             mva = taxed.MVA;
-                                            valorAgregado = calculation.ValorAgregadoMva(baseCalc, (decimal)mva);
+                                            valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
                                             valorAgreg = valorAgregado;
                                         }
 
                                         if (taxed.EBcr && taxed.BCR != null)
                                         {
                                             bcr = taxed.BCR;
-                                            valorbcr = calculation.ValorAgregadoBcr((decimal)bcr, Convert.ToDecimal(valorAgregado));
+                                            valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), Convert.ToDecimal(valorAgregado));
                                             valorAgreg = valorbcr;
                                             if (prod.Picms.Equals(12))
                                                 valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
@@ -784,10 +784,10 @@ namespace Escon.SisctNET.Web.Controllers
                                         if (taxed.Fecop != null)
                                         {
                                             fecop = taxed.Fecop;
-                                            valorFecop = calculation.ValorFecop((decimal)fecop, Convert.ToDecimal(valorAgreg));
+                                            valorFecop = calculation.ValorFecop(Convert.ToDecimal(fecop), Convert.ToDecimal(valorAgreg));
                                         }
 
-                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, (decimal)fecop, Convert.ToDecimal(valorAgreg));
+                                        valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), Convert.ToDecimal(valorAgreg));
                                         totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
 
                                         if (totalIcms < 0)
@@ -823,9 +823,6 @@ namespace Escon.SisctNET.Web.Controllers
                                         {
                                             var product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi);
 
-                                            if(product == null)
-                                                product = _productService.FindByProduct(products, taxedP.Product, taxedP.GroupId, nota.Dhemi.AddMonths(1));
-
                                             if (taxedP.TaxationType.Type == "ST")
                                             {
                                                 decimal precoPauta = Convert.ToDecimal(product.Price), totalIcmsPauta = 0,
@@ -839,14 +836,14 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (taxedP.MVA != null)
                                                 {
                                                     mva = taxedP.MVA;
-                                                    valorAgregado = calculation.ValorAgregadoMva(baseCalc, (decimal)mva);
+                                                    valorAgregado = calculation.ValorAgregadoMva(baseCalc, Convert.ToDecimal(mva));
                                                     valorAgreg = valorAgregado;
                                                 }
 
                                                 if (taxedP.EBcr && taxedP.BCR != null)
                                                 {
                                                     bcr = taxedP.BCR;
-                                                    valorbcr = calculation.ValorAgregadoBcr((decimal)bcr, Convert.ToDecimal(valorAgreg));
+                                                    valorbcr = calculation.ValorAgregadoBcr(Convert.ToDecimal(bcr), Convert.ToDecimal(valorAgreg));
                                                     valorAgreg = valorbcr;
                                                     if (prod.Picms.Equals(12))
                                                         valorIcms = (baseCalc * 7 / 100) + prod.IcmsCTe;
@@ -855,16 +852,16 @@ namespace Escon.SisctNET.Web.Controllers
                                                 if (taxedP.Fecop != null)
                                                 {
                                                     fecop = taxedP.Fecop;
-                                                    valorFecop = calculation.ValorFecop((decimal)fecop, Convert.ToDecimal(valorAgreg));
-                                                    valorFecop2 = calculation.ValorFecop((decimal)fecop, Convert.ToDecimal(baseCalc2));
+                                                    valorFecop = calculation.ValorFecop(Convert.ToDecimal(fecop), Convert.ToDecimal(valorAgreg));
+                                                    valorFecop2 = calculation.ValorFecop(Convert.ToDecimal(fecop), Convert.ToDecimal(baseCalc2));
                                                 }
 
                                                 if (baseCalc2 >= valorAgreg)
                                                     taxationPauta = true;
 
                                                 aliqInterna = Convert.ToDecimal(taxedP.AliqInterna);
-                                                valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, (decimal)fecop, Convert.ToDecimal(valorAgreg));
-                                                valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(aliqInterna, (decimal)fecop, baseCalc2);
+                                                valorAgreAliqInt = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), Convert.ToDecimal(valorAgreg));
+                                                valorAgreAliqInt2 = calculation.ValorAgregadoAliqInt(aliqInterna, Convert.ToDecimal(fecop), baseCalc2);
 
                                                 totalIcms = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt), valorIcms);
                                                 totalIcms2 = calculation.TotalIcms(Convert.ToDecimal(valorAgreAliqInt2), valorIcms);
