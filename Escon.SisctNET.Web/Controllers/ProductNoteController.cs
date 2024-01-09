@@ -2203,9 +2203,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     _creditBalanceService.Update(creditCurrent, GetLog(Model.OccorenceLog.Update));
                                 }
 
-                                baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vprod).Sum() + productsIncentivado.Select(_ => _.Voutro).Sum() +
-                                                productsIncentivado.Select(_ => _.Vseg).Sum() - productsIncentivado.Select(_ => _.Vdesc).Sum() + productsIncentivado.Select(_ => _.Vfrete).Sum() +
-                                                productsIncentivado.Select(_ => _.Freterateado).Sum() + productsIncentivado.Select(_ => _.Vipi).Sum());
+                                baseIcms = Convert.ToDecimal(productsIncentivado.Select(_ => _.Vbasecalc).Sum());
                                 impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
 
                                 totalDarIcms += Math.Round(impostoIcms, 2);
@@ -2218,7 +2216,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (isPauta)
                                 {
                                     baseIcms = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
-                                    baseIcms += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc).Sum());
+                                    baseIcms += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Valoragregado).Sum());
                                 }
                                 else
                                 {
@@ -2226,9 +2224,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                         
                                 impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
-                                //impostoFecop = Math.Round(Convert.ToDecimal(baseIcms * (fecop / 100)), 2);
 
-                                //totalDarFecop += Math.Round(impostoFecop, 2);
                                 totalDarIcms += Math.Round(impostoIcms, 2);
                             }
                             else if ((comp.Annex.Description.Equals("ANEXO CCCXXVI (Art. 791 - A)")  && comp.Chapter.Name.Equals("CAPÍTULO II – A")) || 
@@ -3404,9 +3400,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 _creditBalanceService.Update(creditCurrent, GetLog(Model.OccorenceLog.Update));
                             }
 
-                            baseIcms = Convert.ToDecimal(productsSTIncentivado.Select(_ => _.Vprod).Sum() + productsSTIncentivado.Select(_ => _.Voutro).Sum() +
-                                            productsSTIncentivado.Select(_ => _.Vseg).Sum() - productsSTIncentivado.Select(_ => _.Vdesc).Sum() + productsSTIncentivado.Select(_ => _.Vfrete).Sum() +
-                                            productsSTIncentivado.Select(_ => _.Freterateado).Sum() + productsSTIncentivado.Select(_ => _.Vipi).Sum());
+                            baseIcms = Convert.ToDecimal(productsSTIncentivado.Select(_ => _.Vbasecalc).Sum());
                             impostoIcms = Math.Round(Convert.ToDecimal(baseIcms * (icms / 100)), 2);
                         }
                         else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV"))
@@ -3415,7 +3409,8 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (isPauta)
                             {
-                                baseIcms = Convert.ToDecimal(productsSTIncentivado.Select(_ => _.Vbasecalc2).Sum());
+                                baseIcms = Convert.ToDecimal(productsSTIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                baseIcms += Convert.ToDecimal(productsSTIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
 
                             }
                             else
