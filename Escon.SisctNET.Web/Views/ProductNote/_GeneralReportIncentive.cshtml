@@ -48,6 +48,33 @@
   
     }
 
+    @if (ViewBag.Company.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE"))
+    {
+        <table class="table" style="border: 2px solid;">
+            <thead>
+                <tr>
+                    <th>B. Cálculo Regime <span style="color:red">* Obs. 1</span></th>
+                    <th></th>
+                    <th>BC. ICMS Regime  <span style="color:red">* Obs. 2</span></th>
+                    <th></th>
+                    <th>Base de Cálculo Regime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@string.Format("{0:N}", ViewBag.BaseCalculo1)</td>
+                    <td style="text-align:center; font-size:17px">+</td>
+                    <td>@string.Format("{0:N}", ViewBag.BaseCalculo2)</td>
+                    <td style="text-align:center; font-size:17px">=</td>
+                    <td>@string.Format("{0:N}", ViewBag.Base)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Obs. 1: Pauta for maior ou igual que o Produto</p>
+        <p>Obs. 2: Pauta for menor que o Produto</p>
+    }
+
     <table class="table" style="border: 2px solid;">
         <thead>
             <tr>

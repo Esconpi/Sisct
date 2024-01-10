@@ -2215,8 +2215,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (isPauta)
                                 {
-                                    baseIcms = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
-                                    baseIcms += Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Valoragregado).Sum());
+                                    decimal baseCalc1 = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                    decimal baseCalc2 = Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+
+                                    baseIcms = baseCalc1;
+                                    baseIcms += baseCalc2;
+
+                                    ViewBag.BaseCalculo1 = baseCalc1;
+                                    ViewBag.BaseCalculo2 = baseCalc2;
                                 }
                                 else
                                 {
@@ -3409,8 +3415,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                             if (isPauta)
                             {
-                                baseIcms = Convert.ToDecimal(productsSTIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
-                                baseIcms += Convert.ToDecimal(productsSTIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                decimal baseCalc1 = Convert.ToDecimal(productsSTIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                decimal baseCalc2 = Convert.ToDecimal(productsSTIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+
+                                baseIcms = baseCalc1;
+                                baseIcms += baseCalc2;
+
+                                ViewBag.BaseCalculo1 = baseCalc1;
+                                ViewBag.BaseCalculo2 = baseCalc2;
 
                             }
                             else
