@@ -2216,7 +2216,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (isPauta)
                                 {
                                     decimal baseCalc1 = Convert.ToDecimal(productsIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
-                                    decimal baseCalc2 = Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                    decimal baseCalc2 = Convert.ToDecimal(productsIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Valoragregado).Sum());
 
                                     baseIcms = baseCalc1;
                                     baseIcms += baseCalc2;
@@ -3416,7 +3416,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (isPauta)
                             {
                                 decimal baseCalc1 = Convert.ToDecimal(productsSTIncentivado.Where(_ => _.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
-                                decimal baseCalc2 = Convert.ToDecimal(productsSTIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Vbasecalc2).Sum());
+                                decimal baseCalc2 = Convert.ToDecimal(productsSTIncentivado.Where(_ => !_.TaxationPauta).Select(_ => _.Valoragregado).Sum());
 
                                 baseIcms = baseCalc1;
                                 baseIcms += baseCalc2;
