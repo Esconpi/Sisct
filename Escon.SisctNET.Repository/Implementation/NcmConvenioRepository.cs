@@ -57,7 +57,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 int contaChar = n.Ncm.Length;
                 string substring = ncm;
 
-                if (contaChar < 8 && ncm.Length > contaChar)
+                if (contaChar > 0 && contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
 
                 if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
@@ -82,7 +82,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 int contaChar = n.Ncm.Length;
                 string substring = ncm;
 
-                if (contaChar < 8 && ncm.Length > contaChar)
+                if (contaChar > 0 && contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
 
                 string cestTemp = n.Cest;
@@ -149,7 +149,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 int contaChar = n.Ncm.Length;
                 string substring = ncm;
 
-                if (contaChar < 8 && ncm.Length > contaChar)
+                if (contaChar > 0 && contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
 
                 string cestTemp = n.Cest;
@@ -191,7 +191,7 @@ namespace Escon.SisctNET.Repository.Implementation
                 int contaChar = n.Ncm.Length;
                 string substring = ncm;
 
-                if (contaChar < 8 && ncm.Length > contaChar)
+                if (contaChar > 0 && contaChar < 8 && ncm.Length > contaChar)
                     substring = ncm.Substring(0, contaChar);
 
                 if (n.Ncm.Equals(substring) && !contaChar.Equals(0))
