@@ -1396,37 +1396,51 @@ namespace Escon.SisctNET.Web.Controllers
                     var productsPautaMVA = products.Where(_ => _.Incentivo && !_.TaxationPauta).ToList();
                     var productsFPauta = products.Where(_ => !_.Incentivo).ToList();
 
-                    baseCalculo = Convert.ToDecimal(productsFPauta.Select(_ => _.Vbasecalc).Sum());
-                    totalAC = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorAC).Sum());
-                    totalGeralIcms = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalICMS).Sum());
-                    totalFecop = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalFecop).Sum());
+                    decimal baseCalculo1 = 0, baseCalculo2 = 0, baseCalculo3 = 0, totalAC1 = 0, totalAC2 = 0, totalAC3 = 0, totalGeralIcms1 = 0, totalGeralIcms2 = 0,
+                        totalGeralIcms3 = 0, totalFecop1 = 0, totalFecop2 = 0, totalFecop3 = 0;
 
-                    decimal baseCalculo2 = Convert.ToDecimal(productsPauta.Select(_ => _.Vbasecalc2).Sum()),
-                        totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum()),
-                        totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum()),
-                        totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
-
-                    decimal baseCalculo3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.Vbasecalc).Sum()),
-                       totalAC3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.ValorAC).Sum()),
-                       totalGeralIcms3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalICMS).Sum()),
-                       totalFecop3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalFecop).Sum());
-
+                   
                     if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.Produto))
                     {
-                        baseCalculo += baseCalculo2 + baseCalculo3;
-                        totalAC += totalAC2 + totalAC3;
-                        totalGeralIcms += totalGeralIcms2 + totalGeralIcms3;
-                        totalFecop += totalFecop2 + totalFecop3;
+                        baseCalculo1 = Convert.ToDecimal(productsFPauta.Select(_ => _.Vbasecalc).Sum());
+                        totalAC1 = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorAC).Sum());
+                        totalGeralIcms1 = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalICMS).Sum());
+                        totalFecop1 = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalFecop).Sum());
+
+                        baseCalculo2 = Convert.ToDecimal(productsPauta.Select(_ => _.Vbasecalc2).Sum());
+                        totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum());
+                        totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum());
+                        totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
+
+                        baseCalculo3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.Vbasecalc).Sum());
+                        totalAC3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.ValorAC).Sum());
+                        totalGeralIcms3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalICMS).Sum());
+                        totalFecop3 = Convert.ToDecimal(productsPautaMVA.Select(_ => _.TotalFecop).Sum());
+
+                        baseCalculo = baseCalculo1 + baseCalculo2 + baseCalculo3;
+                        totalAC = totalAC1 + totalAC2 + totalAC3;
+                        totalGeralIcms1 = totalGeralIcms1 + totalGeralIcms2 + totalGeralIcms3;
+                        totalFecop = totalFecop1 + totalFecop2 + totalFecop3;
                         baseCalcIcms = Convert.ToDecimal(productsFPauta.Select(_ => _.Valoragregado).Sum()) + Convert.ToDecimal(productsPautaMVA.Select(_ => _.Valoragregado).Sum());
                         baseCalcBCR = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorBCR).Sum()) + Convert.ToDecimal(productsPautaMVA.Select(_ => _.ValorBCR).Sum());
 
                     }
                     else if (comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") && comp.Chapter.Name.Equals("CAPÍTULO IV") && type.Equals(Model.Type.ProdutoI))
                     {
-                        baseCalculo = baseCalculo2;
-                        totalAC = totalAC2;
-                        totalGeralIcms = totalGeralIcms2;
-                        totalFecop = totalFecop2;
+                        baseCalculo1 = Convert.ToDecimal(productsFPauta.Select(_ => _.Vbasecalc).Sum());
+                        totalAC1 = Convert.ToDecimal(productsFPauta.Select(_ => _.ValorAC).Sum());
+                        totalGeralIcms1 = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalICMS).Sum());
+                        totalFecop1 = Convert.ToDecimal(productsFPauta.Select(_ => _.TotalFecop).Sum());
+
+                        baseCalculo2 = Convert.ToDecimal(productsPauta.Select(_ => _.Vbasecalc2).Sum());
+                        totalAC2 = Convert.ToDecimal(productsPauta.Select(_ => _.ValorAC2).Sum());
+                        totalGeralIcms2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalICMS2).Sum());
+                        totalFecop2 = Convert.ToDecimal(productsPauta.Select(_ => _.TotalFecop2).Sum());
+
+                        baseCalculo = baseCalculo1 + baseCalculo2;
+                        totalAC = totalAC1 + totalAC2;
+                        totalGeralIcms = totalGeralIcms1 + totalGeralIcms2;
+                        totalFecop = totalFecop1 + totalFecop2;
                     }
 
                     if (typeTaxation.Equals(Model.TypeTaxation.ST) || typeTaxation.Equals(Model.TypeTaxation.AT))
