@@ -466,7 +466,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc;
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
@@ -505,7 +505,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc;
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
@@ -759,7 +759,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 decimal dif_frete = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
-                                baseCalc = Vbasecalc;
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {
@@ -798,7 +798,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
                                         dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
-                                baseCalc = Vbasecalc;
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {
