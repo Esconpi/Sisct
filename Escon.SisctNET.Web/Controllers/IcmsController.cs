@@ -108,7 +108,7 @@ namespace Escon.SisctNET.Web.Controllers
 
             try
             {
-                opcao = "saida";
+                opcao = "entrada";
 
                 var comp = _companyService.FindById(companyId, null);
 

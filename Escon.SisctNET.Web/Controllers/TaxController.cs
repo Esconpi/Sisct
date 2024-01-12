@@ -1020,7 +1020,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if(nn == null)
                                             {
                                                 ViewBag.Erro = 3;
-                                                return View();
+                                                return View(comp);
                                             }
 
                                             var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"]) &&
@@ -1175,7 +1175,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (nn == null)
                                             {
                                                 ViewBag.Erro = 3;
-                                                return View();
+                                                return View(comp);
                                             }
 
                                             var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime") && _.Code.Equals(exitNotes[i][j]["cProd"])
@@ -1283,7 +1283,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 // Devolução Entrada
                                 for (int i = entryNotes.Count - 1; i >= 0; i--)
                                 {
-                                    /*if (entryNotes[i][1]["finNFe"] != "4" || entryNotes[i][1]["tpNF"] == "0")
+                                    if (entryNotes[i][1]["finNFe"] != "4" || entryNotes[i][1]["tpNF"] == "0")
                                     {
                                         entryNotes.RemoveAt(i);
                                         continue;
@@ -1292,7 +1292,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     {
                                         entryNotes.RemoveAt(i);
                                         continue;
-                                    }*/
+                                    }
 
                                     bool contribuinte = false, ncm = false, ncmI = false, ncmII = false, cfop = false;
                                     int posClienteRaiz = contContribuintesRaiz - 1;
@@ -1325,7 +1325,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             if (nn == null)
                                             {
                                                 ViewBag.Erro = 3;
-                                                return View();
+                                                return View(comp);
                                             }
 
                                             var nIncentivo = ncmInciso.Where(_ => _.TypeTaxation.Equals("Incentivado/Regime")  && _.Code.Equals(entryNotes[i][j]["cProd"])

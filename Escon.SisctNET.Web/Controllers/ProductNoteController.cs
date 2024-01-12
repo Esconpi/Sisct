@@ -466,7 +466,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi) - Convert.ToDecimal(prod.Freterateado);
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Freterateado);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
@@ -505,7 +505,7 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi) - Convert.ToDecimal(prod.Freterateado);
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Freterateado);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
@@ -756,7 +756,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 decimal dif_frete = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
-                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi) - Convert.ToDecimal(item.Freterateado);
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Freterateado);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {
@@ -795,7 +795,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
                                         dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
-                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi) - -Convert.ToDecimal(item.Freterateado);
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Freterateado);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {

@@ -913,7 +913,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else if (taxed.TaxationType.Type == "Normal" && taxed.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                                 {
-                                    baseCalc = baseDeCalc - vIPI - frete_prod;
+                                    baseCalc = baseDeCalc - frete_prod;
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
@@ -954,7 +954,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else if (taxed.TaxationType.Type == "Normal" && !taxed.TaxationType.Description.Equals("1  AP - Antecipação parcial"))
                                 {
-                                    baseCalc = baseDeCalc - vIPI - frete_prod;
+                                    baseCalc = baseDeCalc - frete_prod;
 
                                     dif = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValid));
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, Convert.ToDecimal(pICMSValidOrig));

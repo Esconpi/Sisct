@@ -394,7 +394,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                 <th rowspan="2">ICMS Apurado</th>
             </tr>
             <tr style="font-size:9px;">
-                <th>V. Produto</th>
+                <th>BC. ICMS</th>
                 <th>Aliq Inter(%)</th>
                 <th>Aliq Intra <br /> NFe(%)</th>
                 <th>Dif</th>
@@ -458,8 +458,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                     </td>
                     <td>
-                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
+                        @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))
                     </td>
                     <td>
                         @if (item.EBcr == true && item.AliqInternaBCR != null)
@@ -581,8 +580,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                     </td>
                     <td>
-                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                                                Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
+                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod))
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Note.Nct)</td>
                     <td>
@@ -592,8 +590,7 @@ else if (ViewBag.TypeTaxation == "AP" || ViewBag.TypeTaxation == "CO" ||
                         }
                     </td>
                     <td>
-                        @string.Format("{0:N}", Convert.ToDecimal(item.Vprod) + Convert.ToDecimal(item.Vseg) + Convert.ToDecimal(item.Voutro) +
-                            Convert.ToDecimal(item.Vfrete) - Convert.ToDecimal(item.Vdesc) + Convert.ToDecimal(item.Vipi))
+                        @string.Format("{0:N}", Convert.ToDecimal(item.Vbasecalc))
                     </td>
                     <td>
                         @if (item.EBcr == true && item.AliqInternaBCR != null)
