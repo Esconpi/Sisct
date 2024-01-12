@@ -993,7 +993,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
-                                            if (prod.Csosn != null)
+                                            if (prod.Csosn != null && prod.Csosn != "")
                                                 baseDifal = calculation.Base3(baseCalc - icmsInter, aliqInterna);
                                             else if (vICMS > 0)
                                                 baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
@@ -1025,7 +1025,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             bcrInter = calculation.BCR(Convert.ToDecimal(aliquotConfaz), Convert.ToDecimal(pICMSValid));
                                             icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
-                                            if (prod.Csosn != null)
+                                            if (prod.Csosn != null && prod.Csosn != "")
                                                 baseDifal = calculation.Base3(baseCalc - icmsInter, aliqInterna);
                                             else if (prod.Vicms > 0)
                                                 baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
@@ -1053,7 +1053,7 @@ namespace Escon.SisctNET.Web.Controllers
                                             decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(pICMSValid)),
                                                     base2 = 0, base3 = 0, baseDifal = 0;
 
-                                            if (prod.Csosn != null)
+                                            if (prod.Csosn != null && prod.Csosn != "")
                                                 base2 = calculation.Base2(baseCalc, base1);
                                             else if (prod.Vicms > 0)
                                                 base2 = calculation.Base2(baseCalc, prod.Vicms);
