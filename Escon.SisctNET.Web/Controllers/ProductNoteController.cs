@@ -466,11 +466,11 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi);
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi) - Convert.ToDecimal(prod.Freterateado);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
-                            icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado));
+                            icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc);
                             icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
 
                             prod.AliqInterna = aliqInterna;
@@ -505,20 +505,20 @@ namespace Escon.SisctNET.Web.Controllers
                             if (dif_frete < 0)
                                 dif_frete = 0;
 
-                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi);
+                            baseCalc = Vbasecalc - Convert.ToDecimal(prod.Vipi) - Convert.ToDecimal(prod.Freterateado);
 
                             decimal icmsApu = 0, icmsApuCTe = 0;
 
                             if (dataTemp < dataRef)
                             {
-                                icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(prod.Freterateado));
+                                icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc);
                                 icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
                             }
                             else
                             {
                                 if (entity.EBcr && prod.PicmsBCR == null && prod.AliqInternaBCR == null)
                                 {
-                                    decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)), 
+                                    decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(prod.Picms)), 
                                             bcrIntra = 0, bcrInter = 100 , icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
                                     if (bcr != null)
@@ -527,11 +527,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                     if (prod.Csosn != null)
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado) - base1, aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc - base1, aliqInterna);
                                     else if (prod.Vicms > 0)
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado) - prod.Vicms, aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
                                     else
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado), aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc, aliqInterna);
 
                                     icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
                                     icmsApu = calculation.Icms(icmsIntra, icmsInter);
@@ -552,7 +552,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
                                 {
-                                    decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)),
+                                    decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(prod.Picms)),
                                             bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
                                     bcrIntra = calculation.BCR(Convert.ToDecimal(prod.AliqInternaBCR), aliqInterna);
@@ -560,11 +560,11 @@ namespace Escon.SisctNET.Web.Controllers
                                     icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                     if (prod.Csosn != null)
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado) - icmsInter, aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc - icmsInter, aliqInterna);
                                     else if (prod.Vicms > 0)
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado) - prod.Vicms, aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
                                     else
-                                        baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado), aliqInterna);
+                                        baseDifal = calculation.Base3(baseCalc, aliqInterna);
 
                                     icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
                                     icmsApu = calculation.Icms(icmsIntra, icmsInter);
@@ -585,15 +585,15 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else
                                 {
-                                    decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(prod.Freterateado), Convert.ToDecimal(prod.Picms)),
+                                    decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(prod.Picms)),
                                             base2 = 0, base3 = 0, baseDifal = 0;
 
                                     if (prod.Csosn != null)
-                                        base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), base1);
+                                        base2 = calculation.Base2(baseCalc, base1);
                                     else if (prod.Vicms > 0)
-                                        base2 = calculation.Base2(baseCalc - Convert.ToDecimal(prod.Freterateado), prod.Vicms);
+                                        base2 = calculation.Base2(baseCalc, prod.Vicms);
                                     else
-                                        base2 = baseCalc - Convert.ToDecimal(prod.Freterateado);
+                                        base2 = baseCalc;
 
                                     base3 = calculation.Base3(base2, aliqInterna);
                                     baseDifal = calculation.BaseDifal(base3, aliqInterna);
@@ -754,12 +754,9 @@ namespace Escon.SisctNET.Web.Controllers
                             {
                                 dif = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
-                                /*decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
-                                        dif_frete = calculation.DiferencialAliq(aliqCte, aliquotaOrig);*/
-
                                 decimal dif_frete = calculation.DiferencialAliq(aliqInterna, item.Picms);
 
-                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi);
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi) - Convert.ToDecimal(item.Freterateado);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {
@@ -777,7 +774,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 decimal icmsApu = 0, icmsApuCTe = 0;
 
-                                icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado));
+                                icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc);
                                 icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
 
                                 item.Diferencial = dif;
@@ -798,7 +795,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 decimal aliquotaOrig = item.PicmsOrig > 0 ? item.PicmsOrig : item.Picms,
                                         dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
-                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi);
+                                baseCalc = Vbasecalc - Convert.ToDecimal(item.Vipi) - -Convert.ToDecimal(item.Freterateado);
 
                                 if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                 {
@@ -818,14 +815,14 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 if (dataTemp < dataRef)
                                 {
-                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc - Convert.ToDecimal(item.Freterateado));
+                                    icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc);
                                     icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
                                 }
                                 else
                                 {
                                     if (entity.EBcr && item.PicmsBCR == null && item.AliqInternaBCR == null)
                                     {
-                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                        decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(item.Picms)),
                                                 bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
                                         if (bcr != null)
@@ -834,11 +831,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                         if (item.Csosn != null)
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado) - base1, aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc - base1, aliqInterna);
                                         else if (item.Vicms > 0)
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado) - prod.Vicms, aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
                                         else
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(prod.Freterateado), aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc, aliqInterna);
 
                                         icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
                                         icmsApu = calculation.Icms(icmsIntra, icmsInter);
@@ -861,7 +858,7 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
                                     {
-                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                        decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(item.Picms)),
                                                 bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
                                         bcrIntra = calculation.BCR(Convert.ToDecimal(item.AliqInternaBCR), aliqInterna);
@@ -869,11 +866,11 @@ namespace Escon.SisctNET.Web.Controllers
                                         icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                         if (item.Csosn != null)
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado) - icmsInter, aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc - icmsInter, aliqInterna);
                                         else if (item.Vicms > 0)
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado) - prod.Vicms, aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc - prod.Vicms, aliqInterna);
                                         else
-                                            baseDifal = calculation.Base3(baseCalc - Convert.ToDecimal(item.Freterateado), aliqInterna);
+                                            baseDifal = calculation.Base3(baseCalc, aliqInterna);
 
                                         icmsIntra = calculation.IcmsBCRIntra(baseDifal, bcrIntra, aliqInterna);
                                         icmsApu = calculation.Icms(icmsIntra, icmsInter);
@@ -896,15 +893,15 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                     else
                                     {
-                                        decimal base1 = calculation.Base1(baseCalc - Convert.ToDecimal(item.Freterateado), Convert.ToDecimal(item.Picms)),
+                                        decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(item.Picms)),
                                            base2 = 0, base3 = 0, baseDifal = 0;
 
                                         if(item.Csosn != null)
-                                            base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), base1);
+                                            base2 = calculation.Base2(baseCalc, base1);
                                         else  if (item.Vicms > 0)
-                                            base2 = calculation.Base2(baseCalc - Convert.ToDecimal(item.Freterateado), prod.Vicms);
+                                            base2 = calculation.Base2(baseCalc, prod.Vicms);
                                         else
-                                            base2 = baseCalc - Convert.ToDecimal(item.Freterateado);
+                                            base2 = baseCalc;
 
                                         base3 = calculation.Base3(base2, aliqInterna);
                                         baseDifal = calculation.BaseDifal(base3, aliqInterna);
