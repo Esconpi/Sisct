@@ -2335,7 +2335,7 @@ namespace Escon.SisctNET.Web.Controllers
                             //    ViewBag.TotalImpostoIncentivo = totalImpostoIncentivo + (valorDiefSIE - totalIcmsPagoSIE) + (totalfecop1SIE + totalfecop2SIE);
 
                             if ((comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") || comp.Annex.Description.Equals("ANEXO III - BEBIDAS ALCOÓLICAS, EXCETO CERVEJA E CHOPE") || 
-                                 comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && typeTaxation.Equals(Model.TypeTaxation.ST) && type.Equals(Model.Type.Produto))
+                                 comp.Chapter.Name.Equals("CAPÍTULO IV-C")) && typeTaxation.Equals(Model.TypeTaxation.ST) && (type.Equals(Model.Type.Produto) || type.Equals(Model.Type.ProdutoI)))
                             {
                                 if (imp == null)
                                 {
