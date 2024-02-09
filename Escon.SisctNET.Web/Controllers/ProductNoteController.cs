@@ -2090,7 +2090,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                             }
                             else if (comp.Annex.Description.Equals("ANEXO II - AUTOPEÇAS") && comp.Chapter.Name.Equals("CAPÍTULO IV-B") &&
-                                    type.Equals(Model.Type.Produto))
+                                    type.Equals(Model.Type.Produto) || type.Equals(Model.Type.ProdutoI))
                             {
                                 if (impAnexo == null)
                                 {
