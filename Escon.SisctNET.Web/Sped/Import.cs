@@ -3148,6 +3148,7 @@ namespace Escon.SisctNET.Web.Sped
                                 linhaSped.Add(linha[25]);
                                 linhaSped.Add(linha[16]);
                                 linhaSped.Add(linha[22]);
+                                linhaSped.Add(linha[21]);
                                 sped.Add(linhaSped);
                             }
                         }
@@ -3166,6 +3167,7 @@ namespace Escon.SisctNET.Web.Sped
                                 linhaSped.Add(linha[25]);
                                 linhaSped.Add(linha[16]);
                                 linhaSped.Add(linha[22]);
+                                linhaSped.Add(linha[21]);
                                 sped.Add(linhaSped);
                             }
                         }
