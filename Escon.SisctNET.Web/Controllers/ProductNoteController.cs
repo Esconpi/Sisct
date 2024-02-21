@@ -452,12 +452,12 @@ namespace Escon.SisctNET.Web.Controllers
                             dif = calculation.DiferencialAliq(aliqInterna, prod.Picms);
                             decimal dif_frete = calculation.DiferencialAliq(aliqInterna, prod.Picms);
 
-                            if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
+                            if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                             {
                                 if (prod.Orig == 1 || prod.Orig == 2 || prod.Orig == 3 || prod.Orig == 8)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
                                 else
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(entity.PicmsBCR));
                             }
 
                             if (dif < 0)
@@ -491,12 +491,12 @@ namespace Escon.SisctNET.Web.Controllers
                             decimal aliquotaOrig = prod.PicmsOrig > 0 ? prod.PicmsOrig : prod.Picms,
                                     dif_frete = calculation.DiferencialAliq(aliqInterna, aliquotaOrig);
 
-                            if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
+                            if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                             {
                                 if (prod.Orig == 1 || prod.Orig == 2 || prod.Orig == 3 || prod.Orig == 8)
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
                                 else
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(prod.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
                             }
 
                             if (dif < 0)
@@ -516,7 +516,7 @@ namespace Escon.SisctNET.Web.Controllers
                             }
                             else
                             {
-                                if (entity.EBcr && prod.PicmsBCR == null && prod.AliqInternaBCR == null)
+                                if (entity.EBcr && entity.PicmsBCR == null && entity.AliqInternaBCR == null)
                                 {
                                     decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(prod.Picms)), 
                                             bcrIntra = 0, bcrInter = 100 , icmsInter = 0, baseDifal = 0, icmsIntra = 0;
@@ -550,13 +550,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
                                 }
-                                else if (entity.EBcr && prod.PicmsBCR != null && prod.AliqInternaBCR != null)
+                                else if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                                 {
                                     decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(prod.Picms)),
                                             bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
-                                    bcrIntra = calculation.BCR(Convert.ToDecimal(prod.AliqInternaBCR), aliqInterna);
-                                    bcrInter = calculation.BCR(Convert.ToDecimal(prod.PicmsBCR), Convert.ToDecimal(prod.Picms));
+                                    bcrIntra = calculation.BCR(Convert.ToDecimal(entity.AliqInternaBCR), aliqInterna);
+                                    bcrInter = calculation.BCR(Convert.ToDecimal(entity.PicmsBCR), Convert.ToDecimal(prod.Picms));
                                     icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                     if (prod.Csosn != null && prod.Csosn != "")
@@ -758,12 +758,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 baseCalc = Vbasecalc - Convert.ToDecimal(item.Freterateado);
 
-                                if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
+                                if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                                 {
                                     if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), item.Picms);
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), item.Picms);
                                     else
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(entity.PicmsBCR));
                                 }
 
                                 if (dif < 0)
@@ -797,12 +797,12 @@ namespace Escon.SisctNET.Web.Controllers
 
                                 baseCalc = Vbasecalc - Convert.ToDecimal(item.Freterateado);
 
-                                if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
+                                if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                                 {
                                     if (item.Orig == 1 || item.Orig == 2 || item.Orig == 3 || item.Orig == 8)
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), item.Picms);
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), item.Picms);
                                     else
-                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(item.AliqInternaBCR), Convert.ToDecimal(item.PicmsBCR));
+                                        dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(entity.PicmsBCR));
                                 }
 
                                 if (dif < 0)
@@ -820,7 +820,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 }
                                 else
                                 {
-                                    if (entity.EBcr && item.PicmsBCR == null && item.AliqInternaBCR == null)
+                                    if (entity.EBcr && entity.PicmsBCR == null && entity.AliqInternaBCR == null)
                                     {
                                         decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(item.Picms)),
                                                 bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
@@ -856,13 +856,13 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         icmsApuCTe = calculation.Icms(icmsIntraCTe, icmsInterCTe);
                                     }
-                                    else if (entity.EBcr && item.PicmsBCR != null && item.AliqInternaBCR != null)
+                                    else if (entity.EBcr && entity.PicmsBCR != null && entity.AliqInternaBCR != null)
                                     {
                                         decimal base1 = calculation.Base1(baseCalc, Convert.ToDecimal(item.Picms)),
                                                 bcrIntra = 0, bcrInter = 100, icmsInter = 0, baseDifal = 0, icmsIntra = 0;
 
-                                        bcrIntra = calculation.BCR(Convert.ToDecimal(item.AliqInternaBCR), aliqInterna);
-                                        bcrInter = calculation.BCR(Convert.ToDecimal(item.PicmsBCR), Convert.ToDecimal(item.Picms));
+                                        bcrIntra = calculation.BCR(Convert.ToDecimal(entity.AliqInternaBCR), aliqInterna);
+                                        bcrInter = calculation.BCR(Convert.ToDecimal(entity.PicmsBCR), Convert.ToDecimal(item.Picms));
                                         icmsInter = calculation.IcmsBCR(base1, bcrInter);
 
                                         if (item.Csosn != null && item.Csosn != "")

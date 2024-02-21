@@ -184,6 +184,31 @@
                     </div>
 
                     <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <label class="control-label">Aliquota Interestadual BCR (%)</label>
+                            @if (Convert.ToDecimal(Model.PicmsBCR) > 0)
+                            {
+                                <input type="text" name="PicmsBCR" id="PicmsBCR" class="form-control money" value="@Model.PicmsBCR" required />
+                            }
+                            else
+                            {
+                                <input type="text" name="PicmsBCR" id="PicmsBCR" class="form-control money" disabled="disabled" />
+                            }
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                            <label class="control-label">Aliquota Interna BCR (%)</label>
+                            @if (Convert.ToDecimal(Model.AliqInternaBCR) > 0)
+                            {
+                                <input type="text" name="AliqInternaBCR" id="AliqInternaBCR" class="form-control money" value="@Model.AliqInternaBCR" required />
+                            }
+                            else
+                            {
+                                <input type="text" name="AliqInternaBCR" id="AliqInternaBCR" class="form-control money" disabled="disabled" />
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="form-group col-lg-1 col-md-6 col-xs-6" id="pauta">
                             <label asp-for="Pautado" class="control-label">Pautado</label> <br />
                             @Html.CheckBoxFor(model => model.Pautado, new { @data_off = "Não", @data_on = "Sim", @data_size = "small", @data_toggle = "toggle", @data_onstyle = "primary", @readonly = "true"})
