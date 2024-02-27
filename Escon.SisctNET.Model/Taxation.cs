@@ -15,7 +15,7 @@ namespace Escon.SisctNET.Model
         [Display(Name = "CEST")]
         public string Cest { get; set; }
 
-        [Display(Name = "Aliq. Inter")]
+        [Display(Name = "Aliq. Interna")]
         public decimal? AliqInterna { get; set; }
 
         [Display(Name = "MVA")]
@@ -35,7 +35,7 @@ namespace Escon.SisctNET.Model
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
 
-        [Display(Name = "Aliquota")]
+        [Display(Name = "Aliq. Interestadual")]
         public decimal? Picms { get; set; }
 
         [Display(Name = "Uf")]
