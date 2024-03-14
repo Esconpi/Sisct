@@ -237,7 +237,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 List<Model.ProductNote> updateProducts = new List<Model.ProductNote>();
 
-                if (entity.Pautado == true)
+                if (entity.Pautado)
                 {
                     var product = _productService.FindByProduct(Convert.ToInt64(entity.ProductId), null);
                     decimal precoPauta = Convert.ToDecimal(product.Price), baseCalc = 0, valorIcms = calculation.ValorIcms(prod.IcmsCTe, prod.Vicms);
@@ -474,6 +474,8 @@ namespace Escon.SisctNET.Web.Controllers
                             icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(prod.Freterateado));
 
                             prod.AliqInterna = aliqInterna;
+                            prod.AliqInternaBCR = entity.AliqInternaBCR;
+                            prod.PicmsBCR = entity.PicmsBCR;
                             prod.Mva = null;
                             prod.Valoragregado = null;
                             prod.Fecop = null;
@@ -496,7 +498,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 if (prod.Orig == 1 || prod.Orig == 2 || prod.Orig == 3 || prod.Orig == 8)
                                     dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(prod.Picms));
                                 else
-                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(prod.PicmsBCR));
+                                    dif = calculation.DiferencialAliq(Convert.ToDecimal(entity.AliqInternaBCR), Convert.ToDecimal(entity.PicmsBCR));
                             }
 
                             if (dif < 0)
@@ -626,6 +628,8 @@ namespace Escon.SisctNET.Web.Controllers
                             }
 
                             prod.AliqInterna = aliqInterna;
+                            prod.AliqInternaBCR = entity.AliqInternaBCR;
+                            prod.PicmsBCR = entity.PicmsBCR;
                             prod.Mva = null;
                             prod.Valoragregado = null;
                             prod.Fecop = null;
@@ -777,6 +781,8 @@ namespace Escon.SisctNET.Web.Controllers
                                 icmsApu = calculation.IcmsApurado(Convert.ToDecimal(dif), baseCalc);
                                 icmsApuCTe = calculation.IcmsApurado(dif_frete, Convert.ToDecimal(item.Freterateado));
 
+                                item.AliqInternaBCR = entity.AliqInternaBCR;
+                                item.PicmsBCR = entity.PicmsBCR;
                                 item.Diferencial = dif;
                                 item.DiferencialCTe = dif_frete;
                                 item.IcmsApurado = icmsApu;
@@ -932,6 +938,8 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
+                                item.AliqInternaBCR = entity.AliqInternaBCR;
+                                item.PicmsBCR = entity.PicmsBCR;
                                 item.Diferencial = dif;
                                 item.DiferencialCTe = dif_frete;
                                 item.IcmsApurado = icmsApu;
@@ -1027,7 +1035,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                 _noteService.Update(updateNote, GetLog(OccorenceLog.Update));
 
-                if (productType == "Normal" && entity.Pautado == false && prod.Divergent == false)
+                if (productType == "Normal" && !entity.Pautado && !prod.Divergent)
                 {
                     string aliquot = prod.Picms.ToString(),
                            code = calculation.Code(prod.Note.Company.Document, prod.Ncm, prod.Note.Uf, aliquot);
