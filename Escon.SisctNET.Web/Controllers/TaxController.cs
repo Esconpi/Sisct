@@ -3580,7 +3580,7 @@ namespace Escon.SisctNET.Web.Controllers
                                 bonificacao += lucroPresumido[5];
 
                             }
-                            else if (comp.CountingType.Name.Equals("Simples"))
+                            else if (comp.CountingType.Name.Equals("Simples Nacional"))
                             {
                                 // Empresa do Simples
                                 cfopsDevoVenda.AddRange(cfopsDevoVendaST);
@@ -4630,11 +4630,16 @@ namespace Escon.SisctNET.Web.Controllers
                                 List<string> ncmIsento = new List<string>();
                                 List<string> ncmOutras = new List<string>();
 
+                                //  Vendas
                                 cfopsVenda.AddRange(cfopsVendaST);
                                 cfopsVenda.AddRange(cfopsTransf);
                                 cfopsVenda.AddRange(cfopsTransfST);
 
-                                exitNotes = importXml.NFeAll(directoryNfeExit, cfopsVenda);
+                                //  Devoluções
+                                cfopsDevoVenda.AddRange(cfopsDevoVendaST);
+
+                                exitNotes = importXml.NFeAll(directoryNfeExit);
+
                                 // Vendas
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
                                 {
@@ -4666,9 +4671,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     string NCM = "", cProd = "", CFOP = "";
                                     decimal vProd = 0;
+                                    bool cfop = false;
 
                                     for (int j = 0; j < exitNotes[i].Count(); j++)
                                     {
+                                        if (exitNotes[i][j].ContainsKey("CFOP"))
+                                        {
+                                            cfop = false;
+
+                                            if (cfopsVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
+                                            }
+
+                                        }
+
                                         if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
                                         {
                                             cProd = exitNotes[i][j]["cProd"];
@@ -4695,7 +4712,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         }
 
-                                        if (exitNotes[i][j].ContainsKey("CSOSN"))
+                                        if (exitNotes[i][j].ContainsKey("CSOSN") && cfop)
                                         {
                                             if (comp.Taxation == "Produto")
                                             {
@@ -4901,7 +4918,6 @@ namespace Escon.SisctNET.Web.Controllers
                                     }
                                 }
 
-                                
                                 // Devoluções de Vendas
                                 for (int i = exitNotes.Count - 1; i >= 0; i--)
                                 {
@@ -4932,9 +4948,21 @@ namespace Escon.SisctNET.Web.Controllers
 
                                     string NCM = "", cProd = "", CFOP = "";
                                     decimal vProd = 0;
+                                    bool cfop = false;
 
                                     for (int j = 0; j < exitNotes[i].Count; j++)
                                     {
+                                        if (exitNotes[i][j].ContainsKey("CFOP"))
+                                        {
+                                            cfop = false;
+
+                                            if (cfopsDevoVenda.Contains(exitNotes[i][j]["CFOP"]))
+                                            {
+                                                cfop = true;
+                                            }
+
+                                        }
+
                                         if (exitNotes[i][j].ContainsKey("cProd") && exitNotes[i][j].ContainsKey("NCM"))
                                         {
                                             cProd = exitNotes[i][j]["cProd"];
@@ -4961,7 +4989,7 @@ namespace Escon.SisctNET.Web.Controllers
 
                                         }
 
-                                        if (exitNotes[i][j].ContainsKey("CSOSN"))
+                                        if (exitNotes[i][j].ContainsKey("CSOSN") && cfop)
                                         {
                                             if (comp.Taxation == "Produto")
                                             {
